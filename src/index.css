@@ -1,0 +1,310 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 212 100% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 215 70% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 28 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 5%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 212 100% 40%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 217 33% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 28 100% 50%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+    --ring: 213 27% 84%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    direction: rtl;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    direction: rtl;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-electric-navy;
+  }
+  
+  ul {
+    padding-right: 1.5rem;
+    padding-left: 0;
+  }
+}
+
+@layer utilities {
+  .electric-gradient {
+    background: linear-gradient(135deg, #0052CC 0%, #0077FF 100%);
+  }
+  
+  .topic-card {
+    @apply relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-border;
+  }
+  
+  .topic-card.locked:before {
+    content: "";
+    @apply absolute top-0 left-0 w-full h-full bg-gray-900/50 z-10 flex items-center justify-center;
+  }
+  
+  .topic-card.locked:after {
+    content: "🔒";
+    @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl z-20;
+  }
+  
+  .btn-electric {
+    @apply py-2 px-6 bg-electric-blue text-white rounded-lg font-medium transition-all hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none;
+  }
+  
+  .btn-electric-outline {
+    @apply py-2 px-6 bg-transparent text-electric-blue border border-electric-blue rounded-lg font-medium transition-all hover:bg-electric-blue/10 focus:ring-2 focus:ring-blue-300 focus:outline-none;
+  }
+  
+  .btn-premium {
+    @apply py-2 px-6 bg-electric-orange text-white rounded-lg font-medium transition-all hover:bg-orange-500 focus:ring-2 focus:ring-orange-300 focus:outline-none;
+  }
+  
+  .bg-electric-navy {
+    @apply bg-[#172B4D];
+  }
+  
+  .bg-electric-blue {
+    @apply bg-[#0052CC];
+  }
+  
+  .bg-electric-orange {
+    @apply bg-[#FF8200];
+  }
+  
+  .text-electric-blue {
+    @apply text-[#0052CC];
+  }
+  
+  .text-electric-navy {
+    @apply text-[#172B4D];
+  }
+  
+  .text-electric-orange {
+    @apply text-[#FF8200];
+  }
+  
+  .hero-section {
+    position: relative;
+    background-image: url('/lovable-uploads/22942430-5fcc-4c60-8cbb-dfa8761ab5bd.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(23, 43, 77, 0.8), rgba(0, 82, 204, 0.7));
+    z-index: 1;
+  }
+  
+  .hero-section > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .blur-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+  }
+  
+  /* תמיכה טובה יותר ב-RTL */
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+  
+  .flex-row-reverse-rtl {
+    flex-direction: row-reverse;
+  }
+  
+  /* תיקונים ל-RTL באלמנטים בעייתיים */
+  .rtl-space-x-reverse {
+    --tw-space-x-reverse: 1 !important;
+  }
+
+  /* פתרון בעיית מרווחים ב-RTL */
+  [dir="rtl"] .space-x-1 > * + *, .space-x-1.rtl > * + * {
+    --tw-space-x-reverse: 1 !important;
+    margin-right: calc(0.25rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  [dir="rtl"] .space-x-2 > * + *, .space-x-2.rtl > * + * {
+    --tw-space-x-reverse: 1 !important;
+    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  [dir="rtl"] .space-x-3 > * + *, .space-x-3.rtl > * + * {
+    --tw-space-x-reverse: 1 !important;
+    margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+    margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  [dir="rtl"] .space-x-4 > * + *, .space-x-4.rtl > * + * {
+    --tw-space-x-reverse: 1 !important;
+    margin-right: calc(1rem * var(--tw-space-x-reverse));
+    margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  /* תיקון מרג'ינים ב-RTL */
+  [dir="rtl"] .ml-1, .ml-1.rtl {
+    margin-left: 0;
+    margin-right: 0.25rem;
+  }
+
+  [dir="rtl"] .ml-2, .ml-2.rtl {
+    margin-left: 0;
+    margin-right: 0.5rem;
+  }
+
+  [dir="rtl"] .mr-1, .mr-1.rtl {
+    margin-right: 0;
+    margin-left: 0.25rem;
+  }
+
+  [dir="rtl"] .mr-2, .mr-2.rtl {
+    margin-right: 0;
+    margin-left: 0.5rem;
+  }
+
+  [dir="rtl"] .mr-3, .mr-3.rtl {
+    margin-right: 0;
+    margin-left: 0.75rem;
+  }
+
+  [dir="rtl"] .mr-4, .mr-4.rtl {
+    margin-right: 0;
+    margin-left: 1rem;
+  }
+
+  [dir="rtl"] .mr-6, .mr-6.rtl {
+    margin-right: 0;
+    margin-left: 1.5rem;
+  }
+
+  [dir="rtl"] .mr-8, .mr-8.rtl {
+    margin-right: 0;
+    margin-left: 2rem;
+  }
+
+  [dir="rtl"] .pl-2, .pl-2.rtl {
+    padding-left: 0;
+    padding-right: 0.5rem;
+  }
+
+  [dir="rtl"] .pr-2, .pr-2.rtl {
+    padding-right: 0;
+    padding-left: 0.5rem;
+  }
+
+  /* תמיכה בטקסט מימין לשמאל */
+  .text-right {
+    text-align: right;
+  }
+
+  /* הפיכת אייקונים של חצים */
+  [dir="rtl"] .rtl-rotate-180 {
+    transform: rotate(180deg);
+  }
+
+  /* הפיכת כיוון פלקס לתמיכה ב-RTL */
+  .flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+
+  /* תיקון להצגת אייקונים ב-RTL */
+  [dir="rtl"] .rtl-flip {
+    transform: scaleX(-1);
+  }
+  
+  /* מאפשר שליטה ב-RTL עבור רכיבים */
+  .rtl-component {
+    direction: rtl;
+    text-align: right;
+  }
+  
+  /* תיקון כיוון עבור דיאלוגים ופופאפים */
+  [dir="rtl"] .dialog-content,
+  [dir="rtl"] .popover-content {
+    text-align: right;
+  }
+}
