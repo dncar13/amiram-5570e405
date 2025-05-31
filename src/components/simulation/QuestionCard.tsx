@@ -1,6 +1,7 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle } from "lucide-react";
+import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb } from "lucide-react";
 import { Question } from "@/data/questionsData";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
@@ -50,6 +51,7 @@ const QuestionCard = ({
   const { isAdmin, isPremium } = useAuth();
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
+  const [showTip, setShowTip] = useState(false);
   
   useEffect(() => {
     if (currentQuestion) {
@@ -120,15 +122,17 @@ const QuestionCard = ({
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
   const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
 
-  // אנימציית הבהוב מוגבלת ל-3 פעמים
-  const pulseAnimation = {
-    animate: {
-      scale: [1, 1.02, 1],
-      transition: {
-        duration: 0.5,
-        repeat: 2, // הבהוב 3 פעמים בלבד (0, 1, 2)
-        repeatType: "loop" as const
-      }
+  // Get question type badge
+  const getQuestionTypeBadge = () => {
+    switch (currentQuestion.questionType) {
+      case 'reading-comprehension':
+        return 'Reading Comprehension';
+      case 'sentence-completion':
+        return 'Sentence Completion';
+      case 'restatement':
+        return 'Restatement';
+      default:
+        return 'Question';
     }
   };
 
@@ -143,12 +147,15 @@ const QuestionCard = ({
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
-                שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
+                Question {currentQuestionIndex + 1} of {totalQuestions}
+              </Badge>
+              <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
+                {getQuestionTypeBadge()}
               </Badge>
               {localIsSaved && (
                 <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20">
                   <Flag className="h-3 w-3 fill-current" />
-                  <span>נשמרה</span>
+                  <span>Saved</span>
                 </Badge>
               )}
             </div>
@@ -178,30 +185,48 @@ const QuestionCard = ({
         </div>
 
         <CardContent className="p-6">
-          <h3 className="text-xl font-semibold mb-6 text-gray-800 leading-relaxed">
-            {currentQuestion.text}
-          </h3>
+          {/* Display reading passage separately for reading comprehension questions */}
+          {currentQuestion.questionType === 'reading-comprehension' && currentQuestion.passageText && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <div className="bg-blue-50 p-5 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4" />
+                  Reading Passage
+                </h4>
+                <p className="text-gray-800 leading-relaxed">
+                  {currentQuestion.passageText}
+                </p>
+              </div>
+              <div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800 leading-relaxed">
+                  {currentQuestion.text}
+                </h3>
+              </div>
+            </div>
+          )}
+
+          {/* For other question types, show the question normally */}
+          {currentQuestion.questionType !== 'reading-comprehension' && (
+            <h3 className="text-xl font-semibold mb-6 text-gray-800 leading-relaxed">
+              {currentQuestion.text}
+            </h3>
+          )}
           
           {currentQuestion.image && (
             <QuestionImage 
               src={currentQuestion.image} 
-              alt={`תרשים לשאלה ${currentQuestionIndex + 1}`}
+              alt={`Diagram for question ${currentQuestionIndex + 1}`}
               maxHeightRem={16}
             />
           )}
           
-          <div className="space-y-3">
+          <div className="space-y-3 mb-4">
             {currentQuestion.options.map((option, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.1 }}
-                variants={
-                  isAnswerSubmitted && index === currentQuestion.correctAnswer
-                    ? pulseAnimation
-                    : undefined
-                }
               >
                 <div 
                   className={cn(
@@ -218,7 +243,7 @@ const QuestionCard = ({
                   )}
                   onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
                 >
-                  <div className="flex items-start gap-4" style={{ direction: 'rtl' }}>
+                  <div className="flex items-start gap-4">
                     <div className={cn(
                       "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-200",
                       selectedAnswerIndex === index 
@@ -231,10 +256,10 @@ const QuestionCard = ({
                       isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
                         "bg-green-500 border-green-500 text-white"
                     )}>
-                      <span className="font-semibold text-lg">{index + 1}</span>
+                      <span className="font-semibold text-lg">{String.fromCharCode(65 + index)}</span>
                     </div>
                     <span className={cn(
-                      "flex-grow text-right leading-relaxed transition-colors duration-200",
+                      "flex-grow leading-relaxed transition-colors duration-200",
                       selectedAnswerIndex === index ? "text-gray-900 font-medium" : "text-gray-700",
                       isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700 font-medium",
                       isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
@@ -245,7 +270,7 @@ const QuestionCard = ({
                   </div>
                   
                   {isAnswerSubmitted && showCorrectAnswer && (
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2">
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2">
                       {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
                         <CheckCircle className="h-6 w-6 text-green-600" />
                       )}
@@ -261,6 +286,43 @@ const QuestionCard = ({
               </motion.div>
             ))}
           </div>
+
+          {/* Hint/Tip Button - show before submitting answer */}
+          {!isAnswerSubmitted && currentQuestion.tips && (
+            <div className="mb-4">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowTip(!showTip)}
+                className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
+              >
+                <Lightbulb className="h-4 w-4" />
+                {showTip ? 'Hide Hint' : 'Show Hint'}
+              </Button>
+              
+              <AnimatePresence>
+                {showTip && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden mt-3"
+                  >
+                    <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Lightbulb className="h-4 w-4 text-amber-600" />
+                        <span className="font-medium text-amber-800">Hint</span>
+                      </div>
+                      <p className="text-amber-700 text-sm leading-relaxed">
+                        {currentQuestion.tips}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
           
           <AnimatePresence>
             {(isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && showExplanation) && (
@@ -269,14 +331,14 @@ const QuestionCard = ({
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="overflow-hidden"
+                className="overflow-hidden mb-6"
               >
-                <div className="mt-6 p-5 bg-slate-50 border border-slate-200 rounded-lg">
+                <div className="p-5 bg-slate-50 border border-slate-200 rounded-lg">
                   <div className="flex items-center gap-2 mb-3">
                     <div className="bg-slate-600 p-1.5 rounded-lg">
                       <MessageSquare className="h-4 w-4 text-white" />
                     </div>
-                    <h4 className="font-semibold text-slate-800">הסבר מפורט</h4>
+                    <h4 className="font-semibold text-slate-800">Detailed Explanation</h4>
                   </div>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                     {currentQuestion.explanation}
@@ -285,7 +347,7 @@ const QuestionCard = ({
                   {currentQuestion.explanationImage && (
                     <QuestionImage
                       src={currentQuestion.explanationImage}
-                      alt="תרשים הסבר"
+                      alt="Explanation diagram"
                       maxHeightRem={14}
                     />
                   )}
@@ -294,7 +356,7 @@ const QuestionCard = ({
             )}
           </AnimatePresence>
           
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-between">
+          <div className="flex flex-col sm:flex-row gap-3 justify-between">
             <div className="flex gap-2">
               {currentQuestionIndex > 0 && (
                 <Button 
@@ -303,8 +365,8 @@ const QuestionCard = ({
                   className="flex-1 sm:flex-none border hover:bg-gray-50"
                   disabled={examMode && !isAnswerSubmitted}
                 >
-                  <ChevronRight className="h-4 w-4 ml-1" />
-                  הקודמת
+                  <ChevronRight className="h-4 w-4 mr-1" />
+                  Previous
                 </Button>
               )}
               
@@ -315,13 +377,13 @@ const QuestionCard = ({
                 >
                   {currentQuestionIndex < totalQuestions - 1 ? (
                     <>
-                      הבאה
-                      <ChevronLeft className="h-4 w-4 mr-1" />
+                      Next
+                      <ChevronLeft className="h-4 w-4 ml-1" />
                     </>
                   ) : (
                     <>
-                      סיים סימולציה
-                      <Trophy className="h-4 w-4 mr-1" />
+                      Finish Test
+                      <Trophy className="h-4 w-4 ml-1" />
                     </>
                   )}
                 </Button>
@@ -335,7 +397,7 @@ const QuestionCard = ({
                   className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-medium text-base px-6 py-2"
                   disabled={selectedAnswerIndex === null}
                 >
-                  הגש תשובה
+                  Submit Answer
                 </Button>
               ) : (
                 currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
@@ -344,7 +406,7 @@ const QuestionCard = ({
                     onClick={onToggleExplanation}
                     className="flex-1 sm:flex-none border"
                   >
-                    {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
+                    {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
                   </Button>
                 )
               )}
