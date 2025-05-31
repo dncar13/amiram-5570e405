@@ -1,5 +1,5 @@
 
-import { shield, clock, BarChart } from "lucide-react";
+import { Shield, Clock, BarChart } from "lucide-react";
 
 const FeaturesSection = () => {
   return (
@@ -27,7 +27,7 @@ const FeaturesSection = () => {
             }}
           >
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#28a745' }}>
-              <shield className="h-8 w-8 text-white" />
+              <Shield className="h-8 w-8 text-white" />
             </div>
             <h3 
               className="text-2xl font-semibold mb-4"
@@ -62,7 +62,7 @@ const FeaturesSection = () => {
             }}
           >
             <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#007bff' }}>
-              <clock className="h-8 w-8 text-white" />
+              <Clock className="h-8 w-8 text-white" />
             </div>
             <h3 
               className="text-2xl font-semibold mb-4"
