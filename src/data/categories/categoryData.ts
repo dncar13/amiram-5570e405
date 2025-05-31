@@ -1,6 +1,6 @@
 
 import { Category } from '../types/topicTypes';
-import { BookOpen, Brain, MessageSquare, Zap } from 'lucide-react';
+import { BookOpen, PenTool, RefreshCw, Zap } from 'lucide-react';
 
 export const categoryData: Category[] = [
   {
@@ -13,26 +13,26 @@ export const categoryData: Category[] = [
   },
   {
     id: 2,
-    title: "Grammar",
-    description: "דקדוק אנגלי - זמנים, מבנה משפט וכללי לשון",
-    icon: Brain,
+    title: "Sentence Completion",
+    description: "השלמת משפטים - בחירת המילה הנכונה להשלמת המשפט",
+    icon: PenTool,
     color: "bg-green-500",
-    topicIds: [3, 4, 5]
+    topicIds: [3, 4]
   },
   {
     id: 3,
-    title: "Vocabulary",
-    description: "אוצר מילים ומשמעויות במגוון הקשרים",
-    icon: MessageSquare,
+    title: "Restatement",
+    description: "ניסוח מחדש - זיהוי המשפט השקול במשמעותו",
+    icon: RefreshCw,
     color: "bg-purple-500",
-    topicIds: [6, 7, 8]
+    topicIds: [5, 6]
   },
   {
     id: 4,
     title: "Comprehensive Test",
-    description: "מבחן מקיף הכולל את כל נושאי האמירם",
+    description: "מבחן מקיף הכולל את כל סוגי השאלות באמירם",
     icon: Zap,
     color: "bg-orange-500",
-    topicIds: [9, 10]
+    topicIds: [7, 8]
   }
 ];

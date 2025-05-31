@@ -14,7 +14,8 @@ export interface Question {
   categoryId?: number;
   difficulty?: 'easy' | 'medium' | 'hard';
   tags?: string[];
-  // Added properties for user questions
+  questionType?: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive';
+  passageText?: string; // For reading comprehension questions
   answers?: string[]; // Alternative for options
   flagged?: boolean; // Whether the question is flagged
   verified?: boolean; // Whether the question is verified
