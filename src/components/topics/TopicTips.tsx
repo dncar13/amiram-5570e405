@@ -1,6 +1,5 @@
-
 import { LightbulbIcon } from "lucide-react";
-import { Subtopic } from "@/data/topicsData";
+import { Subtopic } from "@/data/types/topicTypes";
 
 interface TopicTipsProps {
   tips: string[];

@@ -1,9 +1,8 @@
-
 import { Badge } from "@/components/ui/badge";
 import { HoverEffect } from "@/components/ui/hover-effect";
 import { BookOpen, Clock, Award } from "lucide-react";
 import React from "react";
-import { IconObject } from "@/data/topicsData";
+import { IconObject } from "@/data/types/topicTypes";
 
 interface TopicDetailsProps {
   title: string;

@@ -14,7 +14,7 @@ import {
 } from "@/services/questions/progress";
 import { refreshQuestionsFromStorage } from "@/services/questions/storage";
 import { saveActivity } from "./useActivityHistory";
-import { getTopicById } from "@/data/topics/topicsData";
+import { getTopicById } from "@/data/topicsData";
 import { useSimulationSettings } from "@/context/SimulationSettingsContext";
 import { ALL_QUESTIONS_AVAILABLE } from "@/utils/topicAccess";
 import { 

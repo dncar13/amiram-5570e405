@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { getSimulationProgress } from "@/services/questions/progress";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getTopicById } from "@/data/topics/topicsData";
+import { getTopicById } from "@/data/topicsData";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
