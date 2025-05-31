@@ -1,6 +1,5 @@
-
 import { Topic } from './types/topicTypes';
-import { BookOpen, Brain, MessageSquare, Target, Zap } from 'lucide-react';
+import { BookOpen, Brain, MessageSquare, Target, Zap, TrendingUp, Microscope, FileText } from 'lucide-react';
 
 // Export topics data for Amiram English tests
 export const topicsData: Topic[] = [
@@ -173,8 +172,54 @@ export const topicsData: Topic[] = [
     subtopics: [],
     recommended: false
   },
+  
+  // New topics for complex reading passages
   {
     id: 9,
+    title: "Society & Economy Reading",
+    description: "קטעי קריאה בנושאי חברה וכלכלה עם מספור שורות",
+    timeEstimate: "25-30 דקות",
+    totalQuestions: 4,
+    targetQuestions: 15,
+    targetCount: 15,
+    completedPercentage: 0,
+    difficulty: "intermediate",
+    icon: TrendingUp,
+    categoryId: 2,
+    tips: [
+      "קרא את הקטע כולו לפני מעבר לשאלות",
+      "שים לב למספור השורות להתמצאות מהירה",
+      "חפש מילות מפתח בשאלה ואתר אותן בטקסט",
+      "הבן את הרעיון המרכזי לפני פירוט"
+    ],
+    subtopics: [],
+    recommended: true
+  },
+  
+  {
+    id: 10,
+    title: "Science & Technology Reading", 
+    description: "קטעי קריאה בנושאי מדע וטכנולוגיה עם מספור שורות",
+    timeEstimate: "25-30 דקות",
+    totalQuestions: 0,
+    targetQuestions: 15,
+    targetCount: 15,
+    completedPercentage: 0,
+    difficulty: "advanced",
+    icon: Microscope,
+    categoryId: 2,
+    tips: [
+      "שים לב למונחים מדעיים ולהגדרותיהם",
+      "זהה קשרי סיבה ותוצאה במחקרים",
+      "הבן את השלבים בתהליכים מדעיים",
+      "התמקד בממצאים ובמסקנות"
+    ],
+    subtopics: [],
+    recommended: false
+  },
+  
+  {
+    id: 11,
     title: "Mixed Practice - Reading & Grammar",
     description: "תרגול משולב של הבנת הנקרא ודקדוק",
     timeEstimate: "55-70 דקות",
@@ -195,7 +240,7 @@ export const topicsData: Topic[] = [
     recommended: true
   },
   {
-    id: 10,
+    id: 12,
     title: "Comprehensive Amiram Test - All Skills",
     description: "מבחן מקיף הכולל את כל נושאי האמירם באנגלית",
     timeEstimate: "120-150 דקות",

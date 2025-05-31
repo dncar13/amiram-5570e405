@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
 import { useEffect, useState } from "react";
 import { QuestionImage } from "@/components/common/QuestionImage";
+import { ReadingPassage } from "./ReadingPassage";
 
 interface QuestionCardProps {
   currentQuestion: Question | undefined;
@@ -185,8 +186,28 @@ const QuestionCard = ({
         </div>
 
         <CardContent className="p-6">
-          {/* Display reading passage separately for reading comprehension questions */}
-          {currentQuestion.questionType === 'reading-comprehension' && currentQuestion.passageText && (
+          {/* Display reading passage with line numbers for questions that have them */}
+          {currentQuestion.questionType === 'reading-comprehension' && 
+           currentQuestion.passageWithLines && 
+           currentQuestion.passageWithLines.length > 0 && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              <ReadingPassage 
+                title={currentQuestion.passageTitle}
+                passageWithLines={currentQuestion.passageWithLines}
+                showLineNumbers={currentQuestion.lineNumbers}
+              />
+              <div>
+                <h3 className="text-xl font-semibold mb-4 text-gray-800 leading-relaxed">
+                  {currentQuestion.text}
+                </h3>
+              </div>
+            </div>
+          )}
+
+          {/* Display reading passage separately for reading comprehension questions (legacy format) */}
+          {currentQuestion.questionType === 'reading-comprehension' && 
+           currentQuestion.passageText && 
+           (!currentQuestion.passageWithLines || currentQuestion.passageWithLines.length === 0) && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-5 rounded-lg border border-blue-200">
                 <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
