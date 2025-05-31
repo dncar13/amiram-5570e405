@@ -10,6 +10,7 @@ import { categoryData } from "@/data/categories/categoryData";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { IconObject } from "@/data/types/topicTypes";
+import { LucideIcon } from "lucide-react";
 import React from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 
@@ -25,13 +26,19 @@ const Categories = () => {
       category.description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const renderIcon = (icon: React.ReactNode | IconObject) => {
+  const renderIcon = (icon: React.ReactNode | IconObject | LucideIcon) => {
     if (React.isValidElement(icon)) {
       return icon;
     }
     
     if (icon && typeof icon === 'object' && 'type' in icon) {
       const IconComponent = (icon as IconObject).type;
+      return <IconComponent className="h-6 w-6 text-electric-blue" />;
+    }
+    
+    // Handle LucideIcon case
+    if (typeof icon === 'function') {
+      const IconComponent = icon as LucideIcon;
       return <IconComponent className="h-6 w-6 text-electric-blue" />;
     }
     

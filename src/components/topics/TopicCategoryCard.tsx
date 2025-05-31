@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import TopicCard from "@/components/TopicCard";
 import { Link } from "react-router-dom";
 import TopicProgressSummary from "./TopicProgressSummary";
+import { LucideIcon } from "lucide-react";
 
 interface TopicCategoryCardProps {
   category: Category;
@@ -33,7 +34,7 @@ const TopicCategoryCard = ({
   isLoggedIn,
   showComprehensiveCard = false
 }: TopicCategoryCardProps) => {
-  const renderIcon = (icon: React.ReactNode | IconObject) => {
+  const renderIcon = (icon: React.ReactNode | IconObject | LucideIcon) => {
     if (React.isValidElement(icon)) {
       return icon;
     }
@@ -41,6 +42,12 @@ const TopicCategoryCard = ({
     if (icon && typeof icon === 'object' && 'type' in icon) {
       const iconObj = icon as IconObject;
       const IconComponent = iconObj.type;
+      return <IconComponent className="h-5 w-5 text-white" />;
+    }
+    
+    // Handle LucideIcon case
+    if (typeof icon === 'function') {
+      const IconComponent = icon as LucideIcon;
       return <IconComponent className="h-5 w-5 text-white" />;
     }
     
