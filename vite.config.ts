@@ -10,7 +10,6 @@ export default defineConfig(async ({ mode }) => {
   // Only load componentTagger in development mode using dynamic import
   if (mode === 'development') {
     try {
-      // @ts-expect-error - lovable-tagger is a dev dependency and may not have type declarations
       const { componentTagger } = await import('lovable-tagger');
       plugins.push(componentTagger() as PluginOption);
     } catch (error: unknown) {

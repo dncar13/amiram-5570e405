@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ const Header = () => {
   const { toast } = useToast();
   
   useEffect(() => {
-    console.log("Header auth state:", currentUser ? `Logged in as ${currentUser.email}` : "Not logged in");
+    console.log("Header auth state:", currentUser ? `Logged in as ${currentUser?.email || 'unknown'}` : "Not logged in");
     console.log("Is admin:", isAdmin);
   }, [currentUser, isAdmin]);
   
@@ -69,7 +70,7 @@ const Header = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse">
                   <Avatar className="h-8 w-8 bg-electric-blue/10">
-                    <AvatarImage src={currentUser.photoURL || undefined} />
+                    <AvatarImage src={currentUser?.photoURL || undefined} />
                     <AvatarFallback className="bg-electric-blue/10 text-electric-blue">{userInitials}</AvatarFallback>
                   </Avatar>
                   <span className="mr-2">החשבון שלי</span>
