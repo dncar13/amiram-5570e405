@@ -1,410 +1,218 @@
-
 import { Topic } from '../types/topicTypes';
-import { FileText } from 'lucide-react';
+import { BookOpen, Brain, MessageSquare, Target, Zap } from 'lucide-react';
 
-// Export topics data
+// Export topics data for Amiram English tests
 export const topicsData: Topic[] = [
   {
     id: 1,
-    title: "התקנת כלי חשמל במתח גבוה",
-    description: "התקנה ובטיחות של כלי חשמל במתח גבוה",
+    title: "Reading Comprehension - Basic Texts",
+    description: "הבנת הנקרא ברמה בסיסית - טקסטים קצרים ופשוטים",
     timeEstimate: "45-60 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
-    difficulty: "advanced",
-    icon: null,
-    categoryId: 2,
+    difficulty: "beginner",
+    icon: BookOpen,
+    categoryId: 1,
     tips: [
-  "עיין בעמודים 78–97 לפני תחילת הסימולציה",
-  "ודא הכרה של עומקי הטמנה ומרחקים תקניים",
-  "בדוק דרישות רדיוס כיפוף לכבלי מתח גבוה",
-  "שינון טבלת זרמים מותרים לפי חתך וסוג בידוד",
-  "שים לב לחובת סימון ואזהרה מעל תוואי קבור",
-  "בדוק דרישות הארקה לכלי עבודה וסולמות"
-],
+      "קרא את הטקסט לפחות פעמיים לפני מעבר לשאלות",
+      "זהה מילות מפתח בשאלה ובטקסט",
+      "שים לב להקשר ולא רק למילים בודדות",
+      "אל תוסיף מידע שלא כתוב בטקסט",
+      "אם לא בטוח, חזור לטקסט ובדוק שוב"
+    ],
     subtopics: [],
-    recommended: false
+    recommended: true
   },
   {
     id: 2,
-    title: "עבודה במיתקן חי או בקרבתו",
-    description: "עבודה במיתקן חי או בקרבתו לפי תקנות החשמל",
-    timeEstimate: "60-75 דקות",
+    title: "Reading Comprehension - Intermediate Texts",
+    description: "הבנת הנקרא ברמה בינונית - טקסטים מורכבים יותר",
+    timeEstimate: "50-65 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
-    difficulty: "advanced",
-    icon: null,
-    categoryId: 2,
+    difficulty: "intermediate",
+    icon: BookOpen,
+    categoryId: 1,
     tips: [
-      "הקפד על הרשאות עבודה מתאימות",
-      "השתמש בציוד מגן אישי ייעודי",
-      "וודא קיום הדרכת בטיחות ייעודית"
+      "התמקד בהבנת הרעיון המרכזי",
+      "זהה קשרי סיבה ותוצאה",
+      "שים לב לדעות מול עובדות",
+      "חפש רמזים בהקשר למילים לא מוכרות"
     ],
     subtopics: [],
-    recommended: false
+    recommended: true
   },
   {
     id: 3,
-    title: "הארקות ואמצעי הגנה בפני חישמול במתח עד 1000 וולט",
-    description: "מערכות הארקה ואמצעי הגנה מפני חישמול במתח נמוך",
-    timeEstimate: "50-65 דקות",
-    totalQuestions: 4,
+    title: "Grammar - Verb Tenses",
+    description: "זמני פועל באנגלית - עבר, הווה, עתיד ומשמעויותיהם",
+    timeEstimate: "40-55 דקות",
+    totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
-    completedPercentage: 8,
+    completedPercentage: 0,
     difficulty: "intermediate",
-    icon: null,
-    categoryId: 1,
+    icon: Brain,
+    categoryId: 2,
     tips: [
-      "הכר את סוגי ההארקות השונים",
-      "וודא חיבור נכון של מערכת ההארקה",
-      "בדוק התנגדות הארקה באופן תקופתי"
+      "זהה מילות אות זמן (yesterday, now, tomorrow)",
+      "שים לב להקשר הזמני של המשפט",
+      "התרגל על המבנה של כל זמן",
+      "זכור את ההבדלים בין זמנים דומים"
     ],
     subtopics: [],
     recommended: true
   },
   {
     id: 4,
-    title: "מוליכים סופיים המיועדים למתח עד 1000 וולט",
-    description: "התקנה ובחירה של מוליכים סופיים במתח נמוך",
-    timeEstimate: "40-55 דקות",
-    totalQuestions: 1,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 2,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 2,
-    tips: [
-      "בחר חתך מוליכים מתאים לעומס",
-      "הקפד על צבעי מוליכים תקניים",
-      "וודא בידוד תקין ומתאים"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 5,
-    title: "התקנת לוחות במתח עד 1000 וולט",
-    description: "התקנת לוחות חשמל במתח נמוך",
-    timeEstimate: "55-70 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 3,
-    tips: [
-      "הקפד על סדר וארגון בתוך הלוח",
-      "וודא מרווחי אוורור מתאימים",
-      "התקן שילוט תקני לכל מעגל"
-    ],
-    subtopics: [],
-    recommended: true
-  },
-  {
-    id: 6,
-    title: "התקנת מוליכים, והתקנת כבלים שאינם עולים על מתח נמוך",
-    description: "שיטות התקנה של מוליכים וכבלים במתח נמוך",
-    timeEstimate: "45-60 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "beginner",
-    icon: null,
-    categoryId: 5,
-    tips: [
-      "השתמש בשיטות קיבוע מתאימות",
-      "הקפד על רדיוסי כיפוף מינימליים",
-      "שמור על מרחק בטיחות ממקורות חום"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 7,
-    title: "התקנת כבלים במתח שאינו עולה על מתח נמוך",
-    description: "התקנת כבלים במתח נמוך וסוגי כבלים שונים",
-    timeEstimate: "50-65 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 5,
-    tips: [
-      "בחר כבלים המתאימים לתנאי הסביבה",
-      "הקפד על תמיכה ועיגון נאותים",
-      "וודא חיבור נכון בקצוות"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 8,
-    title: "התקנת גנרטורים למתח נמוך",
-    description: "התקנה, תחזוקה ובדיקה של גנרטורים למתח נמוך",
-    timeEstimate: "45-60 דקות",
-    totalQuestions: 1,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 2,
-    difficulty: "advanced",
-    icon: null,
-    categoryId: 1,
-    tips: [
-      "וודא אוורור מתאים במקום ההתקנה",
-      "התקן מערכת פליטה תקנית",
-      "בדוק מערכת החלפה אוטומטית באופן תקופתי"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 9,
-    title: "מיתקן חשמלי ארעי באתר בניה במתח שאינו עולה על מתח נמוך",
-    description: "התקנה ובדיקת מתקני חשמל ארעיים באתרי בנייה",
-    timeEstimate: "40-55 דקות",
-    totalQuestions: 5,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 10,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 3,
-    tips: [
-      "השתמש בציוד עמיד למים ואבק",
-      "בדוק מפסקי פחת אחת לשבוע",
-      "הקפד על גובה התקנה תקני"
-    ],
-    subtopics: [],
-    recommended: true
-  },
-  {
-    id: 10,
-    title: "תקנות רשויות חשמל עליזות במתח עד 1000 וולט",
-    description: "תקנות ודרישות של רשויות החשמל במתח נמוך",
+    title: "Grammar - Sentence Structure",
+    description: "מבנה המשפט האנגלי - סדר מילים וחלקי דיבור",
     timeEstimate: "35-50 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
     difficulty: "beginner",
-    icon: null,
-    categoryId: 6,
+    icon: Brain,
+    categoryId: 2,
     tips: [
-      "הכר את הדרישות החוקיות העדכניות",
-      "וודא קבלת אישורים מתאימים",
-      "שמור על תיעוד של בדיקות ואישורים"
+      "זכור את הסדר הבסיסי: Subject + Verb + Object",
+      "שים לב למיקום התואר במשפט",
+      "התרגל על סוגי השאלות השונים",
+      "זהה את חלקי הדיבור השונים"
     ],
     subtopics: [],
     recommended: false
   },
   {
-    id: 11,
-    title: "תקנות מערכות אל-פסק חשמליות במתח נמוך",
-    description: "התקנה ותחזוקה של מערכות אל-פסק (UPS) במתח נמוך",
+    id: 5,
+    title: "Grammar - Modal Verbs & Conditionals",
+    description: "פעלי עזר ומשפטי תנאי באנגלית",
     timeEstimate: "45-60 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 1,
+    difficulty: "advanced",
+    icon: Brain,
+    categoryId: 2,
     tips: [
-      "התקן בחדר עם אוורור מתאים",
-      "וודא תחזוקה תקופתית של המצברים",
-      "בדוק זמן גיבוי בעומס מלא"
+      "הבן את המשמעויות השונות של כל Modal",
+      "התרגל על סוגי התנאי השונים",
+      "שים לב להבדלים דקים בין Modal Verbs",
+      "זכור את המבנים הקבועים"
     ],
     subtopics: [],
     recommended: false
   },
   {
-    id: 12,
-    title: "התפשטות והגנה של מוליכים מבודדים וכבלים במתח נמוך",
-    description: "התפשטות תרמית והגנה על מוליכים וכבלים במתח נמוך",
+    id: 6,
+    title: "Vocabulary - Common Words",
+    description: "אוצר מילים בסיסי ושימושי ליומיום",
+    timeEstimate: "30-45 דקות",
+    totalQuestions: 0,
+    targetQuestions: 50,
+    targetCount: 50,
+    completedPercentage: 0,
+    difficulty: "beginner",
+    icon: MessageSquare,
+    categoryId: 3,
+    tips: [
+      "למד מילים בהקשר ולא בבידוד",
+      "התרגל על מילים נרדפות ומילים נגדיות",
+      "שים לב למשמעויות שונות של אותה מילה",
+      "עשה קשרים בין מילים חדשות למוכרות"
+    ],
+    subtopics: [],
+    recommended: true
+  },
+  {
+    id: 7,
+    title: "Vocabulary - Academic Words",
+    description: "אוצר מילים אקדמי ומתקדם",
     timeEstimate: "40-55 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 5,
-    tips: [
-      "תכנן מקדמי התפשטות תרמית",
-      "השתמש באמצעי הגנה מתאימים",
-      "וודא ריווח נכון בין כבלים"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 13,
-    title: "מיתקני חשמל באתרים חקלאיים במתח עד 1000 וולט",
-    description: "התקנת ותחזוקת מערכות חשמל באתרים חקלאיים",
-    timeEstimate: "50-65 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
+    difficulty: "advanced",
+    icon: MessageSquare,
     categoryId: 3,
     tips: [
-      "השתמש בציוד עמיד לתנאי סביבה קשים",
-      "הקפד על הגנה מפני חדירת מים ואבק",
-      "וודא הגנה מפני קורוזיה"
+      "התמקד במילים שחוזרות בטקסטים אקדמיים",
+      "למד קידומות וסיומות נפוצות",
+      "התרגל על הבחנות משמעות דקות",
+      "השתמש במילים בהקשרים שונים"
     ],
     subtopics: [],
     recommended: false
   },
   {
-    id: 14,
-    title: "מיתקני חשמל באתרים רפואיים במתח שאינו עולה על מתח נמוך",
-    description: "התקנת מערכות חשמל במתקנים רפואיים",
-    timeEstimate: "60-75 דקות",
+    id: 8,
+    title: "Vocabulary - Collocations & Phrases",
+    description: "צירופי מילים ובעיות לשון נפוצות",
+    timeEstimate: "35-50 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
-    difficulty: "advanced",
-    icon: null,
-    categoryId: 4,
+    difficulty: "intermediate",
+    icon: MessageSquare,
+    categoryId: 3,
     tips: [
-      "הכר את דרישות ה-IT למתקנים רפואיים",
-      "הקפד על מערכות גיבוי אמינות",
-      "וודא ביצוע בדיקות תקופתיות"
+      "למד צירופים קבועים כיחידה אחת",
+      "שים לב לשילובים נפוצים של מילים",
+      "התרגל על ביטויים אידיומטיים",
+      "זכור שלא כל תרגום מילולי נכון"
     ],
     subtopics: [],
     recommended: false
   },
   {
-    id: 15,
-    title: "מיתקני חשמל למרחצי הידרותרפיים במתח שאינו עולה על מתח נמוך",
-    description: "התקנת מערכות חשמל במרחצים ובריכות הידרותרפיים",
-    timeEstimate: "45-60 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "advanced",
-    icon: null,
-    categoryId: 4,
-    tips: [
-      "הכר את אזורי הסיכון השונים",
-      "השתמש בציוד מתאים לסביבה רטובה",
-      "הקפד על מפסקי פחת ייעודיים"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 16,
-    title: "סוג בדיקות למיתקני חשמל שאינו עולה על מתח נמוך",
-    description: "סוגי בדיקות, מדידות ופרוטוקולים למתקני חשמל במתח נמוך",
+    id: 9,
+    title: "Mixed Practice - Reading & Grammar",
+    description: "תרגול משולב של הבנת הנקרא ודקדוק",
     timeEstimate: "55-70 דקות",
     totalQuestions: 0,
     targetQuestions: 50,
     targetCount: 50,
     completedPercentage: 0,
     difficulty: "intermediate",
-    icon: null,
-    categoryId: 6,
-    tips: [
-      "הכר את סוגי הבדיקות השונים",
-      "השתמש במכשירי מדידה מכוילים",
-      "תעד את תוצאות הבדיקות באופן מסודר"
-    ],
-    subtopics: [],
-    recommended: true
-  },
-  {
-    id: 17,
-    title: "מיתקן חשמל ציבורי בבנין רב קומות",
-    description: "התקנת מערכות חשמל בבניינים רבי קומות",
-    timeEstimate: "60-75 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "advanced",
-    icon: null,
+    icon: Target,
     categoryId: 4,
     tips: [
-      "תכנן מערכות עומס יתר ותקלה",
-      "הקפד על מערכות חירום אמינות",
-      "וודא עמידה בדרישות כיבוי אש"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 18,
-    title: "תקנות הבזק והחשמל (התקרבות והצטלבות בין קווי בזק לקווי חשמל)",
-    description: "תקנות ודרישות להתקרבות והצטלבות בין קווי בזק וחשמל",
-    timeEstimate: "40-55 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "intermediate",
-    icon: null,
-    categoryId: 6,
-    tips: [
-      "הכר את מרחקי הבטיחות הנדרשים",
-      "וודא תיאום עם חברות התקשורת",
-      "התקן אמצעי הגנה במקומות הצטלבות"
-    ],
-    subtopics: [],
-    recommended: false
-  },
-  {
-    id: 19,
-    title: "תקנות הבטיחות בעבודה",
-    description: "תקנות ודרישות בטיחות בעבודות חשמל",
-    timeEstimate: "45-60 דקות",
-    totalQuestions: 0,
-    targetQuestions: 50,
-    targetCount: 50,
-    completedPercentage: 0,
-    difficulty: "beginner",
-    icon: null,
-    categoryId: 6,
-    tips: [
-      "הכר את הוראות הבטיחות לעבודות חשמל",
-      "השתמש בציוד מגן אישי מתאים",
-      "וודא קיום הדרכות בטיחות תקופתיות"
+      "שלב בין כישורים שונים באותו תרגיל",
+      "שים לב הן לתוכן והן למבנה",
+      "תרגל מעבר מהיר בין סוגי שאלות",
+      "נהל זמן בחוכמה בין חלקים שונים"
     ],
     subtopics: [],
     recommended: true
   },
   {
-    id: 20,
-    title: "כל השאלות - מבחן מקיף",
-    description: "מאגר מקיף של כל השאלות מכל הנושאים, מבחן הכנה מקיף",
+    id: 10,
+    title: "Comprehensive Amiram Test - All Skills",
+    description: "מבחן מקיף הכולל את כל נושאי האמירם באנגלית",
     timeEstimate: "120-150 דקות",
-    totalQuestions: 18,
-    targetQuestions: 1000,
-    targetCount: 1000,
-    completedPercentage: 1.8,
+    totalQuestions: 0,
+    targetQuestions: 300,
+    targetCount: 300,
+    completedPercentage: 0,
     difficulty: "mixed",
-    icon: null,
-    categoryId: 6,
+    icon: Zap,
+    categoryId: 4,
     tips: [
-      "נהל את הזמן בחוכמה - הקצה כ-1 דקה לכל שאלה",
-      "עבור קודם על שאלות שאתה בטוח בתשובתן",
-      "חזור על נושאים חלשים לפני המבחן המקיף"
+      "נהל את הזמן בחוכמה - הקצה זמן לכל חלק",
+      "התחל בנושאים החזקים שלך",
+      "אל תיתקע על שאלה אחת - עבור הלאה",
+      "השאר זמן לבדיקה בסוף",
+      "קרא שאלות בעיון ואל תמהר"
     ],
     subtopics: [],
     recommended: true
   }
-]
+];
