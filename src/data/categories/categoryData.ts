@@ -2,6 +2,9 @@
 import { Category } from '../types/topicTypes';
 import { BookOpen, PenTool, RefreshCw, Zap } from 'lucide-react';
 
+// Export the Category type for convenience
+export type { Category } from '../types/topicTypes';
+
 export const categoryData: Category[] = [
   {
     id: 1,

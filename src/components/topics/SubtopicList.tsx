@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { getQuestionsBySubtopic } from "@/data/questionsData";
-import { Subtopic, IconObject } from "@/data/topicsData";
+import { Subtopic, IconObject } from "@/data/types/topicTypes";
 import { FileText, ChevronLeft, AlertTriangle, Bookmark, BookText } from "lucide-react";
 import React from "react";
 

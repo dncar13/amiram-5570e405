@@ -7,7 +7,7 @@ export const topicsData: Topic[] = [
     title: "Reading Comprehension - Level 1",
     description: "טקסטים קצרים עם שאלות הבנה בסיסיות",
     categoryId: 1,
-    difficulty: "easy",
+    difficulty: "beginner",
     estimatedTime: 25,
     questionCount: 15,
     tags: ["reading", "comprehension", "basic"]
@@ -17,7 +17,7 @@ export const topicsData: Topic[] = [
     title: "Reading Comprehension - Level 2",
     description: "טקסטים מתקדמים עם שאלות הבנה מורכבות",
     categoryId: 1,
-    difficulty: "hard",
+    difficulty: "advanced",
     estimatedTime: 35,
     questionCount: 20,
     tags: ["reading", "comprehension", "advanced"]
@@ -27,7 +27,7 @@ export const topicsData: Topic[] = [
     title: "Sentence Completion - Basic",
     description: "השלמת משפטים ברמה בסיסית",
     categoryId: 2,
-    difficulty: "easy",
+    difficulty: "beginner",
     estimatedTime: 20,
     questionCount: 25,
     tags: ["vocabulary", "grammar", "basic"]
@@ -37,7 +37,7 @@ export const topicsData: Topic[] = [
     title: "Sentence Completion - Advanced",
     description: "השלמת משפטים ברמה מתקדמת",
     categoryId: 2,
-    difficulty: "hard",
+    difficulty: "advanced",
     estimatedTime: 30,
     questionCount: 25,
     tags: ["vocabulary", "grammar", "advanced"]
@@ -47,7 +47,7 @@ export const topicsData: Topic[] = [
     title: "Restatement - Basic",
     description: "ניסוח מחדש ברמה בסיסית",
     categoryId: 3,
-    difficulty: "easy",
+    difficulty: "beginner",
     estimatedTime: 20,
     questionCount: 20,
     tags: ["paraphrasing", "meaning", "basic"]
@@ -57,7 +57,7 @@ export const topicsData: Topic[] = [
     title: "Restatement - Advanced",
     description: "ניסוח מחדש ברמה מתקדמת",
     categoryId: 3,
-    difficulty: "hard",
+    difficulty: "advanced",
     estimatedTime: 30,
     questionCount: 20,
     tags: ["paraphrasing", "meaning", "advanced"]
@@ -67,7 +67,7 @@ export const topicsData: Topic[] = [
     title: "AMIRAM Practice Test 1",
     description: "מבחן תרגול מלא הכולל את כל סוגי השאלות",
     categoryId: 4,
-    difficulty: "medium",
+    difficulty: "intermediate",
     estimatedTime: 60,
     questionCount: 50,
     tags: ["comprehensive", "practice", "exam"]
@@ -77,9 +77,14 @@ export const topicsData: Topic[] = [
     title: "AMIRAM Practice Test 2",
     description: "מבחן תרגול מלא נוסף",
     categoryId: 4,
-    difficulty: "medium",
+    difficulty: "intermediate",
     estimatedTime: 60,
     questionCount: 50,
     tags: ["comprehensive", "practice", "exam"]
   }
 ];
+
+// Export the getTopicById function
+export const getTopicById = (id: number): Topic | undefined => {
+  return topicsData.find(topic => topic.id === id);
+};

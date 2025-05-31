@@ -3,7 +3,7 @@ import { useState } from "react";
 import React from "react"; 
 import { ChevronDown, ChevronUp, Zap, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Topic, Category, IconObject } from "@/data/topicsData";
+import { Topic, Category, IconObject } from "@/data/types/topicTypes";
 import { Badge } from "@/components/ui/badge";
 import TopicCard from "@/components/TopicCard";
 import { Link } from "react-router-dom";

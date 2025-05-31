@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 // Updated import path to use the questions version
 import { Question } from "@/data/questionsData";
-import { Topic } from "@/data/topicsData";
+import { Topic } from "@/data/types/topicTypes";
 import { FileText, Star, RefreshCw, ExternalLink } from "lucide-react";
 import { refreshQuestionsFromStorage } from "@/services/questions";
 import { toast } from "@/hooks/use-toast";
