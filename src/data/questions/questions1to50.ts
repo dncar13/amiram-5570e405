@@ -2,7 +2,7 @@
 import { Question } from '../types/questionTypes';
 
 export const questions1to50: Question[] = [
-  // Reading Comprehension Questions (1-4)
+  // Reading Comprehension Questions (1-3)
   {
     id: 1,
     text: `Read the following passage and answer the question:
@@ -70,7 +70,7 @@ What is the author's overall view of online education?`,
     tips: "Look for words like 'however' and 'despite' that indicate the author is presenting multiple perspectives."
   },
 
-  // Sentence Completion Questions (4-7)
+  // Sentence Completion Questions (4-6)
   {
     id: 4,
     text: "The scientist's groundbreaking research has _____ our understanding of climate change and its long-term effects.",
