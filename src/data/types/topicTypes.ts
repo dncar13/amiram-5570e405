@@ -1,5 +1,25 @@
 
 import { LucideIcon } from 'lucide-react';
+import React from 'react';
+
+// Define IconObject interface for icon components
+export interface IconObject {
+  type: React.ElementType;
+  props?: React.ComponentProps<any>;
+}
+
+// Define Subtopic interface
+export interface Subtopic {
+  id: number;
+  title: string;
+  name: string; 
+  description: string;
+  questionsCount: number;
+  targetCount: number;
+  difficulty?: 'beginner' | 'intermediate' | 'advanced';
+  icon?: React.ReactNode | IconObject;
+  questionIds: number[]; 
+}
 
 export interface Category {
   id: number;
@@ -7,6 +27,7 @@ export interface Category {
   description: string;
   icon: LucideIcon;
   color: string;
+  topicIds: number[];
 }
 
 export interface Topic {
