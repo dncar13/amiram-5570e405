@@ -1,52 +1,126 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { LightbulbIcon, Monitor, Shield } from "lucide-react";
+
+import { shield, clock, BarChart } from "lucide-react";
 
 const FeaturesSection = () => {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-20" style={{ backgroundColor: '#ffffff' }}>
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-6 text-center">הדרך הקצרה לרישיון חשמלאי</h2>
-        <p className="text-center mb-12 text-sm text-gray-600 max-w-3xl mx-auto">
-          במקום לשנן – תתמקד במה שחשוב באמת. טכנולוגיה, תרגול חכם וליווי אישי – כל מה שצריך כדי לעבור את הבחינה בפעם הראשונה.
-        </p>
+        <h2 
+          className="text-4xl font-bold mb-6 text-center"
+          style={{ 
+            color: '#0056b3',
+            fontFamily: 'Rubik, sans-serif',
+            fontWeight: '700'
+          }}
+        >
+          למה לבחור בנו?
+        </h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-              <LightbulbIcon className="h-6 w-6 text-purple-600" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          <div 
+            className="bg-white rounded-lg p-8 text-center transition-transform duration-300 hover:scale-105"
+            style={{ 
+              boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+              padding: '32px',
+              margin: '20px'
+            }}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#28a745' }}>
+              <shield className="h-8 w-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">לומדים פחות – מצליחים יותר</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              המערכת החכמה שלנו מזהה את הנושאים שדורשים חיזוק וממקדת אותך רק במה שצריך – חוסכת עד 40% מהזמן.
+            <h3 
+              className="text-2xl font-semibold mb-4"
+              style={{ 
+                color: '#0056b3',
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '700'
+              }}
+            >
+              הכנה מותאמת אישית
+            </h3>
+            <p 
+              className="text-gray-600 leading-relaxed"
+              style={{ 
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '400',
+                fontSize: '16px',
+                lineHeight: '1.6'
+              }}
+            >
+              תכנית לימודים מותאמת אישית לרמת האנגלית שלכם כדי להתקדם במהירות וביעילות.
             </p>
           </div>
           
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-              <Monitor className="h-6 w-6 text-blue-600" />
+          <div 
+            className="bg-white rounded-lg p-8 text-center transition-transform duration-300 hover:scale-105"
+            style={{ 
+              boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+              padding: '32px',
+              margin: '20px'
+            }}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#007bff' }}>
+              <clock className="h-8 w-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">תרגול מדויק כמו במבחן</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              כל השאלות הכי עדכניות ממבחני הרישוי האמיתיים – עם סימולציות, ניתוח ביצועים ומעקב אחרי התקדמות אישית.
+            <h3 
+              className="text-2xl font-semibold mb-4"
+              style={{ 
+                color: '#0056b3',
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '700'
+              }}
+            >
+              סימולציה אמיתית
+            </h3>
+            <p 
+              className="text-gray-600 leading-relaxed"
+              style={{ 
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '400',
+                fontSize: '16px',
+                lineHeight: '1.6'
+              }}
+            >
+              סביבת סימולציה זהה למבחן האמיתי עם שעון וזמן מדויק כדי שתגיעו מוכנים.
             </p>
           </div>
           
-          <div className="bg-white rounded-lg p-8 text-center shadow-sm">
-            <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-              <Shield className="h-6 w-6 text-green-600" />
+          <div 
+            className="bg-white rounded-lg p-8 text-center transition-transform duration-300 hover:scale-105"
+            style={{ 
+              boxShadow: '0 4px 8px rgba(0,0,0,0.05)',
+              borderRadius: '8px',
+              padding: '32px',
+              margin: '20px'
+            }}
+          >
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6" style={{ backgroundColor: '#6f42c1' }}>
+              <BarChart className="h-8 w-8 text-white" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">אתם לא לבד בדרך</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              ליווי של מרצים מנוסים, שיעורים מוקלטים, קהילה פעילה, ומענה מהיר לשאלות – כל מה שצריך כדי ללמוד בראש שקט.
+            <h3 
+              className="text-2xl font-semibold mb-4"
+              style={{ 
+                color: '#0056b3',
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '700'
+              }}
+            >
+              מעקב התקדמות
+            </h3>
+            <p 
+              className="text-gray-600 leading-relaxed"
+              style={{ 
+                fontFamily: 'Rubik, sans-serif',
+                fontWeight: '400',
+                fontSize: '16px',
+                lineHeight: '1.6'
+              }}
+            >
+              מעקב נתונים מתקדם כדי לזהות חולשות, לחזק את הידע ולהגיע מוכנים.
             </p>
           </div>
-        </div>
-        
-        <div className="text-center mt-10">
-          <Button to="/topics" className="bg-orange-500 text-white hover:bg-orange-600">
-            גלה את הנושאים שמחכים לך
-          </Button>
         </div>
       </div>
     </section>

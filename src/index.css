@@ -1,4 +1,5 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,6 +35,12 @@
     --ring: 222 84% 5%;
 
     --radius: 0.5rem;
+
+    /* AMIRAM Academy Colors */
+    --amiram-primary: #0056b3;
+    --amiram-secondary: #ff7f0e;
+    --amiram-light-bg: #f7f9fc;
+    --amiram-dark-bg: #343a40;
   }
 
   .dark {
@@ -79,11 +86,15 @@
   body {
     @apply bg-background text-foreground;
     direction: rtl;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Rubik', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-electric-navy;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    color: #0056b3;
   }
   
   ul {
@@ -93,8 +104,50 @@
 }
 
 @layer utilities {
+  /* AMIRAM Academy Theme Classes */
+  .amiram-primary {
+    color: #0056b3;
+  }
+  
+  .amiram-secondary {
+    color: #ff7f0e;
+  }
+  
+  .amiram-bg-primary {
+    background-color: #0056b3;
+  }
+  
+  .amiram-bg-secondary {
+    background-color: #ff7f0e;
+  }
+  
+  .amiram-bg-light {
+    background-color: #f7f9fc;
+  }
+  
+  .amiram-bg-dark {
+    background-color: #343a40;
+  }
+  
+  .amiram-shadow {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  }
+  
+  .amiram-shadow-lg {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  }
+  
+  .amiram-border-radius {
+    border-radius: 8px;
+  }
+  
+  .amiram-spacing {
+    padding: 32px;
+    margin: 20px;
+  }
+
   .electric-gradient {
-    background: linear-gradient(135deg, #0052CC 0%, #0077FF 100%);
+    background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
   }
   
   .topic-card {
@@ -112,17 +165,37 @@
   }
   
   .btn-electric {
-    @apply py-2 px-6 bg-electric-blue text-white rounded-lg font-medium transition-all hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none;
+    @apply py-2 px-6 text-white rounded-lg font-medium transition-all focus:ring-2 focus:ring-blue-300 focus:outline-none;
+    background-color: #0056b3;
+    font-family: 'Rubik', sans-serif;
+  }
+  
+  .btn-electric:hover {
+    background-color: #004494;
   }
   
   .btn-electric-outline {
-    @apply py-2 px-6 bg-transparent text-electric-blue border border-electric-blue rounded-lg font-medium transition-all hover:bg-electric-blue/10 focus:ring-2 focus:ring-blue-300 focus:outline-none;
+    @apply py-2 px-6 bg-transparent border rounded-lg font-medium transition-all focus:ring-2 focus:ring-blue-300 focus:outline-none;
+    color: #0056b3;
+    border-color: #0056b3;
+    font-family: 'Rubik', sans-serif;
+  }
+  
+  .btn-electric-outline:hover {
+    background-color: rgba(0, 86, 179, 0.1);
   }
   
   .btn-premium {
-    @apply py-2 px-6 bg-electric-orange text-white rounded-lg font-medium transition-all hover:bg-orange-500 focus:ring-2 focus:ring-orange-300 focus:outline-none;
+    @apply py-2 px-6 text-white rounded-lg font-medium transition-all focus:ring-2 focus:outline-none;
+    background-color: #ff7f0e;
+    font-family: 'Rubik', sans-serif;
   }
   
+  .btn-premium:hover {
+    background-color: #e96e06;
+  }
+
+  /* Keep existing utility classes for backward compatibility */
   .bg-electric-navy {
     @apply bg-[#172B4D];
   }

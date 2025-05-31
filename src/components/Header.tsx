@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { BoltIcon, MenuIcon, LogInIcon, UserIcon, LogOutIcon } from "lucide-react";
+import { BookOpen, MenuIcon, LogInIcon, UserIcon, LogOutIcon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { logoutUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
@@ -47,20 +47,21 @@ const Header = () => {
     : currentUser?.email?.substring(0, 2).toUpperCase() || "משתמש";
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
+    <header className="bg-white shadow-md sticky top-0 z-50" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2 space-x-reverse">
-          <BoltIcon className="h-8 w-8 text-electric-blue" />
-          <span className="text-xl font-bold text-electric-navy">TD-Academy</span>
+          <BookOpen className="h-8 w-8" style={{ color: '#0056b3' }} />
+          <span className="text-xl font-bold" style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}>AMIRAM Academy</span>
         </Link>
         
-        <nav className="hidden md:flex items-center space-x-6 space-x-reverse">
-          <Link to="/" className="text-electric-slate hover:text-electric-blue transition-colors">דף הבית</Link>
-          <Link to="/topics" className="text-electric-slate hover:text-electric-blue transition-colors">סימולציות</Link>
-          <Link to="/about" className="text-electric-slate hover:text-electric-blue transition-colors">אודות</Link>
+        <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
+          <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>דף הבית</Link>
+          <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>אודות</Link>
+          <Link to="/topics" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>הסימולציות שלי</Link>
+          <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>יצירת קשר</Link>
           
           {isAdmin && (
-            <Link to="/admin" className="text-electric-blue font-medium hover:text-electric-blue/80 transition-colors">
+            <Link to="/admin" className="font-medium hover:text-blue-800 transition-colors" style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}>
               ניהול
             </Link>
           )}
@@ -69,11 +70,11 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse">
-                  <Avatar className="h-8 w-8 bg-electric-blue/10">
+                  <Avatar className="h-8 w-8" style={{ backgroundColor: '#0056b3' }}>
                     <AvatarImage src={currentUser?.photoURL || undefined} />
-                    <AvatarFallback className="bg-electric-blue/10 text-electric-blue">{userInitials}</AvatarFallback>
+                    <AvatarFallback className="text-white" style={{ backgroundColor: '#0056b3' }}>{userInitials}</AvatarFallback>
                   </Avatar>
-                  <span className="mr-2">החשבון שלי</span>
+                  <span className="mr-2" style={{ fontFamily: 'Rubik, sans-serif' }}>החשבון שלי</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -100,8 +101,15 @@ const Header = () => {
             </DropdownMenu>
           ) : (
             <Link to="/login">
-              <Button className="bg-electric-blue hover:bg-electric-blue/90 text-white flex items-center space-x-2 space-x-reverse">
-                <LogInIcon className="h-4 w-4" />
+              <Button 
+                className="text-white font-bold text-lg px-6 py-3 rounded-lg transition-colors hover:opacity-90"
+                style={{ 
+                  backgroundColor: '#0056b3',
+                  fontFamily: 'Rubik, sans-serif',
+                  borderRadius: '8px'
+                }}
+              >
+                <LogInIcon className="h-4 w-4 ml-2" />
                 <span>התחברות</span>
               </Button>
             </Link>
@@ -109,7 +117,7 @@ const Header = () => {
         </nav>
         
         <button 
-          className="md:hidden text-electric-slate"
+          className="md:hidden text-gray-700"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <MenuIcon className="h-6 w-6" />
@@ -121,30 +129,42 @@ const Header = () => {
           <nav className="flex flex-col space-y-4">
             <Link 
               to="/" 
-              className="text-electric-slate hover:text-electric-blue transition-colors"
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
               onClick={() => setIsMenuOpen(false)}
             >
               דף הבית
             </Link>
             <Link 
-              to="/topics" 
-              className="text-electric-slate hover:text-electric-blue transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              סימולציות
-            </Link>
-            <Link 
               to="/about" 
-              className="text-electric-slate hover:text-electric-blue transition-colors"
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
               onClick={() => setIsMenuOpen(false)}
             >
               אודות
+            </Link>
+            <Link 
+              to="/topics" 
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              הסימולציות שלי
+            </Link>
+            <Link 
+              to="/contact" 
+              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              יצירת קשר
             </Link>
             
             {isAdmin && (
               <Link 
                 to="/admin" 
-                className="text-electric-blue font-medium hover:text-electric-blue/80 transition-colors"
+                className="font-medium hover:text-blue-800 transition-colors"
+                style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}
                 onClick={() => setIsMenuOpen(false)}
               >
                 ניהול
@@ -155,7 +175,8 @@ const Header = () => {
               <>
                 <Link 
                   to="/account" 
-                  className="text-electric-slate hover:text-electric-blue transition-colors"
+                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   החשבון שלי
@@ -177,8 +198,15 @@ const Header = () => {
                 to="/login"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Button className="bg-electric-blue hover:bg-electric-blue/90 w-full flex items-center justify-center space-x-2 space-x-reverse">
-                  <LogInIcon className="h-4 w-4" />
+                <Button 
+                  className="w-full text-white font-bold text-lg px-6 py-3 rounded-lg transition-colors hover:opacity-90"
+                  style={{ 
+                    backgroundColor: '#0056b3',
+                    fontFamily: 'Rubik, sans-serif',
+                    borderRadius: '8px'
+                  }}
+                >
+                  <LogInIcon className="h-4 w-4 ml-2" />
                   <span>התחברות</span>
                 </Button>
               </Link>

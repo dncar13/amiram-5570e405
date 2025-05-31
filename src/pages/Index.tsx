@@ -9,7 +9,7 @@ import DetailedFeaturesSection from "@/components/homepage/DetailedFeaturesSecti
 import FAQSection from "@/components/homepage/FAQSection";
 import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import FounderSection from "@/components/homepage/FounderSection";
-import CTASection from "@/components/homepage/CTASection";
+import ContactSection from "@/components/homepage/ContactSection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -19,17 +19,14 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ fontFamily: 'Rubik, sans-serif' }}>
       <Header />
       
       <main className="flex-grow">
         <HeroSection />
         <FeaturesSection />
-        <DetailedFeaturesSection />
-        <FAQSection />
         <TestimonialsSection />
-        <FounderSection />
-        <CTASection />
+        <ContactSection />
       </main>
       
       <Footer />
