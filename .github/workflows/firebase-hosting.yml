@@ -1,5 +1,4 @@
-
-name: Deploy to Firebase Hosting
+name: build_and_deploy
 
 on:
   push:
@@ -7,28 +6,22 @@ on:
       - main
 
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Set up Node.js
+
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-          cache: 'npm'
-          
+          node-version: 20
+
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
-        
+        run: npm install
+
       - name: Build
         run: npm run build
-        
-      - name: Deploy to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POGODIN_E8784 }}'
-          channelId: live
-          projectId: pogodin-e8784
+
+      # (לא חובה) תוכל להוסיף כאן Deploy אם תשתמש ב־Firebase/Netlify וכו'
