@@ -1,19 +1,19 @@
-
 import { Link } from "react-router-dom";
 import { BadgeCheck, Lock, Clock, HelpCircle, Layers, BookOpen, Zap, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import { IconObject } from "@/data/topicsData";
+import { IconObject } from "@/data/types/topicTypes";
 import { Progress } from "@/components/ui/progress";
+import { LucideIcon } from "lucide-react";
 import React from "react";
 
 interface TopicCardProps {
   id: number;
   title: string;
   description: string;
-  icon: React.ReactNode | IconObject;
+  icon: React.ReactNode | IconObject | LucideIcon;
   questionCount: number;
   isAvailable: boolean;
   isPremium: boolean;
@@ -57,6 +57,12 @@ const TopicCard: React.FC<TopicCardProps> = ({
     if (icon && typeof icon === 'object' && 'type' in icon) {
       const iconObj = icon as IconObject;
       const IconComponent = iconObj.type;
+      return <IconComponent className="h-5 w-5 text-electric-blue" />;
+    }
+    
+    // Handle LucideIcon case
+    if (typeof icon === 'function') {
+      const IconComponent = icon as LucideIcon;
       return <IconComponent className="h-5 w-5 text-electric-blue" />;
     }
     
