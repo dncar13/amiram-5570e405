@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -11,13 +10,26 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  signInWithGoogle, 
-  loginWithEmailAndPassword, 
-  registerWithEmailAndPassword 
-} from "@/lib/firebase";
+// import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
+
+// פונקציות זמניות עד לחיבור Supabase
+const signInWithGoogle = async () => ({ 
+  user: null, 
+  error: new Error("Google login not implemented yet"), 
+  message: "התחברות באמצעות Google עדיין לא מוכנה" 
+});
+
+const loginWithEmailAndPassword = async (email: string, password: string) => ({ 
+  user: null, 
+  error: new Error("Email login not implemented yet") 
+});
+
+const registerWithEmailAndPassword = async (email: string, password: string) => ({ 
+  user: null, 
+  error: new Error("Email registration not implemented yet") 
+});
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,8 +61,8 @@ const Login = () => {
         });
         navigate("/topics");
       } else {
-        if (error?.code === "auth/unauthorized-domain" || message) {
-          setAuthError(message || "Google התחברות לא זמינה בסביבת הפיתוח. בהפעלה באתר האמיתי זה יעבוד כראוי.");
+        if (error?.message || message) {
+          setAuthError(message || "התחברות באמצעות Google עדיין לא מוכנה");
         } else {
           toast({
             variant: "destructive",
@@ -81,7 +93,7 @@ const Login = () => {
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
-          description: error instanceof Error ? error.message : "אירעה שגיאה. אנא נסה שוב.",
+          description: "התחברות עדיין לא מוכנה - נחבר בקרוב את Supabase",
         });
       }
     } finally {
@@ -106,7 +118,7 @@ const Login = () => {
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
-          description: error instanceof Error ? error.message : "אירעה שגיאה. אנא נסה שוב.",
+          description: "הרשמה עדיין לא מוכנה - נחבר בקרוב את Supabase",
         });
       }
     } finally {
@@ -129,15 +141,13 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center py-12 bg-electric-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
-            {isDevEnvironment && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>התחברות באמצעות Google לא זמינה</AlertTitle>
-                <AlertDescription>
-                  התחברות באמצעות Google אינה זמינה בסביבת הפיתוח. באתר האמיתי (pogodin.co.il) זה יעבוד כראוי.
-                </AlertDescription>
-              </Alert>
-            )}
+            <Alert variant="destructive" className="mb-6">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertTitle>מערכת ההתחברות בפיתוח</AlertTitle>
+              <AlertDescription>
+                מערכת ההתחברות עדיין בפיתוח. בקרוב נחבר את Supabase לאימות מלא.
+              </AlertDescription>
+            </Alert>
             
             {authError && (
               <Alert variant="destructive" className="mb-6">
