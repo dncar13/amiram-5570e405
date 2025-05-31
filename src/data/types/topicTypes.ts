@@ -25,7 +25,7 @@ export interface Category {
   id: number;
   title: string;
   description: string;
-  icon: LucideIcon;
+  icon: React.ReactNode | IconObject | LucideIcon;
   color: string;
   topicIds: number[];
 }
