@@ -1,5 +1,5 @@
 
-import { Topic } from '../types/topicTypes';
+import { Topic } from './types/topicTypes';
 import { BookOpen, Brain, MessageSquare, Target, Zap } from 'lucide-react';
 
 // Export topics data for Amiram English tests
