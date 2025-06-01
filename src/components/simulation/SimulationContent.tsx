@@ -1,4 +1,3 @@
-
 import { toast } from "@/hooks/use-toast";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -115,11 +114,6 @@ const SimulationContent = ({
     updateQuestion(updatedQuestion);
     setIsEditing(false);
     setQuestionToEdit(null);
-    toast({
-      title: "השאלה עודכנה בהצלחה",
-      description: "השינויים נשמרו במערכת",
-      duration: 3000,
-    });
   };
 
   // Check if current question has a reading passage
@@ -170,22 +164,24 @@ const SimulationContent = ({
   return (
     <div className="w-full" ref={contentRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Mobile Header */}
-        <div className="md:hidden bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 mb-4 text-white">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold">סימולציה - {isQuestionSet ? `קבוצה ${setNumber}` : "נושא"}</span>
+        {/* Mobile Header - only for regular questions */}
+        {shouldShowProgressBar && (
+          <div className="md:hidden bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 mb-4 text-white">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">סימולציה - {isQuestionSet ? `קבוצה ${setNumber}` : "נושא"}</span>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-white/20"
+                onClick={() => setShowNavigationPanel(true)}
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white hover:bg-white/20"
-              onClick={() => setShowNavigationPanel(true)}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
           </div>
-        </div>
+        )}
 
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Navigation Panel - Desktop (only for non-story questions) */}
@@ -239,6 +235,7 @@ const SimulationContent = ({
                 showAnswersImmediately={showAnswersImmediately}
                 answeredQuestionsCount={answeredQuestionsCount}
                 correctQuestionsCount={correctQuestionsCount}
+                progressPercentage={progressPercentage}
                 onAnswerSelect={onAnswerSelect}
                 onSubmitAnswer={onSubmitAnswer}
                 onNextQuestion={onNextQuestion}

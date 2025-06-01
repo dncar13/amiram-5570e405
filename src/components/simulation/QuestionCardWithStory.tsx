@@ -10,7 +10,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
 import { useEffect, useState } from "react";
 import { QuestionImage } from "@/components/common/QuestionImage";
-import { Progress } from "@/components/ui/progress";
 
 interface QuestionCardWithStoryProps {
   currentQuestion: Question | undefined;
@@ -24,6 +23,7 @@ interface QuestionCardWithStoryProps {
   showAnswersImmediately?: boolean;
   answeredQuestionsCount: number;
   correctQuestionsCount: number;
+  progressPercentage: number;
   onAnswerSelect: (index: number) => void;
   onSubmitAnswer: () => void;
   onNextQuestion: () => void;
@@ -45,6 +45,7 @@ const QuestionCardWithStory = ({
   showAnswersImmediately = true,
   answeredQuestionsCount,
   correctQuestionsCount,
+  progressPercentage,
   onAnswerSelect,
   onSubmitAnswer,
   onNextQuestion,
@@ -57,7 +58,7 @@ const QuestionCardWithStory = ({
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
   const [showTip, setShowTip] = useState(false);
-  const [showProgress, setShowProgress] = useState(false);
+  const [showProgressDetails, setShowProgressDetails] = useState(false);
   
   useEffect(() => {
     if (currentQuestion) {
@@ -127,7 +128,6 @@ const QuestionCardWithStory = ({
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
   const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
-  const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
 
   // Get question type badge
   const getQuestionTypeBadge = () => {
@@ -186,14 +186,14 @@ const QuestionCardWithStory = ({
                   </div>
                 </div>
               ))
-            ) : currentQuestion.passageText ? (
+            ) : (
               // Simple passage text
               <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
                 <p className="text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line">
                   {currentQuestion.passageText}
                 </p>
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       </div>
@@ -212,7 +212,7 @@ const QuestionCardWithStory = ({
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
-                Question {currentQuestionIndex + 1} of {totalQuestions}
+                שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
               </Badge>
               <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
                 {getQuestionTypeBadge()}
@@ -220,7 +220,7 @@ const QuestionCardWithStory = ({
               {localIsSaved && (
                 <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20">
                   <Flag className="h-3 w-3 fill-current" />
-                  <span>Saved</span>
+                  <span>נשמר</span>
                 </Badge>
               )}
             </div>
@@ -267,7 +267,7 @@ const QuestionCardWithStory = ({
                 {currentQuestion.image && (
                   <QuestionImage 
                     src={currentQuestion.image} 
-                    alt={`Diagram for question ${currentQuestionIndex + 1}`}
+                    alt={`תרשים לשאלה ${currentQuestionIndex + 1}`}
                     maxHeightRem={12}
                   />
                 )}
@@ -282,7 +282,7 @@ const QuestionCardWithStory = ({
                     >
                       <button 
                         className={cn(
-                          "w-full text-left px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
+                          "w-full text-right px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
                           selectedAnswerIndex === index 
                             ? "border-blue-500 bg-blue-50 shadow-md" 
                             : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
@@ -310,10 +310,10 @@ const QuestionCardWithStory = ({
                               isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
                                 "bg-green-500 border-green-500 text-white"
                             )}>
-                              {String.fromCharCode(65 + index)}
+                              {index + 1}
                             </div>
                             <span className={cn(
-                              "flex-grow leading-relaxed text-lg font-medium",
+                              "flex-grow leading-relaxed text-lg font-medium text-right",
                               isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
                               isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
                               isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
@@ -351,7 +351,7 @@ const QuestionCardWithStory = ({
                       className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
                     >
                       <Lightbulb className="h-4 w-4" />
-                      {showTip ? 'Hide Hint' : 'Show Hint'}
+                      {showTip ? 'הסתר רמז' : 'הצג רמז'}
                     </Button>
                     
                     <AnimatePresence>
@@ -366,7 +366,7 @@ const QuestionCardWithStory = ({
                           <div className="p-5 bg-amber-50 border border-amber-200 rounded-lg">
                             <div className="flex items-center gap-2 mb-3">
                               <Lightbulb className="h-5 w-5 text-amber-600" />
-                              <span className="font-semibold text-amber-800 text-lg">Hint</span>
+                              <span className="font-semibold text-amber-800 text-lg">רמז</span>
                             </div>
                             <p className="text-amber-700 leading-relaxed text-base">
                               {currentQuestion.tips}
@@ -386,7 +386,7 @@ const QuestionCardWithStory = ({
                       className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
                       disabled={selectedAnswerIndex === null}
                     >
-                      Submit Answer
+                      הגש תשובה
                     </Button>
                   ) : (
                     <div className="flex gap-4 w-full sm:w-auto">
@@ -396,7 +396,7 @@ const QuestionCardWithStory = ({
                           onClick={onToggleExplanation}
                           className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
                         >
-                          {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
+                          {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
                         </Button>
                       )}
                       
@@ -406,13 +406,13 @@ const QuestionCardWithStory = ({
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
-                            Next
-                            <ChevronLeft className="h-5 w-5 ml-2" />
+                            הבא
+                            <ChevronLeft className="h-5 w-5 mr-2" />
                           </>
                         ) : (
                           <>
-                            Finish Test
-                            <Trophy className="h-5 w-5 ml-2" />
+                            סיים בחינה
+                            <Trophy className="h-5 w-5 mr-2" />
                           </>
                         )}
                       </Button>
@@ -421,55 +421,6 @@ const QuestionCardWithStory = ({
                 </div>
               </div>
             </div>
-
-            {/* Progress Button - Located at the bottom */}
-            <div className="flex justify-center">
-              <Button
-                variant="outline"
-                onClick={() => setShowProgress(!showProgress)}
-                className="flex items-center gap-2 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
-              >
-                <BarChart3 className="h-4 w-4" />
-                התקדמות
-              </Button>
-            </div>
-
-            {/* Progress Display */}
-            <AnimatePresence>
-              {showProgress && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden"
-                >
-                  <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="text-sm font-medium text-gray-700">
-                        שאלה {currentQuestionIndex + 1} / {totalQuestions}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {progressPercentage}% הושלם
-                      </div>
-                    </div>
-                    
-                    <Progress value={progressPercentage} className="h-2 mb-4" />
-                    
-                    <div className="flex justify-between items-center text-sm text-gray-500">
-                      <div className="flex items-center gap-1">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span>{correctQuestionsCount} נכונות</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <AlertCircle className="h-4 w-4 text-amber-500" />
-                        <span>{answeredQuestionsCount} ענו</span>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
           
           <AnimatePresence>
@@ -486,7 +437,7 @@ const QuestionCardWithStory = ({
                     <div className="bg-slate-600 p-1.5 rounded-lg">
                       <MessageSquare className="h-4 w-4 text-white" />
                     </div>
-                    <h4 className="font-semibold text-slate-800">Detailed Explanation</h4>
+                    <h4 className="font-semibold text-slate-800">הסבר מפורט</h4>
                   </div>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                     {currentQuestion.explanation}
@@ -495,7 +446,7 @@ const QuestionCardWithStory = ({
                   {currentQuestion.explanationImage && (
                     <QuestionImage
                       src={currentQuestion.explanationImage}
-                      alt="Explanation diagram"
+                      alt="תרשים הסבר"
                       maxHeightRem={14}
                     />
                   )}
@@ -504,6 +455,55 @@ const QuestionCardWithStory = ({
             )}
           </AnimatePresence>
         </CardContent>
+
+        {/* Progress Button at Bottom */}
+        <div className="px-6 pb-6">
+          <Button
+            variant="outline"
+            className="w-full bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+            onClick={() => setShowProgressDetails(!showProgressDetails)}
+          >
+            <BarChart3 className="h-5 w-5 ml-2" />
+            התקדמות ({Math.round(progressPercentage)}%)
+          </Button>
+
+          <AnimatePresence>
+            {showProgressDetails && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden mt-4"
+              >
+                <div className="bg-white border border-gray-200 rounded-lg p-4">
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="bg-blue-50 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-blue-600">{answeredQuestionsCount}</div>
+                      <div className="text-sm text-blue-600">ענו</div>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-3">
+                      <div className="text-2xl font-bold text-green-600">{correctQuestionsCount}</div>
+                      <div className="text-sm text-green-600">נכונות</div>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      <span>התקדמות: {Math.round(progressPercentage)}%</span>
+                      <span>{currentQuestionIndex + 1} / {totalQuestions}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                        style={{ width: `${progressPercentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </Card>
     </motion.div>
   );

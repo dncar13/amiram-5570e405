@@ -1,4 +1,3 @@
-
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
@@ -22,12 +21,6 @@ const Simulation = () => {
   const isContinue = searchParams.get('continue') === 'true' || window.sessionStorage.getItem('continue_simulation') === 'true';
   const contentRef = useRef<HTMLDivElement>(null);
   const initialLoadAttempted = useRef(false);
-  // Track whether we've shown the toast already
-  const hasShownToast = useRef(false);
-  // Track whether we're on the first load to avoid auto-showing answers
-  const isFirstLoad = useRef(true);
-  // Track if we need to show reset toast
-  const shouldShowResetToast = useRef(false);
   
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
@@ -41,7 +34,6 @@ const Simulation = () => {
       
       if (hasResetParam) {
         console.log("Reset parameter detected - simulation will reset");
-        shouldShowResetToast.current = true;
         
         // Remove the reset parameter from URL to prevent reload issues
         removeResetParameterFromUrl();

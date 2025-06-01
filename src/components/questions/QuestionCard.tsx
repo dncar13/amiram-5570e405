@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, HelpCircle, ArrowLeft, ArrowRight, Image, Edit, Flag } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 import { Question } from "@/data/questionsData";
 import { useAuth } from "@/context/AuthContext";
 import { QuestionImage } from "@/components/common/QuestionImage";
@@ -51,8 +50,7 @@ const QuestionCard = ({
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
   const questionCardRef = useRef<HTMLDivElement>(null);
-  // כדי לעקוב אחרי הזמן שנותר לשאלה בבחינה
-  const [remainingTime, setRemainingTime] = useState(examMode ? 60 : 0); // 60 שניות לדוגמה
+  const [remainingTime, setRemainingTime] = useState(examMode ? 60 : 0);
 
   useEffect(() => {
     if (currentQuestion) {
@@ -68,7 +66,6 @@ const QuestionCard = ({
       });
     }
     
-    // איפוס הטיימר בכל שאלה חדשה
     if (examMode) {
       setRemainingTime(60);
       const timer = setInterval(() => {
@@ -87,11 +84,7 @@ const QuestionCard = ({
 
   const handleSaveStatusChange = () => {
     if (!isPremium) {
-      toast({
-        title: "תכונה זו זמינה למשתמשי פרימיום בלבד",
-        description: "שדרג לפרימיום כדי לשמור שאלות ולקבל גישה לתכונות נוספות",
-        variant: "destructive",
-      });
+      // Removed toast notification
       return;
     }
     
@@ -303,7 +296,7 @@ const QuestionCard = ({
               onClick={onPreviousQuestion} 
               variant="outline"
               className="hover:bg-electric-gray/30 flex items-center gap-2 order-1 md:order-1 ml-2"
-              disabled={examMode && !isAnswerSubmitted} // אם במצב בחינה, לא ניתן לחזור אחורה לפני הגשת התשובה
+              disabled={examMode && !isAnswerSubmitted}
             >
               <ArrowRight className="h-4 w-4 ml-1" />
               <span className="hidden sm:inline">לשאלה הקודמת</span>
