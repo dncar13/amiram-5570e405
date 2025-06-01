@@ -1,5 +1,7 @@
+
 import { toast } from "@/hooks/use-toast";
 import QuestionCard from "./QuestionCard";
+import QuestionCardWithStory from "./QuestionCardWithStory";
 import SimulationResults from "./SimulationResults";
 import SimulationProgress from "./SimulationProgress";
 import NavigationPanel from "./NavigationPanel";
@@ -120,6 +122,12 @@ const SimulationContent = ({
     });
   };
 
+  // Check if current question has a reading passage
+  const hasReadingPassage = (question: Question) => {
+    return (question.passageWithLines && question.passageWithLines.length > 0) ||
+           (question.passageTitle || question.passageText);
+  };
+
   // If no questions are available, redirect to empty state
   if (questionsData.length === 0) {
     return (
@@ -156,6 +164,9 @@ const SimulationContent = ({
     );
   }
 
+  // Determine if we should show the progress bar (only for non-story questions)
+  const shouldShowProgressBar = !currentQuestion || !hasReadingPassage(currentQuestion);
+
   return (
     <div className="w-full" ref={contentRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -177,85 +188,114 @@ const SimulationContent = ({
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Navigation Panel - Desktop */}
-          <aside className="hidden lg:block w-80 shrink-0">
-            <div className="sticky top-4">
-              <NavigationPanel 
-                currentQuestionIndex={currentQuestionIndex}
-                totalQuestions={totalQuestions}
-                userAnswers={userAnswers}
-                questionsData={questionsData}
-                questionFlags={questionFlags}
-                onNavigateToQuestion={onNavigateToQuestion}
-                onToggleQuestionFlag={onToggleQuestionFlag}
-                progressPercentage={progressPercentage}
-                currentScorePercentage={currentScorePercentage}
-                onResetProgress={onResetProgress}
-                simulationType={isQuestionSet ? "question-set" : "topic"}
-                setNumber={setNumber}
-              />
-            </div>
-          </aside>
+          {/* Navigation Panel - Desktop (only for non-story questions) */}
+          {shouldShowProgressBar && (
+            <aside className="hidden lg:block w-80 shrink-0">
+              <div className="sticky top-4">
+                <NavigationPanel 
+                  currentQuestionIndex={currentQuestionIndex}
+                  totalQuestions={totalQuestions}
+                  userAnswers={userAnswers}
+                  questionsData={questionsData}
+                  questionFlags={questionFlags}
+                  onNavigateToQuestion={onNavigateToQuestion}
+                  onToggleQuestionFlag={onToggleQuestionFlag}
+                  progressPercentage={progressPercentage}
+                  currentScorePercentage={currentScorePercentage}
+                  onResetProgress={onResetProgress}
+                  simulationType={isQuestionSet ? "question-set" : "topic"}
+                  setNumber={setNumber}
+                />
+              </div>
+            </aside>
+          )}
 
           {/* Main Content */}
-          <div className="flex-1 max-w-4xl">
-            {/* Progress Bar */}
-            <SimulationProgress 
-              currentQuestionIndex={currentQuestionIndex}
-              totalQuestions={totalQuestions}
-              remainingTime={remainingTime}
-              isTimerActive={isTimerActive}
-              answeredQuestionsCount={answeredQuestionsCount}
-              correctQuestionsCount={correctQuestionsCount}
-              simulationType={isQuestionSet ? "question-set" : "topic"}
-            />
+          <div className={cn("flex-1", shouldShowProgressBar ? "max-w-4xl" : "max-w-7xl mx-auto")}>
+            {/* Progress Bar (only for non-story questions) */}
+            {shouldShowProgressBar && (
+              <SimulationProgress 
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={totalQuestions}
+                remainingTime={remainingTime}
+                isTimerActive={isTimerActive}
+                answeredQuestionsCount={answeredQuestionsCount}
+                correctQuestionsCount={correctQuestionsCount}
+                simulationType={isQuestionSet ? "question-set" : "topic"}
+              />
+            )}
             
-            {/* Question Card with the fixed flag access */}
-            <QuestionCard 
-              currentQuestion={currentQuestion}
-              currentQuestionIndex={currentQuestionIndex}
-              totalQuestions={totalQuestions}
-              selectedAnswerIndex={selectedAnswerIndex}
-              isAnswerSubmitted={isAnswerSubmitted}
-              showExplanation={showExplanation}
-              isFlagged={questionFlags[currentQuestionIndex] ?? false}
-              examMode={examMode}
-              showAnswersImmediately={showAnswersImmediately}
-              onAnswerSelect={onAnswerSelect}
-              onSubmitAnswer={onSubmitAnswer}
-              onNextQuestion={onNextQuestion}
-              onPreviousQuestion={onPreviousQuestion}
-              onToggleExplanation={onToggleExplanation}
-              onToggleQuestionFlag={() => onToggleQuestionFlag()}
-              onEditQuestion={isAdmin && currentQuestion ? handleEditQuestion : undefined}
-            />
+            {/* Question Card - Choose the right component */}
+            {currentQuestion && hasReadingPassage(currentQuestion) ? (
+              <QuestionCardWithStory 
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswerIndex={selectedAnswerIndex}
+                isAnswerSubmitted={isAnswerSubmitted}
+                showExplanation={showExplanation}
+                isFlagged={questionFlags[currentQuestionIndex] ?? false}
+                examMode={examMode}
+                showAnswersImmediately={showAnswersImmediately}
+                answeredQuestionsCount={answeredQuestionsCount}
+                correctQuestionsCount={correctQuestionsCount}
+                onAnswerSelect={onAnswerSelect}
+                onSubmitAnswer={onSubmitAnswer}
+                onNextQuestion={onNextQuestion}
+                onPreviousQuestion={onPreviousQuestion}
+                onToggleExplanation={onToggleExplanation}
+                onToggleQuestionFlag={() => onToggleQuestionFlag()}
+                onEditQuestion={isAdmin && currentQuestion ? handleEditQuestion : undefined}
+              />
+            ) : (
+              <QuestionCard 
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswerIndex={selectedAnswerIndex}
+                isAnswerSubmitted={isAnswerSubmitted}
+                showExplanation={showExplanation}
+                isFlagged={questionFlags[currentQuestionIndex] ?? false}
+                examMode={examMode}
+                showAnswersImmediately={showAnswersImmediately}
+                onAnswerSelect={onAnswerSelect}
+                onSubmitAnswer={onSubmitAnswer}
+                onNextQuestion={onNextQuestion}
+                onPreviousQuestion={onPreviousQuestion}
+                onToggleExplanation={onToggleExplanation}
+                onToggleQuestionFlag={() => onToggleQuestionFlag()}
+                onEditQuestion={isAdmin && currentQuestion ? handleEditQuestion : undefined}
+              />
+            )}
           </div>
         </div>
 
-        {/* Mobile Navigation Panel */}
-        <Sheet open={showNavigationPanel} onOpenChange={setShowNavigationPanel}>
-          <SheetContent side="right" className="w-full max-w-md p-0">
-            <div className="h-full overflow-auto">
-              <NavigationPanel 
-                currentQuestionIndex={currentQuestionIndex}
-                totalQuestions={totalQuestions}
-                userAnswers={userAnswers}
-                questionsData={questionsData}
-                questionFlags={questionFlags}
-                onNavigateToQuestion={(index) => {
-                  onNavigateToQuestion(index);
-                  setShowNavigationPanel(false);
-                }}
-                onToggleQuestionFlag={onToggleQuestionFlag}
-                progressPercentage={progressPercentage}
-                currentScorePercentage={currentScorePercentage}
-                onResetProgress={onResetProgress}
-                simulationType={isQuestionSet ? "question-set" : "topic"}
-                setNumber={setNumber}
-              />
-            </div>
-          </SheetContent>
-        </Sheet>
+        {/* Mobile Navigation Panel (only for non-story questions) */}
+        {shouldShowProgressBar && (
+          <Sheet open={showNavigationPanel} onOpenChange={setShowNavigationPanel}>
+            <SheetContent side="right" className="w-full max-w-md p-0">
+              <div className="h-full overflow-auto">
+                <NavigationPanel 
+                  currentQuestionIndex={currentQuestionIndex}
+                  totalQuestions={totalQuestions}
+                  userAnswers={userAnswers}
+                  questionsData={questionsData}
+                  questionFlags={questionFlags}
+                  onNavigateToQuestion={(index) => {
+                    onNavigateToQuestion(index);
+                    setShowNavigationPanel(false);
+                  }}
+                  onToggleQuestionFlag={onToggleQuestionFlag}
+                  progressPercentage={progressPercentage}
+                  currentScorePercentage={currentScorePercentage}
+                  onResetProgress={onResetProgress}
+                  simulationType={isQuestionSet ? "question-set" : "topic"}
+                  setNumber={setNumber}
+                />
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
 
         {/* Admin Question Editor */}
         {isAdmin && (

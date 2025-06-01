@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen } from "lucide-react";
+import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen, BarChart3 } from "lucide-react";
 import { Question } from "@/data/questionsData";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
 import { useEffect, useState } from "react";
 import { QuestionImage } from "@/components/common/QuestionImage";
+import { Progress } from "@/components/ui/progress";
 
 interface QuestionCardWithStoryProps {
   currentQuestion: Question | undefined;
@@ -21,6 +22,8 @@ interface QuestionCardWithStoryProps {
   isFlagged: boolean;
   examMode?: boolean;
   showAnswersImmediately?: boolean;
+  answeredQuestionsCount: number;
+  correctQuestionsCount: number;
   onAnswerSelect: (index: number) => void;
   onSubmitAnswer: () => void;
   onNextQuestion: () => void;
@@ -40,6 +43,8 @@ const QuestionCardWithStory = ({
   isFlagged,
   examMode = false,
   showAnswersImmediately = true,
+  answeredQuestionsCount,
+  correctQuestionsCount,
   onAnswerSelect,
   onSubmitAnswer,
   onNextQuestion,
@@ -52,6 +57,7 @@ const QuestionCardWithStory = ({
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
   const [showTip, setShowTip] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
   
   useEffect(() => {
     if (currentQuestion) {
@@ -121,6 +127,7 @@ const QuestionCardWithStory = ({
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
   const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
+  const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
 
   // Get question type badge
   const getQuestionTypeBadge = () => {
@@ -244,355 +251,226 @@ const QuestionCardWithStory = ({
 
         <CardContent className="p-6">
           {/* Reading Comprehension Layout - Professional side-by-side */}
-          {hasReadingPassage() ? (
-            <div className="space-y-8">
-              {/* Reading Passage - Always visible and prominent */}
-              <div className="w-full">
-                {renderReadingPassage()}
-              </div>
-
-              {/* Question and Options */}
-              <div className="w-full">
-                <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                  <h3 className="text-2xl font-bold mb-6 text-gray-900 leading-relaxed">
-                    {currentQuestion.text}
-                  </h3>
-                  
-                  {currentQuestion.image && (
-                    <QuestionImage 
-                      src={currentQuestion.image} 
-                      alt={`Diagram for question ${currentQuestionIndex + 1}`}
-                      maxHeightRem={12}
-                    />
-                  )}
-                  
-                  <div className="space-y-4 mb-6">
-                    {currentQuestion.options.map((option, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <button 
-                          className={cn(
-                            "w-full text-left px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
-                            selectedAnswerIndex === index 
-                              ? "border-blue-500 bg-blue-50 shadow-md" 
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
-                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                              "border-green-500 bg-green-50 shadow-md",
-                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                              "border-red-500 bg-red-50 shadow-md",
-                            isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                              selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
-                          )}
-                          onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                          disabled={isAnswerSubmitted}
-                        >
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 flex-1">
-                              <div className={cn(
-                                "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
-                                selectedAnswerIndex === index 
-                                  ? "bg-blue-500 border-blue-500 text-white" 
-                                  : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                                  "bg-green-500 border-green-500 text-white",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                                  "bg-red-500 border-red-500 text-white",
-                                isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                                  "bg-green-500 border-green-500 text-white"
-                              )}>
-                                {String.fromCharCode(65 + index)}
-                              </div>
-                              <span className={cn(
-                                "flex-grow leading-relaxed text-lg font-medium",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
-                                isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
-                              )}>
-                                {option}
-                              </span>
-                            </div>
-                            
-                            {isAnswerSubmitted && showCorrectAnswer && (
-                              <div className="flex-shrink-0 ml-4">
-                                {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                                  <CheckCircle className="h-7 w-7 text-green-600" />
-                                )}
-                                {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                                  <XCircle className="h-7 w-7 text-red-600" />
-                                )}
-                                {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                                  <CheckCircle className="h-7 w-7 text-green-600" />
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Hint/Tip Button - show before submitting answer */}
-                  {!isAnswerSubmitted && currentQuestion.tips && (
-                    <div className="mb-6">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowTip(!showTip)}
-                        className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
-                      >
-                        <Lightbulb className="h-4 w-4" />
-                        {showTip ? 'Hide Hint' : 'Show Hint'}
-                      </Button>
-                      
-                      <AnimatePresence>
-                        {showTip && (
-                          <motion.div 
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden mt-4"
-                          >
-                            <div className="p-5 bg-amber-50 border border-amber-200 rounded-lg">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Lightbulb className="h-5 w-5 text-amber-600" />
-                                <span className="font-semibold text-amber-800 text-lg">Hint</span>
-                              </div>
-                              <p className="text-amber-700 leading-relaxed text-base">
-                                {currentQuestion.tips}
-                              </p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  )}
-
-                  {/* Submit/Navigation buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 justify-end">
-                    {!isAnswerSubmitted ? (
-                      <Button 
-                        onClick={onSubmitAnswer} 
-                        className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
-                        disabled={selectedAnswerIndex === null}
-                      >
-                        Submit Answer
-                      </Button>
-                    ) : (
-                      <div className="flex gap-4 w-full sm:w-auto">
-                        {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
-                          <Button 
-                            variant="outline" 
-                            onClick={onToggleExplanation}
-                            className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
-                          >
-                            {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
-                          </Button>
-                        )}
-                        
-                        <Button 
-                          onClick={onNextQuestion} 
-                          className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md font-medium text-base px-6 py-3"
-                        >
-                          {currentQuestionIndex < totalQuestions - 1 ? (
-                            <>
-                              Next
-                              <ChevronLeft className="h-5 w-5 ml-2" />
-                            </>
-                          ) : (
-                            <>
-                              Finish Test
-                              <Trophy className="h-5 w-5 ml-2" />
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
+          <div className="space-y-8">
+            {/* Reading Passage - Always visible and prominent */}
+            <div className="w-full">
+              {renderReadingPassage()}
             </div>
-          ) : (
-            /* Standard question layout for non-reading comprehension */
-            <div>
-              <h3 className="text-xl font-semibold mb-6 text-gray-800 leading-relaxed">
-                {currentQuestion.text}
-              </h3>
-              
-              {currentQuestion.image && (
-                <QuestionImage 
-                  src={currentQuestion.image} 
-                  alt={`Diagram for question ${currentQuestionIndex + 1}`}
-                  maxHeightRem={16}
-                />
-              )}
-              
-              <div className="space-y-3 mb-4">
-                {currentQuestion.options.map((option, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div 
-                      className={cn(
-                        "relative border rounded-lg p-4 transition-all duration-200 cursor-pointer group",
-                        selectedAnswerIndex === index 
-                          ? "border-blue-300 bg-blue-50/30" 
-                          : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50",
-                        isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                          "border-green-400 bg-green-50/40",
-                        isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                          "border-red-400 bg-red-50/40",
-                        isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                          selectedAnswerIndex !== index && "border-green-400 bg-green-50/40"
-                      )}
-                      onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className={cn(
-                          "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-200",
-                          selectedAnswerIndex === index 
-                            ? "bg-blue-400 border-blue-400 text-white" 
-                            : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                            "bg-green-500 border-green-500 text-white",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                            "bg-red-500 border-red-500 text-white",
-                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                            "bg-green-500 border-green-500 text-white"
-                        )}>
-                          <span className="font-semibold text-lg">{String.fromCharCode(65 + index)}</span>
-                        </div>
-                        <span className={cn(
-                          "flex-grow leading-relaxed transition-colors duration-200",
-                          selectedAnswerIndex === index ? "text-gray-900 font-medium" : "text-gray-700",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700 font-medium",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
-                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700 font-medium"
-                        )}>
-                          {option}
-                        </span>
-                      </div>
-                      
-                      {isAnswerSubmitted && showCorrectAnswer && (
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2">
-                          {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                            <CheckCircle className="h-6 w-6 text-green-600" />
-                          )}
-                          {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                            <XCircle className="h-6 w-6 text-red-600" />
-                          )}
-                          {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                            <CheckCircle className="h-6 w-6 text-green-600" />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
 
-              {/* Hint/Tip Button for standard questions */}
-              {!isAnswerSubmitted && currentQuestion.tips && (
-                <div className="mb-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowTip(!showTip)}
-                    className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
-                  >
-                    <Lightbulb className="h-4 w-4" />
-                    {showTip ? 'Hide Hint' : 'Show Hint'}
-                  </Button>
-                  
-                  <AnimatePresence>
-                    {showTip && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden mt-3"
-                      >
-                        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Lightbulb className="h-4 w-4 text-amber-600" />
-                            <span className="font-medium text-amber-800">Hint</span>
-                          </div>
-                          <p className="text-amber-700 text-sm leading-relaxed">
-                            {currentQuestion.tips}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-              
-              <div className="flex flex-col sm:flex-row gap-3 justify-between">
-                <div className="flex gap-2">
-                  {currentQuestionIndex > 0 && (
-                    <Button 
-                      onClick={onPreviousQuestion} 
-                      variant="outline"
-                      className="flex-1 sm:flex-none border hover:bg-gray-50"
-                      disabled={examMode && !isAnswerSubmitted}
-                    >
-                      <ChevronRight className="h-4 w-4 mr-1" />
-                      Previous
-                    </Button>
-                  )}
-                  
-                  {isAnswerSubmitted && (
-                    <Button 
-                      onClick={onNextQuestion} 
-                      className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md"
-                    >
-                      {currentQuestionIndex < totalQuestions - 1 ? (
-                        <>
-                          Next
-                          <ChevronLeft className="h-4 w-4 ml-1" />
-                        </>
-                      ) : (
-                        <>
-                          Finish Test
-                          <Trophy className="h-4 w-4 ml-1" />
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
+            {/* Question and Options */}
+            <div className="w-full">
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <h3 className="text-2xl font-bold mb-6 text-gray-900 leading-relaxed">
+                  {currentQuestion.text}
+                </h3>
                 
-                <div className="flex gap-2">
+                {currentQuestion.image && (
+                  <QuestionImage 
+                    src={currentQuestion.image} 
+                    alt={`Diagram for question ${currentQuestionIndex + 1}`}
+                    maxHeightRem={12}
+                  />
+                )}
+                
+                <div className="space-y-4 mb-6">
+                  {currentQuestion.options.map((option, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <button 
+                        className={cn(
+                          "w-full text-left px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
+                          selectedAnswerIndex === index 
+                            ? "border-blue-500 bg-blue-50 shadow-md" 
+                            : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
+                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
+                            "border-green-500 bg-green-50 shadow-md",
+                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
+                            "border-red-500 bg-red-50 shadow-md",
+                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
+                            selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
+                        )}
+                        onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
+                        disabled={isAnswerSubmitted}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4 flex-1">
+                            <div className={cn(
+                              "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
+                              selectedAnswerIndex === index 
+                                ? "bg-blue-500 border-blue-500 text-white" 
+                                : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
+                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
+                                "bg-green-500 border-green-500 text-white",
+                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
+                                "bg-red-500 border-red-500 text-white",
+                              isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
+                                "bg-green-500 border-green-500 text-white"
+                            )}>
+                              {String.fromCharCode(65 + index)}
+                            </div>
+                            <span className={cn(
+                              "flex-grow leading-relaxed text-lg font-medium",
+                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
+                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
+                              isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
+                            )}>
+                              {option}
+                            </span>
+                          </div>
+                          
+                          {isAnswerSubmitted && showCorrectAnswer && (
+                            <div className="flex-shrink-0 ml-4">
+                              {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
+                                <CheckCircle className="h-7 w-7 text-green-600" />
+                              )}
+                              {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
+                                <XCircle className="h-7 w-7 text-red-600" />
+                              )}
+                              {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
+                                <CheckCircle className="h-7 w-7 text-green-600" />
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Hint/Tip Button - show before submitting answer */}
+                {!isAnswerSubmitted && currentQuestion.tips && (
+                  <div className="mb-6">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setShowTip(!showTip)}
+                      className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
+                    >
+                      <Lightbulb className="h-4 w-4" />
+                      {showTip ? 'Hide Hint' : 'Show Hint'}
+                    </Button>
+                    
+                    <AnimatePresence>
+                      {showTip && (
+                        <motion.div 
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden mt-4"
+                        >
+                          <div className="p-5 bg-amber-50 border border-amber-200 rounded-lg">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Lightbulb className="h-5 w-5 text-amber-600" />
+                              <span className="font-semibold text-amber-800 text-lg">Hint</span>
+                            </div>
+                            <p className="text-amber-700 leading-relaxed text-base">
+                              {currentQuestion.tips}
+                            </p>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+
+                {/* Submit/Navigation buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-end">
                   {!isAnswerSubmitted ? (
                     <Button 
                       onClick={onSubmitAnswer} 
-                      className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-medium text-base px-6 py-2"
+                      className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
                       disabled={selectedAnswerIndex === null}
                     >
                       Submit Answer
                     </Button>
                   ) : (
-                    currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
+                    <div className="flex gap-4 w-full sm:w-auto">
+                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
+                        <Button 
+                          variant="outline" 
+                          onClick={onToggleExplanation}
+                          className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
+                        >
+                          {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
+                        </Button>
+                      )}
+                      
                       <Button 
-                        variant="outline" 
-                        onClick={onToggleExplanation}
-                        className="flex-1 sm:flex-none border"
+                        onClick={onNextQuestion} 
+                        className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md font-medium text-base px-6 py-3"
                       >
-                        {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
+                        {currentQuestionIndex < totalQuestions - 1 ? (
+                          <>
+                            Next
+                            <ChevronLeft className="h-5 w-5 ml-2" />
+                          </>
+                        ) : (
+                          <>
+                            Finish Test
+                            <Trophy className="h-5 w-5 ml-2" />
+                          </>
+                        )}
                       </Button>
-                    )
+                    </div>
                   )}
                 </div>
               </div>
             </div>
-          )}
+
+            {/* Progress Button - Located at the bottom */}
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowProgress(!showProgress)}
+                className="flex items-center gap-2 bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100"
+              >
+                <BarChart3 className="h-4 w-4" />
+                התקדמות
+              </Button>
+            </div>
+
+            {/* Progress Display */}
+            <AnimatePresence>
+              {showProgress && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-sm font-medium text-gray-700">
+                        שאלה {currentQuestionIndex + 1} / {totalQuestions}
+                      </div>
+                      <div className="text-sm text-gray-500">
+                        {progressPercentage}% הושלם
+                      </div>
+                    </div>
+                    
+                    <Progress value={progressPercentage} className="h-2 mb-4" />
+                    
+                    <div className="flex justify-between items-center text-sm text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <span>{correctQuestionsCount} נכונות</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <AlertCircle className="h-4 w-4 text-amber-500" />
+                        <span>{answeredQuestionsCount} ענו</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           
           <AnimatePresence>
             {(isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && showExplanation) && (
