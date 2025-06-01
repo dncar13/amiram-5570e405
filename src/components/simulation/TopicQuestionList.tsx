@@ -62,15 +62,14 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
     // Clean up the interval on component unmount
     return () => clearInterval(refreshInterval);
   }, [topicId]);
-  
-  const startSimulation = () => {
+    const startSimulation = () => {
     // Check if user has access to this topic
     if (!hasAccessToTopic(topicId)) {
-      toast({
-        title: "נדרש מנוי פרימיום",
-        description: "רק נושא 1 פתוח לכולם. שאר הנושאים דורשים מנוי פרימיום",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "נדרש מנוי פרימיום",
+      //   description: "רק נושא 1 פתוח לכולם. שאר הנושאים דורשים מנוי פרימיום",
+      //   variant: "destructive",
+      // });
       return;
     }
     

@@ -115,11 +115,9 @@ const SimulationContent = ({
     setIsEditing(false);
     setQuestionToEdit(null);
   };
-
-  // Check if current question has a reading passage
+  // Check if current question has a reading passage with line numbers (story format)
   const hasReadingPassage = (question: Question) => {
-    return (question.passageWithLines && question.passageWithLines.length > 0) ||
-           (question.passageTitle || question.passageText);
+    return question.passageWithLines && question.passageWithLines.length > 0;
   };
 
   // If no questions are available, redirect to empty state

@@ -62,16 +62,15 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
       
       // Force reload questions from source to ensure all questions are included
       reloadQuestionsFromSource();
-      
-      // Using topic ID 1 which contains the first set of questions
+        // Using topic ID 1 which contains the first set of questions
       navigate("/questions-set/1/intro");
     } catch (error) {
       console.error("Error starting simulation:", error);
-      toast({
-        title: "שגיאה בהפעלת הסימולציה",
-        description: "אירעה שגיאה בעת ניסיון להתחיל סימולציה חדשה",
-        variant: "destructive"
-      });
+      // toast({
+      //   title: "שגיאה בהפעלת הסימולציה",
+      //   description: "אירעה שגיאה בעת ניסיון להתחיל סימולציה חדשה",
+      //   variant: "destructive"
+      // });
       setIsLoading(false);
     }
   };
@@ -95,14 +94,13 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
           
           if (topicQuestions.length > 0) {
             console.log(`Found ${topicQuestions.length} questions for topic ${simulationProgress.topicId}, continuing simulation`);
-            navigate(`/simulation/${simulationProgress.topicId}?continue=true`);
-          } else {
+            navigate(`/simulation/${simulationProgress.topicId}?continue=true`);          } else {
             console.error(`No questions found for topic ${simulationProgress.topicId}`);
-            toast({
-              title: "אין שאלות בנושא זה",
-              description: "לא ניתן להמשיך את הסימולציה כיוון שאין שאלות בנושא זה",
-              variant: "destructive"
-            });
+            // toast({
+            //   title: "אין שאלות בנושא זה",
+            //   description: "לא ניתן להמשיך את הסימולציה כיוון שאין שאלות בנושא זה",
+            //   variant: "destructive"
+            // });
             setIsLoading(false);
           }
         } else {
@@ -114,14 +112,13 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
         // Open login dialog if user is not authenticated
         setLoginDialogOpen(true);
         setIsLoading(false);
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error("Error continuing simulation:", error);
-      toast({
-        title: "שגיאה בהמשך הסימולציה",
-        description: "אירעה שגיאה בעת ניסיון להמשיך את הסימולציה",
-        variant: "destructive"
-      });
+      // toast({
+      //   title: "שגיאה בהמשך הסימולציה",
+      //   description: "אירעה שגיאה בעת ניסיון להמשיך את הסימולציה",
+      //   variant: "destructive"
+      // });
       setIsLoading(false);
     }
   };

@@ -1,4 +1,3 @@
-
 // Only modifying the loadProgress function in the useSimulation hook
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -284,21 +283,20 @@ export const useSimulation = (
         
         // Show toast only for serious errors
         if (result.error.includes("quota") || result.error.includes("storage")) {
-          toast({
-            title: "שגיאה",
-            description: "שגיאה בשמירת ההתקדמות - ייתכן שהזיכרון מלא",
-            variant: "destructive",
-          });
+          // toast({
+          //   title: "שגיאה",
+          //   description: "שגיאה בשמירת ההתקדמות - ייתכן שהזיכרון מלא",
+          //   variant: "destructive",
+          // });
         }
       }
-      
-      // If there's a warning, show it as a toast
+        // If there's a warning, show it as a toast
       if (result.warning && !result.warning.includes("cloud")) {
-        toast({
-          title: "התראה",
-          description: result.warning,
-          variant: "default",
-        });
+        // toast({
+        //   title: "התראה",
+        //   description: result.warning,
+        //   variant: "default",
+        // });
       }
     } catch (error) {
       console.error("Error in saveProgress:", error);
@@ -452,11 +450,11 @@ export const useSimulation = (
       return true;
     } catch (error) {
       console.error("Error in loadProgress:", error);
-      toast({
-        title: "שגיאה",
-        description: "שגיאה בטעינת ההתקדמות",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "שגיאה",
+      //   description: "שגיאה בטעינת ההתקדמות",
+      //   variant: "destructive",
+      // });
       return false;
     }
   }, [simulationId, questions.length, isQuestionSet, isContinue]);
@@ -754,17 +752,17 @@ export const useSimulation = (
             
             toast({
               title: "התקדמות אופסה",
-              description: "כל ההתקדמות בסימולציה אופסה בהצל��ה",
+              description: "כל ההתקדמות בסימולציה אופסה בהצלחה",
               variant: "default",
             });
           })
           .catch(err => {
             console.error("Error resetting progress:", err);
-            toast({
-              title: "שגיאה באיפוס התקדמות",
-              description: "אירעה שגיאה בעת איפוס ההתקדמות",
-              variant: "destructive",
-            });
+            // toast({
+            //   title: "שגיאה באיפוס התקדמות",
+            //   description: "אירעה שגיאה בעת איפוס ההתקדמות",
+            //   variant: "destructive",
+            // });
           });
       }
     }

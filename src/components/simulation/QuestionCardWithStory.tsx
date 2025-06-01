@@ -60,6 +60,9 @@ const QuestionCardWithStory = ({
   const [showTip, setShowTip] = useState(false);
   const [showProgressDetails, setShowProgressDetails] = useState(false);
   
+  // Control tips display - set to false to hide all tips
+  const SHOW_TIPS = false;
+  
   useEffect(() => {
     if (currentQuestion) {
       setLocalIsSaved(isQuestionSaved(currentQuestion.id));
@@ -339,10 +342,8 @@ const QuestionCardWithStory = ({
                       </button>
                     </motion.div>
                   ))}
-                </div>
-
-                {/* Hint/Tip Button - show before submitting answer */}
-                {!isAnswerSubmitted && currentQuestion.tips && (
+                </div>                {/* Hint/Tip Button - show before submitting answer */}
+                {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
                   <div className="mb-6">
                     <Button
                       variant="outline"
@@ -399,10 +400,9 @@ const QuestionCardWithStory = ({
                           {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
                         </Button>
                       )}
-                      
-                      <Button 
+                        <Button 
                         onClick={onNextQuestion} 
-                        className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md font-medium text-base px-6 py-3"
+                        className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium text-base px-6 py-3"
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
@@ -454,30 +454,36 @@ const QuestionCardWithStory = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </CardContent>
-
-        {/* Progress Button at Bottom */}
+        </CardContent>        {/* Progress Bar at Bottom - Similar to the one in regular QuestionCard */}
         <div className="px-6 pb-6">
-          <Button
-            variant="outline"
-            className="w-full bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
-            onClick={() => setShowProgressDetails(!showProgressDetails)}
-          >
-            <BarChart3 className="h-5 w-5 ml-2" />
-            התקדמות ({Math.round(progressPercentage)}%)
-          </Button>
-
-          <AnimatePresence>
-            {showProgressDetails && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden mt-4"
-              >
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                  <div className="grid grid-cols-2 gap-4 text-center">
+          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200" onClick={() => setShowProgressDetails(!showProgressDetails)}>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-1 text-gray-700">
+                <BarChart3 className="h-5 w-5 text-blue-600" />
+                <span className="font-medium">התקדמות ({Math.round(progressPercentage)}%)</span>
+              </div>
+              <div className="text-sm font-medium text-gray-700">
+                {currentQuestionIndex + 1} / {totalQuestions}
+              </div>
+            </div>
+            
+            <div className="w-full bg-gray-200 rounded-full h-3">
+              <div 
+                className="bg-blue-600 h-3 rounded-full transition-all duration-300" 
+                style={{ width: `${progressPercentage}%` }}
+              ></div>
+            </div>
+            
+            <AnimatePresence>
+              {showProgressDetails && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden mt-4"
+                >
+                  <div className="grid grid-cols-2 gap-4 text-center mt-3">
                     <div className="bg-blue-50 rounded-lg p-3">
                       <div className="text-2xl font-bold text-blue-600">{answeredQuestionsCount}</div>
                       <div className="text-sm text-blue-600">ענו</div>
@@ -487,22 +493,10 @@ const QuestionCardWithStory = ({
                       <div className="text-sm text-green-600">נכונות</div>
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <div className="flex justify-between text-sm text-gray-600 mb-2">
-                      <span>התקדמות: {Math.round(progressPercentage)}%</span>
-                      <span>{currentQuestionIndex + 1} / {totalQuestions}</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
-                        style={{ width: `${progressPercentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </Card>
     </motion.div>

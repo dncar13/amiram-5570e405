@@ -154,11 +154,11 @@ export const useSavedQuestions = () => {
     } catch (error) {
       console.error("Error initializing saved questions:", error);
       setSavedQuestions([]);
-      toast({
-        title: "שגיאה",
-        description: "שגיאה בטעינת השאלות השמורות",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "שגיאה",
+      //   description: "שגיאה בטעינת השאלות השמורות",
+      //   variant: "destructive",
+      // });
     } finally {
       setIsLoading(false);
       setIsInitialized(true);
@@ -236,11 +236,11 @@ export const useSavedQuestions = () => {
       return true;
     } catch (error) {
       console.error("Error saving question:", error);
-      toast({
-        title: "שגיאה",
-        description: "שגיאה בשמירת השאלה",
-        variant: "destructive",
-      });
+      // toast({
+      //   title: "שגיאה",
+      //   description: "שגיאה בשמירת השאלה",
+      //   variant: "destructive",
+      // });
       return false;
     }
   };
@@ -277,12 +277,11 @@ export const useSavedQuestions = () => {
       
       return true;
     } catch (error) {
-      console.error("Error removing question:", error);
-      toast({
-        title: "שגיאה",
-        description: "שגיאה בהסרת השאלה",
-        variant: "destructive",
-      });
+      console.error("Error removing question:", error);      // toast({
+      //   title: "שגיאה",
+      //   description: "שגיאה בהסרת השאלה",
+      //   variant: "destructive",
+      // });
       return false;
     }
   };

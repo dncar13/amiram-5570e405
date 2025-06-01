@@ -169,11 +169,11 @@ export const saveProgressUnified = async (
             console.log("Successfully saved after optimizing storage");
           } catch (retryError) {
             console.error("Still can't save after optimization:", retryError);
-            toast({
-              title: "שגיאה",
-              description: "לא ניתן לשמור התקדמות - זיכרון מלא",
-              variant: "destructive",
-            });
+            // toast({
+            //   title: "שגיאה",
+            //   description: "לא ניתן לשמור התקדמות - זיכרון מלא",
+            //   variant: "destructive",
+            // });
             return { 
               success: false, 
               error: "Storage quota exceeded",
@@ -271,11 +271,11 @@ export const saveProgressUnified = async (
     return { success: true };
   } catch (error) {
     console.error("Error saving simulation progress:", error);
-    toast({
-      title: "שגיאה",
-      description: "שגיאה בשמירת ההתקדמות",
-      variant: "destructive",
-    });
+    // toast({
+    //   title: "שגיאה",
+    //   description: "שגיאה בשמירת ההתקדמות",
+    //   variant: "destructive",
+    // });
     
     return { 
       success: false,

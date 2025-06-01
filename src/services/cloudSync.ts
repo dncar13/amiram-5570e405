@@ -257,11 +257,11 @@ export const saveProgressToCloud = async (progress: SimulationProgress): Promise
   
   if (!result.success) {
     // Final failure after retries - notify user
-    toast({
-      title: "שגיאה",
-      description: result.message || "שגיאת חיבור לענן",
-      variant: "destructive",
-    });
+    // toast({
+    //   title: "שגיאה",
+    //   description: result.message || "שגיאת חיבור לענן",
+    //   variant: "destructive",
+    // });
   } else {
     // Optionally show success toast for crucial data
     if (progress.forceSync) {
@@ -336,11 +336,11 @@ export const loadProgressFromCloud = async (id: string | number): Promise<CloudO
   } catch (error) {
     console.error("Error loading progress from cloud:", error);
     // Show toast error to inform the user
-    toast({
-      title: "שגיאה",
-      description: "שגיאה בטעינת התקדמות מהענן",
-      variant: "destructive",
-    });
+    // toast({
+    //   title: "שגיאה",
+    //   description: "שגיאה בטעינת התקדמות מהענן",
+    //   variant: "destructive",
+    // });
     return { 
       success: false,
       data: null, 
@@ -369,11 +369,11 @@ export const deleteProgressFromCloud = async (id: string | number): Promise<Clou
   } catch (error) {
     console.error("Error deleting progress from cloud:", error);
     // Show toast error to inform the user
-    toast({
-      title: "שגיאה",
-      description: "שגיאה במחיקת התקדמות מהענן",
-      variant: "destructive",
-    });
+    // toast({
+    //   title: "שגיאה",
+    //   description: "שגיאה במחיקת התקדמות מהענן",
+    //   variant: "destructive",
+    // });
     return { 
       success: false, 
       error: error instanceof Error ? error.message : String(error),
