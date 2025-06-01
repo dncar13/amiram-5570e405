@@ -21,6 +21,8 @@ const Simulation = () => {
   const isContinue = searchParams.get('continue') === 'true' || window.sessionStorage.getItem('continue_simulation') === 'true';
   const contentRef = useRef<HTMLDivElement>(null);
   const initialLoadAttempted = useRef(false);
+  const shouldShowResetToast = useRef(false);
+  const hasShownToast = useRef(false);
   
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
@@ -34,6 +36,7 @@ const Simulation = () => {
       
       if (hasResetParam) {
         console.log("Reset parameter detected - simulation will reset");
+        shouldShowResetToast.current = true;
         
         // Remove the reset parameter from URL to prevent reload issues
         removeResetParameterFromUrl();
