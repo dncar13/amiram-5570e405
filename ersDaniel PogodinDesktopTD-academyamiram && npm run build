@@ -1,0 +1,10 @@
+[33m489b2fe[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m תיאור השינוי שביצעתי
+[33mdaa5ad4[m feat: Implement reading comprehension with line numbers
+[33m4506b66[m Refactor: Remove all electricity questions and reset questions
+[33m00131aa[m Refactor: Update question structure and content
+[33m3feab64[m Fix: Cannot find module topicTypes
+[33m8611de9[m Fix TypeScript errors in data and components
+[33m345855f[m Fix TypeScript errors related to exports and types.
+[33mdeddbc0[m Refactor: Remove electrical questions and add new question types
+[33mb5fcb25[m Fix: Import and use correct Lucide icons
+[33m1f1ce99[m Refactor: Implement AmirAM Academy design
