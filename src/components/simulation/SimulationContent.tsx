@@ -1,5 +1,4 @@
 
-import { toast } from "@/hooks/use-toast";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
 import SimulationResults from "./SimulationResults";
@@ -22,7 +21,7 @@ interface SimulationContentProps {
   totalQuestions: number;
   remainingTime: number;
   isTimerActive: boolean;
-  currentQuestion?: Question; // Make this optional
+  currentQuestion?: Question;
   selectedAnswerIndex: number | null;
   isAnswerSubmitted: boolean;
   showExplanation: boolean;
@@ -159,34 +158,37 @@ const SimulationContent = ({
     );
   }
 
-  // Determine if we should show the progress bar and navigation (only for non-story questions)
-  const shouldShowProgressBar = !currentQuestion || !hasReadingPassage(currentQuestion);
+  // Check if this is a story question
+  const isStoryQuestion = currentQuestion && hasReadingPassage(currentQuestion);
 
   return (
     <div className="w-full" ref={contentRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Mobile Header - only for regular questions */}
-        {shouldShowProgressBar && (
-          <div className="md:hidden bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 mb-4 text-white">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                <span className="font-semibold">סימולציה - {isQuestionSet ? `קבוצה ${setNumber}` : "נושא"}</span>
+        {/* Show header and progress only for regular questions (not story questions) */}
+        {!isStoryQuestion && (
+          <>
+            {/* Mobile Header */}
+            <div className="md:hidden bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg p-4 mb-4 text-white">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold">סימולציה - {isQuestionSet ? `קבוצה ${setNumber}` : "נושא"}</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20"
+                  onClick={() => setShowNavigationPanel(true)}
+                >
+                  <Menu className="h-5 w-5" />
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-white/20"
-                onClick={() => setShowNavigationPanel(true)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
             </div>
-          </div>
+          </>
         )}
 
         <div className="flex flex-col lg:flex-row gap-6">
-          {/* Navigation Panel - Desktop (only for non-story questions) */}
-          {shouldShowProgressBar && (
+          {/* Navigation Panel - Desktop (only for regular questions) */}
+          {!isStoryQuestion && (
             <aside className="hidden lg:block w-80 shrink-0">
               <div className="sticky top-4">
                 <NavigationPanel 
@@ -208,9 +210,9 @@ const SimulationContent = ({
           )}
 
           {/* Main Content */}
-          <div className={cn("flex-1", shouldShowProgressBar ? "max-w-4xl" : "max-w-7xl mx-auto")}>
-            {/* Progress Bar (only for non-story questions) */}
-            {shouldShowProgressBar && (
+          <div className={cn("flex-1", !isStoryQuestion ? "max-w-4xl" : "max-w-7xl mx-auto")}>
+            {/* Progress Bar (only for regular questions) */}
+            {!isStoryQuestion && (
               <SimulationProgress 
                 currentQuestionIndex={currentQuestionIndex}
                 totalQuestions={totalQuestions}
@@ -223,7 +225,7 @@ const SimulationContent = ({
             )}
             
             {/* Question Card - Choose the right component */}
-            {currentQuestion && hasReadingPassage(currentQuestion) ? (
+            {isStoryQuestion ? (
               <QuestionCardWithStory 
                 currentQuestion={currentQuestion}
                 currentQuestionIndex={currentQuestionIndex}
@@ -268,8 +270,8 @@ const SimulationContent = ({
           </div>
         </div>
 
-        {/* Mobile Navigation Panel (only for non-story questions) */}
-        {shouldShowProgressBar && (
+        {/* Mobile Navigation Panel (only for regular questions) */}
+        {!isStoryQuestion && (
           <Sheet open={showNavigationPanel} onOpenChange={setShowNavigationPanel}>
             <SheetContent side="right" className="w-full max-w-md p-0">
               <div className="h-full overflow-auto">
