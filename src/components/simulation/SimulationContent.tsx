@@ -1,3 +1,4 @@
+
 import { toast } from "@/hooks/use-toast";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -158,7 +159,7 @@ const SimulationContent = ({
     );
   }
 
-  // Determine if we should show the progress bar (only for non-story questions)
+  // Determine if we should show the progress bar and navigation (only for non-story questions)
   const shouldShowProgressBar = !currentQuestion || !hasReadingPassage(currentQuestion);
 
   return (
