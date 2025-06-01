@@ -3,8 +3,8 @@
  * Utility functions for checking topic access permissions
  */
 
-// רשימת נושאים שזמינים לכולם (חינמיים)
-const FREE_TOPIC_IDS = [1]; // נושא 1 הוא חינמי
+// כל הנושאים זמינים לכולם (נושאים חינמיים)
+const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // כל הנושאים פתוחים
 
 /**
  * בודק אם נושא מסוים זמין בחינם (לכל המשתמשים)
@@ -12,7 +12,7 @@ const FREE_TOPIC_IDS = [1]; // נושא 1 הוא חינמי
  * @returns boolean האם הנושא חינמי
  */
 export const isFreeTopic = (topicId: number): boolean => {
-  return FREE_TOPIC_IDS.includes(topicId);
+  return true; // כל הנושאים חינמיים עכשיו
 };
 
 /**
@@ -23,13 +23,8 @@ export const isFreeTopic = (topicId: number): boolean => {
  * @returns boolean האם למשתמש יש גישה
  */
 export const checkTopicAccess = (topicId: number, isPremium: boolean, isAdmin: boolean): boolean => {
-  // מנהלים ומשתמשי פרימיום יכולים לגשת לכל הנושאים
-  if (isPremium || isAdmin) {
-    return true;
-  }
-  
-  // משתמשים אחרים יכולים לגשת רק לנושאים חינמיים
-  return isFreeTopic(topicId);
+  // כל הנושאים זמינים לכולם
+  return true;
 };
 
 /**
@@ -41,5 +36,5 @@ export const getFreeTopicIds = (): number[] => {
 };
 
 // Flag to enable showing all questions in simulations regardless of topic ID
-export const ALL_QUESTIONS_AVAILABLE = false;
+export const ALL_QUESTIONS_AVAILABLE = true; // הפעלתי גישה לכל השאלות
 

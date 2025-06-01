@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
@@ -48,7 +47,7 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   logout: async () => {},
   updatePremiumStatus: () => {},
-  hasAccessToTopic: () => false
+  hasAccessToTopic: () => true // ברירת מחדל - גישה לכל הנושאים
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -65,8 +64,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
-  // רשימת נושאים חינמיים (זמינים לכולם)
-  const FREE_TOPIC_IDS = [1];
+  // כל הנושאים זמינים לכולם עכשיו
+  const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const extractUsernameFromEmail = (email?: string | null) => {
     if (!email) return "משתמש";
@@ -78,15 +77,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       .join(' ');
   };
 
-  // פונקציה לבדיקה אם למשתמש יש גישה לנושא מסוים
+  // פונקציה לבדיקה אם למשתמש יש גישה לנושא מסוים - עכשיו כל הנושאים פתוחים
   const hasAccessToTopic = (topicId: number): boolean => {
-    // נושאים חינמיים זמינים לכולם
-    if (FREE_TOPIC_IDS.includes(topicId)) {
-      return true;
-    }
-    
-    // משתמשי פרימיום או מנהלים יכולים לגשת לכל הנושאים
-    return isPremium || isAdmin;
+    // כל הנושאים זמינים לכולם עכשיו
+    return true;
   };
 
   // פונקציה חדשה לעדכון סטטוס פרימיום
@@ -179,4 +173,3 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
