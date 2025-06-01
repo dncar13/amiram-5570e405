@@ -222,7 +222,7 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
               <Button 
                 variant="default"
                 className="w-full bg-amber-600 hover:bg-amber-700 text-white py-4 text-base font-semibold group-hover:scale-105 transition-all duration-200"
-                onClick={() => navigate("/questions-sets")}
+                onClick={() => navigate("/simulations-entry")}
               >
                 פתח מאגר שאלות
                 <ArrowLeft className="h-4 w-4 mr-2" />

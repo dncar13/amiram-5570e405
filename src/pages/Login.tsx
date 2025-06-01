@@ -45,7 +45,7 @@ const Login = () => {
   const { currentUser, isDevEnvironment } = useAuth();
   
   if (currentUser) {
-    navigate("/topics");
+    navigate("/simulations-entry");
     return null;
   }
   
@@ -59,7 +59,7 @@ const Login = () => {
           title: "התחברת בהצלחה!",
           description: `ברוך הבא ${user.displayName || user.email}`,
         });
-        navigate("/topics");
+        navigate("/simulations-entry");
       } else {
         if (error?.message || message) {
           setAuthError(message || "התחברות באמצעות Google עדיין לא מוכנה");
@@ -88,7 +88,7 @@ const Login = () => {
           title: "התחברת בהצלחה!",
           description: `ברוך הבא ${user.displayName || user.email}`,
         });
-        navigate("/topics");
+        navigate("/simulations-entry");
       } else {
         toast({
           variant: "destructive",
@@ -113,7 +113,7 @@ const Login = () => {
           title: "נרשמת בהצלחה!",
           description: `ברוך הבא ${formData.name || user.email}`,
         });
-        navigate("/topics");
+        navigate("/simulations-entry");
       } else {
         toast({
           variant: "destructive",

@@ -70,7 +70,7 @@ const ThankYou = () => {
           <div className="flex justify-center gap-4">
             <Button 
               className="bg-electric-blue hover:bg-blue-600 py-6 px-8 text-lg" 
-              onClick={() => navigate("/topics")}
+              onClick={() => navigate("/simulations-entry")}
             >
               התחל ללמוד עכשיו
             </Button>

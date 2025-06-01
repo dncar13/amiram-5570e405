@@ -50,10 +50,9 @@ const HeroSection: React.FC = () => {
         >
           סימולציות מדויקות, מעקב ביצועים אישי ומשוב מפורט – כל הכלים להצלחה שלכם במבחן אמירם במקום אחד.
         </p>
-        
-        <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12 transition-all duration-500 delay-500">
-          <Link to="/topics">
-            <Button 
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12 transition-all duration-500 delay-500">
+          <Link to="/simulations-entry">
+            <Button
               className="text-white font-bold text-lg px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               style={{ 
                 backgroundColor: '#ff7f0e',

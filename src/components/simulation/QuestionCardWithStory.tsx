@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen, BarChart3 } from "lucide-react";
+import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen, BarChart3, ChevronUp, ChevronDown } from "lucide-react";
 import { Question } from "@/data/questionsData";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
@@ -454,26 +454,50 @@ const QuestionCardWithStory = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </CardContent>        {/* Progress Bar at Bottom - Similar to the one in regular QuestionCard */}
+        </CardContent>        {/* Enhanced Comprehensive Progress Bar */}
         <div className="px-6 pb-6">
-          <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200" onClick={() => setShowProgressDetails(!showProgressDetails)}>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-1 text-gray-700">
-                <BarChart3 className="h-5 w-5 text-blue-600" />
-                <span className="font-medium">התקדמות ({Math.round(progressPercentage)}%)</span>
+          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl shadow-md border border-gray-200">
+            {/* Header Section */}
+            <div 
+              className="cursor-pointer" 
+              onClick={() => setShowProgressDetails(!showProgressDetails)}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-600 rounded-lg">
+                    <BarChart3 className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg text-gray-800">התקדמות במבחן</h3>
+                    <p className="text-sm text-gray-600">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-blue-600">{Math.round(progressPercentage)}%</div>
+                    <div className="text-xs text-gray-500">הושלם</div>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: showProgressDetails ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronDown className="h-5 w-5 text-gray-400" />
+                  </motion.div>
+                </div>
               </div>
-              <div className="text-sm font-medium text-gray-700">
-                {currentQuestionIndex + 1} / {totalQuestions}
+              
+              {/* Main Progress Bar */}
+              <div className="w-full bg-gray-300 rounded-full h-4 shadow-inner">
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-4 rounded-full transition-all duration-500 ease-out relative overflow-hidden" 
+                  style={{ width: `${progressPercentage}%` }}
+                >
+                  <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
+                </div>
               </div>
             </div>
             
-            <div className="w-full bg-gray-200 rounded-full h-3">
-              <div 
-                className="bg-blue-600 h-3 rounded-full transition-all duration-300" 
-                style={{ width: `${progressPercentage}%` }}
-              ></div>
-            </div>
-            
+            {/* Detailed Statistics */}
             <AnimatePresence>
               {showProgressDetails && (
                 <motion.div 
@@ -481,16 +505,89 @@ const QuestionCardWithStory = ({
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="overflow-hidden mt-4"
+                  className="overflow-hidden mt-6"
                 >
-                  <div className="grid grid-cols-2 gap-4 text-center mt-3">
-                    <div className="bg-blue-50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-blue-600">{answeredQuestionsCount}</div>
-                      <div className="text-sm text-blue-600">ענו</div>
+                  {/* Statistics Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div className="bg-white rounded-lg p-4 border border-blue-200 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <AlertCircle className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-blue-600">{answeredQuestionsCount}</div>
+                          <div className="text-sm text-gray-600">שאלות שנענו</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="bg-green-50 rounded-lg p-3">
-                      <div className="text-2xl font-bold text-green-600">{correctQuestionsCount}</div>
-                      <div className="text-sm text-green-600">נכונות</div>
+                    
+                    <div className="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-green-100 rounded-lg">
+                          <CheckCircle className="h-5 w-5 text-green-600" />
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-green-600">{correctQuestionsCount}</div>
+                          <div className="text-sm text-gray-600">תשובות נכונות</div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="bg-white rounded-lg p-4 border border-red-200 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-red-100 rounded-lg">
+                          <XCircle className="h-5 w-5 text-red-600" />
+                        </div>
+                        <div>
+                          <div className="text-2xl font-bold text-red-600">{answeredQuestionsCount - correctQuestionsCount}</div>
+                          <div className="text-sm text-gray-600">תשובות שגויות</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Accuracy Percentage */}
+                  {answeredQuestionsCount > 0 && (
+                    <div className="bg-white rounded-lg p-4 border border-gray-200">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Trophy className="h-5 w-5 text-amber-500" />
+                          <span className="font-semibold text-gray-700">אחוז הצלחה</span>
+                        </div>
+                        <span className={cn(
+                          "text-2xl font-bold",
+                          (correctQuestionsCount / answeredQuestionsCount) * 100 >= 60 
+                            ? "text-green-600" 
+                            : "text-red-600"
+                        )}>
+                          {Math.round((correctQuestionsCount / answeredQuestionsCount) * 100)}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className={cn(
+                            "h-3 rounded-full transition-all duration-500",
+                            (correctQuestionsCount / answeredQuestionsCount) * 100 >= 60
+                              ? "bg-gradient-to-r from-green-400 to-green-600"
+                              : "bg-gradient-to-r from-red-400 to-red-600"
+                          )}
+                          style={{ width: `${(correctQuestionsCount / answeredQuestionsCount) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Remaining Questions */}
+                  <div className="bg-white rounded-lg p-4 border border-gray-200 mt-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <BookOpen className="h-5 w-5 text-gray-500" />
+                        <span className="font-semibold text-gray-700">שאלות נותרות</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-gray-600">{totalQuestions - (currentQuestionIndex + 1)}</div>
+                        <div className="text-xs text-gray-500">שאלות</div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>

@@ -111,7 +111,7 @@ const FAQSection = () => {
               הצטרפו למאות תלמידים שכבר מתקדמים איתנו לקראת רישיון החשמלאי – בצורה ממוקדת, גמישה ומעודכנת.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button to="/topics" className="bg-blue-600 text-white">
+              <Button to="/simulations-entry" className="bg-blue-600 text-white">
                 להתחלת הלימוד עכשיו
               </Button>
               <Button to="/contact" className="bg-white text-blue-600 border border-blue-200 hover:bg-blue-50">

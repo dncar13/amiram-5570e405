@@ -24,6 +24,11 @@ import UserAccount from "./pages/UserAccount";
 import QuestionsSets from "./pages/QuestionsSets";
 import QuestionsSetPreparation from "./pages/QuestionsSetPreparation";
 import Categories from "./pages/Categories";
+import SimulationsEntry from "./pages/SimulationsEntry";
+import SimulationByType from "./pages/SimulationByType";
+import SimulationByDifficulty from "./pages/SimulationByDifficulty";
+import FullSimulation from "./pages/FullSimulation";
+import SimulationHistory from "./pages/SimulationHistory";
 
 // ScrollToTop component that uses the location to scroll on every navigation
 const ScrollToTop = () => {
@@ -66,10 +71,29 @@ const App = () => (
                 <Route path="/account" element={<UserAccount />} />
                 <Route path="/admin" element={<AdminPanel />} />
                 <Route path="/admin/questions" element={<AdminPanel />} />
-                <Route path="/admin/topics" element={<AdminPanel />} />
-                <Route path="/questions-sets" element={<QuestionsSets />} />
+                <Route path="/admin/topics" element={<AdminPanel />} />                <Route path="/questions-sets" element={<QuestionsSets />} />
                 <Route path="/questions-set/:setId/intro" element={<QuestionsSetPreparation />} />
                 <Route path="/questions-set/:setId" element={<Simulation />} />
+                
+                {/* New Simulations Entry Routes */}
+                <Route path="/simulations-entry" element={<SimulationsEntry />} />
+                <Route path="/simulation/full" element={<FullSimulation />} />
+                <Route path="/simulation/by-type" element={<SimulationsEntry />} />
+                <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
+                <Route path="/simulation/history" element={<SimulationHistory />} />
+                <Route path="/simulation/type/:type" element={<SimulationByType />} />
+                <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
+                
+                {/* Individual simulation routes */}
+                <Route path="/simulation/:type/:difficulty" element={<Simulation />} />
+                <Route path="/simulation/:type/timed" element={<Simulation />} />
+                <Route path="/simulation/:type/practice" element={<Simulation />} />
+                <Route path="/simulation/:type/adaptive" element={<Simulation />} />
+                <Route path="/simulation/difficulty/:level/:type" element={<Simulation />} />
+                <Route path="/simulation/difficulty/:level/timed" element={<Simulation />} />
+                <Route path="/simulation/difficulty/:level/adaptive" element={<Simulation />} />
+                <Route path="/simulation/full/start" element={<Simulation />} />
+                
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

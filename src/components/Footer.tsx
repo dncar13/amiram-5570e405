@@ -54,10 +54,9 @@ const Footer = () => {
                 >
                   דף הבית
                 </Link>
-              </li>
-              <li>
+              </li>              <li>
                 <Link 
-                  to="/topics" 
+                  to="/simulations-entry" 
                   className="text-gray-300 hover:text-white transition-colors"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >

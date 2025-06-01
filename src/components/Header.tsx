@@ -53,11 +53,10 @@ const Header = () => {
           <BookOpen className="h-8 w-8" style={{ color: '#0056b3' }} />
           <span className="text-xl font-bold" style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}>AMIRAM Academy</span>
         </Link>
-        
-        <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
+          <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
           <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>דף הבית</Link>
           <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>אודות</Link>
-          <Link to="/topics" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>הסימולציות שלי</Link>
+          <Link to="/simulations-entry" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>הסימולציות שלי</Link>
           <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>יצירת קשר</Link>
           
           {isAdmin && (
@@ -142,9 +141,8 @@ const Header = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               אודות
-            </Link>
-            <Link 
-              to="/topics" 
+            </Link>            <Link 
+              to="/simulations-entry" 
               className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
               style={{ fontFamily: 'Rubik, sans-serif' }}
               onClick={() => setIsMenuOpen(false)}

@@ -29,10 +29,10 @@ const Premium = () => {
     setIsProcessing(false);
   };
   
-  // Navigate to topics page after successful payment
+  // Navigate to simulations entry page after successful payment
   const handleSuccessfulPayment = () => {
     setIsDialogOpen(false);
-    navigate("/topics");
+    navigate("/simulations-entry");
   };
 
   // Get amount based on selected plan

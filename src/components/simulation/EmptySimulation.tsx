@@ -27,7 +27,7 @@ export const EmptySimulation = ({ isQuestionSet }: EmptySimulationProps) => {
               }
             </p>
             <Button 
-              onClick={() => navigate(isQuestionSet ? "/questions-sets" : "/topics")}
+              onClick={() => navigate(isQuestionSet ? "/questions-sets" : "/simulations-entry")}
               className="bg-electric-blue hover:bg-blue-600"
             >
               {isQuestionSet ? "חזרה לרשימת הקבוצות" : "חזרה לרשימת הנושאים"}

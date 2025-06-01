@@ -1,21 +1,25 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { FileText, ChevronLeft } from "lucide-react";
+import { 
+  FileText, ChevronLeft, BookOpen, Edit3, RotateCcw, Brain, 
+  GraduationCap, ListChecks, Clock, Star, ArrowLeft 
+} from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { allQuestions } from "@/data/questions"; // Import allQuestions from the index
+import { allQuestions } from "@/data/questions";
 
 interface QuestionSet {
   id: number;
-  startQuestion: number;
-  endQuestion: number;
   title: string;
+  description: string;
   filePath: string;
-  questionsCount: number; // Add count of actual questions
+  questionsCount: number;
+  icon: React.ReactNode;
+  filter: (q: any) => boolean;
+  color: string;
 }
 
 export default function QuestionsSets() {
@@ -23,37 +27,97 @@ export default function QuestionsSets() {
   const { currentUser, isPremium } = useAuth();
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
   
-  useEffect(() => {
-    // Create 20 groups of questions with links to the appropriate question files
-    const sets: QuestionSet[] = [];
-    
-    for (let i = 1; i <= 20; i++) {
-      const startQuestion = (i - 1) * 50 + 1;
-      const endQuestion = i * 50;
-      const filePath = `questions${startQuestion}to${endQuestion}`;
-      
-      // Count actual questions in this range from allQuestions
-      const startIndex = startQuestion - 1; // 0-based index
-      const endIndex = endQuestion - 1;     // 0-based index
-      const questionsInRange = allQuestions ? 
-        allQuestions.filter(q => q.id >= startQuestion && q.id <= endQuestion).length : 0;
-      
-      sets.push({
-        id: i,
-        startQuestion,
-        endQuestion,
-        title: `שאלות ${startQuestion} עד ${endQuestion}`,
-        filePath,
-        questionsCount: questionsInRange
-      });
+  // הגדרת קבוצות השאלות לפי סוג
+  const predefinedQuestionSets: Omit<QuestionSet, 'questionsCount'>[] = [
+    {
+      id: 1,
+      title: "שאלות הבנת הנקרא",
+      description: "שאלות על טקסטים וקטעי קריאה",
+      filePath: "reading-comprehension",
+      icon: <BookOpen className="h-6 w-6" />,
+      filter: (q) => q.questionType === 'reading-comprehension',
+      color: "border-t-blue-500"
+    },
+    {
+      id: 2,
+      title: "השלמת משפטים",
+      description: "בחירת המילה המתאימה להשלמת המשפט",
+      filePath: "sentence-completion", 
+      icon: <Edit3 className="h-6 w-6" />,
+      filter: (q) => q.questionType === 'sentence-completion',
+      color: "border-t-green-500"
+    },
+    {
+      id: 3,
+      title: "שאלות ניסוח מחדש",
+      description: "מציאת הביטוי השווה במשמעותו",
+      filePath: "restatement",
+      icon: <RotateCcw className="h-6 w-6" />,
+      filter: (q) => q.questionType === 'restatement',
+      color: "border-t-purple-500"
+    },
+    {
+      id: 4,
+      title: "כל השאלות (1-50)",
+      description: "תרגול מעורב מכל הסוגים",
+      filePath: "questions1to50",
+      icon: <FileText className="h-6 w-6" />,
+      filter: (q) => q.id >= 1 && q.id <= 50,
+      color: "border-t-electric-blue"
+    },
+    {
+      id: 5,
+      title: "קטע מורכב - Gig Economy",
+      description: "שאלות הבנת הנקרא מתקדמות",
+      filePath: "questions51to100",
+      icon: <BookOpen className="h-6 w-6" />,
+      filter: (q) => q.id >= 51 && q.id <= 100 && q.passageTitle === "The Rise of the Gig Economy",
+      color: "border-t-orange-500"
     }
+  ];
+
+  useEffect(() => {
+    // חישוב כמות השאלות לכל קבוצה
+    const sets: QuestionSet[] = predefinedQuestionSets.map((set) => {
+      const questionsInRange = allQuestions ? 
+        allQuestions.filter(set.filter).length : 0;
+      
+      return {
+        ...set,
+        questionsCount: questionsInRange
+      };
+    });
     
     setQuestionSets(sets);
   }, []);
 
-  // Function to navigate to a specific question set preparation page
+  // פונקציה לניווט לעמוד הכנה של קבוצת שאלות מסוימת
   const handleStartQuestionSet = (setId: number) => {
     navigate(`/questions-set/${setId}/intro`);
+  };
+
+  // פונקציה לקבלת צבע הרקע של האייקון
+  const getIconBgColor = (color: string) => {
+    switch(color) {
+      case "border-t-blue-500": return "bg-blue-100";
+      case "border-t-green-500": return "bg-green-100";
+      case "border-t-purple-500": return "bg-purple-100";
+      case "border-t-electric-blue": return "bg-electric-blue/10";
+      case "border-t-orange-500": return "bg-orange-100";
+      default: return "bg-gray-100";
+    }
+  };
+
+  // פונקציה לקבלת צבע הטקסט של האייקון
+  const getIconTextColor = (color: string) => {
+    switch(color) {
+      case "border-t-blue-500": return "text-blue-600";
+      case "border-t-green-500": return "text-green-600";
+      case "border-t-purple-500": return "text-purple-600";
+      case "border-t-electric-blue": return "text-electric-blue";
+      case "border-t-orange-500": return "text-orange-600";
+      default: return "text-gray-600";
+    }
   };
 
   return (
@@ -73,19 +137,23 @@ export default function QuestionsSets() {
         </div>
 
         <div className="mb-6 text-center">
-          <p className="text-electric-slate mb-2">בחר קבוצת שאלות מתוך 1000 השאלות במאגר</p>
-          <p className="text-sm text-electric-slate">כל קבוצה מכילה עד 50 שאלות</p>
+          <p className="text-electric-slate mb-2">בחר סוג שאלות לתרגול</p>
+          <p className="text-sm text-electric-slate">
+            כרגע זמינות {allQuestions?.length || 0} שאלות במאגר
+          </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
           {questionSets.map((set) => (
             <Card 
               key={set.id}
-              className="bg-white p-4 shadow-md border-t-4 border-t-electric-blue rounded-lg flex flex-col hover:shadow-lg transition-all"
+              className={`bg-white p-6 shadow-md ${set.color} border-t-4 rounded-lg flex flex-col hover:shadow-lg transition-all`}
             >
               <div className="flex items-center justify-center mb-4">
-                <span className="p-3 bg-electric-blue/10 rounded-full">
-                  <FileText className="h-6 w-6 text-electric-blue" />
+                <span className={`p-3 ${getIconBgColor(set.color)} rounded-full`}>
+                  <div className={getIconTextColor(set.color)}>
+                    {set.icon}
+                  </div>
                 </span>
               </div>
               
@@ -93,22 +161,24 @@ export default function QuestionsSets() {
                 {set.title}
               </h3>
               
-              <p className="text-electric-slate text-sm mb-4 text-center">
-                קבוצה {set.id} מתוך 20
-                {set.questionsCount > 0 && (
-                  <span className="block mt-1 font-medium text-electric-blue">
-                    {set.questionsCount} שאלות זמינות
-                  </span>
-                )}
-                {set.questionsCount === 0 && (
-                  <span className="block mt-1 text-gray-400">
-                    אין שאלות זמינות בקבוצה זו
-                  </span>
-                )}
+              <p className="text-electric-slate text-sm mb-4 text-center min-h-[3rem] flex items-center justify-center">
+                {set.description}
               </p>
               
+              <div className="text-center mb-4">
+                {set.questionsCount > 0 ? (
+                  <span className="inline-block px-3 py-1 bg-electric-blue/10 text-electric-blue rounded-full text-sm font-medium">
+                    {set.questionsCount} שאלות זמינות
+                  </span>
+                ) : (
+                  <span className="inline-block px-3 py-1 bg-gray-100 text-gray-400 rounded-full text-sm">
+                    אין שאלות זמינות
+                  </span>
+                )}
+              </div>
+              
               <Button 
-                className="mt-auto w-full py-2 text-base font-medium bg-electric-blue hover:bg-blue-600"
+                className="mt-auto w-full py-2 text-base font-medium bg-electric-blue hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-500"
                 onClick={() => handleStartQuestionSet(set.id)}
                 disabled={set.questionsCount === 0}
               >
@@ -116,6 +186,13 @@ export default function QuestionsSets() {
               </Button>
             </Card>
           ))}
+        </div>
+
+        {/* הוספת הודעה עבור המשתמש על התוכניות העתידיות */}
+        <div className="mt-8 p-4 bg-blue-50 rounded-lg text-center">
+          <p className="text-blue-700 text-sm">
+            🚀 בקרוב יתווספו עוד סוגי שאלות וקטעי קריאה נוספים למאגר
+          </p>
         </div>
       </div>
       <Footer />

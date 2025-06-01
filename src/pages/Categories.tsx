@@ -80,12 +80,11 @@ const Categories = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              
-              <div className="flex justify-center mt-6">
+                <div className="flex justify-center mt-6">
                 <Button 
                   variant="outline" 
                   className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                  onClick={() => navigate("/topics")}
+                  onClick={() => navigate("/simulations-entry")}
                 >
                   <ArrowRight className="ml-2 h-4 w-4" /> חזרה למסך הבחירה
                 </Button>
