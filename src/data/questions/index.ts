@@ -47,9 +47,7 @@ export const getQuestionById = (id: number): Question | undefined => {
  * מחזיר שאלות לפי סוג שאלה
  */
 export const getQuestionsByType = (type: string): Question[] => {
-  return allQuestions.filter(question => 
-    question.type === type || question.questionType === type
-  );
+  return allQuestions.filter(question => question.type === type);
 };
 
 /**

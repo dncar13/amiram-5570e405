@@ -63,6 +63,22 @@ export const getQuestionsBySet = (setId: number): Question[] => {
 };
 
 /**
+ * Update a question
+ */
+export const updateQuestion = (updatedQuestion: Question): void => {
+  const allQuestions = getQuestions();
+  const index = allQuestions.findIndex(q => q.id === updatedQuestion.id);
+  
+  if (index !== -1) {
+    allQuestions[index] = updatedQuestion;
+    saveQuestions(allQuestions, true);
+    console.log(`Updated question ${updatedQuestion.id}`);
+  } else {
+    console.error(`Question with id ${updatedQuestion.id} not found`);
+  }
+};
+
+/**
  * Save questions to storage
  */
 export const saveQuestionsToStorage = (questions: Question[]): void => {
@@ -144,3 +160,8 @@ export const resetSimulationProgress = (topicId: number): void => {
     console.error(`Error resetting simulation progress for topic ${topicId}:`, error);
   }
 };
+
+/**
+ * Reset simulation - alias for resetSimulationProgress
+ */
+export const resetSimulation = resetSimulationProgress;

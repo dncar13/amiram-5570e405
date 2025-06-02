@@ -1,4 +1,3 @@
-
 import { Question, QuestionSet } from '../types/questionTypes';
 
 // Questions following the new structure from your example
@@ -34,8 +33,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 60
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "restatement"
+      "categoryId": 1
     },
     {
       "id": 12,
@@ -58,8 +56,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 60
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "restatement"
+      "categoryId": 1
     },
     {
       "id": 13,
@@ -82,8 +79,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 55
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "restatement"
+      "categoryId": 1
     },
     {
       "id": 14,
@@ -106,8 +102,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 50
       },
       "topicId": 3,
-      "categoryId": 2,
-      "questionType": "sentence-completion"
+      "categoryId": 2
     },
     {
       "id": 15,
@@ -130,8 +125,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 45
       },
       "topicId": 3,
-      "categoryId": 2,
-      "questionType": "sentence-completion"
+      "categoryId": 2
     },
     {
       "id": 16,
@@ -154,8 +148,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 55
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "reading-comprehension"
+      "categoryId": 1
     },
     {
       "id": 17,
@@ -178,8 +171,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 58
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "restatement"
+      "categoryId": 1
     },
     {
       "id": 18,
@@ -202,8 +194,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 48
       },
       "topicId": 3,
-      "categoryId": 2,
-      "questionType": "sentence-completion"
+      "categoryId": 2
     },
     {
       "id": 19,
@@ -226,8 +217,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 60
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "restatement"
+      "categoryId": 1
     },
     {
       "id": 20,
@@ -250,8 +240,7 @@ export const newQuestionSet: QuestionSet = {
         "estimatedTime": 52
       },
       "topicId": 1,
-      "categoryId": 1,
-      "questionType": "reading-comprehension"
+      "categoryId": 1
     }
   ]
 };
