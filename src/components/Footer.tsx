@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { BookOpen, Mail, Phone, ExternalLink } from "lucide-react";
+import { BookOpen, ExternalLink } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,36 +8,7 @@ const Footer = () => {
   return (
     <footer style={{ backgroundColor: '#343a40' }} className="text-white pt-12 pb-6">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <div className="flex items-center space-x-2 space-x-reverse mb-4">
-              <BookOpen className="h-8 w-8" style={{ color: '#ff7f0e' }} />
-              <span 
-                className="text-xl font-bold"
-                style={{ fontFamily: 'Rubik, sans-serif' }}
-              >
-                AMIRAM Academy
-              </span>
-            </div>
-            <p 
-              className="text-gray-300 mb-4"
-              style={{ 
-                fontFamily: 'Rubik, sans-serif',
-                lineHeight: '1.6'
-              }}
-            >
-              פלטפורמה מתקדמת לתרגול והכנה למבחן אמירם - מבחן מיון רמת אנגלית לסטודנטים.
-            </p>
-            <div className="flex items-center space-x-4 space-x-reverse">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Mail className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Phone className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
-          
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 
               className="text-lg font-semibold mb-4 text-white"
@@ -54,7 +25,8 @@ const Footer = () => {
                 >
                   דף הבית
                 </Link>
-              </li>              <li>
+              </li>
+              <li>
                 <Link 
                   to="/simulations-entry" 
                   className="text-gray-300 hover:text-white transition-colors"
