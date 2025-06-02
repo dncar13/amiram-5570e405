@@ -104,6 +104,7 @@ export const useSimulationData = (
           setQuestionCount(setQuestions.length);
           
           console.log(`Found ${setQuestions.length} questions for set ${setId}`);
+          console.log("First question in set:", setQuestions[0]);
           
           if (setQuestions.length === 0) {
             setError(`לא נמצאו שאלות לקבוצת שאלות ${setId}`);
@@ -124,6 +125,8 @@ export const useSimulationData = (
       
       // Regular topic behavior
       if (!topic) {
+        console.error("Topic not found for topicId:", topicId);
+        console.log("Available topics:", topicsData.map(t => ({ id: t.id, title: t.title })));
         setError("הנושא לא נמצא");
         return [];
       }
@@ -139,9 +142,11 @@ export const useSimulationData = (
       // Normal filtering by topic ID
       const filteredQuestions = getQuestionsByTopic(topic.id);
       console.log(`Topic ${topic.id}: found ${filteredQuestions.length} questions`);
+      console.log("First question in topic:", filteredQuestions[0]);
       setQuestionCount(filteredQuestions.length);
       
       if (filteredQuestions.length === 0) {
+        console.error(`No questions found for topic ${topic.id}. Available topic IDs in questions:`, getAllQuestions().map(q => q.topicId).filter((id, index, arr) => arr.indexOf(id) === index));
         setError(`לא נמצאו שאלות לנושא ${topic.title || topic.id}`);
         toast({
           title: "אין שאלות לנושא זה",

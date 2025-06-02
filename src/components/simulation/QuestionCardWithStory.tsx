@@ -84,6 +84,7 @@ const QuestionCardWithStory = ({
 
   // If no question is available, show a message
   if (!currentQuestion) {
+    console.error("QuestionCardWithStory: No current question provided");
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -126,6 +127,18 @@ const QuestionCardWithStory = ({
         </Card>
       </motion.div>
     );
+  }
+
+  // וודא שיש טקסט שאלה - השתמש בשדה 'text'
+  const questionText = currentQuestion.text || '';
+  
+  if (!questionText) {
+    console.error("QuestionCardWithStory: No question text found", currentQuestion);
+  }
+
+  // וודא שיש אפשרויות תשובה
+  if (!currentQuestion.options || currentQuestion.options.length === 0) {
+    console.error("QuestionCardWithStory: No options found", currentQuestion);
   }
 
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
@@ -253,18 +266,20 @@ const QuestionCardWithStory = ({
         </div>
 
         <CardContent className="p-6">
-          {/* Reading Comprehension Layout - Professional side-by-side */}
+          {/* Layout depends on question type */}
           <div className="space-y-8">
-            {/* Reading Passage - Always visible and prominent */}
-            <div className="w-full">
-              {renderReadingPassage()}
-            </div>
+            {/* Reading Passage - Only show if it exists */}
+            {hasReadingPassage() && (
+              <div className="w-full">
+                {renderReadingPassage()}
+              </div>
+            )}
 
             {/* Question and Options */}
             <div className="w-full">
               <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                 <h3 className="text-2xl font-bold mb-6 text-gray-900 leading-relaxed">
-                  {currentQuestion.text}
+                  {questionText}
                 </h3>
                 
                 {currentQuestion.image && (
@@ -275,74 +290,76 @@ const QuestionCardWithStory = ({
                   />
                 )}
                 
-                <div className="space-y-4 mb-6">
-                  {currentQuestion.options.map((option, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <button 
-                        className={cn(
-                          "w-full text-right px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
-                          selectedAnswerIndex === index 
-                            ? "border-blue-500 bg-blue-50 shadow-md" 
-                            : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                            "border-green-500 bg-green-50 shadow-md",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                            "border-red-500 bg-red-50 shadow-md",
-                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                            selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
-                        )}
-                        onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                        disabled={isAnswerSubmitted}
+                {currentQuestion.options && currentQuestion.options.length > 0 && (
+                  <div className="space-y-4 mb-6">
+                    {currentQuestion.options.map((option, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
                       >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4 flex-1">
-                            <div className={cn(
-                              "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
-                              selectedAnswerIndex === index 
-                                ? "bg-blue-500 border-blue-500 text-white" 
-                                : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                                "bg-green-500 border-green-500 text-white",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                                "bg-red-500 border-red-500 text-white",
-                              isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                                "bg-green-500 border-green-500 text-white"
-                            )}>
-                              {index + 1}
-                            </div>
-                            <span className={cn(
-                              "flex-grow leading-relaxed text-lg font-medium text-right",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
-                              isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
-                            )}>
-                              {option}
-                            </span>
-                          </div>
-                          
-                          {isAnswerSubmitted && showCorrectAnswer && (
-                            <div className="flex-shrink-0 ml-4">
-                              {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                                <CheckCircle className="h-7 w-7 text-green-600" />
-                              )}
-                              {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                                <XCircle className="h-7 w-7 text-red-600" />
-                              )}
-                              {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                                <CheckCircle className="h-7 w-7 text-green-600" />
-                              )}
-                            </div>
+                        <button 
+                          className={cn(
+                            "w-full text-right px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
+                            selectedAnswerIndex === index 
+                              ? "border-blue-500 bg-blue-50 shadow-md" 
+                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
+                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
+                              "border-green-500 bg-green-50 shadow-md",
+                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
+                              "border-red-500 bg-red-50 shadow-md",
+                            isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
+                              selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
                           )}
-                        </div>
-                      </button>
-                    </motion.div>
-                  ))}
-                </div>
+                          onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
+                          disabled={isAnswerSubmitted}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4 flex-1">
+                              <div className={cn(
+                                "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
+                                selectedAnswerIndex === index 
+                                  ? "bg-blue-500 border-blue-500 text-white" 
+                                  : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
+                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
+                                  "bg-green-500 border-green-500 text-white",
+                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
+                                  "bg-red-500 border-red-500 text-white",
+                                isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
+                                  "bg-green-500 border-green-500 text-white"
+                              )}>
+                                {index + 1}
+                              </div>
+                              <span className={cn(
+                                "flex-grow leading-relaxed text-lg font-medium text-right",
+                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
+                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
+                                isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
+                              )}>
+                                {option}
+                              </span>
+                            </div>
+                            
+                            {isAnswerSubmitted && showCorrectAnswer && (
+                              <div className="flex-shrink-0 ml-4">
+                                {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
+                                  <CheckCircle className="h-7 w-7 text-green-600" />
+                                )}
+                                {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
+                                  <XCircle className="h-7 w-7 text-red-600" />
+                                )}
+                                {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
+                                  <CheckCircle className="h-7 w-7 text-green-600" />
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </button>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
 
                 {/* Hint/Tip Button - show before submitting answer */}
                 {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (

@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -95,6 +96,7 @@ const QuestionCard = ({
   };
 
   if (!currentQuestion) {
+    console.error("QuestionCard: No current question provided");
     return (
       <Card className="shadow-md border-t-4 border-t-red-500 overflow-hidden transition-all animate-fade-in max-w-3xl mx-auto">
         <CardHeader className="pb-2 bg-red-50">
@@ -118,10 +120,32 @@ const QuestionCard = ({
     );
   }
 
-  // Use the 'text' field for question text
+  // וודא שיש טקסט שאלה - השתמש בשדה 'text'
   const questionText = currentQuestion.text || '';
+  
+  if (!questionText) {
+    console.error("QuestionCard: No question text found", currentQuestion);
+  }
 
-  // Support both new 'question' field and legacy 'text' field
+  // וודא שיש אפשרויות תשובה
+  if (!currentQuestion.options || currentQuestion.options.length === 0) {
+    console.error("QuestionCard: No options found", currentQuestion);
+    return (
+      <Card className="shadow-md border-t-4 border-t-yellow-500 overflow-hidden transition-all animate-fade-in max-w-3xl mx-auto">
+        <CardHeader className="pb-2 bg-yellow-50">
+          <CardTitle className="text-lg text-yellow-700">
+            שאלה לא שלמה
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="pt-4">
+          <p className="text-gray-700">
+            השאלה לא מכילה אפשרויות תשובה. אנא פנה למנהל המערכת.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const renderProgressBar = () => {
     const percentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
     return (
@@ -134,7 +158,6 @@ const QuestionCard = ({
     );
   };
 
-  // Display metadata if available (from new question format)
   const renderMetadata = () => {
     if (!currentQuestion.metadata) return null;
     
@@ -201,7 +224,7 @@ const QuestionCard = ({
         )}
         
         <div className="space-y-3" role="radiogroup" aria-labelledby="question-options">
-          {currentQuestion.options && currentQuestion.options.map((option, index) => {
+          {currentQuestion.options.map((option, index) => {
             const isCorrectAnswer = index === currentQuestion.correctAnswer;
             const isSelectedAnswer = selectedAnswerIndex === index;
             const showCorrectAnswer = isAnswerSubmitted && (!examMode || examMode && !showAnswersImmediately === false);

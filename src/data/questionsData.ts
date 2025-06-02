@@ -2,27 +2,44 @@
 import { Question } from './types/questionTypes';
 import { allQuestions } from './questions/index';
 
-// Re-export the Question type (using 'export type' for TypeScript isolatedModules)
+// ייצוא מחדש של סוג השאלה
 export type { Question };
 
+// השתמש ישירות ב-allQuestions מהמקור, ללא יצירת עותק נוסף
+export const questionsData: Question[] = allQuestions;
+
+/**
+ * מחזיר שאלות לפי נושא מסוים
+ */
 export const getQuestionsByTopic = (topicId: number): Question[] => {
-  return questionsData.filter(question => question.topicId === topicId);
+  console.log(`Looking for questions with topicId: ${topicId}`);
+  console.log(`Available questions: ${questionsData.length}`);
+  
+  const filtered = questionsData.filter(question => {
+    console.log(`Question ${question.id}: topicId=${question.topicId}, type=${question.type}`);
+    return question.topicId === topicId;
+  });
+  
+  console.log(`Found ${filtered.length} questions for topic ${topicId}`);
+  return filtered;
 };
 
-// New function to get questions by subtopic ID
+/**
+ * מחזיר שאלות לפי תת-נושא
+ */
 export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
   return questionsData.filter(question => question.subtopicId === subtopicId);
 };
 
 /**
- * Returns questions by passage title
+ * מחזיר שאלות לפי כותרת קטע
  */
 export const getQuestionsByPassage = (passageTitle: string): Question[] => {
   return questionsData.filter(question => question.passageTitle === passageTitle);
 };
 
 /**
- * Returns all unique passages in the system
+ * מחזיר את כל הקטעים הייחודיים במערכת
  */
 export const getAllPassages = (): string[] => {
   const passages = questionsData
@@ -33,25 +50,31 @@ export const getAllPassages = (): string[] => {
 };
 
 /**
- * Returns questions with line numbers
+ * מחזיר שאלות עם מספור שורות
  */
 export const getQuestionsWithLineNumbers = (): Question[] => {
   return questionsData.filter(question => question.lineNumbers === true);
 };
 
 /**
- * Returns questions by type - using the unified 'type' property
+ * מחזיר שאלות לפי סוג - שימוש בשדה 'type' המאוחד
  */
 export const getQuestionsByType = (type: string): Question[] => {
-  return questionsData.filter(question => question.type === type);
+  console.log(`Looking for questions with type: ${type}`);
+  console.log(`Available questions: ${questionsData.length}`);
+  
+  const filtered = questionsData.filter(question => {
+    console.log(`Question ${question.id}: type=${question.type}`);
+    return question.type === type;
+  });
+  
+  console.log(`Found ${filtered.length} questions for type ${type}`);
+  return filtered;
 };
 
 /**
- * Returns questions by difficulty
+ * מחזיר שאלות לפי רמת קושי
  */
 export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
   return questionsData.filter(question => question.difficulty === difficulty);
 };
-
-// Include all questions from the updated index
-export const questionsData: Question[] = allQuestions;
