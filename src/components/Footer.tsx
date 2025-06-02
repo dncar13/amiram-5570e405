@@ -1,6 +1,7 @@
 
+
 import { Link } from "react-router-dom";
-import { BookOpen, Mail, Phone, ExternalLink } from "lucide-react";
+import { ExternalLink, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -9,35 +10,37 @@ const Footer = () => {
     <footer style={{ backgroundColor: '#343a40' }} className="text-white pt-12 pb-6">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Contact Section */}
           <div>
-            <div className="flex items-center space-x-2 space-x-reverse mb-4">
-              <BookOpen className="h-8 w-8" style={{ color: '#ff7f0e' }} />
-              <span 
-                className="text-xl font-bold"
-                style={{ fontFamily: 'Rubik, sans-serif' }}
-              >
-                AMIRAM Academy
-              </span>
-            </div>
-            <p 
-              className="text-gray-300 mb-4"
-              style={{ 
-                fontFamily: 'Rubik, sans-serif',
-                lineHeight: '1.6'
-              }}
+            <h3 
+              className="text-lg font-semibold mb-4 text-white"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
             >
-              פלטפורמה מתקדמת לתרגול והכנה למבחן אמירם - מבחן מיון רמת אנגלית לסטודנטים.
-            </p>
-            <div className="flex items-center space-x-4 space-x-reverse">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Mail className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
-                <Phone className="h-5 w-5" />
-              </a>
+              צרו קשר
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2 space-x-reverse">
+                <Mail className="h-4 w-4 text-gray-300" />
+                <span 
+                  className="text-gray-300 text-sm"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  info@amiram-academy.co.il
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 space-x-reverse">
+                <Phone className="h-4 w-4 text-gray-300" />
+                <span 
+                  className="text-gray-300 text-sm"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  03-1234567
+                </span>
+              </div>
             </div>
           </div>
-          
+
+          {/* Quick Navigation */}
           <div>
             <h3 
               className="text-lg font-semibold mb-4 text-white"
@@ -54,7 +57,8 @@ const Footer = () => {
                 >
                   דף הבית
                 </Link>
-              </li>              <li>
+              </li>
+              <li>
                 <Link 
                   to="/simulations-entry" 
                   className="text-gray-300 hover:text-white transition-colors"
@@ -84,6 +88,7 @@ const Footer = () => {
             </ul>
           </div>
           
+          {/* Popular Topics */}
           <div>
             <h3 
               className="text-lg font-semibold mb-4 text-white"
@@ -147,3 +152,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
