@@ -1,52 +1,86 @@
 
+import { Question } from "@/data/types/questionTypes";
+import { allQuestions } from "@/data/questions";
+
 /**
- * DEPRECATED FILE - Use the new API from '@/services/questions' instead
- * This file is kept for backwards compatibility but will be removed in the future
+ * Get all questions from the system
  */
-
-import { 
-  getAllQuestions,
-  getQuestionById,
-  updateQuestion,
-  addQuestion,
-  deleteQuestion,
-  saveChanges,
-  resetChanges,
-  refreshQuestionsFromStorage
-} from './questions';
-
-import {
-  getSimulationProgress,
-  saveSimulationProgress,
-  resetSimulation,
-  getProgressKey,
-  // Import SimulationProgress as a type explicitly
-  type SimulationProgress
-} from './questions/progress';
-
-// Import questionsData to re-export it
-import { questionsData } from "@/data/questionsData";
-
-// Import the new reload function from storage
-import { reloadQuestionsFromSource } from './questions/storage';
-
-// Re-export all service functions from the new API
-export {
-  getAllQuestions,
-  getQuestionById,
-  updateQuestion,
-  addQuestion,
-  deleteQuestion,
-  saveChanges,
-  resetChanges,
-  refreshQuestionsFromStorage,
-  reloadQuestionsFromSource, // Export the new function
-  getSimulationProgress,
-  saveSimulationProgress,
-  resetSimulation,
-  getProgressKey,
-  questionsData // Re-export questionsData for backward compatibility
+export const getAllQuestions = (): Question[] => {
+  return allQuestions;
 };
 
-// Re-export the SimulationProgress type properly
-export type { SimulationProgress };
+/**
+ * Get questions by topic ID
+ */
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  return allQuestions.filter(question => question.topicId === topicId);
+};
+
+/**
+ * Get questions by question type
+ */
+export const getQuestionsByType = (type: string): Question[] => {
+  return allQuestions.filter(question => 
+    question.type === type || question.questionType === type
+  );
+};
+
+/**
+ * Get questions by difficulty level
+ */
+export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
+  return allQuestions.filter(question => question.difficulty === difficulty);
+};
+
+/**
+ * Get questions by both type and difficulty
+ */
+export const getQuestionsByTypeAndDifficulty = (
+  type: string, 
+  difficulty: string
+): Question[] => {
+  return allQuestions.filter(question => 
+    (question.type === type || question.questionType === type) && 
+    question.difficulty === difficulty
+  );
+};
+
+/**
+ * Get a random set of questions
+ */
+export const getRandomQuestions = (count: number, filters?: {
+  type?: string;
+  difficulty?: string;
+  topicId?: number;
+}): Question[] => {
+  let filteredQuestions = allQuestions;
+  
+  if (filters?.type) {
+    filteredQuestions = filteredQuestions.filter(q => 
+      q.type === filters.type || q.questionType === filters.type
+    );
+  }
+  
+  if (filters?.difficulty) {
+    filteredQuestions = filteredQuestions.filter(q => 
+      q.difficulty === filters.difficulty
+    );
+  }
+  
+  if (filters?.topicId) {
+    filteredQuestions = filteredQuestions.filter(q => 
+      q.topicId === filters.topicId
+    );
+  }
+  
+  // Shuffle and take the requested number
+  const shuffled = [...filteredQuestions].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+};
+
+/**
+ * Get question by ID
+ */
+export const getQuestionById = (id: number): Question | undefined => {
+  return allQuestions.find(question => question.id === id);
+};

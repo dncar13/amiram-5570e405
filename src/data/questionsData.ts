@@ -1,7 +1,6 @@
 
 import { Question } from './types/questionTypes';
-import { questions1to50 } from './questions/questions1to50';
-import { questions51to100 } from './questions/questions51to100';
+import { allQuestions } from './questions/index';
 
 // Re-export the Question type (using 'export type' for TypeScript isolatedModules)
 export type { Question };
@@ -12,10 +11,7 @@ export const getQuestionsByTopic = (topicId: number): Question[] => {
 
 // New function to get questions by subtopic ID
 export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
-  // For now, assuming subtopicId might be stored in a future field
-  // This will need to be updated when subtopic information is added to questions
-  // Currently we'll return an empty array since subtopics aren't yet implemented in the questions data
-  return [];
+  return questionsData.filter(question => question.subtopicId === subtopicId);
 };
 
 /**
@@ -43,8 +39,21 @@ export const getQuestionsWithLineNumbers = (): Question[] => {
   return questionsData.filter(question => question.lineNumbers === true);
 };
 
-// Include both the original 10 questions and the new extended reading questions
-export const questionsData: Question[] = [
-  ...questions1to50,
-  ...questions51to100
-];
+/**
+ * Returns questions by type
+ */
+export const getQuestionsByType = (type: string): Question[] => {
+  return questionsData.filter(question => 
+    question.type === type || question.questionType === type
+  );
+};
+
+/**
+ * Returns questions by difficulty
+ */
+export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
+  return questionsData.filter(question => question.difficulty === difficulty);
+};
+
+// Include all questions from the updated index
+export const questionsData: Question[] = allQuestions;

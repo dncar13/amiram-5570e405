@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -28,13 +27,13 @@ export const initializeQuestions = (): Question[] => {
     } else {
       cachedQuestions = [...allQuestions];
       localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-      console.log("No saved questions found, using defaults and saving them");
+      console.log("No saved questions found, using defaults and saving them:", allQuestions.length);
     }
   } catch (error) {
     console.error("Error initializing questions:", error);
     cachedQuestions = [...allQuestions];
     localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-    console.log("Using default questions due to error and saving them");
+    console.log("Using default questions due to error and saving them:", allQuestions.length);
   }
   
   isInitialized = true;
@@ -89,17 +88,10 @@ export const saveQuestions = (questions: Question[], immediate = false): void =>
  */
 export const refreshQuestionsFromStorage = (): Question[] => {
   try {
-    // First try to load from localStorage
-    const savedQuestions = localStorage.getItem(QUESTIONS_STORAGE_KEY);
-    if (savedQuestions) {
-      cachedQuestions = JSON.parse(savedQuestions);
-      console.log("Force refreshed questions from localStorage:", cachedQuestions.length);
-    } else {
-      // If no saved questions exist, always reload from the source files
-      cachedQuestions = [...allQuestions];
-      localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-      console.log("No saved questions in localStorage, reloading from source files:", allQuestions.length);
-    }
+    // Always reload from the source files to get the latest questions
+    cachedQuestions = [...allQuestions];
+    localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
+    console.log("Force refreshed questions from source files:", allQuestions.length);
   } catch (error) {
     console.error("Error force refreshing questions:", error);
     // On error, reload from the source files

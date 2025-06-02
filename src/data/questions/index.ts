@@ -4,11 +4,13 @@
 import { Question } from '../types/questionTypes';
 import { questions1to50 } from './questions1to50';
 import { questions51to100 } from './questions51to100';
+import { convertedQuestions } from './newQuestions';
 
-// מערך המאגד את כל השאלות מכל הקבצים
+// מערך המאגד את כל השאלות מכל הקבצים - מוסיף את השאלות החדשות
 export const allQuestions: Question[] = [
   ...questions1to50,
-  ...questions51to100
+  ...questions51to100,
+  ...convertedQuestions
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -39,6 +41,22 @@ export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
  */
 export const getQuestionById = (id: number): Question | undefined => {
   return allQuestions.find(question => question.id === id);
+};
+
+/**
+ * מחזיר שאלות לפי סוג שאלה
+ */
+export const getQuestionsByType = (type: string): Question[] => {
+  return allQuestions.filter(question => 
+    question.type === type || question.questionType === type
+  );
+};
+
+/**
+ * מחזיר שאלות לפי רמת קושי
+ */
+export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
+  return allQuestions.filter(question => question.difficulty === difficulty);
 };
 
 /**

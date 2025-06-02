@@ -1,32 +1,40 @@
 
 import { LucideIcon } from 'lucide-react';
 
-// Define Question type for the application
+// Define Question type for the application - updated to match new structure
 export interface Question {
   id: number;
-  text: string;
+  type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive';
+  question: string; // Changed from 'text' to 'question'
   options: string[];
   correctAnswer: number;
   explanation: string;
-  topicId: number;
-  image?: string; // Image for the question itself
-  explanationImage?: string; // Image for the explanation
-  explanationVideo?: string; // Video for the explanation
-  subtopicId?: number;
-  categoryId?: number;
-  difficulty?: 'easy' | 'medium' | 'hard';
+  difficulty: 'easy' | 'medium' | 'hard';
   tags?: string[];
-  questionType?: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive';
-  passageText?: string; // For reading comprehension questions - the passage to read
-  answers?: string[]; // Alternative for options
-  flagged?: boolean; // Whether the question is flagged
-  verified?: boolean; // Whether the question is verified
-  tips?: string; // Hint/tip text for the question
+  createdAt: string;
+  metadata: {
+    topic?: string;
+    wordCount: number;
+    estimatedTime: number;
+  };
   
-  // New fields for reading passages with line numbers
-  passageTitle?: string;          // Title of the passage
-  lineNumbers?: boolean;          // Whether to display line numbers
-  passageWithLines?: PassageLine[]; // The passage divided into numbered lines
+  // Legacy fields for backward compatibility
+  text?: string;
+  topicId?: number;
+  categoryId?: number;
+  subtopicId?: number;
+  image?: string;
+  explanationImage?: string;
+  explanationVideo?: string;
+  passageText?: string;
+  answers?: string[];
+  flagged?: boolean;
+  verified?: boolean;
+  tips?: string;
+  passageTitle?: string;
+  lineNumbers?: boolean;
+  passageWithLines?: PassageLine[];
+  questionType?: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive';
 }
 
 // New interface for numbered lines
@@ -45,5 +53,19 @@ export interface ReadingPassage {
   topic: string;
   difficulty: 'easy' | 'medium' | 'hard';
   lineCount: number;
-  questions: number[]; // Question IDs belonging to this passage
+  questions: number[];
+}
+
+// New structure for question sets with metadata
+export interface QuestionSet {
+  metadata: {
+    generated: string;
+    type: string;
+    difficulty: string;
+    count: number;
+    topic: string;
+    tags: string[];
+    model: string;
+  };
+  questions: Question[];
 }

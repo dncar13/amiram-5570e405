@@ -84,7 +84,6 @@ const QuestionCard = ({
 
   const handleSaveStatusChange = () => {
     if (!isPremium) {
-      // Removed toast notification
       return;
     }
     
@@ -120,6 +119,9 @@ const QuestionCard = ({
     );
   }
 
+  // Support both new 'question' field and legacy 'text' field
+  const questionText = currentQuestion.question || currentQuestion.text || '';
+
   const renderProgressBar = () => {
     const percentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
     return (
@@ -128,6 +130,25 @@ const QuestionCard = ({
           className="bg-electric-blue h-full rounded-full transition-all duration-300 ease-in-out"
           style={{ width: `${percentage}%` }}
         />
+      </div>
+    );
+  };
+
+  // Display metadata if available (from new question format)
+  const renderMetadata = () => {
+    if (!currentQuestion.metadata) return null;
+    
+    return (
+      <div className="text-xs text-gray-500 mb-2 flex gap-4">
+        {currentQuestion.metadata.estimatedTime && (
+          <span>זמן משוער: {currentQuestion.metadata.estimatedTime} שניות</span>
+        )}
+        {currentQuestion.metadata.wordCount && (
+          <span>מילים: {currentQuestion.metadata.wordCount}</span>
+        )}
+        {currentQuestion.metadata.topic && (
+          <span>נושא: {currentQuestion.metadata.topic}</span>
+        )}
       </div>
     );
   };
@@ -142,7 +163,7 @@ const QuestionCard = ({
             <span className="bg-electric-blue text-white rounded-full w-7 h-7 flex-shrink-0 flex items-center justify-center text-sm mt-0.5">
               {currentQuestionIndex + 1}
             </span>
-            <span className="break-words">{currentQuestion.text}</span>
+            <span className="break-words">{questionText}</span>
           </CardTitle>
           
           <div className="flex items-center">
@@ -167,6 +188,7 @@ const QuestionCard = ({
             )}
           </div>
         </div>
+        {renderMetadata()}
       </CardHeader>
       
       <CardContent className="pt-4">
