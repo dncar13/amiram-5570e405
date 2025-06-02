@@ -1,0 +1,58 @@
+/**
+ * אינדקס לשאלות מסווגות לפי סוג
+ * מאפשר גישה מהירה לשאלות לפי קטגורית התוכן
+ */
+
+import { Question } from '../../types/questionTypes';
+import { allQuestions } from '../index';
+
+/**
+ * מחזיר שאלות מסוג reading comprehension
+ */
+export const getReadingComprehensionQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'reading-comprehension');
+};
+
+/**
+ * מחזיר שאלות מסוג restatement
+ */
+export const getRestatementQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'restatement');
+};
+
+/**
+ * מחזיר שאלות מסוג vocabulary
+ */
+export const getVocabularyQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'vocabulary');
+};
+
+/**
+ * מחזיר שאלות מסוג grammar
+ */
+export const getGrammarQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'grammar');
+};
+
+/**
+ * מחזיר רשימה של כל סוגי השאלות הזמינים
+ */
+export const getAvailableQuestionTypes = (): string[] => {
+  const types = allQuestions.map(q => q.type).filter(Boolean);
+  return [...new Set(types)];
+};
+
+/**
+ * מחזיר סטטיסטיקות על חלוקת השאלות לפי סוג
+ */
+export const getQuestionTypeStats = (): Record<string, number> => {
+  const stats: Record<string, number> = {};
+  
+  allQuestions.forEach(question => {
+    if (question.type) {
+      stats[question.type] = (stats[question.type] || 0) + 1;
+    }
+  });
+  
+  return stats;
+};

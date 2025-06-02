@@ -5,13 +5,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/homepage/HeroSection";
 import FeaturesSection from "@/components/homepage/FeaturesSection";
-import PremiumShowcase from "@/components/homepage/PremiumShowcase";
-import TestimonialsSection from "@/components/homepage/TestimonialsSection";
-import ContactSection from "@/components/homepage/ContactSection";
-import CTASection from "@/components/homepage/CTASection";
 import DetailedFeaturesSection from "@/components/homepage/DetailedFeaturesSection";
-import FounderSection from "@/components/homepage/FounderSection";
 import FAQSection from "@/components/homepage/FAQSection";
+import TestimonialsSection from "@/components/homepage/TestimonialsSection";
+import FounderSection from "@/components/homepage/FounderSection";
+import ContactSection from "@/components/homepage/ContactSection";
+import StatsSection from "@/components/homepage/StatsSection";
+import CTASection from "@/components/homepage/CTASection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -21,18 +21,18 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ fontFamily: 'Rubik, sans-serif' }}>
+    <div className="min-h-screen flex flex-col bg-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
       <Header />
       
       <main className="flex-grow">
         <HeroSection />
-        <PremiumShowcase />
+        <StatsSection />
         <FeaturesSection />
         <DetailedFeaturesSection />
         <TestimonialsSection />
         <FounderSection />
-        <FAQSection />
         <CTASection />
+        <FAQSection />
         <ContactSection />
       </main>
       

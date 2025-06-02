@@ -1,4 +1,3 @@
-
 import { Question } from './types/questionTypes';
 import { allQuestions } from './questions/index';
 
@@ -8,20 +7,15 @@ export type { Question };
 // השתמש ישירות ב-allQuestions מהמקור, ללא יצירת עותק נוסף
 export const questionsData: Question[] = allQuestions;
 
+// DEPRECATED: Use questionsService.ts functions instead
+// The functions below are kept for backward compatibility only
+// All new code should use the questionsService.ts module
+
 /**
  * מחזיר שאלות לפי נושא מסוים
  */
 export const getQuestionsByTopic = (topicId: number): Question[] => {
-  console.log(`Looking for questions with topicId: ${topicId}`);
-  console.log(`Available questions: ${questionsData.length}`);
-  
-  const filtered = questionsData.filter(question => {
-    console.log(`Question ${question.id}: topicId=${question.topicId}, type=${question.type}`);
-    return question.topicId === topicId;
-  });
-  
-  console.log(`Found ${filtered.length} questions for topic ${topicId}`);
-  return filtered;
+  return questionsData.filter(question => question.topicId === topicId);
 };
 
 /**
@@ -60,16 +54,7 @@ export const getQuestionsWithLineNumbers = (): Question[] => {
  * מחזיר שאלות לפי סוג - שימוש בשדה 'type' המאוחד
  */
 export const getQuestionsByType = (type: string): Question[] => {
-  console.log(`Looking for questions with type: ${type}`);
-  console.log(`Available questions: ${questionsData.length}`);
-  
-  const filtered = questionsData.filter(question => {
-    console.log(`Question ${question.id}: type=${question.type}`);
-    return question.type === type;
-  });
-  
-  console.log(`Found ${filtered.length} questions for type ${type}`);
-  return filtered;
+  return questionsData.filter(question => question.type === type);
 };
 
 /**

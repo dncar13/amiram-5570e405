@@ -1,6 +1,24 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { getQuestions, saveQuestions, initializeQuestions, refreshQuestionsFromStorage, reloadQuestionsFromSource } from "./questions/storage";
+
+// Import organized question functions
+import { 
+  getReadingComprehensionQuestions,
+  getRestatementQuestions,
+  getVocabularyQuestions,
+  getGrammarQuestions,
+  getAvailableQuestionTypes,
+  getQuestionTypeStats
+} from "@/data/questions/by-type";
+
+import {
+  getEasyQuestions,
+  getMediumQuestions,
+  getHardQuestions,
+  getAvailableDifficulties,
+  getDifficultyStats,
+  getMixedDifficultyQuestions
+} from "@/data/questions/by-difficulty";
 
 // Main API for questions service - ensures consistent access to questions data
 
@@ -165,3 +183,65 @@ export const resetSimulationProgress = (topicId: number): void => {
  * Reset simulation - alias for resetSimulationProgress
  */
 export const resetSimulation = resetSimulationProgress;
+
+/**
+ * Validate that a question has all required fields
+ */
+export const validateQuestion = (question: Question): boolean => {
+  if (!question) return false;
+  
+  // Check required fields
+  if (!question.id || !question.text || !question.type) return false;
+  
+  // Check options array
+  if (!question.options || !Array.isArray(question.options) || question.options.length === 0) return false;
+  
+  // Check correctAnswer
+  if (typeof question.correctAnswer !== 'number' || 
+      question.correctAnswer < 0 || 
+      question.correctAnswer >= question.options.length) return false;
+  
+  // Check that all options are non-empty strings
+  if (question.options.some(option => !option || typeof option !== 'string')) return false;
+  
+  return true;
+};
+
+/**
+ * Validate all questions and return report
+ */
+export const validateAllQuestions = (): { valid: number; invalid: Question[]; total: number } => {
+  const allQuestions = getAllQuestions();
+  const invalid: Question[] = [];
+  let valid = 0;
+  
+  allQuestions.forEach(question => {
+    if (validateQuestion(question)) {
+      valid++;
+    } else {
+      invalid.push(question);
+    }
+  });
+  
+  return {
+    valid,
+    invalid,
+    total: allQuestions.length
+  };
+};
+
+// Export organized question access functions
+export {
+  getReadingComprehensionQuestions,
+  getRestatementQuestions,
+  getVocabularyQuestions,
+  getGrammarQuestions,
+  getAvailableQuestionTypes,
+  getQuestionTypeStats,
+  getEasyQuestions,
+  getMediumQuestions,
+  getHardQuestions,
+  getAvailableDifficulties,
+  getDifficultyStats,
+  getMixedDifficultyQuestions
+};

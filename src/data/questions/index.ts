@@ -3,14 +3,14 @@
 
 import { Question } from '../types/questionTypes';
 import { questions1to50 } from './questions1to50';
-import { questions51to100 } from './questions51to100';
-import { convertedQuestions } from './newQuestions';
+import { restatementQuestions } from './restatementQuestions';
+import { vocabularyQuestions } from './vocabularyQuestions';
 
-// מערך המאגד את כל השאלות מכל הקבצים - מוסיף את השאלות החדשות
+// מערך המאגד את כל השאלות מכל הקבצים
 export const allQuestions: Question[] = [
   ...questions1to50,
-  ...questions51to100,
-  ...convertedQuestions
+  ...restatementQuestions,
+  ...vocabularyQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -44,20 +44,6 @@ export const getQuestionById = (id: number): Question | undefined => {
 };
 
 /**
- * מחזיר שאלות לפי סוג שאלה
- */
-export const getQuestionsByType = (type: string): Question[] => {
-  return allQuestions.filter(question => question.type === type);
-};
-
-/**
- * מחזיר שאלות לפי רמת קושי
- */
-export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
-  return allQuestions.filter(question => question.difficulty === difficulty);
-};
-
-/**
  * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
  */
 export const getQuestionsBySet = (setId: number): Question[] => {
@@ -76,29 +62,4 @@ export const getQuestionsBySet = (setId: number): Question[] => {
  */
 export const getQuestionSetCount = (setId: number): number => {
   return getQuestionsBySet(setId).length;
-};
-
-/**
- * מחזיר שאלות לפי קטע קריאה מסוים
- */
-export const getQuestionsByPassage = (passageTitle: string): Question[] => {
-  return allQuestions.filter(question => question.passageTitle === passageTitle);
-};
-
-/**
- * מחזיר את כל הקטעים הייחודיים במערכת
- */
-export const getAllPassages = (): string[] => {
-  const passages = allQuestions
-    .filter(q => q.passageTitle)
-    .map(q => q.passageTitle!)
-    .filter((title, index, array) => array.indexOf(title) === index);
-  return passages;
-};
-
-/**
- * מחזיר שאלות עם מספור שורות
- */
-export const getQuestionsWithLineNumbers = (): Question[] => {
-  return allQuestions.filter(question => question.lineNumbers === true);
 };
