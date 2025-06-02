@@ -1,25 +1,24 @@
-
 import { LucideIcon } from 'lucide-react';
 
 // Define Question type for the application - updated to match new structure
 export interface Question {
   id: number;
   type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive';
-  question: string; // Changed from 'text' to 'question'
+  question?: string; // New field, optional for backward compatibility
   options: string[];
   correctAnswer: number;
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
   tags?: string[];
-  createdAt: string;
-  metadata: {
+  createdAt?: string; // Made optional
+  metadata?: {
     topic?: string;
-    wordCount: number;
-    estimatedTime: number;
-  };
+    wordCount?: number;
+    estimatedTime?: number;
+  }; // Made optional
   
-  // Legacy fields for backward compatibility
-  text?: string;
+  // Legacy fields for backward compatibility - keeping text as main field
+  text: string; // Main question text field
   topicId?: number;
   categoryId?: number;
   subtopicId?: number;

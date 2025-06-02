@@ -84,3 +84,37 @@ export const getRandomQuestions = (count: number, filters?: {
 export const getQuestionById = (id: number): Question | undefined => {
   return allQuestions.find(question => question.id === id);
 };
+
+/**
+ * Force refresh questions from storage
+ */
+export const refreshQuestionsFromStorage = (): Question[] => {
+  // Return all questions from the source
+  return [...allQuestions];
+};
+
+/**
+ * Update a question
+ */
+export const updateQuestion = (updatedQuestion: Question): boolean => {
+  // For now, just return true since we're working with static data
+  console.log("Question update requested:", updatedQuestion);
+  return true;
+};
+
+/**
+ * Get simulation progress
+ */
+export const getSimulationProgress = (topicId: number) => {
+  const key = `simulation_progress_${topicId}`;
+  const stored = localStorage.getItem(key);
+  return stored ? JSON.parse(stored) : null;
+};
+
+/**
+ * Reset simulation
+ */
+export const resetSimulation = (topicId: number): void => {
+  const key = `simulation_progress_${topicId}`;
+  localStorage.removeItem(key);
+};

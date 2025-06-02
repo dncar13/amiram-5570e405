@@ -42,7 +42,7 @@ export {
   getQuestions,
   saveQuestions,
   refreshQuestionsFromStorage,
-  reloadQuestionsFromSource, // Export the new function
+  reloadQuestionsFromSource,
   initializeQuestions,
   
   // Progress Operations

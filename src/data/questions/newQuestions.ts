@@ -14,9 +14,9 @@ export const newQuestionSet: QuestionSet = {
   },
   "questions": [
     {
-      "id": 1,
+      "id": 11,
       "type": "restatement",
-      "question": "The university administration has determined that extending library hours during examination periods is financially unfeasible at this time.",
+      "text": "The university administration has determined that extending library hours during examination periods is financially unfeasible at this time.",
       "options": [
         "The university cannot afford to keep the library open longer during exam periods right now.",
         "The university administration has decided to extend library hours despite financial constraints.",
@@ -24,7 +24,7 @@ export const newQuestionSet: QuestionSet = {
         "The university is considering extending library hours if financial conditions improve."
       ],
       "correctAnswer": 0,
-      "explanation": "The original statement indicates that extending library hours is 'financially unfeasible at this time,' which is directly equivalent to saying the university 'cannot afford' to keep the library open longer right now. The other options either contradict the original statement or add information not present in the original.",
+      "explanation": "The original statement indicates that extending library hours is 'financially unfeasible at this time,' which is directly equivalent to saying the university 'cannot afford' to keep the library open longer right now.",
       "difficulty": "medium",
       "tags": ["amir-test"],
       "createdAt": "2025-06-02T08:01:14.564Z",
@@ -32,12 +32,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 140,
         "estimatedTime": 60
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "restatement"
     },
     {
-      "id": 2,
+      "id": 12,
       "type": "restatement",
-      "question": "Students who fail to submit their assignments by the deadline will not be granted extensions except in cases of documented medical emergencies.",
+      "text": "Students who fail to submit their assignments by the deadline will not be granted extensions except in cases of documented medical emergencies.",
       "options": [
         "Medical documentation is required for all assignment submissions.",
         "Late assignments will be accepted only if students provide evidence of a medical emergency.",
@@ -45,7 +48,7 @@ export const newQuestionSet: QuestionSet = {
         "Documented medical emergencies are insufficient grounds for assignment extensions."
       ],
       "correctAnswer": 1,
-      "explanation": "The original statement indicates that extensions will not be granted except in cases of documented medical emergencies, which is equivalent to saying that late assignments will only be accepted with evidence of a medical emergency. The other options either contradict the original statement or add information not present in the original.",
+      "explanation": "The original statement indicates that extensions will not be granted except in cases of documented medical emergencies, which is equivalent to saying that late assignments will only be accepted with evidence of a medical emergency.",
       "difficulty": "medium",
       "tags": ["amir-test"],
       "createdAt": "2025-06-02T08:01:14.564Z",
@@ -53,12 +56,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 143,
         "estimatedTime": 60
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "restatement"
     },
     {
-      "id": 3,
+      "id": 13,
       "type": "restatement",
-      "question": "The research proposal was rejected by the committee because it lacked sufficient methodological rigor and clear objectives.",
+      "text": "The research proposal was rejected by the committee because it lacked sufficient methodological rigor and clear objectives.",
       "options": [
         "The committee approved the research proposal despite its methodological weaknesses.",
         "The committee found the research proposal to be methodologically sound but unclear.",
@@ -74,12 +80,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 135,
         "estimatedTime": 55
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "restatement"
     },
     {
-      "id": 4,
+      "id": 14,
       "type": "sentence-completion",
-      "question": "Despite the professor's reputation for being demanding, most students found her classes to be _____ and intellectually stimulating.",
+      "text": "Despite the professor's reputation for being demanding, most students found her classes to be _____ and intellectually stimulating.",
       "options": [
         "boring and repetitive",
         "rewarding and engaging",
@@ -95,12 +104,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 120,
         "estimatedTime": 50
-      }
+      },
+      "topicId": 3,
+      "categoryId": 2,
+      "questionType": "sentence-completion"
     },
     {
-      "id": 5,
+      "id": 15,
       "type": "sentence-completion",
-      "question": "The new campus policy requires all students to _____ their identification cards when entering the library during evening hours.",
+      "text": "The new campus policy requires all students to _____ their identification cards when entering the library during evening hours.",
       "options": [
         "surrender",
         "present",
@@ -116,12 +128,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 110,
         "estimatedTime": 45
-      }
+      },
+      "topicId": 3,
+      "categoryId": 2,
+      "questionType": "sentence-completion"
     },
     {
-      "id": 6,
+      "id": 16,
       "type": "reading-comprehension",
-      "question": "According to the passage, what is the primary benefit of the new study abroad program?",
+      "text": "According to the passage, what is the primary benefit of the new study abroad program?",
       "options": [
         "Reduced tuition costs for participants",
         "Enhanced cultural understanding and language skills",
@@ -137,12 +152,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 125,
         "estimatedTime": 55
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "reading-comprehension"
     },
     {
-      "id": 7,
+      "id": 17,
       "type": "restatement",
-      "question": "The dean announced that the university will implement a new grading system beginning next semester to ensure greater transparency in academic evaluation.",
+      "text": "The dean announced that the university will implement a new grading system beginning next semester to ensure greater transparency in academic evaluation.",
       "options": [
         "The university plans to make its grading process more transparent starting next term.",
         "The dean has decided to postpone the implementation of the new grading system.",
@@ -158,12 +176,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 138,
         "estimatedTime": 58
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "restatement"
     },
     {
-      "id": 8,
+      "id": 18,
       "type": "sentence-completion",
-      "question": "The laboratory equipment was so _____ that even minor experiments required extensive preparation and careful handling.",
+      "text": "The laboratory equipment was so _____ that even minor experiments required extensive preparation and careful handling.",
       "options": [
         "durable",
         "inexpensive",
@@ -179,12 +200,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 118,
         "estimatedTime": 48
-      }
+      },
+      "topicId": 3,
+      "categoryId": 2,
+      "questionType": "sentence-completion"
     },
     {
-      "id": 9,
+      "id": 19,
       "type": "restatement",
-      "question": "Faculty members are required to submit their course syllabi to the academic office no later than two weeks before the semester begins.",
+      "text": "Faculty members are required to submit their course syllabi to the academic office no later than two weeks before the semester begins.",
       "options": [
         "Course syllabi must be submitted by faculty at least two weeks prior to the start of the semester.",
         "Faculty members may submit their syllabi any time during the first two weeks of the semester.",
@@ -200,12 +224,15 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 142,
         "estimatedTime": 60
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "restatement"
     },
     {
-      "id": 10,
+      "id": 20,
       "type": "reading-comprehension",
-      "question": "The passage suggests that the university's decision to increase class sizes was primarily motivated by:",
+      "text": "The passage suggests that the university's decision to increase class sizes was primarily motivated by:",
       "options": [
         "A desire to improve student-teacher interaction",
         "Financial pressures and budget constraints",
@@ -221,16 +248,13 @@ export const newQuestionSet: QuestionSet = {
         "topic": "university life",
         "wordCount": 128,
         "estimatedTime": 52
-      }
+      },
+      "topicId": 1,
+      "categoryId": 1,
+      "questionType": "reading-comprehension"
     }
   ]
 };
 
 // Convert new format to legacy format for compatibility
-export const convertedQuestions: Question[] = newQuestionSet.questions.map(q => ({
-  ...q,
-  text: q.question, // Add legacy 'text' field
-  topicId: 1, // Default topic ID
-  categoryId: 1, // Default category ID
-  questionType: q.type as 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive'
-}));
+export const convertedQuestions: Question[] = newQuestionSet.questions;
