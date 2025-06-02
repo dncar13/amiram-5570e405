@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { 
   TrendingUp, 
   Award, 
@@ -131,10 +133,11 @@ const SimulationByDifficulty: React.FC = () => {
     { type: 'restatement', title: 'ניסוח מחדש', icon: <RotateCcw className="w-5 h-5" /> },
     { type: 'reading-comprehension', title: 'הבנת הנקרא', icon: <BookOpenCheck className="w-5 h-5" /> }
   ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -314,10 +317,11 @@ const SimulationByDifficulty: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </div>        </motion.div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

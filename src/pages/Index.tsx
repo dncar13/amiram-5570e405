@@ -10,6 +10,7 @@ import FAQSection from "@/components/homepage/FAQSection";
 import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import FounderSection from "@/components/homepage/FounderSection";
 import ContactSection from "@/components/homepage/ContactSection";
+import CTASection from "@/components/homepage/CTASection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -25,7 +26,11 @@ const Index = () => {
       <main className="flex-grow">
         <HeroSection />
         <FeaturesSection />
+        <DetailedFeaturesSection />
         <TestimonialsSection />
+        <FounderSection />
+        <FAQSection />
+        <CTASection />
         <ContactSection />
       </main>
       

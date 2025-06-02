@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { 
   BookOpen, 
   List, 
@@ -157,10 +159,11 @@ const SimulationsEntry: React.FC = () => {
   const handleDifficultyClick = (level: string) => {
     navigate(`/simulation/difficulty/${level}`);
   };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -347,11 +350,12 @@ const SimulationsEntry: React.FC = () => {
               >
                 התחבר עכשיו
               </button>
-            </div>
-          )}
+            </div>        )}
         </motion.div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

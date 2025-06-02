@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { 
   History, 
   Bookmark, 
@@ -183,10 +185,11 @@ const SimulationHistory: React.FC = () => {
 
   const totalQuestions = simulationHistory.reduce((sum, sim) => sum + sim.questionCount, 0);
   const totalCorrect = simulationHistory.reduce((sum, sim) => sum + sim.correctAnswers, 0);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -472,9 +475,10 @@ const SimulationHistory: React.FC = () => {
               </div>
             )}
           </div>
-        </motion.div>
-      </div>
+        </motion.div>      </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

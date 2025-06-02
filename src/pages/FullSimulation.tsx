@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { 
   PlayCircle, 
   Clock, 
@@ -70,10 +72,11 @@ const FullSimulation: React.FC = () => {
         : [...prev.includeTypes, type]
     }));
   };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -339,9 +342,10 @@ const FullSimulation: React.FC = () => {
               </ul>
             </div>
           </motion.div>
-        </div>
-      </div>
+        </div>      </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
