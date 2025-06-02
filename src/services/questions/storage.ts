@@ -1,3 +1,4 @@
+
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -20,14 +21,26 @@ export const initializeQuestions = (): Question[] => {
   }
 
   try {
+    // Always start with the source questions to ensure consistency
+    cachedQuestions = [...allQuestions];
+    
+    // Try to load any saved modifications from localStorage
     const savedQuestions = localStorage.getItem(QUESTIONS_STORAGE_KEY);
     if (savedQuestions) {
-      cachedQuestions = JSON.parse(savedQuestions);
-      console.log("Loaded questions from localStorage:", cachedQuestions.length);
+      const parsed = JSON.parse(savedQuestions);
+      // Validate that the saved questions are still compatible
+      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id && parsed[0].type) {
+        cachedQuestions = parsed;
+        console.log("Loaded modified questions from localStorage:", cachedQuestions.length);
+      } else {
+        // If saved questions are invalid, use source and save them
+        localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
+        console.log("Invalid saved questions found, using source questions:", allQuestions.length);
+      }
     } else {
-      cachedQuestions = [...allQuestions];
+      // No saved questions, use source and save them
       localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-      console.log("No saved questions found, using defaults and saving them:", allQuestions.length);
+      console.log("No saved questions found, using source questions and saving them:", allQuestions.length);
     }
   } catch (error) {
     console.error("Error initializing questions:", error);
@@ -84,7 +97,7 @@ export const saveQuestions = (questions: Question[], immediate = false): void =>
 };
 
 /**
- * Force refresh questions from storage
+ * Force refresh questions from storage - always reload from source
  */
 export const refreshQuestionsFromStorage = (): Question[] => {
   try {
@@ -94,14 +107,11 @@ export const refreshQuestionsFromStorage = (): Question[] => {
     console.log("Force refreshed questions from source files:", allQuestions.length);
   } catch (error) {
     console.error("Error force refreshing questions:", error);
-    // On error, reload from the source files
     cachedQuestions = [...allQuestions];
     console.log("Error occurred, reloading questions from source files:", allQuestions.length);
   }
   
-  // Force re-initialization if needed
   isInitialized = true;
-  
   return [...cachedQuestions];
 };
 

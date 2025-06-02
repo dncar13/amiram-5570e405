@@ -1,11 +1,10 @@
 
 import { useState, useEffect, useMemo } from "react";
-import { getQuestionsForSet, resetConflictingProgress } from "@/services/cloudSync";
-import { refreshQuestionsFromStorage, reloadQuestionsFromSource } from "@/services/questions/storage";
+import { getQuestionsByTopic, getQuestionsBySet, getAllQuestions, refreshQuestionsFromStorage } from "@/services/questionsService";
+import { resetConflictingProgress } from "@/services/cloudSync";
 import { isComprehensiveExamTopic } from "@/data/utils/topicUtils";
 import { topicsData } from "@/data/topicsData";
 import { toast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
 import { cleanupOldProgress, checkForResetRequest, removeResetParameterFromUrl } from "@/services/storageUtils";
 
 export const useSimulationData = (
@@ -13,7 +12,6 @@ export const useSimulationData = (
   setId: string | undefined,
   isQuestionSet: boolean
 ) => {
-  const navigate = useNavigate();
   const [questionSetTitle, setQuestionSetTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [questionCount, setQuestionCount] = useState(0);
@@ -32,8 +30,11 @@ export const useSimulationData = (
   useEffect(() => {
     const initializeSimulation = async () => {
       setIsLoading(true);
+      setError(null);
       
       try {
+        console.log("Initializing simulation data...", { topicId, setId, isQuestionSet });
+        
         // Reset conflicting global progress to avoid confusion between topics and question sets
         resetConflictingProgress();
         
@@ -42,9 +43,6 @@ export const useSimulationData = (
         
         if (shouldReset) {
           console.log("Reset parameter detected in URL - simulation will reset");
-          // Don't show the toast here, it will be shown by the Simulation component
-          
-          // Remove the reset parameter from URL to prevent reload issues
           removeResetParameterFromUrl();
         }
         
@@ -57,10 +55,9 @@ export const useSimulationData = (
           }
         }, 1000);
         
-        // Always reload questions from source files when simulation starts
-        // This ensures any manually added questions are included
-        const freshQuestions = reloadQuestionsFromSource();
-        console.log(`Reloaded ${freshQuestions.length} questions from source files`);
+        // Refresh questions from source to ensure we have the latest data
+        const freshQuestions = refreshQuestionsFromStorage();
+        console.log(`Refreshed ${freshQuestions.length} questions from source files`);
         
         // If we have a question set ID, determine its title for display
         if (setId) {
@@ -80,7 +77,6 @@ export const useSimulationData = (
           sessionStorage.removeItem('question_set_id');
         }
         
-        refreshQuestionsFromStorage();
         setInitComplete(true);
       } catch (err) {
         console.error("Error initializing simulation:", err);
@@ -98,19 +94,19 @@ export const useSimulationData = (
     if (!initComplete) return [];
     
     try {
+      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet });
+      
       // If we're viewing a question set (not a topic)
       if (setId) {
-        let setQuestions;
-        // Use the function from cloudSync to get questions specifically by ID range
         const setIdNum = parseInt(setId, 10);
         if (!isNaN(setIdNum)) {
-          setQuestions = getQuestionsForSet(setIdNum);
+          const setQuestions = getQuestionsBySet(setIdNum);
           setQuestionCount(setQuestions.length);
           
           console.log(`Found ${setQuestions.length} questions for set ${setId}`);
           
           if (setQuestions.length === 0) {
-            setError(`No questions found for set ${setId}`);
+            setError(`לא נמצאו שאלות לקבוצת שאלות ${setId}`);
             toast({
               title: "אין שאלות לקבוצה זו",
               description: "קבוצת שאלות זו אינה מכילה שאלות כרגע.",
@@ -121,36 +117,32 @@ export const useSimulationData = (
           
           return setQuestions;
         } else {
-          setError("Invalid set ID");
-          setQuestions = [];
-          setQuestionCount(0);
+          setError("מזהה קבוצת שאלות לא תקין");
           return [];
         }
       }
       
       // Regular topic behavior
       if (!topic) {
-        setError("Topic not found");
+        setError("הנושא לא נמצא");
         return [];
       }
       
       // For comprehensive exams, show all questions regardless of topic
       if (isComprehensiveExam) {
-        const allQs = reloadQuestionsFromSource().slice(0); // Create a copy to avoid reference issues
+        const allQs = getAllQuestions();
         console.log(`Comprehensive exam: showing all ${allQs.length} questions`);
         setQuestionCount(allQs.length);
         return allQs;
       }
       
-      // Normal filtering by topic ID - ensure we're working with a clean copy
-      const filteredQuestions = reloadQuestionsFromSource()
-        .filter(q => !topic || q.topicId === topic.id);
-        
+      // Normal filtering by topic ID
+      const filteredQuestions = getQuestionsByTopic(topic.id);
       console.log(`Topic ${topic.id}: found ${filteredQuestions.length} questions`);
       setQuestionCount(filteredQuestions.length);
       
       if (filteredQuestions.length === 0) {
-        setError(`No questions found for topic ${topic.id}`);
+        setError(`לא נמצאו שאלות לנושא ${topic.title || topic.id}`);
         toast({
           title: "אין שאלות לנושא זה",
           description: "נושא זה אינו מכיל שאלות כרגע. אנא בחר נושא אחר.",
@@ -161,10 +153,10 @@ export const useSimulationData = (
       return filteredQuestions;
     } catch (error) {
       console.error("Error loading questions:", error);
-      setError("Error loading questions");
+      setError("שגיאה בטעינת השאלות");
       return [];
     }
-  }, [topic, setId, isComprehensiveExam, initComplete, navigate]);
+  }, [topic, setId, isComprehensiveExam, initComplete]);
   
   // Helper function for part navigation (question sets divided into parts)
   const getCurrentPart = () => {

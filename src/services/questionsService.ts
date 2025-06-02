@@ -1,120 +1,146 @@
 
 import { Question } from "@/data/types/questionTypes";
-import { allQuestions } from "@/data/questions";
+import { getQuestions, saveQuestions, initializeQuestions, refreshQuestionsFromStorage, reloadQuestionsFromSource } from "./questions/storage";
+
+// Main API for questions service - ensures consistent access to questions data
 
 /**
  * Get all questions from the system
  */
 export const getAllQuestions = (): Question[] => {
-  return allQuestions;
+  return getQuestions();
 };
 
 /**
- * Get questions by topic ID
+ * Get questions filtered by topic ID
  */
 export const getQuestionsByTopic = (topicId: number): Question[] => {
+  const allQuestions = getQuestions();
   return allQuestions.filter(question => question.topicId === topicId);
 };
 
 /**
- * Get questions by question type
+ * Get questions by subtopic ID
  */
-export const getQuestionsByType = (type: string): Question[] => {
-  return allQuestions.filter(question => 
-    question.type === type || question.questionType === type
-  );
+export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
+  const allQuestions = getQuestions();
+  return allQuestions.filter(question => question.subtopicId === subtopicId);
 };
 
 /**
- * Get questions by difficulty level
- */
-export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
-  return allQuestions.filter(question => question.difficulty === difficulty);
-};
-
-/**
- * Get questions by both type and difficulty
- */
-export const getQuestionsByTypeAndDifficulty = (
-  type: string, 
-  difficulty: string
-): Question[] => {
-  return allQuestions.filter(question => 
-    (question.type === type || question.questionType === type) && 
-    question.difficulty === difficulty
-  );
-};
-
-/**
- * Get a random set of questions
- */
-export const getRandomQuestions = (count: number, filters?: {
-  type?: string;
-  difficulty?: string;
-  topicId?: number;
-}): Question[] => {
-  let filteredQuestions = allQuestions;
-  
-  if (filters?.type) {
-    filteredQuestions = filteredQuestions.filter(q => 
-      q.type === filters.type || q.questionType === filters.type
-    );
-  }
-  
-  if (filters?.difficulty) {
-    filteredQuestions = filteredQuestions.filter(q => 
-      q.difficulty === filters.difficulty
-    );
-  }
-  
-  if (filters?.topicId) {
-    filteredQuestions = filteredQuestions.filter(q => 
-      q.topicId === filters.topicId
-    );
-  }
-  
-  // Shuffle and take the requested number
-  const shuffled = [...filteredQuestions].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
-};
-
-/**
- * Get question by ID
+ * Get a specific question by ID
  */
 export const getQuestionById = (id: number): Question | undefined => {
+  const allQuestions = getQuestions();
   return allQuestions.find(question => question.id === id);
 };
 
 /**
- * Force refresh questions from storage
+ * Get questions by type
  */
-export const refreshQuestionsFromStorage = (): Question[] => {
-  // Return all questions from the source
-  return [...allQuestions];
+export const getQuestionsByType = (type: string): Question[] => {
+  const allQuestions = getQuestions();
+  return allQuestions.filter(question => question.type === type);
 };
 
 /**
- * Update a question
+ * Get questions by difficulty
  */
-export const updateQuestion = (updatedQuestion: Question): boolean => {
-  // For now, just return true since we're working with static data
-  console.log("Question update requested:", updatedQuestion);
-  return true;
+export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
+  const allQuestions = getQuestions();
+  return allQuestions.filter(question => question.difficulty === difficulty);
 };
 
 /**
- * Get simulation progress
+ * Get questions by question set (50 questions per set)
  */
-export const getSimulationProgress = (topicId: number) => {
-  const key = `simulation_progress_${topicId}`;
-  const stored = localStorage.getItem(key);
-  return stored ? JSON.parse(stored) : null;
+export const getQuestionsBySet = (setId: number): Question[] => {
+  const startId = (setId - 1) * 50 + 1;
+  const endId = setId * 50;
+  
+  const allQuestions = getQuestions();
+  return allQuestions.filter(question => question.id >= startId && question.id <= endId);
 };
 
 /**
- * Reset simulation
+ * Save questions to storage
  */
-export const resetSimulation = (topicId: number): void => {
-  const key = `simulation_progress_${topicId}`;
-  localStorage.removeItem(key);
+export const saveQuestionsToStorage = (questions: Question[]): void => {
+  saveQuestions(questions, true);
+};
+
+/**
+ * Initialize questions system
+ */
+export const initQuestions = (): Question[] => {
+  return initializeQuestions();
+};
+
+/**
+ * Refresh questions from storage
+ */
+export { refreshQuestionsFromStorage };
+
+/**
+ * Reload questions from source files
+ */
+export { reloadQuestionsFromSource };
+
+// Simulation Progress Functions
+export interface SimulationProgress {
+  currentQuestionIndex: number;
+  totalQuestions: number;
+  userAnswers: Record<number, number>;
+  questionFlags: Record<number, boolean>;
+  score: number;
+  timeStarted: number;
+  lastUpdated: number;
+}
+
+/**
+ * Get simulation progress for a topic
+ */
+export const getSimulationProgress = (topicId: number): SimulationProgress | null => {
+  try {
+    const progressKey = `topic_${topicId}_progress`;
+    const saved = localStorage.getItem(progressKey);
+    
+    if (saved) {
+      const progress = JSON.parse(saved);
+      console.log(`Loaded simulation progress for topic ${topicId}:`, progress);
+      return progress;
+    }
+    
+    return null;
+  } catch (error) {
+    console.error(`Error loading simulation progress for topic ${topicId}:`, error);
+    return null;
+  }
+};
+
+/**
+ * Save simulation progress for a topic
+ */
+export const saveSimulationProgress = (topicId: number, progress: SimulationProgress): void => {
+  try {
+    const progressKey = `topic_${topicId}_progress`;
+    progress.lastUpdated = Date.now();
+    localStorage.setItem(progressKey, JSON.stringify(progress));
+    console.log(`Saved simulation progress for topic ${topicId}:`, progress);
+  } catch (error) {
+    console.error(`Error saving simulation progress for topic ${topicId}:`, error);
+  }
+};
+
+/**
+ * Reset simulation progress for a topic
+ */
+export const resetSimulationProgress = (topicId: number): void => {
+  try {
+    const progressKey = `topic_${topicId}_progress`;
+    localStorage.removeItem(progressKey);
+    console.log(`Reset simulation progress for topic ${topicId}`);
+  } catch (error) {
+    console.error(`Error resetting simulation progress for topic ${topicId}:`, error);
+  }
 };

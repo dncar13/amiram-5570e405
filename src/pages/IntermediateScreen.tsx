@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ChevronLeft, FileText, Clock, Settings, Check } from "lucide-react";
+import { ChevronLeft, FileText, Clock, Settings } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/context/AuthContext";
 import { useSimulationSettings } from "@/context/SimulationSettingsContext";
-import { getSimulationProgress } from "@/services/questionsService";
+import { getSimulationProgress, getQuestionsByTopic } from "@/services/questionsService";
 import { topicsData } from "@/data/topicsData";
 import { categoryData } from "@/data/categories/categoryData";
-import { Topic } from "@/data/types/topicTypes"; // Removed incorrect TopicType import
-import { allQuestions } from "@/data/questions/index";
 import { SimulationButtons } from "@/components/simulation/SimulationParts";
 
 const IntermediateScreen = () => {
@@ -41,7 +37,7 @@ const IntermediateScreen = () => {
     
     // Load simulation progress
     if (topicId) {
-      const progress = getSimulationProgress(topicId); // Pass number instead of string
+      const progress = getSimulationProgress(topicId);
       
       if (progress) {
         setSimulationProgress(progress);
@@ -49,9 +45,8 @@ const IntermediateScreen = () => {
     }
   }, [topicId]);
   
-  // Count questions for this topic
-  const topicQuestions = topic ? 
-    allQuestions.filter(q => q.topicId === topic.id) : [];
+  // Count questions for this topic using the service
+  const topicQuestions = topic ? getQuestionsByTopic(topic.id) : [];
   
   // Display question count (limited by settings if necessary)
   const displayQuestionCount = topicQuestions.length > 0 
@@ -115,10 +110,10 @@ const IntermediateScreen = () => {
         </div>
 
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold mb-3">{topic.title}</h1> {/* Changed from topic.name to topic.title */}
+          <h1 className="text-3xl font-bold mb-3">{topic.title}</h1>
           {category && (
             <p className="text-electric-slate">
-              קטגוריה: {category.title} {/* Changed from category.name to category.title */}
+              קטגוריה: {category.title}
             </p>
           )}
         </div>
@@ -134,7 +129,7 @@ const IntermediateScreen = () => {
               {displayQuestionCount} שאלות
             </h3>
             <p className="text-sm text-electric-slate">
-              נושא: {topic.title} {/* Changed from topic.name to topic.title */}
+              נושא: {topic.title}
             </p>
           </Card>
 
@@ -145,7 +140,7 @@ const IntermediateScreen = () => {
               </span>
             </div>
             <h3 className="text-lg font-semibold mb-2">
-              {settings?.questionsCount ? 60 : 60} שניות לשאלה {/* Changed from settings?.timePerQuestion to a fixed value or formula */}
+              60 שניות לשאלה
             </h3>
             <p className="text-sm text-electric-slate">
               קצב עבודה מומלץ

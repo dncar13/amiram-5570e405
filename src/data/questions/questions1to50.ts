@@ -5,7 +5,7 @@ export const questions1to50: Question[] = [
   // Reading Comprehension Questions (1-3)
   {
     id: 1,
-    type: 'reading-comprehension', // Add missing type field
+    type: 'reading-comprehension',
     text: `Read the following passage and answer the question:
 
 "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in the 21st century. The emergence of the 'gig economy' has fundamentally altered how millions of people work and earn their living."
@@ -22,13 +22,12 @@ What does the passage suggest about the traditional employment model?`,
     topicId: 1,
     categoryId: 1,
     difficulty: 'medium',
-    questionType: 'reading-comprehension',
     passageText: "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in the 21st century. The emergence of the 'gig economy' has fundamentally altered how millions of people work and earn their living.",
     tips: "Look for keywords in the passage that directly answer the question. The phrase 'dramatic transformation' is key here."
   },
   {
     id: 2,
-    type: 'reading-comprehension', // Add missing type field
+    type: 'reading-comprehension',
     text: `Read the following passage and answer the question:
 
 "Climate change represents one of the most pressing challenges of our time. Rising global temperatures are causing ice caps to melt, sea levels to rise, and weather patterns to become increasingly unpredictable. Scientists worldwide are working to develop solutions that can help mitigate these effects."
@@ -45,13 +44,12 @@ According to the passage, what effect is climate change having on weather patter
     topicId: 1,
     categoryId: 1,
     difficulty: 'easy',
-    questionType: 'reading-comprehension',
     passageText: "Climate change represents one of the most pressing challenges of our time. Rising global temperatures are causing ice caps to melt, sea levels to rise, and weather patterns to become increasingly unpredictable. Scientists worldwide are working to develop solutions that can help mitigate these effects.",
     tips: "Focus on the specific phrase that describes what's happening to weather patterns in the passage."
   },
   {
     id: 3,
-    type: 'reading-comprehension', // Add missing type field
+    type: 'reading-comprehension',
     text: `Read the following passage and answer the question:
 
 "Online education has revolutionized learning by making courses accessible to students worldwide. However, it also presents challenges such as limited face-to-face interaction and the need for strong self-discipline. Despite these obstacles, many educational institutions continue to expand their online offerings."
@@ -68,7 +66,6 @@ What is the author's overall view of online education?`,
     topicId: 1,
     categoryId: 1,
     difficulty: 'medium',
-    questionType: 'reading-comprehension',
     passageText: "Online education has revolutionized learning by making courses accessible to students worldwide. However, it also presents challenges such as limited face-to-face interaction and the need for strong self-discipline. Despite these obstacles, many educational institutions continue to expand their online offerings.",
     tips: "Look for words like 'however' and 'despite' that indicate the author is presenting multiple perspectives."
   },
@@ -76,7 +73,7 @@ What is the author's overall view of online education?`,
   // Sentence Completion Questions (4-6)
   {
     id: 4,
-    type: 'sentence-completion', // Add missing type field
+    type: 'sentence-completion',
     text: "The scientist's groundbreaking research has _____ our understanding of climate change and its long-term effects.",
     options: [
       "confused",
@@ -89,12 +86,11 @@ What is the author's overall view of online education?`,
     topicId: 3,
     categoryId: 2,
     difficulty: 'medium',
-    questionType: 'sentence-completion',
     tips: "Consider which word best matches the positive impact suggested by 'groundbreaking research.'"
   },
   {
     id: 5,
-    type: 'sentence-completion', // Add missing type field
+    type: 'sentence-completion',
     text: "Despite working overtime, she couldn't _____ the project on time.",
     options: [
       "abandon",
@@ -107,12 +103,11 @@ What is the author's overall view of online education?`,
     topicId: 3,
     categoryId: 2,
     difficulty: 'easy',
-    questionType: 'sentence-completion',
     tips: "The word 'Despite' suggests contrast - she worked extra but still couldn't do something expected."
   },
   {
     id: 6,
-    type: 'sentence-completion', // Add missing type field
+    type: 'sentence-completion',
     text: "The new policy aims to _____ the gap between rich and poor communities by providing equal access to education.",
     options: [
       "widen",
@@ -125,14 +120,13 @@ What is the author's overall view of online education?`,
     topicId: 3,
     categoryId: 2,
     difficulty: 'medium',
-    questionType: 'sentence-completion',
     tips: "Think about what a policy would want to do with a gap between communities - reduce it or increase it?"
   },
 
   // Restatement Questions (7-10)
   {
     id: 7,
-    type: 'restatement', // Add missing type field
+    type: 'restatement',
     text: "The committee did not approve the proposal because it lacked sufficient evidence.",
     options: [
       "The committee rejected the proposal due to insufficient evidence.",
@@ -145,12 +139,11 @@ What is the author's overall view of online education?`,
     topicId: 5,
     categoryId: 3,
     difficulty: 'easy',
-    questionType: 'restatement',
     tips: "Look for the option that uses different words but expresses exactly the same meaning as the original sentence."
   },
   {
     id: 8,
-    type: 'restatement', // Add missing type field
+    type: 'restatement',
     text: "Although the weather was terrible, the outdoor concert proceeded as planned.",
     options: [
       "The concert was cancelled due to bad weather.",
@@ -163,12 +156,11 @@ What is the author's overall view of online education?`,
     topicId: 5,
     categoryId: 3,
     difficulty: 'medium',
-    questionType: 'restatement',
     tips: "Find the option that maintains the contrast between bad weather and the event continuing as planned."
   },
   {
     id: 9,
-    type: 'restatement', // Add missing type field
+    type: 'restatement',
     text: "It is essential that all students attend the orientation session.",
     options: [
       "Students may choose whether to attend orientation.",
@@ -181,12 +173,11 @@ What is the author's overall view of online education?`,
     topicId: 5,
     categoryId: 3,
     difficulty: 'medium',
-    questionType: 'restatement',
     tips: "Focus on the strength of the requirement - 'essential' indicates something is absolutely necessary."
   },
   {
     id: 10,
-    type: 'restatement', // Add missing type field
+    type: 'restatement',
     text: "The new regulations will take effect immediately.",
     options: [
       "The regulations will be delayed indefinitely.",
@@ -199,7 +190,6 @@ What is the author's overall view of online education?`,
     topicId: 5,
     categoryId: 3,
     difficulty: 'easy',
-    questionType: 'restatement',
     tips: "Look for the phrase that means the same as 'immediately' and 'take effect.'"
   }
 ];
