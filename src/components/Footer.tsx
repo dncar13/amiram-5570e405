@@ -1,6 +1,7 @@
 
+
 import { Link } from "react-router-dom";
-import { BookOpen, ExternalLink } from "lucide-react";
+import { ExternalLink, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -8,7 +9,38 @@ const Footer = () => {
   return (
     <footer style={{ backgroundColor: '#343a40' }} className="text-white pt-12 pb-6">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Contact Section */}
+          <div>
+            <h3 
+              className="text-lg font-semibold mb-4 text-white"
+              style={{ fontFamily: 'Rubik, sans-serif' }}
+            >
+              צרו קשר
+            </h3>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2 space-x-reverse">
+                <Mail className="h-4 w-4 text-gray-300" />
+                <span 
+                  className="text-gray-300 text-sm"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  info@amiram-academy.co.il
+                </span>
+              </div>
+              <div className="flex items-center space-x-2 space-x-reverse">
+                <Phone className="h-4 w-4 text-gray-300" />
+                <span 
+                  className="text-gray-300 text-sm"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  03-1234567
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Navigation */}
           <div>
             <h3 
               className="text-lg font-semibold mb-4 text-white"
@@ -56,6 +88,7 @@ const Footer = () => {
             </ul>
           </div>
           
+          {/* Popular Topics */}
           <div>
             <h3 
               className="text-lg font-semibold mb-4 text-white"
@@ -119,3 +152,4 @@ const Footer = () => {
 };
 
 export default Footer;
+
