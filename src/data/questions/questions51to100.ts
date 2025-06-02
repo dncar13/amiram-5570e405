@@ -1,9 +1,11 @@
+
 import { Question } from '../types/questionTypes';
 
 export const questions51to100: Question[] = [
   // Complex reading passage - The Gig Economy
   {
     id: 51,
+    type: 'reading-comprehension', // Add missing type field
     text: "The first paragraph suggests that the traditional employment model has _____ in recent decades.",
     options: [
       "remained completely unchanged",
@@ -68,6 +70,7 @@ export const questions51to100: Question[] = [
 
   {
     id: 52,
+    type: 'reading-comprehension', // Add missing type field
     text: "According to the passage, digital platforms have primarily _____ the gig economy.",
     options: [
       "hindered the development of",
@@ -133,6 +136,7 @@ export const questions51to100: Question[] = [
 
   {
     id: 53,
+    type: 'reading-comprehension', // Add missing type field
     text: "The passage indicates that gig workers' lack of traditional benefits has _____ their financial vulnerability.",
     options: [
       "significantly reduced",
@@ -198,6 +202,7 @@ export const questions51to100: Question[] = [
 
   {
     id: 54,
+    type: 'reading-comprehension', // Add missing type field
     text: "The author suggests that future policies should aim to _____ the competing demands of flexibility and security.",
     options: [
       "completely ignore",

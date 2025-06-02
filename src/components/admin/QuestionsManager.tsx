@@ -158,11 +158,13 @@ const QuestionsManager: React.FC = () => {
   const handleCreateNewQuestion = () => {
     const newEmptyQuestion: Question = {
       id: 0,
+      type: 'reading-comprehension', // Add required type field
       text: "",
       options: ["", ""],
       correctAnswer: 0,
-      topicId: topicsData[0]?.id || 1,
-      explanation: ""
+      difficulty: 'medium', // Add required difficulty field
+      explanation: "",
+      topicId: topicsData[0]?.id || 1
     };
     
     setSelectedQuestion(newEmptyQuestion);

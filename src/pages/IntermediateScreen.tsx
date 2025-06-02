@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -42,8 +41,7 @@ const IntermediateScreen = () => {
     
     // Load simulation progress
     if (topicId) {
-      const progressKey = `topic_${topicId}_progress`;
-      const progress = getSimulationProgress(progressKey);
+      const progress = getSimulationProgress(topicId); // Pass number instead of string
       
       if (progress) {
         setSimulationProgress(progress);

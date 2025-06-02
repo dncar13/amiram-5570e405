@@ -5,6 +5,7 @@ export const questions1to50: Question[] = [
   // Reading Comprehension Questions (1-3)
   {
     id: 1,
+    type: 'reading-comprehension', // Add missing type field
     text: `Read the following passage and answer the question:
 
 "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in the 21st century. The emergence of the 'gig economy' has fundamentally altered how millions of people work and earn their living."
@@ -27,6 +28,7 @@ What does the passage suggest about the traditional employment model?`,
   },
   {
     id: 2,
+    type: 'reading-comprehension', // Add missing type field
     text: `Read the following passage and answer the question:
 
 "Climate change represents one of the most pressing challenges of our time. Rising global temperatures are causing ice caps to melt, sea levels to rise, and weather patterns to become increasingly unpredictable. Scientists worldwide are working to develop solutions that can help mitigate these effects."
@@ -49,6 +51,7 @@ According to the passage, what effect is climate change having on weather patter
   },
   {
     id: 3,
+    type: 'reading-comprehension', // Add missing type field
     text: `Read the following passage and answer the question:
 
 "Online education has revolutionized learning by making courses accessible to students worldwide. However, it also presents challenges such as limited face-to-face interaction and the need for strong self-discipline. Despite these obstacles, many educational institutions continue to expand their online offerings."
@@ -73,6 +76,7 @@ What is the author's overall view of online education?`,
   // Sentence Completion Questions (4-6)
   {
     id: 4,
+    type: 'sentence-completion', // Add missing type field
     text: "The scientist's groundbreaking research has _____ our understanding of climate change and its long-term effects.",
     options: [
       "confused",
@@ -90,6 +94,7 @@ What is the author's overall view of online education?`,
   },
   {
     id: 5,
+    type: 'sentence-completion', // Add missing type field
     text: "Despite working overtime, she couldn't _____ the project on time.",
     options: [
       "abandon",
@@ -107,6 +112,7 @@ What is the author's overall view of online education?`,
   },
   {
     id: 6,
+    type: 'sentence-completion', // Add missing type field
     text: "The new policy aims to _____ the gap between rich and poor communities by providing equal access to education.",
     options: [
       "widen",
@@ -126,6 +132,7 @@ What is the author's overall view of online education?`,
   // Restatement Questions (7-10)
   {
     id: 7,
+    type: 'restatement', // Add missing type field
     text: "The committee did not approve the proposal because it lacked sufficient evidence.",
     options: [
       "The committee rejected the proposal due to insufficient evidence.",
@@ -143,6 +150,7 @@ What is the author's overall view of online education?`,
   },
   {
     id: 8,
+    type: 'restatement', // Add missing type field
     text: "Although the weather was terrible, the outdoor concert proceeded as planned.",
     options: [
       "The concert was cancelled due to bad weather.",
@@ -160,6 +168,7 @@ What is the author's overall view of online education?`,
   },
   {
     id: 9,
+    type: 'restatement', // Add missing type field
     text: "It is essential that all students attend the orientation session.",
     options: [
       "Students may choose whether to attend orientation.",
@@ -177,6 +186,7 @@ What is the author's overall view of online education?`,
   },
   {
     id: 10,
+    type: 'restatement', // Add missing type field
     text: "The new regulations will take effect immediately.",
     options: [
       "The regulations will be delayed indefinitely.",
