@@ -9,6 +9,9 @@ import PremiumShowcase from "@/components/homepage/PremiumShowcase";
 import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import ContactSection from "@/components/homepage/ContactSection";
 import CTASection from "@/components/homepage/CTASection";
+import DetailedFeaturesSection from "@/components/homepage/DetailedFeaturesSection";
+import FounderSection from "@/components/homepage/FounderSection";
+import FAQSection from "@/components/homepage/FAQSection";
 
 const Index = () => {
   const navigate = useNavigate();
