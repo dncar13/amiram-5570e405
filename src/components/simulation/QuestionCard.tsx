@@ -1,3 +1,4 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb } from "lucide-react";
@@ -124,9 +125,9 @@ const QuestionCard = ({
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
   const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
 
-  // Get question type badge
+  // Get question type badge - using the 'type' property instead of 'questionType'
   const getQuestionTypeBadge = () => {
-    switch (currentQuestion.questionType) {
+    switch (currentQuestion.type) {
       case 'reading-comprehension':
         return 'Reading Comprehension';
       case 'sentence-completion':
@@ -222,7 +223,7 @@ const QuestionCard = ({
 
         <CardContent className="p-6">
           {/* Reading Comprehension Layout - Professional side-by-side */}
-          {currentQuestion.questionType === 'reading-comprehension' && 
+          {currentQuestion.type === 'reading-comprehension' && 
            currentQuestion.passageWithLines && 
            currentQuestion.passageWithLines.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[600px]">
@@ -297,7 +298,9 @@ const QuestionCard = ({
                         </button>
                       </motion.div>
                     ))}
-                  </div>                  {/* Hint/Tip Button - show before submitting answer */}
+                  </div>
+
+                  {/* Hint/Tip Button - show before submitting answer */}
                   {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
                     <div className="mb-4">
                       <Button
@@ -458,7 +461,9 @@ const QuestionCard = ({
                     </div>
                   </motion.div>
                 ))}
-              </div>              {/* Hint/Tip Button for standard questions */}
+              </div>
+
+              {/* Hint/Tip Button for standard questions */}
               {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
                 <div className="mb-4">
                   <Button

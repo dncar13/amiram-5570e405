@@ -40,12 +40,10 @@ export const getQuestionsWithLineNumbers = (): Question[] => {
 };
 
 /**
- * Returns questions by type
+ * Returns questions by type - using the unified 'type' property
  */
 export const getQuestionsByType = (type: string): Question[] => {
-  return questionsData.filter(question => 
-    question.type === type || question.questionType === type
-  );
+  return questionsData.filter(question => question.type === type);
 };
 
 /**

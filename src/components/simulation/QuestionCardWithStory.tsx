@@ -132,9 +132,9 @@ const QuestionCardWithStory = ({
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
   const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
 
-  // Get question type badge
+  // Get question type badge - using the 'type' property instead of 'questionType'
   const getQuestionTypeBadge = () => {
-    switch (currentQuestion.questionType) {
+    switch (currentQuestion.type) {
       case 'reading-comprehension':
         return 'Reading Comprehension';
       case 'sentence-completion':
@@ -342,7 +342,9 @@ const QuestionCardWithStory = ({
                       </button>
                     </motion.div>
                   ))}
-                </div>                {/* Hint/Tip Button - show before submitting answer */}
+                </div>
+
+                {/* Hint/Tip Button - show before submitting answer */}
                 {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
                   <div className="mb-6">
                     <Button
@@ -454,7 +456,9 @@ const QuestionCardWithStory = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </CardContent>        {/* Enhanced Comprehensive Progress Bar */}
+        </CardContent>
+
+        {/* Enhanced Comprehensive Progress Bar */}
         <div className="px-6 pb-6">
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl shadow-md border border-gray-200">
             {/* Header Section */}

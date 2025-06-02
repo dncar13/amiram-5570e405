@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -119,9 +118,10 @@ const QuestionCard = ({
     );
   }
 
-  // Support both new 'question' field and legacy 'text' field
-  const questionText = currentQuestion.question || currentQuestion.text || '';
+  // Use the 'text' field for question text
+  const questionText = currentQuestion.text || '';
 
+  // Support both new 'question' field and legacy 'text' field
   const renderProgressBar = () => {
     const percentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
     return (
