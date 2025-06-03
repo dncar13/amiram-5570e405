@@ -115,15 +115,6 @@ const SimulationContent = ({
     willUseStoryCard: isReadingComprehensionWithPassage
   });
 
-  // Convert Record objects to arrays for child components
-  const userAnswersArray: (number | null)[] = [];
-  const questionFlagsArray: boolean[] = [];
-  
-  for (let i = 0; i < totalQuestions; i++) {
-    userAnswersArray[i] = userAnswers[i] ?? null;
-    questionFlagsArray[i] = questionFlags[i] ?? false;
-  }
-
   return (
     <div className="space-y-6">
       {/* Navigation Panel */}
