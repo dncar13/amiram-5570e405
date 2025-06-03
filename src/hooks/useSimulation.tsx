@@ -125,14 +125,66 @@ export const useSimulation = (
   const [settingsInitialized, setSettingsInitialized] = useState(false);
   const [progressLoaded, setProgressLoaded] = useState(false);
   const [progressLoadAttempted, setProgressLoadAttempted] = useState(false);
-  
-  // Load questions into separate state - replaces the old simulationQuestions useMemo
+    // Load questions into separate state - replaces the old simulationQuestions useMemo
   useEffect(() => {
     if (!simulationId) {
       setQuestions([]);
       return;
     }
     
+    // Handle difficulty-based simulations (IDs are prefixed with 'difficulty_')
+    if (simulationId.startsWith('difficulty_')) {
+      const parts = simulationId.split('_');
+      if (parts.length === 3) {
+        const level = parts[1];
+        const type = parts[2];
+        
+        let difficultyQuestions: Question[] = [];
+        
+        if (type === 'mixed') {
+          // For mixed practice, get questions from the specified difficulty level
+          switch (level) {
+            case 'easy':
+              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'easy');
+              break;
+            case 'medium':
+              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'medium');
+              break;
+            case 'hard':
+              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'hard');
+              break;
+            default:
+              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'medium');
+          }
+        } else {
+          // For specific question types, filter by both difficulty and type
+          const allQuestions = refreshQuestionsFromStorage();
+          let filteredByDifficulty: Question[] = [];
+          
+          switch (level) {
+            case 'easy':
+              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'easy');
+              break;
+            case 'medium':
+              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'medium');
+              break;
+            case 'hard':
+              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'hard');
+              break;
+            default:
+              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'medium');
+          }
+          
+          // Filter by question type
+          difficultyQuestions = filteredByDifficulty.filter(q => q.type === type);
+        }
+        
+        console.log(`Loading ${difficultyQuestions.length} questions for difficulty: ${level}, type: ${type}`);
+        setQuestions(difficultyQuestions);
+        return;
+      }
+    }
+
     // Handle question sets (IDs are prefixed with 'qs_')
     if (isQuestionSet) {
       // Strip prefix if it exists
@@ -806,10 +858,10 @@ export const useSimulation = (
     
     return calculatedScore;
   };
-  
-  // Return all values and functions needed by components
+    // Return all values and functions needed by components
   // IMPORTANT: Make sure to include progressLoaded in the returned object
   return {
+    questions,
     currentQuestionIndex,
     totalQuestions,
     remainingTime,

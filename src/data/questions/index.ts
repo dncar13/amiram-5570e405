@@ -1,18 +1,19 @@
 
 // אינדקס מרכזי שמייבא את כל קבצי השאלות
+// מבנה חדש: ארגון לפי סוגי שאלות
 
 import { Question } from '../types/questionTypes';
-import { questions1to50 } from './questions1to50';
-import { restatementQuestions } from './restatementQuestions';
-import { vocabularyQuestions } from './vocabularyQuestions';
-import { restatementMediumQuestions } from './restatementMediumQuestions';
+import { restatementQuestions } from './by-type/restatementQuestions';
+import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestions';
+import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
+import { vocabularyQuestions } from './by-type/vocabularyQuestions';
 
-// מערך המאגד את כל השאלות מכל הקבצים
+// מערך המאגד את כל השאלות מכל הקבצים - מארגן לפי סוג שאלה
 export const allQuestions: Question[] = [
-  ...questions1to50,
   ...restatementQuestions,
+  ...sentenceCompletionQuestions,
+  ...readingComprehensionQuestions,
   ...vocabularyQuestions,
-  ...restatementMediumQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -68,7 +69,7 @@ export const getQuestionSetCount = (setId: number): number => {
 
 // הרץ בדיקה לכמות השאלות שנטענו
 console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
-console.log(`[Questions] Restatement Medium questions loaded: ${restatementMediumQuestions.length}`);
-// הוספת לוגים לבדיקה
-console.log('[Debug] Total questions loaded:', allQuestions.length);
-console.log('[Debug] Restatement Medium questions:', restatementMediumQuestions.length);
+console.log(`[Questions] Restatement questions loaded: ${restatementQuestions.length}`);
+console.log(`[Questions] Sentence completion questions loaded: ${sentenceCompletionQuestions.length}`);
+console.log(`[Questions] Reading comprehension questions loaded: ${readingComprehensionQuestions.length}`);
+console.log(`[Questions] Vocabulary questions loaded: ${vocabularyQuestions.length}`);

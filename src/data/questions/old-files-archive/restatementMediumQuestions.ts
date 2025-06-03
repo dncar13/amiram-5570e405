@@ -3,7 +3,7 @@ import { Question } from '../types/questionTypes';
 
 export const restatementMediumQuestions: Question[] = [
   {
-    id: 201,
+    id: 301,
     type: "restatement",
     text: "The university administration has determined that extending library hours during examination periods is financially unfeasible at this time.\n\nWhich statement best restates this information?",
     options: [
@@ -25,9 +25,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Look for the option that contains the exact same meaning as the original statement, without adding or changing any information."
-  },
-  {
-    id: 202,
+  },  {
+    id: 302,
     type: "restatement",
     text: "Students who fail to submit their assignments by the deadline will not be granted extensions except in cases of documented medical emergencies.\n\nWhich statement best restates this information?",
     options: [
@@ -49,9 +48,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Look for the option that preserves the original meaning and conditions without adding extra information."
-  },
-  {
-    id: 203,
+  },  {
+    id: 303,
     type: "restatement",
     text: "The professor's lecture was so engaging that even students who typically struggle to maintain focus remained attentive throughout the three-hour session.\n\nWhich statement best restates this information?",
     options: [
@@ -73,9 +71,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Focus on identifying the cause-effect relationship in the original statement and find the option that maintains the same relationship."
-  },
-  {
-    id: 204,
+  },  {
+    id: 304,
     type: "restatement",
     text: "The university's new policy requires all undergraduate students to complete at least one semester of study abroad before graduation, unless financial constraints make this impossible.\n\nWhich statement best restates this information?",
     options: [
@@ -97,9 +94,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Identify the main requirement and its exception in the original statement and find the option that maintains both accurately."
-  },
-  {
-    id: 205,
+  },  {
+    id: 305,
     type: "restatement",
     text: "Despite the availability of online resources, the majority of students still prefer consulting with professors during office hours when they encounter difficult concepts.\n\nWhich statement best restates this information?",
     options: [
@@ -121,9 +117,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Look for the option that maintains the contrast expressed in the original statement (despite X, Y still happens)."
-  },
-  {
-    id: 206,
+  },  {
+    id: 306,
     type: "restatement",
     text: "The dormitory renovation project, which was scheduled to be completed before the fall semester, has been delayed due to unexpected structural issues discovered during the initial phase of construction.\n\nWhich statement best restates this information?",
     options: [
@@ -145,9 +140,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Identify the initial plan, the current status, and the reason for any change in the original statement."
-  },
-  {
-    id: 207,
+  },  {
+    id: 307,
     type: "restatement",
     text: "Faculty members are encouraged, but not required, to incorporate digital learning tools into their curriculum, provided that these tools enhance rather than detract from the educational experience.\n\nWhich statement best restates this information?",
     options: [
@@ -169,9 +163,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Pay attention to the level of obligation expressed in the original statement and find the option that maintains the same level."
-  },
-  {
-    id: 208,
+  },  {
+    id: 308,
     type: "restatement",
     text: "While participation in class discussions constitutes 20% of the final grade, the professor acknowledges that quality of contributions is valued more highly than frequency.\n\nWhich statement best restates this information?",
     options: [
@@ -193,9 +186,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Focus on identifying the professor's stated priority in the grading system and find the option that accurately reflects it."
-  },
-  {
-    id: 209,
+  },  {
+    id: 309,
     type: "restatement",
     text: "The interdisciplinary research symposium welcomes submissions from graduate students across all departments, though preference will be given to collaborative projects that bridge multiple academic disciplines.\n\nWhich statement best restates this information?",
     options: [
@@ -217,9 +209,8 @@ export const restatementMediumQuestions: Question[] = [
     topicId: 2,
     categoryId: 1,
     tips: "Identify both the general rule and any stated preferences or exceptions in the original statement."
-  },
-  {
-    id: 210,
+  },  {
+    id: 310,
     type: "restatement",
     text: "The university's commitment to sustainability has resulted in a significant reduction in energy consumption across campus, although further improvements are still necessary to meet the institution's carbon neutrality goals.\n\nWhich statement best restates this information?",
     options: [
