@@ -92,19 +92,15 @@ const SimulationContent = ({
     return (
       <SimulationResults
         score={score}
-        totalQuestions={totalQuestions}
         questionsData={questionsData}
         userAnswers={userAnswersArray}
         questionFlags={questionFlagsArray}
-        currentScorePercentage={currentScorePercentage}
-        examMode={examMode}
-        showAnswersImmediately={showAnswersImmediately}
-        isQuestionSet={isQuestionSet}
-        setNumber={setNumber}
+        answeredQuestionsCount={answeredQuestionsCount}
+        correctQuestionsCount={correctQuestionsCount}
         onRestart={onRestart}
         onBackToTopics={onBackToTopics}
-        onResetProgress={onResetProgress}
         onNavigateToQuestion={onNavigateToQuestion}
+        isQuestionSet={isQuestionSet}
       />
     );
   }
