@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -131,10 +130,15 @@ const SimulationContent = ({
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
         userAnswers={userAnswersArray}
+        questionsData={questionsData}
         questionFlags={questionFlagsArray}
+        progressPercentage={progressPercentage}
+        currentScorePercentage={currentScorePercentage}
         onNavigateToQuestion={onNavigateToQuestion}
-        remainingTime={remainingTime}
-        isTimerActive={isTimerActive}
+        onToggleQuestionFlag={onToggleQuestionFlag}
+        onResetProgress={onResetProgress}
+        simulationType={isQuestionSet ? "question-set" : "topic"}
+        setNumber={setNumber}
       />
 
       {/* Question Display */}
