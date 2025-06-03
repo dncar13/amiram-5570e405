@@ -130,8 +130,8 @@ const SimulationContent = ({
       <NavigationPanel
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
-        userAnswers={userAnswers}
-        questionFlags={questionFlags}
+        userAnswers={userAnswersArray}
+        questionFlags={questionFlagsArray}
         onNavigateToQuestion={onNavigateToQuestion}
         remainingTime={remainingTime}
         isTimerActive={isTimerActive}
