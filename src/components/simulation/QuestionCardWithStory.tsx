@@ -159,17 +159,31 @@ const QuestionCardWithStory = ({
     }
   };
 
-  // Check if this question has a reading passage (story)
+  // תיקון הפונקציה - בדיקה אם יש קטע קריאה - תמיכה גם ב-passageText וגם ב-passageWithLines
   const hasReadingPassage = () => {
+    console.log('Checking for reading passage:', {
+      hasPassageWithLines: !!(currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0),
+      hasPassageText: !!currentQuestion.passageText,
+      hasPassageTitle: !!currentQuestion.passageTitle,
+      questionType: currentQuestion.type
+    });
+    
     return (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0) ||
-           (currentQuestion.passageTitle || currentQuestion.passageText);
+           currentQuestion.passageText ||
+           currentQuestion.passageTitle;
   };
 
-  // Render the reading passage for reading comprehension questions
+  // תיקון רינדור הקטע - תמיכה גם ב-passageText רגיל
   const renderReadingPassage = () => {
     if (!hasReadingPassage()) {
+      console.log('No reading passage found for question:', currentQuestion.id);
       return null;
     }
+
+    console.log('Rendering reading passage for question:', currentQuestion.id, {
+      passageText: currentQuestion.passageText,
+      passageWithLines: currentQuestion.passageWithLines
+    });
 
     return (
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
@@ -202,11 +216,18 @@ const QuestionCardWithStory = ({
                   </div>
                 </div>
               ))
-            ) : (
-              // Simple passage text
+            ) : currentQuestion.passageText ? (
+              // Simple passage text - תיקון חשוב כאן!
               <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
                 <p className="text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line">
                   {currentQuestion.passageText}
+                </p>
+              </div>
+            ) : (
+              // Fallback if only title exists
+              <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
+                <p className="text-gray-600 italic text-center">
+                  קטע קריאה זמין עבור שאלה זו
                 </p>
               </div>
             )}

@@ -1,3 +1,4 @@
+
 /**
  * אינדקס לשאלות מסווגות לפי סוג
  * מאפשר גישה מהירה לשאלות לפי קטגורית התוכן
@@ -10,7 +11,12 @@ import { allQuestions } from '../index';
  * מחזיר שאלות מסוג reading comprehension
  */
 export const getReadingComprehensionQuestions = (): Question[] => {
-  return allQuestions.filter(q => q.type === 'reading-comprehension');
+  const questions = allQuestions.filter(q => q.type === 'reading-comprehension');
+  console.log(`[getReadingComprehensionQuestions] Found ${questions.length} reading comprehension questions`);
+  questions.forEach(q => {
+    console.log(`Question ${q.id}: hasPassageText=${!!q.passageText}, hasPassageWithLines=${!!(q.passageWithLines && q.passageWithLines.length > 0)}`);
+  });
+  return questions;
 };
 
 /**

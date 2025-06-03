@@ -6,6 +6,7 @@ import { Question } from '../types/questionTypes';
 import { restatementQuestions } from './by-type/restatementQuestions';
 import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestions';
 import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
+import { readingComprehensionAdvancedQuestions } from './by-type/readingComprehensionAdvancedQuestions';
 import { vocabularyQuestions } from './by-type/vocabularyQuestions';
 
 // מערך המאגד את כל השאלות מכל הקבצים - מארגן לפי סוג שאלה
@@ -13,6 +14,7 @@ export const allQuestions: Question[] = [
   ...restatementQuestions,
   ...sentenceCompletionQuestions,
   ...readingComprehensionQuestions,
+  ...readingComprehensionAdvancedQuestions,
   ...vocabularyQuestions,
 ];
 
@@ -72,4 +74,11 @@ console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
 console.log(`[Questions] Restatement questions loaded: ${restatementQuestions.length}`);
 console.log(`[Questions] Sentence completion questions loaded: ${sentenceCompletionQuestions.length}`);
 console.log(`[Questions] Reading comprehension questions loaded: ${readingComprehensionQuestions.length}`);
+console.log(`[Questions] Reading comprehension advanced questions loaded: ${readingComprehensionAdvancedQuestions.length}`);
 console.log(`[Questions] Vocabulary questions loaded: ${vocabularyQuestions.length}`);
+
+// בדיקת שאלות הבנת הנקרא עם קטעים
+const readingQuestionsWithPassages = allQuestions.filter(q => 
+  q.type === 'reading-comprehension' && (q.passageText || q.passageWithLines)
+);
+console.log(`[Questions] Reading comprehension questions with passages: ${readingQuestionsWithPassages.length}`);
