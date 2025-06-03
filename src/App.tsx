@@ -9,7 +9,7 @@ import { SimulationSettingsProvider } from "@/context/SimulationSettingsContext"
 import { useEffect } from 'react';
 import Index from "./pages/Index";
 import Login from "./pages/Login";
-import Topics from "./pages/Topics";
+// import Topics from "./pages/Topics"; // מוסר כדי למנוע כפילות
 import SimulationSetup from "./pages/SimulationSetup";
 import Simulation from "./pages/Simulation";
 import TopicQuestions from "./pages/TopicQuestions"; 
@@ -52,12 +52,11 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <ScrollToTop />
-              <Routes>
+              <ScrollToTop />              <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/topics" element={<Topics />} />
-                <Route path="/topics/list" element={<Topics />} />
+                <Route path="/login" element={<Login />} />                <Route path="/topics" element={<SimulationsEntry />} />
+                <Route path="/topics/list" element={<SimulationsEntry />} />
+                <Route path="/simulations-entry/list" element={<SimulationsEntry />} />
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/topics/:topicId/intro" element={<SimulationSetup />} />
                 <Route path="/simulation/:topicId" element={<Simulation />} />

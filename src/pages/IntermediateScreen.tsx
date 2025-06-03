@@ -70,9 +70,8 @@ const IntermediateScreen = () => {
       navigate(`/simulation/${id}?continue=true`);
     }
   };
-
   const handleBackClick = () => {
-    navigate("/topics");
+    navigate("/simulations-entry");
   };
   
   // Check if we have a saved progress to show the continue button
@@ -84,10 +83,9 @@ const IntermediateScreen = () => {
     return (
       <>
         <Header />
-        <div className="max-w-4xl mx-auto py-8 px-4 text-center">
-          <h1 className="text-2xl font-bold mb-4">נושא לא נמצא</h1>
+        <div className="max-w-4xl mx-auto py-8 px-4 text-center">          <h1 className="text-2xl font-bold mb-4">נושא לא נמצא</h1>
           <p className="mb-6">הנושא שחיפשת אינו קיים במערכת.</p>
-          <Button onClick={() => navigate('/topics')}>חזרה לרשימת הנושאים</Button>
+          <Button onClick={() => navigate('/simulations-entry')}>חזרה לרשימת הנושאים</Button>
         </div>
         <Footer />
       </>

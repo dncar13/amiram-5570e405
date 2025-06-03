@@ -1,18 +1,18 @@
 
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import { Button } from "../components/ui/button";
 import { ArrowRight, List } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { RTLWrapper } from "@/components/ui/rtl-wrapper";
-import TopicCard from "@/components/topics/TopicCard";
-import { useAuth } from "@/context/AuthContext";
-import { topicsData } from "@/data/topicsData";
-import { categoryData } from "@/data/categories/categoryData";
-import { Input } from "@/components/ui/input";
+import { RTLWrapper } from "../components/ui/rtl-wrapper";
+import TopicCard from "../components/topics/TopicCard";
+import { useAuth } from "../context/AuthContext";
+import { topicsData } from "../data/topicsData";
+import { categoryData } from "../data/categories/categoryData";
+import { Input } from "../components/ui/input";
 import { Search } from "lucide-react";
-import StudyModes from "@/components/topics/StudyModes";
+import StudyModes from "../components/topics/StudyModes";
 
 const Topics = () => {
   const location = useLocation();

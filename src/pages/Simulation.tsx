@@ -157,7 +157,7 @@ const Simulation = () => {
     if (setId) {
       return "/questions-sets";
     } else {
-      return "/topics";
+      return "/simulations-entry";
     }
   };
 
@@ -237,12 +237,11 @@ const Simulation = () => {
             </div>
             <p className="text-gray-600 mb-6">
               {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
-            </p>
-            <Button 
+            </p>            <Button 
               onClick={() => navigate(handleBackToTopics())} 
               className="w-full bg-amber-600 hover:bg-amber-700"
             >
-              חזרה לרשימת הנושאים
+              {isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
             </Button>
           </div>
         </main>

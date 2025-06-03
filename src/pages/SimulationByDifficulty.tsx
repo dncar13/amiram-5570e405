@@ -120,11 +120,11 @@ const SimulationByDifficulty: React.FC = () => {
       </div>
     );
   }
-
   const handleStartPractice = (questionType?: string) => {
+    // For mixed practice (when no questionType is provided), use "mixed" as the type
     const path = questionType 
       ? `/simulation/difficulty/${currentDifficulty.level}/${questionType}`
-      : `/simulation/difficulty/${currentDifficulty.level}`;
+      : `/simulation/difficulty/${currentDifficulty.level}/mixed`;
     navigate(path);
   };
 

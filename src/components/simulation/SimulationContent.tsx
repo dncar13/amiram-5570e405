@@ -119,7 +119,6 @@ const SimulationContent = ({
   const hasReadingPassage = (question: Question) => {
     return question.passageWithLines && question.passageWithLines.length > 0;
   };
-
   // If no questions are available, redirect to empty state
   if (questionsData.length === 0) {
     return (
@@ -130,7 +129,7 @@ const SimulationContent = ({
             לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות.
           </p>
           <Button onClick={onBackToTopics} className="bg-amber-600 hover:bg-amber-700 text-white">
-            חזרה לרשימת הנושאים
+            {isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
           </Button>
         </div>
       </div>

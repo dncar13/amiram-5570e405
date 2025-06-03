@@ -5,12 +5,14 @@ import { Question } from '../types/questionTypes';
 import { questions1to50 } from './questions1to50';
 import { restatementQuestions } from './restatementQuestions';
 import { vocabularyQuestions } from './vocabularyQuestions';
+import { restatementMediumQuestions } from './restatementMediumQuestions';
 
 // מערך המאגד את כל השאלות מכל הקבצים
 export const allQuestions: Question[] = [
   ...questions1to50,
   ...restatementQuestions,
   ...vocabularyQuestions,
+  ...restatementMediumQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -63,3 +65,10 @@ export const getQuestionsBySet = (setId: number): Question[] => {
 export const getQuestionSetCount = (setId: number): number => {
   return getQuestionsBySet(setId).length;
 };
+
+// הרץ בדיקה לכמות השאלות שנטענו
+console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
+console.log(`[Questions] Restatement Medium questions loaded: ${restatementMediumQuestions.length}`);
+// הוספת לוגים לבדיקה
+console.log('[Debug] Total questions loaded:', allQuestions.length);
+console.log('[Debug] Restatement Medium questions:', restatementMediumQuestions.length);

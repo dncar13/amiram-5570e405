@@ -96,28 +96,25 @@ const Footer = () => {
             >
               נושאים פופולריים
             </h3>
-            <ul className="space-y-2">
-              <li>
+            <ul className="space-y-2">              <li>
                 <Link 
-                  to="/topics/1" 
+                  to="/topics/1/intro" 
                   className="text-gray-300 hover:text-white transition-colors"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
                   הבנת הנקרא
                 </Link>
-              </li>
-              <li>
+              </li>              <li>
                 <Link 
-                  to="/topics/2" 
+                  to="/topics/2/intro" 
                   className="text-gray-300 hover:text-white transition-colors"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
                   דקדוק אנגלי
                 </Link>
-              </li>
-              <li>
+              </li>              <li>
                 <Link 
-                  to="/topics/4" 
+                  to="/topics/4/intro" 
                   className="text-gray-300 hover:text-white transition-colors"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >

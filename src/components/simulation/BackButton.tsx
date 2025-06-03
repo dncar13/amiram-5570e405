@@ -16,7 +16,7 @@ export const BackButton = ({ isQuestionSet }: BackButtonProps) => {
         variant="ghost" 
         size="sm"
         className="text-gray-600 hover:text-gray-800 hover:bg-gray-100 -mr-2"
-        onClick={() => navigate(isQuestionSet ? "/questions-sets" : "/simulations")}
+        onClick={() => navigate(isQuestionSet ? "/questions-sets" : "/simulations-entry")}
       >
         <ChevronRight className="h-4 w-4 ml-1" />
         {isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לסימולציות"}

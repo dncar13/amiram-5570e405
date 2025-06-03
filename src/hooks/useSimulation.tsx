@@ -735,10 +735,8 @@ export const useSimulation = (
     setShowAnswersImmediately(settings.showAnswersImmediately);
     setIsTimerActive(settings.timerEnabled);
     setRemainingTime(settings.timerMinutes * 60);
-  };
-  
-  const handleBackToTopics = () => {
-    navigate("/topics");
+  };  const handleBackToTopics = () => {
+    return isQuestionSet ? "/questions-sets" : "/simulations-entry";
   };
   
   const resetProgress = () => {

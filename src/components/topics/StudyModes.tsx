@@ -174,11 +174,10 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
                   <span>הסברים מפורטים לכל שאלה</span>
                 </div>
               </div>
-              
-              <Button 
+                <Button 
                 variant="default"
                 className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-4 text-base font-semibold group-hover:scale-105 transition-all duration-200"
-                onClick={() => navigate("/topics/list")}
+                onClick={() => navigate("/simulations-entry/list")}
               >
                 התחל תרגול
                 <ArrowLeft className="h-4 w-4 mr-2" />
