@@ -1,4 +1,4 @@
-import { Question } from '../types/questionTypes';
+import { Question } from '../../types/questionTypes';
 
 /**
  * שאלות אוצר מילים (Vocabulary) - נוצר על ידי AI

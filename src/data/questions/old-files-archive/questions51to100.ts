@@ -1,5 +1,4 @@
-
-import { Question } from '../types/questionTypes';
+import { Question } from '../../types/questionTypes';
 
 export const questions51to100: Question[] = [
   // Complex reading passage - The Gig Economy

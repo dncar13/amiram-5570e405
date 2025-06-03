@@ -1,5 +1,4 @@
-
-import { Question } from '../types/questionTypes';
+import { Question } from '../../types/questionTypes';
 
 export const questions1to50: Question[] = [
   // Reading Comprehension Questions (1-3)

@@ -1,4 +1,4 @@
-import { Question, QuestionSet } from '../types/questionTypes';
+import { Question, QuestionSet } from '../../types/questionTypes';
 
 // Questions following the new structure from your example
 export const newQuestionSet: QuestionSet = {

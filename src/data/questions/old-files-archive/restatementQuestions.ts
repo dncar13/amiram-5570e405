@@ -1,4 +1,4 @@
-import { Question } from '../types/questionTypes';
+import { Question } from '../../types/questionTypes';
 
 /**
  * שאלות מסוג Restatement (הכותבת מחדש) - נוצר על ידי AI

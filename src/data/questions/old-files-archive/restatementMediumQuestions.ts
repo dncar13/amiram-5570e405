@@ -1,5 +1,5 @@
 // קובץ שאלות restatement ברמה בינונית
-import { Question } from '../types/questionTypes';
+import { Question } from '../../types/questionTypes';
 
 export const restatementMediumQuestions: Question[] = [
   {
