@@ -8,6 +8,7 @@ import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestio
 import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
 import { readingComprehensionAdvancedQuestions } from './by-type/readingComprehensionAdvancedQuestions';
 import { vocabularyQuestions } from './by-type/vocabularyQuestions';
+import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
 
 // מערך המאגד את כל השאלות מכל הקבצים - מארגן לפי סוג שאלה
 export const allQuestions: Question[] = [
@@ -16,6 +17,7 @@ export const allQuestions: Question[] = [
   ...readingComprehensionQuestions,
   ...readingComprehensionAdvancedQuestions,
   ...vocabularyQuestions,
+  ...gigEconomyReadingQuestions, // השאלות החדשות שלך!
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -76,6 +78,7 @@ console.log(`[Questions] Sentence completion questions loaded: ${sentenceComplet
 console.log(`[Questions] Reading comprehension questions loaded: ${readingComprehensionQuestions.length}`);
 console.log(`[Questions] Reading comprehension advanced questions loaded: ${readingComprehensionAdvancedQuestions.length}`);
 console.log(`[Questions] Vocabulary questions loaded: ${vocabularyQuestions.length}`);
+console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
 
 // בדיקת שאלות הבנת הנקרא עם קטעים
 const readingQuestionsWithPassages = allQuestions.filter(q => 
