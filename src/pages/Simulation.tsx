@@ -21,14 +21,16 @@ import {
   getRestatementQuestions 
 } from "@/services/questionsService";
 import { Question } from "@/data/types/questionTypes";
+import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
 
 const Simulation = () => {
   const navigate = useNavigate();
-  const { topicId, setId, level, type } = useParams<{ 
+  const { topicId, setId, level, type, storyId } = useParams<{ 
     topicId: string; 
     setId: string; 
     level: string; 
     type: string; 
+    storyId: string;
   }>();
   const [searchParams] = useSearchParams();
   const isContinue = searchParams.get('continue') === 'true' || window.sessionStorage.getItem('continue_simulation') === 'true';
@@ -40,7 +42,7 @@ const Simulation = () => {
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
     useEffect(() => {
-    console.log("Simulation component mounted or parameters changed", { topicId, setId, level, type, isContinue });
+    console.log("Simulation component mounted or parameters changed", { topicId, setId, level, type, storyId, isContinue });
     
     // Check if there's a reset parameter in the URL - only on first load
     if (!initialLoadAttempted.current) {
@@ -55,7 +57,10 @@ const Simulation = () => {
       }
     }
       // Save simulation mode in sessionStorage to survive refreshes
-    if (setId) {
+    if (storyId) {
+      window.sessionStorage.setItem('is_story_simulation', 'true');
+      window.sessionStorage.setItem('current_story_id', storyId);
+    } else if (setId) {
       window.sessionStorage.setItem('is_question_set', 'true');
     } else if (topicId) {
       window.sessionStorage.setItem('is_question_set', 'false');
@@ -72,14 +77,15 @@ const Simulation = () => {
       window.sessionStorage.removeItem('continue_simulation');
     }
     
-    // Check if we're doing a question set simulation vs a topic simulation
+    // Check if we're doing a story simulation
+    const storyFlag = window.sessionStorage.getItem('is_story_simulation');
     const questSetFlag = window.sessionStorage.getItem('is_question_set');
     setIsQuestionSet(questSetFlag === 'true');
     
-    console.log(`Simulation opened with ${questSetFlag === 'true' ? 'QUESTION SET' : level && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, level: ${level}, type: ${type}, continue: ${isContinue}`);
+    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : level && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, level: ${level}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
       // Store the current simulation IDs in sessionStorage to persist across refreshes
-    if (topicId) {
-      sessionStorage.setItem('current_topic_id', topicId);
+    if (storyId) {
+      sessionStorage.setItem('current_story_id', storyId);
     }
     
     if (setId) {
@@ -94,7 +100,7 @@ const Simulation = () => {
     // Force attempt load on first render
     initialLoadAttempted.current = true;
     
-  }, [topicId, setId, level, type, isContinue]);
+  }, [topicId, setId, level, type, storyId, isContinue]);
   // Get simulation data (questions, topic info, etc.)
   const { 
     isLoading, 
@@ -106,25 +112,33 @@ const Simulation = () => {
     error,
   } = useSimulationData(topicId, setId, isQuestionSet);
   
+  // Check if this is a story-based simulation
+  const isStoryBased = Boolean(storyId);
+  
+  // Get story-specific questions if this is a story simulation
+  const storyQuestions = isStoryBased ? getQuestionsByStory(storyId!) : [];
+  const story = isStoryBased ? getStoryById(storyId!) : undefined;
+  
   // Check if this is a difficulty-based simulation
   const isDifficultyBased = Boolean(level && type);
   
-  // Use setId if available, otherwise use topicId, but mark with special prefix for question sets
-  // For difficulty-based simulations, create a unique ID
-  const simulationId = isDifficultyBased 
-    ? `difficulty_${level}_${type}`
-    : setId 
-      ? `qs_${setId}` 
-      : topicId;
+  // Use appropriate simulation ID
+  const simulationId = isStoryBased
+    ? `story_${storyId}`
+    : isDifficultyBased 
+      ? `difficulty_${level}_${type}`
+      : setId 
+        ? `qs_${setId}` 
+        : topicId;
     
   // Ensure the simulationId is properly formatted for storage
   const formattedSimulationId = simulationId ? simulationId : '';
     // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet);
   
-  // For difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = isDifficultyBased ? simulation.questions : topicQuestions;
-  const effectiveIsLoading = isDifficultyBased ? false : isLoading;
+  // For story-based simulations, use story questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = isStoryBased ? storyQuestions : isDifficultyBased ? simulation.questions : topicQuestions;
+  const effectiveIsLoading = (isDifficultyBased || isStoryBased) ? false : isLoading;
   
   useEffect(() => {
     if (contentRef.current) {
@@ -179,7 +193,9 @@ const Simulation = () => {
   ]);
     // Handle navigation to topics
   const handleBackToTopics = () => {
-    if (isDifficultyBased) {
+    if (isStoryBased) {
+      return "/reading-comprehension";
+    } else if (isDifficultyBased) {
       return `/simulation/difficulty/${level}`;
     } else if (setId) {
       return "/questions-sets";
@@ -262,11 +278,12 @@ const Simulation = () => {
             </div>
             <p className="text-gray-600 mb-6">
               {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
-            </p>            <Button 
+            </p>
+            <Button 
               onClick={() => navigate(handleBackToTopics())} 
               className="w-full bg-amber-600 hover:bg-amber-700"
             >
-              {isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
+              {isStoryBased ? "חזרה לסיפורי הבנת הנקרא" : isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
             </Button>
           </div>
         </main>
@@ -282,9 +299,12 @@ const Simulation = () => {
         <div className="container mx-auto px-4 max-w-5xl">
           
           {/* כפתור חזרה - מעל הכל */}
-          <BackButton isQuestionSet={isQuestionSet} />          {/* כותרת הסימולציה */}
+          <BackButton isQuestionSet={isQuestionSet} />
+          
+          {/* כותרת הסימולציה */}
           <SimulationHeader 
             topicTitle={
+              isStoryBased ? story?.title || 'הבנת הנקרא' :
               isDifficultyBased ? `${level === 'easy' ? 'רמה קלה' : level === 'medium' ? 'רמה בינונית' : 'רמה קשה'} - ${type === 'mixed' ? 'תרגול מעורב' : type === 'restatement' ? 'ניסוח מחדש' : type}` :
               setId ? questionSetTitle : 
               (isComprehensiveExam ? topic?.title : topic?.title || "")} 
@@ -307,7 +327,8 @@ const Simulation = () => {
             selectedAnswerIndex={simulation.selectedAnswerIndex}
             isAnswerSubmitted={simulation.isAnswerSubmitted}
             showExplanation={simulation.showExplanation}
-            score={simulation.score}            questionsData={questionsToUse}
+            score={simulation.score}
+            questionsData={questionsToUse}
             userAnswers={simulation.userAnswers}
             questionFlags={simulation.questionFlags}
             answeredQuestionsCount={simulation.answeredQuestionsCount}

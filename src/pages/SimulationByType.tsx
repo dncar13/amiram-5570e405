@@ -95,16 +95,24 @@ const SimulationByType: React.FC = () => {
   }
 
   const handleStartPractice = (difficulty?: string) => {
+    // Special handling for reading comprehension - redirect to story selection
+    if (currentType?.type === 'reading-comprehension') {
+      navigate('/reading-comprehension');
+      return;
+    }
+    
     const path = difficulty 
       ? `/simulation/${currentType.type}/${difficulty}`
       : `/simulation/${currentType.type}`;
     navigate(path);
   };
+
   return (
     <>
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
         <div className="max-w-6xl mx-auto">
+        
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -149,7 +157,10 @@ const SimulationByType: React.FC = () => {
           >
             <h2 className="text-2xl font-bold text-gray-800 mb-6">תרגול מהיר</h2>
             <p className="text-gray-600 mb-6">
-              התחל תרגול מיידי עם שאלות מעורבות בנושא זה
+              {currentType?.type === 'reading-comprehension' 
+                ? 'בחר סיפור ותתחיל סימולציה של שאלות הבנת הנקרא'
+                : 'התחל תרגול מיידי עם שאלות מעורבות בנושא זה'
+              }
             </p>
             
             <div className="space-y-4">
@@ -159,30 +170,35 @@ const SimulationByType: React.FC = () => {
               >
                 <div className="flex items-center justify-center">
                   <Clock className="w-5 h-5 ml-2" />
-                  התחל תרגול (10 שאלות)
+                  {currentType?.type === 'reading-comprehension' 
+                    ? 'בחר סיפור לתרגול'
+                    : 'התחל תרגול (10 שאלות)'
+                  }
                 </div>
               </button>
               
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => handleStartPractice('easy')}
-                  className="py-3 px-4 bg-green-100 text-green-700 rounded-lg font-medium hover:bg-green-200 transition-colors"
-                >
-                  קל
-                </button>
-                <button
-                  onClick={() => handleStartPractice('medium')}
-                  className="py-3 px-4 bg-yellow-100 text-yellow-700 rounded-lg font-medium hover:bg-yellow-200 transition-colors"
-                >
-                  בינוני
-                </button>
-                <button
-                  onClick={() => handleStartPractice('hard')}
-                  className="py-3 px-4 bg-red-100 text-red-700 rounded-lg font-medium hover:bg-red-200 transition-colors"
-                >
-                  קשה
-                </button>
-              </div>
+              {currentType?.type !== 'reading-comprehension' && (
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    onClick={() => handleStartPractice('easy')}
+                    className="py-3 px-4 bg-green-100 text-green-700 rounded-lg font-medium hover:bg-green-200 transition-colors"
+                  >
+                    קל
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('medium')}
+                    className="py-3 px-4 bg-yellow-100 text-yellow-700 rounded-lg font-medium hover:bg-yellow-200 transition-colors"
+                  >
+                    בינוני
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('hard')}
+                    className="py-3 px-4 bg-red-100 text-red-700 rounded-lg font-medium hover:bg-red-200 transition-colors"
+                  >
+                    קשה
+                  </button>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -214,70 +230,73 @@ const SimulationByType: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Practice Modes */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl shadow-lg p-8"
-        >
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">מצבי תרגול</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                  <Clock className="w-8 h-8 text-blue-600" />
+        {/* Practice Modes - Only show for non-reading-comprehension types */}
+        {currentType?.type !== 'reading-comprehension' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="bg-white rounded-2xl shadow-lg p-8"
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">מצבי תרגול</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 transition-colors cursor-pointer group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
+                    <Clock className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מתוזמן</h3>
+                  <p className="text-gray-600 text-sm">
+                    תרגול עם הגבלת זמן כמו במבחן האמיתי
+                  </p>
+                  <button 
+                    onClick={() => navigate(`/simulation/${currentType.type}/timed`)}
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                  >
+                    התחל
+                  </button>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מתוזמן</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול עם הגבלת זמן כמו במבחן האמיתי
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/timed`)}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  התחל
-                </button>
               </div>
-            </div>
 
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-                  <Target className="w-8 h-8 text-green-600" />
+              <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 transition-colors cursor-pointer group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
+                    <Target className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול ממוקד</h3>
+                  <p className="text-gray-600 text-sm">
+                    תרגול ללא הגבלת זמן עם הסברים מפורטים
+                  </p>
+                  <button 
+                    onClick={() => navigate(`/simulation/${currentType.type}/practice`)}
+                    className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                  >
+                    התחל
+                  </button>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול ממוקד</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול ללא הגבלת זמן עם הסברים מפורטים
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/practice`)}
-                  className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
-                >
-                  התחל
-                </button>
               </div>
-            </div>
 
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-                  <TrendingUp className="w-8 h-8 text-purple-600" />
+              <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 transition-colors cursor-pointer group">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
+                    <TrendingUp className="w-8 h-8 text-purple-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מותאם אישית</h3>
+                  <p className="text-gray-600 text-sm">
+                    תרגול מותאם לרמה שלך עם AI מתקדם
+                  </p>
+                  <button 
+                    onClick={() => navigate(`/simulation/${currentType.type}/adaptive`)}
+                    className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
+                  >
+                    התחל
+                  </button>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מותאם אישית</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול מותאם לרמה שלך עם AI מתקדם
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/adaptive`)}
-                  className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
-                >
-                  התחל
-                </button>
               </div>
             </div>
-          </div>        </motion.div>
+          </motion.div>
+        )}
       </div>
     </div>
     <Footer />

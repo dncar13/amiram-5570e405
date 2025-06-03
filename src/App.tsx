@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,7 +8,6 @@ import { SimulationSettingsProvider } from "@/context/SimulationSettingsContext"
 import { useEffect } from 'react';
 import Index from "./pages/Index";
 import Login from "./pages/Login";
-// import Topics from "./pages/Topics"; // מוסר כדי למנוע כפילות
 import SimulationSetup from "./pages/SimulationSetup";
 import Simulation from "./pages/Simulation";
 import TopicQuestions from "./pages/TopicQuestions"; 
@@ -29,6 +27,7 @@ import SimulationByType from "./pages/SimulationByType";
 import SimulationByDifficulty from "./pages/SimulationByDifficulty";
 import FullSimulation from "./pages/FullSimulation";
 import SimulationHistory from "./pages/SimulationHistory";
+import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 
 // ScrollToTop component that uses the location to scroll on every navigation
 const ScrollToTop = () => {
@@ -52,9 +51,11 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <ScrollToTop />              <Routes>
+              <ScrollToTop />
+              <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/login" element={<Login />} />                <Route path="/topics" element={<SimulationsEntry />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/topics" element={<SimulationsEntry />} />
                 <Route path="/topics/list" element={<SimulationsEntry />} />
                 <Route path="/simulations-entry/list" element={<SimulationsEntry />} />
                 <Route path="/categories" element={<Categories />} />
@@ -70,11 +71,16 @@ const App = () => (
                 <Route path="/account" element={<UserAccount />} />
                 <Route path="/admin" element={<AdminPanel />} />
                 <Route path="/admin/questions" element={<AdminPanel />} />
-                <Route path="/admin/topics" element={<AdminPanel />} />                <Route path="/questions-sets" element={<QuestionsSets />} />
+                <Route path="/admin/topics" element={<AdminPanel />} />
+                <Route path="/questions-sets" element={<QuestionsSets />} />
                 <Route path="/questions-set/:setId/intro" element={<QuestionsSetPreparation />} />
                 <Route path="/questions-set/:setId" element={<Simulation />} />
                 
-                {/* New Simulations Entry Routes */}
+                {/* New Reading Comprehension Routes */}
+                <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
+                <Route path="/simulation/story/:storyId" element={<Simulation />} />
+                
+                {/* Existing Simulations Entry Routes */}
                 <Route path="/simulations-entry" element={<SimulationsEntry />} />
                 <Route path="/simulation/full" element={<FullSimulation />} />
                 <Route path="/simulation/by-type" element={<SimulationsEntry />} />
