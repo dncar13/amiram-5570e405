@@ -159,31 +159,36 @@ const QuestionCardWithStory = ({
     }
   };
 
-  // תיקון הפונקציה - בדיקה אם יש קטע קריאה - תמיכה גם ב-passageText וגם ב-passageWithLines
-  const hasReadingPassage = () => {
-    console.log('Checking for reading passage:', {
-      hasPassageWithLines: !!(currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0),
-      hasPassageText: !!currentQuestion.passageText,
-      hasPassageTitle: !!currentQuestion.passageTitle,
-      questionType: currentQuestion.type
-    });
+  // פונקציה לבניית הטקסט המלא של הקטע - מציגה את כל הסיפור
+  const getFullPassageText = () => {
+    // אם יש passageText רגיל, השתמש בו
+    if (currentQuestion.passageText) {
+      return currentQuestion.passageText;
+    }
     
-    return (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0) ||
-           currentQuestion.passageText ||
-           currentQuestion.passageTitle;
+    // אם יש passageWithLines, צור טקסט אחד רציף מכל השורות
+    if (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0) {
+      return currentQuestion.passageWithLines.map(line => line.text).join(' ');
+    }
+    
+    return null;
   };
 
-  // תיקון רינדור הקטע - תמיכה גם ב-passageText רגיל
-  const renderReadingPassage = () => {
+  // בדיקה אם יש קטע קריאה
+  const hasReadingPassage = () => {
+    return getFullPassageText() !== null || currentQuestion.passageTitle;
+  };
+
+  // רינדור הקטע המלא
+  const renderFullReadingPassage = () => {
+    const fullText = getFullPassageText();
+    
     if (!hasReadingPassage()) {
       console.log('No reading passage found for question:', currentQuestion.id);
       return null;
     }
 
-    console.log('Rendering reading passage for question:', currentQuestion.id, {
-      passageText: currentQuestion.passageText,
-      passageWithLines: currentQuestion.passageWithLines
-    });
+    console.log('Rendering full reading passage for question:', currentQuestion.id);
 
     return (
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
@@ -195,42 +200,12 @@ const QuestionCardWithStory = ({
           </h4>
         </div>
         
-        {/* Content */}
-        <div className="p-6 max-h-[70vh] overflow-y-auto">
-          <div className="space-y-5">
-            {currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0 ? (
-              // Structured passage with line numbers
-              currentQuestion.passageWithLines.map((line) => (
-                <div key={line.lineNumber} className="flex gap-4 group">
-                  {currentQuestion.lineNumbers && (
-                    <div className="flex-shrink-0 w-16 text-center">
-                      <span className="inline-block text-sm text-blue-700 font-mono bg-blue-100 px-3 py-1.5 rounded-lg border border-blue-200 shadow-sm">
-                        {line.startLine}-{line.endLine}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex-1 bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-blue-100 shadow-sm group-hover:shadow-md transition-shadow">
-                    <p className="text-gray-800 leading-relaxed text-lg font-medium">
-                      {line.text}
-                    </p>
-                  </div>
-                </div>
-              ))
-            ) : currentQuestion.passageText ? (
-              // Simple passage text - תיקון חשוב כאן!
-              <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
-                <p className="text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line">
-                  {currentQuestion.passageText}
-                </p>
-              </div>
-            ) : (
-              // Fallback if only title exists
-              <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
-                <p className="text-gray-600 italic text-center">
-                  קטע קריאה זמין עבור שאלה זו
-                </p>
-              </div>
-            )}
+        {/* Content - כל הטקסט */}
+        <div className="p-6">
+          <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
+            <p className="text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line">
+              {fullText || "קטע קריאה זמין עבור שאלה זו"}
+            </p>
           </div>
         </div>
       </div>
@@ -289,10 +264,10 @@ const QuestionCardWithStory = ({
         <CardContent className="p-6">
           {/* Layout depends on question type */}
           <div className="space-y-8">
-            {/* Reading Passage - Only show if it exists */}
+            {/* Reading Passage - כל הסיפור מוצג עבור כל שאלה */}
             {hasReadingPassage() && (
               <div className="w-full">
-                {renderReadingPassage()}
+                {renderFullReadingPassage()}
               </div>
             )}
 
