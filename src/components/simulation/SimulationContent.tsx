@@ -1,5 +1,4 @@
 
-
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -95,8 +94,8 @@ const SimulationContent = ({
         score={score}
         totalQuestions={totalQuestions}
         questionsData={questionsData}
-        userAnswers={userAnswers}
-        questionFlags={questionFlags}
+        userAnswers={userAnswersArray}
+        questionFlags={questionFlagsArray}
         currentScorePercentage={currentScorePercentage}
         examMode={examMode}
         showAnswersImmediately={showAnswersImmediately}
