@@ -1,3 +1,4 @@
+
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -115,13 +116,8 @@ const SimulationContent = ({
   });
 
   // Convert Record objects to arrays for child components that expect arrays
-  const userAnswersArray: (number | null)[] = [];
-  const questionFlagsArray: boolean[] = [];
-  
-  for (let i = 0; i < totalQuestions; i++) {
-    userAnswersArray[i] = userAnswers[i] ?? null;
-    questionFlagsArray[i] = questionFlags[i] ?? false;
-  }
+  const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
+  const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
 
   return (
     <div className="space-y-6">
