@@ -85,6 +85,10 @@ const SimulationContent = ({
     questionText: currentQuestion?.text?.substring(0, 50) + '...'
   });
 
+  // Convert Record objects to arrays for child components that expect arrays
+  const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
+  const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
+
   if (simulationComplete) {
     return (
       <SimulationResults
@@ -115,10 +119,6 @@ const SimulationContent = ({
     questionType: currentQuestion?.type,
     willUseStoryCard: isReadingComprehensionWithPassage
   });
-
-  // Convert Record objects to arrays for child components that expect arrays
-  const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
-  const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
 
   return (
     <div className="space-y-6">
