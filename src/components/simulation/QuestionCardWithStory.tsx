@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen, BarChart3, ChevronUp, ChevronDown } from "lucide-react";
+import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen } from "lucide-react";
 import { Question } from "@/data/questionsData";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/context/AuthContext";
@@ -24,6 +24,7 @@ interface QuestionCardWithStoryProps {
   answeredQuestionsCount: number;
   correctQuestionsCount: number;
   progressPercentage: number;
+  storyTitle?: string;
   onAnswerSelect: (index: number) => void;
   onSubmitAnswer: () => void;
   onNextQuestion: () => void;
@@ -46,6 +47,7 @@ const QuestionCardWithStory = ({
   answeredQuestionsCount,
   correctQuestionsCount,
   progressPercentage,
+  storyTitle,
   onAnswerSelect,
   onSubmitAnswer,
   onNextQuestion,
@@ -53,12 +55,10 @@ const QuestionCardWithStory = ({
   onToggleExplanation,
   onToggleQuestionFlag,
   onEditQuestion
-}: QuestionCardWithStoryProps) => {
-  const { isAdmin, isPremium } = useAuth();
+}: QuestionCardWithStoryProps) => {  const { isAdmin, isPremium } = useAuth();
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
   const [showTip, setShowTip] = useState(false);
-  const [showProgressDetails, setShowProgressDetails] = useState(false);
   
   // Control tips display - set to false to hide all tips
   const SHOW_TIPS = false;
@@ -143,20 +143,24 @@ const QuestionCardWithStory = ({
 
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
-  const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
-
-  // Get question type badge - using the 'type' property instead of 'questionType'
+  const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);  // Get question type badge - using the 'type' property instead of 'questionType'
   const getQuestionTypeBadge = () => {
     switch (currentQuestion.type) {
       case 'reading-comprehension':
-        return 'Reading Comprehension';
+        return <span dir="ltr" style={{direction: 'ltr'}}>Reading Comprehension</span>;
       case 'sentence-completion':
-        return 'Sentence Completion';
+        return <span dir="ltr" style={{direction: 'ltr'}}>Sentence Completion</span>;
       case 'restatement':
-        return 'Restatement';
+        return <span dir="ltr" style={{direction: 'ltr'}}>Restatement</span>;
       default:
         return 'Question';
-    }
+    }  };
+
+  // פונקציה לזיהוי אם טקסט הוא באנגלית
+  const isEnglishText = (text: string) => {
+    if (!text) return false;
+    const englishPattern = /^[a-zA-Z0-9\s.,!?;:()\-'"]+$/;
+    return englishPattern.test(text.trim());
   };
 
   // פונקציה לבניית הטקסט המלא של הקטע - מציגה את כל הסיפור
@@ -190,26 +194,37 @@ const QuestionCardWithStory = ({
 
     console.log('Rendering full reading passage for question:', currentQuestion.id);
 
-    return (
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl">
-          <h4 className="text-xl font-bold text-white flex items-center gap-3">
-            <BookOpen className="h-6 w-6" />
-            {currentQuestion.passageTitle || "Reading Passage"}
-          </h4>
-        </div>
-        
-        {/* Content - כל הטקסט */}
-        <div className="p-6">
-          <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
-            <p className="text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line">
-              {fullText || "קטע קריאה זמין עבור שאלה זו"}
-            </p>
+return (
+  <div className="w-full flex justify-start"> {/* Force left alignment container */}
+    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm max-w-4xl"> {/* Add max-width here */}
+      {/* Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl">
+        <h4 className="text-xl font-bold text-white flex items-center gap-3">
+          <BookOpen className="h-6 w-6" />
+          <span dir="ltr" style={{direction: 'ltr'}}>{storyTitle || currentQuestion.passageTitle || "Reading Passage"}</span>
+        </h4>
+      </div>
+      {/* Content - כל הטקסט */}
+      <div className="p-6">
+        <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
+          <div 
+            className={cn(
+              "text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line",
+              isEnglishText(fullText || "") ? "text-left" : "text-right"
+            )}
+            dir={isEnglishText(fullText || "") ? "ltr" : "rtl"}
+            style={{
+              direction: isEnglishText(fullText || "") ? 'ltr' : 'rtl',
+              textAlign: isEnglishText(fullText || "") ? 'left' : 'right'
+            }}
+          >
+            {fullText || "קטע קריאה זמין עבור שאלה זו"}
           </div>
         </div>
       </div>
-    );
+    </div>
+  </div>
+);
   };
 
   return (
@@ -217,24 +232,37 @@ const QuestionCardWithStory = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="max-w-7xl mx-auto"
+      className="max-w-7xl"
     >
-      <Card className="border-0 shadow-lg bg-white">
-        <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-t-xl">
+      <Card className="border-0 shadow-lg bg-white">        <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-t-xl">
           <div className="flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
-                שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
-              </Badge>
-              <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
-                {getQuestionTypeBadge()}
-              </Badge>
-              {localIsSaved && (
-                <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20">
-                  <Flag className="h-3 w-3 fill-current" />
-                  <span>נשמר</span>
+            <div className="flex flex-col gap-2">              <div className="flex items-center gap-3">
+                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20" dir="ltr" style={{direction: 'ltr'}}>
+                  Question {currentQuestionIndex + 1} of {totalQuestions}
                 </Badge>
+                <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
+                  {getQuestionTypeBadge()}
+                </Badge>                {localIsSaved && (
+                  <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20" dir="ltr" style={{direction: 'ltr'}}>
+                    <Flag className="h-3 w-3 fill-current" />
+                    <span>Saved</span>
+                  </Badge>
+                )}
+              </div>
+                {/* Story name */}
+              {currentQuestion.passageTitle && (
+                <div 
+                  className="text-white/90 text-sm font-medium"
+                  dir={isEnglishText(currentQuestion.passageTitle) ? "ltr" : "rtl"}
+                  style={isEnglishText(currentQuestion.passageTitle) ? {direction: 'ltr'} : {}}
+                >
+                  {currentQuestion.passageTitle}
+                </div>
               )}
+                {/* Progress line */}
+              <div className="text-white/80 text-sm" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
+                Progress: {currentQuestionIndex + 1} / {totalQuestions} Questions
+              </div>
             </div>
             
             <div className="flex items-center gap-2">
@@ -262,19 +290,25 @@ const QuestionCardWithStory = ({
         </div>
 
         <CardContent className="p-6">
-          {/* Layout depends on question type */}
-          <div className="space-y-8">
-            {/* Reading Passage - כל הסיפור מוצג עבור כל שאלה */}
+          {/* Layout depends on question type */}          <div className="space-y-8">            {/* Reading Passage - כל הסיפור מוצג עבור כל שאלה */}
             {hasReadingPassage() && (
               <div className="w-full">
                 {renderFullReadingPassage()}
               </div>
             )}
 
-            {/* Question and Options */}
-            <div className="w-full">
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <h3 className="text-2xl font-bold mb-6 text-gray-900 leading-relaxed">
+            {/* Question and Options */}<div className="w-full">
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">                <h3 
+                  className={cn(
+                    "text-2xl font-bold mb-6 text-gray-900 leading-relaxed",
+                    isEnglishText(questionText) ? "text-left" : "text-right"
+                  )}
+                  dir={isEnglishText(questionText) ? "ltr" : "rtl"}
+                  style={{
+                    direction: isEnglishText(questionText) ? 'ltr' : 'rtl',
+                    textAlign: isEnglishText(questionText) ? 'left' : 'right'
+                  }}
+                >
                   {questionText}
                 </h3>
                 
@@ -309,10 +343,9 @@ const QuestionCardWithStory = ({
                               selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
                           )}
                           onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                          disabled={isAnswerSubmitted}
-                        >
+                          disabled={isAnswerSubmitted}                        >
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 flex-1">
+                            <div className="flex items-center gap-4 flex-1" dir="ltr" style={{ direction: 'ltr' }}>
                               <div className={cn(
                                 "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
                                 selectedAnswerIndex === index 
@@ -327,18 +360,25 @@ const QuestionCardWithStory = ({
                               )}>
                                 {index + 1}
                               </div>
-                              <span className={cn(
-                                "flex-grow leading-relaxed text-lg font-medium text-right",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
-                                isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
-                                isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
-                              )}>
+                              <span 
+                                className={cn(
+                                  "flex-grow leading-relaxed text-lg font-medium",
+                                  isEnglishText(option) ? "text-left" : "text-right",
+                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
+                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
+                                  isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
+                                )}
+                                dir={isEnglishText(option) ? "ltr" : "rtl"}
+                                style={{
+                                  direction: isEnglishText(option) ? 'ltr' : 'rtl',
+                                  textAlign: isEnglishText(option) ? 'left' : 'right'
+                                }}
+                              >
                                 {option}
                               </span>
-                            </div>
-                            
+                            </div>                            
                             {isAnswerSubmitted && showCorrectAnswer && (
-                              <div className="flex-shrink-0 ml-4">
+                              <div className="flex-shrink-0 mr-4">
                                 {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
                                   <CheckCircle className="h-7 w-7 text-green-600" />
                                 )}
@@ -396,13 +436,14 @@ const QuestionCardWithStory = ({
 
                 {/* Submit/Navigation buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-end">
-                  {!isAnswerSubmitted ? (
-                    <Button 
+                  {!isAnswerSubmitted ? (                    <Button 
                       onClick={onSubmitAnswer} 
                       className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
                       disabled={selectedAnswerIndex === null}
+                      dir="ltr"
+                      style={{direction: 'ltr'}}
                     >
-                      הגש תשובה
+                      Submit Answer
                     </Button>
                   ) : (
                     <div className="flex gap-4 w-full sm:w-auto">
@@ -414,19 +455,20 @@ const QuestionCardWithStory = ({
                         >
                           {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
                         </Button>
-                      )}
-                        <Button 
+                      )}                        <Button 
                         onClick={onNextQuestion} 
                         className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium text-base px-6 py-3"
+                        dir="ltr"
+                        style={{direction: 'ltr'}}
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
-                            הבא
+                            Next
                             <ChevronLeft className="h-5 w-5 mr-2" />
                           </>
                         ) : (
                           <>
-                            סיים בחינה
+                            Finish Exam
                             <Trophy className="h-5 w-5 mr-2" />
                           </>
                         )}
@@ -467,151 +509,8 @@ const QuestionCardWithStory = ({
                   )}
                 </div>
               </motion.div>
-            )}
-          </AnimatePresence>
+            )}        </AnimatePresence>
         </CardContent>
-
-        {/* Enhanced Comprehensive Progress Bar */}
-        <div className="px-6 pb-6">
-          <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl shadow-md border border-gray-200">
-            {/* Header Section */}
-            <div 
-              className="cursor-pointer" 
-              onClick={() => setShowProgressDetails(!showProgressDetails)}
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-600 rounded-lg">
-                    <BarChart3 className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-gray-800">התקדמות במבחן</h3>
-                    <p className="text-sm text-gray-600">שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-blue-600">{Math.round(progressPercentage)}%</div>
-                    <div className="text-xs text-gray-500">הושלם</div>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: showProgressDetails ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronDown className="h-5 w-5 text-gray-400" />
-                  </motion.div>
-                </div>
-              </div>
-              
-              {/* Main Progress Bar */}
-              <div className="w-full bg-gray-300 rounded-full h-4 shadow-inner">
-                <div 
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 h-4 rounded-full transition-all duration-500 ease-out relative overflow-hidden" 
-                  style={{ width: `${progressPercentage}%` }}
-                >
-                  <div className="absolute inset-0 bg-white/20 animate-pulse rounded-full"></div>
-                </div>
-              </div>
-            </div>
-            
-            {/* Detailed Statistics */}
-            <AnimatePresence>
-              {showProgressDetails && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="overflow-hidden mt-6"
-                >
-                  {/* Statistics Grid */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="bg-white rounded-lg p-4 border border-blue-200 shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-blue-100 rounded-lg">
-                          <AlertCircle className="h-5 w-5 text-blue-600" />
-                        </div>
-                        <div>
-                          <div className="text-2xl font-bold text-blue-600">{answeredQuestionsCount}</div>
-                          <div className="text-sm text-gray-600">שאלות שנענו</div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white rounded-lg p-4 border border-green-200 shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-green-100 rounded-lg">
-                          <CheckCircle className="h-5 w-5 text-green-600" />
-                        </div>
-                        <div>
-                          <div className="text-2xl font-bold text-green-600">{correctQuestionsCount}</div>
-                          <div className="text-sm text-gray-600">תשובות נכונות</div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-white rounded-lg p-4 border border-red-200 shadow-sm">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-red-100 rounded-lg">
-                          <XCircle className="h-5 w-5 text-red-600" />
-                        </div>
-                        <div>
-                          <div className="text-2xl font-bold text-red-600">{answeredQuestionsCount - correctQuestionsCount}</div>
-                          <div className="text-sm text-gray-600">תשובות שגויות</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Accuracy Percentage */}
-                  {answeredQuestionsCount > 0 && (
-                    <div className="bg-white rounded-lg p-4 border border-gray-200">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <Trophy className="h-5 w-5 text-amber-500" />
-                          <span className="font-semibold text-gray-700">אחוז הצלחה</span>
-                        </div>
-                        <span className={cn(
-                          "text-2xl font-bold",
-                          (correctQuestionsCount / answeredQuestionsCount) * 100 >= 60 
-                            ? "text-green-600" 
-                            : "text-red-600"
-                        )}>
-                          {Math.round((correctQuestionsCount / answeredQuestionsCount) * 100)}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3">
-                        <div 
-                          className={cn(
-                            "h-3 rounded-full transition-all duration-500",
-                            (correctQuestionsCount / answeredQuestionsCount) * 100 >= 60
-                              ? "bg-gradient-to-r from-green-400 to-green-600"
-                              : "bg-gradient-to-r from-red-400 to-red-600"
-                          )}
-                          style={{ width: `${(correctQuestionsCount / answeredQuestionsCount) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Remaining Questions */}
-                  <div className="bg-white rounded-lg p-4 border border-gray-200 mt-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <BookOpen className="h-5 w-5 text-gray-500" />
-                        <span className="font-semibold text-gray-700">שאלות נותרות</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-gray-600">{totalQuestions - (currentQuestionIndex + 1)}</div>
-                        <div className="text-xs text-gray-500">שאלות</div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
       </Card>
     </motion.div>
   );

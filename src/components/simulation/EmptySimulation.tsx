@@ -12,25 +12,21 @@ export const EmptySimulation = ({ isQuestionSet }: EmptySimulationProps) => {
   const navigate = useNavigate();
   
   return (
-    <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
-      <Header />
-      <main className="flex-grow py-4 md:py-6">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="text-center py-12">
+    <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">      <Header />      <main className="flex-grow py-4 md:py-6">        <div className="container mx-auto px-4 max-w-5xl" dir="ltr" style={{direction: 'ltr'}}>
+          <div className="text-left py-12">
             <h2 className="text-2xl font-bold text-electric-navy mb-4">
-              {isQuestionSet ? "אין שאלות בקבוצה זו" : "אין שאלות לנושא זה"}
-            </h2>
-            <p className="text-electric-slate mb-6">
+              {isQuestionSet ? "No questions in this set" : "No questions for this topic"}
+            </h2>            <p className="text-electric-slate mb-6">
               {isQuestionSet 
-                ? "קבוצת שאלות זו אינה מכילה שאלות כרגע. אנא בחר קבוצה אחרת."
-                : "נושא זה אינו מכיל שאלות כרגע. אנא בחר נושא אחר."
+                ? "This question set does not contain any questions at the moment. Please select another set."
+                : "This topic does not contain any questions at the moment. Please select another topic."
               }
             </p>
             <Button 
               onClick={() => navigate(isQuestionSet ? "/questions-sets" : "/simulations-entry")}
               className="bg-electric-blue hover:bg-blue-600"
             >
-              {isQuestionSet ? "חזרה לרשימת הקבוצות" : "חזרה לרשימת הנושאים"}
+              {isQuestionSet ? "Back to Question Sets" : "Back to Topics"}
             </Button>
           </div>
         </div>

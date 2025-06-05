@@ -130,19 +130,17 @@ const NavigationPanel = ({
       </Button>
     );
   };
-
-  // רנדור רשימת כפתורים
+  // Render list of question buttons
   const renderQuestionList = (indices: number[]) => {
     if (indices.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center py-8 text-gray-500">
-          <p className="text-sm">אין שאלות להצגה</p>
+        <div className="flex flex-col items-center justify-center py-8 text-gray-500" dir="ltr" style={{direction: 'ltr'}}>
+          <p className="text-sm">No questions to display</p>
         </div>
       );
     }
-    
-    return (
-      <div className="flex flex-wrap gap-2 justify-start" style={{ direction: 'rtl' }}>
+      return (
+      <div className="flex flex-wrap gap-2" style={{ direction: 'ltr', textAlign: 'left' }}>
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
@@ -153,11 +151,10 @@ const NavigationPanel = ({
       <CardHeader className="pb-3 border-b bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-lg">
         <CardTitle className="text-lg flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
-            <span>
+            <Target className="h-5 w-5" />            <span>
               {simulationType === "question-set" 
-                ? `קבוצה ${setNumber || ''}` 
-                : "ניווט מהיר"}
+                ? `Set ${setNumber || ''}` 
+                : "Quick Navigation"}
             </span>
           </div>
           <Button 
@@ -165,76 +162,45 @@ const NavigationPanel = ({
             size="icon" 
             className="h-8 w-8 text-white hover:bg-white/20" 
             onClick={onResetProgress}
-            title="אפס התקדמות"
+            title="Reset Progress"
           >
             <Trash className="h-4 w-4" />
           </Button>
         </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="pt-4">
-        {/* סטטיסטיקות התקדמות */}
-        <div className="space-y-3 mb-4">
-          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-gray-100">
-            <div className="flex justify-between items-center mb-1.5">
-              <span className="text-sm font-medium text-gray-600">התקדמות</span>
-              <span className="text-lg font-bold text-blue-600">{progressPercentage}%</span>
-            </div>
-            <Progress value={progressPercentage} className="h-2" />
-          </div>
-          
-          <div className="bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-gray-100">
-            <div className="flex justify-between items-center mb-1.5">
-              <span className="text-sm font-medium text-gray-600">ציון נוכחי</span>
-              <span className={cn(
-                "text-lg font-bold",
-                currentScorePercentage >= 60 ? "text-green-600" : "text-red-600"
-              )}>
-                {currentScorePercentage}%
-              </span>
-            </div>
-            <Progress 
-              value={currentScorePercentage} 
-              className="h-2" 
-              indicatorClassName={currentScorePercentage >= 60 ? "bg-green-600" : "bg-red-600"}
-            />
-          </div>
-          
-          <div className="grid grid-cols-3 gap-2">
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-2.5 text-center border border-green-200">
+      </CardHeader>        <CardContent className="pt-4">
+        {/* Statistics */}
+        <div className="mb-4">          <div className="grid grid-cols-3 gap-2">            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-2.5 text-center border border-green-200">
               <CheckCircle className="h-5 w-5 text-green-600 mx-auto mb-1" />
-              <div className="text-xs text-green-800 font-medium">נכונות</div>
+              <div className="text-sm text-green-800 font-semibold">Correct</div>
               <div className="text-lg font-bold text-green-700">{correctAnswersCount}</div>
             </div>
             
             <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-2.5 text-center border border-red-200">
               <XCircle className="h-5 w-5 text-red-600 mx-auto mb-1" />
-              <div className="text-xs text-red-800 font-medium">שגויות</div>
+              <div className="text-sm text-red-800 font-semibold">Wrong</div>
               <div className="text-lg font-bold text-red-700">{incorrectQuestions.length}</div>
             </div>
             
             <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-2.5 text-center border border-amber-200">
               <Flag className="h-5 w-5 text-amber-600 mx-auto mb-1 fill-amber-500" />
-              <div className="text-xs text-amber-800 font-medium">שמורות</div>
+              <div className="text-sm text-amber-800 font-semibold">Saved</div>
               <div className="text-lg font-bold text-amber-700">{flaggedQuestions.length}</div>
             </div>
           </div>
         </div>
-        
-        {/* טאבים לרשימות שאלות */}
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-3 bg-gray-100/80 backdrop-blur-sm">
+          {/* Question List Tabs */}
+        <Tabs defaultValue="all" className="w-full">          <TabsList className="grid grid-cols-4 mb-3 bg-gray-100/80 backdrop-blur-sm">
             <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-              הכל ({totalQuestions})
+              All ({totalQuestions})
             </TabsTrigger>
             <TabsTrigger value="unanswered" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-              לא נענו ({unansweredQuestions.length})
+              Unanswered ({unansweredQuestions.length})
             </TabsTrigger>
             <TabsTrigger value="incorrect" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-              שגויות ({incorrectQuestions.length})
+              Wrong ({incorrectQuestions.length})
             </TabsTrigger>
             <TabsTrigger value="flagged" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
-              שמורות ({flaggedQuestions.length})
+              Saved ({flaggedQuestions.length})
             </TabsTrigger>
           </TabsList>
           
@@ -256,19 +222,18 @@ const NavigationPanel = ({
             </TabsContent>
           </div>
         </Tabs>
-        
-        <div className="mt-3 flex justify-center items-center gap-3 text-xs text-gray-500">
+          <div className="mt-3 flex justify-center items-center gap-3 text-xs text-gray-500" dir="ltr" style={{direction: 'ltr'}}>
           <div className="flex items-center gap-1">
             <div className="h-3 w-3 rounded-full bg-green-500"></div>
-            <span>נכונה</span>
+            <span>Correct</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="h-3 w-3 rounded-full bg-red-500"></div>
-            <span>שגויה</span>
+            <span>Wrong</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="h-3 w-3 rounded-full bg-amber-500"></div>
-            <span>שמורה</span>
+            <span>Saved</span>
           </div>
         </div>
       </CardContent>

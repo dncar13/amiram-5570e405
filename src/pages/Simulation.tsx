@@ -1,5 +1,5 @@
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import Header from "@/components/Header";
 import SimulationHeader from "@/components/simulation/SimulationHeader";
@@ -41,7 +41,35 @@ const Simulation = () => {
   
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
-    useEffect(() => {
+
+  // Check if this is a story-based simulation
+  const isStoryBased = Boolean(storyId);
+  
+  // Get story-specific questions if this is a story simulation - MEMOIZED to prevent infinite loops
+  const storyQuestions = useMemo(() => {
+    if (!isStoryBased || !storyId) return [];
+    
+    console.log('Getting questions for story:', storyId);
+    return getQuestionsByStory(storyId);
+  }, [isStoryBased, storyId]);
+  
+  const story = useMemo(() => {
+    if (!isStoryBased || !storyId) return undefined;
+    
+    return getStoryById(storyId);
+  }, [isStoryBased, storyId]);  
+  // Get simulation data (questions, topic info, etc.)
+  const { 
+    isLoading, 
+    topicQuestions, 
+    topic, 
+    questionSetTitle,
+    isComprehensiveExam,
+    setIdNumber,
+    error,
+  } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
+
+  useEffect(() => {
     console.log("Simulation component mounted or parameters changed", { topicId, setId, level, type, storyId, isContinue });
     
     // Check if there's a reset parameter in the URL - only on first load
@@ -96,28 +124,9 @@ const Simulation = () => {
       sessionStorage.setItem('current_difficulty_level', level);
       sessionStorage.setItem('current_difficulty_type', type);
     }
-    
-    // Force attempt load on first render
+      // Force attempt load on first render
     initialLoadAttempted.current = true;
-    
-  }, [topicId, setId, level, type, storyId, isContinue]);
-  // Get simulation data (questions, topic info, etc.)
-  const { 
-    isLoading, 
-    topicQuestions, 
-    topic, 
-    questionSetTitle,
-    isComprehensiveExam,
-    setIdNumber,
-    error,
-  } = useSimulationData(topicId, setId, isQuestionSet);
-  
-  // Check if this is a story-based simulation
-  const isStoryBased = Boolean(storyId);
-  
-  // Get story-specific questions if this is a story simulation
-  const storyQuestions = isStoryBased ? getQuestionsByStory(storyId!) : [];
-  const story = isStoryBased ? getStoryById(storyId!) : undefined;
+      }, [topicId, setId, level, type, storyId, isContinue]);
   
   // Check if this is a difficulty-based simulation
   const isDifficultyBased = Boolean(level && type);
@@ -132,12 +141,10 @@ const Simulation = () => {
         : topicId;
     
   // Ensure the simulationId is properly formatted for storage
-  const formattedSimulationId = simulationId ? simulationId : '';
-    // Only pass the correct arguments to the hook
-  const simulation = useSimulation(formattedSimulationId, isQuestionSet);
-  
-  // For story-based simulations, use story questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = isStoryBased ? storyQuestions : isDifficultyBased ? simulation.questions : topicQuestions;
+  const formattedSimulationId = simulationId ? simulationId : '';    // Only pass the correct arguments to the hook
+  const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
+    // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = (isDifficultyBased || isStoryBased) ? simulation.questions : topicQuestions;
   const effectiveIsLoading = (isDifficultyBased || isStoryBased) ? false : isLoading;
   
   useEffect(() => {
@@ -269,9 +276,8 @@ const Simulation = () => {
   if (questionsToUse.length === 0) {
     return (
       <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
-        <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="max-w-md mx-auto p-8 bg-white rounded-lg shadow-md">
+        <Header />        <main className="flex-grow flex items-center justify-start">
+          <div className="max-w-md ml-0 p-8 bg-white rounded-lg shadow-md">
             <div className="flex items-center gap-3 mb-4 text-amber-600">
               <AlertCircle className="h-8 w-8" />
               <h2 className="text-xl font-bold">לא נמצאו שאלות</h2>
@@ -293,9 +299,7 @@ const Simulation = () => {
   
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
-      <Header />
-      
-      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
+      <Header />      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
         <div className="container mx-auto px-4 max-w-5xl">
           
           {/* כפתור חזרה - מעל הכל */}

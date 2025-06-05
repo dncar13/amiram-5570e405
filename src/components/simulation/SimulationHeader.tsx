@@ -1,4 +1,4 @@
-import { BookOpen, CheckCircle2, BarChart2 } from "lucide-react";
+import { CheckCircle2, BarChart2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface SimulationHeaderProps {
@@ -9,7 +9,8 @@ interface SimulationHeaderProps {
   answeredQuestionsCount?: number;
   totalQuestions?: number;
   simulationType?: "practice" | "exam";
-  isQuestionSet?: boolean; // Added this prop
+  isQuestionSet?: boolean;
+  className?: string; // Add custom className support
 }
 
 const SimulationHeader = ({ 
@@ -20,79 +21,70 @@ const SimulationHeader = ({
   answeredQuestionsCount,
   totalQuestions,
   simulationType = "practice",
-  isQuestionSet = false
+  isQuestionSet = false,
+  className = "" // Default empty string
 }: SimulationHeaderProps) => {
   return (
-    <div className="mb-6 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-      <div className="flex justify-between items-start">
-        <div className="flex items-center space-x-2">
-          <div className="bg-slate-100 p-3 rounded-xl">
-            <BookOpen className="h-6 w-6 text-slate-600" />
+    // Remove any centering and force left alignment
+    <div className={`w-full bg-gradient-to-br from-slate-50 to-blue-50 p-8 rounded-2xl shadow-lg border border-slate-200/50 backdrop-blur-sm ${className}`}>
+      {/* Header Section - Force Left Alignment */}
+      <div className="flex items-center justify-start mb-6 w-full">
+        <div className="flex items-center space-x-4" dir="ltr">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 p-4 rounded-xl shadow-md">
+            <BarChart2 className="h-7 w-7 text-white" />
           </div>
-          <div>
-            <h1 className="text-xl font-semibold text-gray-800">
-              {isQuestionSet ? "קבוצת שאלות: " : "סימולציה: "}{topicTitle}
+          <div className="text-left">
+            {/* Use dynamic title instead of hardcoded */}
+            <h1 className="text-3xl font-bold text-slate-800 text-left tracking-tight" dir="ltr">
+              {topicTitle}
             </h1>
-            <div className="text-sm text-gray-600 mt-1">
-              {simulationType === "practice" ? "מצב תרגול" : "מצב מבחן"}
+            <div className="text-base text-slate-600 mt-1 font-medium" dir="ltr">
+              Interactive Simulation • {simulationType === "practice" ? "Practice Mode" : "Exam Mode"}
             </div>
           </div>
         </div>
-        
-        {answeredQuestionsCount !== undefined && totalQuestions !== undefined && (
-          <div className="bg-gray-100 px-4 py-3 rounded-lg text-sm border border-gray-200">
-            <div className="flex items-center gap-2 mb-1">
-              <BarChart2 className="h-4 w-4 text-slate-600" />
-              <span className="font-medium">התקדמות כללית</span>
-            </div>
-            <div className="font-semibold text-gray-700">
-              {answeredQuestionsCount} / {totalQuestions} שאלות
-            </div>
-          </div>
-        )}
       </div>
       
-      <div className="flex mt-4 items-center text-gray-600">
-        {isCompleted ? (
-          <div className="flex items-center space-x-2 text-green-600">
-            <CheckCircle2 className="h-5 w-5" />
-            <span>הסימולציה הושלמה</span>
-            {currentScore !== undefined && (
-              <span className="mr-2 font-medium">
-                ציון: {currentScore}%
-              </span>
-            )}
-          </div>
-        ) : (
-          <div className="flex items-center space-x-2">
-            <span>סימולציה בתהליך</span>
-            {progressPercentage !== undefined && (
-              <span className="mr-2 text-slate-600 font-medium">
-                התקדמות: {progressPercentage}%
-              </span>
-            )}
-          </div>
-        )}
-      </div>
-      
+      {/* Progress Section */}
       {progressPercentage !== undefined && (
-        <div className="mt-3">
-          <Progress 
-            value={progressPercentage} 
-            className="h-2" 
-            indicatorClassName={
-              progressPercentage >= 70 ? "bg-green-500" : 
-              progressPercentage >= 30 ? "bg-slate-600" : 
-              "bg-amber-500"
-            }
-          />
+        <div className="space-y-3">
+          <div className="flex justify-between items-center text-sm font-medium text-slate-600" dir="ltr">
+            <span>Overall Progress</span>
+            <span>{progressPercentage}% Complete</span>
+          </div>
+          <div className="relative">
+            <Progress 
+              value={progressPercentage} 
+              className="h-3 bg-slate-200/50 rounded-full overflow-hidden" 
+              indicatorClassName={`transition-all duration-500 ease-out rounded-full ${
+                progressPercentage >= 70 ? "bg-gradient-to-r from-green-400 to-green-500" : 
+                progressPercentage >= 30 ? "bg-gradient-to-r from-blue-400 to-blue-500" : 
+                "bg-gradient-to-r from-amber-400 to-amber-500"
+              }`}
+            />
+            {progressPercentage > 5 && (
+              <div 
+                className="absolute top-0 left-0 h-full flex items-center justify-center text-xs font-bold text-white"
+                style={{ width: `${progressPercentage}%` }}
+              >
+                {progressPercentage > 15 && `${progressPercentage}%`}
+              </div>
+            )}
+          </div>
         </div>
       )}
       
-      <p className="mt-4 text-gray-600 max-w-2xl">
-        ענה על כל השאלות כדי לסיים את הסימולציה. 
-        ניתן לעבור בין השאלות בחופשיות ולסמן שאלות ל��דיקה מאוחרת.
-      </p>
+      {/* Question Counter */}
+      {answeredQuestionsCount !== undefined && totalQuestions && (
+        <div className="mt-4 flex items-center justify-between bg-white/60 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/40">
+          <div className="text-sm text-slate-600 font-medium" dir="ltr">
+            Questions Answered
+          </div>
+          <div className="text-lg font-bold text-slate-800" dir="ltr">
+            {answeredQuestionsCount} / {totalQuestions}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
