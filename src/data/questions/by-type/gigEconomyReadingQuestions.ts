@@ -1,133 +1,249 @@
-
 import { Question } from '../../types/questionTypes';
 
-// הטקסט לקריאה - כלכלת הגיג
-const gigEconomyPassageText = `
-כלכלת הגיג: מהפכה בעולם העבודה
+// Reading passage - The Gig Economy
+const gigEconomyPassageText = `The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in recent decades. The emergence of the "gig economy" has fundamentally altered how millions of people work and earn their living.
 
-המודל המסורתי של תעסוקה, שבו עובדים החזיקו בעבודות קבועות ומלאות עם מעסיק יחיד לעשרות שנים, עבר שינוי דרמטי בעשרות השנים האחרונות. הופעתה של "כלכלת הגיג" שינתה באופן יסודי את הדרך שבה מיליוני אנשים עובדים ומרויחים לחייתם.
+The gig economy refers to a labor market characterized by short-term contracts, freelance work, and independent contracting rather than permanent employment. This shift has been largely facilitated by digital platforms such as Uber, Lyft, TaskRabbit, and Upwork, which connect workers directly with customers seeking specific services.
 
-כלכלת הגיג מתייחסת לשוק עבודה המאופיין בחוזים קצרי מועד, עבודה עצמאית ומקבלנות עצמאית במקום תעסוקה קבועה. השינוי הזה התאפשר במידה רבה בזכות פלטפורמות דיגיטליות כמו אובר, טאסקרביט ואפוורק, המחברות עובדים ישירות עם לקוחות המחפשים שירותים ספציפיים.
+For many workers, the gig economy offers unprecedented flexibility and autonomy. Freelancers can choose their own schedules, work on multiple projects in the morning, own a ride-share service in the afternoon, and deliver food in the evening, all while maintaining control over their time and earning potential.
 
-עבור עובדים רבים, כלכלת הגיג מציעה גמישות חסרת תקדים ואוטונומיה. עצמאיים יכולים לבחור את לוח הזמנים שלהם, לעבוד על מספר פרויקטים בו-זמנית ולרדוף אחרי מקורות הכנסה מרובים. עם זאת, הגמישות הזו באה במחיר משמעותי - עובדי גיג בדרך כלל חסרים את ההטבות וההגנות שעובדים מסורתיים נהנים מהם, כמו ביטוח בריאות וביטחון תעסוקתי.
+However, this flexibility comes at a significant cost. Gig workers typically lack the benefits and protections that traditional employees enjoy, such as health insurance, paid vacation, unemployment benefits, and job security. They also bear the financial burden of their own equipment, vehicle maintenance, and business expenses. During economic downturns, gig workers are often the first to see their income disappear as they have no job security or guaranteed minimum wage.
 
-העתיד של העבודה ככל הנראה יכלול מציאת איזון בין הגמישות שרוצים גם עובדים וגם עסקים לבין הביטחון והיציבות שעובדים זקוקים להם כדי לשגשג.
-`;
+The social implications of this economic shift are profound. As more people become gig workers, income inequality has widened. While highly skilled freelancers can earn substantial incomes, many gig workers struggle to make ends meet, working multiple jobs without benefits or stable income. This has created a new class of "working poor" - people who are employed but still live in poverty.
 
-// השאלות עם תיוג מלא לפי הקטגוריות שלך
+Governments worldwide are grappling with how to regulate this new economic model. Some countries have begun classifying certain gig workers as employees rather than independent contractors, entitling them to basic labor protections. Others are exploring new forms of portable benefits that could move from job to job, rather than being tied to a single employer.
+
+The future of work will likely involve finding a balance between the flexibility that both workers and businesses desire and the security and stability that workers need to thrive. As technology continues to evolve, society must adapt its economic and social structures to ensure that the benefits of this new economy are shared more equitably among all participants.`;
+
+// Questions based on the passage
 export const gigEconomyReadingQuestions: Question[] = [
   {
-    id: 2001, // מתחיל ממספר גבוה כדי לא להתנגש עם שאלות קיימות
-    type: 'sentence-completion', // השלמת משפטים
-    text: "הפסקה הראשונה מציעה שהמודל המסורתי של תעסוקה _____ בעשרות השנים האחרונות",
+    id: 1,
+    type: 'reading-comprehension',
+    text: "The first paragraph suggests that the traditional employment model has _____ in recent decades",
     options: [
-      "נשאר ללא שינוי לחלוטין",
-      "הפך פופולרי יותר מאי פעם",
-      "עבר שינויים משמעותיים",
-      "הוחלף לחלוטין"
+      "remained completely unchanged",
+      "become more popular than ever",
+      "undergone significant changes",
+      "been completely eliminated"
     ],
     correctAnswer: 2,
-    difficulty: 'easy', // רמה קלה
-    explanation: "הטקסט מתאר שינוי דרמטי במודל התעסוקה המסורתי, מה שמצביע על שינויים משמעותיים.",
+    difficulty: 'medium',
+    explanation: "The text states that the traditional model 'has undergone a dramatic transformation in recent decades.'",
     passageText: gigEconomyPassageText,
-    passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
-    topicId: 3, // הבנת הנקרא
-    tags: ["employment", "economic-change"],
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3, // Reading comprehension
+    tags: ["employment-change", "transformation"],
     metadata: {
-      topic: "כלכלת הגיג",
-      wordCount: 4,
-      estimatedTime: 2
-    }
-  },
-  {
-    id: 2002,
-    type: 'reading-comprehension', // הבנת הנקרא
-    text: "איזה מהפלטפורמות הבאות מוזכרת בטקסט כדוגמה לכלכלת הגיג?",
-    options: [
-      "פייסבוק",
-      "אמזון",
-      "אובר",
-      "גוגל"
-    ],
-    correctAnswer: 2,
-    difficulty: 'easy', // רמה קלה
-    explanation: "בטקסט מוזכר באופן ישיר: 'פלטפורמות דיגיטליות כמו אובר, טאסקרביט ואפוורק'.",
-    passageText: gigEconomyPassageText,
-    passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
-    topicId: 3, // הבנת הנקרא
-    tags: ["platforms", "examples"],
-    metadata: {
-      topic: "כלכלת הגיג",
-      wordCount: 4,
-      estimatedTime: 2
-    }
-  },
-  {
-    id: 2003,
-    type: 'reading-comprehension', // הבנת הנקרא
-    text: "על פי הטקסט, איזה מהיתרונות הבאים מציעה כלכלת הגיג לעובדים?",
-    options: [
-      "ביטוח בריאות מובטח",
-      "שכר קבוע ויציב",
-      "גמישות בלוח הזמנים",
-      "ביטחון תעסוקתי מלא"
-    ],
-    correctAnswer: 2,
-    difficulty: 'medium', // רמה בינונית
-    explanation: "הטקסט מציין שכלכלת הגיג מציעה 'גמישות חסרת תקדים' ו'עצמאיים יכולים לבחור את לוח הזמנים שלהם'.",
-    passageText: gigEconomyPassageText,
-    passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
-    topicId: 3, // הבנת הנקרא
-    tags: ["benefits", "flexibility"],
-    metadata: {
-      topic: "כלכלת הגיג",
-      wordCount: 5,
+      topic: "Gig Economy",
+      wordCount: 385,
       estimatedTime: 3
     }
   },
   {
-    id: 2004,
-    type: 'restatement', // ניסוח מחדש
-    text: "איזה מהמשפטים הבאים מבטא בצורה הטובה ביותר את הרעיון המרכזי של הטקסט?",
+    id: 2,
+    type: 'reading-comprehension',
+    text: "Which of the following platforms is mentioned in the text as an example of the gig economy?",
     options: [
-      "כלכלת הגיג היא פתרון מושלם לבעיות התעסוקה המודרנית",
-      "העבודה המסורתית עדיפה בכל המקרים על כלכלת הגיג",
-      "כלכלת הגיג מציעה גמישות אך גם יוצרת אתגרים חדשים",
-      "הפלטפורמות הדיגיטליות הן הסיבה היחידה לשינויים בשוק העבודה"
+      "Facebook",
+      "Amazon",
+      "TaskRabbit",
+      "Google"
     ],
     correctAnswer: 2,
-    difficulty: 'hard', // רמה קשה
-    explanation: "הטקסט מציג איזון בין היתרונות (גמישות ואוטונומיה) לבין החסרונות (חוסר ביטחון והגנות) של כלכלת הגיג.",
+    difficulty: 'medium',
+    explanation: "The text explicitly mentions 'digital platforms such as Uber, Lyft, TaskRabbit, and Upwork.'",
     passageText: gigEconomyPassageText,
-    passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
-    topicId: 3, // הבנת הנקרא
-    tags: ["main-idea", "analysis"],
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["platforms", "examples"],
     metadata: {
-      topic: "כלכלת הגיג",
-      wordCount: 6,
-      estimatedTime: 4
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
     }
   },
   {
-    id: 2005,
-    type: 'reading-comprehension', // הבנת הנקרא
-    text: "על פי הפסקה האחרונה, העתיד של העבודה ידרוש:",
+    id: 3,
+    type: 'reading-comprehension',
+    text: "According to the text, which of the following benefits does the gig economy offer to workers?",
     options: [
-      "חזרה מלאה למודל התעסוקה המסורתי",
-      "מעבר מלא לכלכלת הגיג",
-      "מציאת איזון בין גמישות לביטחון",
-      "ביטול כל הפלטפורמות הדיגיטליות"
+      "Guaranteed health insurance",
+      "Fixed and stable salary",
+      "Flexibility in scheduling",
+      "Complete job security"
     ],
     correctAnswer: 2,
-    difficulty: 'medium', // רמה בינונית
-    explanation: "הפסקה האחרונה מדברת על 'מציאת איזון בין הגמישות... לבין הביטחון והיציבות'.",
+    difficulty: 'medium',
+    explanation: "The passage states that 'the gig economy offers unprecedented flexibility and autonomy' and workers 'can choose their own schedules.'",
     passageText: gigEconomyPassageText,
-    passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
-    topicId: 3, // הבנת הנקרא
-    tags: ["future", "balance"],
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["benefits", "flexibility"],
     metadata: {
-      topic: "כלכלת הגיג",
-      wordCount: 5,
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 4,
+    type: 'reading-comprehension',
+    text: "What significant cost does the text mention comes with gig economy flexibility?",
+    options: [
+      "Higher taxes for workers",
+      "Lack of traditional employee benefits",
+      "Mandatory overtime work",
+      "Reduced earning potential"
+    ],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    explanation: "The text clearly states that 'Gig workers typically lack the benefits and protections that traditional employees enjoy.'",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["disadvantages", "trade-offs"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 5,
+    type: 'reading-comprehension',
+    text: "According to the text, what financial burden do gig workers bear?",
+    options: [
+      "Company office rent",
+      "Employee training costs",
+      "Equipment and vehicle maintenance",
+      "Marketing expenses for employers"
+    ],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    explanation: "The passage mentions that gig workers 'bear the financial burden of their own equipment, vehicle maintenance, and business expenses.'",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["financial-burden", "expenses"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 6,
+    type: 'reading-comprehension',
+    text: "What does the text suggest has happened to income inequality as more people become gig workers?",
+    options: [
+      "It has decreased significantly",
+      "It has remained the same",
+      "It has widened",
+      "It has been completely eliminated"
+    ],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    explanation: "The text explicitly states: 'As more people become gig workers, income inequality has widened.'",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["social-impact", "inequality"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 7,
+    type: 'reading-comprehension',
+    text: "According to the passage, what term describes people who are employed but still live in poverty?",
+    options: [
+      "Underemployed workers",
+      "Working poor",
+      "Part-time employees",
+      "Temporary workers"
+    ],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    explanation: "The text introduces the term 'working poor' - people who are employed but still live in poverty.",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["vocabulary", "social-class"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 8,
+    type: 'reading-comprehension',
+    text: "How are some governments responding to the gig economy according to the text?",
+    options: [
+      "By banning all digital platforms",
+      "By classifying certain gig workers as employees",
+      "By reducing labor protections",
+      "By eliminating independent contracting"
+    ],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    explanation: "The passage states that 'Some countries have begun classifying certain gig workers as employees rather than independent contractors.'",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["government-response", "regulation"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 9,
+    type: 'reading-comprehension',
+    text: "What type of benefits are some governments exploring for gig workers?",
+    options: [
+      "Fixed salary guarantees",
+      "Portable benefits that move from job to job",
+      "Company-provided housing",
+      "Free transportation services"
+    ],
+    correctAnswer: 1,
+    difficulty: 'medium',
+    explanation: "The text mentions that governments are 'exploring new forms of portable benefits that could move from job to job.'",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["benefits", "policy-solutions"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
+      estimatedTime: 3
+    }
+  },
+  {
+    id: 10,
+    type: 'reading-comprehension',
+    text: "Which of the following statements best expresses the main idea of the text?",
+    options: [
+      "The gig economy is a perfect solution to modern employment problems",
+      "Traditional employment is superior to the gig economy in all cases",
+      "The gig economy offers flexibility but also creates new challenges requiring balanced solutions",
+      "Digital platforms are the only reason for changes in the job market"
+    ],
+    correctAnswer: 2,
+    difficulty: 'medium',
+    explanation: "The text presents a balanced view, discussing both benefits (flexibility) and challenges (lack of security), concluding that balance is needed.",
+    passageText: gigEconomyPassageText,
+    passageTitle: "The Rise of the Gig Economy",
+    topicId: 3,
+    tags: ["main-idea", "synthesis"],
+    metadata: {
+      topic: "Gig Economy",
+      wordCount: 385,
       estimatedTime: 3
     }
   }

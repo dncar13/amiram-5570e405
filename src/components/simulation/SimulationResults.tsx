@@ -49,13 +49,12 @@ const SimulationResults = ({
 
   return (
     <Card className="shadow-lg border-0">
-      <CardContent className="p-6 md:p-8">
-        <div className="text-center mb-6">
+      <CardContent className="p-6 md:p-8">        <div className="text-center mb-6" dir="ltr" style={{direction: 'ltr'}}>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-            {isQuestionSet ? "סיימת את קבוצת השאלות!" : "סימולציה הושלמה!"}
+            {isQuestionSet ? "Question Set Completed!" : "Simulation Completed!"}
           </h2>
           <p className="text-gray-600">
-            ענית על {answeredQuestionsCount} מתוך {questionsData.length} שאלות.
+            You answered {answeredQuestionsCount} out of {questionsData.length} questions.
           </p>
         </div>
 
@@ -75,50 +74,51 @@ const SimulationResults = ({
               })}
             />
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-green-50 border border-green-200">
+        </div>        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-green-50 border border-green-200" dir="ltr" style={{direction: 'ltr'}}>
             <CheckCircle className="text-green-600 h-5 w-5" />
             <div>
-              <div className="text-sm font-medium text-green-700">תשובות נכונות</div>
+              <div className="text-sm font-medium text-green-700">Correct Answers</div>
               <div className="text-lg font-bold text-gray-800">{correctQuestionsCount}</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200">
+          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200" dir="ltr" style={{direction: 'ltr'}}>
             <XCircle className="text-red-600 h-5 w-5" />
             <div>
-              <div className="text-sm font-medium text-red-700">תשובות שגויות</div>
+              <div className="text-sm font-medium text-red-700">Wrong Answers</div>
               <div className="text-lg font-bold text-gray-800">{answeredQuestionsCount - correctQuestionsCount}</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-blue-50 border border-blue-200">
+          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-blue-50 border border-blue-200" dir="ltr" style={{direction: 'ltr'}}>
             <Flag className="text-blue-600 h-5 w-5" />
             <div>
-              <div className="text-sm font-medium text-blue-700">שאלות מסומנות</div>
+              <div className="text-sm font-medium text-blue-700">Flagged Questions</div>
               <div className="text-lg font-bold text-gray-800">{questionFlags.filter(flag => flag).length}</div>
             </div>
           </div>
         </div>
-        
-        <div className="flex flex-col gap-4 mt-8">
+          <div className="flex flex-col gap-4 mt-8">
           <Button 
             onClick={onRestart}
             className="bg-electric-blue hover:bg-blue-600 text-white py-2"
+            dir="ltr"
+            style={{direction: 'ltr'}}
           >
             <RotateCcw className="h-4 w-4 mr-2" />
-            התחל סימולציה מחדש
+            Start New Simulation
           </Button>
           
           <Button 
             variant="outline" 
             onClick={onBackToTopics}
             className="py-2"
+            dir="ltr"
+            style={{direction: 'ltr'}}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לנושאים"}
+            {isQuestionSet ? "Back to Question Sets" : "Back to Topics"}
           </Button>
         </div>
       </CardContent>

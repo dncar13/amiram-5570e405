@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { 
   getQuestionsByTopic, 
   getQuestionsBySet, 
@@ -15,13 +15,25 @@ import { cleanupOldProgress, checkForResetRequest, removeResetParameterFromUrl }
 export const useSimulationData = (
   topicId: string | undefined,
   setId: string | undefined,
-  isQuestionSet: boolean
+  isQuestionSet: boolean,
+  storyQuestions?: any[]
 ) => {
   const [questionSetTitle, setQuestionSetTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [questionCount, setQuestionCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [initComplete, setInitComplete] = useState(false);
+  
+  // Stable reference for story questions to prevent infinite loops
+  const storyQuestionsRef = useRef(storyQuestions);
+  const storyQuestionsLength = storyQuestions?.length ?? 0;
+  
+  // Only update ref when actual content changes, not reference
+  useEffect(() => {
+    if (storyQuestionsLength !== (storyQuestionsRef.current?.length ?? 0)) {
+      storyQuestionsRef.current = storyQuestions;
+    }
+  }, [storyQuestionsLength, storyQuestions]);
   
   // Find the topic if we're doing a topic-based simulation
   const topic = topicId ? topicsData.find(t => t.id === Number(topicId)) : undefined;
@@ -62,9 +74,7 @@ export const useSimulationData = (
         
         // Refresh questions from source to ensure we have the latest data
         const freshQuestions = refreshQuestionsFromStorage();
-        console.log(`Refreshed ${freshQuestions.length} questions from source files`);
-        
-        // If we have a question set ID, determine its title for display
+        console.log(`Refreshed ${freshQuestions.length} questions from source files`);        // If we have a question set ID, determine its title for display
         if (setId) {
           const setIdNum = parseInt(setId, 10);
           if (!isNaN(setIdNum) && setIdNum >= 1 && setIdNum <= 20) {
@@ -97,9 +107,14 @@ export const useSimulationData = (
   // Get questions for this simulation
   const topicQuestions = useMemo(() => {
     if (!initComplete) return [];
-    
-    try {
-      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet });
+      try {      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, storyQuestionsCount: storyQuestionsRef.current?.length });
+      
+      // If we have story questions, use them first
+      if (storyQuestionsRef.current && storyQuestionsRef.current.length > 0) {
+        console.log(`Using ${storyQuestionsRef.current.length} story questions`);
+        setQuestionCount(storyQuestionsRef.current.length);
+        return storyQuestionsRef.current;
+      }
       
       // If we're viewing a question set (not a topic)
       if (setId) {
@@ -126,17 +141,19 @@ export const useSimulationData = (
           setError("מזהה קבוצת שאלות לא תקין");
           return [];
         }
-      }
-      
-      // Regular topic behavior
+      }      // Regular topic behavior
       if (!topic) {
+        // Only show error if we don't have story questions
+        if (!setId && !storyQuestions?.length) {
+          console.log("No topic, setId, or story questions provided");
+          setQuestionCount(0);
+          return [];
+        }
         console.error("Topic not found for topicId:", topicId);
         console.log("Available topics:", topicsData.map(t => ({ id: t.id, title: t.title })));
         setError("הנושא לא נמצא");
         return [];
-      }
-      
-      // For comprehensive exams, show all questions regardless of topic
+      }// For comprehensive exams, show all questions regardless of topic
       if (isComprehensiveExam) {
         const allQs = getAllQuestions();
         console.log(`Comprehensive exam: showing all ${allQs.length} questions`);
@@ -160,13 +177,12 @@ export const useSimulationData = (
         });
       }
       
-      return filteredQuestions;
-    } catch (error) {
+      return filteredQuestions;    } catch (error) {
       console.error("Error loading questions:", error);
       setError("שגיאה בטעינת השאלות");
       return [];
     }
-  }, [topic, setId, isComprehensiveExam, initComplete]);
+  }, [topic, setId, isComprehensiveExam, initComplete, storyQuestionsLength]);
   
   // Helper function for part navigation (question sets divided into parts)
   const getCurrentPart = () => {

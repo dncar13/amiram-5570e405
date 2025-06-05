@@ -81,7 +81,8 @@ const getQuestionsForSet = (setNumber: number): Question[] => {
 
 export const useSimulation = (
   simulationId: string | undefined,
-  isQuestionSet: boolean = false
+  isQuestionSet: boolean = false,
+  externalQuestions?: Question[]
 ) => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -182,7 +183,13 @@ export const useSimulation = (
         console.log(`Loading ${difficultyQuestions.length} questions for difficulty: ${level}, type: ${type}`);
         setQuestions(difficultyQuestions);
         return;
-      }
+      }    }
+      // Handle story-based simulations (IDs are prefixed with 'story_')
+    if (simulationId.startsWith('story_')) {
+      // Use external questions for story simulations
+      console.log(`Loading ${externalQuestions?.length || 0} external questions for story simulation`);
+      setQuestions(externalQuestions || []);
+      return;
     }
 
     // Handle question sets (IDs are prefixed with 'qs_')
@@ -226,9 +233,8 @@ export const useSimulation = (
     const filteredQuestions = allQuestionsFromStorage.filter(q => q.topicId === topicId);
     
     console.log(`Loaded ${filteredQuestions.length} questions for topic ${topicId} from useSimulation`);
-    
-    setQuestions(filteredQuestions.length > 0 ? filteredQuestions : []);
-  }, [simulationId, isQuestionSet]);
+      setQuestions(filteredQuestions.length > 0 ? filteredQuestions : []);
+  }, [simulationId, isQuestionSet, externalQuestions]);
   
   // FIX #5: Update arrays when questions length changes
   useEffect(() => {
@@ -289,8 +295,12 @@ export const useSimulation = (
     isSaving.current = true;
     lastSaveTime.current = now;
     shouldSaveProgress.current = false;
-    
-    try {
+      try {
+      // Check for story simulations first
+      if (simulationId.startsWith('story_')) {
+        return; // Don't try to save for story simulations
+      }
+      
       // Normalize ID for consistent storage
       const numericId = normalizeId(simulationId, isQuestionSet);
       
@@ -433,7 +443,11 @@ export const useSimulation = (
     if (window.sessionStorage.getItem('reset_simulation_progress') === 'true') {
       console.log("Skipping progress load due to reset flag");
       window.sessionStorage.removeItem('reset_simulation_progress');
-      return false;
+      return false;    }
+    
+    // Check for story simulations first
+    if (simulationId.startsWith('story_')) {
+      return false; // Don't try to load for story simulations
     }
     
     // Normalize ID for consistent storage

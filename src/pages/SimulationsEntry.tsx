@@ -17,6 +17,8 @@ import {
   Target,
   Award
 } from 'lucide-react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 interface SimulationOption {
   id: string;
@@ -37,19 +39,10 @@ interface QuestionTypeOption {
   color: string;
 }
 
-interface DifficultyOption {
-  level: string;
-  title: string;
-  description: string;
-  color: string;
-  gradient: string;
-}
-
 const SimulationsEntry: React.FC = () => {
   const navigate = useNavigate();
   const [isAuthenticated] = useState(false); // This should come from your auth context
   const [isPremium] = useState(false); // This should come from your auth context
-
   const simulationOptions: SimulationOption[] = [
     {
       id: 'full-simulation',
@@ -66,14 +59,6 @@ const SimulationsEntry: React.FC = () => {
       icon: <Target className="w-8 h-8" />,
       gradient: 'from-green-500 to-teal-600',
       path: '/simulation/by-type',
-    },
-    {
-      id: 'practice-by-difficulty',
-      title: 'תרגול לפי רמת קושי',
-      description: 'קל/בינוני/קשה עם דירוג AI מתקדם',
-      icon: <TrendingUp className="w-8 h-8" />,
-      gradient: 'from-orange-500 to-red-600',
-      path: '/simulation/by-difficulty',
     },
     {
       id: 'history',
@@ -107,34 +92,9 @@ const SimulationsEntry: React.FC = () => {
       description: 'שאלות הבנת הנקרא עם קטעים',
       icon: <BookOpenCheck className="w-6 h-6" />,
       color: 'text-purple-600',
-    },
-  ];
+    },  ];
 
-  const difficultyLevels: DifficultyOption[] = [
-    {
-      level: 'easy',
-      title: 'קל',
-      description: 'שאלות בסיסיות ופשוטות',
-      color: 'text-green-600',
-      gradient: 'from-green-400 to-green-600',
-    },
-    {
-      level: 'medium',
-      title: 'בינוני',
-      description: 'שאלות ברמת קושי בינונית',
-      color: 'text-yellow-600',
-      gradient: 'from-yellow-400 to-orange-600',
-    },
-    {
-      level: 'hard',
-      title: 'קשה',
-      description: 'שאלות מתקדמות ומאתגרות',
-      color: 'text-red-600',
-      gradient: 'from-red-400 to-red-600',
-    },
-  ];
-
-  const handleOptionClick = (option: SimulationOption) => {
+  const handleOptionClick= (option: SimulationOption) => {
     if (option.requiresAuth && !isAuthenticated) {
       // Handle authentication required
       navigate('/login');
@@ -149,17 +109,15 @@ const SimulationsEntry: React.FC = () => {
 
     navigate(option.path);
   };
-
   const handleQuestionTypeClick = (type: string) => {
     navigate(`/simulation/type/${type}`);
   };
 
-  const handleDifficultyClick = (level: string) => {
-    navigate(`/simulation/difficulty/${level}`);
-  };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
-      <div className="max-w-6xl mx-auto">
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+        <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -172,14 +130,12 @@ const SimulationsEntry: React.FC = () => {
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             בחר את סוג התרגול המתאים לך והתחל להתכונן למבחן הפסיכומטרי
           </p>
-        </motion.div>
-
-            {/* Main Options Grid */}
+        </motion.div>            {/* Main Options Grid */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16"
+              className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-16 max-w-5xl mx-auto"
             >
               {simulationOptions.map((option, index) => (
                 <motion.div
@@ -221,10 +177,8 @@ const SimulationsEntry: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
-
-            {/* Quick Access Sections */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            </motion.div>            {/* Quick Access Sections */}
+            <div className="max-w-2xl mx-auto">
               {/* Question Types */}
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -254,46 +208,6 @@ const SimulationsEntry: React.FC = () => {
                         <p className="text-gray-600 text-sm">{type.description}</p>
                       </div>
                       <ChevronRight className="w-5 h-5 text-gray-400 transition-transform group-hover:translate-x-1" />
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-
-              {/* Difficulty Levels */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6 }}
-                className="bg-white rounded-2xl shadow-lg p-8"
-              >
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                  <TrendingUp className="w-6 h-6 ml-3 text-orange-600" />
-                  תרגול לפי רמת קושי
-                </h2>
-                <div className="space-y-4">
-                  {difficultyLevels.map((difficulty, index) => (
-                    <motion.div
-                      key={difficulty.level}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.7 + index * 0.1 }}
-                      className="group cursor-pointer"
-                      onClick={() => handleDifficultyClick(difficulty.level)}
-                    >
-                      <div className={`p-4 rounded-xl bg-gradient-to-r ${difficulty.gradient} text-white transition-all duration-300 group-hover:shadow-lg group-hover:scale-105`}>
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <h3 className="font-bold text-lg">{difficulty.title}</h3>
-                            <p className="text-white text-opacity-90 text-sm">
-                              {difficulty.description}
-                            </p>
-                          </div>
-                          <div className="flex items-center">
-                            <Award className="w-5 h-5 ml-2" />
-                            <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                          </div>
-                        </div>
-                      </div>
                     </motion.div>
                   ))}
                 </div>
@@ -347,10 +261,11 @@ const SimulationsEntry: React.FC = () => {
                 התחבר עכשיו
               </button>
             </div>
-          )}
-        </motion.div>
+          )}        </motion.div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 
