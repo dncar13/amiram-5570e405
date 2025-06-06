@@ -34,12 +34,8 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 1,
-      questionType: "detail",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
     passageText: environmentPassageText,
     passageTitle: "Environment Reading"
@@ -65,14 +61,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 2,
-      questionType: "detail",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -96,14 +88,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 3,
-      questionType: "detail",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -127,14 +115,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 4,
-      questionType: "detail",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -158,14 +142,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 5,
-      questionType: "detail",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -189,14 +169,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 6,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -220,14 +196,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 7,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -251,14 +223,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 8,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -282,14 +250,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 9,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -313,14 +277,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 10,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -344,14 +304,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 11,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -375,14 +331,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 12,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -406,14 +358,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 13,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -437,14 +385,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 14,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -468,14 +412,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 15,
-      questionType: "main-idea",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -499,14 +439,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 16,
-      questionType: "inference",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -530,14 +466,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 17,
-      questionType: "inference",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -561,14 +493,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 18,
-      questionType: "inference",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -592,14 +520,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 19,
-      questionType: "inference",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -623,14 +547,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 20,
-      questionType: "inference",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -654,14 +574,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 21,
-      questionType: "vocabulary",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -685,14 +601,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 22,
-      questionType: "vocabulary",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -716,14 +628,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 23,
-      questionType: "vocabulary",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -747,14 +655,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 24,
-      questionType: "vocabulary",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   },
   {
@@ -778,14 +682,10 @@ export const environmentReadingQuestions: Question[] = [
     ],
     metadata: {
       topic: "Environment",
-      questionNumber: 25,
-      questionType: "vocabulary",
-      totalQuestions: 25,
       wordCount: 350,
-      estimatedTime: 3,
-      aiInstruction: "Moderate vocabulary, some inference required, clear logical reasoning."
+      estimatedTime: 3
     },
-    passageText: "environmentPassageText",
+    passageText: environmentPassageText,
     passageTitle: "Environment Reading"
   }
 ];

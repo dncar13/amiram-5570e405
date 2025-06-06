@@ -1,3 +1,4 @@
+
 // Only modifying the loadProgress function in the useSimulation hook
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -13,7 +14,7 @@ import {
 } from "@/services/questions/progress";
 import { refreshQuestionsFromStorage } from "@/services/questions/storage";
 import { saveActivity } from "./useActivityHistory";
-import { getTopicById } from "@/data/topicsData";
+import { getTopicById } from "@/data/utils/topicUtils";
 import { useSimulationSettings } from "@/context/SimulationSettingsContext";
 import { ALL_QUESTIONS_AVAILABLE } from "@/utils/topicAccess";
 import { 
