@@ -4,10 +4,14 @@
 
 import { Question } from '../types/questionTypes';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
+import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
+import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
 
-// מערך המאגד את כל השאלות - כרגע רק את The Rise of the Gig Economy
+// מערך המאגד את כל השאלות
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,
+  ...technologyReadingQuestions,
+  ...environmentReadingQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות

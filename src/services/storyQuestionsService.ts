@@ -1,4 +1,3 @@
-
 import { Question } from '@/data/types/questionTypes';
 import { getAllQuestions } from '@/services/questionsService';
 import { GeneralSubject, identifyQuestionSubject } from '@/services/subjectClassificationService';
@@ -72,6 +71,7 @@ export const getAvailableStories = (): Story[] => {
     };
   });
 
+  console.log('Stories found:', stories.map(s => ({ title: s.title, count: s.questionCount, subject: s.subject })));
   return stories;
 };
 
