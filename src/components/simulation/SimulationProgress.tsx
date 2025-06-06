@@ -29,7 +29,7 @@ const SimulationProgress = ({
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+    <div className="bg-white p-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2 text-gray-600">
           <Clock className="h-4 w-4" />

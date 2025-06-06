@@ -1,4 +1,3 @@
-
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb, BookOpen } from "lucide-react";
@@ -55,7 +54,8 @@ const QuestionCardWithStory = ({
   onToggleExplanation,
   onToggleQuestionFlag,
   onEditQuestion
-}: QuestionCardWithStoryProps) => {  const { isAdmin, isPremium } = useAuth();
+}: QuestionCardWithStoryProps) => {
+  const { isAdmin, isPremium } = useAuth();
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [localIsSaved, setLocalIsSaved] = useState(false);
   const [showTip, setShowTip] = useState(false);
@@ -93,10 +93,9 @@ const QuestionCardWithStory = ({
       >
         <Card className="border-0 shadow-lg bg-white">
           <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-4 rounded-t-xl">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
-                  שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
+            <div className="flex justify-start items-center">
+              <div className="flex items-center gap-3">                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
+                  Question {currentQuestionIndex + 1} of {totalQuestions}
                 </Badge>
               </div>
             </div>
@@ -104,14 +103,12 @@ const QuestionCardWithStory = ({
 
           <CardContent className="p-6">
             <div className="flex items-center gap-3 mb-6 text-amber-600">
-              <AlertCircle className="h-6 w-6" />
-              <h3 className="text-xl font-semibold text-gray-800 leading-relaxed">
-                לא נמצאה שאלה
+              <AlertCircle className="h-6 w-6" />              <h3 className="text-xl font-semibold text-gray-800 leading-relaxed">
+                Question Not Found
               </h3>
             </div>
-            
-            <p className="text-gray-600 mb-6">
-              מצטערים, לא נמצאה שאלה לתצוגה. ייתכן שאין שאלות בקבוצת שאלות זו או שאירעה שגיאה בטעינת השאלות.
+              <p className="text-gray-600 mb-6">
+              Sorry, no question was found for display. There may be no questions in this question set or an error occurred while loading the questions.
             </p>
             
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-between">
@@ -119,7 +116,7 @@ const QuestionCardWithStory = ({
                 onClick={onNextQuestion} 
                 className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md"
               >
-                חזרה לרשימת השאלות
+                Back to Question List
                 <ChevronLeft className="h-4 w-4 mr-1" />
               </Button>
             </div>
@@ -129,7 +126,7 @@ const QuestionCardWithStory = ({
     );
   }
 
-  // וודא שיש טקסט שאלה - השתמש בשדה 'text'
+  // Ensure question text exists - use the 'text' field
   const questionText = currentQuestion.text || '';
   
   if (!questionText) {
@@ -143,7 +140,9 @@ const QuestionCardWithStory = ({
 
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
-  const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);  // Get question type badge - using the 'type' property instead of 'questionType'
+  const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
+
+  // Get question type badge - using the 'type' property instead of 'questionType'
   const getQuestionTypeBadge = () => {
     switch (currentQuestion.type) {
       case 'reading-comprehension':
@@ -154,7 +153,8 @@ const QuestionCardWithStory = ({
         return <span dir="ltr" style={{direction: 'ltr'}}>Restatement</span>;
       default:
         return 'Question';
-    }  };
+    }
+  };
 
   // פונקציה לזיהוי אם טקסט הוא באנגלית
   const isEnglishText = (text: string) => {
@@ -182,7 +182,6 @@ const QuestionCardWithStory = ({
   const hasReadingPassage = () => {
     return getFullPassageText() !== null || currentQuestion.passageTitle;
   };
-
   // רינדור הקטע המלא
   const renderFullReadingPassage = () => {
     const fullText = getFullPassageText();
@@ -194,37 +193,36 @@ const QuestionCardWithStory = ({
 
     console.log('Rendering full reading passage for question:', currentQuestion.id);
 
-return (
-  <div className="w-full flex justify-start"> {/* Force left alignment container */}
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm max-w-4xl"> {/* Add max-width here */}
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl">
-        <h4 className="text-xl font-bold text-white flex items-center gap-3">
-          <BookOpen className="h-6 w-6" />
-          <span dir="ltr" style={{direction: 'ltr'}}>{storyTitle || currentQuestion.passageTitle || "Reading Passage"}</span>
-        </h4>
-      </div>
-      {/* Content - כל הטקסט */}
-      <div className="p-6">
-        <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">
-          <div 
-            className={cn(
-              "text-gray-800 leading-relaxed text-lg font-medium whitespace-pre-line",
-              isEnglishText(fullText || "") ? "text-left" : "text-right"
-            )}
-            dir={isEnglishText(fullText || "") ? "ltr" : "rtl"}
-            style={{
-              direction: isEnglishText(fullText || "") ? 'ltr' : 'rtl',
-              textAlign: isEnglishText(fullText || "") ? 'left' : 'right'
-            }}
-          >
-            {fullText || "קטע קריאה זמין עבור שאלה זו"}
+    return (
+      <div className="w-full h-fit">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm h-fit">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl">
+            <h4 className="text-xl font-bold text-white flex items-center gap-3 text-left" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
+              <BookOpen className="h-6 w-6" />
+              <span>{storyTitle || currentQuestion.passageTitle || "Reading Passage"}</span>
+            </h4>
+          </div>
+          {/* Content - כל הטקסט */}
+          <div className="p-6">
+            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">              <div 
+                className={cn(
+                  "text-gray-800 leading-relaxed text-xl font-medium whitespace-pre-line",
+                  isEnglishText(fullText || "") ? "text-left" : "text-right"
+                )}
+                dir={isEnglishText(fullText || "") ? "ltr" : "rtl"}
+                style={{
+                  direction: isEnglishText(fullText || "") ? 'ltr' : 'rtl',
+                  textAlign: isEnglishText(fullText || "") ? 'left' : 'right'
+                }}
+              >
+                {fullText || "קטע קריאה זמין עבור שאלה זו"}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-);
+    );
   };
 
   return (
@@ -234,47 +232,44 @@ return (
       transition={{ duration: 0.3 }}
       className="max-w-7xl"
     >
-      <Card className="border-0 shadow-lg bg-white">        <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-t-xl">
-          <div className="flex justify-between items-center">
-            <div className="flex flex-col gap-2">              <div className="flex items-center gap-3">
+      <Card className="border-0 shadow-lg bg-white">        {/* MAIN HEADER - PROPER RTL/LTR ALIGNMENT */}
+        <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-t-xl">
+          <div className="flex justify-between items-center w-full">
+            <div className="flex flex-col gap-2">
+              {/* Badges Row */}
+              <div className="flex items-center gap-3">
                 <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20" dir="ltr" style={{direction: 'ltr'}}>
                   Question {currentQuestionIndex + 1} of {totalQuestions}
                 </Badge>
                 <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
                   {getQuestionTypeBadge()}
-                </Badge>                {localIsSaved && (
+                </Badge>
+                {localIsSaved && (
                   <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20" dir="ltr" style={{direction: 'ltr'}}>
                     <Flag className="h-3 w-3 fill-current" />
                     <span>Saved</span>
                   </Badge>
                 )}
               </div>
-                {/* Story name */}
+
+              {/* Story Name - PROPERLY ALIGNED */}
               {currentQuestion.passageTitle && (
                 <div 
                   className="text-white/90 text-sm font-medium"
-                  dir={isEnglishText(currentQuestion.passageTitle) ? "ltr" : "rtl"}
-                  style={isEnglishText(currentQuestion.passageTitle) ? {direction: 'ltr'} : {}}
+                  dir="ltr"
+                  style={{direction: 'ltr', textAlign: 'left'}}
                 >
+                  <BookOpen className="inline h-4 w-4 ml-1" />
                   {currentQuestion.passageTitle}
                 </div>
               )}
-                {/* Progress line */}
+
+              {/* Progress Line - PROPERLY ALIGNED */}
               <div className="text-white/80 text-sm" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
                 Progress: {currentQuestionIndex + 1} / {totalQuestions} Questions
-              </div>
-            </div>
-            
+              </div>            </div>            
+            {/* Admin Edit Button - PROPERLY ALIGNED */}
             <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-white hover:bg-white/10"
-                onClick={handleSaveStatusChange}
-              >
-                <Flag className={cn("h-4 w-4", localIsSaved && "fill-current")} />
-              </Button>
-              
               {isAdmin && onEditQuestion && (
                 <Button
                   variant="ghost"
@@ -287,20 +282,45 @@ return (
               )}
             </div>
           </div>
-        </div>
-
-        <CardContent className="p-6">
-          {/* Layout depends on question type */}          <div className="space-y-8">            {/* Reading Passage - כל הסיפור מוצג עבור כל שאלה */}
+        </div>        <CardContent className="p-6">
+          {/* RESPONSIVE LAYOUT: Mobile (stacked) vs Desktop (side-by-side) */}
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+            {/* LEFT COLUMN (Desktop) / TOP (Mobile): Reading Passage */}
             {hasReadingPassage() && (
-              <div className="w-full">
+              <div className="w-full md:w-1/2 md:flex-shrink-0">
                 {renderFullReadingPassage()}
               </div>
-            )}
+            )}            {/* RIGHT COLUMN (Desktop) / BOTTOM (Mobile): Question and Options */}
+            <div className={cn("w-full", hasReadingPassage() ? "md:w-1/2" : "")}>
+              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                {/* Question Header with Save Button */}
+                <div className="flex items-center justify-between mb-6">
+                  <h4 className="text-lg font-semibold text-gray-700">Question</h4>
+                  
+                  {/* Save Question Button */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 flex-shrink-0",
+                      localIsSaved 
+                        ? "text-amber-600 hover:text-amber-700 hover:bg-amber-50 bg-amber-50/50" 
+                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                    )}
+                    onClick={handleSaveStatusChange}
+                    title={localIsSaved ? "הסר שאלה משמורות" : "שמור שאלה"}
+                  >
+                    <Flag className={cn("h-4 w-4", localIsSaved && "fill-current")} />
+                    <span className="text-sm font-medium hidden sm:inline">
+                      {localIsSaved ? "שמורה" : "שמור"}
+                    </span>
+                  </Button>
+                </div>
 
-            {/* Question and Options */}<div className="w-full">
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">                <h3 
+                {/* Question Text */}
+                <h3 
                   className={cn(
-                    "text-2xl font-bold mb-6 text-gray-900 leading-relaxed",
+                    "text-xl font-medium text-gray-900 leading-relaxed mb-6",
                     isEnglishText(questionText) ? "text-left" : "text-right"
                   )}
                   dir={isEnglishText(questionText) ? "ltr" : "rtl"}
@@ -343,7 +363,8 @@ return (
                               selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
                           )}
                           onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                          disabled={isAnswerSubmitted}                        >
+                          disabled={isAnswerSubmitted}
+                        >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-4 flex-1" dir="ltr" style={{ direction: 'ltr' }}>
                               <div className={cn(
@@ -376,7 +397,8 @@ return (
                               >
                                 {option}
                               </span>
-                            </div>                            
+                            </div>
+                            
                             {isAnswerSubmitted && showCorrectAnswer && (
                               <div className="flex-shrink-0 mr-4">
                                 {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
@@ -432,34 +454,27 @@ return (
                       )}
                     </AnimatePresence>
                   </div>
-                )}
-
-                {/* Submit/Navigation buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-end">
-                  {!isAnswerSubmitted ? (                    <Button 
+                )}                {/* Submit/Navigation buttons */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-start items-start">                  {!isAnswerSubmitted ? (
+                    <Button 
                       onClick={onSubmitAnswer} 
                       className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
                       disabled={selectedAnswerIndex === null}
-                      dir="ltr"
-                      style={{direction: 'ltr'}}
                     >
                       Submit Answer
                     </Button>
                   ) : (
-                    <div className="flex gap-4 w-full sm:w-auto">
-                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
-                        <Button 
+                    <div className="flex gap-4 w-full sm:w-auto justify-start">
+                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (                        <Button 
                           variant="outline" 
                           onClick={onToggleExplanation}
                           className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
                         >
-                          {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
+                          {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
                         </Button>
-                      )}                        <Button 
+                      )}                      <Button 
                         onClick={onNextQuestion} 
                         className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium text-base px-6 py-3"
-                        dir="ltr"
-                        style={{direction: 'ltr'}}
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
@@ -477,40 +492,40 @@ return (
                   )}
                 </div>
               </div>
-            </div>
-          </div>
-          
-          <AnimatePresence>
-            {(isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && showExplanation) && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden mt-6"
-              >
-                <div className="p-5 bg-slate-50 border border-slate-200 rounded-lg">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="bg-slate-600 p-1.5 rounded-lg">
-                      <MessageSquare className="h-4 w-4 text-white" />
+
+              {/* Explanation Section - Now within the question column */}
+              <AnimatePresence>
+                {(isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && showExplanation) && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden mt-4"
+                  >
+                    <div className="p-5 bg-slate-50 border border-slate-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="bg-slate-600 p-1.5 rounded-lg">
+                          <MessageSquare className="h-4 w-4 text-white" />
+                        </div>
+                        <h4 className="font-semibold text-slate-800">Detailed Explanation</h4>
+                      </div>
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {currentQuestion.explanation}
+                      </p>
+                      
+                      {currentQuestion.explanationImage && (                        <QuestionImage
+                          src={currentQuestion.explanationImage}
+                          alt="Explanation diagram"
+                          maxHeightRem={14}
+                        />
+                      )}
                     </div>
-                    <h4 className="font-semibold text-slate-800">הסבר מפורט</h4>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {currentQuestion.explanation}
-                  </p>
-                  
-                  {currentQuestion.explanationImage && (
-                    <QuestionImage
-                      src={currentQuestion.explanationImage}
-                      alt="תרשים הסבר"
-                      maxHeightRem={14}
-                    />
-                  )}
-                </div>
-              </motion.div>
-            )}        </AnimatePresence>
-        </CardContent>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>        </CardContent>
       </Card>
     </motion.div>
   );

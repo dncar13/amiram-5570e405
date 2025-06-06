@@ -2,7 +2,6 @@ import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import Header from "@/components/Header";
-import SimulationHeader from "@/components/simulation/SimulationHeader";
 import SimulationContent from "@/components/simulation/SimulationContent";
 import { useSimulation } from "@/hooks/useSimulation";
 import { useSimulationData } from "@/hooks/useSimulationData";
@@ -197,8 +196,7 @@ const Simulation = () => {
     simulation.progressLoaded,
     effectiveIsLoading,
     questionsToUse.length
-  ]);
-    // Handle navigation to topics
+  ]);  // Handle navigation to topics
   const handleBackToTopics = () => {
     if (isStoryBased) {
       return "/reading-comprehension";
@@ -284,8 +282,7 @@ const Simulation = () => {
             </div>
             <p className="text-gray-600 mb-6">
               {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
-            </p>
-            <Button 
+            </p>            <Button 
               onClick={() => navigate(handleBackToTopics())} 
               className="w-full bg-amber-600 hover:bg-amber-700"
             >
@@ -299,28 +296,18 @@ const Simulation = () => {
   
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
-      <Header />      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
-        <div className="container mx-auto px-4 max-w-5xl">
-          
-          {/* כפתור חזרה - מעל הכל */}
+      <Header />
+      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
+        
+        {/* כפתור חזרה - ללא מרכוז */}
+        <div className="w-full px-4">
           <BackButton isQuestionSet={isQuestionSet} />
-          
-          {/* כותרת הסימולציה */}
-          <SimulationHeader 
-            topicTitle={
-              isStoryBased ? story?.title || 'הבנת הנקרא' :
-              isDifficultyBased ? `${level === 'easy' ? 'רמה קלה' : level === 'medium' ? 'רמה בינונית' : 'רמה קשה'} - ${type === 'mixed' ? 'תרגול מעורב' : type === 'restatement' ? 'ניסוח מחדש' : type}` :
-              setId ? questionSetTitle : 
-              (isComprehensiveExam ? topic?.title : topic?.title || "")} 
-            isCompleted={simulation.simulationComplete} 
-            currentScore={simulation.currentScorePercentage}
-            progressPercentage={simulation.progressPercentage}
-            answeredQuestionsCount={simulation.answeredQuestionsCount}
-            totalQuestions={simulation.totalQuestions}
-            simulationType={simulation.examMode ? "exam" : "practice"}
-            isQuestionSet={isQuestionSet}
-          />
-          
+        </div>
+        
+        {/* NO MORE TITLE - REMOVED COMPLETELY! */}
+        
+        {/* תוכן הסימולציה - עם מרכוז */}
+        <div className="container mx-auto max-w-5xl px-4">
           <SimulationContent 
             simulationComplete={simulation.simulationComplete}
             currentQuestionIndex={simulation.currentQuestionIndex}

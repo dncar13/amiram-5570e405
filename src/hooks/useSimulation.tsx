@@ -802,7 +802,8 @@ export const useSimulation = (
     setIsTimerActive(settings.timerEnabled);
     setRemainingTime(settings.timerMinutes * 60);
   };  const handleBackToTopics = () => {
-    return isQuestionSet ? "/questions-sets" : "/simulations-entry";
+    // This function is now a placeholder - actual navigation is handled in parent component
+    console.log("handleBackToTopics called in useSimulation");
   };
   
   const resetProgress = () => {
