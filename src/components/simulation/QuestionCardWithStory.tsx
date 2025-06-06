@@ -94,8 +94,9 @@ const QuestionCardWithStory = ({
         <Card className="border-0 shadow-lg bg-white">
           <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-4 rounded-t-xl">
             <div className="flex justify-start items-center">
-              <div className="flex items-center gap-3">                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
-                  Question {currentQuestionIndex + 1} of {totalQuestions}
+              <div className="flex items-center gap-3">
+                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
+                  שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
                 </Badge>
               </div>
             </div>
@@ -103,12 +104,14 @@ const QuestionCardWithStory = ({
 
           <CardContent className="p-6">
             <div className="flex items-center gap-3 mb-6 text-amber-600">
-              <AlertCircle className="h-6 w-6" />              <h3 className="text-xl font-semibold text-gray-800 leading-relaxed">
-                Question Not Found
+              <AlertCircle className="h-6 w-6" />
+              <h3 className="text-xl font-semibold text-gray-800 leading-relaxed">
+                לא נמצאה שאלה
               </h3>
             </div>
-              <p className="text-gray-600 mb-6">
-              Sorry, no question was found for display. There may be no questions in this question set or an error occurred while loading the questions.
+            
+            <p className="text-gray-600 mb-6">
+              מצטערים, לא נמצאה שאלה לתצוגה. ייתכן שאין שאלות בקבוצת שאלות זו או שאירעה שגיאה בטעינת השאלות.
             </p>
             
             <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-between">
@@ -116,7 +119,7 @@ const QuestionCardWithStory = ({
                 onClick={onNextQuestion} 
                 className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md"
               >
-                Back to Question List
+                חזרה לרשימת השאלות
                 <ChevronLeft className="h-4 w-4 mr-1" />
               </Button>
             </div>
@@ -126,7 +129,7 @@ const QuestionCardWithStory = ({
     );
   }
 
-  // Ensure question text exists - use the 'text' field
+  // וודא שיש טקסט שאלה - השתמש בשדה 'text'
   const questionText = currentQuestion.text || '';
   
   if (!questionText) {
@@ -455,26 +458,33 @@ const QuestionCardWithStory = ({
                     </AnimatePresence>
                   </div>
                 )}                {/* Submit/Navigation buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-start items-start">                  {!isAnswerSubmitted ? (
+                <div className="flex flex-col sm:flex-row gap-4 justify-start">
+                  {!isAnswerSubmitted ? (
                     <Button 
                       onClick={onSubmitAnswer} 
                       className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
                       disabled={selectedAnswerIndex === null}
+                      dir="ltr"
+                      style={{direction: 'ltr'}}
                     >
                       Submit Answer
                     </Button>
                   ) : (
-                    <div className="flex gap-4 w-full sm:w-auto justify-start">
-                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (                        <Button 
+                    <div className="flex gap-4 w-full sm:w-auto">
+                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
+                        <Button 
                           variant="outline" 
                           onClick={onToggleExplanation}
                           className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
                         >
-                          {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
+                          {showExplanation ? 'הסתר הסבר' : 'הצג הסבר'}
                         </Button>
-                      )}                      <Button 
+                      )}
+                      <Button 
                         onClick={onNextQuestion} 
                         className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium text-base px-6 py-3"
+                        dir="ltr"
+                        style={{direction: 'ltr'}}
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
@@ -508,15 +518,16 @@ const QuestionCardWithStory = ({
                         <div className="bg-slate-600 p-1.5 rounded-lg">
                           <MessageSquare className="h-4 w-4 text-white" />
                         </div>
-                        <h4 className="font-semibold text-slate-800">Detailed Explanation</h4>
+                        <h4 className="font-semibold text-slate-800">הסבר מפורט</h4>
                       </div>
                       <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                         {currentQuestion.explanation}
                       </p>
                       
-                      {currentQuestion.explanationImage && (                        <QuestionImage
+                      {currentQuestion.explanationImage && (
+                        <QuestionImage
                           src={currentQuestion.explanationImage}
-                          alt="Explanation diagram"
+                          alt="תרשים הסבר"
                           maxHeightRem={14}
                         />
                       )}
