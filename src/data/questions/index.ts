@@ -3,21 +3,11 @@
 // מבנה חדש: ארגון לפי סוגי שאלות
 
 import { Question } from '../types/questionTypes';
-import { restatementQuestions } from './by-type/restatementQuestions';
-import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestions';
-import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
-import { readingComprehensionAdvancedQuestions } from './by-type/readingComprehensionAdvancedQuestions';
-import { vocabularyQuestions } from './by-type/vocabularyQuestions';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
 
-// מערך המאגד את כל השאלות מכל הקבצים - מארגן לפי סוג שאלה
+// מערך המאגד את כל השאלות - כרגע רק את The Rise of the Gig Economy
 export const allQuestions: Question[] = [
-  ...restatementQuestions,
-  ...sentenceCompletionQuestions,
-  ...readingComprehensionQuestions,
-  ...readingComprehensionAdvancedQuestions,
-  ...vocabularyQuestions,
-  ...gigEconomyReadingQuestions, // השאלות החדשות שלך!
+  ...gigEconomyReadingQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -73,11 +63,6 @@ export const getQuestionSetCount = (setId: number): number => {
 
 // הרץ בדיקה לכמות השאלות שנטענו
 console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
-console.log(`[Questions] Restatement questions loaded: ${restatementQuestions.length}`);
-console.log(`[Questions] Sentence completion questions loaded: ${sentenceCompletionQuestions.length}`);
-console.log(`[Questions] Reading comprehension questions loaded: ${readingComprehensionQuestions.length}`);
-console.log(`[Questions] Reading comprehension advanced questions loaded: ${readingComprehensionAdvancedQuestions.length}`);
-console.log(`[Questions] Vocabulary questions loaded: ${vocabularyQuestions.length}`);
 console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
 
 // בדיקת שאלות הבנת הנקרא עם קטעים

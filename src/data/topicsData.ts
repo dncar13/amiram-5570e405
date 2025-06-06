@@ -177,9 +177,9 @@ export const topicsData: Topic[] = [
   {
     id: 9,
     title: "Society & Economy Reading",
-    description: "קטעי קריאה בנושאי חברה וכלכלה עם מספור שורות",
+    description: "קטעי קריאה בנושאי חברה וכלכלה - The Rise of the Gig Economy",
     timeEstimate: "25-30 דקות",
-    totalQuestions: 4,
+    totalQuestions: 10,
     targetQuestions: 15,
     targetCount: 15,
     completedPercentage: 0,

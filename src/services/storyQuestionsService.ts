@@ -15,6 +15,8 @@ export interface Story {
 // Get all available stories from reading comprehension questions
 export const getAvailableStories = (): Story[] => {
   const allQuestions = getAllQuestions();
+  // פילטור שאלות שיש להן גם passageText וגם passageTitle
+  // כרגע זה אמור להחזיר רק את השאלות של The Rise of the Gig Economy
   const readingQuestions = allQuestions.filter(q => 
     q.passageText && q.passageTitle
   );
@@ -46,7 +48,9 @@ export const getAvailableStories = (): Story[] => {
       difficulty = 'medium';
     } else if (hasEasy) {
       difficulty = 'easy';
-    }    // Determine the primary subject of the story
+    }
+    
+    // Determine the primary subject of the story
     const subjects = questions.map(q => identifyQuestionSubject(q)).filter(Boolean);
     const subjectCounts: Record<string, number> = {};
     subjects.forEach(subject => {
