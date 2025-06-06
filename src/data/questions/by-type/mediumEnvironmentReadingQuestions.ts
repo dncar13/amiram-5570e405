@@ -15,7 +15,7 @@ Despite these successes, challenges remain in quantifying the precise value of e
 export const environmentReadingQuestions: Question[] = [
   {
     id: 26,
-    type: "reading-comprehension",passageText
+    type: "reading-comprehension",
     text: "What was the main outcome of Costa Rica's Payment for Ecosystem Services program?",
     options: [
       "It increased the country's GDP by 50%",
