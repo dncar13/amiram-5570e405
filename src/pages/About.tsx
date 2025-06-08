@@ -2,13 +2,10 @@
 import { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import AboutHero from "@/components/about/AboutHero";
-import WhyChooseUs from "@/components/about/WhyChooseUs";
-import HowItWorks from "@/components/about/HowItWorks";
-import WhatMakesUsSpecial from "@/components/about/WhatMakesUsSpecial";
-import TestimonialSection from "@/components/about/TestimonialSection";
-import OurPromise from "@/components/about/OurPromise";
-import CTASection from "@/components/about/CTASection";
+import ModernAboutHero from "@/components/about/ModernAboutHero";
+import ModernStorySection from "@/components/about/ModernStorySection";
+import ModernFeaturesSection from "@/components/about/ModernFeaturesSection";
+import ModernCTASection from "@/components/about/ModernCTASection";
 
 const About = () => {
   useEffect(() => {
@@ -16,19 +13,14 @@ const About = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       <Header />
       
-      <main className="flex-grow pb-16">
-        <div className="container mx-auto px-4 py-12">
-          <AboutHero />
-          <WhyChooseUs />
-          <HowItWorks />
-          <WhatMakesUsSpecial />
-          <TestimonialSection />
-          <OurPromise />
-          <CTASection />
-        </div>
+      <main className="overflow-hidden">
+        <ModernAboutHero />
+        <ModernStorySection />
+        <ModernFeaturesSection />
+        <ModernCTASection />
       </main>
       
       <Footer />
