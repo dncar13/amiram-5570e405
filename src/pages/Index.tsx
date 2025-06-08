@@ -3,13 +3,13 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import HeroSection from "@/components/homepage/HeroSection";
-import FeaturesSection from "@/components/homepage/FeaturesSection";
+import EnhancedHeroSection from "@/components/homepage/EnhancedHeroSection";
+import EnhancedFeaturesSection from "@/components/homepage/EnhancedFeaturesSection";
+import EnhancedStatsSection from "@/components/homepage/EnhancedStatsSection";
 import DetailedFeaturesSection from "@/components/homepage/DetailedFeaturesSection";
 import FAQSection from "@/components/homepage/FAQSection";
 import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import ContactSection from "@/components/homepage/ContactSection";
-import StatsSection from "@/components/homepage/StatsSection";
 import CTASection from "@/components/homepage/CTASection";
 
 const Index = () => {
@@ -24,9 +24,9 @@ const Index = () => {
       <Header />
       
       <main className="flex-grow">
-        <HeroSection />
-        <StatsSection />
-        <FeaturesSection />
+        <EnhancedHeroSection />
+        <EnhancedStatsSection />
+        <EnhancedFeaturesSection />
         <DetailedFeaturesSection />
         <TestimonialsSection />
         <CTASection />
