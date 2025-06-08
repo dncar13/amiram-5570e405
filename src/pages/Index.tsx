@@ -8,7 +8,6 @@ import FeaturesSection from "@/components/homepage/FeaturesSection";
 import DetailedFeaturesSection from "@/components/homepage/DetailedFeaturesSection";
 import FAQSection from "@/components/homepage/FAQSection";
 import TestimonialsSection from "@/components/homepage/TestimonialsSection";
-import FounderSection from "@/components/homepage/FounderSection";
 import ContactSection from "@/components/homepage/ContactSection";
 import StatsSection from "@/components/homepage/StatsSection";
 import CTASection from "@/components/homepage/CTASection";
@@ -21,7 +20,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white" style={{ fontFamily: 'Rubik, sans-serif' }}>
+    <div className="min-h-screen flex flex-col bg-white" style={{ fontFamily: 'Assistant, sans-serif' }}>
       <Header />
       
       <main className="flex-grow">
@@ -30,7 +29,6 @@ const Index = () => {
         <FeaturesSection />
         <DetailedFeaturesSection />
         <TestimonialsSection />
-        <FounderSection />
         <CTASection />
         <FAQSection />
         <ContactSection />
