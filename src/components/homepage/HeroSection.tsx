@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -70,13 +69,15 @@ const HeroSection: React.FC = () => {
     restDelta: 0.001
   });
   
-  const opacity = useSpring(useTransform(scrollY, [0, 300], [1, 0]), {
+  // Updated opacity - stops at 0.3 instead of 0 for both mobile and desktop
+  const opacity = useSpring(useTransform(scrollY, [0, 400], [1, 0.3]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  const scale = useSpring(useTransform(scrollY, [0, 300], [1, 0.95]), {
+  // Updated scale - less dramatic scaling
+  const scale = useSpring(useTransform(scrollY, [0, 400], [1, 0.98]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
@@ -243,7 +244,7 @@ const HeroSection: React.FC = () => {
         </motion.div>
       </motion.div>
       
-      {/* Main content with enhanced animations */}
+      {/* Main content with enhanced animations - improved opacity behavior */}
       <motion.div 
         className="container relative z-10 mx-auto px-4 py-12 md:py-24"
         style={{ opacity, scale }}
