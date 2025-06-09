@@ -13,12 +13,26 @@ export interface Story {
 
 // Get all available stories from reading comprehension questions
 export const getAvailableStories = (): Story[] => {
+  console.log('[DEBUG] getAvailableStories called');
+  
   const allQuestions = getAllQuestions();
+  console.log('[DEBUG] Total questions loaded:', allQuestions.length);
+  
   // פילטור שאלות שיש להן גם passageText וגם passageTitle
-  // כרגע זה אמור להחזיר רק את השאלות של The Rise of the Gig Economy
-  const readingQuestions = allQuestions.filter(q => 
-    q.passageText && q.passageTitle
-  );
+  const readingQuestions = allQuestions.filter(q => {
+    const hasPassageText = !!q.passageText;
+    const hasPassageTitle = !!q.passageTitle;
+    const isReadingType = q.type === 'reading-comprehension';
+    
+    console.log(`[DEBUG] Question ${q.id}: hasPassageText=${hasPassageText}, hasPassageTitle=${hasPassageTitle}, isReadingType=${isReadingType}`);
+    
+    return hasPassageText && hasPassageTitle && isReadingType;
+  });
+  
+  console.log('[DEBUG] Reading questions found:', readingQuestions.length);
+  readingQuestions.forEach(q => {
+    console.log(`[DEBUG] Reading question: ${q.id} - "${q.passageTitle}"`);
+  });
 
   // Group questions by passage title
   const storiesMap = new Map<string, Question[]>();
@@ -30,6 +44,8 @@ export const getAvailableStories = (): Story[] => {
     }
     storiesMap.get(title)!.push(question);
   });
+
+  console.log('[DEBUG] Stories map:', Array.from(storiesMap.keys()));
 
   // Convert to Story objects
   const stories: Story[] = Array.from(storiesMap.entries()).map(([title, questions]) => {
@@ -61,7 +77,7 @@ export const getAvailableStories = (): Story[] => {
       ? Object.entries(subjectCounts).sort((a, b) => b[1] - a[1])[0][0] as GeneralSubject
       : undefined;
 
-    return {
+    const story = {
       id: title.replace(/\s+/g, '-').toLowerCase(),
       title,
       description: questions[0]?.passageText?.substring(0, 100) + '...' || '',
@@ -69,9 +85,13 @@ export const getAvailableStories = (): Story[] => {
       difficulty,
       subject: primarySubject
     };
+    
+    console.log('[DEBUG] Created story:', story);
+    return story;
   });
 
-  console.log('Stories found:', stories.map(s => ({ title: s.title, count: s.questionCount, subject: s.subject })));
+  console.log('[DEBUG] Final stories:', stories.length);
+  console.log('[DEBUG] Stories found:', stories.map(s => ({ title: s.title, count: s.questionCount, subject: s.subject })));
   return stories;
 };
 

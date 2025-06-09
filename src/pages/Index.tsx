@@ -11,6 +11,7 @@ import TestimonialsSection from "@/components/homepage/TestimonialsSection";
 import ContactSection from "@/components/homepage/ContactSection";
 import StatsSection from "@/components/homepage/StatsSection";
 import CTASection from "@/components/homepage/CTASection";
+import DebugStoriesSection from "@/components/homepage/DebugStoriesSection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -26,6 +27,14 @@ const Index = () => {
       <main className="flex-grow">
         <HeroSection />
         <StatsSection />
+        
+        {/* DEBUG: Add temporary debug section */}
+        <section className="py-8 bg-gray-100">
+          <div className="max-w-4xl mx-auto px-4">
+            <DebugStoriesSection />
+          </div>
+        </section>
+        
         <FeaturesSection />
         <DetailedFeaturesSection />
         <TestimonialsSection />

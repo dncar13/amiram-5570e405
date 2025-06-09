@@ -26,7 +26,17 @@ import {
  * Get all questions from the system
  */
 export const getAllQuestions = (): Question[] => {
-  return getQuestions();
+  const questions = getQuestions();
+  console.log('[DEBUG] getAllQuestions called, returning:', questions.length, 'questions');
+  
+  // Debug: show reading comprehension questions specifically
+  const readingQuestions = questions.filter(q => q.type === 'reading-comprehension');
+  console.log('[DEBUG] Reading comprehension questions:', readingQuestions.length);
+  readingQuestions.forEach(q => {
+    console.log(`[DEBUG] RC Question ${q.id}: "${q.passageTitle}" - hasPassageText: ${!!q.passageText}`);
+  });
+  
+  return questions;
 };
 
 /**
