@@ -136,7 +136,12 @@ const SimulationsEntry: React.FC = () => {
   };
 
   const handleQuestionTypeClick = (type: string) => {
-    navigate(`/simulation/type/${type}`);
+    // Direct navigation to reading comprehension for that specific type
+    if (type === 'reading-comprehension') {
+      navigate('/reading-comprehension');
+    } else {
+      navigate(`/simulation/type/${type}`);
+    }
   };
 
   // Smooth spring animations
