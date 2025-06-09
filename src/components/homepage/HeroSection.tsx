@@ -427,11 +427,14 @@ const HeroSection: React.FC = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="border-2 border-white/20 text-white bg-white/5 backdrop-blur-2xl hover:bg-white/10 hover:border-white/30 font-semibold text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-2xl transition-all duration-300 shadow-xl relative overflow-hidden group w-full"
-                    style={{ fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif' }}
+                    className="border-2 border-white/40 text-white bg-white/10 backdrop-blur-2xl hover:bg-white/20 hover:border-white/60 font-semibold text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-2xl transition-all duration-300 shadow-2xl relative overflow-hidden group w-full"
+                    style={{ 
+                      fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
+                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                    }}
                   >
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0"
+                      className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
                       initial={{ x: "-100%" }}
                       animate={{ x: "100%" }}
                       transition={{
@@ -440,7 +443,7 @@ const HeroSection: React.FC = () => {
                         ease: "linear"
                       }}
                     />
-                    <span className="relative z-10">שדרג לפרימיום</span>
+                    <span className="relative z-10 drop-shadow-sm">שדרג לפרימיום</span>
                   </Button>
                 </motion.div>
               </Link>
