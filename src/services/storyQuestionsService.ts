@@ -67,8 +67,8 @@ export const getAvailableStories = (): Story[] => {
   const stories: Story[] = Array.from(storiesMap.entries()).map(([title, questions]) => {
     const difficulties = questions.map(q => q.difficulty);
     const hasEasy = difficulties.includes('easy');
-    const hasMedium = difficulties.includes('medium') || difficulties.includes('intermediate');
-    const hasHard = difficulties.includes('hard') || difficulties.includes('advanced');
+    const hasMedium = difficulties.includes('medium');
+    const hasHard = difficulties.includes('hard');
     
     let difficulty: 'easy' | 'medium' | 'hard' | 'mixed' = 'medium';
     if ((hasEasy && hasMedium) || (hasEasy && hasHard) || (hasMedium && hasHard)) {

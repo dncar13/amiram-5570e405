@@ -1,4 +1,3 @@
-
 import { Question } from "../../types/questionTypes";
 
 export const technologyPassageText = `
@@ -27,7 +26,7 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage states that 'recent advances in computing power, data availability, and algorithmic sophistication have accelerated its practical applications.'",
     topicId: 2,
-    difficulty: 'intermediate',
+    difficulty: 'medium',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
     tags: ["technology", "AI", "computing"],
@@ -93,7 +92,7 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage specifically mentions 'Issues of privacy, job displacement, algorithmic bias, and the potential for AI systems to make decisions without human oversight.'",
     topicId: 2,
-    difficulty: 'intermediate',
+    difficulty: 'medium',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
     tags: ["technology", "AI", "ethics"],
