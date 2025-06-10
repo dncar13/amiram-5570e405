@@ -257,5 +257,3 @@ export {
   getDifficultyStats,
   getMixedDifficultyQuestions
 };
-
-}
