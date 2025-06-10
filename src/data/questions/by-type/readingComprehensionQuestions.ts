@@ -1,3 +1,4 @@
+
 import { Question } from "../../types/questionTypes";
 
 /**
@@ -24,6 +25,7 @@ What does the passage suggest about the traditional employment model?`,
     topicId: 1,
     categoryId: 1,
     difficulty: 'medium',
+    passageTitle: "The Changing Nature of Work",
     passageText: "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in the 21st century. The emergence of the 'gig economy' has fundamentally altered how millions of people work and earn their living.",
     tips: "Look for keywords in the passage that directly answer the question. The phrase 'dramatic transformation' is key here."
   },
@@ -46,6 +48,7 @@ According to the passage, what effect is climate change having on weather patter
     topicId: 1,
     categoryId: 1,
     difficulty: 'easy',
+    passageTitle: "Climate Change Impact",
     passageText: "Climate change represents one of the most pressing challenges of our time. Rising global temperatures are causing ice caps to melt, sea levels to rise, and weather patterns to become increasingly unpredictable. Scientists worldwide are working to develop solutions that can help mitigate these effects.",
     tips: "Focus on the specific phrase that describes what's happening to weather patterns in the passage."
   },
@@ -68,6 +71,7 @@ What is the author's overall view of online education?`,
     topicId: 1,
     categoryId: 1,
     difficulty: 'medium',
+    passageTitle: "Online Education Revolution",
     passageText: "Online education has revolutionized learning by making courses accessible to students worldwide. However, it also presents challenges such as limited face-to-face interaction and the need for strong self-discipline. Despite these obstacles, many educational institutions continue to expand their online offerings.",
     tips: "Look for signal words like 'however' and 'despite' that indicate the author is presenting multiple perspectives."
   }

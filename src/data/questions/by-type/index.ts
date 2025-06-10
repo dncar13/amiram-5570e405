@@ -6,16 +6,25 @@
 
 import { Question } from '../../types/questionTypes';
 import { allQuestions } from '../index';
+import { readingComprehensionQuestions } from './readingComprehensionQuestions';
+import { readingComprehensionAdvancedQuestions } from './readingComprehensionAdvancedQuestions';
 
 /**
  * מחזיר שאלות מסוג reading comprehension
  */
 export const getReadingComprehensionQuestions = (): Question[] => {
-  const questions = allQuestions.filter(q => q.type === 'reading-comprehension');
+  // שילוב שאלות מכל הקבצים של הבנת הנקרא
+  const questions = [
+    ...allQuestions.filter(q => q.type === 'reading-comprehension'),
+    ...readingComprehensionQuestions,
+    ...readingComprehensionAdvancedQuestions
+  ];
+  
   console.log(`[getReadingComprehensionQuestions] Found ${questions.length} reading comprehension questions`);
   questions.forEach(q => {
-    console.log(`Question ${q.id}: hasPassageText=${!!q.passageText}, hasPassageWithLines=${!!(q.passageWithLines && q.passageWithLines.length > 0)}`);
+    console.log(`Question ${q.id}: hasPassageText=${!!q.passageText}, hasPassageWithLines=${!!(q.passageWithLines && q.passageWithLines.length > 0)}, hasPassageTitle=${!!q.passageTitle}`);
   });
+  
   return questions;
 };
 

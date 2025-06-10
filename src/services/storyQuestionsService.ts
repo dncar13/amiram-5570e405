@@ -1,5 +1,6 @@
+
 import { Question } from '@/data/types/questionTypes';
-import { getAllQuestions } from '@/services/questionsService';
+import { getAllQuestions, getReadingComprehensionQuestions } from '@/services/questionsService';
 import { GeneralSubject, identifyQuestionSubject } from '@/services/subjectClassificationService';
 
 export interface Story {
@@ -15,11 +16,12 @@ export interface Story {
 export const getAvailableStories = (): Story[] => {
   console.log('[DEBUG] getAvailableStories called');
   
-  const allQuestions = getAllQuestions();
-  console.log('[DEBUG] Total questions loaded:', allQuestions.length);
+  // Use getReadingComprehensionQuestions instead of getAllQuestions to ensure we get all RC questions
+  const allReadingQuestions = getReadingComprehensionQuestions();
+  console.log('[DEBUG] Total reading questions loaded:', allReadingQuestions.length);
   
   // פילטור שאלות שיש להן גם passageText וגם passageTitle
-  const readingQuestions = allQuestions.filter(q => {
+  const readingQuestions = allReadingQuestions.filter(q => {
     const hasPassageText = !!q.passageText;
     const hasPassageTitle = !!q.passageTitle;
     const isReadingType = q.type === 'reading-comprehension';

@@ -6,12 +6,16 @@ import { Question } from '../types/questionTypes';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
 import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
 import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
+import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
+import { readingComprehensionAdvancedQuestions } from './by-type/readingComprehensionAdvancedQuestions';
 
 // מערך המאגד את כל השאלות
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,
   ...technologyReadingQuestions,
   ...environmentReadingQuestions,
+  ...readingComprehensionQuestions,
+  ...readingComprehensionAdvancedQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
