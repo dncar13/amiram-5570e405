@@ -1,76 +1,22 @@
 
-// אינדקס מרכזי שמייבא את כל קבצי השאלות
-// מבנה חדש: ארגון לפי סוגי שאלות
+import { Question } from "./types/questionTypes";
+import { mediumQuestions } from "./reading-comprehension/medium";
 
-import { Question } from '../types/questionTypes';
-import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
-import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
-import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
+console.log('[DEBUG] Loading questions from organized structure');
+console.log('[DEBUG] Medium questions loaded:', mediumQuestions.length);
 
-// מערך המאגד את כל השאלות
+// Export all questions - using the organized structure with 25 questions per story
 export const allQuestions: Question[] = [
-  ...gigEconomyReadingQuestions,
-  ...technologyReadingQuestions,
-  ...environmentReadingQuestions,
+  ...mediumQuestions
 ];
 
-// פונקציות עזר לקבלת שאלות
+console.log('[DEBUG] Total questions exported:', allQuestions.length);
 
-/**
- * מחזיר את כל השאלות במערכת
- */
-export const getAllQuestions = (): Question[] => {
-  return allQuestions;
-};
+// Log question counts by passage title for debugging
+const questionCounts: Record<string, number> = {};
+allQuestions.forEach(q => {
+  const title = q.passageTitle || 'Unknown';
+  questionCounts[title] = (questionCounts[title] || 0) + 1;
+});
 
-/**
- * מחזיר שאלות לפי נושא מסוים
- */
-export const getQuestionsByTopic = (topicId: number): Question[] => {
-  return allQuestions.filter(question => question.topicId === topicId);
-};
-
-/**
- * מחזיר שאלות לפי תת-נושא
- */
-export const getQuestionsBySubtopic = (topicId: number): Question[] => {
-  return allQuestions.filter(question => question.topicId === topicId);
-};
-
-/**
- * מחזיר שאלה לפי מזהה
- */
-export const getQuestionById = (id: number): Question | undefined => {
-  return allQuestions.find(question => question.id === id);
-};
-
-/**
- * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
- */
-export const getQuestionsBySet = (setId: number): Question[] => {
-  // חישוב טווח השאלות בסט
-  const startId = (setId - 1) * 50 + 1;
-  const endId = setId * 50;
-  
-  // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
-  return allQuestions.filter(
-    question => question.id >= startId && question.id <= endId
-  );
-};
-
-/**
- * מחזיר את מספר השאלות בסט מסוים
- */
-export const getQuestionSetCount = (setId: number): number => {
-  return getQuestionsBySet(setId).length;
-};
-
-// הרץ בדיקה לכמות השאלות שנטענו
-console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
-console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
-
-// בדיקת שאלות הבנת הנקרא עם קטעים
-const readingQuestionsWithPassages = allQuestions.filter(q => 
-  q.type === 'reading-comprehension' && (q.passageText || q.passageWithLines)
-);
-console.log(`[Questions] Reading comprehension questions with passages: ${readingQuestionsWithPassages.length}`);
+console.log('[DEBUG] Questions by passage title:', questionCounts);
