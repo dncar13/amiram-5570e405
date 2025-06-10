@@ -20,21 +20,10 @@ export const getReadingComprehensionQuestions = (): Question[] => {
 };
 
 /**
- * מחזיר שאלות מסוג sentence completion
- */
-export const getSentenceCompletionQuestions = (): Question[] => {
-  const questions = allQuestions.filter(q => q.type === 'sentence-completion');
-  console.log(`[getSentenceCompletionQuestions] Found ${questions.length} sentence completion questions`);
-  return questions;
-};
-
-/**
  * מחזיר שאלות מסוג restatement
  */
 export const getRestatementQuestions = (): Question[] => {
-  const questions = allQuestions.filter(q => q.type === 'restatement');
-  console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
-  return questions;
+  return allQuestions.filter(q => q.type === 'restatement');
 };
 
 /**
