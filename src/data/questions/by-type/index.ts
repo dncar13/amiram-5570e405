@@ -2,23 +2,18 @@
 /**
  * אינדקס לשאלות מסווגות לפי סוג
  * מאפשר גישה מהירה לשאלות לפי קטגורית התוכן
+ * עודכן להכיל רק את 3 קבצי השאלות הפעילים
  */
 
 import { Question } from '../../types/questionTypes';
 import { allQuestions } from '../index';
-import { readingComprehensionQuestions } from './readingComprehensionQuestions';
-import { readingComprehensionAdvancedQuestions } from './readingComprehensionAdvancedQuestions';
 
 /**
  * מחזיר שאלות מסוג reading comprehension
+ * כולל רק שאלות מ-3 הקבצים הפעילים
  */
 export const getReadingComprehensionQuestions = (): Question[] => {
-  // שילוב שאלות מכל הקבצים של הבנת הנקרא
-  const questions = [
-    ...allQuestions.filter(q => q.type === 'reading-comprehension'),
-    ...readingComprehensionQuestions,
-    ...readingComprehensionAdvancedQuestions
-  ];
+  const questions = allQuestions.filter(q => q.type === 'reading-comprehension');
   
   console.log(`[getReadingComprehensionQuestions] Found ${questions.length} reading comprehension questions`);
   questions.forEach(q => {

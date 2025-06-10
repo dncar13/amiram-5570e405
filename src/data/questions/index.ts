@@ -6,16 +6,12 @@ import { Question } from '../types/questionTypes';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
 import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
 import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
-import { readingComprehensionQuestions } from './by-type/readingComprehensionQuestions';
-import { readingComprehensionAdvancedQuestions } from './by-type/readingComprehensionAdvancedQuestions';
 
-// מערך המאגד את כל השאלות
+// מערך המאגד את כל השאלות - רק 3 קבצים פעילים
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,
   ...technologyReadingQuestions,
   ...environmentReadingQuestions,
-  ...readingComprehensionQuestions,
-  ...readingComprehensionAdvancedQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -72,6 +68,8 @@ export const getQuestionSetCount = (setId: number): number => {
 // הרץ בדיקה לכמות השאלות שנטענו
 console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
 console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
+console.log(`[Questions] Technology questions loaded: ${technologyReadingQuestions.length}`);
+console.log(`[Questions] Environment questions loaded: ${environmentReadingQuestions.length}`);
 
 // בדיקת שאלות הבנת הנקרא עם קטעים
 const readingQuestionsWithPassages = allQuestions.filter(q => 
