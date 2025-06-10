@@ -34,14 +34,22 @@ const Simulation: React.FC = () => {
     questionType = location.pathname.split('/simulation/type/')[1]?.split('/')[0];
   }
   
+  // NEW: Handle direct question type URLs like /simulation/sentence-completion
+  if (!questionType && !setId && topicId && !topicId.match(/^\d+$/)) {
+    // If topicId is not a number, it's likely a question type
+    questionType = topicId;
+    // Clear topicId since this is actually a question type simulation
+    const actualTopicId = undefined;
+  }
+  
   // Create simulationId before using it
   const simulationId = questionType ? `type_${questionType}` : (setId ? `qs_${setId}` : topicId);
   
   console.log('Simulation component mounted or parameters changed', { 
-    topicId, setId, level, type, storyId, isContinue 
+    topicId, setId, level, type, storyId, isContinue, questionType, simulationId
   });
   
-  console.log('Simulation opened with STORY - topicId:', topicId, ', setId:', setId, ', level:', level, ', type:', type, ', storyId:', storyId, ', continue:', isContinue);
+  console.log('Simulation opened with STORY - topicId:', topicId, ', setId:', setId, ', level:', level, ', type:', type, ', storyId:', storyId, ', continue:', isContinue, ', questionType:', questionType);
 
   // Use simulation data hook with question type support
   const {
@@ -54,7 +62,7 @@ const Simulation: React.FC = () => {
     getCurrentPart,
     questionCount,
     error: dataError
-  } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions, questionType);
+  } = useSimulationData(questionType ? undefined : topicId, setId, isQuestionSet, storyQuestions, questionType);
 
   // Use main simulation hook - pass the questions from data hook
   const {
@@ -118,7 +126,7 @@ const Simulation: React.FC = () => {
               <h2 className="text-2xl font-bold text-red-600 mb-4">שגיאה</h2>
               <p className="text-gray-700 mb-4">{dataError}</p>
               <button
-                onClick={() => window.location.href = isQuestionSet ? "/questions-sets" : "/simulations-entry"}
+                onClick={() => window.location.href = questionType ? "/simulation-by-type" : (isQuestionSet ? "/questions-sets" : "/simulations-entry")}
                 className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
               >
                 חזור לדף הבחירה
@@ -190,7 +198,7 @@ const Simulation: React.FC = () => {
             onRestart={handleRestartSimulation}
             onBackToTopics={() => {
               handleBackToTopics();
-              return isQuestionSet ? "/questions-sets" : "/simulations-entry";
+              return questionType ? "/simulation-by-type" : (isQuestionSet ? "/questions-sets" : "/simulations-entry");
             }}
             onResetProgress={resetProgress}
           />
