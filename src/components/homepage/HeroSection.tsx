@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -50,7 +51,7 @@ const HeroSection: React.FC = () => {
   const successRate = useAnimatedCounter(94, 2000, 700, '%');
   const questionsCount = useAnimatedCounter(1000, 2200, 900, '+');
   
-  // Enhanced parallax effects
+  // Enhanced parallax effects - with limited opacity fade
   const y1 = useSpring(useTransform(scrollY, [0, 500], [0, -100]), {
     stiffness: 100,
     damping: 30,
@@ -69,13 +70,15 @@ const HeroSection: React.FC = () => {
     restDelta: 0.001
   });
   
-  const opacity = useSpring(useTransform(scrollY, [0, 300], [1, 0]), {
+  // Limited opacity fade - never goes below 0.3 (30%)
+  const opacity = useSpring(useTransform(scrollY, [0, 400], [1, 0.3]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  const scale = useSpring(useTransform(scrollY, [0, 300], [1, 0.95]), {
+  // Limited scale - never goes below 0.98
+  const scale = useSpring(useTransform(scrollY, [0, 400], [1, 0.98]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
@@ -127,8 +130,8 @@ const HeroSection: React.FC = () => {
             key={index}
             className="absolute w-24 h-32 md:w-32 md:h-40"
             initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: window.innerHeight + 100,
+              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
+              y: (typeof window !== 'undefined' ? window.innerHeight : 600) + 100,
               rotateX: 0,
               rotateY: 0,
               rotateZ: 0
@@ -282,7 +285,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
 
             <motion.h1 
-              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-8"
+              className="text-4xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -325,7 +328,7 @@ const HeroSection: React.FC = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl mb-12 text-gray-300 leading-[1.6] max-w-2xl mx-auto lg:mx-0"
+              className="text-lg md:text-xl mb-12 text-gray-300 leading-[1.6] max-w-2xl mx-auto lg:mx-0"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -537,7 +540,7 @@ const HeroSection: React.FC = () => {
                     
                     {/* Animated number */}
                     <motion.div 
-                      className={`text-5xl font-bold mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
+                      className={`text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
                       ref={stat.ref}
                     >
                       {stat.value}
