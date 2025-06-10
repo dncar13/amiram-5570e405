@@ -33,8 +33,8 @@ export const getQuestionsByTopic = (topicId: number): Question[] => {
 /**
  * מחזיר שאלות לפי תת-נושא
  */
-export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
-  return allQuestions.filter(question => question.subtopicId === subtopicId);
+export const getQuestionsBySubtopic = (topicId: number): Question[] => {
+  return allQuestions.filter(question => question.topicId === topicId);
 };
 
 /**

@@ -1,3 +1,4 @@
+
 export interface Question {
   id: number;
   type: string;
@@ -6,14 +7,32 @@ export interface Question {
   correctAnswer: number;
   explanation: string;
   topicId: number;
-  categoryId: number;
+  categoryId?: number; // Make it optional since many existing questions don't have it
   difficulty: 'easy' | 'medium' | 'hard';
   passageText?: string;
   passageTitle?: string;
   tips?: string;
   tags?: string[];
   metadata?: any;
-  passageWithLines?: string[];
+  passageWithLines?: PassageLine[];
+  
+  // Additional properties used by the existing codebase
+  flagged?: boolean;
+  image?: string;
+  explanationImage?: string;
+  explanationVideo?: string;
+  lineNumbers?: boolean;
+  
+  // Optional fields that might exist in some questions
+  createdAt?: string;
+  subtopicId?: number;
+}
+
+export interface PassageLine {
+  lineNumber: number;
+  startLine: number;
+  endLine: number;
+  text: string;
 }
 
 export interface QuestionMetadata {
@@ -51,4 +70,10 @@ export interface QuestionBank {
   sentenceCompletion: Question[];
   restatement: Question[];
   vocabulary: Question[];
+}
+
+export interface QuestionSet {
+  id: number;
+  title: string;
+  questions: Question[];
 }
