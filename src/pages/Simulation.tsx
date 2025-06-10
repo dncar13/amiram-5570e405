@@ -34,6 +34,9 @@ const Simulation: React.FC = () => {
     questionType = location.pathname.split('/simulation/type/')[1]?.split('/')[0];
   }
   
+  // Create simulationId before using it
+  const simulationId = questionType ? `type_${questionType}` : (setId ? `qs_${setId}` : topicId);
+  
   console.log('Simulation component mounted or parameters changed', { 
     topicId, setId, level, type, storyId, isContinue 
   });
@@ -84,9 +87,6 @@ const Simulation: React.FC = () => {
     handleBackToTopics,
     resetProgress
   } = useSimulation(simulationId, isQuestionSet, topicQuestions);
-
-  // Create simulationId based on the type of simulation
-  const simulationId = questionType ? `type_${questionType}` : (setId ? `qs_${setId}` : topicId);
 
   const isLoading = dataLoading || !progressLoaded;
 
@@ -139,7 +139,7 @@ const Simulation: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
           <div className="container mx-auto px-4 py-8">
             <BackButton isQuestionSet={isQuestionSet} />
-            <EmptySimulation isQuestionSet={isQuestionSet} />
+            <EmptySimulation isQuestionSet={isQuestionSet} questionType={questionType} />
           </div>
         </div>
         <Footer />
@@ -188,7 +188,10 @@ const Simulation: React.FC = () => {
             onToggleQuestionFlag={toggleQuestionFlag}
             onNavigateToQuestion={navigateToQuestion}
             onRestart={handleRestartSimulation}
-            onBackToTopics={handleBackToTopics}
+            onBackToTopics={() => {
+              handleBackToTopics();
+              return isQuestionSet ? "/questions-sets" : "/simulations-entry";
+            }}
             onResetProgress={resetProgress}
           />
         </div>
