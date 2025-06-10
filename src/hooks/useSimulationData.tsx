@@ -4,8 +4,7 @@ import {
   getQuestionsByTopic, 
   getQuestionsBySet, 
   getAllQuestions, 
-  refreshQuestionsFromStorage,
-  getQuestionsByType 
+  refreshQuestionsFromStorage 
 } from "@/services/questionsService";
 import { resetConflictingProgress } from "@/services/cloudSync";
 import { isComprehensiveExamTopic } from "@/data/utils/topicUtils";
@@ -17,8 +16,7 @@ export const useSimulationData = (
   topicId: string | undefined,
   setId: string | undefined,
   isQuestionSet: boolean,
-  storyQuestions?: any[],
-  questionType?: string
+  storyQuestions?: any[]
 ) => {
   const [questionSetTitle, setQuestionSetTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +50,7 @@ export const useSimulationData = (
       setError(null);
       
       try {
-        console.log("Initializing simulation data...", { topicId, setId, isQuestionSet, questionType });
+        console.log("Initializing simulation data...", { topicId, setId, isQuestionSet });
         
         // Reset conflicting global progress to avoid confusion between topics and question sets
         resetConflictingProgress();
@@ -76,9 +74,7 @@ export const useSimulationData = (
         
         // Refresh questions from source to ensure we have the latest data
         const freshQuestions = refreshQuestionsFromStorage();
-        console.log(`Refreshed ${freshQuestions.length} questions from source files`);
-        
-        // If we have a question set ID, determine its title for display
+        console.log(`Refreshed ${freshQuestions.length} questions from source files`);        // If we have a question set ID, determine its title for display
         if (setId) {
           const setIdNum = parseInt(setId, 10);
           if (!isNaN(setIdNum) && setIdNum >= 1 && setIdNum <= 20) {
@@ -90,16 +86,10 @@ export const useSimulationData = (
           // Mark this as a question set simulation in session storage
           sessionStorage.setItem('is_question_set', 'true');
           sessionStorage.setItem('question_set_id', setId);
-        } else if (questionType) {
-          // Mark this as a type-based simulation
-          sessionStorage.setItem('simulation_type', questionType);
-          sessionStorage.removeItem('is_question_set');
-          sessionStorage.removeItem('question_set_id');
         } else {
           // Mark this as a topic simulation
           sessionStorage.removeItem('is_question_set');
           sessionStorage.removeItem('question_set_id');
-          sessionStorage.removeItem('simulation_type');
         }
         
         setInitComplete(true);
@@ -112,39 +102,18 @@ export const useSimulationData = (
     };
     
     initializeSimulation();
-  }, [topicId, setId, questionType]);
+  }, [topicId, setId]);
   
   // Get questions for this simulation
   const topicQuestions = useMemo(() => {
     if (!initComplete) return [];
-    
-    try {
-      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, questionType, storyQuestionsCount: storyQuestionsRef.current?.length });
+      try {      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, storyQuestionsCount: storyQuestionsRef.current?.length });
       
       // If we have story questions, use them first
       if (storyQuestionsRef.current && storyQuestionsRef.current.length > 0) {
         console.log(`Using ${storyQuestionsRef.current.length} story questions`);
         setQuestionCount(storyQuestionsRef.current.length);
         return storyQuestionsRef.current;
-      }
-      
-      // If we're viewing by question type (like restatement, sentence-completion)
-      if (questionType) {
-        const typeQuestions = getQuestionsByType(questionType);
-        console.log(`Found ${typeQuestions.length} questions for type ${questionType}`);
-        setQuestionCount(typeQuestions.length);
-        
-        if (typeQuestions.length === 0) {
-          setError(`לא נמצאו שאלות מסוג ${questionType}`);
-          toast({
-            title: "אין שאלות מסוג זה",
-            description: "סוג שאלות זה אינו מכיל שאלות כרגע.",
-            variant: "destructive",
-          });
-          return [];
-        }
-        
-        return typeQuestions;
       }
       
       // If we're viewing a question set (not a topic)
@@ -172,13 +141,11 @@ export const useSimulationData = (
           setError("מזהה קבוצת שאלות לא תקין");
           return [];
         }
-      }
-      
-      // Regular topic behavior
+      }      // Regular topic behavior
       if (!topic) {
-        // Only show error if we don't have story questions or question type
-        if (!setId && !storyQuestions?.length && !questionType) {
-          console.log("No topic, setId, question type, or story questions provided");
+        // Only show error if we don't have story questions
+        if (!setId && !storyQuestions?.length) {
+          console.log("No topic, setId, or story questions provided");
           setQuestionCount(0);
           return [];
         }
@@ -186,9 +153,7 @@ export const useSimulationData = (
         console.log("Available topics:", topicsData.map(t => ({ id: t.id, title: t.title })));
         setError("הנושא לא נמצא");
         return [];
-      }
-
-      // For comprehensive exams, show all questions regardless of topic
+      }// For comprehensive exams, show all questions regardless of topic
       if (isComprehensiveExam) {
         const allQs = getAllQuestions();
         console.log(`Comprehensive exam: showing all ${allQs.length} questions`);
@@ -212,13 +177,12 @@ export const useSimulationData = (
         });
       }
       
-      return filteredQuestions;
-    } catch (error) {
+      return filteredQuestions;    } catch (error) {
       console.error("Error loading questions:", error);
       setError("שגיאה בטעינת השאלות");
       return [];
     }
-  }, [topic, setId, isComprehensiveExam, initComplete, storyQuestionsLength, questionType]);
+  }, [topic, setId, isComprehensiveExam, initComplete, storyQuestionsLength]);
   
   // Helper function for part navigation (question sets divided into parts)
   const getCurrentPart = () => {

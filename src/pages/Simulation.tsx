@@ -1,211 +1,349 @@
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { RTLWrapper } from "@/components/ui/rtl-wrapper";
+import Header from "@/components/Header";
+import SimulationContent from "@/components/simulation/SimulationContent";
+import { useSimulation } from "@/hooks/useSimulation";
+import { useSimulationData } from "@/hooks/useSimulationData";
+import { SimulationLoading } from "@/components/simulation/SimulationLoading";
+import { EmptySimulation } from "@/components/simulation/EmptySimulation";
+import { BackButton } from "@/components/simulation/BackButton";
+import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import { checkForResetRequest, removeResetParameterFromUrl, setupAutoSave } from "@/services/storageUtils";
+import { 
+  getMediumQuestions, 
+  getEasyQuestions, 
+  getHardQuestions, 
+  getMixedDifficultyQuestions,
+  getRestatementQuestions 
+} from "@/services/questionsService";
+import { Question } from "@/data/types/questionTypes";
+import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { useSimulation } from '@/hooks/useSimulation';
-import { useSimulationData } from '@/hooks/useSimulationData';
-import { BackButton } from '@/components/simulation/BackButton';
-import SimulationContent from '@/components/simulation/SimulationContent';
-import { SimulationLoading } from '@/components/simulation/SimulationLoading';
-import { EmptySimulation } from '@/components/simulation/EmptySimulation';
-import { toast } from '@/hooks/use-toast';
-
-const Simulation: React.FC = () => {
+const Simulation = () => {
+  const navigate = useNavigate();
   const { topicId, setId, level, type, storyId } = useParams<{ 
-    topicId?: string; 
-    setId?: string; 
-    level?: string;
-    type?: string;
-    storyId?: string;
+    topicId: string; 
+    setId: string; 
+    level: string; 
+    type: string; 
+    storyId: string;
   }>();
+  const [searchParams] = useSearchParams();
+  const isContinue = searchParams.get('continue') === 'true' || window.sessionStorage.getItem('continue_simulation') === 'true';
+  const contentRef = useRef<HTMLDivElement>(null);
+  const initialLoadAttempted = useRef(false);
+  const shouldShowResetToast = useRef(false);
+  const hasShownToast = useRef(false);
   
-  const location = useLocation();
-  const [storyQuestions, setStoryQuestions] = useState<any[]>([]);
-  
-  // Determine if this is a question set vs topic simulation
-  const isQuestionSet = Boolean(setId);
-  const isContinue = new URLSearchParams(location.search).get('continue') === 'true';
-  
-  // Extract question type from URL path - handle different route patterns
-  let questionType = type;
-  if (!questionType && location.pathname.includes('/simulation/type/')) {
-    questionType = location.pathname.split('/simulation/type/')[1]?.split('/')[0];
-  }
-  
-  // NEW: Handle direct question type URLs like /simulation/sentence-completion
-  if (!questionType && !setId && topicId && !topicId.match(/^\d+$/)) {
-    // If topicId is not a number, it's likely a question type
-    questionType = topicId;
-    // Clear topicId since this is actually a question type simulation
-    const actualTopicId = undefined;
-  }
-  
-  // Create simulationId before using it
-  const simulationId = questionType ? `type_${questionType}` : (setId ? `qs_${setId}` : topicId);
-  
-  console.log('Simulation component mounted or parameters changed', { 
-    topicId, setId, level, type, storyId, isContinue, questionType, simulationId
-  });
-  
-  console.log('Simulation opened with STORY - topicId:', topicId, ', setId:', setId, ', level:', level, ', type:', type, ', storyId:', storyId, ', continue:', isContinue, ', questionType:', questionType);
+  // Check if we're doing a question set simulation vs a topic simulation
+  const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
 
-  // Use simulation data hook with question type support
-  const {
-    topic,
-    topicQuestions,
+  // Check if this is a story-based simulation
+  const isStoryBased = Boolean(storyId);
+  
+  // Get story-specific questions if this is a story simulation - MEMOIZED to prevent infinite loops
+  const storyQuestions = useMemo(() => {
+    if (!isStoryBased || !storyId) return [];
+    
+    console.log('Getting questions for story:', storyId);
+    return getQuestionsByStory(storyId);
+  }, [isStoryBased, storyId]);
+  
+  const story = useMemo(() => {
+    if (!isStoryBased || !storyId) return undefined;
+    
+    return getStoryById(storyId);
+  }, [isStoryBased, storyId]);  
+  // Get simulation data (questions, topic info, etc.)
+  const { 
+    isLoading, 
+    topicQuestions, 
+    topic, 
     questionSetTitle,
-    isLoading: dataLoading,
     isComprehensiveExam,
     setIdNumber,
-    getCurrentPart,
-    questionCount,
-    error: dataError
-  } = useSimulationData(questionType ? undefined : topicId, setId, isQuestionSet, storyQuestions, questionType);
+    error,
+  } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
 
-  // Use main simulation hook - pass the questions from data hook
-  const {
-    currentQuestionIndex,
-    currentQuestion,
-    selectedAnswerIndex,
-    isAnswerSubmitted,
-    showExplanation,
-    simulationComplete,
-    score,
-    userAnswers,
-    questionFlags,
-    answeredQuestionsCount,
-    correctQuestionsCount,
-    progressPercentage,
-    currentScorePercentage,
-    remainingTime,
-    isTimerActive,
-    examMode,
-    showAnswersImmediately,
-    progressLoaded,
-    handleAnswerSelect,
-    handleSubmitAnswer,
-    handleNextQuestion,
-    handlePreviousQuestion,
-    handleToggleExplanation,
-    toggleQuestionFlag,
-    navigateToQuestion,
-    handleRestartSimulation,
-    handleBackToTopics,
-    resetProgress
-  } = useSimulation(simulationId, isQuestionSet, topicQuestions);
+  useEffect(() => {
+    console.log("Simulation component mounted or parameters changed", { topicId, setId, level, type, storyId, isContinue });
+    
+    // Check if there's a reset parameter in the URL - only on first load
+    if (!initialLoadAttempted.current) {
+      const hasResetParam = checkForResetRequest();
+      
+      if (hasResetParam) {
+        console.log("Reset parameter detected - simulation will reset");
+        shouldShowResetToast.current = true;
+        
+        // Remove the reset parameter from URL to prevent reload issues
+        removeResetParameterFromUrl();
+      }
+    }
+      // Save simulation mode in sessionStorage to survive refreshes
+    if (storyId) {
+      window.sessionStorage.setItem('is_story_simulation', 'true');
+      window.sessionStorage.setItem('current_story_id', storyId);
+    } else if (setId) {
+      window.sessionStorage.setItem('is_question_set', 'true');
+    } else if (topicId) {
+      window.sessionStorage.setItem('is_question_set', 'false');
+    } else if (level && type) {
+      window.sessionStorage.setItem('is_question_set', 'false');
+      window.sessionStorage.setItem('is_difficulty_based', 'true');
+      window.sessionStorage.setItem('difficulty_level', level);
+      window.sessionStorage.setItem('difficulty_type', type);
+    }
+    
+    // Clean up the continue flag after using it
+    if (window.sessionStorage.getItem('continue_simulation') === 'true') {
+      console.log('Detected continue_simulation flag, will attempt to continue simulation');
+      window.sessionStorage.removeItem('continue_simulation');
+    }
+    
+    // Check if we're doing a story simulation
+    const storyFlag = window.sessionStorage.getItem('is_story_simulation');
+    const questSetFlag = window.sessionStorage.getItem('is_question_set');
+    setIsQuestionSet(questSetFlag === 'true');
+    
+    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : level && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, level: ${level}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
+      // Store the current simulation IDs in sessionStorage to persist across refreshes
+    if (storyId) {
+      sessionStorage.setItem('current_story_id', storyId);
+    }
+    
+    if (setId) {
+      sessionStorage.setItem('current_set_id', setId);
+    }
+    
+    if (level && type) {
+      sessionStorage.setItem('current_difficulty_level', level);
+      sessionStorage.setItem('current_difficulty_type', type);
+    }
+      // Force attempt load on first render
+    initialLoadAttempted.current = true;
+      }, [topicId, setId, level, type, storyId, isContinue]);
+  
+  // Check if this is a difficulty-based simulation
+  const isDifficultyBased = Boolean(level && type);
+  
+  // Use appropriate simulation ID
+  const simulationId = isStoryBased
+    ? `story_${storyId}`
+    : isDifficultyBased 
+      ? `difficulty_${level}_${type}`
+      : setId 
+        ? `qs_${setId}` 
+        : topicId;
+    
+  // Ensure the simulationId is properly formatted for storage
+  const formattedSimulationId = simulationId ? simulationId : '';    // Only pass the correct arguments to the hook
+  const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
+    // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = (isDifficultyBased || isStoryBased) ? simulation.questions : topicQuestions;
+  const effectiveIsLoading = (isDifficultyBased || isStoryBased) ? false : isLoading;
+  
+  useEffect(() => {
+    if (contentRef.current) {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
+      contentRef.current.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  }, [simulation.currentQuestionIndex]);
+    // Setup auto-save for simulation progress
+  useEffect(() => {
+    // Only setup auto-save when simulation is loaded and we have questions
+    if (simulation && !effectiveIsLoading && questionsToUse.length > 0) {
+      console.log("Setting up auto-save for simulation");
+      
+      // Create auto-save with 30 second interval
+      const cleanupAutoSave = setupAutoSave(() => {
+        simulation.saveProgress();
+      }, 30000); // 30 seconds
+      
+      return cleanupAutoSave;
+    }
+  }, [simulation, effectiveIsLoading, questionsToUse.length]);
+    // Save progress whenever important state changes
+  useEffect(() => {
+    if (
+      simulation && 
+      simulation.progressLoaded && 
+      !effectiveIsLoading && 
+      questionsToUse.length > 0
+    ) {
+      // Add a short delay to ensure state has settled
+      const saveTimeout = setTimeout(() => {
+        simulation.saveProgress();
+        console.log("Auto-saving simulation progress after state changes");
+      }, 500);
+      
+      return () => clearTimeout(saveTimeout);
+    }
+  }, [
+    simulation.currentQuestionIndex, 
+    simulation.userAnswers, 
+    simulation.simulationComplete,
+    simulation.progressLoaded,
+    effectiveIsLoading,
+    questionsToUse.length
+  ]);  // Handle navigation to topics
+  const handleBackToTopics = () => {
+    if (isStoryBased) {
+      return "/reading-comprehension";
+    } else if (isDifficultyBased) {
+      return `/simulation/difficulty/${level}`;
+    } else if (setId) {
+      return "/questions-sets";
+    } else {
+      return "/simulations-entry";
+    }
+  };
 
-  const isLoading = dataLoading || !progressLoaded;
-
-  // Show loading state
-  if (isLoading) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-          <div className="container mx-auto px-4 py-8">
-            <BackButton isQuestionSet={isQuestionSet} />
-            <SimulationLoading />
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  // Show error state
-  if (dataError) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-          <div className="container mx-auto px-4 py-8">
-            <BackButton isQuestionSet={isQuestionSet} />
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-red-600 mb-4">שגיאה</h2>
-              <p className="text-gray-700 mb-4">{dataError}</p>
-              <button
-                onClick={() => window.location.href = questionType ? "/simulation-by-type" : (isQuestionSet ? "/questions-sets" : "/simulations-entry")}
-                className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
-              >
-                חזור לדף הבחירה
-              </button>
-            </div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  // Show empty state
-  if (!topicQuestions || topicQuestions.length === 0) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-          <div className="container mx-auto px-4 py-8">
-            <BackButton isQuestionSet={isQuestionSet} />
-            <EmptySimulation isQuestionSet={isQuestionSet} questionType={questionType} />
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  return (
-    <>
-      <Header />
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
-      >
-        <div className="container mx-auto px-4 py-8">
-          <BackButton isQuestionSet={isQuestionSet} />
+  // Handle navigation to a specific question
+  const handleNavigateToQuestion = (index: number) => {
+    if (simulation.simulationComplete) {
+      simulation.setSimulationComplete(false);
+    }
+    
+    simulation.navigateToQuestion(index);
+  };
+    // Initial auto-save on page load - show toast only once
+  useEffect(() => {
+    if (
+      simulation && 
+      simulation.progressLoaded && 
+      !effectiveIsLoading && 
+      questionsToUse.length > 0
+    ) {
+      // Force save on initial load after a short delay
+      const initialSaveTimeout = setTimeout(() => {
+        console.log("Forcing initial save to ensure persistence");
+        simulation.saveProgress();
+        
+        // If this is a reset, show toast to confirm
+        if (shouldShowResetToast.current) {
+          toast({
+            title: "איפוס סימולציה",
+            description: "הנתונים אופסו והסימולציה מתחילה מחדש",
+            variant: "default",
+          });
+          shouldShowResetToast.current = false;
+        }
+        // Show auto-save toast if we haven't shown it already
+        else if (!hasShownToast.current) {
+          toast({
+            title: "התקדמות הסימולציה נשמרת",
+            description: "התקדמותך תישמר באופן אוטומטי גם בעת רענון הדף",
+            variant: "default",
+          });
+          hasShownToast.current = true;
           
-          <SimulationContent
-            simulationComplete={simulationComplete}
-            currentQuestionIndex={currentQuestionIndex}
-            totalQuestions={topicQuestions.length}
-            remainingTime={remainingTime}
-            isTimerActive={isTimerActive}
-            currentQuestion={currentQuestion}
-            selectedAnswerIndex={selectedAnswerIndex}
-            isAnswerSubmitted={isAnswerSubmitted}
-            showExplanation={showExplanation}
-            score={score}
-            questionsData={topicQuestions}
-            userAnswers={userAnswers}
-            questionFlags={questionFlags}
-            answeredQuestionsCount={answeredQuestionsCount}
-            correctQuestionsCount={correctQuestionsCount}
-            progressPercentage={progressPercentage}
-            currentScorePercentage={currentScorePercentage}
-            examMode={examMode}
-            showAnswersImmediately={showAnswersImmediately}
+          // Store flag in session storage to remember we've shown the toast to this user
+          sessionStorage.setItem('simulation_toast_shown', 'true');
+        }
+      }, 2000);
+      
+      return () => clearTimeout(initialSaveTimeout);
+    }
+  }, [simulation, simulation.progressLoaded, effectiveIsLoading, questionsToUse.length]);
+  
+  // Check on initial load if we need to restore the toast shown state
+  useEffect(() => {
+    // Check if we've already shown the toast in this session
+    const toastShown = sessionStorage.getItem('simulation_toast_shown') === 'true';
+    if (toastShown) {
+      hasShownToast.current = true;
+    }  }, []);
+  
+  // Show loading state while data is being fetched
+  if (effectiveIsLoading) {
+    return <SimulationLoading />;
+  }
+  
+  // Show empty state if no questions are available
+  if (questionsToUse.length === 0) {
+    return (
+      <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
+        <Header />        <main className="flex-grow flex items-center justify-start">
+          <div className="max-w-md ml-0 p-8 bg-white rounded-lg shadow-md">
+            <div className="flex items-center gap-3 mb-4 text-amber-600">
+              <AlertCircle className="h-8 w-8" />
+              <h2 className="text-xl font-bold">לא נמצאו שאלות</h2>
+            </div>
+            <p className="text-gray-600 mb-6">
+              {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
+            </p>            <Button 
+              onClick={() => navigate(handleBackToTopics())} 
+              className="w-full bg-amber-600 hover:bg-amber-700"
+            >
+              {isStoryBased ? "חזרה לסיפורי הבנת הנקרא" : isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
+            </Button>
+          </div>
+        </main>
+      </RTLWrapper>
+    );
+  }
+  
+  return (
+    <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
+      <Header />
+      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
+        
+        {/* כפתור חזרה - ללא מרכוז */}
+        <div className="w-full px-4">
+          <BackButton isQuestionSet={isQuestionSet} />
+        </div>
+        
+        {/* NO MORE TITLE - REMOVED COMPLETELY! */}
+        
+        {/* תוכן הסימולציה - עם מרכוז */}
+        <div className="container mx-auto max-w-5xl px-4">
+          <SimulationContent 
+            simulationComplete={simulation.simulationComplete}
+            currentQuestionIndex={simulation.currentQuestionIndex}
+            totalQuestions={simulation.totalQuestions}
+            remainingTime={simulation.remainingTime}
+            isTimerActive={simulation.isTimerActive}
+            currentQuestion={simulation.currentQuestion}
+            selectedAnswerIndex={simulation.selectedAnswerIndex}
+            isAnswerSubmitted={simulation.isAnswerSubmitted}
+            showExplanation={simulation.showExplanation}
+            score={simulation.score}
+            questionsData={questionsToUse}
+            userAnswers={simulation.userAnswers}
+            questionFlags={simulation.questionFlags}
+            answeredQuestionsCount={simulation.answeredQuestionsCount}
+            correctQuestionsCount={simulation.correctQuestionsCount}
+            progressPercentage={simulation.progressPercentage}
+            currentScorePercentage={simulation.currentScorePercentage}
+            examMode={simulation.examMode}
+            showAnswersImmediately={simulation.showAnswersImmediately}
             isQuestionSet={isQuestionSet}
             setNumber={setIdNumber}
-            onAnswerSelect={handleAnswerSelect}
-            onSubmitAnswer={handleSubmitAnswer}
-            onNextQuestion={handleNextQuestion}
-            onPreviousQuestion={handlePreviousQuestion}
-            onToggleExplanation={handleToggleExplanation}
-            onToggleQuestionFlag={toggleQuestionFlag}
-            onNavigateToQuestion={navigateToQuestion}
-            onRestart={handleRestartSimulation}
-            onBackToTopics={() => {
-              handleBackToTopics();
-              return questionType ? "/simulation-by-type" : (isQuestionSet ? "/questions-sets" : "/simulations-entry");
-            }}
-            onResetProgress={resetProgress}
+            onAnswerSelect={simulation.handleAnswerSelect}
+            onSubmitAnswer={simulation.handleSubmitAnswer}
+            onNextQuestion={simulation.handleNextQuestion}
+            onPreviousQuestion={simulation.handlePreviousQuestion}
+            onToggleExplanation={simulation.handleToggleExplanation}
+            onToggleQuestionFlag={simulation.toggleQuestionFlag}
+            onNavigateToQuestion={handleNavigateToQuestion}
+            onRestart={simulation.handleRestartSimulation}
+            onBackToTopics={handleBackToTopics}
+            onResetProgress={simulation.resetProgress}
           />
         </div>
-      </motion.div>
-      <Footer />
-    </>
+      </main>
+    </RTLWrapper>
   );
 };
 
