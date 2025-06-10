@@ -1,27 +1,76 @@
 
-import { Question } from "../types/questionTypes";
-import { mediumQuestions } from "./reading-comprehension/medium";
+// אינדקס מרכזי שמייבא את כל קבצי השאלות
+// מבנה חדש: ארגון לפי סוגי שאלות
 
-console.log('[DEBUG] Loading questions from organized structure');
-console.log('[DEBUG] Medium questions loaded:', mediumQuestions.length);
+import { Question } from '../types/questionTypes';
+import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
+import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
+import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
 
-// Export all questions - using the organized structure with 25 questions per story
+// מערך המאגד את כל השאלות
 export const allQuestions: Question[] = [
-  ...mediumQuestions
+  ...gigEconomyReadingQuestions,
+  ...technologyReadingQuestions,
+  ...environmentReadingQuestions,
 ];
 
-console.log('[DEBUG] Total questions exported:', allQuestions.length);
+// פונקציות עזר לקבלת שאלות
 
-// Log question counts by passage title for debugging
-const questionCounts: Record<string, number> = {};
-allQuestions.forEach(q => {
-  const title = q.passageTitle || 'Unknown';
-  questionCounts[title] = (questionCounts[title] || 0) + 1;
-});
-
-console.log('[DEBUG] Questions by passage title:', questionCounts);
-
-// Export function needed by SimulationSetup
-export const getQuestionsByTopic = (topicId: number): Question[] => {
-  return allQuestions.filter(q => q.topicId === topicId);
+/**
+ * מחזיר את כל השאלות במערכת
+ */
+export const getAllQuestions = (): Question[] => {
+  return allQuestions;
 };
+
+/**
+ * מחזיר שאלות לפי נושא מסוים
+ */
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  return allQuestions.filter(question => question.topicId === topicId);
+};
+
+/**
+ * מחזיר שאלות לפי תת-נושא
+ */
+export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
+  return allQuestions.filter(question => question.subtopicId === subtopicId);
+};
+
+/**
+ * מחזיר שאלה לפי מזהה
+ */
+export const getQuestionById = (id: number): Question | undefined => {
+  return allQuestions.find(question => question.id === id);
+};
+
+/**
+ * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
+ */
+export const getQuestionsBySet = (setId: number): Question[] => {
+  // חישוב טווח השאלות בסט
+  const startId = (setId - 1) * 50 + 1;
+  const endId = setId * 50;
+  
+  // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
+  return allQuestions.filter(
+    question => question.id >= startId && question.id <= endId
+  );
+};
+
+/**
+ * מחזיר את מספר השאלות בסט מסוים
+ */
+export const getQuestionSetCount = (setId: number): number => {
+  return getQuestionsBySet(setId).length;
+};
+
+// הרץ בדיקה לכמות השאלות שנטענו
+console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
+console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
+
+// בדיקת שאלות הבנת הנקרא עם קטעים
+const readingQuestionsWithPassages = allQuestions.filter(q => 
+  q.type === 'reading-comprehension' && (q.passageText || q.passageWithLines)
+);
+console.log(`[Questions] Reading comprehension questions with passages: ${readingQuestionsWithPassages.length}`);

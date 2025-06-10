@@ -6,52 +6,59 @@
 
 import { Question } from '../../types/questionTypes';
 import { allQuestions } from '../index';
-import { mediumQuestions } from "../reading-comprehension/medium";
 
-// Reading Comprehension Questions
-export const getReadingComprehensionQuestions = () => {
-  console.log('[DEBUG] Loading reading comprehension questions from organized structure');
-  return mediumQuestions;
+/**
+ * מחזיר שאלות מסוג reading comprehension
+ */
+export const getReadingComprehensionQuestions = (): Question[] => {
+  const questions = allQuestions.filter(q => q.type === 'reading-comprehension');
+  console.log(`[getReadingComprehensionQuestions] Found ${questions.length} reading comprehension questions`);
+  questions.forEach(q => {
+    console.log(`Question ${q.id}: hasPassageText=${!!q.passageText}, hasPassageWithLines=${!!(q.passageWithLines && q.passageWithLines.length > 0)}`);
+  });
+  return questions;
 };
 
 /**
  * מחזיר שאלות מסוג restatement
  */
-export const getRestatementQuestions = () => {
-  return [];
+export const getRestatementQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'restatement');
 };
 
 /**
  * מחזיר שאלות מסוג vocabulary
  */
-export const getVocabularyQuestions = () => {
-  return [];
+export const getVocabularyQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'vocabulary');
 };
 
 /**
  * מחזיר שאלות מסוג grammar
  */
-export const getGrammarQuestions = () => {
-  return [];
+export const getGrammarQuestions = (): Question[] => {
+  return allQuestions.filter(q => q.type === 'grammar');
 };
 
 /**
  * מחזיר רשימה של כל סוגי השאלות הזמינים
  */
-export const getAvailableQuestionTypes = () => {
-  return ['reading-comprehension', 'restatement', 'vocabulary', 'grammar'];
+export const getAvailableQuestionTypes = (): string[] => {
+  const types = allQuestions.map(q => q.type).filter(Boolean);
+  return [...new Set(types)];
 };
 
 /**
  * מחזיר סטטיסטיקות על חלוקת השאלות לפי סוג
  */
-export const getQuestionTypeStats = () => {
-  const readingQuestions = getReadingComprehensionQuestions();
+export const getQuestionTypeStats = (): Record<string, number> => {
+  const stats: Record<string, number> = {};
   
-  return {
-    'reading-comprehension': readingQuestions.length,
-    'restatement': 0,
-    'vocabulary': 0,
-    'grammar': 0
-  };
+  allQuestions.forEach(question => {
+    if (question.type) {
+      stats[question.type] = (stats[question.type] || 0) + 1;
+    }
+  });
+  
+  return stats;
 };

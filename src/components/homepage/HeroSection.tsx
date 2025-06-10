@@ -69,15 +69,13 @@ const HeroSection: React.FC = () => {
     restDelta: 0.001
   });
   
-  // Updated opacity - stops at 0.3 instead of 0 for both mobile and desktop
-  const opacity = useSpring(useTransform(scrollY, [0, 400], [1, 0.3]), {
+  const opacity = useSpring(useTransform(scrollY, [0, 300], [1, 0]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Updated scale - less dramatic scaling
-  const scale = useSpring(useTransform(scrollY, [0, 400], [1, 0.98]), {
+  const scale = useSpring(useTransform(scrollY, [0, 300], [1, 0.95]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
@@ -122,8 +120,8 @@ const HeroSection: React.FC = () => {
         }} />
       </div>
 
-      {/* Floating 3D cards in background - hidden on mobile for better performance */}
-      <div className="absolute inset-0 overflow-hidden hidden md:block">
+      {/* Floating 3D cards in background */}
+      <div className="absolute inset-0 overflow-hidden">
         {floatingCards.map((card, index) => (
           <motion.div
             key={index}
@@ -159,9 +157,9 @@ const HeroSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Premium animated gradient orbs - smaller on mobile */}
+      {/* Premium animated gradient orbs */}
       <motion.div 
-        className="absolute top-1/4 right-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
+        className="absolute top-1/4 right-1/4 w-[600px] h-[600px]"
         style={{ y: y1 }}
       >
         <div className="relative w-full h-full">
@@ -193,7 +191,7 @@ const HeroSection: React.FC = () => {
       </motion.div>
       
       <motion.div 
-        className="absolute bottom-1/4 left-1/4 w-[250px] h-[250px] md:w-[500px] md:h-[500px]"
+        className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px]"
         style={{ y: y2 }}
       >
         <motion.div
@@ -210,9 +208,9 @@ const HeroSection: React.FC = () => {
         />
       </motion.div>
       
-      {/* Premium badge with advanced glow - repositioned for mobile */}
+      {/* Premium badge with advanced glow */}
       <motion.div 
-        className="absolute top-4 right-4 md:top-8 md:right-8 z-20"
+        className="absolute top-8 right-8 z-20"
         initial={{ opacity: 0, x: 100 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -222,7 +220,7 @@ const HeroSection: React.FC = () => {
           whileTap={{ scale: 0.95 }}
           className="relative"
         >
-          <Badge className="relative bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white font-bold px-3 py-2 md:px-6 md:py-3 text-xs md:text-sm border-0 shadow-2xl backdrop-blur-sm overflow-hidden">
+          <Badge className="relative bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white font-bold px-6 py-3 text-sm border-0 shadow-2xl backdrop-blur-sm overflow-hidden">
             <motion.div 
               className="absolute inset-0 bg-gradient-to-r from-amber-300 via-orange-400 to-red-400"
               animate={{
@@ -237,24 +235,24 @@ const HeroSection: React.FC = () => {
                 opacity: 0.3
               }}
             />
-            <Trophy className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 relative z-10" />
+            <Trophy className="w-4 h-4 mr-2 relative z-10" />
             <span className="relative z-10">חשבון פרימיום</span>
           </Badge>
           <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 blur-2xl opacity-50 -z-10 animate-pulse" />
         </motion.div>
       </motion.div>
       
-      {/* Main content with enhanced animations - improved opacity behavior */}
+      {/* Main content with enhanced animations */}
       <motion.div 
-        className="container relative z-10 mx-auto px-4 py-12 md:py-24"
+        className="container relative z-10 mx-auto px-4 py-24"
         style={{ opacity, scale }}
       >
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left column - Main content */}
-          <motion.div className="text-center lg:text-right order-2 lg:order-1">
-            {/* Premium indicator with advanced animation - smaller on mobile */}
+          <motion.div className="text-center lg:text-right">
+            {/* Premium indicator with advanced animation */}
             <motion.div 
-              className="inline-flex items-center bg-white/5 backdrop-blur-2xl rounded-full px-4 py-3 md:px-8 md:py-4 mb-6 md:mb-10 border border-white/10 shadow-2xl relative overflow-hidden"
+              className="inline-flex items-center bg-white/5 backdrop-blur-2xl rounded-full px-8 py-4 mb-10 border border-white/10 shadow-2xl relative overflow-hidden"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -276,15 +274,15 @@ const HeroSection: React.FC = () => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               >
-                <Sparkles className="w-4 h-4 md:w-5 md:h-5 text-amber-400 mr-2 md:mr-3 relative z-10" />
+                <Sparkles className="w-5 h-5 text-amber-400 mr-3 relative z-10" />
               </motion.div>
-              <span className="text-xs md:text-sm font-medium bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent relative z-10">
+              <span className="text-sm font-medium bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent relative z-10">
                 הפלטפורמה המובילה להכנה למבחן אמירם
               </span>
             </motion.div>
 
             <motion.h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl font-bold leading-[1.1] mb-4 md:mb-8"
+              className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[1.1] mb-8"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -327,7 +325,7 @@ const HeroSection: React.FC = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-base md:text-xl lg:text-2xl mb-6 md:mb-12 text-gray-300 leading-[1.6] max-w-2xl mx-auto lg:mx-0"
+              className="text-xl md:text-2xl mb-12 text-gray-300 leading-[1.6] max-w-2xl mx-auto lg:mx-0"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -342,29 +340,29 @@ const HeroSection: React.FC = () => {
               <span className="text-blue-300"> לרמת הצלחה גבוהה.</span>
             </motion.p>
 
-            {/* Key features with enhanced animations - grid adjusted for mobile */}
+            {/* Key features with enhanced animations */}
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-5 mb-6 md:mb-12 max-w-lg mx-auto lg:mx-0"
+              className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12 max-w-lg mx-auto lg:mx-0"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.7 }}
             >
               {[
-                { text: "+1000 שאלות מעודכנות", icon: <BookOpen className="w-4 h-4 md:w-5 md:h-5" /> },
-                { text: "סימולציות מדויקות", icon: <Target className="w-4 h-4 md:w-5 md:h-5" /> },
-                { text: "מעקב ביצועים מתקדם", icon: <TrendingUp className="w-4 h-4 md:w-5 md:h-5" /> },
-                { text: "תמיכה מקצועית 24/7", icon: <Users className="w-4 h-4 md:w-5 md:h-5" /> }
+                { text: "+1000 שאלות מעודכנות", icon: <BookOpen className="w-5 h-5" /> },
+                { text: "סימולציות מדויקות", icon: <Target className="w-5 h-5" /> },
+                { text: "מעקב ביצועים מתקדם", icon: <TrendingUp className="w-5 h-5" /> },
+                { text: "תמיכה מקצועית 24/7", icon: <Users className="w-5 h-5" /> }
               ].map((feature, index) => (
                 <motion.div 
                   key={index}
-                  className="flex items-center text-gray-200 group cursor-pointer justify-center sm:justify-start"
+                  className="flex items-center text-gray-200 group cursor-pointer"
                   initial={{ opacity: 0, x: -20 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
                   whileHover={{ x: 5 }}
                 >
                   <motion.div 
-                    className="relative ml-2 md:ml-3"
+                    className="relative ml-3"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     <div className="text-green-400 relative z-10">
@@ -372,7 +370,7 @@ const HeroSection: React.FC = () => {
                     </div>
                     <div className="absolute inset-0 bg-green-400 blur-xl opacity-0 group-hover:opacity-60 transition-opacity" />
                   </motion.div>
-                  <span className="text-xs md:text-sm font-medium group-hover:text-white transition-colors">
+                  <span className="text-sm font-medium group-hover:text-white transition-colors">
                     {feature.text}
                   </span>
                 </motion.div>
@@ -380,7 +378,7 @@ const HeroSection: React.FC = () => {
             </motion.div>
               
             <motion.div 
-              className="flex flex-col gap-3 md:gap-5 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -389,12 +387,12 @@ const HeroSection: React.FC = () => {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative group w-full"
+                  className="relative group"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-700 rounded-2xl blur-xl opacity-70 group-hover:opacity-100 transition-opacity" />
                   <Button
                     size="lg"
-                    className="relative bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-2xl shadow-2xl border-0 overflow-hidden w-full"
+                    className="relative bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-lg px-10 py-6 rounded-2xl shadow-2xl border-0 overflow-hidden"
                     style={{ fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif' }}
                   >
                     <motion.div
@@ -404,15 +402,15 @@ const HeroSection: React.FC = () => {
                       transition={{ duration: 0.5 }}
                       style={{ opacity: 0.3 }}
                     />
-                    <span className="relative z-10 flex items-center justify-center">
-                      <Zap className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" />
+                    <span className="relative z-10 flex items-center">
+                      <Zap className="w-5 h-5 mr-3" />
                       התחל תרגול מתקדם
                       <motion.div
                         initial={{ x: 0 }}
                         whileHover={{ x: -5 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <ArrowLeft className="w-4 h-4 md:w-5 md:h-5 mr-2 md:mr-3" />
+                        <ArrowLeft className="w-5 h-5 mr-3" />
                       </motion.div>
                     </span>
                   </Button>
@@ -423,19 +421,15 @@ const HeroSection: React.FC = () => {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full"
                 >
                   <Button
                     variant="outline"
                     size="lg"
-                    className="border-2 border-white/40 text-white bg-white/10 backdrop-blur-2xl hover:bg-white/20 hover:border-white/60 font-semibold text-sm md:text-lg px-6 md:px-10 py-4 md:py-6 rounded-2xl transition-all duration-300 shadow-2xl relative overflow-hidden group w-full"
-                    style={{ 
-                      fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
-                      boxShadow: '0 8px 32px rgba(255, 255, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                    }}
+                    className="border-2 border-white/20 text-white bg-white/5 backdrop-blur-2xl hover:bg-white/10 hover:border-white/30 font-semibold text-lg px-10 py-6 rounded-2xl transition-all duration-300 shadow-xl relative overflow-hidden group"
+                    style={{ fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif' }}
                   >
                     <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0"
+                      className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0"
                       initial={{ x: "-100%" }}
                       animate={{ x: "100%" }}
                       transition={{
@@ -444,21 +438,21 @@ const HeroSection: React.FC = () => {
                         ease: "linear"
                       }}
                     />
-                    <span className="relative z-10 drop-shadow-sm">שדרג לפרימיום</span>
+                    <span className="relative z-10">שדרג לפרימיום</span>
                   </Button>
                 </motion.div>
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Right column - Stats Cards - reordered for mobile */}
+          {/* Right column - Ultra Premium Animated Stats */}
           <motion.div 
-            className="relative order-1 lg:order-2 mb-8 lg:mb-0"
+            className="relative"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="grid grid-cols-2 gap-4 md:gap-8">
+            <div className="grid grid-cols-2 gap-8">
               {[
                 { 
                   value: studentsCount.count, 
@@ -466,7 +460,7 @@ const HeroSection: React.FC = () => {
                   label: "סטודנטים מצליחים", 
                   color: "from-yellow-400 to-orange-500", 
                   delay: 0.5,
-                  icon: <Users className="w-4 h-4 md:w-6 md:h-6" />
+                  icon: <Users className="w-6 h-6" />
                 },
                 { 
                   value: successRate.count, 
@@ -474,7 +468,7 @@ const HeroSection: React.FC = () => {
                   label: "שיעור הצלחה", 
                   color: "from-green-400 to-emerald-500", 
                   delay: 0.6,
-                  icon: <Award className="w-4 h-4 md:w-6 md:h-6" />
+                  icon: <Award className="w-6 h-6" />
                 },
                 { 
                   value: questionsCount.count, 
@@ -482,14 +476,14 @@ const HeroSection: React.FC = () => {
                   label: "שאלות מעודכנות", 
                   color: "from-blue-400 to-indigo-500", 
                   delay: 0.7,
-                  icon: <BookOpen className="w-4 h-4 md:w-6 md:h-6" />
+                  icon: <BookOpen className="w-6 h-6" />
                 },
                 { 
                   value: "24/7", 
                   label: "תמיכה מקצועית", 
                   color: "from-purple-400 to-pink-500", 
                   delay: 0.8,
-                  icon: <Users className="w-4 h-4 md:w-6 md:h-6" />
+                  icon: <Users className="w-6 h-6" />
                 }
               ].map((stat, index) => (
                 <motion.div
@@ -510,7 +504,7 @@ const HeroSection: React.FC = () => {
                   style={{ transformStyle: "preserve-3d" }}
                 >
                   <motion.div 
-                    className="bg-white/5 backdrop-blur-3xl rounded-2xl md:rounded-3xl p-4 md:p-8 border border-white/10 text-center overflow-hidden relative"
+                    className="bg-white/5 backdrop-blur-3xl rounded-3xl p-8 border border-white/10 text-center overflow-hidden relative"
                     whileHover={{ 
                       borderColor: "rgba(255,255,255,0.3)",
                       backgroundColor: "rgba(255,255,255,0.08)"
@@ -531,7 +525,7 @@ const HeroSection: React.FC = () => {
                     
                     {/* Icon with animation */}
                     <motion.div 
-                      className={`w-8 h-8 md:w-12 md:h-12 mx-auto mb-2 md:mb-4 bg-gradient-to-br ${stat.color} rounded-xl md:rounded-2xl flex items-center justify-center text-white relative z-10`}
+                      className={`w-12 h-12 mx-auto mb-4 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center text-white relative z-10`}
                       whileHover={{ 
                         rotate: 360,
                         scale: 1.1
@@ -543,13 +537,13 @@ const HeroSection: React.FC = () => {
                     
                     {/* Animated number */}
                     <motion.div 
-                      className={`text-2xl md:text-5xl font-bold mb-1 md:mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
+                      className={`text-5xl font-bold mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
                       ref={stat.ref}
                     >
                       {stat.value}
                     </motion.div>
                     
-                    <div className="text-xs md:text-sm text-gray-300 font-medium relative z-10">
+                    <div className="text-sm text-gray-300 font-medium relative z-10">
                       {stat.label}
                     </div>
                     
@@ -565,9 +559,9 @@ const HeroSection: React.FC = () => {
               ))}
             </div>
             
-            {/* Central floating element - smaller on mobile */}
+            {/* Central floating element */}
             <motion.div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-40 md:h-40"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40"
               animate={{
                 rotate: 360,
               }}

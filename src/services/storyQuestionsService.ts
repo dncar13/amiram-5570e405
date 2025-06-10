@@ -1,4 +1,3 @@
-
 import { Question } from '@/data/types/questionTypes';
 import { getAllQuestions } from '@/services/questionsService';
 import { GeneralSubject, identifyQuestionSubject } from '@/services/subjectClassificationService';
@@ -19,42 +18,27 @@ export const getAvailableStories = (): Story[] => {
   const allQuestions = getAllQuestions();
   console.log('[DEBUG] Total questions loaded:', allQuestions.length);
   
-  // Filter reading comprehension questions that have passage text
+  // פילטור שאלות שיש להן גם passageText וגם passageTitle
   const readingQuestions = allQuestions.filter(q => {
     const hasPassageText = !!q.passageText;
+    const hasPassageTitle = !!q.passageTitle;
     const isReadingType = q.type === 'reading-comprehension';
     
-    console.log(`[DEBUG] Question ${q.id}: hasPassageText=${hasPassageText}, isReadingType=${isReadingType}, passageTitle="${q.passageTitle || 'undefined'}"`);
+    console.log(`[DEBUG] Question ${q.id}: hasPassageText=${hasPassageText}, hasPassageTitle=${hasPassageTitle}, isReadingType=${isReadingType}`);
     
-    return hasPassageText && isReadingType;
+    return hasPassageText && hasPassageTitle && isReadingType;
   });
   
   console.log('[DEBUG] Reading questions found:', readingQuestions.length);
+  readingQuestions.forEach(q => {
+    console.log(`[DEBUG] Reading question: ${q.id} - "${q.passageTitle}"`);
+  });
 
-  // Group questions by passage title or passage text
+  // Group questions by passage title
   const storiesMap = new Map<string, Question[]>();
   
   readingQuestions.forEach(question => {
-    // Use passageTitle if available, otherwise create title from topicId or passage content
-    let title = question.passageTitle;
-    
-    if (!title) {
-      // Fallback: create title based on topicId
-      switch (question.topicId) {
-        case 1:
-          title = "The Rise of the Gig Economy";
-          break;
-        case 2:
-          title = "Artificial Intelligence Revolution";
-          break;
-        case 3:
-          title = "Climate Change: Challenges and Solutions";
-          break;
-        default:
-          title = `Reading Passage ${question.topicId}`;
-      }
-    }
-    
+    const title = question.passageTitle || 'ללא כותרת';
     if (!storiesMap.has(title)) {
       storiesMap.set(title, []);
     }
@@ -71,7 +55,7 @@ export const getAvailableStories = (): Story[] => {
     const hasHard = difficulties.includes('hard');
     
     let difficulty: 'easy' | 'medium' | 'hard' | 'mixed' = 'medium';
-    if ((hasEasy && hasMedium) || (hasEasy && hasHard) || (hasMedium && hasHard)) {
+    if (hasEasy && hasMedium && hasHard) {
       difficulty = 'mixed';
     } else if (hasHard) {
       difficulty = 'hard';
@@ -96,7 +80,7 @@ export const getAvailableStories = (): Story[] => {
     const story = {
       id: title.replace(/\s+/g, '-').toLowerCase(),
       title,
-      description: questions[0]?.passageText?.substring(0, 150) + '...' || '',
+      description: questions[0]?.passageText?.substring(0, 100) + '...' || '',
       questionCount: questions.length,
       difficulty,
       subject: primarySubject

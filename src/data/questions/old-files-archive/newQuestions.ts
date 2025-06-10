@@ -2,18 +2,16 @@ import { Question, QuestionSet } from '../../types/questionTypes';
 
 // Questions following the new structure from your example
 export const newQuestionSet: QuestionSet = {
-  id: 1,
-  title: "University Life Question Set",
-  metadata: {
-    generated: "2025-06-02T08:01:14.566Z",
-    type: "restatement",
-    difficulty: "medium",
-    count: 20,
-    topic: "university life",
-    tags: ["amir-test"],
-    model: "claude-3-7-sonnet-20250219"
+  "metadata": {
+    "generated": "2025-06-02T08:01:14.566Z",
+    "type": "restatement",
+    "difficulty": "medium",
+    "count": 20,
+    "topic": "university life",
+    "tags": ["amir-test"],
+    "model": "claude-3-7-sonnet-20250219"
   },
-  questions: [
+  "questions": [
     {
       "id": 11,
       "type": "restatement",
