@@ -51,7 +51,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 2,
     tags: ["main-idea", "causation"],
-    tips: "חפש את ההצהרה הישירה בקטע שמסבירה מה גורם לשינויי האקלים."
+    tips: "חפש את ההצהרה הישירה בקטע שמסבירה מה גורם לשינויי האקלים.",
+    topicId: 3
   },
   {
     id: 30102,
@@ -70,7 +71,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 1,
     tags: ["details", "facts"],
-    tips: "זהו מידע פקטואלי הנמצא ישירות בטקסט."
+    tips: "זהו מידע פקטואלי הנמצא ישירות בטקסט.",
+    topicId: 3
   },
   {
     id: 30103,
@@ -89,7 +91,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 2,
     tags: ["details", "policy"],
-    tips: "חפש את החלק שמתאר את יעדי הסכם פריז."
+    tips: "חפש את החלק שמתאר את יעדי הסכם פריז.",
+    topicId: 3
   },
   {
     id: 30104,
@@ -108,7 +111,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 3,
     tags: ["comparison", "strategies"],
-    tips: "התמקד בהגדרות שהקטע נותן לשני סוגי האסטרטגיות."
+    tips: "התמקד בהגדרות שהקטע נותן לשני סוגי האסטרטגיות.",
+    topicId: 3
   },
   {
     id: 30105,
@@ -127,7 +131,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 3,
     tags: ["author-intent", "conclusion"],
-    tips: "שים לב למסקנה שהמחבר מציג בסוף הקטע לגבי תפקיד הפעולות האינדיבידואליות."
+    tips: "שים לב למסקנה שהמחבר מציג בסוף הקטע לגבי תפקיד הפעולות האינדיבידואליות.",
+    topicId: 3
   }
 ];
 

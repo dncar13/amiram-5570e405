@@ -47,7 +47,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "easy",
     estimatedTime: 2,
     tags: ["main-idea", "comprehension"],
-    tips: "חפש את הביטוי שמסביר ישירות מה הניע את הצמיחה של כלכלת הפיגועים."
+    tips: "חפש את הביטוי שמסביר ישירות מה הניע את הצמיחה של כלכלת הפיגועים.",
+    topicId: 1
   },
   {
     id: 10102,
@@ -66,7 +67,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "easy",
     estimatedTime: 1,
     tags: ["details", "factual"],
-    tips: "זהו מידע מפורש הנמצא ישירות בטקסט."
+    tips: "זהו מידע מפורש הנמצא ישירות בטקסט.",
+    topicId: 1
   },
   {
     id: 10103,
@@ -85,7 +87,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "easy",
     estimatedTime: 2,
     tags: ["inference", "author-intent"],
-    tips: "חפש מילות איתות כמו 'עם זאת' ו'מהצד החיובי' שמעידות על כך שהמחבר מציג מספר נקודות מבט."
+    tips: "חפש מילות איתות כמו 'עם זאת' ו'מהצד החיובי' שמעידות על כך שהמחבר מציג מספר נקודות מבט.",
+    topicId: 1
   },
   {
     id: 10104,
@@ -104,7 +107,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "easy",
     estimatedTime: 2,
     tags: ["details", "challenges"],
-    tips: "חפש את הקטע שדן בהיבטים השליליים או באתגרים של עבודת פיגועים."
+    tips: "חפש את הקטע שדן בהיבטים השליליים או באתגרים של עבודת פיגועים.",
+    topicId: 1
   },
   {
     id: 10105,
@@ -123,7 +127,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "easy",
     estimatedTime: 1,
     tags: ["vocabulary", "context"],
-    tips: "השתמש בהקשר של הקטע כדי להבין את עוצמת השינוי המתואר."
+    tips: "השתמש בהקשר של הקטע כדי להבין את עוצמת השינוי המתואר.",
+    topicId: 1
   }
 ];
 

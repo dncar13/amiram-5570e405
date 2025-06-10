@@ -49,7 +49,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 2,
     tags: ["main-idea", "causation"],
-    tips: "חפש את הגורמים הספציפיים שהקטע מזכיר כמאיצים את הפיתוח של הבינה המלאכותית."
+    tips: "חפש את הגורמים הספציפיים שהקטע מזכיר כמאיצים את הפיתוח של הבינה המלאכותית.",
+    topicId: 2
   },
   {
     id: 20102,
@@ -68,7 +69,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 3,
     tags: ["inference", "comparison"],
-    tips: "שים לב לאופן שבו הקטע בונה מהמושג הכללי (למידת מכונה) למושג המספציפי יותר (למידה עמוקה)."
+    tips: "שים לב לאופן שבו הקטע בונה מהמושג הכללי (למידת מכונה) למושג המספציפי יותר (למידה עמוקה).",
+    topicId: 2
   },
   {
     id: 20103,
@@ -87,7 +89,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 2,
     tags: ["details", "exclusion"],
-    tips: "עבור על רשימת המגזרים במפורש ובדוק איזה מהאפשרויות לא מופיע."
+    tips: "עבור על רשימת המגזרים במפורש ובדוק איזה מהאפשרויות לא מופיע.",
+    topicId: 2
   },
   {
     id: 20104,
@@ -106,7 +109,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 3,
     tags: ["author-intent", "concerns"],
-    tips: "חפש את הקטע שדן במפורש בדאגות ובסוגיות הקשורות לבינה מלאכותית."
+    tips: "חפש את הקטע שדן במפורש בדאגות ובסוגיות הקשורות לבינה מלאכותית.",
+    topicId: 2
   },
   {
     id: 20105,
@@ -125,7 +129,8 @@ export const questions: ReadingQuestion[] = [
     difficulty: "medium",
     estimatedTime: 2,
     tags: ["inference", "future"],
-    tips: "שים לב למסקנה שהמחבר מציג בסוף הקטע לגבי המגמות העתידיות."
+    tips: "שים לב למסקנה שהמחבר מציג בסוף הקטע לגבי המגמות העתידיות.",
+    topicId: 2
   }
 ];
 

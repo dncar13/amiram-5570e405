@@ -26,6 +26,7 @@ export interface Question {
   // Optional fields that might exist in some questions
   createdAt?: string;
   subtopicId?: number;
+  passageId?: number; // Add this for reading comprehension questions
 }
 
 export interface PassageLine {
@@ -76,4 +77,5 @@ export interface QuestionSet {
   id: number;
   title: string;
   questions: Question[];
+  metadata?: any; // Add metadata property to QuestionSet
 }
