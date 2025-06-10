@@ -1,3 +1,4 @@
+
 /**
  * אינדקס לשאלות מסווגות לפי סוג
  * מאפשר גישה מהירה לשאלות לפי קטגורית התוכן
@@ -12,10 +13,6 @@ export const getReadingComprehensionQuestions = () => {
   console.log('[DEBUG] Loading reading comprehension questions from organized structure');
   return mediumQuestions;
 };
-
-// Legacy imports for compatibility (these should eventually be removed)
-import { technologyReadingQuestions } from "./mediumTechnologyReadingQuestions";
-import { environmentReadingQuestions } from "./mediumEnvironmentReadingQuestions";
 
 /**
  * מחזיר שאלות מסוג restatement

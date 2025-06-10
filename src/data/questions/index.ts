@@ -1,5 +1,5 @@
 
-import { Question } from "./types/questionTypes";
+import { Question } from "../types/questionTypes";
 import { mediumQuestions } from "./reading-comprehension/medium";
 
 console.log('[DEBUG] Loading questions from organized structure');
@@ -20,3 +20,8 @@ allQuestions.forEach(q => {
 });
 
 console.log('[DEBUG] Questions by passage title:', questionCounts);
+
+// Export function needed by SimulationSetup
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  return allQuestions.filter(q => q.topicId === topicId);
+};
