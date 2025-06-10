@@ -8,7 +8,7 @@ import { useSimulation } from '@/hooks/useSimulation';
 import { useSimulationData } from '@/hooks/useSimulationData';
 import { BackButton } from '@/components/simulation/BackButton';
 import SimulationContent from '@/components/simulation/SimulationContent';
-import SimulationLoading from '@/components/simulation/SimulationLoading';
+import { SimulationLoading } from '@/components/simulation/SimulationLoading';
 import { EmptySimulation } from '@/components/simulation/EmptySimulation';
 import { toast } from '@/hooks/use-toast';
 
@@ -53,7 +53,7 @@ const Simulation: React.FC = () => {
     error: dataError
   } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions, questionType);
 
-  // Use main simulation hook
+  // Use main simulation hook - pass the questions from data hook
   const {
     currentQuestionIndex,
     currentQuestion,
@@ -72,20 +72,23 @@ const Simulation: React.FC = () => {
     isTimerActive,
     examMode,
     showAnswersImmediately,
-    isLoading: simulationLoading,
-    onAnswerSelect,
-    onSubmitAnswer,
-    onNextQuestion,
-    onPreviousQuestion,
-    onToggleExplanation,
-    onToggleQuestionFlag,
-    onNavigateToQuestion,
-    onRestart,
-    onBackToTopics,
-    onResetProgress
-  } = useSimulation(topicQuestions, topic, setIdNumber, isQuestionSet);
+    progressLoaded,
+    handleAnswerSelect,
+    handleSubmitAnswer,
+    handleNextQuestion,
+    handlePreviousQuestion,
+    handleToggleExplanation,
+    toggleQuestionFlag,
+    navigateToQuestion,
+    handleRestartSimulation,
+    handleBackToTopics,
+    resetProgress
+  } = useSimulation(simulationId, isQuestionSet, topicQuestions);
 
-  const isLoading = dataLoading || simulationLoading;
+  // Create simulationId based on the type of simulation
+  const simulationId = questionType ? `type_${questionType}` : (setId ? `qs_${setId}` : topicId);
+
+  const isLoading = dataLoading || !progressLoaded;
 
   // Show loading state
   if (isLoading) {
@@ -95,9 +98,7 @@ const Simulation: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
           <div className="container mx-auto px-4 py-8">
             <BackButton isQuestionSet={isQuestionSet} />
-            <SimulationLoading 
-              message={questionType ? `טוען שאלות ${questionType}...` : "טוען סימולציה..."}
-            />
+            <SimulationLoading />
           </div>
         </div>
         <Footer />
@@ -138,10 +139,7 @@ const Simulation: React.FC = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
           <div className="container mx-auto px-4 py-8">
             <BackButton isQuestionSet={isQuestionSet} />
-            <EmptySimulation 
-              isQuestionSet={isQuestionSet}
-              questionType={questionType}
-            />
+            <EmptySimulation isQuestionSet={isQuestionSet} />
           </div>
         </div>
         <Footer />
@@ -182,16 +180,16 @@ const Simulation: React.FC = () => {
             showAnswersImmediately={showAnswersImmediately}
             isQuestionSet={isQuestionSet}
             setNumber={setIdNumber}
-            onAnswerSelect={onAnswerSelect}
-            onSubmitAnswer={onSubmitAnswer}
-            onNextQuestion={onNextQuestion}
-            onPreviousQuestion={onPreviousQuestion}
-            onToggleExplanation={onToggleExplanation}
-            onToggleQuestionFlag={onToggleQuestionFlag}
-            onNavigateToQuestion={onNavigateToQuestion}
-            onRestart={onRestart}
-            onBackToTopics={onBackToTopics}
-            onResetProgress={onResetProgress}
+            onAnswerSelect={handleAnswerSelect}
+            onSubmitAnswer={handleSubmitAnswer}
+            onNextQuestion={handleNextQuestion}
+            onPreviousQuestion={handlePreviousQuestion}
+            onToggleExplanation={handleToggleExplanation}
+            onToggleQuestionFlag={toggleQuestionFlag}
+            onNavigateToQuestion={navigateToQuestion}
+            onRestart={handleRestartSimulation}
+            onBackToTopics={handleBackToTopics}
+            onResetProgress={resetProgress}
           />
         </div>
       </motion.div>
