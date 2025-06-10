@@ -1,34 +1,45 @@
 
+import { LucideIcon } from 'lucide-react';
+
+// Define Question type for the application - updated to match new structure
 export interface Question {
   id: number;
-  type: string;
-  text: string;
+  type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive' | 'vocabulary' | 'grammar' | 'writing' | 'listening';
+  text: string; // Main question text field
   options: string[];
   correctAnswer: number;
   explanation: string;
-  topicId: number;
-  categoryId?: number; // Make it optional since many existing questions don't have it
   difficulty: 'easy' | 'medium' | 'hard';
+  
+  // Optional fields for different question types
+  topicId?: number;
+  categoryId?: number;
+  subtopicId?: number;
   passageText?: string;
   passageTitle?: string;
-  tips?: string;
-  tags?: string[];
-  metadata?: any;
+  lineNumbers?: boolean;
   passageWithLines?: PassageLine[];
+  tips?: string;
   
-  // Additional properties used by the existing codebase
-  flagged?: boolean;
+  // Additional optional metadata
+  tags?: string[];
+  createdAt?: string;
+  metadata?: {
+    topic?: string;
+    wordCount?: number;
+    estimatedTime?: number;
+  };
+  
+  // Legacy fields for backward compatibility
   image?: string;
   explanationImage?: string;
   explanationVideo?: string;
-  lineNumbers?: boolean;
-  
-  // Optional fields that might exist in some questions
-  createdAt?: string;
-  subtopicId?: number;
-  passageId?: number; // Add this for reading comprehension questions
+  answers?: string[];
+  flagged?: boolean;
+  verified?: boolean;
 }
 
+// New interface for numbered lines
 export interface PassageLine {
   lineNumber: number;
   startLine: number;
@@ -36,46 +47,27 @@ export interface PassageLine {
   text: string;
 }
 
-export interface QuestionMetadata {
-  id: string;
-  subject: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  estimatedTime: number; // in minutes
-  tags: string[];
-  author: string;
-  dateCreated: string;
-  lastModified: string;
-  validationStatus: 'draft' | 'review' | 'approved';
-}
-
+// Interface for complete reading passage
 export interface ReadingPassage {
   id: number;
   title: string;
+  content: string;
   topic: string;
-  generalSubject: string;
-  text: string;
-  wordCount: number;
-  readingLevel: string; // e.g., "grade-10", "grade-12"
+  difficulty: 'easy' | 'medium' | 'hard';
+  lineCount: number;
+  questions: number[];
 }
 
-export interface ReadingQuestion extends Question {
-  passageId: number;
-  questionSubtype: 'main-idea' | 'details' | 'inference' | 'vocabulary-context' | 'author-intent' | 'text-structure' | 'comparison';
-  estimatedTime: number; // in minutes
-  tags: string[];
-  tips?: string;
-}
-
-export interface QuestionBank {
-  readingComprehension: ReadingQuestion[];
-  sentenceCompletion: Question[];
-  restatement: Question[];
-  vocabulary: Question[];
-}
-
+// New structure for question sets with metadata
 export interface QuestionSet {
-  id: number;
-  title: string;
+  metadata: {
+    generated: string;
+    type: string;
+    difficulty: string;
+    count: number;
+    topic: string;
+    tags: string[];
+    model: string;
+  };
   questions: Question[];
-  metadata?: any; // Add metadata property to QuestionSet
 }

@@ -1,4 +1,3 @@
-
 import { Question } from "../../types/questionTypes";
 
 export const technologyPassageText = `
@@ -27,7 +26,6 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage states that 'recent advances in computing power, data availability, and algorithmic sophistication have accelerated its practical applications.'",
     topicId: 2,
-    categoryId: 1,
     difficulty: 'medium',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
@@ -50,7 +48,6 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage defines machine learning as 'a subset of AI, allows computers to learn and improve from experience without being explicitly programmed for every task.'",
     topicId: 2,
-    categoryId: 1,
     difficulty: 'easy',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
@@ -73,7 +70,6 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 2,
     explanation: "The passage mentions healthcare, finance, transportation, and creative industries as sectors using AI, but agriculture is not specifically mentioned.",
     topicId: 2,
-    categoryId: 1,
     difficulty: 'easy',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
@@ -96,7 +92,6 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage specifically mentions 'Issues of privacy, job displacement, algorithmic bias, and the potential for AI systems to make decisions without human oversight.'",
     topicId: 2,
-    categoryId: 1,
     difficulty: 'medium',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
@@ -119,7 +114,6 @@ export const technologyReadingQuestions: Question[] = [
     correctAnswer: 1,
     explanation: "The passage concludes that 'the integration of AI into society will likely continue to accelerate.'",
     topicId: 2,
-    categoryId: 1,
     difficulty: 'easy',
     passageText: technologyPassageText,
     passageTitle: "Artificial Intelligence Revolution",
