@@ -7,6 +7,7 @@ import {
   getRestatementQuestions,
   getVocabularyQuestions,
   getGrammarQuestions,
+  getSentenceCompletionQuestions,
   getAvailableQuestionTypes,
   getQuestionTypeStats
 } from "@/data/questions/by-type";
@@ -244,6 +245,7 @@ export const validateAllQuestions = (): { valid: number; invalid: Question[]; to
 export {
   getReadingComprehensionQuestions,
   getRestatementQuestions,
+  getSentenceCompletionQuestions,
   getVocabularyQuestions,
   getGrammarQuestions,
   getAvailableQuestionTypes,
@@ -255,3 +257,5 @@ export {
   getDifficultyStats,
   getMixedDifficultyQuestions
 };
+
+}

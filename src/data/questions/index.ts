@@ -4,14 +4,14 @@
 
 import { Question } from '../types/questionTypes';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
-import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
-import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
+import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestions';
+import { restatementQuestions } from './by-type/restatementQuestions';
 
 // מערך המאגד את כל השאלות
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,
-  ...technologyReadingQuestions,
-  ...environmentReadingQuestions,
+  ...sentenceCompletionQuestions,
+  ...restatementQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -68,6 +68,8 @@ export const getQuestionSetCount = (setId: number): number => {
 // הרץ בדיקה לכמות השאלות שנטענו
 console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
 console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
+console.log(`[Questions] Sentence Completion questions loaded: ${sentenceCompletionQuestions.length}`);
+console.log(`[Questions] Restatement questions loaded: ${restatementQuestions.length}`);
 
 // בדיקת שאלות הבנת הנקרא עם קטעים
 const readingQuestionsWithPassages = allQuestions.filter(q => 

@@ -13,6 +13,7 @@ import {
   Target,
   TrendingUp
 } from 'lucide-react';
+import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/data/questions/by-type';
 
 interface QuestionTypeData {
   type: string;
@@ -28,6 +29,10 @@ interface QuestionTypeData {
 const SimulationByType: React.FC = () => {
   const navigate = useNavigate();
   const { type } = useParams<{ type: string }>();
+
+  // Get actual question counts
+  const sentenceCompletionCount = getSentenceCompletionQuestions().length;
+  const restatementCount = getRestatementQuestions().length;
 
   // Redirect reading comprehension directly to stories page
   useEffect(() => {
@@ -50,7 +55,7 @@ const SimulationByType: React.FC = () => {
         'בחן את כל האפשרויות לפני קבלת החלטה',
         'שים לב לדקדוק ולצורת הפועל'
       ],
-      questionCount: 45
+      questionCount: sentenceCompletionCount
     },
     'restatement': {
       type: 'restatement',
@@ -65,7 +70,7 @@ const SimulationByType: React.FC = () => {
         'שמור על אותה משמעות עם ניסוח שונה',
         'הימנע מביטויים חריגים או מיוחדים'
       ],
-      questionCount: 38
+      questionCount: restatementCount
     }
   };
 
