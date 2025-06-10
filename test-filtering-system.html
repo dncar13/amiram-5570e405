@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>בדיקת מערכת הסינון - הבנת הנקרא</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        direction: rtl;
+        text-align: right;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #f9f9f9;
+      }
+      .success {
+        color: green;
+        font-weight: bold;
+      }
+      .error {
+        color: red;
+        font-weight: bold;
+      }
+      .story-item {
+        margin: 10px 0;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background: white;
+      }
+      .filter-controls {
+        margin: 15px 0;
+        padding: 10px;
+        background: #e8f4fd;
+        border-radius: 5px;
+      }
+      select,
+      button {
+        margin: 5px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 בדיקת מערכת הסינון - הבנת הנקרא</h1>
+
+      <div class="test-section">
+        <h2>📊 נתוני מערכת</h2>
+        <div id="system-info">טוען...</div>
+      </div>
+
+      <div class="test-section">
+        <h2>🎯 בדיקת סיווג נושאים</h2>
+        <div id="classification-test">טוען...</div>
+      </div>
+
+      <div class="test-section">
+        <h2>📚 סיפורים זמינים</h2>
+        <div class="filter-controls">
+          <label>רמת קושי: </label>
+          <select id="difficulty-filter">
+            <option value="all">הכל</option>
+            <option value="easy">קל</option>
+            <option value="medium">בינוני</option>
+            <option value="hard">קשה</option>
+          </select>
+
+          <label>נושא: </label>
+          <select id="subject-filter">
+            <option value="all">הכל</option>
+            <option value="technology">טכנולוגיה</option>
+            <option value="economics">כלכלה</option>
+            <option value="health">בריאות</option>
+            <option value="society">חברה</option>
+            <option value="environment">סביבה</option>
+          </select>
+
+          <button onclick="filterStories()">סנן</button>
+          <button onclick="resetFilters()">איפוס</button>
+        </div>
+        <div id="stories-list">טוען...</div>
+      </div>
+
+      <div class="test-section">
+        <h2>📈 סטטיסטיקות</h2>
+        <div id="statistics">טוען...</div>
+      </div>
+    </div>
+
+    <script type="module">
+      // מסמולציית המערכת - בסביבה אמיתית זה יובא מהקבצים
+      const mockQuestions = [
+        {
+          id: 1,
+          type: "reading-comprehension",
+          passageTitle: "כלכלת הגיג: מהפכה בעולם העבודה",
+          passageText:
+            "השוק החופשי מבוסס על עקרונות של היצע וביקוש. כלכלת הגיג משנה את דפוסי העבודה המסורתיים...",
+          difficulty: "medium",
+          text: "מה המושג המרכזי בטקסט?",
+        },
+        {
+          id: 2,
+          type: "reading-comprehension",
+          passageTitle: "The Changing Nature of Work",
+          passageText:
+            "Technology is revolutionizing the workplace. Artificial intelligence and automation are changing how we work...",
+          difficulty: "hard",
+          text: "What is the main topic of the passage?",
+        },
+        {
+          id: 3,
+          type: "reading-comprehension",
+          passageTitle: "Climate Change Impact",
+          passageText:
+            "Global warming affects ecosystems worldwide. Rising temperatures cause ice caps to melt and sea levels to rise...",
+          difficulty: "easy",
+          text: "What environmental effects are mentioned?",
+        },
+        {
+          id: 4,
+          type: "reading-comprehension",
+          passageTitle: "Online Education Revolution",
+          passageText:
+            "Digital learning platforms have made education accessible to millions. Online courses offer flexibility and convenience...",
+          difficulty: "medium",
+          text: "What are the benefits of online education?",
+        },
+      ]; // פונקציות סיווג נושאים (9 נושאים)
+      const subjectKeywords = {
+        technology: [
+          "טכנולוגיה",
+          "בינה מלאכותית",
+          "רובוטיקה",
+          "technology",
+          "artificial intelligence",
+          "automation",
+          "digital",
+        ],
+        economics: [
+          "כלכלה",
+          "שוק",
+          "היצע",
+          "ביקוש",
+          "גיג",
+          "economy",
+          "market",
+          "financial",
+          "business",
+        ],
+        engineering: [
+          "הנדסה",
+          "טכני",
+          "מערכת",
+          "engineering",
+          "technical",
+          "system",
+          "design",
+        ],
+        health: [
+          "בריאות",
+          "רפואה",
+          "חולים",
+          "health",
+          "medical",
+          "healthcare",
+          "medicine",
+        ],
+        society: [
+          "חברה",
+          "קהילה",
+          "אנשים",
+          "society",
+          "community",
+          "social",
+          "people",
+        ],
+        education: [
+          "חינוך",
+          "בית ספר",
+          "תלמיד",
+          "education",
+          "school",
+          "student",
+          "learning",
+        ],
+        environment: [
+          "סביבה",
+          "אקלים",
+          "זיהום",
+          "environment",
+          "climate",
+          "warming",
+          "ecosystems",
+          "temperature",
+        ],
+        education: [
+          "חינוך",
+          "לימודים",
+          "קורסים",
+          "education",
+          "learning",
+          "courses",
+          "online",
+          "digital learning",
+        ],
+      };
+
+      function classifySubject(text, title = "") {
+        const content = (text + " " + title).toLowerCase();
+
+        for (const [subject, keywords] of Object.entries(subjectKeywords)) {
+          if (
+            keywords.some((keyword) => content.includes(keyword.toLowerCase()))
+          ) {
+            return subject;
+          }
+        }
+        return null;
+      }
+
+      function getAvailableStories() {
+        const groupedByTitle = {};
+
+        mockQuestions.forEach((q) => {
+          if (q.type === "reading-comprehension" && q.passageTitle) {
+            if (!groupedByTitle[q.passageTitle]) {
+              const subject = classifySubject(
+                q.passageText || "",
+                q.passageTitle
+              );
+
+              groupedByTitle[q.passageTitle] = {
+                id: q.passageTitle.replace(/\\s+/g, "-").toLowerCase(),
+                title: q.passageTitle,
+                description: q.passageText?.substring(0, 100) + "..." || "",
+                questionCount: 1,
+                difficulty: q.difficulty,
+                subject: subject,
+                questions: [q],
+              };
+            } else {
+              groupedByTitle[q.passageTitle].questionCount++;
+              groupedByTitle[q.passageTitle].questions.push(q);
+            }
+          }
+        });
+
+        return Object.values(groupedByTitle);
+      }
+
+      function getFilteredStories(
+        difficultyFilter = "all",
+        subjectFilter = "all"
+      ) {
+        let stories = getAvailableStories();
+
+        if (difficultyFilter !== "all") {
+          stories = stories.filter(
+            (story) => story.difficulty === difficultyFilter
+          );
+        }
+
+        if (subjectFilter !== "all") {
+          stories = stories.filter((story) => story.subject === subjectFilter);
+        }
+
+        return stories;
+      }
+
+      function displaySystemInfo() {
+        const allStories = getAvailableStories();
+        const allSubjects = [
+          ...new Set(allStories.map((s) => s.subject).filter(Boolean)),
+        ];
+
+        document.getElementById("system-info").innerHTML = `
+                <div class="success">✅ מערכת הסינון פועלת</div>
+                <p><strong>סה"כ סיפורים זמינים:</strong> ${
+                  allStories.length
+                }</p>
+                <p><strong>נושאים זמינים:</strong> ${allSubjects.join(", ")}</p>
+                <p><strong>רמות קושי זמינות:</strong> ${[
+                  ...new Set(allStories.map((s) => s.difficulty)),
+                ].join(", ")}</p>
+            `;
+      }
+
+      function displayClassificationTest() {
+        const testCases = [
+          { text: "כלכלת השוק החופשי", expected: "economics" },
+          { text: "טכנולוגיה ובינה מלאכותית", expected: "technology" },
+          { text: "השפעות שינויי האקלים על הסביבה", expected: "environment" },
+          { text: "מערכת החינוך הדיגיטלית", expected: "education" },
+        ];
+
+        let html = "";
+        testCases.forEach((test) => {
+          const result = classifySubject(test.text);
+          const isCorrect = result === test.expected;
+          html += `
+                    <div style="margin: 10px 0;">
+                        <strong>טקסט:</strong> "${test.text}"<br>
+                        <strong>צפוי:</strong> ${
+                          test.expected
+                        }, <strong>קיבלנו:</strong> ${result}
+                        <span class="${isCorrect ? "success" : "error"}">
+                            ${isCorrect ? "✅ הצלחה" : "❌ כשל"}
+                        </span>
+                    </div>
+                `;
+        });
+
+        document.getElementById("classification-test").innerHTML = html;
+      }
+
+      function displayStories(stories = null) {
+        if (!stories) {
+          stories = getAvailableStories();
+        }
+
+        if (stories.length === 0) {
+          document.getElementById("stories-list").innerHTML =
+            '<div class="error">❌ לא נמצאו סיפורים התואמים לסינון</div>';
+          return;
+        }
+
+        let html = `<div class="success">✅ נמצאו ${stories.length} סיפורים</div>`;
+
+        stories.forEach((story) => {
+          const difficultyMap = {
+            easy: "קל",
+            medium: "בינוני",
+            hard: "קשה",
+          };
+
+          const subjectMap = {
+            technology: "טכנולוגיה",
+            economics: "כלכלה",
+            environment: "סביבה",
+            education: "חינוך",
+            society: "חברה",
+            health: "בריאות",
+          };
+
+          html += `
+                    <div class="story-item">
+                        <h4>${story.title}</h4>
+                        <p>${story.description}</p>
+                        <p><strong>שאלות:</strong> ${story.questionCount} | 
+                           <strong>קושי:</strong> ${
+                             difficultyMap[story.difficulty] || story.difficulty
+                           } | 
+                           <strong>נושא:</strong> ${
+                             subjectMap[story.subject] ||
+                             story.subject ||
+                             "כללי"
+                           }</p>
+                    </div>
+                `;
+        });
+
+        document.getElementById("stories-list").innerHTML = html;
+      }
+
+      function displayStatistics() {
+        const stories = getAvailableStories();
+        const difficultyStats = {};
+        const subjectStats = {};
+
+        stories.forEach((story) => {
+          difficultyStats[story.difficulty] =
+            (difficultyStats[story.difficulty] || 0) + 1;
+          if (story.subject) {
+            subjectStats[story.subject] =
+              (subjectStats[story.subject] || 0) + 1;
+          }
+        });
+
+        const difficultyMap = { easy: "קל", medium: "בינוני", hard: "קשה" };
+        const subjectMap = {
+          technology: "טכנולוגיה",
+          economics: "כלכלה",
+          environment: "סביבה",
+          education: "חינוך",
+        };
+
+        let html = "<h4>חלוקה לפי רמת קושי:</h4>";
+        Object.entries(difficultyStats).forEach(([diff, count]) => {
+          html += `<p>${difficultyMap[diff] || diff}: ${count} סיפורים</p>`;
+        });
+
+        html += "<h4>חלוקה לפי נושא:</h4>";
+        Object.entries(subjectStats).forEach(([subject, count]) => {
+          html += `<p>${subjectMap[subject] || subject}: ${count} סיפורים</p>`;
+        });
+
+        document.getElementById("statistics").innerHTML = html;
+      }
+
+      // הוספת פונקציות לחלון הגלובלי
+      window.filterStories = function () {
+        const difficultyFilter =
+          document.getElementById("difficulty-filter").value;
+        const subjectFilter = document.getElementById("subject-filter").value;
+        const filteredStories = getFilteredStories(
+          difficultyFilter,
+          subjectFilter
+        );
+        displayStories(filteredStories);
+      };
+
+      window.resetFilters = function () {
+        document.getElementById("difficulty-filter").value = "all";
+        document.getElementById("subject-filter").value = "all";
+        displayStories();
+      };
+
+      // טעינה ראשונית
+      displaySystemInfo();
+      displayClassificationTest();
+      displayStories();
+      displayStatistics();
+
+      console.log("🎯 בדיקת מערכת הסינון הושלמה בהצלחה!");
+    </script>
+  </body>
+</html>
