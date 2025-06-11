@@ -5,6 +5,7 @@ import { getQuestions, saveQuestions, initializeQuestions, refreshQuestionsFromS
 import { 
   getReadingComprehensionQuestions,
   getRestatementQuestions,
+  getSentenceCompletionQuestions,
   getVocabularyQuestions,
   getGrammarQuestions,
   getAvailableQuestionTypes,
@@ -35,6 +36,14 @@ export const getAllQuestions = (): Question[] => {
   readingQuestions.forEach(q => {
     console.log(`[DEBUG] RC Question ${q.id}: "${q.passageTitle}" - hasPassageText: ${!!q.passageText}`);
   });
+  
+  // Debug: show sentence completion questions
+  const sentenceCompletionQuestions = questions.filter(q => q.type === 'sentence-completion');
+  console.log('[DEBUG] Sentence completion questions:', sentenceCompletionQuestions.length);
+  
+  // Debug: show restatement questions
+  const restatementQuestions = questions.filter(q => q.type === 'restatement');
+  console.log('[DEBUG] Restatement questions:', restatementQuestions.length);
   
   return questions;
 };
@@ -240,10 +249,11 @@ export const validateAllQuestions = (): { valid: number; invalid: Question[]; to
   };
 };
 
-// Export organized question access functions
+// Export organized question access functions including new ones
 export {
   getReadingComprehensionQuestions,
   getRestatementQuestions,
+  getSentenceCompletionQuestions,
   getVocabularyQuestions,
   getGrammarQuestions,
   getAvailableQuestionTypes,

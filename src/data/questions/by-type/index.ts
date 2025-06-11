@@ -2,7 +2,7 @@
 /**
  * אינדקס לשאלות מסווגות לפי סוג
  * מאפשר גישה מהירה לשאלות לפי קטגורית התוכן
- * עודכן להכיל רק את 3 קבצי השאלות הפעילים
+ * עודכן להכיל את כל קבצי השאלות הפעילים כולל sentence-completion ו-restatement
  */
 
 import { Question } from '../../types/questionTypes';
@@ -10,7 +10,6 @@ import { allQuestions } from '../index';
 
 /**
  * מחזיר שאלות מסוג reading comprehension
- * כולל רק שאלות מ-3 הקבצים הפעילים
  */
 export const getReadingComprehensionQuestions = (): Question[] => {
   const questions = allQuestions.filter(q => q.type === 'reading-comprehension');
@@ -27,7 +26,18 @@ export const getReadingComprehensionQuestions = (): Question[] => {
  * מחזיר שאלות מסוג restatement
  */
 export const getRestatementQuestions = (): Question[] => {
-  return allQuestions.filter(q => q.type === 'restatement');
+  const questions = allQuestions.filter(q => q.type === 'restatement');
+  console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
+  return questions;
+};
+
+/**
+ * מחזיר שאלות מסוג sentence completion
+ */
+export const getSentenceCompletionQuestions = (): Question[] => {
+  const questions = allQuestions.filter(q => q.type === 'sentence-completion');
+  console.log(`[getSentenceCompletionQuestions] Found ${questions.length} sentence completion questions`);
+  return questions;
 };
 
 /**
