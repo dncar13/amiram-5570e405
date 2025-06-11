@@ -31,6 +31,7 @@ interface SimulationState {
   correctQuestionsCount: number;
   progressPercentage: number;
   currentScorePercentage: number;
+  selectedAnswerIndex: number | null;
 }
 
 interface SimulationActions {
@@ -67,6 +68,7 @@ const initialSimulationState: SimulationState = {
   correctQuestionsCount: 0,
   progressPercentage: 0,
   currentScorePercentage: 0,
+  selectedAnswerIndex: null,
 };
 
 export const useSimulation = (
@@ -164,7 +166,7 @@ export const useSimulation = (
           time: new Date().toLocaleTimeString(),
           topic: 'General',
           questionId: 'N/A',
-          status: 'completed',
+          status: 'correct', // Use valid status type
           score: prevState.score,
           correctAnswers: prevState.correctQuestionsCount,
           totalAnswered: prevState.totalQuestions,
@@ -411,6 +413,7 @@ export const useSimulation = (
     correctQuestionsCount: state.correctQuestionsCount,
     progressPercentage: state.progressPercentage,
     currentScorePercentage: state.currentScorePercentage,
+    selectedAnswerIndex: state.selectedAnswerIndex,
     handleAnswerSelect,
     handleSubmitAnswer,
     handleNextQuestion,
