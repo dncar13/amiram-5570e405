@@ -351,7 +351,7 @@ const Simulation = () => {
             onPreviousQuestion={simulation.handlePreviousQuestion}
             onToggleExplanation={simulation.handleToggleExplanation}
             onToggleQuestionFlag={simulation.toggleQuestionFlag}
-            onNavigateToQuestion={(index) => handleNavigateToQuestion(index)}
+            onNavigateToQuestion={handleNavigateToQuestion}
             onRestart={simulation.handleRestartSimulation}
             onBackToTopics={handleBackToTopics}
             onResetProgress={simulation.resetProgress}

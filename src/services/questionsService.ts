@@ -301,6 +301,5 @@ export {
   getHardQuestions,
   getAvailableDifficulties,
   getDifficultyStats,
-  getMixedDifficultyQuestions,
-  getQuestionsByDifficultyAndType
+  getMixedDifficultyQuestions
 };
