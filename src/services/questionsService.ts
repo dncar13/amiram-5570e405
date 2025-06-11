@@ -83,7 +83,12 @@ export const getQuestionById = (id: number): Question | undefined => {
  */
 export const getQuestionsByType = (type: string): Question[] => {
   const allQuestions = getQuestions();
-  return allQuestions.filter(question => question.type === type);
+  const filteredQuestions = allQuestions.filter(question => question.type === type);
+  
+  console.log(`[questionsService] Getting questions by type: ${type}`);
+  console.log(`[questionsService] Found ${filteredQuestions.length} questions with type ${type}`);
+  
+  return filteredQuestions;
 };
 
 /**
@@ -91,7 +96,19 @@ export const getQuestionsByType = (type: string): Question[] => {
  */
 export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
   const allQuestions = getQuestions();
-  return allQuestions.filter(question => question.difficulty === difficulty);
+  const filteredQuestions = allQuestions.filter(question => question.difficulty === difficulty);
+  
+  console.log(`[questionsService] Getting questions by difficulty: ${difficulty}`);
+  console.log(`[questionsService] Found ${filteredQuestions.length} questions with difficulty ${difficulty}`);
+  
+  // Debug: show breakdown by type for this difficulty
+  const sentenceCompletionCount = filteredQuestions.filter(q => q.type === 'sentence-completion').length;
+  const restatementCount = filteredQuestions.filter(q => q.type === 'restatement').length;
+  const readingCount = filteredQuestions.filter(q => q.type === 'reading-comprehension').length;
+  
+  console.log(`[questionsService] ${difficulty} breakdown - Sentence completion: ${sentenceCompletionCount}, Restatement: ${restatementCount}, Reading: ${readingCount}`);
+  
+  return filteredQuestions;
 };
 
 /**
@@ -271,3 +288,6 @@ export {
   getDifficultyStats,
   getMixedDifficultyQuestions
 };
+
+// Add the new function to exports
+export { getQuestionsByDifficultyAndType };

@@ -130,6 +130,20 @@ const Simulation = () => {
   // Check if this is a difficulty-based simulation
   const isDifficultyBased = Boolean(level && type);
   
+  // Store difficulty parameters in sessionStorage for useSimulation
+  useEffect(() => {
+    if (level && type) {
+      console.log(`Simulation - setting difficulty parameters: ${level}, ${type}`);
+      sessionStorage.setItem('current_difficulty_level', level);
+      sessionStorage.setItem('current_difficulty_type', type);
+      sessionStorage.setItem('is_difficulty_based', 'true');
+    } else {
+      sessionStorage.removeItem('current_difficulty_level');
+      sessionStorage.removeItem('current_difficulty_type');
+      sessionStorage.removeItem('is_difficulty_based');
+    }
+  }, [level, type]);
+
   // Use appropriate simulation ID
   const simulationId = isStoryBased
     ? `story_${storyId}`
@@ -143,8 +157,8 @@ const Simulation = () => {
   const formattedSimulationId = simulationId ? simulationId : '';    // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
     // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = (isDifficultyBased || isStoryBased) ? simulation.questions : topicQuestions;
-  const effectiveIsLoading = (isDifficultyBased || isStoryBased) ? false : isLoading;
+  const questionsToUse = isDifficultyBased ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
+  const effectiveIsLoading = isDifficultyBased ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
   
   useEffect(() => {
     if (contentRef.current) {

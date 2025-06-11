@@ -27,7 +27,7 @@ const easyQuestions: Question[] = [
       "The store stays open past 9 PM."
     ],
     "correctAnswer": 2,
-    "explanation": "Only option A conveys the same meaning as the original statement.",
+    "explanation": "Only option C conveys the same meaning as the original statement.",
     "difficulty": "easy",
     "id": 3031
   },
@@ -41,7 +41,7 @@ const easyQuestions: Question[] = [
       "Mike is taller than John."
     ],
     "correctAnswer": 1,
-    "explanation": "Only option A expresses the same relationship between John and Mike's heights.",
+    "explanation": "Only option B expresses the same relationship between John and Mike's heights.",
     "difficulty": "easy",
     "id": 3032
   },
@@ -55,7 +55,7 @@ const easyQuestions: Question[] = [
       "The cake looks good but tastes bad."
     ],
     "correctAnswer": 1,
-    "explanation": "Only option A maintains both positive qualities of the cake.",
+    "explanation": "Only option B maintains both positive qualities of the cake.",
     "difficulty": "easy",
     "id": 3033
   },
@@ -69,7 +69,7 @@ const easyQuestions: Question[] = [
       "Tom went to the party alone."
     ],
     "correctAnswer": 1,
-    "explanation": "Only option A correctly expresses that Tom was the sole non-attendee.",
+    "explanation": "Only option B correctly expresses that Tom was the sole non-attendee.",
     "difficulty": "easy",
     "id": 3034
   }
