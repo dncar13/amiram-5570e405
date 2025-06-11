@@ -1,5 +1,78 @@
-
 import { Question } from '../../types/questionTypes';
+
+// Sentence completion questions - easy difficulty
+const easyQuestions: Question[] = [
+  {
+    "type": "sentence-completion",
+    "text": "The weather today is very ____.",
+    "options": [
+      "nice",
+      "difficult",
+      "expensive",
+      "heavy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'Nice' is the most appropriate word to describe pleasant weather.",
+    "difficulty": "easy",
+    "id": 2030
+  },
+  {
+    "type": "sentence-completion",
+    "text": "She ____ to school every day.",
+    "options": [
+      "walks",
+      "walking",
+      "walked",
+      "will walk"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'Walks' is the correct present tense form for a habitual action.",
+    "difficulty": "easy",
+    "id": 2031
+  },
+  {
+    "type": "sentence-completion",
+    "text": "The cat is ____ on the chair.",
+    "options": [
+      "sitting",
+      "running",
+      "flying",
+      "swimming"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'Sitting' is the logical action for a cat on a chair.",
+    "difficulty": "easy",
+    "id": 2032
+  },
+  {
+    "type": "sentence-completion",
+    "text": "I like to ____ books in my free time.",
+    "options": [
+      "read",
+      "eat",
+      "drink",
+      "sleep"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'Read' is the appropriate verb for books.",
+    "difficulty": "easy",
+    "id": 2033
+  },
+  {
+    "type": "sentence-completion",
+    "text": "The apple is ____ and sweet.",
+    "options": [
+      "red",
+      "fast",
+      "loud",
+      "cold"
+    ],
+    "correctAnswer": 0,
+    "explanation": "'Red' is a color that can describe an apple along with 'sweet'.",
+    "difficulty": "easy",
+    "id": 2034
+  }
+];
 
 // Sentence completion questions - medium difficulty
 const mediumQuestions: Question[] = [
@@ -151,9 +224,10 @@ const hardQuestions: Question[] = [
 
 // Combine all sentence completion questions
 export const sentenceCompletionQuestions: Question[] = [
+  ...easyQuestions,
   ...mediumQuestions,
   ...hardQuestions
 ];
 
 console.log(`[SentenceCompletion] Loaded ${sentenceCompletionQuestions.length} sentence completion questions`);
-console.log(`[SentenceCompletion] Medium: ${mediumQuestions.length}, Hard: ${hardQuestions.length}`);
+console.log(`[SentenceCompletion] Easy: ${easyQuestions.length}, Medium: ${mediumQuestions.length}, Hard: ${hardQuestions.length}`);
