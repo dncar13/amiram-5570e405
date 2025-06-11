@@ -1,5 +1,5 @@
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import Header from "@/components/Header";
 import SimulationContent from "@/components/simulation/SimulationContent";
@@ -224,15 +224,16 @@ const Simulation = () => {
     }
   };
 
-  // Handle navigation to a specific question - this function should accept an index parameter
-  const handleNavigateToQuestion = (index: number) => {
+  // Handle navigation to a specific question - this function accepts an index parameter
+  const handleNavigateToQuestion = useCallback((index: number) => {
     if (simulation.simulationComplete) {
       simulation.setSimulationComplete(false);
     }
     
     simulation.navigateToQuestion(index);
-  };
-    // Initial auto-save on page load - show toast only once
+  }, [simulation]);
+
+  // Initial auto-save on page load - show toast only once
   useEffect(() => {
     if (
       simulation && 
@@ -289,7 +290,8 @@ const Simulation = () => {
   if (questionsToUse.length === 0) {
     return (
       <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
-        <Header />        <main className="flex-grow flex items-center justify-start">
+        <Header />
+        <main className="flex-grow flex items-center justify-start">
           <div className="max-w-md ml-0 p-8 bg-white rounded-lg shadow-md">
             <div className="flex items-center gap-3 mb-4 text-amber-600">
               <AlertCircle className="h-8 w-8" />
@@ -297,7 +299,8 @@ const Simulation = () => {
             </div>
             <p className="text-gray-600 mb-6">
               {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
-            </p>            <Button 
+            </p>
+            <Button 
               onClick={() => navigate(handleBackToTopics())} 
               className="w-full bg-amber-600 hover:bg-amber-700"
             >
