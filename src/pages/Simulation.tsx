@@ -1,3 +1,4 @@
+
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
@@ -362,3 +363,4 @@ const Simulation = () => {
 };
 
 export default Simulation;
+

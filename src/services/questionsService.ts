@@ -301,8 +301,6 @@ export {
   getHardQuestions,
   getAvailableDifficulties,
   getDifficultyStats,
-  getMixedDifficultyQuestions
+  getMixedDifficultyQuestions,
+  getQuestionsByDifficultyAndType
 };
-
-// Add the new function to exports
-export { getQuestionsByDifficultyAndType };
