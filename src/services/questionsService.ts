@@ -163,7 +163,7 @@ export const getReadingComprehensionQuestions = (): Question[] => {
  * מחזיר שאלות לפי רמת קושי וסוג
  */
 export const getQuestionsByDifficultyAndType = (difficulty: string, type: string): Question[] => {
-  console.log(`Getting questions for difficulty: ${difficulty}, type: ${type}`);
+  console.log(`[getQuestionsByDifficultyAndType] Getting questions for difficulty: ${difficulty}, type: ${type}`);
   
   let questions: Question[] = [];
   
@@ -175,7 +175,7 @@ export const getQuestionsByDifficultyAndType = (difficulty: string, type: string
     questions = getVocabularyQuestions().filter(q => q.difficulty === difficulty);
   }
   
-  console.log(`Found ${questions.length} questions for ${difficulty} ${type}`);
+  console.log(`[getQuestionsByDifficultyAndType] Found ${questions.length} questions for ${difficulty} ${type}`);
   return questions;
 };
 

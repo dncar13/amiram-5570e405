@@ -10,6 +10,7 @@ import {
   getRestatementQuestions,
   getQuestionsByDifficultyAndType
 } from "@/services/questionsService";
+import { useParams } from "react-router-dom";
 
 interface SimulationState {
   currentQuestionIndex: number;
@@ -80,6 +81,7 @@ export const useSimulation = (
   const timerInterval = useRef<NodeJS.Timeout | null>(null);
   const progressLoadedRef = useRef(false);
   const { toast } = useToast();
+  const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
 
   const initializeTimer = useCallback(() => {
     console.log("Initializing timer");
@@ -285,18 +287,22 @@ export const useSimulation = (
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet });
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty });
     
     let questionsToUse: Question[] = [];
     
     if (storyQuestions && storyQuestions.length > 0) {
       questionsToUse = [...storyQuestions];
       console.log(`Using ${questionsToUse.length} story questions`);
+    } else if (type && difficulty) {
+      console.log(`Loading questions for type: ${type}, difficulty: ${difficulty}`);
+      questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
+      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${type}`);
     } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
       const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
       const difficultyType = sessionStorage.getItem('current_difficulty_type');
       
-      console.log(`Getting difficulty-based questions: ${difficultyLevel}, ${difficultyType}`);
+      console.log(`Getting difficulty-based questions from sessionStorage: ${difficultyLevel}, ${difficultyType}`);
       
       if (difficultyLevel && difficultyType) {
         if (difficultyType === 'mixed') {
@@ -304,24 +310,7 @@ export const useSimulation = (
         } else {
           questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
         }
-      }
-    } else {
-      // Check URL path for difficulty-based routing
-      const currentPath = window.location.pathname;
-      console.log("Current path:", currentPath);
-      
-      if (currentPath.includes('/sentence-completion/')) {
-        const pathParts = currentPath.split('/');
-        const difficulty = pathParts[pathParts.length - 1];
-        
-        console.log(`Extracting difficulty from path: ${difficulty}`);
-        questionsToUse = getQuestionsByDifficultyAndType(difficulty, 'sentence-completion');
-      } else if (currentPath.includes('/restatement/')) {
-        const pathParts = currentPath.split('/');
-        const difficulty = pathParts[pathParts.length - 1];
-        
-        console.log(`Extracting difficulty from path: ${difficulty}`);
-        questionsToUse = getQuestionsByDifficultyAndType(difficulty, 'restatement');
+        console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${difficultyType}`);
       }
     }
     
@@ -334,9 +323,9 @@ export const useSimulation = (
         currentQuestion: questionsToUse[0]
       }));
     } else {
-      console.warn("No questions found for simulation");
+      console.warn("No questions found for simulation", { type, difficulty, simulationId });
     }
-  }, [simulationId, isQuestionSet, storyQuestions]);
+  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty]);
 
   useEffect(() => {
     initializeQuestions();

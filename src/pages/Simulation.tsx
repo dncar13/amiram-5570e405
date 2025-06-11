@@ -24,10 +24,10 @@ import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsServ
 
 const Simulation = () => {
   const navigate = useNavigate();
-  const { topicId, setId, level, type, storyId } = useParams<{ 
+  const { topicId, setId, difficulty, type, storyId } = useParams<{ 
     topicId: string; 
     setId: string; 
-    level: string; 
+    difficulty: string; 
     type: string; 
     storyId: string;
   }>();
@@ -70,7 +70,7 @@ const Simulation = () => {
   } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
 
   useEffect(() => {
-    console.log("Simulation component mounted or parameters changed", { topicId, setId, level, type, storyId, isContinue });
+    console.log("Simulation component mounted or parameters changed", { topicId, setId, difficulty, type, storyId, isContinue });
     
     // Check if there's a reset parameter in the URL - only on first load
     if (!initialLoadAttempted.current) {
@@ -92,11 +92,12 @@ const Simulation = () => {
       window.sessionStorage.setItem('is_question_set', 'true');
     } else if (topicId) {
       window.sessionStorage.setItem('is_question_set', 'false');
-    } else if (level && type) {
+    } else if (difficulty && type) {
       window.sessionStorage.setItem('is_question_set', 'false');
       window.sessionStorage.setItem('is_difficulty_based', 'true');
-      window.sessionStorage.setItem('difficulty_level', level);
+      window.sessionStorage.setItem('difficulty_level', difficulty);
       window.sessionStorage.setItem('difficulty_type', type);
+      console.log(`[Simulation] Setting difficulty parameters: ${difficulty}, ${type}`);
     }
     
     // Clean up the continue flag after using it
@@ -110,7 +111,7 @@ const Simulation = () => {
     const questSetFlag = window.sessionStorage.getItem('is_question_set');
     setIsQuestionSet(questSetFlag === 'true');
     
-    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : level && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, level: ${level}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
+    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
       // Store the current simulation IDs in sessionStorage to persist across refreshes
     if (storyId) {
       sessionStorage.setItem('current_story_id', storyId);
@@ -120,22 +121,22 @@ const Simulation = () => {
       sessionStorage.setItem('current_set_id', setId);
     }
     
-    if (level && type) {
-      sessionStorage.setItem('current_difficulty_level', level);
+    if (difficulty && type) {
+      sessionStorage.setItem('current_difficulty_level', difficulty);
       sessionStorage.setItem('current_difficulty_type', type);
     }
       // Force attempt load on first render
     initialLoadAttempted.current = true;
-      }, [topicId, setId, level, type, storyId, isContinue]);
+      }, [topicId, setId, difficulty, type, storyId, isContinue]);
   
   // Check if this is a difficulty-based simulation
-  const isDifficultyBased = Boolean(level && type);
+  const isDifficultyBased = Boolean(difficulty && type);
   
   // Store difficulty parameters in sessionStorage for useSimulation
   useEffect(() => {
-    if (level && type) {
-      console.log(`Simulation - setting difficulty parameters: ${level}, ${type}`);
-      sessionStorage.setItem('current_difficulty_level', level);
+    if (difficulty && type) {
+      console.log(`Simulation - setting difficulty parameters: ${difficulty}, ${type}`);
+      sessionStorage.setItem('current_difficulty_level', difficulty);
       sessionStorage.setItem('current_difficulty_type', type);
       sessionStorage.setItem('is_difficulty_based', 'true');
     } else {
@@ -143,13 +144,13 @@ const Simulation = () => {
       sessionStorage.removeItem('current_difficulty_type');
       sessionStorage.removeItem('is_difficulty_based');
     }
-  }, [level, type]);
+  }, [difficulty, type]);
 
   // Use appropriate simulation ID
   const simulationId = isStoryBased
     ? `story_${storyId}`
     : isDifficultyBased 
-      ? `difficulty_${level}_${type}`
+      ? `difficulty_${difficulty}_${type}`
       : setId 
         ? `qs_${setId}` 
         : topicId;
@@ -216,7 +217,7 @@ const Simulation = () => {
     if (isStoryBased) {
       return "/reading-comprehension";
     } else if (isDifficultyBased) {
-      return `/simulation/difficulty/${level}`;
+      return `/simulation/difficulty/${difficulty}`;
     } else if (setId) {
       return "/questions-sets";
     } else {
@@ -321,8 +322,6 @@ const Simulation = () => {
         <div className="w-full px-4">
           <BackButton isQuestionSet={isQuestionSet} />
         </div>
-        
-        {/* NO MORE TITLE - REMOVED COMPLETELY! */}
         
         {/* תוכן הסימולציה - עם מרכוז */}
         <div className="container mx-auto max-w-5xl px-4">
