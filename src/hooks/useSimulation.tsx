@@ -106,7 +106,7 @@ export const useSimulation = (
 
   const handleSubmitAnswer = useCallback(() => {
     setState(prevState => {
-      if (prevState.isAnswerSubmitted || prevState.currentQuestion === null) {
+      if (prevState.isAnswerSubmitted || prevState.currentQuestion === null || prevState.selectedAnswerIndex === null) {
         return prevState;
       }
       
