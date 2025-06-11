@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { 
   gigEconomyReadingQuestions, 
@@ -8,13 +7,29 @@ import {
 } from "@/data/questions/index";
 import { vocabularyQuestions } from "@/data/questions/by-type/vocabularyQuestions";
 
-import { 
-  sentenceCompletionQuestionsWithMetadata as sentenceCompletionQuestions 
-} from "@/data/questions/by-type/sentenceCompletionQuestions";
+// Import sentence completion questions from the new files
+import easyQuestions from "../../questions-for-lovable/sentence-completion/easy/sentence-completion-easy-2025-06-11";
+import mediumQuestions from "../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11";
+import hardQuestions from "../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11";
 
-import { 
-  restatementQuestionsWithMetadata as restatementQuestions 
-} from "@/data/questions/by-type/restatementQuestionsNew";
+// Import restatement questions
+import restatementEasy from "../../questions-for-lovable/restatement/easy/restatement-easy-2025-06-11";
+import restatementMedium from "../../questions-for-lovable/restatement/medium/restatement-medium-2025-06-11";
+import restatementHard from "../../questions-for-lovable/restatement/hard/restatement-hard-2025-06-11";
+
+// Combine all sentence completion questions
+const allSentenceCompletionQuestions: Question[] = [
+  ...easyQuestions,
+  ...mediumQuestions,
+  ...hardQuestions
+];
+
+// Combine all restatement questions
+const allRestatementQuestions: Question[] = [
+  ...restatementEasy,
+  ...restatementMedium,
+  ...restatementHard
+];
 
 // Re-export functions from questions/index
 export {
@@ -108,10 +123,12 @@ export const getVocabularyQuestions = (): Question[] => {
  * מחזיר שאלות השלמת משפטים לפי רמת קושי
  */
 export const getSentenceCompletionQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
-  const questions = sentenceCompletionQuestions.filter(q => q.type === 'sentence-completion');
+  const questions = allSentenceCompletionQuestions.filter(q => q.type === 'sentence-completion');
   
   if (difficulty) {
-    return questions.filter(q => q.difficulty === difficulty);
+    const filtered = questions.filter(q => q.difficulty === difficulty);
+    console.log(`[getSentenceCompletionQuestions] Found ${filtered.length} ${difficulty} sentence completion questions`);
+    return filtered;
   }
   
   console.log(`[getSentenceCompletionQuestions] Found ${questions.length} sentence completion questions`);
@@ -121,8 +138,15 @@ export const getSentenceCompletionQuestions = (difficulty?: 'easy' | 'medium' | 
 /**
  * מחזיר שאלות ניסוח מחדש לפי רמת קושי
  */
-export const getRestatementQuestions = (): Question[] => {
-  const questions = restatementQuestions.filter(q => q.type === 'restatement');
+export const getRestatementQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
+  const questions = allRestatementQuestions.filter(q => q.type === 'restatement');
+  
+  if (difficulty) {
+    const filtered = questions.filter(q => q.difficulty === difficulty);
+    console.log(`[getRestatementQuestions] Found ${filtered.length} ${difficulty} restatement questions`);
+    return filtered;
+  }
+  
   console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
   return questions;
 };
@@ -146,7 +170,7 @@ export const getQuestionsByDifficultyAndType = (difficulty: string, type: string
   if (type === 'sentence-completion') {
     questions = getSentenceCompletionQuestions(difficulty as 'easy' | 'medium' | 'hard');
   } else if (type === 'restatement') {
-    questions = getRestatementQuestions().filter(q => q.difficulty === difficulty);
+    questions = getRestatementQuestions(difficulty as 'easy' | 'medium' | 'hard');
   } else if (type === 'vocabulary') {
     questions = getVocabularyQuestions().filter(q => q.difficulty === difficulty);
   }
@@ -154,3 +178,5 @@ export const getQuestionsByDifficultyAndType = (difficulty: string, type: string
   console.log(`Found ${questions.length} questions for ${difficulty} ${type}`);
   return questions;
 };
+
+// ... keep existing code (other functions)

@@ -305,16 +305,36 @@ export const useSimulation = (
           questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
         }
       }
+    } else {
+      // Check URL path for difficulty-based routing
+      const currentPath = window.location.pathname;
+      console.log("Current path:", currentPath);
+      
+      if (currentPath.includes('/sentence-completion/')) {
+        const pathParts = currentPath.split('/');
+        const difficulty = pathParts[pathParts.length - 1];
+        
+        console.log(`Extracting difficulty from path: ${difficulty}`);
+        questionsToUse = getQuestionsByDifficultyAndType(difficulty, 'sentence-completion');
+      } else if (currentPath.includes('/restatement/')) {
+        const pathParts = currentPath.split('/');
+        const difficulty = pathParts[pathParts.length - 1];
+        
+        console.log(`Extracting difficulty from path: ${difficulty}`);
+        questionsToUse = getQuestionsByDifficultyAndType(difficulty, 'restatement');
+      }
     }
     
     if (questionsToUse.length > 0) {
       console.log(`Setting ${questionsToUse.length} questions for simulation`);
-      setQuestions(questionsToUse);
-      setTotalQuestions(questionsToUse.length);
-      
-      if (questionsToUse.length > 0) {
-        setCurrentQuestion(questionsToUse[0]);
-      }
+      setState(prevState => ({
+        ...prevState,
+        questions: questionsToUse,
+        totalQuestions: questionsToUse.length,
+        currentQuestion: questionsToUse[0]
+      }));
+    } else {
+      console.warn("No questions found for simulation");
     }
   }, [simulationId, isQuestionSet, storyQuestions]);
 
