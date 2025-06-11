@@ -1,472 +1,433 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
-import { 
-  getSimulationProgress, 
-  saveSimulationProgress, 
-  resetSimulation 
-} from "@/services/questionsService";
+import { saveActivity } from "@/hooks/useActivityHistory";
 import { useToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { 
+  getEasyQuestions, 
+  getMediumQuestions, 
+  getHardQuestions, 
+  getMixedDifficultyQuestions,
+  getRestatementQuestions,
+  getQuestionsByDifficultyAndType
+} from "@/services/questionsService";
 
-// Constants
-const EXAM_TIME_MINUTES = 60;
-const EXAM_TIME_MS = EXAM_TIME_MINUTES * 60 * 1000;
-
-// Types
-interface SimulationHook {
-  // Current state
+interface SimulationState {
   currentQuestionIndex: number;
   currentQuestion: Question | null;
-  totalQuestions: number;
   questions: Question[];
-  userAnswers: Record<number, number>;
+  userAnswers: Record<number, number | null>;
   questionFlags: Record<number, boolean>;
-  selectedAnswerIndex: number | null;
-  isAnswerSubmitted: boolean;
-  showExplanation: boolean;
   simulationComplete: boolean;
-  progressLoaded: boolean;
-  
-  // Timer state
+  score: number;
+  totalQuestions: number;
   remainingTime: number;
   isTimerActive: boolean;
-  
-  // Stats
-  score: number;
+  isAnswerSubmitted: boolean;
+  showExplanation: boolean;
+  progressLoaded: boolean;
+  examMode: boolean;
+  showAnswersImmediately: boolean;
   answeredQuestionsCount: number;
   correctQuestionsCount: number;
   progressPercentage: number;
   currentScorePercentage: number;
-  
-  // Settings
-  examMode: boolean;
-  showAnswersImmediately: boolean;
-  
-  // Actions
-  handleAnswerSelect: (index: number) => void;
+}
+
+interface SimulationActions {
+  handleAnswerSelect: (answerIndex: number) => void;
   handleSubmitAnswer: () => void;
   handleNextQuestion: () => void;
   handlePreviousQuestion: () => void;
   handleToggleExplanation: () => void;
-  navigateToQuestion: (index: number) => void;
-  toggleQuestionFlag: (index: number) => void;
+  toggleQuestionFlag: (questionIndex: number) => void;
+  navigateToQuestion: (questionIndex: number) => void;
   handleRestartSimulation: () => void;
-  resetProgress: () => void;
   saveProgress: () => void;
+  resetProgress: () => void;
   setSimulationComplete: (complete: boolean) => void;
 }
 
+const initialSimulationState: SimulationState = {
+  currentQuestionIndex: 0,
+  currentQuestion: null,
+  questions: [],
+  userAnswers: {},
+  questionFlags: {},
+  simulationComplete: false,
+  score: 0,
+  totalQuestions: 0,
+  remainingTime: 1800, // 30 minutes in seconds
+  isTimerActive: false,
+  isAnswerSubmitted: false,
+  showExplanation: false,
+  progressLoaded: false,
+  examMode: false,
+  showAnswersImmediately: false,
+  answeredQuestionsCount: 0,
+  correctQuestionsCount: 0,
+  progressPercentage: 0,
+  currentScorePercentage: 0,
+};
+
 export const useSimulation = (
-  simulationId: string,
+  simulationId: string, 
   isQuestionSet: boolean = false,
-  providedQuestions?: Question[]
-): SimulationHook => {
+  storyQuestions?: Question[]
+) => {
+  const [state, setState] = useState<SimulationState>(initialSimulationState);
+  const timerInterval = useRef<NodeJS.Timeout | null>(null);
+  const progressLoadedRef = useRef(false);
   const { toast } = useToast();
-  const navigate = useNavigate();
-  
-  // Core state
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
-  const [questionFlags, setQuestionFlags] = useState<Record<number, boolean>>({});
-  const [selectedAnswerIndex, setSelectedAnswerIndex] = useState<number | null>(null);
-  const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [simulationComplete, setSimulationComplete] = useState(false);
-  const [totalQuestions, setTotalQuestions] = useState(0);
-  const [progressLoaded, setProgressLoaded] = useState(false);
-  
-  // Timer state
-  const [remainingTime, setRemainingTime] = useState(EXAM_TIME_MS);
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  const [lastTimerUpdate, setLastTimerUpdate] = useState(Date.now());
-  
-  // Settings
-  const [examMode, setExamMode] = useState(false);
-  const [showAnswersImmediately, setShowAnswersImmediately] = useState(true);
-  
-  // Current question
-  const currentQuestion = useMemo(() => {
-    if (questions.length === 0 || currentQuestionIndex >= questions.length) {
-      return null;
-    }
-    return questions[currentQuestionIndex];
-  }, [questions, currentQuestionIndex]);
-  
-  // Stats calculations
-  const answeredQuestionsCount = useMemo(() => {
-    return Object.keys(userAnswers).length;
-  }, [userAnswers]);
-  
-  const correctQuestionsCount = useMemo(() => {
-    return Object.entries(userAnswers).reduce((count, [questionIndex, answerIndex]) => {
-      const question = questions[parseInt(questionIndex)];
-      if (question && question.correctAnswer === answerIndex) {
-        return count + 1;
-      }
-      return count;
-    }, 0);
-  }, [userAnswers, questions]);
-  
-  const score = useMemo(() => {
-    if (questions.length === 0) return 0;
-    return Math.round((correctQuestionsCount / questions.length) * 100);
-  }, [correctQuestionsCount, questions.length]);
-  
-  const progressPercentage = useMemo(() => {
-    if (totalQuestions === 0) return 0;
-    return Math.round((answeredQuestionsCount / totalQuestions) * 100);
-  }, [answeredQuestionsCount, totalQuestions]);
-  
-  const currentScorePercentage = useMemo(() => {
-    if (answeredQuestionsCount === 0) return 0;
-    return Math.round((correctQuestionsCount / answeredQuestionsCount) * 100);
-  }, [correctQuestionsCount, answeredQuestionsCount]);
-  
-  // Initialize simulation
-  useEffect(() => {
-    console.log("useSimulation - initializing with parameters:", { simulationId, isQuestionSet, providedQuestions });
+
+  const initializeTimer = useCallback(() => {
+    console.log("Initializing timer");
     
-    // If we have provided questions (like story questions), use them
-    if (providedQuestions && providedQuestions.length > 0) {
-      console.log("useSimulation - using provided questions:", providedQuestions.length);
-      setQuestions(providedQuestions);
-      setTotalQuestions(providedQuestions.length);
-      setProgressLoaded(true);
-      return;
+    if (timerInterval.current) {
+      clearInterval(timerInterval.current);
     }
     
-    // Check if this is a difficulty-based simulation
-    const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
-    const difficultyType = sessionStorage.getItem('current_difficulty_type');
-    
-    if (difficultyLevel && difficultyType) {
-      console.log(`useSimulation - loading questions for difficulty: ${difficultyLevel}, type: ${difficultyType}`);
-      
-      // Import the function here to avoid circular dependencies
-      import("@/services/questionsService").then((module) => {
-        const difficultyQuestions = module.getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
-        console.log(`useSimulation - loaded ${difficultyQuestions.length} questions for ${difficultyLevel} ${difficultyType}`);
+    timerInterval.current = setInterval(() => {
+      setState(prevState => {
+        if (!prevState.isTimerActive || prevState.remainingTime <= 0) {
+          clearInterval(timerInterval.current!);
+          return prevState;
+        }
         
-        if (difficultyQuestions.length === 0) {
-          console.error(`useSimulation - No questions found for difficulty: ${difficultyLevel}, type: ${difficultyType}`);
-          // Try to get all questions of this type regardless of difficulty as fallback
-          const typeQuestions = module.getQuestionsByType(difficultyType);
-          console.log(`useSimulation - fallback: found ${typeQuestions.length} questions of type ${difficultyType}`);
-          setQuestions(typeQuestions);
-          setTotalQuestions(typeQuestions.length);
-          setProgressLoaded(true);
-        } else {
-          setQuestions(difficultyQuestions);
-          setTotalQuestions(difficultyQuestions.length);
-          setProgressLoaded(true);
-        }
-      });
-      return;
-    }
-    
-    // If no simulation ID, we can't load progress
-    if (!simulationId) {
-      console.log("useSimulation - no simulationId provided, can't load progress");
-      setProgressLoaded(true);
-      return;
-    }
-    
-    // Check for reset parameter in URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const resetParam = urlParams.get('reset');
-    
-    if (resetParam === 'true') {
-      console.log("useSimulation - reset parameter detected, resetting simulation");
-      resetSimulation(Number(simulationId));
-      
-      // Remove the reset parameter from URL
-      urlParams.delete('reset');
-      const newUrl = `${window.location.pathname}${urlParams.toString() ? `?${urlParams.toString()}` : ''}`;
-      window.history.replaceState({}, '', newUrl);
-    }
-    
-    // Try to load existing progress
-    const continueFlag = sessionStorage.getItem('continue_simulation') === 'true';
-    const progress = getSimulationProgress(Number(simulationId));
-    
-    if (progress && (continueFlag || urlParams.get('continue') === 'true')) {
-      console.log("useSimulation - loading existing progress:", progress);
-      
-      // Load questions first
-      import("@/services/questionsService").then((module) => {
-        const allQuestions = module.getAllQuestions();
-        
-        // If we're doing a question set, filter by set ID
-        let filteredQuestions = allQuestions;
-        if (isQuestionSet) {
-          const setId = Number(simulationId.replace('qs_', ''));
-          filteredQuestions = module.getQuestionsBySet(setId);
-          console.log(`useSimulation - loaded ${filteredQuestions.length} questions for set ${setId}`);
-          
-          // Now restore progress
-          setQuestions(filteredQuestions);
-          setTotalQuestions(filteredQuestions.length);
-          setCurrentQuestionIndex(progress.currentQuestionIndex);
-          setUserAnswers(progress.userAnswers || {});
-          setQuestionFlags(progress.questionFlags || {});
-          setProgressLoaded(true);
-        } else {
-          // For topic simulations
-          filteredQuestions = module.getQuestionsByTopic(Number(simulationId));
-          console.log(`useSimulation - loaded ${filteredQuestions.length} questions for topic ${simulationId}`);
-          
-          // Now restore progress
-          setQuestions(filteredQuestions);
-          setTotalQuestions(filteredQuestions.length);
-          setCurrentQuestionIndex(progress.currentQuestionIndex);
-          setUserAnswers(progress.userAnswers || {});
-          setQuestionFlags(progress.questionFlags || {});
-          setProgressLoaded(true);
-        }
-      });
-    } else {
-      // No existing progress or not continuing, start fresh
-      console.log("useSimulation - no existing progress or not continuing, starting fresh");
-      
-      // Load questions based on simulation type
-      if (isQuestionSet) {
-        const setId = Number(simulationId.replace('qs_', ''));
-        import("@/services/questionsService").then((module) => {
-          const setQuestions = module.getQuestionsBySet(setId);
-          console.log(`useSimulation - loaded ${setQuestions.length} questions for set ${setId}`);
-          setQuestions(setQuestions);
-          setTotalQuestions(setQuestions.length);
-          setProgressLoaded(true);
-        });
-      } else {
-        // For topic simulations
-        import("@/services/questionsService").then((module) => {
-          const topicQuestions = module.getQuestionsByTopic(Number(simulationId));
-          console.log(`useSimulation - loaded ${topicQuestions.length} questions for topic ${simulationId}`);
-          setQuestions(topicQuestions);
-          setTotalQuestions(topicQuestions.length);
-          setProgressLoaded(true);
-        });
-      }
-    }
-  }, [simulationId, isQuestionSet, providedQuestions]);
-  
-  // Timer effect
-  useEffect(() => {
-    if (!examMode || !isTimerActive) return;
-    
-    const interval = setInterval(() => {
-      const now = Date.now();
-      const elapsed = now - lastTimerUpdate;
-      setLastTimerUpdate(now);
-      
-      setRemainingTime(prev => {
-        const newTime = Math.max(0, prev - elapsed);
-        if (newTime === 0) {
-          // Time's up!
-          setIsTimerActive(false);
-          setSimulationComplete(true);
-          toast({
-            title: "הזמן נגמר!",
-            description: "זמן המבחן הסתיים. הציון שלך מחושב על סמך התשובות שהספקת לענות.",
-            variant: "destructive",
-          });
-        }
-        return newTime;
+        return { ...prevState, remainingTime: prevState.remainingTime - 1 };
       });
     }, 1000);
-    
-    return () => clearInterval(interval);
-  }, [examMode, isTimerActive, lastTimerUpdate, toast]);
-  
-  // Handle answer selection
-  const handleAnswerSelect = useCallback((index: number) => {
-    if (isAnswerSubmitted) return;
-    setSelectedAnswerIndex(index);
-  }, [isAnswerSubmitted]);
-  
-  // Handle answer submission
+  }, []);
+
+  const handleAnswerSelect = useCallback((answerIndex: number) => {
+    setState(prevState => ({ ...prevState, selectedAnswerIndex: answerIndex }));
+  }, []);
+
   const handleSubmitAnswer = useCallback(() => {
-    if (selectedAnswerIndex === null || isAnswerSubmitted) return;
-    
-    // Record the answer
-    setUserAnswers(prev => ({
-      ...prev,
-      [currentQuestionIndex]: selectedAnswerIndex
-    }));
-    
-    setIsAnswerSubmitted(true);
-    
-    // If we're showing answers immediately, check if it's correct
-    if (showAnswersImmediately && currentQuestion) {
-      const isCorrect = selectedAnswerIndex === currentQuestion.correctAnswer;
+    setState(prevState => {
+      if (prevState.isAnswerSubmitted || prevState.currentQuestion === null) {
+        return prevState;
+      }
       
-      toast({
-        title: isCorrect ? "תשובה נכונה!" : "תשובה שגויה",
-        description: isCorrect 
-          ? "כל הכבוד! התשובה שלך נכונה." 
-          : `התשובה הנכונה היא: ${currentQuestion.options[currentQuestion.correctAnswer]}`,
-        variant: isCorrect ? "default" : "destructive",
+      const isCorrect = prevState.selectedAnswerIndex === prevState.currentQuestion.correctAnswer;
+      const questionId = prevState.currentQuestion.id;
+      
+      // Save activity record
+      saveActivity({
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString(),
+        topic: 'General',
+        questionId: String(questionId),
+        status: isCorrect ? 'correct' : 'wrong',
+        isCorrect: isCorrect,
+        isCompleted: false
       });
-    }
-  }, [selectedAnswerIndex, isAnswerSubmitted, currentQuestionIndex, showAnswersImmediately, currentQuestion, toast]);
-  
-  // Handle moving to next question
-  const handleNextQuestion = useCallback(() => {
-    if (currentQuestionIndex >= questions.length - 1) {
-      // End of simulation
-      setSimulationComplete(true);
-      return;
-    }
-    
-    setCurrentQuestionIndex(prev => prev + 1);
-    setSelectedAnswerIndex(userAnswers[currentQuestionIndex + 1] ?? null);
-    setIsAnswerSubmitted(userAnswers[currentQuestionIndex + 1] !== undefined);
-    setShowExplanation(false);
-  }, [currentQuestionIndex, questions.length, userAnswers]);
-  
-  // Handle moving to previous question
-  const handlePreviousQuestion = useCallback(() => {
-    if (currentQuestionIndex <= 0) return;
-    
-    setCurrentQuestionIndex(prev => prev - 1);
-    setSelectedAnswerIndex(userAnswers[currentQuestionIndex - 1] ?? null);
-    setIsAnswerSubmitted(userAnswers[currentQuestionIndex - 1] !== undefined);
-    setShowExplanation(false);
-  }, [currentQuestionIndex, userAnswers]);
-  
-  // Toggle explanation visibility
-  const handleToggleExplanation = useCallback(() => {
-    setShowExplanation(prev => !prev);
+      
+      const updatedUserAnswers = { ...prevState.userAnswers, [prevState.currentQuestionIndex]: prevState.selectedAnswerIndex };
+      const newScore = isCorrect ? prevState.score + 1 : prevState.score;
+      const newCorrectQuestionsCount = isCorrect ? prevState.correctQuestionsCount + 1 : prevState.correctQuestionsCount;
+      const newAnsweredQuestionsCount = prevState.answeredQuestionsCount + 1;
+      const newProgressPercentage = Math.round((newAnsweredQuestionsCount / prevState.totalQuestions) * 100);
+      const newCurrentScorePercentage = Math.round((newScore / prevState.totalQuestions) * 100);
+      
+      return {
+        ...prevState,
+        userAnswers: updatedUserAnswers,
+        score: newScore,
+        isAnswerSubmitted: true,
+        showExplanation: true,
+        correctQuestionsCount: newCorrectQuestionsCount,
+        answeredQuestionsCount: newAnsweredQuestionsCount,
+        progressPercentage: newProgressPercentage,
+        currentScorePercentage: newCurrentScorePercentage
+      };
+    });
   }, []);
-  
-  // Navigate to a specific question
-  const navigateToQuestion = useCallback((index: number) => {
-    if (index < 0 || index >= questions.length) return;
-    
-    setCurrentQuestionIndex(index);
-    setSelectedAnswerIndex(userAnswers[index] ?? null);
-    setIsAnswerSubmitted(userAnswers[index] !== undefined);
-    setShowExplanation(false);
-  }, [questions.length, userAnswers]);
-  
-  // Toggle question flag
-  const toggleQuestionFlag = useCallback((index: number) => {
-    setQuestionFlags(prev => ({
-      ...prev,
-      [index]: !prev[index]
+
+  const handleNextQuestion = useCallback(() => {
+    setState(prevState => {
+      if (prevState.currentQuestionIndex < prevState.totalQuestions - 1) {
+        return {
+          ...prevState,
+          currentQuestionIndex: prevState.currentQuestionIndex + 1,
+          currentQuestion: prevState.questions[prevState.currentQuestionIndex + 1],
+          isAnswerSubmitted: false,
+          showExplanation: false,
+          selectedAnswerIndex: null
+        };
+      } else {
+        // End of simulation
+        clearInterval(timerInterval.current!);
+        
+        // Save activity record for completion
+        saveActivity({
+          date: new Date().toLocaleDateString(),
+          time: new Date().toLocaleTimeString(),
+          topic: 'General',
+          questionId: 'N/A',
+          status: 'completed',
+          score: prevState.score,
+          correctAnswers: prevState.correctQuestionsCount,
+          totalAnswered: prevState.totalQuestions,
+          isCompleted: true
+        });
+        
+        return { ...prevState, isTimerActive: false, simulationComplete: true };
+      }
+    });
+  }, []);
+
+  const handlePreviousQuestion = useCallback(() => {
+    setState(prevState => {
+      if (prevState.currentQuestionIndex > 0) {
+        return {
+          ...prevState,
+          currentQuestionIndex: prevState.currentQuestionIndex - 1,
+          currentQuestion: prevState.questions[prevState.currentQuestionIndex - 1],
+          isAnswerSubmitted: false,
+          showExplanation: false,
+          selectedAnswerIndex: null
+        };
+      }
+      return prevState;
+    });
+  }, []);
+
+  const handleToggleExplanation = useCallback(() => {
+    setState(prevState => ({ ...prevState, showExplanation: !prevState.showExplanation }));
+  }, []);
+
+  const toggleQuestionFlag = useCallback((questionIndex: number) => {
+    setState(prevState => {
+      const questionId = prevState.questions[questionIndex].id;
+      const newFlags = { ...prevState.questionFlags, [questionId]: !prevState.questionFlags[questionId] };
+      return { ...prevState, questionFlags: newFlags };
+    });
+  }, []);
+
+  const navigateToQuestion = useCallback((questionIndex: number) => {
+    setState(prevState => ({
+      ...prevState,
+      currentQuestionIndex: questionIndex,
+      currentQuestion: prevState.questions[questionIndex],
+      isAnswerSubmitted: false,
+      showExplanation: false,
+      selectedAnswerIndex: null
     }));
   }, []);
-  
-  // Restart simulation
+
   const handleRestartSimulation = useCallback(() => {
-    // Confirm restart
-    if (window.confirm("האם אתה בטוח שברצונך להתחיל מחדש? כל ההתקדמות תאבד.")) {
-      setCurrentQuestionIndex(0);
-      setUserAnswers({});
-      setQuestionFlags({});
-      setSelectedAnswerIndex(null);
-      setIsAnswerSubmitted(false);
-      setShowExplanation(false);
-      setSimulationComplete(false);
+    console.log("Restarting simulation");
+    
+    clearInterval(timerInterval.current!);
+    
+    setState(prevState => ({
+      ...initialSimulationState,
+      questions: prevState.questions,
+      totalQuestions: prevState.totalQuestions,
+      isTimerActive: prevState.examMode,
+      remainingTime: 1800
+    }));
+    
+    initializeTimer();
+  }, [initializeTimer]);
+
+  const saveProgress = useCallback(() => {
+    try {
+      const progress = {
+        currentQuestionIndex: state.currentQuestionIndex,
+        userAnswers: state.userAnswers,
+        questionFlags: state.questionFlags,
+        remainingTime: state.remainingTime,
+        isTimerActive: state.isTimerActive,
+        examMode: state.examMode,
+        showAnswersImmediately: state.showAnswersImmediately,
+        answeredQuestionsCount: state.answeredQuestionsCount,
+        correctQuestionsCount: state.correctQuestionsCount,
+        progressPercentage: state.progressPercentage,
+        currentScorePercentage: state.currentScorePercentage
+      };
       
-      // Reset timer if in exam mode
-      if (examMode) {
-        setRemainingTime(EXAM_TIME_MS);
-        setIsTimerActive(true);
-        setLastTimerUpdate(Date.now());
-      }
+      sessionStorage.setItem(`simulation_progress_${simulationId}`, JSON.stringify(progress));
+      console.log(`Simulation progress saved for ${simulationId}`);
+    } catch (error) {
+      console.error("Error saving simulation progress:", error);
+    }
+  }, [simulationId, state]);
+
+  const resetProgress = useCallback(() => {
+    try {
+      sessionStorage.removeItem(`simulation_progress_${simulationId}`);
+      console.log(`Simulation progress reset for ${simulationId}`);
       
-      // Save the reset progress
-      if (simulationId) {
-        resetSimulation(Number(simulationId));
-      }
+      setState(prevState => ({
+        ...initialSimulationState,
+        questions: prevState.questions,
+        totalQuestions: prevState.totalQuestions,
+        examMode: prevState.examMode,
+        showAnswersImmediately: prevState.showAnswersImmediately
+      }));
       
       toast({
-        title: "הסימולציה אופסה",
-        description: "הסימולציה התחילה מחדש. בהצלחה!",
+        title: "איפוס סימולציה",
+        description: "הנתונים אופסו והסימולציה מתחילה מחדש",
         variant: "default",
       });
+    } catch (error) {
+      console.error("Error resetting simulation progress:", error);
     }
-  }, [examMode, simulationId, toast]);
-  
-  // Reset progress
-  const resetProgress = useCallback(() => {
-    if (simulationId) {
-      resetSimulation(Number(simulationId));
+  }, [simulationId, toast]);
+
+  const setSimulationComplete = useCallback((complete: boolean) => {
+    setState(prevState => ({ ...prevState, simulationComplete: complete }));
+  }, []);
+
+  // Initialize questions based on simulation type
+  const initializeQuestions = useCallback(() => {
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet });
+    
+    let questionsToUse: Question[] = [];
+    
+    if (storyQuestions && storyQuestions.length > 0) {
+      questionsToUse = [...storyQuestions];
+      console.log(`Using ${questionsToUse.length} story questions`);
+    } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
+      const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
+      const difficultyType = sessionStorage.getItem('current_difficulty_type');
       
-      // Reload the page with reset parameter
-      navigate(`${window.location.pathname}?reset=true`);
-    }
-  }, [simulationId, navigate]);
-  
-  // Save progress
-  const saveProgress = useCallback(() => {
-    if (!simulationId || questions.length === 0) return;
-    
-    const progress = {
-      currentQuestionIndex,
-      totalQuestions: questions.length,
-      userAnswers,
-      questionFlags,
-      score,
-      timeStarted: Date.now() - (EXAM_TIME_MS - remainingTime),
-      lastUpdated: Date.now()
-    };
-    
-    saveSimulationProgress(Number(simulationId), progress);
-  }, [simulationId, currentQuestionIndex, questions.length, userAnswers, questionFlags, score, remainingTime]);
-  
-  // Save progress when unmounting
-  useEffect(() => {
-    return () => {
-      if (progressLoaded && questions.length > 0) {
-        saveProgress();
+      console.log(`Getting difficulty-based questions: ${difficultyLevel}, ${difficultyType}`);
+      
+      if (difficultyLevel && difficultyType) {
+        if (difficultyType === 'mixed') {
+          questionsToUse = getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
+        } else {
+          questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+        }
       }
-    };
-  }, [progressLoaded, questions.length, saveProgress]);
-  
+    }
+    
+    if (questionsToUse.length > 0) {
+      console.log(`Setting ${questionsToUse.length} questions for simulation`);
+      setQuestions(questionsToUse);
+      setTotalQuestions(questionsToUse.length);
+      
+      if (questionsToUse.length > 0) {
+        setCurrentQuestion(questionsToUse[0]);
+      }
+    }
+  }, [simulationId, isQuestionSet, storyQuestions]);
+
+  useEffect(() => {
+    initializeQuestions();
+  }, [initializeQuestions]);
+
+  useEffect(() => {
+    const savedProgress = sessionStorage.getItem(`simulation_progress_${simulationId}`);
+    
+    if (savedProgress && !progressLoadedRef.current) {
+      try {
+        const parsedProgress = JSON.parse(savedProgress);
+        
+        setState(prevState => ({
+          ...prevState,
+          currentQuestionIndex: parsedProgress.currentQuestionIndex || 0,
+          userAnswers: parsedProgress.userAnswers || {},
+          questionFlags: parsedProgress.questionFlags || {},
+          remainingTime: parsedProgress.remainingTime || 1800,
+          isTimerActive: parsedProgress.isTimerActive !== undefined ? parsedProgress.isTimerActive : false,
+          examMode: parsedProgress.examMode !== undefined ? parsedProgress.examMode : false,
+          showAnswersImmediately: parsedProgress.showAnswersImmediately !== undefined ? parsedProgress.showAnswersImmediately : false,
+          answeredQuestionsCount: parsedProgress.answeredQuestionsCount || 0,
+          correctQuestionsCount: parsedProgress.correctQuestionsCount || 0,
+          progressPercentage: parsedProgress.progressPercentage || 0,
+          currentScorePercentage: parsedProgress.currentScorePercentage || 0,
+          progressLoaded: true
+        }));
+        
+        progressLoadedRef.current = true;
+        console.log(`Simulation progress loaded for ${simulationId}`);
+      } catch (error) {
+        console.error("Error loading simulation progress:", error);
+      }
+    } else {
+      setState(prevState => ({ ...prevState, progressLoaded: true }));
+    }
+  }, [simulationId]);
+
+  useEffect(() => {
+    if (state.examMode) {
+      initializeTimer();
+    } else {
+      clearInterval(timerInterval.current!);
+    }
+    
+    return () => clearInterval(timerInterval.current!);
+  }, [state.examMode, initializeTimer]);
+
+  const setQuestions = (questions: Question[]) => {
+    setState(prevState => ({ ...prevState, questions }));
+  };
+
+  const setTotalQuestions = (totalQuestions: number) => {
+    setState(prevState => ({ ...prevState, totalQuestions }));
+  };
+
+  const setCurrentQuestion = (currentQuestion: Question) => {
+    setState(prevState => ({ ...prevState, currentQuestion }));
+  };
+
+  const setSelectedAnswerIndex = (selectedAnswerIndex: number | null) => {
+    setState(prevState => ({ ...prevState, selectedAnswerIndex }));
+  };
+
+  const setIsTimerActive = (isTimerActive: boolean) => {
+    setState(prevState => ({ ...prevState, isTimerActive }));
+  };
+
+  const setExamMode = (examMode: boolean) => {
+    setState(prevState => ({ ...prevState, examMode }));
+  };
+
+  const setShowAnswersImmediately = (showAnswersImmediately: boolean) => {
+    setState(prevState => ({ ...prevState, showAnswersImmediately }));
+  };
+
   return {
-    // Current state
-    currentQuestionIndex,
-    currentQuestion,
-    totalQuestions,
-    questions,
-    userAnswers,
-    questionFlags,
-    selectedAnswerIndex,
-    isAnswerSubmitted,
-    showExplanation,
-    simulationComplete,
-    progressLoaded,
-    
-    // Timer state
-    remainingTime,
-    isTimerActive,
-    
-    // Stats
-    score,
-    answeredQuestionsCount,
-    correctQuestionsCount,
-    progressPercentage,
-    currentScorePercentage,
-    
-    // Settings
-    examMode,
-    showAnswersImmediately,
-    
-    // Actions
+    currentQuestionIndex: state.currentQuestionIndex,
+    currentQuestion: state.currentQuestion,
+    questions: state.questions,
+    userAnswers: state.userAnswers,
+    questionFlags: state.questionFlags,
+    simulationComplete: state.simulationComplete,
+    score: state.score,
+    totalQuestions: state.totalQuestions,
+    remainingTime: state.remainingTime,
+    isTimerActive: state.isTimerActive,
+    isAnswerSubmitted: state.isAnswerSubmitted,
+    showExplanation: state.showExplanation,
+    progressLoaded: state.progressLoaded,
+    examMode: state.examMode,
+    showAnswersImmediately: state.showAnswersImmediately,
+    answeredQuestionsCount: state.answeredQuestionsCount,
+    correctQuestionsCount: state.correctQuestionsCount,
+    progressPercentage: state.progressPercentage,
+    currentScorePercentage: state.currentScorePercentage,
     handleAnswerSelect,
     handleSubmitAnswer,
     handleNextQuestion,
     handlePreviousQuestion,
     handleToggleExplanation,
-    navigateToQuestion,
     toggleQuestionFlag,
+    navigateToQuestion,
     handleRestartSimulation,
-    resetProgress,
     saveProgress,
-    setSimulationComplete
+    resetProgress,
+    setSimulationComplete,
+    setQuestions,
+    setTotalQuestions,
+    setCurrentQuestion,
+    setSelectedAnswerIndex,
+    setIsTimerActive,
+    setExamMode,
+    setShowAnswersImmediately
   };
 };
