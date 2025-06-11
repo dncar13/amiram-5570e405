@@ -223,7 +223,7 @@ const Simulation = () => {
     }
   };
 
-  // Handle navigation to a specific question
+  // Handle navigation to a specific question - this function should accept an index parameter
   const handleNavigateToQuestion = (index: number) => {
     if (simulation.simulationComplete) {
       simulation.setSimulationComplete(false);

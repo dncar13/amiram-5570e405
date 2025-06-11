@@ -112,6 +112,21 @@ export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
 };
 
 /**
+ * Get questions by both difficulty and type
+ */
+export const getQuestionsByDifficultyAndType = (difficulty: string, type: string): Question[] => {
+  const allQuestions = getQuestions();
+  const filteredQuestions = allQuestions.filter(question => 
+    question.difficulty === difficulty && question.type === type
+  );
+  
+  console.log(`[questionsService] Getting questions by difficulty: ${difficulty} and type: ${type}`);
+  console.log(`[questionsService] Found ${filteredQuestions.length} questions with difficulty ${difficulty} and type ${type}`);
+  
+  return filteredQuestions;
+};
+
+/**
  * Get questions by question set (50 questions per set)
  */
 export const getQuestionsBySet = (setId: number): Question[] => {

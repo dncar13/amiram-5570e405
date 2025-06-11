@@ -144,20 +144,18 @@ export const useSimulation = (
       console.log(`useSimulation - loading questions for difficulty: ${difficultyLevel}, type: ${difficultyType}`);
       
       // Import the function here to avoid circular dependencies
-      import("@/services/questionsService").then(({ getQuestionsByDifficultyAndType }) => {
-        const difficultyQuestions = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+      import("@/services/questionsService").then((module) => {
+        const difficultyQuestions = module.getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
         console.log(`useSimulation - loaded ${difficultyQuestions.length} questions for ${difficultyLevel} ${difficultyType}`);
         
         if (difficultyQuestions.length === 0) {
           console.error(`useSimulation - No questions found for difficulty: ${difficultyLevel}, type: ${difficultyType}`);
           // Try to get all questions of this type regardless of difficulty as fallback
-          import("@/services/questionsService").then(({ getQuestionsByType }) => {
-            const typeQuestions = getQuestionsByType(difficultyType);
-            console.log(`useSimulation - fallback: found ${typeQuestions.length} questions of type ${difficultyType}`);
-            setQuestions(typeQuestions);
-            setTotalQuestions(typeQuestions.length);
-            setProgressLoaded(true);
-          });
+          const typeQuestions = module.getQuestionsByType(difficultyType);
+          console.log(`useSimulation - fallback: found ${typeQuestions.length} questions of type ${difficultyType}`);
+          setQuestions(typeQuestions);
+          setTotalQuestions(typeQuestions.length);
+          setProgressLoaded(true);
         } else {
           setQuestions(difficultyQuestions);
           setTotalQuestions(difficultyQuestions.length);
@@ -196,39 +194,35 @@ export const useSimulation = (
       console.log("useSimulation - loading existing progress:", progress);
       
       // Load questions first
-      import("@/services/questionsService").then(({ getAllQuestions }) => {
-        const allQuestions = getAllQuestions();
+      import("@/services/questionsService").then((module) => {
+        const allQuestions = module.getAllQuestions();
         
         // If we're doing a question set, filter by set ID
         let filteredQuestions = allQuestions;
         if (isQuestionSet) {
           const setId = Number(simulationId.replace('qs_', ''));
-          import("@/services/questionsService").then(({ getQuestionsBySet }) => {
-            filteredQuestions = getQuestionsBySet(setId);
-            console.log(`useSimulation - loaded ${filteredQuestions.length} questions for set ${setId}`);
-            
-            // Now restore progress
-            setQuestions(filteredQuestions);
-            setTotalQuestions(filteredQuestions.length);
-            setCurrentQuestionIndex(progress.currentQuestionIndex);
-            setUserAnswers(progress.userAnswers || {});
-            setQuestionFlags(progress.questionFlags || {});
-            setProgressLoaded(true);
-          });
+          filteredQuestions = module.getQuestionsBySet(setId);
+          console.log(`useSimulation - loaded ${filteredQuestions.length} questions for set ${setId}`);
+          
+          // Now restore progress
+          setQuestions(filteredQuestions);
+          setTotalQuestions(filteredQuestions.length);
+          setCurrentQuestionIndex(progress.currentQuestionIndex);
+          setUserAnswers(progress.userAnswers || {});
+          setQuestionFlags(progress.questionFlags || {});
+          setProgressLoaded(true);
         } else {
           // For topic simulations
-          import("@/services/questionsService").then(({ getQuestionsByTopic }) => {
-            filteredQuestions = getQuestionsByTopic(Number(simulationId));
-            console.log(`useSimulation - loaded ${filteredQuestions.length} questions for topic ${simulationId}`);
-            
-            // Now restore progress
-            setQuestions(filteredQuestions);
-            setTotalQuestions(filteredQuestions.length);
-            setCurrentQuestionIndex(progress.currentQuestionIndex);
-            setUserAnswers(progress.userAnswers || {});
-            setQuestionFlags(progress.questionFlags || {});
-            setProgressLoaded(true);
-          });
+          filteredQuestions = module.getQuestionsByTopic(Number(simulationId));
+          console.log(`useSimulation - loaded ${filteredQuestions.length} questions for topic ${simulationId}`);
+          
+          // Now restore progress
+          setQuestions(filteredQuestions);
+          setTotalQuestions(filteredQuestions.length);
+          setCurrentQuestionIndex(progress.currentQuestionIndex);
+          setUserAnswers(progress.userAnswers || {});
+          setQuestionFlags(progress.questionFlags || {});
+          setProgressLoaded(true);
         }
       });
     } else {
@@ -238,8 +232,8 @@ export const useSimulation = (
       // Load questions based on simulation type
       if (isQuestionSet) {
         const setId = Number(simulationId.replace('qs_', ''));
-        import("@/services/questionsService").then(({ getQuestionsBySet }) => {
-          const setQuestions = getQuestionsBySet(setId);
+        import("@/services/questionsService").then((module) => {
+          const setQuestions = module.getQuestionsBySet(setId);
           console.log(`useSimulation - loaded ${setQuestions.length} questions for set ${setId}`);
           setQuestions(setQuestions);
           setTotalQuestions(setQuestions.length);
@@ -247,8 +241,8 @@ export const useSimulation = (
         });
       } else {
         // For topic simulations
-        import("@/services/questionsService").then(({ getQuestionsByTopic }) => {
-          const topicQuestions = getQuestionsByTopic(Number(simulationId));
+        import("@/services/questionsService").then((module) => {
+          const topicQuestions = module.getQuestionsByTopic(Number(simulationId));
           console.log(`useSimulation - loaded ${topicQuestions.length} questions for topic ${simulationId}`);
           setQuestions(topicQuestions);
           setTotalQuestions(topicQuestions.length);
