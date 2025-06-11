@@ -353,7 +353,7 @@ const Simulation = () => {
             onNextQuestion={simulation.handleNextQuestion}
             onPreviousQuestion={simulation.handlePreviousQuestion}
             onToggleExplanation={simulation.handleToggleExplanation}
-            onToggleQuestionFlag={simulation.toggleQuestionFlag}
+            onToggleQuestionFlag={() => simulation.toggleQuestionFlag(simulation.currentQuestionIndex)}
             onNavigateToQuestion={handleNavigateToQuestion}
             onRestart={simulation.handleRestartSimulation}
             onBackToTopics={handleBackToTopics}
