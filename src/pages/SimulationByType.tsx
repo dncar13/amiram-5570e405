@@ -7,11 +7,11 @@ import Footer from '@/components/Footer';
 import { 
   BookOpen, 
   RotateCcw, 
-  BookOpenCheck, 
   ArrowRight,
-  Clock,
   Target,
-  TrendingUp
+  Zap,
+  Brain,
+  Cpu
 } from 'lucide-react';
 
 interface QuestionTypeData {
@@ -43,7 +43,7 @@ const SimulationByType: React.FC = () => {
       description: 'שאלות השלמת משפטים ומילים חסרות',
       icon: <BookOpen className="w-8 h-8" />,
       color: 'text-blue-600',
-      gradient: 'from-blue-500 to-blue-600',
+      gradient: 'from-blue-500 via-purple-500 to-cyan-500',
       tips: [
         'קרא את המשפט כולו לפני בחירת התשובה',
         'שים לב להקשר ולמשמעות הכללית',
@@ -58,7 +58,7 @@ const SimulationByType: React.FC = () => {
       description: 'שאלות ניסוח מחדש והבעת רעיונות',
       icon: <RotateCcw className="w-8 h-8" />,
       color: 'text-green-600',
-      gradient: 'from-green-500 to-green-600',
+      gradient: 'from-green-500 via-teal-500 to-emerald-500',
       tips: [
         'זהה את הרעיון המרכזי במשפט המקורי',
         'חפש ביטויים נרדפים',
@@ -78,12 +78,12 @@ const SimulationByType: React.FC = () => {
 
   if (!currentType) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">סוג שאלה לא נמצא</h1>
+          <h1 className="text-3xl font-bold text-white mb-4">סוג שאלה לא נמצא</h1>
           <button
             onClick={() => navigate('/simulations-entry')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
           >
             חזור לדף הכניסה
           </button>
@@ -102,7 +102,7 @@ const SimulationByType: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-4">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
         <div className="max-w-6xl mx-auto">
         
         {/* Header */}
@@ -113,72 +113,77 @@ const SimulationByType: React.FC = () => {
         >
           <button
             onClick={() => navigate('/simulations-entry')}
-            className="flex items-center text-blue-600 hover:text-blue-700 mb-6 font-medium"
+            className="flex items-center text-cyan-400 hover:text-cyan-300 mb-6 font-medium transition-colors duration-300"
           >
             <ArrowRight className="w-5 h-5 ml-2" />
             חזור לדף הכניסה
           </button>
           
-          <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-2xl p-8 mb-8`}>
-            <div className="flex items-center mb-4">
-              <div className="bg-white bg-opacity-20 rounded-full p-3 ml-4">
+          <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-3xl p-8 mb-8 border border-white/20 backdrop-blur-sm shadow-2xl`}>
+            <div className="flex items-center mb-6">
+              <div className="bg-white bg-opacity-20 rounded-2xl p-4 ml-4 backdrop-blur-sm">
                 {currentType.icon}
               </div>
               <div>
-                <h1 className="text-3xl font-bold">{currentType.title}</h1>
-                <p className="text-white text-opacity-90 text-lg">
+                <h1 className="text-4xl font-bold mb-2">{currentType.title}</h1>
+                <p className="text-white text-opacity-90 text-xl">
                   {currentType.description}
                 </p>
               </div>
             </div>
-            <div className="flex items-center text-white text-opacity-90">
-              <Target className="w-5 h-5 ml-2" />
-              <span>{currentType.questionCount} שאלות זמינות</span>
+            <div className="flex items-center text-white text-opacity-90 bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
+              <Target className="w-6 h-6 ml-3" />
+              <span className="text-lg font-medium">{currentType.questionCount} שאלות זמינות במערכת</span>
             </div>
           </div>
         </motion.div>
 
-        {/* Practice Options */}
+        {/* Practice Options Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Quick Practice */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-2xl shadow-lg p-8"
+            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">תרגול מהיר</h2>
-            <p className="text-gray-600 mb-6">
+            <div className="flex items-center mb-6">
+              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-3 ml-4">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
+            </div>
+            <p className="text-gray-300 mb-8 text-lg leading-relaxed">
               התחל תרגול מיידי עם שאלות מעורבות בנושא זה
             </p>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               <button
                 onClick={() => handleStartPractice()}
-                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-4 px-6 rounded-xl font-semibold hover:shadow-lg transition-all duration-300`}
+                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
               >
                 <div className="flex items-center justify-center">
-                  <Clock className="w-5 h-5 ml-2" />
+                  <Cpu className="w-6 h-6 ml-3" />
                   התחל תרגול (10 שאלות)
                 </div>
               </button>
               
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-3">
                 <button
                   onClick={() => handleStartPractice('easy')}
-                  className="py-3 px-4 bg-green-100 text-green-700 rounded-lg font-medium hover:bg-green-200 transition-colors"
+                  className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
                 >
                   קל
                 </button>
                 <button
                   onClick={() => handleStartPractice('medium')}
-                  className="py-3 px-4 bg-yellow-100 text-yellow-700 rounded-lg font-medium hover:bg-yellow-200 transition-colors"
+                  className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
                 >
                   בינוני
                 </button>
                 <button
                   onClick={() => handleStartPractice('hard')}
-                  className="py-3 px-4 bg-red-100 text-red-700 rounded-lg font-medium hover:bg-red-200 transition-colors"
+                  className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
                 >
                   קשה
                 </button>
@@ -191,13 +196,15 @@ const SimulationByType: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl shadow-lg p-8"
+            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
           >
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-              <TrendingUp className="w-6 h-6 ml-3 text-blue-600" />
-              טיפים לפתרון
-            </h2>
-            <ul className="space-y-3">
+            <div className="flex items-center mb-6">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-3 ml-4">
+                <Brain className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-3xl font-bold text-white">טיפים לפתרון</h2>
+            </div>
+            <ul className="space-y-4">
               {currentType.tips.map((tip, index) => (
                 <motion.li
                   key={index}
@@ -206,76 +213,41 @@ const SimulationByType: React.FC = () => {
                   transition={{ delay: 0.4 + index * 0.1 }}
                   className="flex items-start"
                 >
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
-                  <span className="text-gray-700">{tip}</span>
+                  <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mt-2 ml-4 flex-shrink-0"></div>
+                  <span className="text-gray-300 text-lg leading-relaxed">{tip}</span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
         </div>
 
-        {/* Practice Modes */}
+        {/* Advanced Features */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl shadow-lg p-8"
+          className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
         >
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">מצבי תרגול</h2>
+          <div className="flex items-center mb-8">
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-3 ml-4">
+              <Target className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold text-white">מערכת תרגול מתקדמת</h2>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                  <Clock className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מתוזמן</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול עם הגבלת זמן כמו במבחן האמיתי
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/timed`)}
-                  className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  התחל
-                </button>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-blue-400 mb-3">מעקב התקדמות</h3>
+              <p className="text-gray-300 leading-relaxed">
+                המערכת שלנו עוקבת אחר ההתקדמות שלך ומספקת משוב מיידי לשיפור הביצועים
+              </p>
             </div>
 
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-green-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
-                  <Target className="w-8 h-8 text-green-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול ממוקד</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול ללא הגבלת זמן עם הסברים מפורטים
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/practice`)}
-                  className="mt-4 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
-                >
-                  התחל
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-                  <TrendingUp className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מותאם אישית</h3>
-                <p className="text-gray-600 text-sm">
-                  תרגול מותאם לרמה שלך עם AI מתקדם
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/${currentType.type}/adaptive`)}
-                  className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
-                >
-                  התחל
-                </button>
-              </div>
+            <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-green-400 mb-3">הסברים מפורטים</h3>
+              <p className="text-gray-300 leading-relaxed">
+                כל שאלה מגיעה עם הסבר מפורט שיעזור לך להבין את התשובה הנכונה
+              </p>
             </div>
           </div>
         </motion.div>
