@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -24,24 +23,20 @@ export const initializeQuestions = (): Question[] => {
     // Always start with the source questions to ensure consistency
     cachedQuestions = [...allQuestions];
     
-    // Try to load any saved modifications from localStorage
-    const savedQuestions = localStorage.getItem(QUESTIONS_STORAGE_KEY);
-    if (savedQuestions) {
-      const parsed = JSON.parse(savedQuestions);
-      // Validate that the saved questions are still compatible
-      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id && parsed[0].type) {
-        cachedQuestions = parsed;
-        console.log("Loaded modified questions from localStorage:", cachedQuestions.length);
-      } else {
-        // If saved questions are invalid, use source and save them
-        localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-        console.log("Invalid saved questions found, using source questions:", allQuestions.length);
-      }
-    } else {
-      // No saved questions, use source and save them
-      localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
-      console.log("No saved questions found, using source questions and saving them:", allQuestions.length);
-    }
+    // Force save to localStorage to ensure the new questions are persisted
+    localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
+    console.log("Loaded and saved updated questions:", cachedQuestions.length);
+    
+    // Debug: Log breakdown by type
+    const sentenceCompletionCount = cachedQuestions.filter(q => q.type === 'sentence-completion').length;
+    const restatementCount = cachedQuestions.filter(q => q.type === 'restatement').length;
+    const readingComprehensionCount = cachedQuestions.filter(q => q.type === 'reading-comprehension').length;
+    
+    console.log(`[Storage Init] Sentence completion: ${sentenceCompletionCount}`);
+    console.log(`[Storage Init] Restatement: ${restatementCount}`);
+    console.log(`[Storage Init] Reading comprehension: ${readingComprehensionCount}`);
+    console.log(`[Storage Init] Total questions: ${cachedQuestions.length}`);
+    
   } catch (error) {
     console.error("Error initializing questions:", error);
     cachedQuestions = [...allQuestions];
@@ -111,9 +106,9 @@ export const refreshQuestionsFromStorage = (): Question[] => {
     const restatementCount = cachedQuestions.filter(q => q.type === 'restatement').length;
     const readingComprehensionCount = cachedQuestions.filter(q => q.type === 'reading-comprehension').length;
     
-    console.log(`[Storage] Sentence completion: ${sentenceCompletionCount}`);
-    console.log(`[Storage] Restatement: ${restatementCount}`);
-    console.log(`[Storage] Reading comprehension: ${readingComprehensionCount}`);
+    console.log(`[Storage Refresh] Sentence completion: ${sentenceCompletionCount}`);
+    console.log(`[Storage Refresh] Restatement: ${restatementCount}`);
+    console.log(`[Storage Refresh] Reading comprehension: ${readingComprehensionCount}`);
     
   } catch (error) {
     console.error("Error force refreshing questions:", error);

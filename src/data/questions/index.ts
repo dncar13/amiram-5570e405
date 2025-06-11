@@ -6,16 +6,18 @@ import { Question } from '../types/questionTypes';
 import { gigEconomyReadingQuestions } from './by-type/gigEconomyReadingQuestions';
 import { technologyReadingQuestions } from './by-type/mediumTechnologyReadingQuestions';
 import { environmentReadingQuestions } from './by-type/mediumEnvironmentReadingQuestions';
-import { sentenceCompletionQuestions } from './by-type/sentenceCompletionQuestions';
-import { restatementQuestionsNew } from './by-type/restatementQuestionsNew';
+import { sentenceCompletionQuestionsWithMetadata } from './by-type/sentenceCompletionQuestions';
+import { restatementQuestionsWithMetadata } from './by-type/restatementQuestionsNew';
+import { vocabularyQuestions } from './by-type/vocabularyQuestions';
 
-// מערך המאגד את כל השאלות - כולל השאלות החדשות
+// מערך המאגד את כל השאלות - כולל השאלות החדשות שלך
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,
   ...technologyReadingQuestions,
   ...environmentReadingQuestions,
-  ...sentenceCompletionQuestions,
-  ...restatementQuestionsNew,
+  ...sentenceCompletionQuestionsWithMetadata,
+  ...restatementQuestionsWithMetadata,
+  ...vocabularyQuestions,
 ];
 
 // פונקציות עזר לקבלת שאלות
@@ -74,8 +76,9 @@ console.log(`[Questions] Total questions loaded: ${allQuestions.length}`);
 console.log(`[Questions] Gig Economy questions loaded: ${gigEconomyReadingQuestions.length}`);
 console.log(`[Questions] Technology questions loaded: ${technologyReadingQuestions.length}`);
 console.log(`[Questions] Environment questions loaded: ${environmentReadingQuestions.length}`);
-console.log(`[Questions] Sentence Completion questions loaded: ${sentenceCompletionQuestions.length}`);
-console.log(`[Questions] Restatement questions loaded: ${restatementQuestionsNew.length}`);
+console.log(`[Questions] Sentence Completion questions loaded: ${sentenceCompletionQuestionsWithMetadata.length}`);
+console.log(`[Questions] Restatement questions loaded: ${restatementQuestionsWithMetadata.length}`);
+console.log(`[Questions] Vocabulary questions loaded: ${vocabularyQuestions.length}`);
 
 // בדיקת שאלות הבנת הנקרא עם קטעים
 const readingQuestionsWithPassages = allQuestions.filter(q => 
