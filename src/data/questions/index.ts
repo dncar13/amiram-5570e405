@@ -10,6 +10,11 @@ import { sentenceCompletionQuestionsWithMetadata } from './by-type/sentenceCompl
 import { restatementQuestionsWithMetadata } from './by-type/restatementQuestionsNew';
 import { vocabularyQuestions } from './by-type/vocabularyQuestions';
 
+// Export individual question collections for use in questionsService
+export { gigEconomyReadingQuestions };
+export { technologyReadingQuestions };
+export { environmentReadingQuestions };
+
 // מערך המאגד את כל השאלות - כולל השאלות החדשות שלך
 export const allQuestions: Question[] = [
   ...gigEconomyReadingQuestions,

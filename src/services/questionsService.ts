@@ -1,8 +1,10 @@
+
 import { Question } from "@/data/types/questionTypes";
 import { 
   gigEconomyReadingQuestions, 
   technologyReadingQuestions, 
-  environmentReadingQuestions 
+  environmentReadingQuestions,
+  getAllQuestions as getAllQuestionsFromIndex
 } from "@/data/questions/index";
 import { vocabularyQuestions } from "@/data/questions/by-type/vocabularyQuestions";
 
@@ -13,6 +15,48 @@ import {
 import { 
   restatementQuestionsWithMetadata as restatementQuestions 
 } from "@/data/questions/by-type/restatementQuestionsNew";
+
+// Re-export functions from questions/index
+export {
+  refreshQuestionsFromStorage,
+  initializeQuestions,
+  getSimulationProgress,
+  saveSimulationProgress,
+  resetSimulation,
+  onProgressChange,
+  getProgressKey,
+  type SimulationProgress
+} from "@/services/questions";
+
+/**
+ * מחזיר את כל השאלות במערכת
+ */
+export const getAllQuestions = (): Question[] => {
+  return getAllQuestionsFromIndex();
+};
+
+/**
+ * מחזיר שאלות לפי נושא מסוים
+ */
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  const allQuestions = getAllQuestions();
+  return allQuestions.filter(question => question.topicId === topicId);
+};
+
+/**
+ * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
+ */
+export const getQuestionsBySet = (setId: number): Question[] => {
+  const allQuestions = getAllQuestions();
+  // חישוב טווח השאלות בסט
+  const startId = (setId - 1) * 50 + 1;
+  const endId = setId * 50;
+  
+  // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
+  return allQuestions.filter(
+    question => question.id >= startId && question.id <= endId
+  );
+};
 
 /**
  * מחזיר שאלות קריאה לפי רמת קושי
@@ -81,6 +125,14 @@ export const getRestatementQuestions = (): Question[] => {
   const questions = restatementQuestions.filter(q => q.type === 'restatement');
   console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
   return questions;
+};
+
+/**
+ * מחזיר שאלות הבנת הנקרא
+ */
+export const getReadingComprehensionQuestions = (): Question[] => {
+  const allQuestions = getAllQuestions();
+  return allQuestions.filter(q => q.type === 'reading-comprehension');
 };
 
 /**

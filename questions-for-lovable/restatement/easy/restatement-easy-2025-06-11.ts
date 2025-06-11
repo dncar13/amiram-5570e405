@@ -1,145 +1,146 @@
+
 import { Question } from '../../../src/data/types/questionTypes';
 
 const questions: Question[] = [
   {
     "type": "restatement",
-    "text": "Original: 'She arrived late because of heavy traffic.'",
+    "text": "John is taller than Mike.",
     "options": [
-      "Heavy traffic caused her to be late.",
-      "She was late but there was no traffic.",
-      "She left early to avoid traffic.",
-      "The traffic was light when she arrived."
+      "Mike is shorter than John.",
+      "Mike is taller than John.",
+      "John and Mike are the same height.",
+      "Mike is very tall."
     ],
     "correctAnswer": 0,
-    "explanation": "Only option A maintains the cause-effect relationship between traffic and lateness.",
+    "explanation": "If John is taller than Mike, then Mike must be shorter than John.",
     "difficulty": "easy",
-    "id": 3030
+    "id": 2060
   },
   {
     "type": "restatement",
-    "text": "Original: 'The store closes at 9 PM.'",
+    "text": "The store closes at 9 PM.",
     "options": [
       "The store opens at 9 PM.",
-      "The store might close early.",
-      "You cannot enter the store after 9 PM.",
-      "The store stays open past 9 PM."
+      "The store is closed at 9 PM.",
+      "The store stops operating at 9 PM.",
+      "The store is always open."
     ],
     "correctAnswer": 2,
-    "explanation": "Only option A conveys the same meaning as the original statement.",
+    "explanation": "'Stops operating' means the same as 'closes'.",
     "difficulty": "easy",
-    "id": 3031
+    "id": 2061
   },
   {
     "type": "restatement",
-    "text": "Original: 'John is taller than Mike.'",
+    "text": "She enjoys reading books.",
     "options": [
-      "Mike is tall but John isn't.",
-      "Mike is shorter than John.",
-      "John and Mike are the same height.",
-      "Mike is taller than John."
+      "She dislikes reading books.",
+      "She likes to read books.",
+      "She never reads books.",
+      "She only reads newspapers."
     ],
     "correctAnswer": 1,
-    "explanation": "Only option A expresses the same relationship between John and Mike's heights.",
+    "explanation": "'Likes to read' means the same as 'enjoys reading'.",
     "difficulty": "easy",
-    "id": 3032
+    "id": 2062
   },
   {
     "type": "restatement",
-    "text": "Original: 'The cake is not only delicious but also beautiful.'",
+    "text": "The weather is very cold today.",
     "options": [
-      "The cake is delicious but ugly.",
-      "The cake is both tasty and attractive.",
-      "The cake is neither tasty nor attractive.",
-      "The cake looks good but tastes bad."
+      "Today is extremely chilly.",
+      "The weather is hot today.",
+      "It's a warm day today.",
+      "The temperature is perfect."
     ],
-    "correctAnswer": 1,
-    "explanation": "Only option A maintains both positive qualities of the cake.",
+    "correctAnswer": 0,
+    "explanation": "'Extremely chilly' means the same as 'very cold'.",
     "difficulty": "easy",
-    "id": 3033
+    "id": 2063
   },
   {
     "type": "restatement",
-    "text": "Original: 'Everyone except Tom went to the party.'",
+    "text": "He arrived late to the meeting.",
     "options": [
-      "Nobody went to the party.",
-      "Tom was the only one who didn't attend the party.",
-      "Tom and others went to the party.",
-      "Tom went to the party alone."
-    ],
-    "correctAnswer": 1,
-    "explanation": "Only option A correctly expresses that Tom was the sole non-attendee.",
-    "difficulty": "easy",
-    "id": 3034
-  },
-  {
-    "type": "restatement",
-    "text": "Original: 'We must leave now to catch the train.'",
-    "options": [
-      "The train is already gone.",
-      "We can leave later for the train.",
-      "We don't need to catch the train.",
-      "If we don't leave now, we'll miss the train."
+      "He came early to the meeting.",
+      "He was on time for the meeting.",
+      "He didn't attend the meeting.",
+      "He came after the meeting started."
     ],
     "correctAnswer": 3,
-    "explanation": "Only option A maintains the urgency and necessity expressed in the original.",
+    "explanation": "'Came after the meeting started' means the same as 'arrived late'.",
     "difficulty": "easy",
-    "id": 3035
+    "id": 2064
   },
   {
     "type": "restatement",
-    "text": "Original: 'She rarely eats meat.'",
+    "text": "The movie was boring.",
     "options": [
-      "She always eats meat.",
-      "She never eats meat.",
-      "She doesn't eat meat very often.",
-      "She eats meat frequently."
+      "The film was exciting.",
+      "The movie was interesting.",
+      "The film was dull.",
+      "The movie was amazing."
     ],
     "correctAnswer": 2,
-    "explanation": "Only option A correctly conveys the infrequency of her meat consumption.",
+    "explanation": "'Dull' means the same as 'boring'.",
     "difficulty": "easy",
-    "id": 3036
+    "id": 2065
   },
   {
     "type": "restatement",
-    "text": "Original: 'The museum is closed on Mondays.'",
+    "text": "She speaks English fluently.",
     "options": [
-      "You cannot visit the museum on Mondays.",
-      "The museum might be closed on Mondays.",
-      "The museum is open every Monday.",
-      "The museum closes early on Mondays."
+      "She can't speak English well.",
+      "She has excellent English skills.",
+      "She only knows a few English words.",
+      "She refuses to speak English."
     ],
-    "correctAnswer": 0,
-    "explanation": "Only option A accurately reflects the museum's Monday closure.",
+    "correctAnswer": 1,
+    "explanation": "'Has excellent English skills' means the same as 'speaks English fluently'.",
     "difficulty": "easy",
-    "id": 3037
+    "id": 2066
   },
   {
     "type": "restatement",
-    "text": "Original: 'This book is worth reading twice.'",
+    "text": "The car is expensive.",
     "options": [
-      "Reading this book a second time is valuable.",
-      "This book should be read once only.",
-      "This book isn't worth reading at all.",
-      "This book is too long to read twice."
+      "The car is cheap.",
+      "The vehicle costs a lot of money.",
+      "The car is free.",
+      "The car is old."
     ],
-    "correctAnswer": 0,
-    "explanation": "Only option A maintains the suggestion that the book deserves multiple readings.",
+    "correctAnswer": 1,
+    "explanation": "'Costs a lot of money' means the same as 'expensive'.",
     "difficulty": "easy",
-    "id": 3038
+    "id": 2067
   },
   {
     "type": "restatement",
-    "text": "Original: 'The weather is too cold for swimming.'",
+    "text": "They will travel tomorrow.",
     "options": [
-      "We can go swimming despite the cold.",
-      "The water is warm enough for swimming.",
-      "The weather is perfect for swimming.",
-      "It's not warm enough to swim."
+      "They traveled yesterday.",
+      "They are traveling today.",
+      "They will go on a trip tomorrow.",
+      "They never travel."
     ],
-    "correctAnswer": 3,
-    "explanation": "Only option A preserves the meaning that the temperature prevents swimming.",
+    "correctAnswer": 2,
+    "explanation": "'Will go on a trip' means the same as 'will travel'.",
     "difficulty": "easy",
-    "id": 3039
+    "id": 2068
+  },
+  {
+    "type": "restatement",
+    "text": "The food tastes delicious.",
+    "options": [
+      "The food tastes terrible.",
+      "The meal is very tasty.",
+      "The food has no flavor.",
+      "The food is cold."
+    ],
+    "correctAnswer": 1,
+    "explanation": "'Very tasty' means the same as 'delicious'.",
+    "difficulty": "easy",
+    "id": 2069
   }
 ];
 
