@@ -1,4 +1,3 @@
-
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
@@ -57,7 +56,8 @@ const Simulation = () => {
     if (!isStoryBased || !storyId) return undefined;
     
     return getStoryById(storyId);
-  }, [isStoryBased, storyId]);  
+  }, [isStoryBased, storyId]);
+
   // Get simulation data (questions, topic info, etc.)
   const { 
     isLoading, 
@@ -351,7 +351,7 @@ const Simulation = () => {
             onPreviousQuestion={simulation.handlePreviousQuestion}
             onToggleExplanation={simulation.handleToggleExplanation}
             onToggleQuestionFlag={simulation.toggleQuestionFlag}
-            onNavigateToQuestion={handleNavigateToQuestion}
+            onNavigateToQuestion={(index) => handleNavigateToQuestion(index)}
             onRestart={simulation.handleRestartSimulation}
             onBackToTopics={handleBackToTopics}
             onResetProgress={simulation.resetProgress}
@@ -363,4 +363,3 @@ const Simulation = () => {
 };
 
 export default Simulation;
-

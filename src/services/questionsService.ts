@@ -287,7 +287,7 @@ export const validateAllQuestions = (): { valid: number; invalid: Question[]; to
   };
 };
 
-// Export organized question access functions including new ones
+// Export organized question access functions
 export {
   getReadingComprehensionQuestions,
   getRestatementQuestions,
