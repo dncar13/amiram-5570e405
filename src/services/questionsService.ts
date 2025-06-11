@@ -40,10 +40,16 @@ export const getAllQuestions = (): Question[] => {
   // Debug: show sentence completion questions
   const sentenceCompletionQuestions = questions.filter(q => q.type === 'sentence-completion');
   console.log('[DEBUG] Sentence completion questions:', sentenceCompletionQuestions.length);
+  sentenceCompletionQuestions.forEach(q => {
+    console.log(`[DEBUG] SC Question ${q.id}: difficulty ${q.difficulty}`);
+  });
   
   // Debug: show restatement questions
   const restatementQuestions = questions.filter(q => q.type === 'restatement');
   console.log('[DEBUG] Restatement questions:', restatementQuestions.length);
+  restatementQuestions.forEach(q => {
+    console.log(`[DEBUG] RS Question ${q.id}: difficulty ${q.difficulty}`);
+  });
   
   return questions;
 };
@@ -265,3 +271,5 @@ export {
   getDifficultyStats,
   getMixedDifficultyQuestions
 };
+
+}

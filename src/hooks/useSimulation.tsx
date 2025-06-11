@@ -1,4 +1,3 @@
-
 // Only modifying the loadProgress function in the useSimulation hook
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -80,6 +79,26 @@ const getQuestionsForSet = (setNumber: number): Question[] => {
   return setQuestions;
 };
 
+// Helper function to get questions by difficulty and type
+const getQuestionsByDifficultyAndType = (difficulty: string, type: string): Question[] => {
+  const allQuestions = refreshQuestionsFromStorage();
+  console.log(`[getQuestionsByDifficultyAndType] Total questions available: ${allQuestions.length}`);
+  
+  if (type === 'mixed') {
+    // For mixed practice, get all questions from the specified difficulty level
+    const filteredQuestions = allQuestions.filter(q => q.difficulty === difficulty);
+    console.log(`[getQuestionsByDifficultyAndType] Found ${filteredQuestions.length} ${difficulty} questions for mixed practice`);
+    return filteredQuestions;
+  } else {
+    // For specific question types, filter by both difficulty and type
+    const filteredQuestions = allQuestions.filter(q => 
+      q.difficulty === difficulty && q.type === type
+    );
+    console.log(`[getQuestionsByDifficultyAndType] Found ${filteredQuestions.length} ${difficulty} ${type} questions`);
+    return filteredQuestions;
+  }
+};
+
 export const useSimulation = (
   simulationId: string | undefined,
   isQuestionSet: boolean = false,
@@ -141,51 +160,14 @@ export const useSimulation = (
         const level = parts[1];
         const type = parts[2];
         
-        let difficultyQuestions: Question[] = [];
-        
-        if (type === 'mixed') {
-          // For mixed practice, get questions from the specified difficulty level
-          switch (level) {
-            case 'easy':
-              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'easy');
-              break;
-            case 'medium':
-              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'medium');
-              break;
-            case 'hard':
-              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'hard');
-              break;
-            default:
-              difficultyQuestions = refreshQuestionsFromStorage().filter(q => q.difficulty === 'medium');
-          }
-        } else {
-          // For specific question types, filter by both difficulty and type
-          const allQuestions = refreshQuestionsFromStorage();
-          let filteredByDifficulty: Question[] = [];
-          
-          switch (level) {
-            case 'easy':
-              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'easy');
-              break;
-            case 'medium':
-              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'medium');
-              break;
-            case 'hard':
-              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'hard');
-              break;
-            default:
-              filteredByDifficulty = allQuestions.filter(q => q.difficulty === 'medium');
-          }
-          
-          // Filter by question type
-          difficultyQuestions = filteredByDifficulty.filter(q => q.type === type);
-        }
-        
+        const difficultyQuestions = getQuestionsByDifficultyAndType(level, type);
         console.log(`Loading ${difficultyQuestions.length} questions for difficulty: ${level}, type: ${type}`);
         setQuestions(difficultyQuestions);
         return;
-      }    }
-      // Handle story-based simulations (IDs are prefixed with 'story_')
+      }
+    }
+    
+    // Handle story-based simulations (IDs are prefixed with 'story_')
     if (simulationId.startsWith('story_')) {
       // Use external questions for story simulations
       console.log(`Loading ${externalQuestions?.length || 0} external questions for story simulation`);

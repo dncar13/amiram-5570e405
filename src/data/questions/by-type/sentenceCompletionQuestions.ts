@@ -1,16 +1,15 @@
 
-import { Question } from "../../types/questionTypes";
+import { Question } from '../../types/questionTypes';
 
-// Import all sentence completion questions
-import sentenceCompletionMedium from "../../../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11";
-import sentenceCompletionHard from "../../../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11";
+// Import sentence completion questions from the questions-for-lovable directory
+import mediumQuestions from '../../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11';
+import hardQuestions from '../../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11';
 
-/**
- * שאלות השלמת משפטים מכל רמות הקושי
- */
+// Combine all sentence completion questions
 export const sentenceCompletionQuestions: Question[] = [
-  ...sentenceCompletionMedium,
-  ...sentenceCompletionHard
+  ...mediumQuestions,
+  ...hardQuestions
 ];
 
-console.log(`[sentenceCompletionQuestions] Loaded ${sentenceCompletionQuestions.length} sentence completion questions`);
+console.log(`[SentenceCompletion] Loaded ${sentenceCompletionQuestions.length} sentence completion questions`);
+console.log(`[SentenceCompletion] Medium: ${mediumQuestions.length}, Hard: ${hardQuestions.length}`);

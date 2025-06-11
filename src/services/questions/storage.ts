@@ -105,6 +105,16 @@ export const refreshQuestionsFromStorage = (): Question[] => {
     cachedQuestions = [...allQuestions];
     localStorage.setItem(QUESTIONS_STORAGE_KEY, JSON.stringify(cachedQuestions));
     console.log("Force refreshed questions from source files:", allQuestions.length);
+    
+    // Debug: Log breakdown by type
+    const sentenceCompletionCount = cachedQuestions.filter(q => q.type === 'sentence-completion').length;
+    const restatementCount = cachedQuestions.filter(q => q.type === 'restatement').length;
+    const readingComprehensionCount = cachedQuestions.filter(q => q.type === 'reading-comprehension').length;
+    
+    console.log(`[Storage] Sentence completion: ${sentenceCompletionCount}`);
+    console.log(`[Storage] Restatement: ${restatementCount}`);
+    console.log(`[Storage] Reading comprehension: ${readingComprehensionCount}`);
+    
   } catch (error) {
     console.error("Error force refreshing questions:", error);
     cachedQuestions = [...allQuestions];

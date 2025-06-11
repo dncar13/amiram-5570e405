@@ -1,30 +1,46 @@
+
 /**
  * אינדקס לשאלות מסווגות לפי רמת קושי
- * מאפשר גישה מהירה לשאלות לפי רמת הקושי הנדרשת
+ * מאפשר גישה מהירה לשאלות לפי עוצמת הקושי
  */
 
 import { Question } from '../../types/questionTypes';
 import { allQuestions } from '../index';
 
 /**
- * מחזיר שאלות ברמת קושי קלה
+ * מחזיר שאלות קלות
  */
 export const getEasyQuestions = (): Question[] => {
-  return allQuestions.filter(q => q.difficulty === 'easy');
+  const questions = allQuestions.filter(q => q.difficulty === 'easy');
+  console.log(`[getEasyQuestions] Found ${questions.length} easy questions`);
+  return questions;
 };
 
 /**
- * מחזיר שאלות ברמת קושי בינונית
+ * מחזיר שאלות בינוניות
  */
 export const getMediumQuestions = (): Question[] => {
-  return allQuestions.filter(q => q.difficulty === 'medium');
+  const questions = allQuestions.filter(q => q.difficulty === 'medium');
+  console.log(`[getMediumQuestions] Found ${questions.length} medium questions`);
+  return questions;
 };
 
 /**
- * מחזיר שאלות ברמת קושי קשה
+ * מחזיר שאלות קשות
  */
 export const getHardQuestions = (): Question[] => {
-  return allQuestions.filter(q => q.difficulty === 'hard');
+  const questions = allQuestions.filter(q => q.difficulty === 'hard');
+  console.log(`[getHardQuestions] Found ${questions.length} hard questions`);
+  return questions;
+};
+
+/**
+ * מחזיר שאלות מעורבות לפי רמת קושי
+ */
+export const getMixedDifficultyQuestions = (difficulty: 'easy' | 'medium' | 'hard'): Question[] => {
+  const questions = allQuestions.filter(q => q.difficulty === difficulty);
+  console.log(`[getMixedDifficultyQuestions] Found ${questions.length} ${difficulty} questions`);
+  return questions;
 };
 
 /**
@@ -48,28 +64,4 @@ export const getDifficultyStats = (): Record<string, number> => {
   });
   
   return stats;
-};
-
-/**
- * מחזיר שאלות מעורבות מכל רמות הקושי
- * @param count מספר השאלות הכולל
- * @param distribution חלוקה יחסית [easy%, medium%, hard%] (סה"כ 100)
- */
-export const getMixedDifficultyQuestions = (
-  count: number, 
-  distribution: [number, number, number] = [30, 50, 20]
-): Question[] => {
-  const [easyPercent, mediumPercent, hardPercent] = distribution;
-  
-  const easyCount = Math.floor((count * easyPercent) / 100);
-  const mediumCount = Math.floor((count * mediumPercent) / 100);
-  const hardCount = count - easyCount - mediumCount; // השאר
-  
-  const easyQuestions = getEasyQuestions().slice(0, easyCount);
-  const mediumQuestions = getMediumQuestions().slice(0, mediumCount);
-  const hardQuestions = getHardQuestions().slice(0, hardCount);
-  
-  // ערבוב השאלות
-  const mixed = [...easyQuestions, ...mediumQuestions, ...hardQuestions];
-  return mixed.sort(() => Math.random() - 0.5);
 };
