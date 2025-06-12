@@ -100,31 +100,25 @@ const NavigationPanel = ({
         variant={isCurrent ? "default" : "outline"}
         size="sm"
         className={cn(
-          "relative h-10 w-10 rounded-lg transition-all duration-200 hover:scale-105 border-2",
-          isCurrent && "bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg shadow-blue-500/30 border-blue-400",
-          !isCurrent && status === 'correct' && "bg-gradient-to-br from-green-50 to-green-100 border-green-300 hover:border-green-400",
-          !isCurrent && status === 'incorrect' && "bg-gradient-to-br from-red-50 to-red-100 border-red-300 hover:border-red-400",
-          !isCurrent && status === 'unanswered' && isFlagged && "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-300 hover:border-amber-400",
-          !isCurrent && status === 'unanswered' && !isFlagged && "bg-white border-gray-200 hover:border-gray-300"
+          "relative h-12 w-12 rounded-xl transition-all duration-200 hover:scale-105 border-2 text-lg font-semibold shadow-lg",
+          isCurrent && "bg-gradient-to-br from-blue-600 to-blue-700 shadow-xl shadow-blue-500/30 border-blue-400 text-white",
+          !isCurrent && status === 'correct' && "bg-gradient-to-br from-green-600/20 to-green-700/20 border-green-500/50 hover:border-green-400 text-green-400 hover:bg-green-600/30",
+          !isCurrent && status === 'incorrect' && "bg-gradient-to-br from-red-600/20 to-red-700/20 border-red-500/50 hover:border-red-400 text-red-400 hover:bg-red-600/30",
+          !isCurrent && status === 'unanswered' && isFlagged && "bg-gradient-to-br from-amber-600/20 to-amber-700/20 border-amber-500/50 hover:border-amber-400 text-amber-400 hover:bg-amber-600/30",
+          !isCurrent && status === 'unanswered' && !isFlagged && "bg-slate-800/60 border-slate-600/50 hover:border-slate-500 text-slate-300 hover:bg-slate-700/60"
         )}
         onClick={() => onNavigateToQuestion(index)}
       >
         {status === 'correct' && (
-          <CheckCircle className="absolute -top-1 -right-1 h-4 w-4 text-green-600 bg-white rounded-full" />
+          <CheckCircle className="absolute -top-1 -right-1 h-5 w-5 text-green-400 bg-slate-900 rounded-full p-0.5" />
         )}
         {status === 'incorrect' && (
-          <XCircle className="absolute -top-1 -right-1 h-4 w-4 text-red-600 bg-white rounded-full" />
+          <XCircle className="absolute -top-1 -right-1 h-5 w-5 text-red-400 bg-slate-900 rounded-full p-0.5" />
         )}
         {isFlagged && (
-          <Flag className="absolute -top-1 -left-1 h-4 w-4 text-amber-600 bg-white rounded-full p-0.5 fill-amber-600" />
+          <Flag className="absolute -top-1 -left-1 h-5 w-5 text-amber-400 bg-slate-900 rounded-full p-0.5 fill-amber-400" />
         )}
-        <span className={cn(
-          "font-semibold text-sm",
-          isCurrent && "text-white",
-          !isCurrent && status === 'correct' && "text-green-700",
-          !isCurrent && status === 'incorrect' && "text-red-700",
-          !isCurrent && status === 'unanswered' && "text-gray-700"
-        )}>
+        <span>
           {index + 1}
         </span>
       </Button>
@@ -134,24 +128,28 @@ const NavigationPanel = ({
   const renderQuestionList = (indices: number[]) => {
     if (indices.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center py-8 text-gray-500" dir="ltr" style={{direction: 'ltr'}}>
-          <p className="text-sm">No questions to display</p>
+        <div className="flex flex-col items-center justify-center py-8 text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
+          <p className="text-lg">No questions to display</p>
         </div>
       );
     }
-      return (
-      <div className="flex flex-wrap gap-2" style={{ direction: 'ltr', textAlign: 'left' }}>
+    
+    return (
+      <div className="flex flex-wrap gap-3" style={{ direction: 'ltr', textAlign: 'left' }}>
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
   };
 
   return (
-    <Card className="relative bg-gradient-to-br from-white to-gray-50 shadow-xl border-0 h-full">
-      <CardHeader className="pb-3 border-b bg-gradient-to-r from-blue-600 to-indigo-700 text-white rounded-t-lg">
-        <CardTitle className="text-lg flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Target className="h-5 w-5" />            <span>
+    <Card className="relative bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 h-full rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+        <CardTitle className="text-xl flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+              <Target className="h-6 w-6 text-slate-300" />
+            </div>
+            <span className="font-bold text-slate-100">
               {simulationType === "question-set" 
                 ? `Set ${setNumber || ''}` 
                 : "Quick Navigation"}
@@ -160,51 +158,51 @@ const NavigationPanel = ({
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-8 w-8 text-white hover:bg-white/20" 
+            className="h-10 w-10 text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 rounded-lg border border-slate-600/50" 
             onClick={onResetProgress}
             title="Reset Progress"
           >
-            <Trash className="h-4 w-4" />
+            <Trash className="h-5 w-5" />
           </Button>
         </CardTitle>
-      </CardHeader>        <CardContent className="pt-4">
+      </CardHeader>        <CardContent className="pt-6 p-6">
         {/* Statistics */}
-        <div className="mb-4">          <div className="grid grid-cols-3 gap-2">            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-2.5 text-center border border-green-200">
-              <CheckCircle className="h-5 w-5 text-green-600 mx-auto mb-1" />
-              <div className="text-sm text-green-800 font-semibold">Correct</div>
-              <div className="text-lg font-bold text-green-700">{correctAnswersCount}</div>
+        <div className="mb-6">          <div className="grid grid-cols-3 gap-3">            <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-4 text-center border border-green-500/30 shadow-lg">
+              <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
+              <div className="text-sm text-green-300 font-semibold">Correct</div>
+              <div className="text-2xl font-bold text-green-400">{correctAnswersCount}</div>
             </div>
             
-            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-2.5 text-center border border-red-200">
-              <XCircle className="h-5 w-5 text-red-600 mx-auto mb-1" />
-              <div className="text-sm text-red-800 font-semibold">Wrong</div>
-              <div className="text-lg font-bold text-red-700">{incorrectQuestions.length}</div>
+            <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-4 text-center border border-red-500/30 shadow-lg">
+              <XCircle className="h-6 w-6 text-red-400 mx-auto mb-2" />
+              <div className="text-sm text-red-300 font-semibold">Wrong</div>
+              <div className="text-2xl font-bold text-red-400">{incorrectQuestions.length}</div>
             </div>
             
-            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-2.5 text-center border border-amber-200">
-              <Flag className="h-5 w-5 text-amber-600 mx-auto mb-1 fill-amber-500" />
-              <div className="text-sm text-amber-800 font-semibold">Saved</div>
-              <div className="text-lg font-bold text-amber-700">{flaggedQuestions.length}</div>
+            <div className="bg-gradient-to-br from-amber-600/20 to-amber-700/20 rounded-xl p-4 text-center border border-amber-500/30 shadow-lg">
+              <Flag className="h-6 w-6 text-amber-400 mx-auto mb-2 fill-amber-400" />
+              <div className="text-sm text-amber-300 font-semibold">Saved</div>
+              <div className="text-2xl font-bold text-amber-400">{flaggedQuestions.length}</div>
             </div>
           </div>
         </div>
           {/* Question List Tabs */}
-        <Tabs defaultValue="all" className="w-full">          <TabsList className="grid grid-cols-4 mb-3 bg-gray-100/80 backdrop-blur-sm">
-            <TabsTrigger value="all" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
+        <Tabs defaultValue="all" className="w-full">          <TabsList className="grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50">
+            <TabsTrigger value="all" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
               All ({totalQuestions})
             </TabsTrigger>
-            <TabsTrigger value="unanswered" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
+            <TabsTrigger value="unanswered" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
               Unanswered ({unansweredQuestions.length})
             </TabsTrigger>
-            <TabsTrigger value="incorrect" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
+            <TabsTrigger value="incorrect" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
               Wrong ({incorrectQuestions.length})
             </TabsTrigger>
-            <TabsTrigger value="flagged" className="data-[state=active]:bg-white data-[state=active]:shadow-sm text-xs font-medium">
+            <TabsTrigger value="flagged" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
               Saved ({flaggedQuestions.length})
             </TabsTrigger>
           </TabsList>
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-lg p-3 border border-gray-100">
+          <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-4 border border-slate-600/50 shadow-lg">
             <TabsContent value="all" className="mt-0">
               {renderQuestionList(Array.from({ length: totalQuestions }, (_, i) => i))}
             </TabsContent>
@@ -222,17 +220,17 @@ const NavigationPanel = ({
             </TabsContent>
           </div>
         </Tabs>
-          <div className="mt-3 flex justify-center items-center gap-3 text-xs text-gray-500" dir="ltr" style={{direction: 'ltr'}}>
-          <div className="flex items-center gap-1">
-            <div className="h-3 w-3 rounded-full bg-green-500"></div>
+          <div className="mt-4 flex justify-center items-center gap-4 text-sm text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 rounded-full bg-green-500 border border-green-400"></div>
             <span>Correct</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="h-3 w-3 rounded-full bg-red-500"></div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 rounded-full bg-red-500 border border-red-400"></div>
             <span>Wrong</span>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="h-3 w-3 rounded-full bg-amber-500"></div>
+          <div className="flex items-center gap-2">
+            <div className="h-4 w-4 rounded-full bg-amber-500 border border-amber-400"></div>
             <span>Saved</span>
           </div>
         </div>
