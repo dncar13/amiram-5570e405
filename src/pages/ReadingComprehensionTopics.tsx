@@ -39,7 +39,19 @@ const ReadingComprehensionTopics: React.FC = () => {
   };
 
   const handleBackClick = () => {
-    navigate('/simulations-entry');
+    console.log('Back button clicked!');
+    console.log('Current pathname:', window.location.pathname);
+    console.log('History length:', window.history.length);
+    console.log('Document referrer:', document.referrer);
+    
+    // Try different navigation approaches
+    try {
+      // Simply navigate to simulations entry for now to test
+      console.log('Navigating to /simulations-entry...');
+      navigate('/simulations-entry');
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
   };
 
   // Calculate filtering statistics
@@ -112,10 +124,11 @@ const ReadingComprehensionTopics: React.FC = () => {
   };
 
   const handleStorySelect = (storyTitle: string) => {
-    // Use the story title directly and encode it for URL
     const encodedTitle = encodeURIComponent(storyTitle);
     navigate(`/simulation/story/${encodedTitle}`);
   };
+
+  console.log('Component rendering, back button should be visible');
 
   return (
     <>
@@ -132,13 +145,13 @@ const ReadingComprehensionTopics: React.FC = () => {
             <button
               onClick={handleBackClick}
               className="flex items-center text-purple-600 hover:text-purple-700 mb-6 font-medium transition-colors group"
+              style={{ display: 'flex', visibility: 'visible' }}
             >
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              חזור לדף הכניסה
+              חזור לדף הכניסה (DEBUG)
             </button>
 
             <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white rounded-3xl p-8 mb-8 shadow-2xl relative overflow-hidden">
-              {/* Background decorative elements */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-4 right-4 w-32 h-32 bg-white rounded-full opacity-20"></div>
                 <div className="absolute bottom-4 left-4 w-24 h-24 bg-white rounded-full opacity-15"></div>
