@@ -1,217 +1,223 @@
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { BookOpen, MenuIcon, LogInIcon, UserIcon, LogOutIcon } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, BookOpen, GraduationCap } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { logoutUser } from "@/lib/firebase";
-import { useToast } from "@/hooks/use-toast";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, isAdmin } = useAuth();
-  const { toast } = useToast();
-  
-  useEffect(() => {
-    console.log("Header auth state:", currentUser ? `Logged in as ${currentUser?.email || 'unknown'}` : "Not logged in");
-    console.log("Is admin:", isAdmin);
-  }, [currentUser, isAdmin]);
-  
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
-    const { success, error } = await logoutUser();
-    if (success) {
-      toast({
-        title: "התנתקת בהצלחה",
-        description: "להתראות בקרוב!",
-      });
-    } else {
-      toast({
-        variant: "destructive",
-        title: "שגיאה בהתנתקות",
-        description: "אנא נסה שוב מאוחר יותר.",
-      });
+    try {
+      await logout();
+      navigate("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
     }
   };
 
-  const userInitials = currentUser?.displayName 
-    ? `${currentUser.displayName.split(' ')[0][0]}${currentUser.displayName.split(' ')[1]?.[0] || ''}`
-    : currentUser?.email?.substring(0, 2).toUpperCase() || "משתמש";
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2 space-x-reverse">
-          <BookOpen className="h-8 w-8" style={{ color: '#0056b3' }} />
-          <span className="text-xl font-bold" style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}>AMIRAM Academy</span>
-        </Link>
-          <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
-          <Link to="/" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>דף הבית</Link>
-          <Link to="/about" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>אודות</Link>
-          <Link to="/simulations-entry" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>הסימולציות שלי</Link>
-          <Link to="/contact" className="text-gray-700 hover:text-blue-600 transition-colors font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>יצירת קשר</Link>
-          
-          {isAdmin && (
-            <Link to="/admin" className="font-medium hover:text-blue-800 transition-colors" style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}>
-              ניהול
-            </Link>
-          )}
-          
-          {currentUser ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse">
-                  <Avatar className="h-8 w-8" style={{ backgroundColor: '#0056b3' }}>
-                    <AvatarImage src={currentUser?.photoURL || undefined} />
-                    <AvatarFallback className="text-white" style={{ backgroundColor: '#0056b3' }}>{userInitials}</AvatarFallback>
-                  </Avatar>
-                  <span className="mr-2" style={{ fontFamily: 'Rubik, sans-serif' }}>החשבון שלי</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>החשבון שלי</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Link to="/account" className="w-full">החשבון שלי</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/account?tab=history" className="w-full">התקדמות</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/account?tab=saved" className="w-full">שאלות שמורות</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/account?tab=settings" className="w-full">הגדרות</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout} className="text-red-500">
-                  <LogOutIcon className="ml-2 h-4 w-4" />
-                  התנתקות
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Link to="/login">
-              <Button 
-                className="text-white font-bold text-lg px-6 py-3 rounded-lg transition-colors hover:opacity-90"
-                style={{ 
-                  backgroundColor: '#0056b3',
-                  fontFamily: 'Rubik, sans-serif',
-                  borderRadius: '8px'
-                }}
-              >
-                <LogInIcon className="h-4 w-4 ml-2" />
-                <span>התחברות</span>
-              </Button>
-            </Link>
-          )}
-        </nav>
-        
-        <button 
-          className="md:hidden text-gray-700"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <MenuIcon className="h-6 w-6" />
-        </button>
-      </div>
-      
-      {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg py-4 px-6 absolute w-full">
-          <nav className="flex flex-col space-y-4">
+    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 rounded-xl shadow-lg border border-blue-500/50 group-hover:shadow-blue-500/30 transition-all duration-300">
+              <GraduationCap className="h-8 w-8 text-white" />
+            </div>
+            <div className="text-right">
+              <h1 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
+                AmirAM Academy
+              </h1>
+              <p className="text-sm text-slate-400 font-medium">
+                Your Path to Success
+              </p>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-6">
             <Link 
               to="/" 
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-              style={{ fontFamily: 'Rubik, sans-serif' }}
-              onClick={() => setIsMenuOpen(false)}
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
-              דף הבית
+              בית
+            </Link>
+            <Link 
+              to="/simulations-entry" 
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+            >
+              סימולציות
+            </Link>
+            <Link 
+              to="/questions-sets" 
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+            >
+              קבוצות שאלות
+            </Link>
+            <Link 
+              to="/reading-comprehension" 
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+            >
+              הבנת הנקרא
             </Link>
             <Link 
               to="/about" 
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-              style={{ fontFamily: 'Rubik, sans-serif' }}
-              onClick={() => setIsMenuOpen(false)}
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
               אודות
-            </Link>            <Link 
-              to="/simulations-entry" 
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-              style={{ fontFamily: 'Rubik, sans-serif' }}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              הסימולציות שלי
             </Link>
-            <Link 
-              to="/contact" 
-              className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-              style={{ fontFamily: 'Rubik, sans-serif' }}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              יצירת קשר
-            </Link>
-            
-            {isAdmin && (
-              <Link 
-                to="/admin" 
-                className="font-medium hover:text-blue-800 transition-colors"
-                style={{ color: '#0056b3', fontFamily: 'Rubik, sans-serif' }}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                ניהול
-              </Link>
-            )}
-            
-            {currentUser ? (
-              <>
-                <Link 
-                  to="/account" 
-                  className="text-gray-700 hover:text-blue-600 transition-colors font-medium"
-                  style={{ fontFamily: 'Rubik, sans-serif' }}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  החשבון שלי
-                </Link>
-                <Button 
-                  variant="ghost" 
-                  className="justify-start text-red-500 flex items-center space-x-2 space-x-reverse"
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  <LogOutIcon className="h-4 w-4" />
-                  <span className="mr-2">התנתקות</span>
-                </Button>
-              </>
-            ) : (
-              <Link 
-                to="/login"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Button 
-                  className="w-full text-white font-bold text-lg px-6 py-3 rounded-lg transition-colors hover:opacity-90"
-                  style={{ 
-                    backgroundColor: '#0056b3',
-                    fontFamily: 'Rubik, sans-serif',
-                    borderRadius: '8px'
-                  }}
-                >
-                  <LogInIcon className="h-4 w-4 ml-2" />
-                  <span>התחברות</span>
-                </Button>
-              </Link>
-            )}
           </nav>
+
+          {/* User Menu / Login */}
+          <div className="hidden md:flex items-center space-x-4">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300"
+                  >
+                    <User className="h-5 w-5 ml-2" />
+                    {user.displayName || user.email}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm"
+                  align="end"
+                >
+                  <DropdownMenuItem 
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300"
+                    onClick={() => navigate("/account")}
+                  >
+                    <Settings className="ml-2 h-4 w-4" />
+                    חשבון משתמש
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-slate-700/50" />
+                  <DropdownMenuItem 
+                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300"
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="ml-2 h-4 w-4" />
+                    התנתק
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                asChild
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold px-6 py-2 rounded-xl shadow-lg border border-blue-500/50 transition-all duration-300 hover:shadow-blue-500/30"
+              >
+                <Link to="/login">התחבר</Link>
+              </Button>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <Button
+            variant="ghost"
+            className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300"
+            onClick={toggleMenu}
+          >
+            {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </Button>
         </div>
-      )}
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm">
+            <div className="flex flex-col space-y-2">
+              <Link 
+                to="/" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                בית
+              </Link>
+              <Link 
+                to="/simulations-entry" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                סימולציות
+              </Link>
+              <Link 
+                to="/questions-sets" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                קבוצות שאלות
+              </Link>
+              <Link 
+                to="/reading-comprehension" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                הבנת הנקרא
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                אודות
+              </Link>
+              
+              {/* Mobile User Menu */}
+              <div className="border-t border-slate-700/50 pt-4 mt-4">
+                {user ? (
+                  <>
+                    <div className="flex items-center px-4 py-2 text-slate-300">
+                      <User className="h-5 w-5 ml-2" />
+                      {user.displayName || user.email}
+                    </div>
+                    <Link 
+                      to="/account" 
+                      className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Settings className="h-4 w-4 ml-2" />
+                      חשבון משתמש
+                    </Link>
+                    <button 
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full text-right text-red-400 hover:text-red-300 font-medium py-3 px-4 rounded-lg hover:bg-red-900/30 transition-all duration-300 flex items-center"
+                    >
+                      <LogOut className="h-4 w-4 ml-2" />
+                      התנתק
+                    </button>
+                  </>
+                ) : (
+                  <Link 
+                    to="/login" 
+                    className="block text-center bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-4 rounded-xl shadow-lg border border-blue-500/50 transition-all duration-300 mx-4"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    התחבר
+                  </Link>
+                )}
+              </div>
+            </div>
+          </nav>
+        )}
+      </div>
     </header>
   );
 };
