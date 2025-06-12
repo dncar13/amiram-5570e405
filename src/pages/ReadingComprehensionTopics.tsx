@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -39,6 +38,10 @@ const ReadingComprehensionTopics: React.FC = () => {
     setFilters(newFilters);
   };
 
+  const handleBackClick = () => {
+    navigate('/simulations-entry');
+  };
+
   // Calculate filtering statistics
   const stats = useMemo(() => {
     const totalStories = allStories.length;
@@ -57,6 +60,7 @@ const ReadingComprehensionTopics: React.FC = () => {
       difficulty: difficultyBreakdown
     };
   }, [allStories, stories]);
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy': return 'bg-green-100 text-green-700';
@@ -76,6 +80,7 @@ const ReadingComprehensionTopics: React.FC = () => {
       default: return 'לא ידוע';
     }
   };
+
   const getSubjectText = (subject?: string) => {
     const subjectMap: Record<string, string> = {
       technology: 'טכנולוגיה',
@@ -90,6 +95,7 @@ const ReadingComprehensionTopics: React.FC = () => {
     };
     return subject ? subjectMap[subject] || subject : 'כללי';
   };
+
   const getSubjectColor = (subject?: string) => {
     const colorMap: Record<string, string> = {
       technology: 'bg-blue-100 text-blue-700',
@@ -103,11 +109,15 @@ const ReadingComprehensionTopics: React.FC = () => {
       psychology: 'bg-pink-100 text-pink-700'
     };
     return subject ? colorMap[subject] || 'bg-gray-100 text-gray-700' : 'bg-gray-100 text-gray-700';
-  };  const handleStorySelect = (storyTitle: string) => {
+  };
+
+  const handleStorySelect = (storyTitle: string) => {
     // Use the story title directly and encode it for URL
     const encodedTitle = encodeURIComponent(storyTitle);
     navigate(`/simulation/story/${encodedTitle}`);
-  };return (
+  };
+
+  return (
     <>
       <Header />
       <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
@@ -120,7 +130,7 @@ const ReadingComprehensionTopics: React.FC = () => {
             className="mb-8"
           >
             <button
-              onClick={() => navigate('/simulations-entry')}
+              onClick={handleBackClick}
               className="flex items-center text-purple-600 hover:text-purple-700 mb-6 font-medium transition-colors group"
             >
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
@@ -171,7 +181,9 @@ const ReadingComprehensionTopics: React.FC = () => {
                 </div>
               </div>
             </div>
-          </motion.div>          {/* Filter Panel */}
+          </motion.div>
+
+          {/* Filter Panel */}
           {isLoading ? (
             <div className="mb-8 bg-white rounded-lg shadow-lg p-6 animate-pulse">
               <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
@@ -194,7 +206,9 @@ const ReadingComprehensionTopics: React.FC = () => {
               onFiltersChange={handleFiltersChange}
               availableCount={stories.length}
             />
-          )}          {/* Stories Grid */}
+          )}
+
+          {/* Stories Grid */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -314,7 +328,9 @@ const ReadingComprehensionTopics: React.FC = () => {
                 </div>
               </>
             )}
-          </motion.div>          {/* Empty State - No Stories Found */}
+          </motion.div>
+
+          {/* Empty State - No Stories Found */}
           {!isLoading && stories.length === 0 && (filters.difficulty !== 'all' || filters.subject !== 'all') && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
