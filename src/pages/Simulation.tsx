@@ -290,20 +290,20 @@ const Simulation = () => {
   // Show empty state if no questions are available
   if (questionsToUse.length === 0) {
     return (
-      <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
+      <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <Header />
         <main className="flex-grow flex items-center justify-start">
-          <div className="max-w-md ml-0 p-8 bg-white rounded-lg shadow-md">
-            <div className="flex items-center gap-3 mb-4 text-amber-600">
+          <div className="max-w-md ml-0 p-8 bg-gradient-to-br from-slate-800 to-slate-700 rounded-lg shadow-2xl border border-slate-600/50">
+            <div className="flex items-center gap-3 mb-4 text-amber-400">
               <AlertCircle className="h-8 w-8" />
-              <h2 className="text-xl font-bold">לא נמצאו שאלות</h2>
+              <h2 className="text-xl font-bold text-slate-100">לא נמצאו שאלות</h2>
             </div>
-            <p className="text-gray-600 mb-6">
+            <p className="text-slate-300 mb-6">
               {error || "לא נמצאו שאלות לסימולציה זו. ייתכן שקבוצת השאלות עדיין לא הושלמה או שאירעה שגיאה בטעינת השאלות."}
             </p>
             <Button 
               onClick={() => navigate(handleBackToTopics())} 
-              className="w-full bg-amber-600 hover:bg-amber-700"
+              className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg"
             >
               {isStoryBased ? "חזרה לסיפורי הבנת הנקרא" : isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
             </Button>
@@ -314,9 +314,9 @@ const Simulation = () => {
   }
   
   return (
-    <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden">
+    <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
-      <main className="flex-grow py-4 md:py-6" ref={contentRef}>
+      <main className="flex-grow py-4 md:py-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" ref={contentRef}>
         
         {/* כפתור חזרה - ללא מרכוז */}
         <div className="w-full px-4">
