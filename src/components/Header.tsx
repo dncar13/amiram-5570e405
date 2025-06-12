@@ -14,7 +14,7 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -85,7 +85,7 @@ const Header = () => {
 
           {/* User Menu / Login */}
           <div className="hidden md:flex items-center space-x-4">
-            {user ? (
+            {currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -93,7 +93,7 @@ const Header = () => {
                     className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300"
                   >
                     <User className="h-5 w-5 ml-2" />
-                    {user.displayName || user.email}
+                    {currentUser.displayName || currentUser.email}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
@@ -179,11 +179,11 @@ const Header = () => {
               
               {/* Mobile User Menu */}
               <div className="border-t border-slate-700/50 pt-4 mt-4">
-                {user ? (
+                {currentUser ? (
                   <>
                     <div className="flex items-center px-4 py-2 text-slate-300">
                       <User className="h-5 w-5 ml-2" />
-                      {user.displayName || user.email}
+                      {currentUser.displayName || currentUser.email}
                     </div>
                     <Link 
                       to="/account" 
