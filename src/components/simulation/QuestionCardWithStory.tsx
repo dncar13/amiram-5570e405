@@ -91,33 +91,35 @@ const QuestionCardWithStory = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Card className="border-0 shadow-lg bg-white">
-          <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-4 rounded-t-xl">
+        <Card className="border-0 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+          <div className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 p-6 rounded-t-xl border-b border-slate-600/50">
             <div className="flex justify-start items-center">
-              <div className="flex items-center gap-3">                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20">
+              <div className="flex items-center gap-3">
+                <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg">
                   Question {currentQuestionIndex + 1} of {totalQuestions}
                 </Badge>
               </div>
             </div>
           </div>
 
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3 mb-6 text-amber-600">
-              <AlertCircle className="h-6 w-6" />              <h3 className="text-xl font-semibold text-gray-800 leading-relaxed">
+          <CardContent className="p-8">
+            <div className="flex items-center gap-4 mb-8 text-amber-400">
+              <AlertCircle className="h-8 w-8" />
+              <h3 className="text-2xl font-bold text-slate-100 leading-relaxed">
                 Question Not Found
               </h3>
             </div>
-              <p className="text-gray-600 mb-6">
+            <p className="text-slate-300 mb-8 text-lg leading-relaxed">
               Sorry, no question was found for display. There may be no questions in this question set or an error occurred while loading the questions.
             </p>
             
-            <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-between">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-between">
               <Button 
                 onClick={onNextQuestion} 
-                className="flex-1 sm:flex-none bg-slate-700 hover:bg-slate-800 text-white shadow-md"
+                className="flex-1 sm:flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-lg border border-slate-600/50 text-lg py-3"
               >
                 Back to Question List
-                <ChevronLeft className="h-4 w-4 mr-1" />
+                <ChevronLeft className="h-5 w-5 mr-2" />
               </Button>
             </div>
           </CardContent>
@@ -195,19 +197,21 @@ const QuestionCardWithStory = ({
 
     return (
       <div className="w-full h-fit">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl shadow-sm h-fit">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600/50 rounded-xl shadow-2xl h-fit">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 rounded-t-xl">
-            <h4 className="text-xl font-bold text-white flex items-center gap-3 text-left" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
-              <BookOpen className="h-6 w-6" />
+          <div className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 px-8 py-6 rounded-t-xl border-b border-slate-600/50">
+            <h4 className="text-2xl font-bold text-slate-100 flex items-center gap-4 text-left" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
+              <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+                <BookOpen className="h-7 w-7 text-slate-300" />
+              </div>
               <span>{storyTitle || currentQuestion.passageTitle || "Reading Passage"}</span>
             </h4>
           </div>
           {/* Content - כל הטקסט */}
-          <div className="p-6">
-            <div className="bg-white/60 backdrop-blur-sm rounded-lg p-6 border border-blue-100 shadow-sm">              <div 
+          <div className="p-8">
+            <div className="bg-slate-700/40 backdrop-blur-sm rounded-xl p-8 border border-slate-600/30 shadow-lg">              <div 
                 className={cn(
-                  "text-gray-800 leading-relaxed text-xl font-medium whitespace-pre-line",
+                  "text-slate-100 leading-relaxed text-xl font-medium whitespace-pre-line",
                   isEnglishText(fullText || "") ? "text-left" : "text-right"
                 )}
                 dir={isEnglishText(fullText || "") ? "ltr" : "rtl"}
@@ -232,59 +236,62 @@ const QuestionCardWithStory = ({
       transition={{ duration: 0.3 }}
       className="max-w-7xl"
     >
-      <Card className="border-0 shadow-lg bg-white">        {/* MAIN HEADER - PROPER RTL/LTR ALIGNMENT */}
-        <div className="bg-gradient-to-r from-slate-700 to-slate-800 p-4 rounded-t-xl">
+      <Card className="border-0 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+        {/* MAIN HEADER */}
+        <div className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 p-6 rounded-t-xl border-b border-slate-600/50">
           <div className="flex justify-between items-center w-full">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               {/* Badges Row */}
-              <div className="flex items-center gap-3">
-                <Badge className="bg-white/10 text-white backdrop-blur-sm text-sm font-medium px-3 py-1 border border-white/20" dir="ltr" style={{direction: 'ltr'}}>
+              <div className="flex items-center gap-4">
+                <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg" dir="ltr" style={{direction: 'ltr'}}>
                   Question {currentQuestionIndex + 1} of {totalQuestions}
                 </Badge>
-                <Badge className="bg-blue-500/20 text-blue-200 backdrop-blur-sm text-sm font-medium px-3 py-1 border border-blue-300/20">
+                <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg">
                   {getQuestionTypeBadge()}
                 </Badge>
                 {localIsSaved && (
-                  <Badge className="bg-amber-500/10 text-amber-200 backdrop-blur-sm flex items-center gap-1 border border-amber-300/20" dir="ltr" style={{direction: 'ltr'}}>
-                    <Flag className="h-3 w-3 fill-current" />
+                  <Badge className="bg-amber-500/20 text-amber-300 backdrop-blur-sm flex items-center gap-2 border border-amber-400/30 px-4 py-2 shadow-lg" dir="ltr" style={{direction: 'ltr'}}>
+                    <Flag className="h-4 w-4 fill-current" />
                     <span>Saved</span>
                   </Badge>
                 )}
               </div>
 
-              {/* Story Name - PROPERLY ALIGNED */}
+              {/* Story Name */}
               {currentQuestion.passageTitle && (
                 <div 
-                  className="text-white/90 text-sm font-medium"
+                  className="text-slate-300 text-lg font-medium flex items-center gap-2"
                   dir="ltr"
                   style={{direction: 'ltr', textAlign: 'left'}}
                 >
-                  <BookOpen className="inline h-4 w-4 ml-1" />
+                  <BookOpen className="h-5 w-5" />
                   {currentQuestion.passageTitle}
                 </div>
               )}
 
-              {/* Progress Line - PROPERLY ALIGNED */}
-              <div className="text-white/80 text-sm" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
+              {/* Progress Line */}
+              <div className="text-slate-400 text-base" dir="ltr" style={{direction: 'ltr', textAlign: 'left'}}>
                 Progress: {currentQuestionIndex + 1} / {totalQuestions} Questions
-              </div>            </div>            
-            {/* Admin Edit Button - PROPERLY ALIGNED */}
-            <div className="flex items-center gap-2">
+              </div>
+            </div>
+            
+            {/* Admin Edit Button */}
+            <div className="flex items-center gap-3">
               {isAdmin && onEditQuestion && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/10 hidden md:flex"
+                  className="text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 hidden md:flex border border-slate-600/50"
                   onClick={() => onEditQuestion(currentQuestion)}
                 >
-                  <Edit className="h-4 w-4" />
+                  <Edit className="h-5 w-5" />
                 </Button>
               )}
             </div>
           </div>
-        </div>        <CardContent className="p-6">
+        </div>        <CardContent className="p-8">
           {/* RESPONSIVE LAYOUT: Mobile (stacked) vs Desktop (side-by-side) */}
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8">
+          <div className="flex flex-col md:flex-row gap-8 md:gap-10">
             {/* LEFT COLUMN (Desktop) / TOP (Mobile): Reading Passage */}
             {hasReadingPassage() && (
               <div className="w-full md:w-1/2 md:flex-shrink-0">
@@ -292,26 +299,26 @@ const QuestionCardWithStory = ({
               </div>
             )}            {/* RIGHT COLUMN (Desktop) / BOTTOM (Mobile): Question and Options */}
             <div className={cn("w-full", hasReadingPassage() ? "md:w-1/2" : "")}>
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+              <div className="bg-slate-800/60 rounded-xl p-8 border border-slate-600/50 shadow-lg">
                 {/* Question Header with Save Button */}
-                <div className="flex items-center justify-between mb-6">
-                  <h4 className="text-lg font-semibold text-gray-700">Question</h4>
+                <div className="flex items-center justify-between mb-8">
+                  <h4 className="text-2xl font-bold text-slate-200">Question</h4>
                   
                   {/* Save Question Button */}
                   <Button
                     variant="ghost"
                     size="sm"
                     className={cn(
-                      "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 flex-shrink-0",
+                      "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 flex-shrink-0 border text-lg",
                       localIsSaved 
-                        ? "text-amber-600 hover:text-amber-700 hover:bg-amber-50 bg-amber-50/50" 
-                        : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                        ? "text-amber-400 hover:text-amber-300 hover:bg-amber-500/10 bg-amber-500/10 border-amber-400/30" 
+                        : "text-slate-400 hover:text-slate-300 hover:bg-slate-700/50 border-slate-600/50"
                     )}
                     onClick={handleSaveStatusChange}
                     title={localIsSaved ? "הסר שאלה משמורות" : "שמור שאלה"}
                   >
-                    <Flag className={cn("h-4 w-4", localIsSaved && "fill-current")} />
-                    <span className="text-sm font-medium hidden sm:inline">
+                    <Flag className={cn("h-5 w-5", localIsSaved && "fill-current")} />
+                    <span className="font-medium hidden sm:inline">
                       {localIsSaved ? "שמורה" : "שמור"}
                     </span>
                   </Button>
@@ -320,7 +327,7 @@ const QuestionCardWithStory = ({
                 {/* Question Text */}
                 <h3 
                   className={cn(
-                    "text-xl font-medium text-gray-900 leading-relaxed mb-6",
+                    "text-2xl font-medium text-slate-100 leading-relaxed mb-8",
                     isEnglishText(questionText) ? "text-left" : "text-right"
                   )}
                   dir={isEnglishText(questionText) ? "ltr" : "rtl"}
@@ -341,7 +348,7 @@ const QuestionCardWithStory = ({
                 )}
                 
                 {currentQuestion.options && currentQuestion.options.length > 0 && (
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-5 mb-8">
                     {currentQuestion.options.map((option, index) => (
                       <motion.div
                         key={index}
@@ -351,27 +358,27 @@ const QuestionCardWithStory = ({
                       >
                         <button 
                           className={cn(
-                            "w-full text-right px-6 py-5 border-2 rounded-xl text-lg transition-all duration-200 group shadow-sm hover:shadow-md",
+                            "w-full text-right px-8 py-6 border-2 rounded-xl text-xl transition-all duration-200 group shadow-lg hover:shadow-xl",
                             selectedAnswerIndex === index 
-                              ? "border-blue-500 bg-blue-50 shadow-md" 
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 bg-white",
+                              ? "border-slate-500 bg-slate-700/60 shadow-xl" 
+                              : "border-slate-600/50 hover:border-slate-500/70 hover:bg-slate-700/40 bg-slate-800/40",
                             isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                              "border-green-500 bg-green-50 shadow-md",
+                              "border-green-500 bg-green-500/20 shadow-xl",
                             isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                              "border-red-500 bg-red-50 shadow-md",
+                              "border-red-500 bg-red-500/20 shadow-xl",
                             isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                              selectedAnswerIndex !== index && "border-green-500 bg-green-50 shadow-md"
+                              selectedAnswerIndex !== index && "border-green-500 bg-green-500/20 shadow-xl"
                           )}
                           onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
                           disabled={isAnswerSubmitted}
                         >
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4 flex-1" dir="ltr" style={{ direction: 'ltr' }}>
+                            <div className="flex items-center gap-5 flex-1" dir="ltr" style={{ direction: 'ltr' }}>
                               <div className={cn(
-                                "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-lg",
+                                "flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center border-2 transition-all duration-200 font-bold text-xl",
                                 selectedAnswerIndex === index 
-                                  ? "bg-blue-500 border-blue-500 text-white" 
-                                  : "border-gray-300 bg-white text-gray-600 group-hover:border-gray-400",
+                                  ? "bg-slate-600 border-slate-500 text-slate-100" 
+                                  : "border-slate-500/70 bg-slate-800/60 text-slate-300 group-hover:border-slate-400",
                                 isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
                                   "bg-green-500 border-green-500 text-white",
                                 isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
@@ -383,11 +390,12 @@ const QuestionCardWithStory = ({
                               </div>
                               <span 
                                 className={cn(
-                                  "flex-grow leading-relaxed text-lg font-medium",
+                                  "flex-grow leading-relaxed text-xl font-medium",
                                   isEnglishText(option) ? "text-left" : "text-right",
-                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-700",
-                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-700",
-                                  isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-700"
+                                  "text-slate-200",
+                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-300",
+                                  isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-300",
+                                  isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-300"
                                 )}
                                 dir={isEnglishText(option) ? "ltr" : "rtl"}
                                 style={{
@@ -400,15 +408,15 @@ const QuestionCardWithStory = ({
                             </div>
                             
                             {isAnswerSubmitted && showCorrectAnswer && (
-                              <div className="flex-shrink-0 mr-4">
+                              <div className="flex-shrink-0 mr-5">
                                 {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                                  <CheckCircle className="h-7 w-7 text-green-600" />
+                                  <CheckCircle className="h-8 w-8 text-green-400" />
                                 )}
                                 {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                                  <XCircle className="h-7 w-7 text-red-600" />
+                                  <XCircle className="h-8 w-8 text-red-400" />
                                 )}
                                 {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                                  <CheckCircle className="h-7 w-7 text-green-600" />
+                                  <CheckCircle className="h-8 w-8 text-green-400" />
                                 )}
                               </div>
                             )}
@@ -455,36 +463,36 @@ const QuestionCardWithStory = ({
                     </AnimatePresence>
                   </div>
                 )}                {/* Submit/Navigation buttons */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-start items-start">                  {!isAnswerSubmitted ? (
+                <div className="flex flex-col sm:flex-row gap-5 justify-start items-start">                  {!isAnswerSubmitted ? (
                     <Button 
                       onClick={onSubmitAnswer} 
-                      className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white shadow-md font-semibold text-lg px-10 py-4"
+                      className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-xl font-bold text-xl px-12 py-5 border border-emerald-500/50"
                       disabled={selectedAnswerIndex === null}
                     >
                       Submit Answer
                     </Button>
                   ) : (
-                    <div className="flex gap-4 w-full sm:w-auto justify-start">
+                    <div className="flex gap-5 w-full sm:w-auto justify-start">
                       {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (                        <Button 
                           variant="outline" 
                           onClick={onToggleExplanation}
-                          className="flex-1 sm:flex-none border-2 font-medium text-base px-6 py-3"
+                          className="flex-1 sm:flex-none border-2 border-slate-600/50 bg-slate-800/40 hover:bg-slate-700/60 text-slate-200 hover:text-slate-100 font-medium text-lg px-8 py-4"
                         >
                           {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
                         </Button>
                       )}                      <Button 
                         onClick={onNextQuestion} 
-                        className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 text-white shadow-md font-medium text-base px-6 py-3"
+                        className="flex-1 sm:flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-xl font-medium text-lg px-8 py-4 border border-slate-500/50"
                       >
                         {currentQuestionIndex < totalQuestions - 1 ? (
                           <>
                             Next
-                            <ChevronLeft className="h-5 w-5 mr-2" />
+                            <ChevronLeft className="h-6 w-6 mr-3" />
                           </>
                         ) : (
                           <>
                             Finish Exam
-                            <Trophy className="h-5 w-5 mr-2" />
+                            <Trophy className="h-6 w-6 mr-3" />
                           </>
                         )}
                       </Button>
@@ -501,20 +509,21 @@ const QuestionCardWithStory = ({
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="overflow-hidden mt-4"
+                    className="overflow-hidden mt-6"
                   >
-                    <div className="p-5 bg-slate-50 border border-slate-200 rounded-lg">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="bg-slate-600 p-1.5 rounded-lg">
-                          <MessageSquare className="h-4 w-4 text-white" />
+                    <div className="p-8 bg-slate-800/60 border border-slate-600/50 rounded-xl shadow-lg">
+                      <div className="flex items-center gap-4 mb-6">
+                        <div className="bg-slate-700 p-3 rounded-lg border border-slate-600/50">
+                          <MessageSquare className="h-6 w-6 text-slate-300" />
                         </div>
-                        <h4 className="font-semibold text-slate-800">Detailed Explanation</h4>
+                        <h4 className="font-bold text-slate-200 text-xl">Detailed Explanation</h4>
                       </div>
-                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                      <p className="text-slate-300 leading-relaxed whitespace-pre-line text-lg">
                         {currentQuestion.explanation}
                       </p>
                       
-                      {currentQuestion.explanationImage && (                        <QuestionImage
+                      {currentQuestion.explanationImage && (
+                        <QuestionImage
                           src={currentQuestion.explanationImage}
                           alt="Explanation diagram"
                           maxHeightRem={14}

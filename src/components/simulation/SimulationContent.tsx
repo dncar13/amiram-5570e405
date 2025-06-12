@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
 import QuestionCardWithStory from "./QuestionCardWithStory";
@@ -116,7 +115,7 @@ const SimulationContent = ({
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6 rounded-xl">
       {/* Navigation Panel */}
       <NavigationPanel
         currentQuestionIndex={currentQuestionIndex}
