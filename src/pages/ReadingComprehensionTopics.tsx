@@ -41,7 +41,11 @@ const ReadingComprehensionTopics: React.FC = () => {
   };
 
   const handleBackClick = () => {
-    navigate('/simulations-entry');
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/simulations-entry');
+    }
   };
 
   // Calculate filtering statistics
@@ -309,7 +313,7 @@ const ReadingComprehensionTopics: React.FC = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             {isLoading ? (
-              <div className="mb-8 bg-gradient-to-r from-slate-800 to-slate-700 rounded-2xl shadow-2xl p-6 animate-pulse border border-slate-600">
+              <div className="mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 animate-pulse border border-slate-600/50">
                 <div className="h-6 bg-slate-600 rounded w-1/4 mb-4"></div>
                 <div className="space-y-4">
                   <div className="flex gap-2">
@@ -325,11 +329,13 @@ const ReadingComprehensionTopics: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <FilterPanel 
-                filters={filters}
-                onFiltersChange={handleFiltersChange}
-                availableCount={stories.length}
-              />
+              <div className="mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 border border-slate-600/50">
+                <FilterPanel 
+                  filters={filters}
+                  onFiltersChange={handleFiltersChange}
+                  availableCount={stories.length}
+                />
+              </div>
             )}
           </motion.div>
 
@@ -396,7 +402,7 @@ const ReadingComprehensionTopics: React.FC = () => {
                       {stats.filtered > 0 && (
                         <motion.div 
                           className="flex items-center text-sm text-cyan-300 bg-slate-800/50 backdrop-blur-sm rounded-full px-4 py-2 border border-cyan-500/20"
-                          animate={{ glow: [0, 1, 0] }}
+                          animate={{ opacity: [0.7, 1, 0.7] }}
                           transition={{ duration: 2, repeat: Infinity }}
                         >
                           <Award className="w-4 h-4 ml-1 text-yellow-400" />
