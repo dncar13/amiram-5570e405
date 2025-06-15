@@ -27,7 +27,9 @@ const Login = () => {
   const navigate = useNavigate();
   const { currentUser, isDevEnvironment } = useAuth();
   
+  // If user is already logged in, redirect to simulations
   if (currentUser) {
+    console.log("User already logged in, redirecting to simulations:", currentUser.email);
     navigate("/simulations-entry");
     return null;
   }
@@ -36,25 +38,21 @@ const Login = () => {
     setIsLoading(true);
     setAuthError(null);
     try {
+      console.log("Google login clicked");
       const { user, error } = await signInWithGoogle();
       
-      if (user) {
+      if (error) {
+        console.error("Google login error:", error);
+        setAuthError(error.message || "שגיאה בהתחברות עם Google");
         toast({
-          title: "התחברת בהצלחה!",
-          description: `ברוך הבא ${user.displayName || user.email}`,
+          variant: "destructive",
+          title: "שגיאה בהתחברות",
+          description: error.message || "אירעה שגיאה. אנא נסה שוב.",
         });
-        navigate("/simulations-entry");
-      } else {
-        if (error) {
-          setAuthError(error.message || "שגיאה בהתחברות עם Google");
-          toast({
-            variant: "destructive",
-            title: "שגיאה בהתחברות",
-            description: error.message || "אירעה שגיאה. אנא נסה שוב.",
-          });
-        }
       }
+      // For OAuth, we don't get user immediately, redirect happens
     } catch (error) {
+      console.error("Google login catch error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       toast({
@@ -72,25 +70,35 @@ const Login = () => {
     setIsLoading(true);
     setAuthError(null);
     
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      setAuthError("אנא מלאו את כל השדות");
+      setIsLoading(false);
+      return;
+    }
+    
     try {
+      console.log("Login attempt for:", formData.email);
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
       
       if (user) {
+        console.log("Login successful, user:", user.email);
         toast({
           title: "התחברת בהצלחה!",
           description: `ברוך הבא ${user.displayName || user.email}`,
         });
         navigate("/simulations-entry");
-      } else {
-        const errorMessage = error?.message || "שגיאה בהתחברות";
-        setAuthError(errorMessage);
+      } else if (error) {
+        console.error("Login failed:", error);
+        setAuthError(error.message);
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
-          description: errorMessage,
+          description: error.message,
         });
       }
     } catch (error) {
+      console.error("Login catch error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       toast({
@@ -108,25 +116,41 @@ const Login = () => {
     setIsLoading(true);
     setAuthError(null);
     
+    // Basic validation
+    if (!formData.email || !formData.password || !formData.name) {
+      setAuthError("אנא מלאו את כל השדות");
+      setIsLoading(false);
+      return;
+    }
+    
+    if (formData.password.length < 6) {
+      setAuthError("הסיסמה חייבת להכיל לפחות 6 תווים");
+      setIsLoading(false);
+      return;
+    }
+    
     try {
+      console.log("Registration attempt for:", formData.email);
       const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
       
       if (user) {
+        console.log("Registration successful, user:", user.email);
         toast({
           title: "נרשמת בהצלחה!",
           description: `ברוך הבא ${formData.name || user.email}`,
         });
         navigate("/simulations-entry");
-      } else {
-        const errorMessage = error?.message || "שגיאה בהרשמה";
-        setAuthError(errorMessage);
+      } else if (error) {
+        console.error("Registration failed:", error);
+        setAuthError(error.message);
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
-          description: errorMessage,
+          description: error.message,
         });
       }
     } catch (error) {
+      console.error("Registration catch error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
       setAuthError(errorMessage);
       toast({
@@ -145,6 +169,10 @@ const Login = () => {
       ...prev,
       [id.replace('register-', '')]: value
     }));
+    // Clear error when user starts typing
+    if (authError) {
+      setAuthError(null);
+    }
   };
   
   return (
@@ -157,7 +185,7 @@ const Login = () => {
             {authError && (
               <Alert variant="destructive" className="mb-6">
                 <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>שגיאה בהתחברות</AlertTitle>
+                <AlertTitle>שגיאה</AlertTitle>
                 <AlertDescription>{authError}</AlertDescription>
               </Alert>
             )}
@@ -313,6 +341,8 @@ const Login = () => {
                             id="register-password"
                             type="password"
                             required
+                            minLength={6}
+                            placeholder="לפחות 6 תווים"
                             className="pl-3 pr-10"
                             value={formData.password}
                             onChange={handleInputChange}

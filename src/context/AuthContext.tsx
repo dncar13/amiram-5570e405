@@ -110,6 +110,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Set up auth state listener FIRST
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed:", user ? user.email : "No user");
+      console.log("User object:", user);
+      
       setCurrentUser(user);
       
       // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו

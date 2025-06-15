@@ -41,8 +41,41 @@ const convertSupabaseUser = (supabaseUser: any): User | null => {
   };
 };
 
+// Helper function to get user-friendly error messages
+const getErrorMessage = (error: any): string => {
+  console.log("Auth error details:", error);
+  
+  if (!error) return "אירעה שגיאה לא ידועה";
+  
+  const message = error.message || error.error_description || error.error || '';
+  
+  // Common error mappings
+  if (message.includes('Invalid login credentials')) {
+    return "פרטי ההתחברות שגויים. אנא בדקו את האימייל והסיסמה.";
+  }
+  
+  if (message.includes('Email not confirmed')) {
+    return "יש לאשר את כתובת האימייל לפני ההתחברות. בדקו את תיבת הדואר שלכם.";
+  }
+  
+  if (message.includes('Password cannot be longer than 72 characters')) {
+    return "הסיסמה ארוכה מדי. השתמשו בסיסמה קצרה יותר.";
+  }
+  
+  if (message.includes('over_email_send_rate_limit') || message.includes('For security purposes')) {
+    return "נשלחו יותר מדי אימיילים. אנא המתינו כמה דקות ונסו שוב.";
+  }
+  
+  if (message.includes('User already registered')) {
+    return "משתמש כבר קיים עם כתובת האימייל הזו. נסו להתחבר.";
+  }
+  
+  return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
+};
+
 export const signInWithGoogle = async () => {
   try {
+    console.log("Attempting Google sign in...");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -51,35 +84,42 @@ export const signInWithGoogle = async () => {
     });
     
     if (error) {
-      return { user: null, error };
+      console.error("Google sign in error:", error);
+      return { user: null, error: { message: getErrorMessage(error) } };
     }
     
     // OAuth redirects don't return user immediately, they redirect to provider
     return { user: null, error: null };
   } catch (error) {
-    return { user: null, error };
+    console.error("Google sign in catch error:", error);
+    return { user: null, error: { message: getErrorMessage(error) } };
   }
 };
 
 export const loginWithEmailAndPassword = async (email: string, password: string) => {
   try {
+    console.log("Attempting email/password login for:", email);
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     
     if (error) {
-      return { user: null, error };
+      console.error("Login error:", error);
+      return { user: null, error: { message: getErrorMessage(error) } };
     }
     
+    console.log("Login successful:", data.user?.email);
     return { user: data.user ? convertSupabaseUser(data.user) : null, error: null };
   } catch (error) {
-    return { user: null, error };
+    console.error("Login catch error:", error);
+    return { user: null, error: { message: getErrorMessage(error) } };
   }
 };
 
 export const registerWithEmailAndPassword = async (email: string, password: string) => {
   try {
+    console.log("Attempting registration for:", email);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -89,24 +129,31 @@ export const registerWithEmailAndPassword = async (email: string, password: stri
     });
     
     if (error) {
-      return { user: null, error };
+      console.error("Registration error:", error);
+      return { user: null, error: { message: getErrorMessage(error) } };
     }
     
+    console.log("Registration successful:", data.user?.email);
     return { user: data.user ? convertSupabaseUser(data.user) : null, error: null };
   } catch (error) {
-    return { user: null, error };
+    console.error("Registration catch error:", error);
+    return { user: null, error: { message: getErrorMessage(error) } };
   }
 };
 
 export const logoutUser = async () => {
   try {
+    console.log("Attempting logout...");
     const { error } = await supabase.auth.signOut();
     if (error) {
-      return { success: false, error };
+      console.error("Logout error:", error);
+      return { success: false, error: { message: getErrorMessage(error) } };
     }
+    console.log("Logout successful");
     return { success: true, error: null };
   } catch (error) {
-    return { success: false, error };
+    console.error("Logout catch error:", error);
+    return { success: false, error: { message: getErrorMessage(error) } };
   }
 };
 
@@ -124,7 +171,11 @@ export const db = supabase;
 
 // Supabase onAuthStateChanged equivalent
 export const onAuthStateChanged = (auth: any, callback: (user: User | null) => void) => {
-  const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+  const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    console.log("Auth state change event:", event);
+    console.log("Session:", session ? "exists" : "null");
+    console.log("User:", session?.user ? session.user.email : "null");
+    
     const user = session?.user ? convertSupabaseUser(session.user) : null;
     callback(user);
   });
