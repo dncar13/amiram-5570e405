@@ -373,12 +373,8 @@ const QuestionCard = ({
                   )}
                 >
                   <ChevronLeft className="h-5 w-5 ml-2" />
-                  שאלה קודמת
+                  Previous
                 </Button>
-
-                <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
-                  <div>מקלדת: ←→ ניווט | 1-4 תשובות | Enter שליחה</div>
-                </div>
 
                 {!isAnswerSubmitted ? (
                   <Button
@@ -389,7 +385,7 @@ const QuestionCard = ({
                       selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
                     )}
                   >
-                    שלח תשובה
+                    Submit Answer
                     <ChevronRight className="h-5 w-5 mr-2" />
                   </Button>
                 ) : (
@@ -401,7 +397,7 @@ const QuestionCard = ({
                       currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
                     )}
                   >
-                    שאלה הבאה
+                    Next Question
                     <ChevronRight className="h-5 w-5 mr-2" />
                   </Button>
                 )}
@@ -572,12 +568,8 @@ const QuestionCard = ({
             )}
           >
             <ChevronLeft className="h-5 w-5 ml-2" />
-            שאלה קודמת
+            Previous
           </Button>
-
-          <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
-            <div>מקלדת: ←→ ניווט | 1-4 תשובות | Enter שליחה</div>
-          </div>
 
           {!isAnswerSubmitted ? (
             <Button
@@ -588,7 +580,7 @@ const QuestionCard = ({
                 selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
               )}
             >
-              שלח תשובה
+              Submit Answer
               <ChevronRight className="h-5 w-5 mr-2" />
             </Button>
           ) : (
@@ -600,7 +592,7 @@ const QuestionCard = ({
                 currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
               )}
             >
-              שאלה הבאה
+              Next Question
               <ChevronRight className="h-5 w-5 mr-2" />
             </Button>
           )}
