@@ -77,7 +77,7 @@ const QuestionCardWithStory = ({
         case '4':
           event.preventDefault();
           const answerIndex = parseInt(event.key) - 1;
-          if (!isAnswerSubmitted && currentQuestion && answerIndex < currentQuestion.answers.length) {
+          if (!isAnswerSubmitted && currentQuestion && currentQuestion.answers && answerIndex < currentQuestion.answers.length) {
             onAnswerSelect(answerIndex);
           }
           break;
@@ -99,6 +99,17 @@ const QuestionCardWithStory = ({
       <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
         <CardContent className="p-8">
           <div className="text-center text-slate-400">טוען שאלה...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Add additional safety check for answers array
+  if (!currentQuestion.answers || !Array.isArray(currentQuestion.answers)) {
+    return (
+      <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
+        <CardContent className="p-8">
+          <div className="text-center text-slate-400">שגיאה בטעינת השאלה - אין תשובות זמינות</div>
         </CardContent>
       </Card>
     );
