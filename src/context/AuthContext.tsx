@@ -105,58 +105,80 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    console.log("Setting up auth state listener...");
+    console.log("🔧 AuthContext: Setting up auth state listener...");
     
-    // Set up auth state listener FIRST
+    // Set up auth state listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Auth state changed:", user ? user.email : "No user");
-      console.log("User object:", user);
+      console.log("🔔 Auth state changed:");
+      console.log("  - User exists:", !!user);
+      console.log("  - User email:", user?.email || "No email");
+      console.log("  - User ID:", user?.uid || "No ID");
+      console.log("  - Full user object:", user);
       
+      // Always update the current user first
       setCurrentUser(user);
       
-      // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
-      if (user && ADMIN_EMAILS.includes(user.email || "")) {
-        console.log("User is admin:", user.email);
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
-      
-      // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
-      const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
-      const isPremiumByEmail = user && PREMIUM_EMAILS.includes(user.email || "");
-      
-      if (premiumStatusFromStorage || isPremiumByEmail) {
-        console.log("User is premium:", premiumStatusFromStorage ? "from storage" : user?.email);
-        setIsPremium(true);
-      } else {
-        setIsPremium(false);
-      }
-      
-      // טעינת נתוני משתמש עם שם מופק מהאימייל
       if (user) {
-        setUserData({
+        console.log("✅ User is logged in, updating states...");
+        
+        // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
+        const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
+        console.log("  - Is admin:", isUserAdmin);
+        setIsAdmin(isUserAdmin);
+        
+        // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
+        const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
+        const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+        const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
+        
+        console.log("  - Premium from storage:", premiumStatusFromStorage);
+        console.log("  - Premium by email:", isPremiumByEmail);
+        console.log("  - Final premium status:", isPremiumUser);
+        setIsPremium(isPremiumUser);
+        
+        // טעינת נתוני משתמש עם שם מופק מהאימייל
+        const newUserData = {
           firstName: extractUsernameFromEmail(user.email),
           lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
-          premiumExpiration: isPremiumByEmail || premiumStatusFromStorage ? 
+          premiumExpiration: isPremiumUser ? 
             new Date().setMonth(new Date().getMonth() + 1) : undefined
-        });
+        };
+        console.log("  - User data:", newUserData);
+        setUserData(newUserData);
       } else {
+        console.log("❌ No user logged in, resetting states...");
+        setIsAdmin(false);
+        setIsPremium(false);
         setUserData(null);
       }
       
+      console.log("🏁 Auth loading complete, setting isLoading to false");
       setIsLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      console.log("🧹 Cleaning up auth listener");
+      unsubscribe();
+    };
   }, []);
+
+  // Debug effect to track state changes
+  useEffect(() => {
+    console.log("🔍 Auth state update:");
+    console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - isLoading:", isLoading);
+    console.log("  - isAdmin:", isAdmin);
+    console.log("  - isPremium:", isPremium);
+  }, [currentUser, isLoading, isAdmin, isPremium]);
 
   const logout = async () => {
     try {
+      console.log("🚪 Attempting logout...");
       await logoutUser();
+      console.log("✅ Logout successful");
       return Promise.resolve();
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("❌ Error during logout:", error);
       return Promise.reject(error);
     }
   };

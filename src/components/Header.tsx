@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, LogOut, Settings, BookOpen, GraduationCap } from "lucide-react";
@@ -14,15 +14,23 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
+
+  // Debug effect to track auth state in Header
+  useEffect(() => {
+    console.log("🖥️ Header: Auth state update:");
+    console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - isLoading:", isLoading);
+  }, [currentUser, isLoading]);
 
   const handleLogout = async () => {
     try {
+      console.log("🚪 Header: Initiating logout...");
       await logout();
       navigate("/");
     } catch (error) {
-      console.error("Error logging out:", error);
+      console.error("❌ Header: Error logging out:", error);
     }
   };
 
@@ -79,7 +87,9 @@ const Header = () => {
 
           {/* User Menu / Login */}
           <div className="hidden md:flex items-center space-x-4">
-            {currentUser ? (
+            {isLoading ? (
+              <div className="text-slate-400">טוען...</div>
+            ) : currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -166,7 +176,9 @@ const Header = () => {
               
               {/* Mobile User Menu */}
               <div className="border-t border-slate-700/50 pt-4 mt-4">
-                {currentUser ? (
+                {isLoading ? (
+                  <div className="text-slate-400 px-4">טוען...</div>
+                ) : currentUser ? (
                   <>
                     <div className="flex items-center px-4 py-2 text-slate-300">
                       <User className="h-5 w-5 ml-2" />

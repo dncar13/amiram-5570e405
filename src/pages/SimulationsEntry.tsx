@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useAuth } from '@/context/AuthContext';
 
 interface SimulationOption {
   id: string;
@@ -49,11 +50,18 @@ interface QuestionTypeOption {
 
 const SimulationsEntry: React.FC = () => {
   const navigate = useNavigate();
-  const [isAuthenticated] = useState(false);
-  const [isPremium] = useState(false);
+  const { currentUser, isPremium, isLoading } = useAuth();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+
+  // Debug effect to track auth state in SimulationsEntry
+  React.useEffect(() => {
+    console.log("🎯 SimulationsEntry: Auth state update:");
+    console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - isPremium:", isPremium);
+    console.log("  - isLoading:", isLoading);
+  }, [currentUser, isPremium, isLoading]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -123,20 +131,30 @@ const SimulationsEntry: React.FC = () => {
   ];
 
   const handleOptionClick = (option: SimulationOption) => {
-    if (option.requiresAuth && !isAuthenticated) {
+    console.log("🎮 SimulationsEntry: Option clicked:", option.id);
+    console.log("  - Requires auth:", option.requiresAuth);
+    console.log("  - User authenticated:", !!currentUser);
+    console.log("  - Is premium:", option.isPremium);
+    console.log("  - User is premium:", isPremium);
+
+    if (option.requiresAuth && !currentUser) {
+      console.log("🔒 Redirecting to login (auth required)");
       navigate('/login');
       return;
     }
 
     if (option.isPremium && !isPremium) {
+      console.log("💎 Redirecting to premium (premium required)");
       navigate('/premium');
       return;
     }
 
+    console.log("✅ Navigating to:", option.path);
     navigate(option.path);
   };
 
   const handleQuestionTypeClick = (type: string) => {
+    console.log("📚 Question type clicked:", type);
     navigate(`/simulation/type/${type}`);
   };
 
@@ -230,7 +248,7 @@ const SimulationsEntry: React.FC = () => {
                   <div className="relative bg-gray-900/95 backdrop-blur-xl rounded-[22px] p-8 h-full">
                     {/* Lock overlay */}
                     <AnimatePresence>
-                      {((option.requiresAuth && !isAuthenticated) || (option.isPremium && !isPremium)) && (
+                      {((option.requiresAuth && !currentUser) || (option.isPremium && !isPremium)) && (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -247,10 +265,10 @@ const SimulationsEntry: React.FC = () => {
                               {option.requiresAuth ? <Lock className="w-8 h-8 text-white" /> : <Shield className="w-8 h-8 text-amber-400" />}
                             </div>
                             <p className="font-semibold text-white text-lg">
-                              {option.requiresAuth && !isAuthenticated ? 'נדרשת התחברות' : 'גרסה פרימיום'}
+                              {option.requiresAuth && !currentUser ? 'נדרשת התחברות' : 'גרסה פרימיום'}
                             </p>
                             <p className="text-white/60 text-sm mt-2">
-                              {option.requiresAuth && !isAuthenticated 
+                              {option.requiresAuth && !currentUser 
                                 ? 'התחבר כדי לגשת לתוכן זה' 
                                 : 'שדרג לפרימיום לגישה מלאה'}
                             </p>
@@ -405,7 +423,7 @@ const SimulationsEntry: React.FC = () => {
                   </h2>
                 </div>
                 
-                {isAuthenticated ? (
+                {currentUser ? (
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     {[
                       { value: "0", label: "סימולציות הושלמו", icon: <PlayCircle />, color: "from-blue-500 to-indigo-600" },
