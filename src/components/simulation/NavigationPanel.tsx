@@ -137,11 +137,11 @@ const NavigationPanel = ({
       );
     }
     
-    // Fixed columns on mobile, auto-fit on desktop
+    // Fixed columns on mobile, auto-fit on desktop (edge to edge)
     return (
       <div
         className={cn(
-          "grid gap-2 justify-center w-full max-w-[600px] mx-auto",
+          "grid gap-2 justify-center w-full mx-auto",
           "grid-cols-5 sm:grid-cols-6 md:grid-cols-7",
           "lg:grid-cols-[repeat(auto-fit,minmax(48px,1fr))]"
         )}
