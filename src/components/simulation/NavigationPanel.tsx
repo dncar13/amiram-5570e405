@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -7,6 +6,7 @@ import { CheckCircle, XCircle, Flag, Trash, Target } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NavigationPanelProps {
   currentQuestionIndex: number;
@@ -19,8 +19,8 @@ interface NavigationPanelProps {
   onNavigateToQuestion: (index: number) => void;
   onToggleQuestionFlag: (index: number) => void;
   onResetProgress: () => void;
-  simulationType?: "topic" | "question-set"; // Added this prop
-  setNumber?: number; // Added this prop
+  simulationType?: "topic" | "question-set";
+  setNumber?: number;
 }
 
 const NavigationPanel = ({
@@ -38,8 +38,8 @@ const NavigationPanel = ({
   setNumber
 }: NavigationPanelProps) => {
   const { isQuestionSaved } = useSavedQuestions();
+  const isMobile = useIsMobile();
 
-  // פונקציה לקביעת סטטוס השאלה
   const getQuestionStatus = (index: number) => {
     if (index >= userAnswers.length || index >= questionsData.length) {
       return "unanswered";
@@ -90,13 +90,19 @@ const NavigationPanel = ({
     const isFlagged = questionFlags[index] || (questionsData[index] && isQuestionSaved(questionsData[index].id));
     const isCurrent = index === currentQuestionIndex;
     
+    // Mobile-specific button size
+    const buttonSize = isMobile ? "h-10 w-10" : "h-12 w-12";
+    const textSize = isMobile ? "text-sm" : "text-lg";
+    
     return (
       <Button
         key={index}
         variant={isCurrent ? "default" : "outline"}
         size="sm"
         className={cn(
-          "relative h-12 w-12 rounded-xl transition-all duration-200 hover:scale-105 border-2 text-lg font-semibold shadow-lg",
+          "relative rounded-xl transition-all duration-200 hover:scale-105 border-2 font-semibold shadow-lg",
+          buttonSize,
+          textSize,
           isCurrent && "bg-gradient-to-br from-blue-600 to-blue-700 shadow-xl shadow-blue-500/30 border-blue-400 text-white",
           !isCurrent && status === 'correct' && "bg-gradient-to-br from-green-600/20 to-green-700/20 border-green-500/50 hover:border-green-400 text-green-400 hover:bg-green-600/30",
           !isCurrent && status === 'incorrect' && "bg-gradient-to-br from-red-600/20 to-red-700/20 border-red-500/50 hover:border-red-400 text-red-400 hover:bg-red-600/30",
@@ -106,13 +112,13 @@ const NavigationPanel = ({
         onClick={() => onNavigateToQuestion(index)}
       >
         {status === 'correct' && (
-          <CheckCircle className="absolute -top-1 -right-1 h-5 w-5 text-green-400 bg-slate-900 rounded-full p-0.5" />
+          <CheckCircle className={cn("absolute -top-1 -right-1 bg-slate-900 rounded-full p-0.5 text-green-400", isMobile ? "h-4 w-4" : "h-5 w-5")} />
         )}
         {status === 'incorrect' && (
-          <XCircle className="absolute -top-1 -right-1 h-5 w-5 text-red-400 bg-slate-900 rounded-full p-0.5" />
+          <XCircle className={cn("absolute -top-1 -right-1 bg-slate-900 rounded-full p-0.5 text-red-400", isMobile ? "h-4 w-4" : "h-5 w-5")} />
         )}
         {isFlagged && (
-          <Flag className="absolute -top-1 -left-1 h-5 w-5 text-amber-400 bg-slate-900 rounded-full p-0.5 fill-amber-400" />
+          <Flag className={cn("absolute -top-1 -left-1 bg-slate-900 rounded-full p-0.5 text-amber-400 fill-amber-400", isMobile ? "h-4 w-4" : "h-5 w-5")} />
         )}
         <span>
           {index + 1}
@@ -125,13 +131,16 @@ const NavigationPanel = ({
     if (indices.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-8 text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
-          <p className="text-lg">No questions to display</p>
+          <p className={cn("text-center", isMobile ? "text-base" : "text-lg")}>No questions to display</p>
         </div>
       );
     }
     
+    // Mobile-specific grid layout
+    const gridCols = isMobile ? "grid-cols-5" : "grid-cols-6";
+    
     return (
-      <div className="flex flex-wrap gap-3" style={{ direction: 'ltr', textAlign: 'left' }}>
+      <div className={cn("grid gap-3 justify-items-center", gridCols)} style={{ direction: 'ltr', textAlign: 'left' }}>
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
@@ -140,10 +149,10 @@ const NavigationPanel = ({
   return (
     <Card className="relative bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 h-full rounded-2xl">
       <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-        <CardTitle className="text-xl flex justify-between items-center">
+        <CardTitle className={cn("flex justify-between items-center", isMobile ? "text-lg" : "text-xl")}>
           <div className="flex items-center gap-3">
             <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-              <Target className="h-6 w-6 text-slate-300" />
+              <Target className={cn("text-slate-300", isMobile ? "h-5 w-5" : "h-6 w-6")} />
             </div>
             <span className="font-bold text-slate-100">
               {simulationType === "question-set" 
@@ -154,73 +163,89 @@ const NavigationPanel = ({
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-10 w-10 text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 rounded-lg border border-slate-600/50" 
+            className={cn("text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 rounded-lg border border-slate-600/50", isMobile ? "h-8 w-8" : "h-10 w-10")}
             onClick={onResetProgress}
             title="Reset Progress"
           >
-            <Trash className="h-5 w-5" />
+            <Trash className={cn(isMobile ? "h-4 w-4" : "h-5 w-5")} />
           </Button>
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="pt-6 p-6">
+      <CardContent className={cn(isMobile ? "pt-4 p-4" : "pt-6 p-6")}>
         {/* Statistics */}
         <div className="mb-6">
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-4 text-center border border-green-500/30 shadow-lg">
-              <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
-              <div className="text-sm text-green-300 font-semibold">Correct</div>
-              <div className="text-2xl font-bold text-green-400">{correctAnswersCount}</div>
+              <CheckCircle className={cn("text-green-400 mx-auto mb-2", isMobile ? "h-5 w-5" : "h-6 w-6")} />
+              <div className={cn("text-green-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Correct</div>
+              <div className={cn("font-bold text-green-400", isMobile ? "text-xl" : "text-2xl")}>{correctAnswersCount}</div>
             </div>
             
             <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-4 text-center border border-red-500/30 shadow-lg">
-              <XCircle className="h-6 w-6 text-red-400 mx-auto mb-2" />
-              <div className="text-sm text-red-300 font-semibold">Wrong</div>
-              <div className="text-2xl font-bold text-red-400">{incorrectQuestions.length}</div>
+              <XCircle className={cn("text-red-400 mx-auto mb-2", isMobile ? "h-5 w-5" : "h-6 w-6")} />
+              <div className={cn("text-red-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Wrong</div>
+              <div className={cn("font-bold text-red-400", isMobile ? "text-xl" : "text-2xl")}>{incorrectQuestions.length}</div>
             </div>
             
             <div className="bg-gradient-to-br from-amber-600/20 to-amber-700/20 rounded-xl p-4 text-center border border-amber-500/30 shadow-lg">
-              <Flag className="h-6 w-6 text-amber-400 mx-auto mb-2 fill-amber-400" />
-              <div className="text-sm text-amber-300 font-semibold">Saved</div>
-              <div className="text-2xl font-bold text-amber-400">{flaggedQuestions.length}</div>
+              <Flag className={cn("text-amber-400 mx-auto mb-2 fill-amber-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />
+              <div className={cn("text-amber-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Saved</div>
+              <div className={cn("font-bold text-amber-400", isMobile ? "text-xl" : "text-2xl")}>{flaggedQuestions.length}</div>
             </div>
           </div>
         </div>
 
-        {/* Question List Tabs - Mobile Optimized */}
+        {/* Question List Tabs */}
         <Tabs defaultValue="all" className="w-full">
           <TabsList className="grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50 h-auto p-1">
             <TabsTrigger 
               value="all" 
-              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+              className={cn(
+                "data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 font-medium",
+                isMobile ? "min-h-[32px] text-[10px]" : "min-h-[36px] text-xs sm:text-sm"
+              )}
             >
-              <span className="hidden sm:inline">All ({totalQuestions})</span>
-              <span className="sm:hidden">All</span>
-              <span className="sm:hidden block text-xs">({totalQuestions})</span>
+              <div className="flex flex-col items-center">
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>All</span>
+                <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({totalQuestions})</span>
+              </div>
             </TabsTrigger>
             <TabsTrigger 
               value="unanswered" 
-              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+              className={cn(
+                "data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 font-medium",
+                isMobile ? "min-h-[32px] text-[10px]" : "min-h-[36px] text-xs sm:text-sm"
+              )}
             >
-              <span className="hidden sm:inline">Unanswered ({unansweredQuestions.length})</span>
-              <span className="sm:hidden">Unans</span>
-              <span className="sm:hidden block text-xs">({unansweredQuestions.length})</span>
+              <div className="flex flex-col items-center">
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Unans</span>
+                <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({unansweredQuestions.length})</span>
+              </div>
             </TabsTrigger>
             <TabsTrigger 
               value="incorrect" 
-              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+              className={cn(
+                "data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 font-medium",
+                isMobile ? "min-h-[32px] text-[10px]" : "min-h-[36px] text-xs sm:text-sm"
+              )}
             >
-              <span className="hidden sm:inline">Wrong ({incorrectQuestions.length})</span>
-              <span className="sm:hidden">Wrong</span>
-              <span className="sm:hidden block text-xs">({incorrectQuestions.length})</span>
+              <div className="flex flex-col items-center">
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Wrong</span>
+                <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({incorrectQuestions.length})</span>
+              </div>
             </TabsTrigger>
             <TabsTrigger 
               value="flagged" 
-              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+              className={cn(
+                "data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 font-medium",
+                isMobile ? "min-h-[32px] text-[10px]" : "min-h-[36px] text-xs sm:text-sm"
+              )}
             >
-              <span className="hidden sm:inline">Saved ({flaggedQuestions.length})</span>
-              <span className="sm:hidden">Saved</span>
-              <span className="sm:hidden block text-xs">({flaggedQuestions.length})</span>
+              <div className="flex flex-col items-center">
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Saved</span>
+                <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({flaggedQuestions.length})</span>
+              </div>
             </TabsTrigger>
           </TabsList>
           
@@ -243,17 +268,17 @@ const NavigationPanel = ({
           </div>
         </Tabs>
 
-        <div className="mt-4 flex justify-center items-center gap-4 text-sm text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
+        <div className={cn("mt-4 flex justify-center items-center gap-4 text-slate-400", isMobile ? "text-xs" : "text-sm")} dir="ltr" style={{direction: 'ltr'}}>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-green-500 border border-green-400"></div>
+            <div className={cn("rounded-full bg-green-500 border border-green-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
             <span>Correct</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-red-500 border border-red-400"></div>
+            <div className={cn("rounded-full bg-red-500 border border-red-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
             <span>Wrong</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 rounded-full bg-amber-500 border border-amber-400"></div>
+            <div className={cn("rounded-full bg-amber-500 border border-amber-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
             <span>Saved</span>
           </div>
         </div>
