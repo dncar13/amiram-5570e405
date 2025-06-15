@@ -4,11 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useQuickPracticeProgress } from '@/hooks/useQuickPracticeProgress';
 import { 
   ArrowRight,
   Zap,
   BookOpen,
-  Target
+  Target,
+  Play,
+  RotateCcw
 } from 'lucide-react';
 
 interface PracticeOptionData {
@@ -23,6 +26,9 @@ interface PracticeOptionData {
 const PracticeOptions: React.FC = () => {
   const navigate = useNavigate();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
+  
+  // Get quick practice progress
+  const { progress, isLoading, hasInProgressPractice, hasCompletedPractice, clearProgress } = useQuickPracticeProgress(type || '');
 
   const questionTypesData: Record<string, PracticeOptionData> = {
     'sentence-completion': {
@@ -63,6 +69,13 @@ const PracticeOptions: React.FC = () => {
     navigate(`/simulation/type/${type}`);
   };
 
+  const handleStartNewQuickPractice = () => {
+    if (hasInProgressPractice) {
+      clearProgress();
+    }
+    navigate(`/simulation/${type}?type=${type}&limit=10`);
+  };
+
   if (!currentType || !difficulty) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
@@ -78,6 +91,34 @@ const PracticeOptions: React.FC = () => {
       </div>
     );
   }
+
+  // Get button text and icon based on progress
+  const getQuickPracticeButtonContent = () => {
+    if (isLoading) {
+      return {
+        text: 'טוען...',
+        icon: <Zap className="w-6 h-6 ml-3" />,
+        showProgress: false
+      };
+    }
+
+    if (hasInProgressPractice && progress) {
+      return {
+        text: 'המשך תרגול',
+        icon: <Play className="w-6 h-6 ml-3" />,
+        showProgress: true,
+        progressText: `בהתקדמות - ${progress.answeredQuestions}/${progress.totalQuestions} שאלות`
+      };
+    }
+
+    return {
+      text: 'התחל תרגול (10 שאלות)',
+      icon: <Zap className="w-6 h-6 ml-3" />,
+      showProgress: false
+    };
+  };
+
+  const buttonContent = getQuickPracticeButtonContent();
 
   return (
     <>
@@ -130,19 +171,47 @@ const PracticeOptions: React.FC = () => {
                 </div>
                 <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
               </div>
+              
+              {/* Progress indicator */}
+              {buttonContent.showProgress && (
+                <div className="mb-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                  <p className="text-blue-400 font-medium text-center">
+                    {buttonContent.progressText}
+                  </p>
+                </div>
+              )}
+              
               <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                התחל תרגול מיידי עם 10 שאלות רנדומליות ברמת קושי {difficultyLabels[difficulty]}
+                {hasInProgressPractice 
+                  ? `המשך את התרגול שהתחלת - נותרו ${progress?.totalQuestions && progress?.answeredQuestions ? progress.totalQuestions - progress.answeredQuestions : 0} שאלות`
+                  : `התחל תרגול מיידי עם 10 שאלות רנדומליות ברמת קושי ${difficultyLabels[difficulty]}`
+                }
               </p>
               
-              <button
-                onClick={handleQuickPractice}
-                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
-              >
-                <div className="flex items-center justify-center">
-                  <Zap className="w-6 h-6 ml-3" />
-                  התחל תרגול (10 שאלות)
-                </div>
-              </button>
+              <div className="space-y-3">
+                <button
+                  onClick={handleQuickPractice}
+                  className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
+                >
+                  <div className="flex items-center justify-center">
+                    {buttonContent.icon}
+                    {buttonContent.text}
+                  </div>
+                </button>
+
+                {/* Start new practice button when there's progress */}
+                {hasInProgressPractice && (
+                  <button
+                    onClick={handleStartNewQuickPractice}
+                    className="w-full bg-gradient-to-r from-gray-600 to-gray-700 text-white py-3 px-6 rounded-xl font-medium text-base hover:shadow-lg transition-all duration-300 border border-white/10"
+                  >
+                    <div className="flex items-center justify-center">
+                      <RotateCcw className="w-5 h-5 ml-2" />
+                      התחל תרגול חדש
+                    </div>
+                  </button>
+                )}
+              </div>
             </motion.div>
 
             {/* Choose Sets */}
