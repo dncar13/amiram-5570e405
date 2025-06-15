@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -129,7 +130,7 @@ const QuestionCard = ({
 
   if (hasReadingPassage) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-120px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-100px)]">
         {/* Reading Passage */}
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
@@ -142,7 +143,7 @@ const QuestionCard = ({
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6 h-full">
+            <CardContent className="p-8 h-[calc(100%-60px)]">
               <div dir="ltr" className="text-left h-full flex flex-col">
                 <ReadingPassage 
                   passageWithLines={currentQuestion.passageWithLines}
@@ -193,7 +194,7 @@ const QuestionCard = ({
                 />
               </div>
             </CardHeader>
-            <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
+            <CardContent className="p-8 space-y-6 flex-1 flex flex-col h-[calc(100%-60px)]">
               {/* Question Text */}
               <div dir="ltr" className="text-left">
                 <h3 className="text-2xl font-bold text-white">{currentQuestion.text}</h3>
