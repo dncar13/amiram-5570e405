@@ -56,20 +56,34 @@ export const useSimulation = (
   );
 
   const handleRestartSimulation = useCallback(() => {
-    console.log("Restarting simulation");
+    console.log("Restarting simulation - clearing state and reinitializing");
     
     clearTimer();
     
-    setState(prevState => ({
+    // Get fresh questions for restart
+    const questionsToUse = loadQuestions({
+      storyQuestions,
+      effectiveType,
+      difficulty,
+      questionLimit,
+      setNumber,
+      startIndex
+    });
+    
+    console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
+    
+    setState({
       ...initialSimulationState,
-      questions: prevState.questions,
-      totalQuestions: prevState.totalQuestions,
-      isTimerActive: prevState.examMode,
-      remainingTime: 1800
-    }));
+      questions: questionsToUse,
+      totalQuestions: questionsToUse.length,
+      currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
+      isTimerActive: false,
+      remainingTime: 1800,
+      progressLoaded: true
+    });
     
     initializeTimer();
-  }, [initializeTimer, clearTimer]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex]);
 
   const saveProgress = useCallback(() => {
     saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
@@ -113,6 +127,7 @@ export const useSimulation = (
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
     console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex, typeFromQuery, effectiveType });
+    console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
     
     const questionsToUse = loadQuestions({
       storyQuestions,
@@ -123,49 +138,78 @@ export const useSimulation = (
       startIndex
     });
     
+    console.log(`Loaded ${questionsToUse.length} questions for simulation`);
+    
     if (questionsToUse.length > 0) {
-      console.log(`Setting ${questionsToUse.length} questions for simulation`);
+      console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
       setState(prevState => ({
         ...prevState,
         questions: questionsToUse,
         totalQuestions: questionsToUse.length,
-        currentQuestion: questionsToUse[0]
+        currentQuestion: questionsToUse[0],
+        progressLoaded: true
       }));
     } else {
-      console.warn("No questions found for simulation", { type, difficulty, effectiveType, simulationId });
+      console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions });
+      setState(prevState => ({
+        ...prevState,
+        progressLoaded: true
+      }));
     }
   }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex]);
 
+  // Initialize questions when storyQuestions or other dependencies change
   useEffect(() => {
+    console.log("useEffect for initializeQuestions triggered");
     initializeQuestions();
   }, [initializeQuestions]);
 
+  // Load saved progress
   useEffect(() => {
-    const savedProgress = loadSimulationProgress(simulationId);
-    
-    if (savedProgress && !progressLoadedRef.current) {
-      setState(prevState => ({
-        ...prevState,
-        currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
-        userAnswers: savedProgress.userAnswers || {},
-        questionFlags: savedProgress.questionFlags || {},
-        remainingTime: savedProgress.remainingTime || 1800,
-        isTimerActive: savedProgress.isTimerActive !== undefined ? savedProgress.isTimerActive : false,
-        examMode: savedProgress.examMode !== undefined ? savedProgress.examMode : false,
-        showAnswersImmediately: savedProgress.showAnswersImmediately !== undefined ? savedProgress.showAnswersImmediately : false,
-        answeredQuestionsCount: savedProgress.answeredQuestionsCount || 0,
-        correctQuestionsCount: savedProgress.correctQuestionsCount || 0,
-        progressPercentage: savedProgress.progressPercentage || 0,
-        currentScorePercentage: savedProgress.currentScorePercentage || 0,
-        progressLoaded: true
-      }));
+    if (!progressLoadedRef.current) {
+      const savedProgress = loadSimulationProgress(simulationId);
       
-      progressLoadedRef.current = true;
-      console.log(`Simulation progress loaded for ${simulationId}`);
-    } else {
-      setState(prevState => ({ ...prevState, progressLoaded: true }));
+      if (savedProgress) {
+        console.log("Loading saved progress for simulation:", simulationId);
+        setState(prevState => ({
+          ...prevState,
+          currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
+          userAnswers: savedProgress.userAnswers || {},
+          questionFlags: savedProgress.questionFlags || {},
+          remainingTime: savedProgress.remainingTime || 1800,
+          isTimerActive: savedProgress.isTimerActive !== undefined ? savedProgress.isTimerActive : false,
+          examMode: savedProgress.examMode !== undefined ? savedProgress.examMode : false,
+          showAnswersImmediately: savedProgress.showAnswersImmediately !== undefined ? savedProgress.showAnswersImmediately : false,
+          answeredQuestionsCount: savedProgress.answeredQuestionsCount || 0,
+          correctQuestionsCount: savedProgress.correctQuestionsCount || 0,
+          progressPercentage: savedProgress.progressPercentage || 0,
+          currentScorePercentage: savedProgress.currentScorePercentage || 0,
+          progressLoaded: true
+        }));
+        
+        progressLoadedRef.current = true;
+        console.log(`Simulation progress loaded for ${simulationId}`);
+      } else {
+        console.log("No saved progress found, using initial state");
+        setState(prevState => ({ ...prevState, progressLoaded: true }));
+        progressLoadedRef.current = true;
+      }
     }
   }, [simulationId]);
+
+  // Update current question when index changes
+  useEffect(() => {
+    if (state.questions.length > 0 && state.currentQuestionIndex < state.questions.length) {
+      const newCurrentQuestion = state.questions[state.currentQuestionIndex];
+      if (newCurrentQuestion && newCurrentQuestion !== state.currentQuestion) {
+        console.log("Updating current question to index:", state.currentQuestionIndex, "Question:", newCurrentQuestion);
+        setState(prevState => ({ 
+          ...prevState, 
+          currentQuestion: newCurrentQuestion 
+        }));
+      }
+    }
+  }, [state.currentQuestionIndex, state.questions, state.currentQuestion]);
 
   useEffect(() => {
     if (state.examMode) {
