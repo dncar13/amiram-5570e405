@@ -148,7 +148,7 @@ const QuestionCard = ({
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-8">
+            <CardContent className="p-2">
               <div dir="ltr" className="text-left">
                 <ReadingPassage 
                   passageWithLines={currentQuestion.passageWithLines}
