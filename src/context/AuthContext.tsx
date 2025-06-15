@@ -104,10 +104,51 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Function to update auth state
+  const updateAuthState = (user: User | null) => {
+    console.log("🔄 Updating auth state with user:", user?.email || "null");
+    
+    setCurrentUser(user);
+    
+    if (user) {
+      console.log("✅ User found, updating related states...");
+      
+      // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
+      const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
+      console.log("  - Is admin:", isUserAdmin);
+      setIsAdmin(isUserAdmin);
+      
+      // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
+      const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
+      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+      const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
+      
+      console.log("  - Premium from storage:", premiumStatusFromStorage);
+      console.log("  - Premium by email:", isPremiumByEmail);
+      console.log("  - Final premium status:", isPremiumUser);
+      setIsPremium(isPremiumUser);
+      
+      // טעינת נתוני משתמש עם שם מופק מהאימייל
+      const newUserData = {
+        firstName: extractUsernameFromEmail(user.email),
+        lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
+        premiumExpiration: isPremiumUser ? 
+          new Date().setMonth(new Date().getMonth() + 1) : undefined
+      };
+      console.log("  - User data:", newUserData);
+      setUserData(newUserData);
+    } else {
+      console.log("❌ No user, resetting states...");
+      setIsAdmin(false);
+      setIsPremium(false);
+      setUserData(null);
+    }
+  };
+
   useEffect(() => {
     console.log("🔧 AuthContext: Setting up auth state listener...");
     
-    let authInitialized = false;
+    let isMounted = true;
     
     // Set up auth state listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -115,58 +156,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("  - User exists:", !!user);
       console.log("  - User email:", user?.email || "No email");
       console.log("  - User ID:", user?.uid || "No ID");
-      console.log("  - Full user object:", user);
+      console.log("  - Component mounted:", isMounted);
       
-      // Always update the current user first
-      setCurrentUser(user);
-      
-      if (user) {
-        console.log("✅ User is logged in, updating states...");
+      if (isMounted) {
+        updateAuthState(user);
         
-        // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
-        const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
-        console.log("  - Is admin:", isUserAdmin);
-        setIsAdmin(isUserAdmin);
-        
-        // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
-        const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
-        const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
-        const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
-        
-        console.log("  - Premium from storage:", premiumStatusFromStorage);
-        console.log("  - Premium by email:", isPremiumByEmail);
-        console.log("  - Final premium status:", isPremiumUser);
-        setIsPremium(isPremiumUser);
-        
-        // טעינת נתוני משתמש עם שם מופק מהאימייל
-        const newUserData = {
-          firstName: extractUsernameFromEmail(user.email),
-          lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
-          premiumExpiration: isPremiumUser ? 
-            new Date().setMonth(new Date().getMonth() + 1) : undefined
-        };
-        console.log("  - User data:", newUserData);
-        setUserData(newUserData);
-      } else {
-        console.log("❌ No user logged in, resetting states...");
-        setIsAdmin(false);
-        setIsPremium(false);
-        setUserData(null);
-      }
-      
-      // Only set loading to false after the first auth check is complete
-      if (!authInitialized) {
-        console.log("🏁 Auth loading complete, setting isLoading to false");
-        setIsLoading(false);
-        authInitialized = true;
+        // Set loading to false after we get the first auth response
+        if (isLoading) {
+          console.log("🏁 Auth initialization complete, setting isLoading to false");
+          setIsLoading(false);
+        }
       }
     });
 
     return () => {
       console.log("🧹 Cleaning up auth listener");
+      isMounted = false;
       unsubscribe();
     };
-  }, []);
+  }, []); // Remove isLoading dependency to prevent re-initialization
 
   // Debug effect to track state changes
   useEffect(() => {

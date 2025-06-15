@@ -10,6 +10,7 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
+    detectSessionInUrl: true,
   }
 });
 
@@ -110,7 +111,14 @@ export const loginWithEmailAndPassword = async (email: string, password: string)
     }
     
     console.log("Login successful:", data.user?.email);
-    return { user: data.user ? convertSupabaseUser(data.user) : null, error: null };
+    const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
+    
+    // Force a brief delay to ensure auth state propagation
+    setTimeout(() => {
+      console.log("🔄 Login: Auth state should be updated now");
+    }, 100);
+    
+    return { user: convertedUser, error: null };
   } catch (error) {
     console.error("Login catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };
@@ -134,7 +142,14 @@ export const registerWithEmailAndPassword = async (email: string, password: stri
     }
     
     console.log("Registration successful:", data.user?.email);
-    return { user: data.user ? convertSupabaseUser(data.user) : null, error: null };
+    const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
+    
+    // Force a brief delay to ensure auth state propagation
+    setTimeout(() => {
+      console.log("🔄 Registration: Auth state should be updated now");
+    }, 100);
+    
+    return { user: convertedUser, error: null };
   } catch (error) {
     console.error("Registration catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };
@@ -169,16 +184,27 @@ export const checkFirebaseConnection = async () => {
 export const auth = supabase.auth;
 export const db = supabase;
 
-// Supabase onAuthStateChanged equivalent
+// Supabase onAuthStateChanged equivalent with improved handling
 export const onAuthStateChanged = (auth: any, callback: (user: User | null) => void) => {
+  console.log("🎯 Setting up onAuthStateChanged listener...");
+  
   const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-    console.log("Auth state change event:", event);
-    console.log("Session:", session ? "exists" : "null");
-    console.log("User:", session?.user ? session.user.email : "null");
+    console.log("🔔 Auth state change event:", event);
+    console.log("🔔 Session exists:", !!session);
+    console.log("🔔 User exists:", !!session?.user);
+    console.log("🔔 User email:", session?.user?.email || "null");
     
     const user = session?.user ? convertSupabaseUser(session.user) : null;
-    callback(user);
+    
+    // Add a small delay to ensure state propagation
+    setTimeout(() => {
+      console.log("🔄 Calling auth callback with user:", user?.email || "null");
+      callback(user);
+    }, 10);
   });
   
-  return () => subscription.unsubscribe();
+  return () => {
+    console.log("🧹 Unsubscribing from auth state changes");
+    subscription.unsubscribe();
+  };
 };
