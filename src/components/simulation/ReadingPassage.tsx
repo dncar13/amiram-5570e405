@@ -28,23 +28,23 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
+      <div className="bg-white rounded-lg p-8 border border-gray-200 text-gray-900 h-full overflow-y-auto shadow-sm">
         {title && (
-          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2" 
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-4" 
               dir="ltr" 
               style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-1 leading-relaxed text-sm" dir="ltr" style={{ textAlign: 'left' }}>
+        <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
           {passageWithLines.map((line, index) => (
-            <div key={index} className="flex gap-3">
+            <div key={index} className="flex gap-4">
               {showLineNumbers && (
-                <span className="text-slate-500 font-mono text-xs min-w-[2rem] text-right flex-shrink-0 mt-0.5">
+                <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
                   {line.lineNumber}
                 </span>
               )}
-              <span className="flex-1 text-slate-700 leading-relaxed">
+              <span className="flex-1 text-gray-800 leading-relaxed text-lg">
                 {line.text}
               </span>
             </div>
@@ -60,23 +60,23 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
+      <div className="bg-white rounded-lg p-8 border border-gray-200 text-gray-900 h-full overflow-y-auto shadow-sm">
         {title && (
-          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2"
+          <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-4"
               dir="ltr" 
               style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-1 leading-relaxed text-sm" dir="ltr" style={{ textAlign: 'left' }}>
+        <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
           {lines.map((line, index) => (
-            <div key={index} className="flex gap-3">
+            <div key={index} className="flex gap-4">
               {showLineNumbers && (
-                <span className="text-slate-500 font-mono text-xs min-w-[2rem] text-right flex-shrink-0 mt-0.5">
+                <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
                   {index + 1}
                 </span>
               )}
-              <span className="flex-1 text-slate-700 leading-relaxed">
+              <span className="flex-1 text-gray-800 leading-relaxed text-lg">
                 {line}
               </span>
             </div>

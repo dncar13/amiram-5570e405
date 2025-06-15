@@ -179,9 +179,9 @@ const QuestionCard = ({
   // If it's a reading comprehension question with passage, use two-column layout
   if (hasReadingPassage) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Reading Passage Section */}
-        <div className="lg:order-1">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 h-[calc(100vh-120px)]">
+        {/* Reading Passage Section - Full height */}
+        <div className="xl:order-1">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
             <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <CardTitle className="text-xl flex items-center gap-3">
@@ -194,7 +194,7 @@ const QuestionCard = ({
                 </span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-4 h-[calc(100%-80px)]">
               <ReadingPassage 
                 title={currentQuestion.passageTitle}
                 passageWithLines={currentQuestion.passageWithLines}
@@ -205,10 +205,10 @@ const QuestionCard = ({
           </Card>
         </div>
 
-        {/* Question Section */}
-        <div className="lg:order-2">
-          <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
-            <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+        {/* Question Section - Full height */}
+        <div className="xl:order-2">
+          <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
+            <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl flex-shrink-0">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl flex items-center gap-3">
                   <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
@@ -248,7 +248,7 @@ const QuestionCard = ({
               </div>
             </CardHeader>
 
-            <CardContent className="p-8 space-y-8">
+            <CardContent className="p-6 space-y-6 flex-grow overflow-y-auto">
               <div className="space-y-6">
                 <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
                   {/* Enhanced question text display with better fallback */}
@@ -262,7 +262,7 @@ const QuestionCard = ({
                   )}
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {answerOptions.map((answer, index) => {
                     const isSelected = selectedAnswerIndex === index;
                     const isCorrectAnswer = index === currentQuestion.correctAnswer;
@@ -274,7 +274,7 @@ const QuestionCard = ({
                         key={index}
                         variant="outline"
                         className={cn(
-                          "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-right justify-start text-wrap",
+                          "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap min-h-[60px]",
                           "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
                           isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
                           shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
@@ -325,7 +325,9 @@ const QuestionCard = ({
                         <XCircle className="h-8 w-8 text-red-400" />
                         <div>
                           <h4 className="text-xl font-bold text-red-300">תשובה שגויה</h4>
-                          <p className="text-red-200">התשובה הנכונה היא: {answerOptions[currentQuestion.correctAnswer]}</p>
+                          <p className="text-red-200" dir="ltr" style={{ textAlign: 'left' }}>
+                            התשובה הנכונה היא: {answerOptions[currentQuestion.correctAnswer]}
+                          </p>
                         </div>
                       </>
                     )}
@@ -361,48 +363,48 @@ const QuestionCard = ({
                   )}
                 </div>
               )}
+            </CardContent>
 
-              <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
+            <div className="flex justify-between items-center gap-4 p-6 border-t border-slate-600/50 flex-shrink-0">
+              <Button
+                variant="outline"
+                onClick={onPreviousQuestion}
+                disabled={currentQuestionIndex === 0}
+                className={cn(
+                  "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
+                  currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                <ChevronLeft className="h-5 w-5 ml-2" />
+                Previous
+              </Button>
+
+              {!isAnswerSubmitted ? (
                 <Button
-                  variant="outline"
-                  onClick={onPreviousQuestion}
-                  disabled={currentQuestionIndex === 0}
+                  onClick={onSubmitAnswer}
+                  disabled={selectedAnswerIndex === null}
                   className={cn(
-                    "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
-                    currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
+                    "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                    selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
                   )}
                 >
-                  <ChevronLeft className="h-5 w-5 ml-2" />
-                  Previous
+                  Submit Answer
+                  <ChevronRight className="h-5 w-5 mr-2" />
                 </Button>
-
-                {!isAnswerSubmitted ? (
-                  <Button
-                    onClick={onSubmitAnswer}
-                    disabled={selectedAnswerIndex === null}
-                    className={cn(
-                      "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                      selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
-                    )}
-                  >
-                    Submit Answer
-                    <ChevronRight className="h-5 w-5 mr-2" />
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={onNextQuestion}
-                    disabled={currentQuestionIndex >= totalQuestions - 1}
-                    className={cn(
-                      "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                      currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
-                    )}
-                  >
-                    Next Question
-                    <ChevronRight className="h-5 w-5 mr-2" />
-                  </Button>
-                )}
-              </div>
-            </CardContent>
+              ) : (
+                <Button
+                  onClick={onNextQuestion}
+                  disabled={currentQuestionIndex >= totalQuestions - 1}
+                  className={cn(
+                    "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                    currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
+                  )}
+                >
+                  Next Question
+                  <ChevronRight className="h-5 w-5 mr-2" />
+                </Button>
+              )}
+            </div>
           </Card>
         </div>
       </div>
@@ -411,8 +413,8 @@ const QuestionCard = ({
 
   // Regular single-column layout for non-reading questions
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
-      <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-[calc(100vh-120px)] flex flex-col">
+      <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl flex-shrink-0">
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl flex items-center gap-3">
             <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
@@ -452,7 +454,7 @@ const QuestionCard = ({
         </div>
       </CardHeader>
 
-      <CardContent className="p-8 space-y-8">
+      <CardContent className="p-8 space-y-8 flex-grow overflow-y-auto">
         <div className="space-y-6">
           <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
             <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
@@ -556,48 +558,48 @@ const QuestionCard = ({
             )}
           </div>
         )}
+      </CardContent>
 
-        <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
+      <div className="flex justify-between items-center gap-4 p-6 border-t border-slate-600/50 flex-shrink-0">
+        <Button
+          variant="outline"
+          onClick={onPreviousQuestion}
+          disabled={currentQuestionIndex === 0}
+          className={cn(
+            "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
+            currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
+          )}
+        >
+          <ChevronLeft className="h-5 w-5 ml-2" />
+          Previous
+        </Button>
+
+        {!isAnswerSubmitted ? (
           <Button
-            variant="outline"
-            onClick={onPreviousQuestion}
-            disabled={currentQuestionIndex === 0}
+            onClick={onSubmitAnswer}
+            disabled={selectedAnswerIndex === null}
             className={cn(
-              "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
-              currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
+              "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+              selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
             )}
           >
-            <ChevronLeft className="h-5 w-5 ml-2" />
-            Previous
+            Submit Answer
+            <ChevronRight className="h-5 w-5 mr-2" />
           </Button>
-
-          {!isAnswerSubmitted ? (
-            <Button
-              onClick={onSubmitAnswer}
-              disabled={selectedAnswerIndex === null}
-              className={cn(
-                "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              Submit Answer
-              <ChevronRight className="h-5 w-5 mr-2" />
-            </Button>
-          ) : (
-            <Button
-              onClick={onNextQuestion}
-              disabled={currentQuestionIndex >= totalQuestions - 1}
-              className={cn(
-                "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              Next Question
-              <ChevronRight className="h-5 w-5 mr-2" />
-            </Button>
-          )}
-        </div>
-      </CardContent>
+        ) : (
+          <Button
+            onClick={onNextQuestion}
+            disabled={currentQuestionIndex >= totalQuestions - 1}
+            className={cn(
+              "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+              currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            Next Question
+            <ChevronRight className="h-5 w-5 mr-2" />
+          </Button>
+        )}
+      </div>
     </Card>
   );
 };
