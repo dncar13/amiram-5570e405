@@ -57,7 +57,7 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 text-slate-800 h-[700px] flex flex-col">
+      <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 text-slate-800 h-[850px] flex flex-col">
         {title && (
           <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-3 flex-shrink-0">
             {title}
