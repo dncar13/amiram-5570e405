@@ -1,4 +1,5 @@
 
+
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -107,8 +108,8 @@ const SimulationByType: React.FC = () => {
       // Navigate to new practice options page
       navigate(`/simulation/type/${currentType.type}/${difficulty}`);
     } else {
-      // Keep existing mixed practice
-      navigate(`/simulation/${currentType.type}`);
+      // Quick practice with mixed questions - navigate directly to simulation with 10 questions
+      navigate(`/simulation/${currentType.type}?limit=10`);
     }
   };
 
@@ -167,7 +168,7 @@ const SimulationByType: React.FC = () => {
               <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
             </div>
             <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-              התחל תרגול מיידי עם שאלות מעורבות בנושא זה
+              התחל תרגול מיידי עם 10 שאלות מעורבות בנושא זה
             </p>
             
             <div className="space-y-6">
@@ -275,3 +276,4 @@ const SimulationByType: React.FC = () => {
 };
 
 export default SimulationByType;
+
