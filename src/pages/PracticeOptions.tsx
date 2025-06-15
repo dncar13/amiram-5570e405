@@ -52,11 +52,10 @@ const PracticeOptions: React.FC = () => {
   };
 
   const handleQuickPractice = () => {
-    navigate(`/simulation/${type}/${difficulty}`);
+    navigate(`/simulation/${type}/${difficulty}?limit=10`);
   };
 
   const handleChooseSet = () => {
-    // נוסיף את זה בשלב הבא
     console.log('Choose set functionality - coming next!');
   };
 

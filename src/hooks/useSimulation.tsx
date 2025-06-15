@@ -10,7 +10,7 @@ import {
   getRestatementQuestions,
   getQuestionsByDifficultyAndType
 } from "@/services/questionsService";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 interface SimulationState {
   currentQuestionIndex: number;
@@ -72,6 +72,16 @@ const initialSimulationState: SimulationState = {
   selectedAnswerIndex: null,
 };
 
+// Helper function to shuffle array
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 export const useSimulation = (
   simulationId: string, 
   isQuestionSet: boolean = false,
@@ -82,6 +92,8 @@ export const useSimulation = (
   const progressLoadedRef = useRef(false);
   const { toast } = useToast();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
+  const [searchParams] = useSearchParams();
+  const questionLimit = searchParams.get('limit');
 
   const initializeTimer = useCallback(() => {
     console.log("Initializing timer");
@@ -270,6 +282,15 @@ export const useSimulation = (
         questionsToUse = [...storyQuestions];
       } else if (type && difficulty) {
         questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
+        
+        // Apply limit if specified in URL
+        if (questionLimit) {
+          const limit = parseInt(questionLimit, 10);
+          if (!isNaN(limit) && limit > 0) {
+            questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+            console.log(`Limited questions to ${limit} random questions`);
+          }
+        }
       } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
         const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
         const difficultyType = sessionStorage.getItem('current_difficulty_type');
@@ -301,7 +322,7 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, type, difficulty]);
+  }, [simulationId, toast, storyQuestions, type, difficulty, questionLimit]);
 
   const setSimulationComplete = useCallback((complete: boolean) => {
     setState(prevState => ({ ...prevState, simulationComplete: complete }));
@@ -309,7 +330,7 @@ export const useSimulation = (
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty });
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit });
     
     let questionsToUse: Question[] = [];
     
@@ -320,6 +341,15 @@ export const useSimulation = (
       console.log(`Loading questions for type: ${type}, difficulty: ${difficulty}`);
       questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
       console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${type}`);
+      
+      // Apply limit if specified in URL
+      if (questionLimit) {
+        const limit = parseInt(questionLimit, 10);
+        if (!isNaN(limit) && limit > 0) {
+          questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+          console.log(`Limited questions to ${limit} random questions from ${questionsToUse.length} total`);
+        }
+      }
     } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
       const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
       const difficultyType = sessionStorage.getItem('current_difficulty_type');
@@ -347,7 +377,7 @@ export const useSimulation = (
     } else {
       console.warn("No questions found for simulation", { type, difficulty, simulationId });
     }
-  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty]);
+  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty, questionLimit]);
 
   useEffect(() => {
     initializeQuestions();
