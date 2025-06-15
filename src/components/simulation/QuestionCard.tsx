@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -250,17 +249,15 @@ const QuestionCard = ({
 
             <CardContent className="p-6 space-y-6 flex-grow overflow-y-auto">
               <div className="space-y-6">
-                <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
-                  {/* Enhanced question text display with better fallback */}
-                  <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
-                    {questionText || `שאלה ${currentQuestionIndex + 1} - לא נמצא טקסט שאלה`}
-                  </h3>
-                  {!questionText && (
-                    <div className="text-amber-300 text-sm mt-2 p-3 bg-amber-600/20 rounded-lg border border-amber-500/50">
-                      שים לב: לא נמצא טקסט לשאלה זו. ID: {currentQuestion.id}
-                    </div>
-                  )}
-                </div>
+                {/* Removed the frame around question text - now it's plain */}
+                <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
+                  {questionText || `שאלה ${currentQuestionIndex + 1} - לא נמצא טקסט שאלה`}
+                </h3>
+                {!questionText && (
+                  <div className="text-amber-300 text-sm mt-2 p-3 bg-amber-600/20 rounded-lg border border-amber-500/50">
+                    שים לב: לא נמצא טקסט לשאלה זו. ID: {currentQuestion.id}
+                  </div>
+                )}
 
                 <div className="space-y-3">
                   {answerOptions.map((answer, index) => {
@@ -456,11 +453,10 @@ const QuestionCard = ({
 
       <CardContent className="p-8 space-y-8 flex-grow overflow-y-auto">
         <div className="space-y-6">
-          <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
-            <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
-              {currentQuestion.text}
-            </h3>
-          </div>
+          {/* Removed the frame around question text - now it's plain */}
+          <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
+            {currentQuestion.text}
+          </h3>
 
           <div className="space-y-4">
             {answerOptions.map((answer, index) => {
