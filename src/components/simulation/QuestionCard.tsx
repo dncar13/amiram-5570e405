@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -6,7 +7,6 @@ import { ChevronRight, ChevronLeft, Flag, Eye, EyeOff, CheckCircle, XCircle, Boo
 import { ReadingPassage } from "./ReadingPassage";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 interface QuestionCardProps {
   currentQuestion: Question | undefined;
@@ -49,7 +49,6 @@ const QuestionCard = ({
   onToggleExplanation,
   onToggleQuestionFlag
 }: QuestionCardProps) => {
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -136,8 +135,8 @@ const QuestionCard = ({
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
             <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-              <CardTitle className={cn("font-semibold text-slate-200 mb-2 flex items-center gap-2", isMobile ? "text-base" : "text-lg")}>
-                <BookOpen className={cn(isMobile ? "h-4 w-4" : "h-5 w-5")} />
+              <CardTitle className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
                 {currentQuestion.passageTitle || 'Technology Reading'}
               </CardTitle>
             </CardHeader>
@@ -157,9 +156,9 @@ const QuestionCard = ({
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
             <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <div className="flex justify-between items-center">
-                <CardTitle className={cn("flex items-center gap-3", isMobile ? "text-lg" : "text-xl")}>
+                <CardTitle className="text-xl flex items-center gap-3">
                   <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-                    <CheckCircle className={cn("text-slate-300", isMobile ? "h-5 w-5" : "h-6 w-6")} />
+                    <CheckCircle className="h-6 w-6 text-slate-300" />
                   </div>
                   <span className="font-bold text-slate-100">
                     Question {currentQuestionIndex + 1} of {totalQuestions}
@@ -169,8 +168,7 @@ const QuestionCard = ({
                   variant="ghost" 
                   size="icon" 
                   className={cn(
-                    "rounded-lg border transition-all duration-300",
-                    isMobile ? "h-8 w-8" : "h-10 w-10",
+                    "h-10 w-10 rounded-lg border transition-all duration-300",
                     isFlagged 
                       ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
                       : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
@@ -178,11 +176,11 @@ const QuestionCard = ({
                   onClick={onToggleQuestionFlag}
                   title={isFlagged ? "Remove flag" : "Flag question"}
                 >
-                  <Flag className={cn(isMobile ? "h-4 w-4" : "h-5 w-5", isFlagged && "fill-amber-400")} />
+                  <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
                 </Button>
               </div>
               <div className="mt-4">
-                <div className={cn("flex justify-between items-center text-slate-300 mb-2", isMobile ? "text-xs" : "text-sm")}>
+                <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
                   <span>Progress</span>
                   <span>{calculatedProgressPercentage}%</span>
                 </div>
@@ -193,10 +191,10 @@ const QuestionCard = ({
                 />
               </div>
             </CardHeader>
-            <CardContent className={cn("space-y-8 flex-1 flex flex-col", isMobile ? "p-4" : "p-8")}>
+            <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
               {/* Question Text */}
               <div dir="ltr" className="text-left">
-                <h3 className={cn("font-bold text-white", isMobile ? "text-lg" : "text-3xl")}>{currentQuestion.text}</h3>
+                <h3 className="text-3xl font-bold text-white">{currentQuestion.text}</h3>
               </div>
               
               <div className="space-y-6 flex-1 flex flex-col">
@@ -211,8 +209,7 @@ const QuestionCard = ({
                         key={index}
                         variant="outline"
                         className={cn(
-                          "w-full h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap",
-                          isMobile ? "p-4" : "p-6",
+                          "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap",
                           "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
                           isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
                           shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
@@ -222,15 +219,15 @@ const QuestionCard = ({
                         disabled={isAnswerSubmitted}
                       >
                         <div className="flex items-center justify-between w-full">
-                          <span className={cn("font-medium leading-relaxed flex-1 text-left", isMobile ? "text-base" : "text-lg")}>
+                          <span className="text-lg font-medium leading-relaxed flex-1 text-left">
                             {answer}
                           </span>
-                          <div className={cn("flex items-center gap-3", isMobile ? "mr-2" : "mr-4")}>
-                            <span className={cn("bg-slate-700/80 text-slate-300 rounded-lg font-bold border border-slate-600/50", isMobile ? "px-2 py-1 text-xs" : "px-3 py-1 text-sm")}>
+                          <div className="flex items-center gap-3 mr-4">
+                            <span className="bg-slate-700/80 text-slate-300 px-3 py-1 rounded-lg text-sm font-bold border border-slate-600/50">
                               {index + 1}
                             </span>
-                            {shouldShowCorrect && <CheckCircle className={cn("text-green-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />}
-                            {shouldShowIncorrect && <XCircle className={cn("text-red-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />}
+                            {shouldShowCorrect && <CheckCircle className="h-6 w-6 text-green-400" />}
+                            {shouldShowIncorrect && <XCircle className="h-6 w-6 text-red-400" />}
                           </div>
                         </div>
                       </Button>
@@ -242,27 +239,26 @@ const QuestionCard = ({
               {/* Answer feedback and explanation section */}
               {isAnswerSubmitted && (
                 <div className={cn(
-                  "rounded-xl border-2 shadow-xl backdrop-blur-sm",
-                  isMobile ? "p-4" : "p-6",
+                  "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
                   isCorrect 
                     ? "bg-green-600/10 border-green-500/30 shadow-green-500/10" 
                     : "bg-red-600/10 border-red-500/30 shadow-red-500/10"
                 )}>
-                  <div className={cn("flex items-center gap-4", isMobile ? "mb-2" : "mb-4")}>
+                  <div className="flex items-center gap-4 mb-4">
                     {isCorrect ? (
                       <>
-                        <CheckCircle className={cn("text-green-400", isMobile ? "h-6 w-6" : "h-8 w-8")} />
+                        <CheckCircle className="h-8 w-8 text-green-400" />
                         <div>
-                          <h4 className={cn("font-bold text-green-300", isMobile ? "text-lg" : "text-xl")}>Correct answer!</h4>
-                          <p className={cn("text-green-200", isMobile ? "text-sm" : "text-base")}>Well done, keep going</p>
+                          <h4 className="text-xl font-bold text-green-300">Correct answer!</h4>
+                          <p className="text-green-200">Well done, keep going</p>
                         </div>
                       </>
                     ) : (
                       <>
-                        <XCircle className={cn("text-red-400", isMobile ? "h-6 w-6" : "h-8 w-8")} />
+                        <XCircle className="h-8 w-8 text-red-400" />
                         <div>
-                          <h4 className={cn("font-bold text-red-300", isMobile ? "text-lg" : "text-xl")}>Wrong answer</h4>
-                          <p className={cn("text-red-200", isMobile ? "text-sm" : "text-base")}>The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
+                          <h4 className="text-xl font-bold text-red-300">Wrong answer</h4>
+                          <p className="text-red-200">The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
                         </div>
                       </>
                     )}
@@ -276,43 +272,42 @@ const QuestionCard = ({
                   <Button
                     variant="outline"
                     onClick={onToggleExplanation}
-                    className={cn("bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl", isMobile ? "text-sm" : "text-base")}
+                    className="bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl"
                   >
                     {showExplanation ? (
                       <>
-                        <EyeOff className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
+                        <EyeOff className="h-5 w-5 ml-2" />
                         Hide explanation
                       </>
                     ) : (
                       <>
-                        <Eye className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
+                        <Eye className="h-5 w-5 ml-2" />
                         Show explanation
                       </>
                     )}
                   </Button>
                   {showExplanation && (
-                    <div className={cn("bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-600/50 shadow-lg text-left", isMobile ? "p-4" : "p-6")}>
-                      <h4 className={cn("font-semibold text-slate-200 mb-3", isMobile ? "text-base" : "text-lg")}>Explanation:</h4>
-                      <p className={cn("text-slate-300 leading-relaxed", isMobile ? "text-sm" : "text-base")}>{currentQuestion.explanation}</p>
+                    <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg text-left">
+                      <h4 className="text-lg font-semibold text-slate-200 mb-3">Explanation:</h4>
+                      <p className="text-slate-300 leading-relaxed">{currentQuestion.explanation}</p>
                     </div>
                   )}
                 </div>
               )}
 
               {/* Navigation buttons */}
-              <div className={cn("flex justify-between items-center gap-4 border-t border-slate-600/50", isMobile ? "pt-4" : "pt-6")}>
+              <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
                 <Button
                   variant="outline"
                   onClick={onPreviousQuestion}
                   disabled={currentQuestionIndex === 0}
                   className={cn(
-                    "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl",
-                    isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                    "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
                     currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
                   )}
                 >
-                  <ChevronLeft className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
-                  {isMobile ? "Previous" : "Previous question"}
+                  <ChevronLeft className="h-5 w-5 ml-2" />
+                  Previous question
                 </Button>
 
                 {!isAnswerSubmitted ? (
@@ -320,26 +315,24 @@ const QuestionCard = ({
                     onClick={onSubmitAnswer}
                     disabled={selectedAnswerIndex === null}
                     className={cn(
-                      "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg transition-all duration-300",
-                      isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                      "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
                       selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
                     )}
                   >
-                    {isMobile ? "Submit" : "Submit answer"}
-                    <ChevronRight className={cn(isMobile ? "h-4 w-4 mr-1" : "h-5 w-5 mr-2")} />
+                    Submit answer
+                    <ChevronRight className="h-5 w-5 mr-2" />
                   </Button>
                 ) : (
                   <Button
                     onClick={onNextQuestion}
                     disabled={currentQuestionIndex >= totalQuestions - 1}
                     className={cn(
-                      "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-lg transition-all duration-300",
-                      isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                      "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
                       currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
                     )}
                   >
-                    {isMobile ? "Next" : "Next question"}
-                    <ChevronRight className={cn(isMobile ? "h-4 w-4 mr-1" : "h-5 w-5 mr-2")} />
+                    Next question
+                    <ChevronRight className="h-5 w-5 mr-2" />
                   </Button>
                 )}
               </div>
@@ -355,9 +348,9 @@ const QuestionCard = ({
       <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
         <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
           <div className="flex justify-between items-center">
-            <CardTitle className={cn("flex items-center gap-3", isMobile ? "text-lg" : "text-xl")}>
+            <CardTitle className="text-xl flex items-center gap-3">
               <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-                <CheckCircle className={cn("text-slate-300", isMobile ? "h-5 w-5" : "h-6 w-6")} />
+                <CheckCircle className="h-6 w-6 text-slate-300" />
               </div>
               <span className="font-bold text-slate-100">
                 Question {currentQuestionIndex + 1} of {totalQuestions}
@@ -368,8 +361,7 @@ const QuestionCard = ({
               variant="ghost" 
               size="icon" 
               className={cn(
-                "rounded-lg border transition-all duration-300",
-                isMobile ? "h-8 w-8" : "h-10 w-10",
+                "h-10 w-10 rounded-lg border transition-all duration-300",
                 isFlagged 
                   ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
                   : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
@@ -377,12 +369,12 @@ const QuestionCard = ({
               onClick={onToggleQuestionFlag}
               title={isFlagged ? "Remove flag" : "Flag question"}
             >
-              <Flag className={cn(isMobile ? "h-4 w-4" : "h-5 w-5", isFlagged && "fill-amber-400")} />
+              <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
             </Button>
           </div>
           
           <div className="mt-4">
-            <div className={cn("flex justify-between items-center text-slate-300 mb-2", isMobile ? "text-xs" : "text-sm")}>
+            <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
               <span>Progress</span>
               <span>{calculatedProgressPercentage}%</span>
             </div>
@@ -394,10 +386,10 @@ const QuestionCard = ({
           </div>
         </CardHeader>
 
-        <CardContent className={cn("space-y-8", isMobile ? "p-4" : "p-8")}>
+        <CardContent className="p-8 space-y-8">
           {/* Question Text */}
           <div dir="ltr" className="text-left">
-            <h3 className={cn("font-bold text-white", isMobile ? "text-lg" : "text-2xl")}>{currentQuestion.text}</h3>
+            <h3 className="text-2xl font-bold text-white">{currentQuestion.text}</h3>
           </div>
 
           <div className="space-y-6">
@@ -413,8 +405,7 @@ const QuestionCard = ({
                     key={index}
                     variant="outline"
                     className={cn(
-                      "w-full h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap",
-                      isMobile ? "p-4" : "p-6",
+                      "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap",
                       "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
                       isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
                       shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
@@ -424,15 +415,15 @@ const QuestionCard = ({
                     disabled={isAnswerSubmitted}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <span className={cn("font-medium leading-relaxed flex-1 text-left", isMobile ? "text-base" : "text-lg")}>
+                      <span className="text-lg font-medium leading-relaxed flex-1 text-left">
                         {answer}
                       </span>
-                      <div className={cn("flex items-center gap-3", isMobile ? "mr-2" : "mr-4")}>
-                        <span className={cn("bg-slate-700/80 text-slate-300 rounded-lg font-bold border border-slate-600/50", isMobile ? "px-2 py-1 text-xs" : "px-3 py-1 text-sm")}>
+                      <div className="flex items-center gap-3 mr-4">
+                        <span className="bg-slate-700/80 text-slate-300 px-3 py-1 rounded-lg text-sm font-bold border border-slate-600/50">
                           {index + 1}
                         </span>
-                        {shouldShowCorrect && <CheckCircle className={cn("text-green-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />}
-                        {shouldShowIncorrect && <XCircle className={cn("text-red-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />}
+                        {shouldShowCorrect && <CheckCircle className="h-6 w-6 text-green-400" />}
+                        {shouldShowIncorrect && <XCircle className="h-6 w-6 text-red-400" />}
                       </div>
                     </div>
                   </Button>
@@ -444,27 +435,26 @@ const QuestionCard = ({
           {/* Answer feedback */}
           {isAnswerSubmitted && (
             <div className={cn(
-              "rounded-xl border-2 shadow-xl backdrop-blur-sm",
-              isMobile ? "p-4" : "p-6",
+              "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
               isCorrect 
                 ? "bg-green-600/10 border-green-500/30 shadow-green-500/10" 
                 : "bg-red-600/10 border-red-500/30 shadow-red-500/10"
             )}>
-              <div className={cn("flex items-center gap-4", isMobile ? "mb-2" : "mb-4")}>
+              <div className="flex items-center gap-4 mb-4">
                 {isCorrect ? (
                   <>
-                    <CheckCircle className={cn("text-green-400", isMobile ? "h-6 w-6" : "h-8 w-8")} />
+                    <CheckCircle className="h-8 w-8 text-green-400" />
                     <div>
-                      <h4 className={cn("font-bold text-green-300", isMobile ? "text-lg" : "text-xl")}>Correct answer!</h4>
-                      <p className={cn("text-green-200", isMobile ? "text-sm" : "text-base")}>Well done, keep going</p>
+                      <h4 className="text-xl font-bold text-green-300">Correct answer!</h4>
+                      <p className="text-green-200">Well done, keep going</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <XCircle className={cn("text-red-400", isMobile ? "h-6 w-6" : "h-8 w-8")} />
+                    <XCircle className="h-8 w-8 text-red-400" />
                     <div>
-                      <h4 className={cn("font-bold text-red-300", isMobile ? "text-lg" : "text-xl")}>Wrong answer</h4>
-                      <p className={cn("text-red-200", isMobile ? "text-sm" : "text-base")}>The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
+                      <h4 className="text-xl font-bold text-red-300">Wrong answer</h4>
+                      <p className="text-red-200">The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
                     </div>
                   </>
                 )}
@@ -478,44 +468,43 @@ const QuestionCard = ({
               <Button
                 variant="outline"
                 onClick={onToggleExplanation}
-                className={cn("bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl", isMobile ? "text-sm" : "text-base")}
+                className="bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl"
               >
                 {showExplanation ? (
                   <>
-                    <EyeOff className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
+                    <EyeOff className="h-5 w-5 ml-2" />
                     Hide explanation
                   </>
                 ) : (
                   <>
-                    <Eye className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
+                    <Eye className="h-5 w-5 ml-2" />
                     Show explanation
                   </>
                 )}
               </Button>
               
               {showExplanation && (
-                <div className={cn("bg-slate-800/60 backdrop-blur-sm rounded-xl border border-slate-600/50 shadow-lg", isMobile ? "p-4" : "p-6")}>
-                  <h4 className={cn("font-semibold text-slate-200 mb-3", isMobile ? "text-base" : "text-lg")}>Explanation:</h4>
-                  <p className={cn("text-slate-300 leading-relaxed", isMobile ? "text-sm" : "text-base")}>{currentQuestion.explanation}</p>
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+                  <h4 className="text-lg font-semibold text-slate-200 mb-3">Explanation:</h4>
+                  <p className="text-slate-300 leading-relaxed">{currentQuestion.explanation}</p>
                 </div>
               )}
             </div>
           )}
 
           {/* Navigation */}
-          <div className={cn("flex justify-between items-center gap-4 border-t border-slate-600/50", isMobile ? "pt-4" : "pt-6")}>
+          <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
             <Button
               variant="outline"
               onClick={onPreviousQuestion}
               disabled={currentQuestionIndex === 0}
               className={cn(
-                "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl",
-                isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
                 currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
               )}
             >
-              <ChevronLeft className={cn(isMobile ? "h-4 w-4 ml-1" : "h-5 w-5 ml-2")} />
-              {isMobile ? "Previous" : "Previous question"}
+              <ChevronLeft className="h-5 w-5 ml-2" />
+              Previous question
             </Button>
 
             {!isAnswerSubmitted ? (
@@ -523,26 +512,24 @@ const QuestionCard = ({
                 onClick={onSubmitAnswer}
                 disabled={selectedAnswerIndex === null}
                 className={cn(
-                  "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-lg transition-all duration-300",
-                  isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                  "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
                   selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
                 )}
               >
-                {isMobile ? "Submit" : "Submit answer"}
-                <ChevronRight className={cn(isMobile ? "h-4 w-4 mr-1" : "h-5 w-5 mr-2")} />
+                Submit answer
+                <ChevronRight className="h-5 w-5 mr-2" />
               </Button>
             ) : (
               <Button
                 onClick={onNextQuestion}
                 disabled={currentQuestionIndex >= totalQuestions - 1}
                 className={cn(
-                  "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-lg transition-all duration-300",
-                  isMobile ? "px-4 py-2 text-sm" : "px-6 py-3",
+                  "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
                   currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
                 )}
               >
-                {isMobile ? "Next" : "Next question"}
-                <ChevronRight className={cn(isMobile ? "h-4 w-4 mr-1" : "h-5 w-5 mr-2")} />
+                Next question
+                <ChevronRight className="h-5 w-5 mr-2" />
               </Button>
             )}
           </div>
