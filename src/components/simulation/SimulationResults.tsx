@@ -169,6 +169,11 @@ const SimulationResults = ({
 
   const recommendations = getRecommendations();
 
+  // Handle navigation to simulations entry page
+  const handleBackToSimulations = () => {
+    window.location.href = '/simulations-entry';
+  };
+
   return (
     <div className="space-y-6 animate-fade-in bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6">
       <Card className="shadow-2xl border border-slate-600/50 bg-slate-800/90 backdrop-blur-sm">
@@ -378,11 +383,11 @@ const SimulationResults = ({
             
             <Button 
               variant="outline" 
-              onClick={onBackToTopics}
+              onClick={handleBackToSimulations}
               className="py-5 text-xl font-semibold rounded-2xl border-2 border-slate-400/70 bg-slate-700/60 text-slate-100 hover:bg-slate-600/80 hover:border-slate-300/80 transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl"
             >
               <ArrowLeft className="h-6 w-6 mr-3" />
-              {isQuestionSet ? "חזרה לקבוצות השאלות" : isQuickPractice ? "חזרה לאפשרויות התרגול" : "חזרה לנושאים"}
+              חזרה לסימולציות
             </Button>
           </div>
         </CardContent>
