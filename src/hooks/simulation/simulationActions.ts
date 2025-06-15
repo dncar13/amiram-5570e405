@@ -1,3 +1,4 @@
+
 import { saveActivity } from "@/hooks/useActivityHistory";
 import { saveSetProgress } from "./progressUtils";
 
@@ -92,13 +93,17 @@ export const createSimulationActions = (
   const handleNextQuestion = () => {
     setState((prevState: any) => {
       if (prevState.currentQuestionIndex < prevState.totalQuestions - 1) {
+        const nextQuestionIndex = prevState.currentQuestionIndex + 1;
+        const previousAnswer = prevState.userAnswers[nextQuestionIndex];
+        const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
+        
         return {
           ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex + 1,
-          currentQuestion: prevState.questions[prevState.currentQuestionIndex + 1],
-          isAnswerSubmitted: false,
-          showExplanation: false,
-          selectedAnswerIndex: null
+          currentQuestionIndex: nextQuestionIndex,
+          currentQuestion: prevState.questions[nextQuestionIndex],
+          isAnswerSubmitted: wasAnswered,
+          showExplanation: wasAnswered,
+          selectedAnswerIndex: wasAnswered ? previousAnswer : null
         };
       } else {
         // End of simulation - save set progress if this is a set-based simulation
@@ -129,13 +134,17 @@ export const createSimulationActions = (
   const handlePreviousQuestion = () => {
     setState((prevState: any) => {
       if (prevState.currentQuestionIndex > 0) {
+        const prevQuestionIndex = prevState.currentQuestionIndex - 1;
+        const previousAnswer = prevState.userAnswers[prevQuestionIndex];
+        const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
+        
         return {
           ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex - 1,
-          currentQuestion: prevState.questions[prevState.currentQuestionIndex - 1],
-          isAnswerSubmitted: false,
-          showExplanation: false,
-          selectedAnswerIndex: null
+          currentQuestionIndex: prevQuestionIndex,
+          currentQuestion: prevState.questions[prevQuestionIndex],
+          isAnswerSubmitted: wasAnswered,
+          showExplanation: wasAnswered,
+          selectedAnswerIndex: wasAnswered ? previousAnswer : null
         };
       }
       return prevState;
@@ -155,14 +164,19 @@ export const createSimulationActions = (
   };
 
   const navigateToQuestion = (questionIndex: number) => {
-    setState((prevState: any) => ({
-      ...prevState,
-      currentQuestionIndex: questionIndex,
-      currentQuestion: prevState.questions[questionIndex],
-      isAnswerSubmitted: false,
-      showExplanation: false,
-      selectedAnswerIndex: null
-    }));
+    setState((prevState: any) => {
+      const previousAnswer = prevState.userAnswers[questionIndex];
+      const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
+      
+      return {
+        ...prevState,
+        currentQuestionIndex: questionIndex,
+        currentQuestion: prevState.questions[questionIndex],
+        isAnswerSubmitted: wasAnswered,
+        showExplanation: wasAnswered,
+        selectedAnswerIndex: wasAnswered ? previousAnswer : null
+      };
+    });
   };
 
   const setSimulationComplete = (complete: boolean) => {
