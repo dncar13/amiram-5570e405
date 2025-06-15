@@ -14,24 +14,33 @@ export const ReadingPassage = ({
   passageText,
   showLineNumbers = true 
 }: ReadingPassageProps) => {
+  
+  console.log('[ReadingPassage] Props received:', {
+    hasTitle: !!title,
+    hasPassageWithLines: !!(passageWithLines && passageWithLines.length > 0),
+    hasPassageText: !!passageText,
+    showLineNumbers,
+    passageWithLinesLength: passageWithLines?.length || 0
+  });
+
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 flex flex-col h-[600px] overflow-y-auto">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-3 flex-shrink-0">
+          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
             {title}
           </h3>
         )}
-        <div className="flex-1 px-2 space-y-3 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {passageWithLines.map((line, index) => (
             <div key={index} className="w-full">
               {showLineNumbers && (
-                <div className="text-slate-600 font-bold text-lg mb-1">
+                <div className="text-slate-600 font-bold text-xl mb-2">
                   Line {line.lineNumber}
                 </div>
               )}
-              <div className="text-slate-800 text-lg leading-relaxed w-full mb-3">
+              <div className="text-slate-800 text-xl leading-relaxed w-full">
                 {line.text}
               </div>
             </div>
@@ -45,22 +54,23 @@ export const ReadingPassage = ({
   if (passageText) {
     // Split by lines for simple display
     const lines = passageText.split('\n').filter(line => line.trim());
+    
     return (
-      <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 flex flex-col h-[600px] overflow-y-auto">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-3 flex-shrink-0">
+          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
             {title}
           </h3>
         )}
-        <div className="flex-1 px-2 space-y-3 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {lines.map((line, index) => (
             <div key={index} className="w-full">
               {showLineNumbers && (
-                <div className="text-slate-600 font-bold text-lg mb-1">
+                <div className="text-slate-600 font-bold text-xl mb-2">
                   Line {index + 1}
                 </div>
               )}
-              <div className="text-slate-800 text-lg leading-relaxed w-full mb-3">
+              <div className="text-slate-800 text-xl leading-relaxed w-full">
                 {line}
               </div>
             </div>
@@ -72,7 +82,7 @@ export const ReadingPassage = ({
 
   // If no passage content is available
   return (
-    <div className="bg-slate-50 rounded-lg border border-slate-200 text-center flex items-center justify-center h-[600px]">
+    <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-center">
       <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
     </div>
   );
