@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -30,6 +31,7 @@ import SimulationByType from "./pages/SimulationByType";
 import SimulationByDifficulty from "./pages/SimulationByDifficulty";
 import FullSimulation from "./pages/FullSimulation";
 import SimulationHistory from "./pages/SimulationHistory";
+import ProgressStats from "./pages/ProgressStats";
 import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
@@ -127,7 +129,8 @@ const AnimatedRoutes = () => {
           <Route path="/simulation/full" element={<FullSimulation />} />
           <Route path="/simulation/by-type" element={<SimulationsEntry />} />
           <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
-          <Route path="/simulation/history" element={<SimulationHistory />} />
+          <Route path="/simulation-history" element={<SimulationHistory />} />
+          <Route path="/progress-stats" element={<ProgressStats />} />
           <Route path="/simulation/type/:type" element={<SimulationByType />} />
           <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
           

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -137,7 +136,7 @@ const Header = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={() => navigate("/simulation-history")}
+                    onClick={() => navigate("/progress-stats")}
                   >
                     <TrendingUp className="ml-2 h-4 w-4" />
                     התקדמות
@@ -239,7 +238,7 @@ const Header = () => {
                       המחבון שלי
                     </Link>
                     <Link 
-                      to="/simulation-history" 
+                      to="/progress-stats" 
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
