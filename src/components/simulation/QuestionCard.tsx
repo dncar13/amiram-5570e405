@@ -134,17 +134,22 @@ const QuestionCard = ({
         {/* Reading Passage */}
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
-            <CardHeader className="h-[60px] pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-              <CardTitle className="text-3xl flex items-center justify-center" dir="ltr">
+            <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+              <CardTitle className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
+                <BookOpen className="h-5 w-5" />
+                Reading Passage
                 {currentQuestion.passageTitle && (
-                  <span className="font-bold text-slate-100 text-center">
-                    {currentQuestion.passageTitle}
-                  </span>
+                  <>
+                    <span className="text-slate-400">•</span>
+                    <span className="bg-blue-600/20 px-3 py-1 rounded-full text-blue-300 border border-blue-500/30">
+                      {currentQuestion.passageTitle}
+                    </span>
+                  </>
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-8 h-[calc(100%-60px)]">
-              <div dir="ltr" className="text-left h-full flex flex-col">
+            <CardContent className="p-8">
+              <div dir="ltr" className="text-left">
                 <ReadingPassage 
                   passageWithLines={currentQuestion.passageWithLines}
                   passageText={currentQuestion.passageText}
@@ -157,13 +162,13 @@ const QuestionCard = ({
         {/* Question Area */}
         <div className="lg:order-2 h-full flex flex-col">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
-            <CardHeader className="h-[60px] pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+            <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <div className="flex justify-between items-center">
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <div className="bg-slate-800/60 p-1.5 rounded-lg border border-slate-600/50">
-                    <CheckCircle className="h-4 w-4 text-slate-300" />
+                <CardTitle className="text-xl flex items-center gap-3">
+                  <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+                    <CheckCircle className="h-6 w-6 text-slate-300" />
                   </div>
-                  <span className="font-medium text-slate-100 text-sm">
+                  <span className="font-bold text-slate-100">
                     Question {currentQuestionIndex + 1} of {totalQuestions}
                   </span>
                 </CardTitle>
@@ -171,7 +176,7 @@ const QuestionCard = ({
                   variant="ghost" 
                   size="icon" 
                   className={cn(
-                    "h-7 w-7 rounded-lg border transition-all duration-300",
+                    "h-10 w-10 rounded-lg border transition-all duration-300",
                     isFlagged 
                       ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
                       : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
@@ -179,25 +184,25 @@ const QuestionCard = ({
                   onClick={onToggleQuestionFlag}
                   title={isFlagged ? "Remove flag" : "Flag question"}
                 >
-                  <Flag className={cn("h-3.5 w-3.5", isFlagged && "fill-amber-400")} />
+                  <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
                 </Button>
               </div>
-              <div className="mt-2">
-                <div className="flex justify-between items-center text-xs text-slate-300 mb-1">
+              <div className="mt-4">
+                <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
                   <span>Progress</span>
                   <span>{calculatedProgressPercentage}%</span>
                 </div>
                 <Progress 
                   value={calculatedProgressPercentage} 
-                  className="h-1.5 bg-slate-800/60 rounded-full border border-slate-600/50" 
+                  className="h-3 bg-slate-800/60 rounded-full border border-slate-600/50" 
                   indicatorClassName="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
                 />
               </div>
             </CardHeader>
-            <CardContent className="p-8 space-y-6 flex-1 flex flex-col h-[calc(100%-60px)]">
+            <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
               {/* Question Text */}
               <div dir="ltr" className="text-left">
-                <h3 className="text-2xl font-bold text-white">{currentQuestion.text}</h3>
+                <h3 className="text-3xl font-bold text-white">{currentQuestion.text}</h3>
               </div>
               
               <div className="space-y-6 flex-1 flex flex-col">
