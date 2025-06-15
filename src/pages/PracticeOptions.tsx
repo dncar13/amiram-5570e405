@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
@@ -27,8 +26,25 @@ const PracticeOptions: React.FC = () => {
   const navigate = useNavigate();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   
-  // Get quick practice progress
-  const { progress, isLoading, hasInProgressPractice, hasCompletedPractice, clearProgress } = useQuickPracticeProgress(type || '');
+  // Get quick practice progress and refresh it when component mounts
+  const { progress, isLoading, hasInProgressPractice, hasCompletedPractice, clearProgress, refreshProgress } = useQuickPracticeProgress(type || '');
+
+  // Refresh progress when component becomes visible (when user returns from simulation)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        refreshProgress();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [refreshProgress]);
+
+  // Also refresh when component mounts
+  useEffect(() => {
+    refreshProgress();
+  }, [refreshProgress]);
 
   const questionTypesData: Record<string, PracticeOptionData> = {
     'sentence-completion': {

@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getQuickPracticeProgress, clearQuickPracticeProgress } from './simulation/progressUtils';
 
 interface QuickPracticeProgress {
@@ -14,20 +14,20 @@ export const useQuickPracticeProgress = (type: string) => {
   const [progress, setProgress] = useState<QuickPracticeProgress | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadProgress = () => {
-      const savedProgress = getQuickPracticeProgress(type);
-      setProgress(savedProgress);
-      setIsLoading(false);
-    };
-
-    loadProgress();
+  const refreshProgress = useCallback(() => {
+    const savedProgress = getQuickPracticeProgress(type);
+    setProgress(savedProgress);
+    setIsLoading(false);
   }, [type]);
 
-  const clearProgress = () => {
+  useEffect(() => {
+    refreshProgress();
+  }, [refreshProgress]);
+
+  const clearProgress = useCallback(() => {
     clearQuickPracticeProgress(type);
     setProgress(null);
-  };
+  }, [type]);
 
   const hasInProgressPractice = progress && progress.inProgress && !progress.completed;
   const hasCompletedPractice = progress && progress.completed;
@@ -37,6 +37,7 @@ export const useQuickPracticeProgress = (type: string) => {
     isLoading,
     hasInProgressPractice,
     hasCompletedPractice,
-    clearProgress
+    clearProgress,
+    refreshProgress
   };
 };
