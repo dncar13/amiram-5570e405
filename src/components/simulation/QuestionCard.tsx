@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -138,14 +137,6 @@ const QuestionCard = ({
               <CardTitle className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
                 Reading Passage
-                {currentQuestion.passageTitle && (
-                  <>
-                    <span className="text-slate-400">•</span>
-                    <span className="bg-blue-600/20 px-3 py-1 rounded-full text-blue-300 border border-blue-500/30">
-                      {currentQuestion.passageTitle}
-                    </span>
-                  </>
-                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-2">
