@@ -1,87 +1,20 @@
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
-import { saveActivity } from "@/hooks/useActivityHistory";
 import { useToast } from "@/hooks/use-toast";
-import { 
-  getEasyQuestions, 
-  getMediumQuestions, 
-  getHardQuestions, 
-  getMixedDifficultyQuestions,
-  getRestatementQuestions,
-  getQuestionsByDifficultyAndType,
-  getSentenceCompletionQuestions
-} from "@/services/questionsService";
 import { useParams, useSearchParams } from "react-router-dom";
-
-interface SimulationState {
-  currentQuestionIndex: number;
-  currentQuestion: Question | null;
-  questions: Question[];
-  userAnswers: Record<number, number | null>;
-  questionFlags: Record<number, boolean>;
-  simulationComplete: boolean;
-  score: number;
-  totalQuestions: number;
-  remainingTime: number;
-  isTimerActive: boolean;
-  isAnswerSubmitted: boolean;
-  showExplanation: boolean;
-  progressLoaded: boolean;
-  examMode: boolean;
-  showAnswersImmediately: boolean;
-  answeredQuestionsCount: number;
-  correctQuestionsCount: number;
-  progressPercentage: number;
-  currentScorePercentage: number;
-  selectedAnswerIndex: number | null;
-}
-
-interface SimulationActions {
-  handleAnswerSelect: (answerIndex: number) => void;
-  handleSubmitAnswer: () => void;
-  handleNextQuestion: () => void;
-  handlePreviousQuestion: () => void;
-  handleToggleExplanation: () => void;
-  toggleQuestionFlag: (questionIndex: number) => void;
-  navigateToQuestion: (questionIndex: number) => void;
-  handleRestartSimulation: () => void;
-  saveProgress: () => void;
-  resetProgress: () => void;
-  setSimulationComplete: (complete: boolean) => void;
-}
-
-const initialSimulationState: SimulationState = {
-  currentQuestionIndex: 0,
-  currentQuestion: null,
-  questions: [],
-  userAnswers: {},
-  questionFlags: {},
-  simulationComplete: false,
-  score: 0,
-  totalQuestions: 0,
-  remainingTime: 1800, // 30 minutes in seconds
-  isTimerActive: false,
-  isAnswerSubmitted: false,
-  showExplanation: false,
-  progressLoaded: false,
-  examMode: false,
-  showAnswersImmediately: false,
-  answeredQuestionsCount: 0,
-  correctQuestionsCount: 0,
-  progressPercentage: 0,
-  currentScorePercentage: 0,
-  selectedAnswerIndex: null,
-};
-
-// Helper function to shuffle array
-const shuffleArray = <T,>(array: T[]): T[] => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
+import { 
+  SimulationState, 
+  SimulationActions, 
+  initialSimulationState 
+} from "./simulation/types";
+import { loadQuestions } from "./simulation/questionLoader";
+import { useTimer } from "./simulation/useTimer";
+import { 
+  saveSimulationProgress, 
+  loadSimulationProgress 
+} from "./simulation/progressUtils";
+import { createSimulationActions } from "./simulation/simulationActions";
 
 export const useSimulation = (
   simulationId: string, 
@@ -89,7 +22,6 @@ export const useSimulation = (
   storyQuestions?: Question[]
 ) => {
   const [state, setState] = useState<SimulationState>(initialSimulationState);
-  const timerInterval = useRef<NodeJS.Timeout | null>(null);
   const progressLoadedRef = useRef(false);
   const { toast } = useToast();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
@@ -104,157 +36,22 @@ export const useSimulation = (
 
   console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit });
 
-  const initializeTimer = useCallback(() => {
-    console.log("Initializing timer");
-    
-    if (timerInterval.current) {
-      clearInterval(timerInterval.current);
-    }
-    
-    timerInterval.current = setInterval(() => {
-      setState(prevState => {
-        if (!prevState.isTimerActive || prevState.remainingTime <= 0) {
-          clearInterval(timerInterval.current!);
-          return prevState;
-        }
-        
-        return { ...prevState, remainingTime: prevState.remainingTime - 1 };
-      });
-    }, 1000);
-  }, []);
+  const { initializeTimer, clearTimer } = useTimer(setState);
 
-  const handleAnswerSelect = useCallback((answerIndex: number) => {
-    setState(prevState => ({ ...prevState, selectedAnswerIndex: answerIndex }));
-  }, []);
-
-  const handleSubmitAnswer = useCallback(() => {
-    setState(prevState => {
-      if (prevState.isAnswerSubmitted || prevState.currentQuestion === null || prevState.selectedAnswerIndex === null) {
-        return prevState;
-      }
-      
-      const isCorrect = prevState.selectedAnswerIndex === prevState.currentQuestion.correctAnswer;
-      const questionId = prevState.currentQuestion.id;
-      
-      // Save activity record
-      saveActivity({
-        date: new Date().toLocaleDateString(),
-        time: new Date().toLocaleTimeString(),
-        topic: 'General',
-        questionId: String(questionId),
-        status: isCorrect ? 'correct' : 'wrong',
-        isCorrect: isCorrect,
-        isCompleted: false
-      });
-      
-      const updatedUserAnswers = { ...prevState.userAnswers, [prevState.currentQuestionIndex]: prevState.selectedAnswerIndex };
-      const newScore = isCorrect ? prevState.score + 1 : prevState.score;
-      const newCorrectQuestionsCount = isCorrect ? prevState.correctQuestionsCount + 1 : prevState.correctQuestionsCount;
-      const newAnsweredQuestionsCount = prevState.answeredQuestionsCount + 1;
-      const newProgressPercentage = Math.round((newAnsweredQuestionsCount / prevState.totalQuestions) * 100);
-      const newCurrentScorePercentage = Math.round((newScore / prevState.totalQuestions) * 100);
-      
-      return {
-        ...prevState,
-        userAnswers: updatedUserAnswers,
-        score: newScore,
-        isAnswerSubmitted: true,
-        showExplanation: true,
-        correctQuestionsCount: newCorrectQuestionsCount,
-        answeredQuestionsCount: newAnsweredQuestionsCount,
-        progressPercentage: newProgressPercentage,
-        currentScorePercentage: newCurrentScorePercentage
-      };
-    });
-  }, []);
-
-  const handleNextQuestion = useCallback(() => {
-    setState(prevState => {
-      if (prevState.currentQuestionIndex < prevState.totalQuestions - 1) {
-        return {
-          ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex + 1,
-          currentQuestion: prevState.questions[prevState.currentQuestionIndex + 1],
-          isAnswerSubmitted: false,
-          showExplanation: false,
-          selectedAnswerIndex: null
-        };
-      } else {
-        // End of simulation - save set progress if this is a set-based simulation
-        clearInterval(timerInterval.current!);
-        
-        if (setNumber && type && difficulty) {
-          const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
-          const setProgress = {
-            completed: true,
-            inProgress: false,
-            score: Math.round((prevState.score / prevState.totalQuestions) * 100),
-            answeredQuestions: prevState.totalQuestions
-          };
-          sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
-        }
-        
-        // Save activity record for completion
-        saveActivity({
-          date: new Date().toLocaleDateString(),
-          time: new Date().toLocaleTimeString(),
-          topic: 'General',
-          questionId: 'N/A',
-          status: 'correct', // Use valid status type
-          score: prevState.score,
-          correctAnswers: prevState.correctQuestionsCount,
-          totalAnswered: prevState.totalQuestions,
-          isCompleted: true
-        });
-        
-        return { ...prevState, isTimerActive: false, simulationComplete: true };
-      }
-    });
-  }, [setNumber, type, difficulty]);
-
-  const handlePreviousQuestion = useCallback(() => {
-    setState(prevState => {
-      if (prevState.currentQuestionIndex > 0) {
-        return {
-          ...prevState,
-          currentQuestionIndex: prevState.currentQuestionIndex - 1,
-          currentQuestion: prevState.questions[prevState.currentQuestionIndex - 1],
-          isAnswerSubmitted: false,
-          showExplanation: false,
-          selectedAnswerIndex: null
-        };
-      }
-      return prevState;
-    });
-  }, []);
-
-  const handleToggleExplanation = useCallback(() => {
-    setState(prevState => ({ ...prevState, showExplanation: !prevState.showExplanation }));
-  }, []);
-
-  const toggleQuestionFlag = useCallback((questionIndex: number) => {
-    setState(prevState => {
-      const questionId = prevState.questions[questionIndex].id;
-      const newFlags = { ...prevState.questionFlags, [questionId]: !prevState.questionFlags[questionId] };
-      return { ...prevState, questionFlags: newFlags };
-    });
-  }, []);
-
-  const navigateToQuestion = useCallback((questionIndex: number) => {
-    setState(prevState => ({
-      ...prevState,
-      currentQuestionIndex: questionIndex,
-      currentQuestion: prevState.questions[questionIndex],
-      isAnswerSubmitted: false,
-      showExplanation: false,
-      selectedAnswerIndex: null
-    }));
-  }, []);
+  // Create simulation actions
+  const actions = createSimulationActions(
+    state, 
+    setState, 
+    clearTimer, 
+    setNumber, 
+    type, 
+    difficulty
+  );
 
   const handleRestartSimulation = useCallback(() => {
     console.log("Restarting simulation");
     
-    clearInterval(timerInterval.current!);
+    clearTimer();
     
     setState(prevState => ({
       ...initialSimulationState,
@@ -265,42 +62,10 @@ export const useSimulation = (
     }));
     
     initializeTimer();
-  }, [initializeTimer]);
+  }, [initializeTimer, clearTimer]);
 
   const saveProgress = useCallback(() => {
-    try {
-      const progress = {
-        currentQuestionIndex: state.currentQuestionIndex,
-        userAnswers: state.userAnswers,
-        questionFlags: state.questionFlags,
-        remainingTime: state.remainingTime,
-        isTimerActive: state.isTimerActive,
-        examMode: state.examMode,
-        showAnswersImmediately: state.showAnswersImmediately,
-        answeredQuestionsCount: state.answeredQuestionsCount,
-        correctQuestionsCount: state.correctQuestionsCount,
-        progressPercentage: state.progressPercentage,
-        currentScorePercentage: state.currentScorePercentage
-      };
-      
-      sessionStorage.setItem(`simulation_progress_${simulationId}`, JSON.stringify(progress));
-      
-      // Also save set progress if this is a set-based simulation
-      if (setNumber && type && difficulty && state.answeredQuestionsCount > 0) {
-        const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
-        const setProgress = {
-          completed: false,
-          inProgress: true,
-          score: undefined,
-          answeredQuestions: state.answeredQuestionsCount
-        };
-        sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
-      }
-      
-      console.log(`Simulation progress saved for ${simulationId}`);
-    } catch (error) {
-      console.error("Error saving simulation progress:", error);
-    }
+    saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
   }, [simulationId, state, setNumber, type, difficulty]);
 
   const resetProgress = useCallback(() => {
@@ -309,33 +74,14 @@ export const useSimulation = (
       console.log(`Simulation progress reset for ${simulationId}`);
       
       // Get the current questions again to avoid undefined state
-      let questionsToUse: Question[] = [];
-      
-      if (storyQuestions && storyQuestions.length > 0) {
-        questionsToUse = [...storyQuestions];
-      } else if (effectiveType && difficulty) {
-        questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
-        
-        // Apply limit if specified in URL
-        if (questionLimit) {
-          const limit = parseInt(questionLimit, 10);
-          if (!isNaN(limit) && limit > 0) {
-            questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-            console.log(`Limited questions to ${limit} random questions`);
-          }
-        }
-      } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
-        const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
-        const difficultyType = sessionStorage.getItem('current_difficulty_type');
-        
-        if (difficultyLevel && difficultyType) {
-          if (difficultyType === 'mixed') {
-            questionsToUse = getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
-          } else {
-            questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
-          }
-        }
-      }
+      const questionsToUse = loadQuestions({
+        storyQuestions,
+        effectiveType,
+        difficulty,
+        questionLimit,
+        setNumber,
+        startIndex
+      });
       
       setState(prevState => ({
         ...initialSimulationState,
@@ -355,81 +101,20 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit]);
-
-  const setSimulationComplete = useCallback((complete: boolean) => {
-    setState(prevState => ({ ...prevState, simulationComplete: complete }));
-  }, []);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex]);
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
     console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex, typeFromQuery, effectiveType });
     
-    let questionsToUse: Question[] = [];
-    
-    if (storyQuestions && storyQuestions.length > 0) {
-      questionsToUse = [...storyQuestions];
-      console.log(`Using ${questionsToUse.length} story questions`);
-    } 
-    // NEW: Handle quick practice with type but no difficulty - PRIORITIZE THIS CASE
-    else if (effectiveType && !difficulty && questionLimit) {
-      console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
-      
-      if (effectiveType === 'sentence-completion') {
-        questionsToUse = getSentenceCompletionQuestions();
-        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} sentence completion questions`);
-      } else if (effectiveType === 'restatement') {
-        questionsToUse = getRestatementQuestions();
-        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} restatement questions`);
-      }
-      
-      // Apply limit and shuffle
-      const limit = parseInt(questionLimit, 10);
-      if (!isNaN(limit) && limit > 0) {
-        questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-        console.log(`[QUICK PRACTICE] Limited and shuffled to ${limit} random questions from all difficulty levels`);
-      }
-    }
-    else if (effectiveType && difficulty) {
-      console.log(`Loading questions for type: ${effectiveType}, difficulty: ${difficulty}`);
-      questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
-      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${effectiveType}`);
-      
-      // Handle set-based question selection
-      if (setNumber && startIndex) {
-        const setNum = parseInt(setNumber, 10);
-        const start = parseInt(startIndex, 10);
-        const questionsPerSet = 10;
-        
-        if (!isNaN(setNum) && !isNaN(start)) {
-          // Get specific 10 questions for this set
-          questionsToUse = questionsToUse.slice(start, start + questionsPerSet);
-          console.log(`Set ${setNum}: Using questions ${start + 1}-${start + questionsToUse.length}`);
-        }
-      }
-      // Apply general limit if specified in URL (for quick practice)
-      else if (questionLimit) {
-        const limit = parseInt(questionLimit, 10);
-        if (!isNaN(limit) && limit > 0) {
-          questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-          console.log(`Limited questions to ${limit} random questions`);
-        }
-      }
-    } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
-      const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
-      const difficultyType = sessionStorage.getItem('current_difficulty_type');
-      
-      console.log(`Getting difficulty-based questions from sessionStorage: ${difficultyLevel}, ${difficultyType}`);
-      
-      if (difficultyLevel && difficultyType) {
-        if (difficultyType === 'mixed') {
-          questionsToUse = getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
-        } else {
-          questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
-        }
-        console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${difficultyType}`);
-      }
-    }
+    const questionsToUse = loadQuestions({
+      storyQuestions,
+      effectiveType,
+      difficulty,
+      questionLimit,
+      setNumber,
+      startIndex
+    });
     
     if (questionsToUse.length > 0) {
       console.log(`Setting ${questionsToUse.length} questions for simulation`);
@@ -449,33 +134,27 @@ export const useSimulation = (
   }, [initializeQuestions]);
 
   useEffect(() => {
-    const savedProgress = sessionStorage.getItem(`simulation_progress_${simulationId}`);
+    const savedProgress = loadSimulationProgress(simulationId);
     
     if (savedProgress && !progressLoadedRef.current) {
-      try {
-        const parsedProgress = JSON.parse(savedProgress);
-        
-        setState(prevState => ({
-          ...prevState,
-          currentQuestionIndex: parsedProgress.currentQuestionIndex || 0,
-          userAnswers: parsedProgress.userAnswers || {},
-          questionFlags: parsedProgress.questionFlags || {},
-          remainingTime: parsedProgress.remainingTime || 1800,
-          isTimerActive: parsedProgress.isTimerActive !== undefined ? parsedProgress.isTimerActive : false,
-          examMode: parsedProgress.examMode !== undefined ? parsedProgress.examMode : false,
-          showAnswersImmediately: parsedProgress.showAnswersImmediately !== undefined ? parsedProgress.showAnswersImmediately : false,
-          answeredQuestionsCount: parsedProgress.answeredQuestionsCount || 0,
-          correctQuestionsCount: parsedProgress.correctQuestionsCount || 0,
-          progressPercentage: parsedProgress.progressPercentage || 0,
-          currentScorePercentage: parsedProgress.currentScorePercentage || 0,
-          progressLoaded: true
-        }));
-        
-        progressLoadedRef.current = true;
-        console.log(`Simulation progress loaded for ${simulationId}`);
-      } catch (error) {
-        console.error("Error loading simulation progress:", error);
-      }
+      setState(prevState => ({
+        ...prevState,
+        currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
+        userAnswers: savedProgress.userAnswers || {},
+        questionFlags: savedProgress.questionFlags || {},
+        remainingTime: savedProgress.remainingTime || 1800,
+        isTimerActive: savedProgress.isTimerActive !== undefined ? savedProgress.isTimerActive : false,
+        examMode: savedProgress.examMode !== undefined ? savedProgress.examMode : false,
+        showAnswersImmediately: savedProgress.showAnswersImmediately !== undefined ? savedProgress.showAnswersImmediately : false,
+        answeredQuestionsCount: savedProgress.answeredQuestionsCount || 0,
+        correctQuestionsCount: savedProgress.correctQuestionsCount || 0,
+        progressPercentage: savedProgress.progressPercentage || 0,
+        currentScorePercentage: savedProgress.currentScorePercentage || 0,
+        progressLoaded: true
+      }));
+      
+      progressLoadedRef.current = true;
+      console.log(`Simulation progress loaded for ${simulationId}`);
     } else {
       setState(prevState => ({ ...prevState, progressLoaded: true }));
     }
@@ -485,12 +164,13 @@ export const useSimulation = (
     if (state.examMode) {
       initializeTimer();
     } else {
-      clearInterval(timerInterval.current!);
+      clearTimer();
     }
     
-    return () => clearInterval(timerInterval.current!);
-  }, [state.examMode, initializeTimer]);
+    return () => clearTimer();
+  }, [state.examMode, initializeTimer, clearTimer]);
 
+  // Setter functions for external state management
   const setQuestions = (questions: Question[]) => {
     setState(prevState => ({ ...prevState, questions }));
   };
@@ -520,6 +200,7 @@ export const useSimulation = (
   };
 
   return {
+    // State
     currentQuestionIndex: state.currentQuestionIndex,
     currentQuestion: state.currentQuestion,
     questions: state.questions,
@@ -540,17 +221,14 @@ export const useSimulation = (
     progressPercentage: state.progressPercentage,
     currentScorePercentage: state.currentScorePercentage,
     selectedAnswerIndex: state.selectedAnswerIndex,
-    handleAnswerSelect,
-    handleSubmitAnswer,
-    handleNextQuestion,
-    handlePreviousQuestion,
-    handleToggleExplanation,
-    toggleQuestionFlag,
-    navigateToQuestion,
+    
+    // Actions
+    ...actions,
     handleRestartSimulation,
     saveProgress,
     resetProgress,
-    setSimulationComplete,
+    
+    // Setters
     setQuestions,
     setTotalQuestions,
     setCurrentQuestion,
