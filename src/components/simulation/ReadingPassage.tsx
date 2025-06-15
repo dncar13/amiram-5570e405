@@ -27,16 +27,21 @@ export const ReadingPassage = ({
   if (passageWithLines && passageWithLines.length > 0) {
     return (
       <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 h-[420px] flex flex-col">
-        {/* Header section with title outside scrollable area */}
-        <div className="flex-shrink-0 p-4 border-b border-slate-300">
-          <div className="text-sm text-slate-500 uppercase tracking-wide mb-1">
-            Reading Passage
-          </div>
-          {title && (
-            <div className="text-lg font-semibold text-slate-900">
-              {title}
+        {/* Header section with title and book icon */}
+        <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-sm text-slate-500 uppercase tracking-wide">
+              Reading Passage
             </div>
-          )}
+            {title && (
+              <div className="text-lg font-semibold text-slate-900">
+                {title}
+              </div>
+            )}
+          </div>
+          <div className="text-slate-600">
+            📖
+          </div>
         </div>
         
         {/* Scrollable content area */}
@@ -69,16 +74,21 @@ export const ReadingPassage = ({
     
     return (
       <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 h-[420px] flex flex-col">
-        {/* Header section with title outside scrollable area */}
-        <div className="flex-shrink-0 p-4 border-b border-slate-300">
-          <div className="text-sm text-slate-500 uppercase tracking-wide mb-1">
-            Reading Passage
-          </div>
-          {title && (
-            <div className="text-lg font-semibold text-slate-900">
-              {title}
+        {/* Header section with title and book icon */}
+        <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="text-sm text-slate-500 uppercase tracking-wide">
+              Reading Passage
             </div>
-          )}
+            {title && (
+              <div className="text-lg font-semibold text-slate-900">
+                {title}
+              </div>
+            )}
+          </div>
+          <div className="text-slate-600">
+            📖
+          </div>
         </div>
         
         {/* Scrollable content area */}
@@ -107,15 +117,20 @@ export const ReadingPassage = ({
   // If no passage content is available
   return (
     <div className="bg-slate-50 rounded-lg border border-slate-200 text-center h-[420px] flex flex-col">
-      <div className="flex-shrink-0 p-4 border-b border-slate-300">
-        <div className="text-sm text-slate-500 uppercase tracking-wide mb-1">
-          Reading Passage
-        </div>
-        {title && (
-          <div className="text-lg font-semibold text-slate-900">
-            {title}
+      <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="text-sm text-slate-500 uppercase tracking-wide">
+            Reading Passage
           </div>
-        )}
+          {title && (
+            <div className="text-lg font-semibold text-slate-900">
+              {title}
+            </div>
+          )}
+        </div>
+        <div className="text-slate-600">
+          📖
+        </div>
       </div>
       <div className="flex-1 flex items-center justify-center">
         <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
