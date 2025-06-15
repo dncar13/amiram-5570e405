@@ -43,7 +43,7 @@ export const loadQuestions = ({
     console.log(`Using ${questionsToUse.length} story questions`);
   } 
   // Handle quick practice with type but no difficulty - PRIORITIZE THIS CASE
-  else if (effectiveType && !difficulty && questionLimit) {
+  else if (effectiveType && questionLimit) {
     console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
     
     if (effectiveType === 'sentence-completion') {

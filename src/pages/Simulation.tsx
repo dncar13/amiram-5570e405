@@ -1,3 +1,4 @@
+
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
@@ -38,6 +39,16 @@ const Simulation = () => {
   const shouldShowResetToast = useRef(false);
   const hasShownToast = useRef(false);
   
+  // Get query parameters
+  const typeFromQuery = searchParams.get('type');
+  const questionLimit = searchParams.get('limit');
+  
+  // Determine effective type and if this is a quick practice simulation
+  const effectiveType = type || typeFromQuery;
+  const isQuickPractice = Boolean(effectiveType && questionLimit && !difficulty);
+  
+  console.log("Simulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, isQuickPractice });
+  
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
 
@@ -58,7 +69,7 @@ const Simulation = () => {
     return getStoryById(storyId);
   }, [isStoryBased, storyId]);
 
-  // Get simulation data (questions, topic info, etc.)
+  // Get simulation data (questions, topic info, etc.) - only for non-quick-practice simulations
   const { 
     isLoading, 
     topicQuestions, 
@@ -70,7 +81,7 @@ const Simulation = () => {
   } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
 
   useEffect(() => {
-    console.log("Simulation component mounted or parameters changed", { topicId, setId, difficulty, type, storyId, isContinue });
+    console.log("Simulation component mounted or parameters changed", { topicId, setId, difficulty, type, storyId, isContinue, typeFromQuery, effectiveType, questionLimit });
     
     // Check if there's a reset parameter in the URL - only on first load
     if (!initialLoadAttempted.current) {
@@ -98,6 +109,11 @@ const Simulation = () => {
       window.sessionStorage.setItem('difficulty_level', difficulty);
       window.sessionStorage.setItem('difficulty_type', type);
       console.log(`[Simulation] Setting difficulty parameters: ${difficulty}, ${type}`);
+    } else if (isQuickPractice) {
+      // For quick practice, don't set difficulty-based flags
+      window.sessionStorage.setItem('is_question_set', 'false');
+      window.sessionStorage.removeItem('is_difficulty_based');
+      console.log(`[Simulation] Setting quick practice parameters: ${effectiveType}, limit: ${questionLimit}`);
     }
     
     // Clean up the continue flag after using it
@@ -111,7 +127,7 @@ const Simulation = () => {
     const questSetFlag = window.sessionStorage.getItem('is_question_set');
     setIsQuestionSet(questSetFlag === 'true');
     
-    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
+    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : isQuickPractice ? 'QUICK PRACTICE' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
       // Store the current simulation IDs in sessionStorage to persist across refreshes
     if (storyId) {
       sessionStorage.setItem('current_story_id', storyId);
@@ -127,7 +143,7 @@ const Simulation = () => {
     }
       // Force attempt load on first render
     initialLoadAttempted.current = true;
-      }, [topicId, setId, difficulty, type, storyId, isContinue]);
+      }, [topicId, setId, difficulty, type, storyId, isContinue, typeFromQuery, effectiveType, questionLimit, isQuickPractice]);
   
   // Check if this is a difficulty-based simulation
   const isDifficultyBased = Boolean(difficulty && type);
@@ -149,6 +165,8 @@ const Simulation = () => {
   // Use appropriate simulation ID
   const simulationId = isStoryBased
     ? `story_${storyId}`
+    : isQuickPractice
+      ? `quick_${effectiveType}_${questionLimit}`
     : isDifficultyBased 
       ? `difficulty_${difficulty}_${type}`
       : setId 
@@ -156,11 +174,14 @@ const Simulation = () => {
         : topicId;
     
   // Ensure the simulationId is properly formatted for storage
-  const formattedSimulationId = simulationId ? simulationId : '';    // Only pass the correct arguments to the hook
+  const formattedSimulationId = simulationId ? simulationId : '';    
+  
+  // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
-    // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = isDifficultyBased ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
-  const effectiveIsLoading = isDifficultyBased ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
+    
+  // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = (isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
+  const effectiveIsLoading = (isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
   
   useEffect(() => {
     if (contentRef.current) {
@@ -218,6 +239,8 @@ const Simulation = () => {
       return "/reading-comprehension";
     } else if (isDifficultyBased) {
       return `/simulation/difficulty/${difficulty}`;
+    } else if (isQuickPractice) {
+      return "/practice-options";
     } else if (setId) {
       return "/questions-sets";
     } else {
@@ -305,7 +328,7 @@ const Simulation = () => {
               onClick={() => navigate(handleBackToTopics())} 
               className="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-2 px-4 rounded-lg shadow-lg"
             >
-              {isStoryBased ? "חזרה לסיפורי הבנת הנקרא" : isQuestionSet ? "חזרה לקבוצות השאלות" : "חזרה לרשימת הנושאים"}
+              {isStoryBased ? "חזרה לסיפורי הבנת הנקרא" : isQuestionSet ? "חזרה לקבוצות השאלות" : isQuickPractice ? "חזרה לאפשרויות התרגול" : "חזרה לרשימת הנושאים"}
             </Button>
           </div>
         </main>
