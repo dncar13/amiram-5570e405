@@ -350,15 +350,15 @@ const Simulation = () => {
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
-      <main className="flex-grow py-4 md:py-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" ref={contentRef}>
+      <main className="flex-grow py-6 px-4 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" ref={contentRef}>
         
-        {/* כפתור חזרה - ללא מרכוז */}
-        <div className="w-full px-4">
+        {/* כפתור חזרה */}
+        <div className="container mx-auto max-w-7xl mb-6">
           <BackButton isQuestionSet={isQuestionSet} />
         </div>
         
-        {/* תוכן הסימולציה - עם מרכוז */}
-        <div className="container mx-auto max-w-5xl px-4">
+        {/* תוכן הסימולציה */}
+        <div className="container mx-auto max-w-7xl">
           <SimulationContent 
             simulationComplete={simulation.simulationComplete}
             currentQuestionIndex={simulation.currentQuestionIndex}

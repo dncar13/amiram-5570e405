@@ -105,22 +105,24 @@ const SimulationContent = ({
   console.log('[SimulationContent] Using unified QuestionCard for all question types');
 
   return (
-    <div className="space-y-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6 rounded-xl">
+    <div className="w-full max-w-none">
       {/* Navigation Panel */}
-      <NavigationPanel
-        currentQuestionIndex={currentQuestionIndex}
-        totalQuestions={totalQuestions}
-        userAnswers={userAnswersArray}
-        questionsData={questionsData}
-        questionFlags={questionFlagsArray}
-        progressPercentage={progressPercentage}
-        currentScorePercentage={currentScorePercentage}
-        onNavigateToQuestion={onNavigateToQuestion}
-        onToggleQuestionFlag={onToggleQuestionFlag}
-        onResetProgress={onResetProgress}
-        simulationType={isQuestionSet ? "question-set" : "topic"}
-        setNumber={setNumber}
-      />
+      <div className="mb-8">
+        <NavigationPanel
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={totalQuestions}
+          userAnswers={userAnswersArray}
+          questionsData={questionsData}
+          questionFlags={questionFlagsArray}
+          progressPercentage={progressPercentage}
+          currentScorePercentage={currentScorePercentage}
+          onNavigateToQuestion={onNavigateToQuestion}
+          onToggleQuestionFlag={onToggleQuestionFlag}
+          onResetProgress={onResetProgress}
+          simulationType={isQuestionSet ? "question-set" : "topic"}
+          setNumber={setNumber}
+        />
+      </div>
 
       {/* Unified Question Display */}
       <QuestionCard
