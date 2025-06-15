@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -136,7 +137,7 @@ const QuestionCard = ({
             <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <CardTitle className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
                 <BookOpen className="h-5 w-5" />
-                Reading Passage
+                {currentQuestion.passageTitle || 'Technology Reading'}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-2">
