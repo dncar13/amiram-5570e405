@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -136,12 +137,13 @@ const NavigationPanel = ({
       );
     }
     
-    // Responsive, tight grid layout for all screen sizes
+    // Fixed columns on mobile, auto-fit on desktop
     return (
       <div
         className={cn(
           "grid gap-2 justify-center w-full max-w-[600px] mx-auto",
-          "grid-cols-[repeat(auto-fit,minmax(48px,1fr))]"
+          "grid-cols-5 sm:grid-cols-6 md:grid-cols-7",
+          "lg:grid-cols-[repeat(auto-fit,minmax(48px,1fr))]"
         )}
         style={{ direction: 'ltr', textAlign: 'left' }}
       >
