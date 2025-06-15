@@ -25,22 +25,22 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] flex flex-col">
+      <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 text-slate-800 max-h-[600px] flex flex-col">
         {title && (
-          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4 flex-shrink-0">
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-3 flex-shrink-0">
             {title}
           </h3>
         )}
-        <div className="flex-1 overflow-y-auto">
-          <div className="space-y-4 leading-relaxed">
+        <div className="flex-1 overflow-y-auto px-2">
+          <div className="space-y-3 leading-relaxed">
             {passageWithLines.map((line, index) => (
               <div key={index} className="w-full">
                 {showLineNumbers && (
-                  <div className="text-slate-600 font-bold text-xl mb-2">
+                  <div className="text-slate-600 font-bold text-lg mb-1">
                     Line {line.lineNumber}
                   </div>
                 )}
-                <div className="text-slate-800 text-xl leading-relaxed w-full">
+                <div className="text-slate-800 text-lg leading-relaxed w-full mb-3">
                   {line.text}
                 </div>
               </div>
@@ -57,22 +57,22 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] flex flex-col">
+      <div className="bg-slate-50 rounded-lg p-4 border border-slate-200 text-slate-800 max-h-[600px] flex flex-col">
         {title && (
-          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4 flex-shrink-0">
+          <h3 className="text-2xl font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-3 flex-shrink-0">
             {title}
           </h3>
         )}
-        <div className="flex-1 overflow-y-auto">
-          <div className="space-y-4 leading-relaxed">
+        <div className="flex-1 overflow-y-auto px-2">
+          <div className="space-y-3 leading-relaxed">
             {lines.map((line, index) => (
               <div key={index} className="w-full">
                 {showLineNumbers && (
-                  <div className="text-slate-600 font-bold text-xl mb-2">
+                  <div className="text-slate-600 font-bold text-lg mb-1">
                     Line {index + 1}
                   </div>
                 )}
-                <div className="text-slate-800 text-xl leading-relaxed w-full">
+                <div className="text-slate-800 text-lg leading-relaxed w-full mb-3">
                   {line}
                 </div>
               </div>
