@@ -1,14 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Flag, Edit, ChevronLeft, ChevronRight, MessageSquare, Trophy, AlertCircle, Lightbulb } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { Question } from "@/data/questionsData";
-import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/context/AuthContext";
+import { ChevronRight, ChevronLeft, Flag, Eye, EyeOff, CheckCircle, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AnimatePresence, motion } from "framer-motion";
-import { useSavedQuestions } from "@/hooks/useSavedQuestions";
-import { useEffect, useState } from "react";
-import { QuestionImage } from "@/components/common/QuestionImage";
+import { useEffect } from "react";
 
 interface QuestionCardProps {
   currentQuestion: Question | undefined;
@@ -18,15 +14,14 @@ interface QuestionCardProps {
   isAnswerSubmitted: boolean;
   showExplanation: boolean;
   isFlagged: boolean;
-  examMode?: boolean;
-  showAnswersImmediately?: boolean;
+  examMode: boolean;
+  showAnswersImmediately: boolean;
   onAnswerSelect: (index: number) => void;
   onSubmitAnswer: () => void;
   onNextQuestion: () => void;
   onPreviousQuestion: () => void;
   onToggleExplanation: () => void;
   onToggleQuestionFlag: () => void;
-  onEditQuestion?: (question: Question) => void;
 }
 
 const QuestionCard = ({
@@ -37,566 +32,267 @@ const QuestionCard = ({
   isAnswerSubmitted,
   showExplanation,
   isFlagged,
-  examMode = false,
-  showAnswersImmediately = true,
+  examMode,
+  showAnswersImmediately,
   onAnswerSelect,
   onSubmitAnswer,
   onNextQuestion,
   onPreviousQuestion,
   onToggleExplanation,
-  onToggleQuestionFlag,
-  onEditQuestion
+  onToggleQuestionFlag
 }: QuestionCardProps) => {
-  const { isAdmin, isPremium } = useAuth();
-  const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
-  const [localIsSaved, setLocalIsSaved] = useState(false);
-  const [showTip, setShowTip] = useState(false);
-  
-  // Control tips display - set to false to hide all tips
-  const SHOW_TIPS = false;
-  
-  useEffect(() => {
-    if (currentQuestion) {
-      setLocalIsSaved(isQuestionSaved(currentQuestion.id));
-    }
-  }, [currentQuestion, isQuestionSaved]);
-  
-  const handleSaveStatusChange = () => {
-    if (!currentQuestion) return;
-    
-    if (localIsSaved) {
-      removeQuestionById(currentQuestion.id);
-      onToggleQuestionFlag();
-    } else {
-      saveQuestion(currentQuestion);
-      onToggleQuestionFlag();
-    }
-    setLocalIsSaved(!localIsSaved);
-  };
 
-  // If no question is available, show a message
+  // Add keyboard navigation
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Prevent keyboard shortcuts when typing in input fields
+      if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      switch (event.key) {
+        case 'ArrowLeft':
+          event.preventDefault();
+          if (currentQuestionIndex > 0) {
+            onPreviousQuestion();
+          }
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          if (isAnswerSubmitted && currentQuestionIndex < totalQuestions - 1) {
+            onNextQuestion();
+          }
+          break;
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+          event.preventDefault();
+          const answerIndex = parseInt(event.key) - 1;
+          if (!isAnswerSubmitted && currentQuestion && answerIndex < currentQuestion.answers.length) {
+            onAnswerSelect(answerIndex);
+          }
+          break;
+        case 'Enter':
+          event.preventDefault();
+          if (!isAnswerSubmitted && selectedAnswerIndex !== null) {
+            onSubmitAnswer();
+          }
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentQuestionIndex, totalQuestions, isAnswerSubmitted, selectedAnswerIndex, currentQuestion, onPreviousQuestion, onNextQuestion, onAnswerSelect, onSubmitAnswer]);
+
   if (!currentQuestion) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        <Card className="border-0 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-          <div className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 p-6 rounded-t-xl border-b border-slate-600/50">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-3">
-                <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg">
-                  שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
-                </Badge>
-              </div>
-            </div>
-          </div>
-
-          <CardContent className="p-8">
-            <div className="flex items-center gap-4 mb-8 text-amber-400">
-              <AlertCircle className="h-8 w-8" />
-              <h3 className="text-2xl font-bold text-slate-100 leading-relaxed">
-                לא נמצאה שאלה
-              </h3>
-            </div>
-            
-            <p className="text-slate-300 mb-8 text-lg leading-relaxed">
-              מצטערים, לא נמצאה שאלה לתצוגה. ייתכן שאין שאלות בקבוצת שאלות זו או שאירעה שגיאה בטעינת השאלות.
-            </p>
-            
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-between">
-              <Button 
-                onClick={onNextQuestion} 
-                className="flex-1 sm:flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-lg border border-slate-600/50 text-lg py-3"
-              >
-                חזרה לרשימת השאלות
-                <ChevronLeft className="h-5 w-5 mr-2" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
+      <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
+        <CardContent className="p-8">
+          <div className="text-center text-slate-400">טוען שאלה...</div>
+        </CardContent>
+      </Card>
     );
   }
 
+  const progressPercentage = Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
-  const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== currentQuestion.correctAnswer && selectedAnswerIndex !== null;
-  const showCorrectAnswer = isAnswerSubmitted && (showAnswersImmediately || !examMode);
-
-  // Get question type badge - using the 'type' property instead of 'questionType'
-  const getQuestionTypeBadge = () => {
-    switch (currentQuestion.type) {
-      case 'reading-comprehension':
-        return 'Reading Comprehension';
-      case 'sentence-completion':
-        return 'Sentence Completion';
-      case 'restatement':
-        return 'Restatement';
-      default:
-        return 'Question';
-    }
-  };
-
-  // Render the reading passage for reading comprehension questions
-  const renderReadingPassage = () => {
-    if (!currentQuestion.passageWithLines || currentQuestion.passageWithLines.length === 0) {
-      return null;
-    }
-
-    return (
-      <div className="bg-slate-800/60 border border-slate-600/50 rounded-xl p-8 overflow-y-auto max-h-[600px] shadow-2xl">
-        <h4 className="text-2xl font-bold mb-6 text-slate-200 flex items-center gap-4">
-          <div className="bg-slate-700/60 p-2 rounded-lg border border-slate-600/50">
-            <MessageSquare className="h-6 w-6 text-slate-300" />
-          </div>
-          {currentQuestion.passageTitle || "Reading Passage"}
-        </h4>
-        
-        <div className="space-y-6">
-          {currentQuestion.passageWithLines.map((line) => (
-            <div key={line.lineNumber} className="flex gap-4">
-              {currentQuestion.lineNumbers && (
-                <div className="flex-shrink-0 w-16 text-right">
-                  <span className="text-sm text-slate-400 font-mono bg-slate-700/40 px-3 py-2 rounded-lg border border-slate-600/30">
-                    {line.startLine}-{line.endLine}
-                  </span>
-                </div>
-              )}
-              <p className="text-slate-200 leading-relaxed text-xl flex-1">
-                {line.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== null && selectedAnswerIndex !== currentQuestion.correctAnswer;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="max-w-7xl ml-0"
-    >
-      <Card className="border-0 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-        <div className="bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 p-6 rounded-t-xl border-b border-slate-600/50">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-4">
-              <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg">
-                Question {currentQuestionIndex + 1} of {totalQuestions}
-              </Badge>
-              <Badge className="bg-slate-800/60 text-slate-200 backdrop-blur-sm text-base font-medium px-4 py-2 border border-slate-600/50 shadow-lg">
-                {getQuestionTypeBadge()}
-              </Badge>
-              {localIsSaved && (
-                <Badge className="bg-amber-500/20 text-amber-300 backdrop-blur-sm flex items-center gap-2 border border-amber-400/30 px-4 py-2 shadow-lg">
-                  <Flag className="h-4 w-4 fill-current" />
-                  <span>Saved</span>
-                </Badge>
-              )}
+    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
+      <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-xl flex items-center gap-3">
+            <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+              <CheckCircle className="h-6 w-6 text-slate-300" />
             </div>
-            
-            <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 border border-slate-600/50",
-                  localIsSaved && "text-amber-400 hover:text-amber-300"
-                )}
-                onClick={handleSaveStatusChange}
-              >
-                <Flag className={cn("h-5 w-5", localIsSaved && "fill-current")} />
-              </Button>
+            <span className="font-bold text-slate-100">
+              שאלה {currentQuestionIndex + 1} מתוך {totalQuestions}
+            </span>
+          </CardTitle>
+          
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className={cn(
+              "h-10 w-10 rounded-lg border transition-all duration-300",
+              isFlagged 
+                ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
+                : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
+            )}
+            onClick={onToggleQuestionFlag}
+            title={isFlagged ? "הסר סימון" : "סמן שאלה"}
+          >
+            <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
+          </Button>
+        </div>
+        
+        <div className="mt-4">
+          <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
+            <span>התקדמות</span>
+            <span>{progressPercentage}%</span>
+          </div>
+          <Progress 
+            value={progressPercentage} 
+            className="h-3 bg-slate-800/60 rounded-full border border-slate-600/50" 
+            indicatorClassName="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
+          />
+        </div>
+      </CardHeader>
+
+      <CardContent className="p-8 space-y-8">
+        <div className="space-y-6">
+          <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+            <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
+              {currentQuestion.text}
+            </h3>
+          </div>
+
+          <div className="space-y-4">
+            {currentQuestion.answers.map((answer, index) => {
+              const isSelected = selectedAnswerIndex === index;
+              const isCorrectAnswer = index === currentQuestion.correctAnswer;
+              const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
+              const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer;
               
-              {isAdmin && onEditQuestion && (
+              return (
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-slate-300 hover:bg-slate-700/50 hover:text-slate-100 hidden md:flex border border-slate-600/50"
-                  onClick={() => onEditQuestion(currentQuestion)}
+                  key={index}
+                  variant="outline"
+                  className={cn(
+                    "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-right justify-start text-wrap",
+                    "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
+                    isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
+                    shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
+                    shouldShowIncorrect && "bg-red-600/20 border-red-500/50 text-red-300 shadow-lg shadow-red-500/20"
+                  )}
+                  onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
+                  disabled={isAnswerSubmitted}
                 >
-                  <Edit className="h-5 w-5" />
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-lg font-medium leading-relaxed flex-1 text-right">
+                      {answer}
+                    </span>
+                    <div className="flex items-center gap-3 mr-4">
+                      <span className="bg-slate-700/80 text-slate-300 px-3 py-1 rounded-lg text-sm font-bold border border-slate-600/50">
+                        {index + 1}
+                      </span>
+                      {shouldShowCorrect && <CheckCircle className="h-6 w-6 text-green-400" />}
+                      {shouldShowIncorrect && <XCircle className="h-6 w-6 text-red-400" />}
+                    </div>
+                  </div>
                 </Button>
-              )}
-            </div>
+              );
+            })}
           </div>
         </div>
 
-        <CardContent className="p-8">
-          {/* Reading Comprehension Layout - Professional side-by-side */}
-          {currentQuestion.type === 'reading-comprehension' && 
-           currentQuestion.passageWithLines && 
-           currentQuestion.passageWithLines.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 min-h-[600px]">
-              {/* Right side - Reading Passage */}
-              <div className="order-2 lg:order-1">
-                {renderReadingPassage()}
-              </div>
-
-              {/* Left side - Question and Options */}
-              <div className="order-1 lg:order-2 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold mb-8 text-slate-100 leading-relaxed">
-                    {currentQuestion.text}
-                  </h3>
-                  
-                  {currentQuestion.image && (
-                    <QuestionImage 
-                      src={currentQuestion.image} 
-                      alt={`Diagram for question ${currentQuestionIndex + 1}`}
-                      maxHeightRem={12}
-                    />
-                  )}
-                  
-                  <div className="space-y-5 mb-8">
-                    {currentQuestion.options.map((option, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <button 
-                          className={cn(
-                            "w-full text-right px-6 py-5 border-2 rounded-xl text-xl transition-all duration-200 group shadow-lg hover:shadow-xl",
-                            selectedAnswerIndex === index 
-                              ? "border-slate-500 bg-slate-700/60" 
-                              : "border-slate-600/50 hover:border-slate-500/70 hover:bg-slate-700/40 bg-slate-800/40",
-                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                              "border-green-500 bg-green-500/20",
-                            isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                              "border-red-500 bg-red-500/20",
-                            isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                              selectedAnswerIndex !== index && "border-green-500 bg-green-500/20"
-                          )}
-                          onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                          disabled={isAnswerSubmitted}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className={cn(
-                              "flex-grow leading-relaxed text-slate-200",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-300 font-medium",
-                              isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-300",
-                              isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-300 font-medium"
-                            )}>
-                              {option}
-                            </span>
-                            
-                            {isAnswerSubmitted && showCorrectAnswer && (
-                              <div className="flex-shrink-0 ml-5">
-                                {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                                  <CheckCircle className="h-7 w-7 text-green-400" />
-                                )}
-                                {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                                  <XCircle className="h-7 w-7 text-red-400" />
-                                )}
-                                {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                                  <CheckCircle className="h-7 w-7 text-green-400" />
-                                )}
-                              </div>
-                            )}
-                          </div>
-                        </button>
-                      </motion.div>
-                    ))}
+        {isAnswerSubmitted && (
+          <div className={cn(
+            "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
+            isCorrect 
+              ? "bg-green-600/10 border-green-500/30 shadow-green-500/10" 
+              : "bg-red-600/10 border-red-500/30 shadow-red-500/10"
+          )}>
+            <div className="flex items-center gap-4 mb-4">
+              {isCorrect ? (
+                <>
+                  <CheckCircle className="h-8 w-8 text-green-400" />
+                  <div>
+                    <h4 className="text-xl font-bold text-green-300">תשובה נכונה!</h4>
+                    <p className="text-green-200">כל הכבוד, המשך כך</p>
                   </div>
-
-                  {/* Hint/Tip Button - show before submitting answer */}
-                  {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
-                    <div className="mb-4">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setShowTip(!showTip)}
-                        className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
-                      >
-                        <Lightbulb className="h-4 w-4" />
-                        {showTip ? 'Hide Hint' : 'Show Hint'}
-                      </Button>
-                      
-                      <AnimatePresence>
-                        {showTip && (
-                          <motion.div 
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden mt-3"
-                          >
-                            <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                              <div className="flex items-center gap-2 mb-2">
-                                <Lightbulb className="h-4 w-4 text-amber-600" />
-                                <span className="font-medium text-amber-800">Hint</span>
-                              </div>
-                              <p className="text-amber-700 text-sm leading-relaxed">
-                                {currentQuestion.tips}
-                              </p>
-                            </div>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  )}
-                </div>
-
-                {/* Submit/Navigation buttons at bottom */}
-                <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-end">
-                  {!isAnswerSubmitted ? (
-                    <Button 
-                      onClick={onSubmitAnswer} 
-                      className="w-full sm:w-auto bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-xl font-bold text-xl px-10 py-4 border border-emerald-500/50"
-                      disabled={selectedAnswerIndex === null}
-                    >
-                      Submit Answer
-                    </Button>
-                  ) : (
-                    <div className="flex gap-4 w-full sm:w-auto">
-                      {currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
-                        <Button 
-                          variant="outline" 
-                          onClick={onToggleExplanation}
-                          className="flex-1 sm:flex-none border-2 border-slate-600/50 bg-slate-800/40 hover:bg-slate-700/60 text-slate-200 hover:text-slate-100 text-lg py-3"
-                        >
-                          {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
-                        </Button>
-                      )}
-                      
-                      <Button 
-                        onClick={onNextQuestion} 
-                        className="flex-1 sm:flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-xl border border-slate-500/50 text-lg py-3"
-                      >
-                        {currentQuestionIndex < totalQuestions - 1 ? (
-                          <>
-                            Next
-                            <ChevronLeft className="h-6 w-6 ml-2" />
-                          </>
-                        ) : (
-                          <>
-                            Finish Test
-                            <Trophy className="h-6 w-6 ml-2" />
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ) : (
-            /* Standard question layout for non-reading comprehension */
-            <div className="bg-slate-800/60 rounded-xl p-8 border border-slate-600/50 shadow-lg">
-              <h3 className="text-2xl font-bold mb-8 text-slate-100 leading-relaxed">
-                {currentQuestion.text}
-              </h3>
-              
-              {currentQuestion.image && (
-                <QuestionImage 
-                  src={currentQuestion.image} 
-                  alt={`Diagram for question ${currentQuestionIndex + 1}`}
-                  maxHeightRem={16}
-                />
-              )}
-              
-              <div className="space-y-4 mb-6">
-                {currentQuestion.options.map((option, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div 
-                      className={cn(
-                        "relative border-2 rounded-xl p-6 transition-all duration-200 cursor-pointer group shadow-lg hover:shadow-xl",
-                        selectedAnswerIndex === index 
-                          ? "border-slate-500 bg-slate-700/60" 
-                          : "border-slate-600/50 hover:border-slate-500/70 hover:bg-slate-700/40 bg-slate-800/40",
-                        isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                          "border-green-500 bg-green-500/20",
-                        isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                          "border-red-500 bg-red-500/20",
-                        isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                          selectedAnswerIndex !== index && "border-green-500 bg-green-500/20"
-                      )}
-                      onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                    >
-                      <div className="flex items-start gap-5">
-                        <div className={cn(
-                          "flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200",
-                          selectedAnswerIndex === index 
-                            ? "bg-slate-600 border-slate-500 text-slate-100" 
-                            : "border-slate-500/70 bg-slate-800/60 text-slate-300 group-hover:border-slate-400",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && 
-                            "bg-green-500 border-green-500 text-white",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && 
-                            "bg-red-500 border-red-500 text-white",
-                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && 
-                            "bg-green-500 border-green-500 text-white"
-                        )}>
-                          <span className="font-bold text-xl">{String.fromCharCode(65 + index)}</span>
-                        </div>
-                        <span className={cn(
-                          "flex-grow leading-relaxed transition-colors duration-200 text-xl",
-                          selectedAnswerIndex === index ? "text-slate-100 font-medium" : "text-slate-200",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && "text-green-300 font-medium",
-                          isAnswerSubmitted && selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && "text-red-300",
-                          isAnswerSubmitted && showCorrectAnswer && index === currentQuestion.correctAnswer && "text-green-300 font-medium"
-                        )}>
-                          {option}
-                        </span>
-                      </div>
-                      
-                      {isAnswerSubmitted && showCorrectAnswer && (
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2">
-                          {selectedAnswerIndex === index && selectedAnswerIndex === currentQuestion.correctAnswer && (
-                            <CheckCircle className="h-7 w-7 text-green-400" />
-                          )}
-                          {selectedAnswerIndex === index && selectedAnswerIndex !== currentQuestion.correctAnswer && (
-                            <XCircle className="h-7 w-7 text-red-400" />
-                          )}
-                          {index === currentQuestion.correctAnswer && selectedAnswerIndex !== index && (
-                            <CheckCircle className="h-7 w-7 text-green-400" />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Hint/Tip Button for standard questions */}
-              {SHOW_TIPS && !isAnswerSubmitted && currentQuestion.tips && (
-                <div className="mb-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setShowTip(!showTip)}
-                    className="flex items-center gap-2 text-amber-700 border-amber-300 hover:bg-amber-50"
-                  >
-                    <Lightbulb className="h-4 w-4" />
-                    {showTip ? 'Hide Hint' : 'Show Hint'}
-                  </Button>
-                  
-                  <AnimatePresence>
-                    {showTip && (
-                      <motion.div 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden mt-3"
-                      >
-                        <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Lightbulb className="h-4 w-4 text-amber-600" />
-                            <span className="font-medium text-amber-800">Hint</span>
-                          </div>
-                          <p className="text-amber-700 text-sm leading-relaxed">
-                            {currentQuestion.tips}
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              )}
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-between">
-                <div className="flex gap-3">
-                  {currentQuestionIndex > 0 && (
-                    <Button 
-                      onClick={onPreviousQuestion} 
-                      variant="outline"
-                      className="flex-1 sm:flex-none border-2 border-slate-600/50 bg-slate-800/40 hover:bg-slate-700/60 text-slate-200 hover:text-slate-100 text-lg py-3"
-                      disabled={examMode && !isAnswerSubmitted}
-                    >
-                      <ChevronRight className="h-5 w-5 mr-2" />
-                      Previous
-                    </Button>
-                  )}
-                  
-                  {isAnswerSubmitted && (
-                    <Button 
-                      onClick={onNextQuestion} 
-                      className="flex-1 sm:flex-none bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white shadow-xl border border-slate-500/50 text-lg py-3"
-                    >
-                      {currentQuestionIndex < totalQuestions - 1 ? (
-                        <>
-                          Next
-                          <ChevronLeft className="h-5 w-5 ml-2" />
-                        </>
-                      ) : (
-                        <>
-                          Finish Test
-                          <Trophy className="h-5 w-5 ml-2" />
-                        </>
-                      )}
-                    </Button>
-                  )}
-                </div>
-                
-                <div className="flex gap-3">
-                  {!isAnswerSubmitted ? (
-                    <Button 
-                      onClick={onSubmitAnswer} 
-                      className="flex-1 sm:flex-none bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-xl font-bold text-xl px-8 py-4 border border-emerald-500/50"
-                      disabled={selectedAnswerIndex === null}
-                    >
-                      Submit Answer
-                    </Button>
-                  ) : (
-                    currentQuestion.explanation && (!examMode || showAnswersImmediately === true) && (
-                      <Button 
-                        variant="outline" 
-                        onClick={onToggleExplanation}
-                        className="flex-1 sm:flex-none border-2 border-slate-600/50 bg-slate-800/40 hover:bg-slate-700/60 text-slate-200 hover:text-slate-100 text-lg py-3"
-                      >
-                        {showExplanation ? 'Hide Explanation' : 'Show Explanation'}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <AnimatePresence>
-            {(isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && showExplanation) && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden mt-8"
-              >
-                <div className="p-8 bg-slate-800/60 border border-slate-600/50 rounded-xl shadow-lg">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-slate-700 p-3 rounded-lg border border-slate-600/50">
-                      <MessageSquare className="h-6 w-6 text-slate-300" />
-                    </div>
-                    <h4 className="font-bold text-slate-200 text-xl">Detailed Explanation</h4>
+                </>
+              ) : (
+                <>
+                  <XCircle className="h-8 w-8 text-red-400" />
+                  <div>
+                    <h4 className="text-xl font-bold text-red-300">תשובה שגויה</h4>
+                    <p className="text-red-200">התשובה הנכונה היא: {currentQuestion.answers[currentQuestion.correctAnswer]}</p>
                   </div>
-                  <p className="text-slate-300 leading-relaxed whitespace-pre-line text-lg">
-                    {currentQuestion.explanation}
-                  </p>
-                  
-                  {currentQuestion.explanationImage && (
-                    <QuestionImage
-                      src={currentQuestion.explanationImage}
-                      alt="Explanation diagram"
-                      maxHeightRem={14}
-                    />
-                  )}
-                </div>
-              </motion.div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+
+        {isAnswerSubmitted && currentQuestion.explanation && (
+          <div className="space-y-4">
+            <Button
+              variant="outline"
+              onClick={onToggleExplanation}
+              className="bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl"
+            >
+              {showExplanation ? (
+                <>
+                  <EyeOff className="h-5 w-5 ml-2" />
+                  הסתר הסבר
+                </>
+              ) : (
+                <>
+                  <Eye className="h-5 w-5 ml-2" />
+                  הצג הסבר
+                </>
+              )}
+            </Button>
+            
+            {showExplanation && (
+              <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+                <h4 className="text-lg font-semibold text-slate-200 mb-3">הסבר:</h4>
+                <p className="text-slate-300 leading-relaxed">{currentQuestion.explanation}</p>
+              </div>
             )}
-          </AnimatePresence>
-        </CardContent>
-      </Card>
-    </motion.div>
+          </div>
+        )}
+
+        <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
+          <Button
+            variant="outline"
+            onClick={onPreviousQuestion}
+            disabled={currentQuestionIndex === 0}
+            className={cn(
+              "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
+              currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
+            )}
+          >
+            <ChevronLeft className="h-5 w-5 ml-2" />
+            שאלה קודמת
+          </Button>
+
+          <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
+            <div>מקלדת: ←→ ניווט | 1-4 תשובות | Enter שליחה</div>
+          </div>
+
+          {!isAnswerSubmitted ? (
+            <Button
+              onClick={onSubmitAnswer}
+              disabled={selectedAnswerIndex === null}
+              className={cn(
+                "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
+              )}
+            >
+              שלח תשובה
+              <ChevronRight className="h-5 w-5 mr-2" />
+            </Button>
+          ) : (
+            <Button
+              onClick={onNextQuestion}
+              disabled={currentQuestionIndex >= totalQuestions - 1}
+              className={cn(
+                "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
+              )}
+            >
+              שאלה הבאה
+              <ChevronRight className="h-5 w-5 mr-2" />
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
