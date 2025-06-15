@@ -193,7 +193,7 @@ const QuestionCard = ({
                 </span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 h-[calc(100%-80px)]">
+            <CardContent className="p-4 h-full">
               <ReadingPassage 
                 title={currentQuestion.passageTitle}
                 passageWithLines={currentQuestion.passageWithLines}
