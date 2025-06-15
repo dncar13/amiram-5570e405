@@ -136,11 +136,15 @@ const NavigationPanel = ({
       );
     }
     
-    // Mobile-specific grid layout
-    const gridCols = isMobile ? "grid-cols-5" : "grid-cols-6";
-    
+    // Responsive, tight grid layout for all screen sizes
     return (
-      <div className={cn("grid gap-3 justify-items-center", gridCols)} style={{ direction: 'ltr', textAlign: 'left' }}>
+      <div
+        className={cn(
+          "grid gap-2 justify-center w-full max-w-[600px] mx-auto",
+          "grid-cols-[repeat(auto-fit,minmax(48px,1fr))]"
+        )}
+        style={{ direction: 'ltr', textAlign: 'left' }}
+      >
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
