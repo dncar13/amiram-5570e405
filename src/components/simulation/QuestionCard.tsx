@@ -410,7 +410,7 @@ const QuestionCard = ({
 
   // Regular single-column layout for non-reading questions
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-[calc(100vh-120px)] flex flex-col">
+    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
       <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl flex-shrink-0">
         <div className="flex justify-between items-center">
           <CardTitle className="text-xl flex items-center gap-3">

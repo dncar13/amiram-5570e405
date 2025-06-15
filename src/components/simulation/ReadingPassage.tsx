@@ -28,7 +28,7 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-[calc(100vh-120px)] flex flex-col">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-full flex flex-col">
         {title && (
           <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0" 
               dir="ltr" 
@@ -62,7 +62,7 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-[calc(100vh-120px)] flex flex-col">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-full flex flex-col">
         {title && (
           <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0"
               dir="ltr" 
