@@ -1,19 +1,7 @@
 
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
-
-// אם יש לך קומפוננטת Button מוכנה, השתמש בזו במקום להגדיר מחדש
-const Button = ({ children, to, className = "", ...props }) => {
-  return (
-    <a
-      href={to}
-      className={`inline-block px-6 py-3 rounded-md font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors ${className}`}
-      {...props}
-    >
-      {children}
-    </a>
-  );
-};
+import { Button } from "@/components/ui/button";
 
 const FAQItem = ({ question, answer, isOpen, onClick }) => {
   return (
@@ -123,11 +111,18 @@ const FAQSection = () => {
               הצטרפו למאות תלמידים שכבר מתקדמים איתנו לקראת רישיון החשמלאי – בצורה ממוקדת, גמישה ומעודכנת.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button to="/simulations-entry" className="bg-blue-600 text-white">
-                להתחלת הלימוד עכשיו
+              <Button 
+                asChild
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                <a href="/simulations-entry">להתחלת הלימוד עכשיו</a>
               </Button>
-              <Button to="/contact" className="bg-white text-blue-600 border border-blue-200 hover:bg-blue-50">
-                לשיחת ייעוץ אישית
+              <Button 
+                asChild
+                variant="outline"
+                className="bg-white text-blue-600 border-blue-200 hover:bg-blue-50"
+              >
+                <a href="/contact">לשיחת ייעוץ אישית</a>
               </Button>
             </div>
           </div>
