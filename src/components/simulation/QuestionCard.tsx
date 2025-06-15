@@ -134,20 +134,21 @@ const QuestionCard = ({
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
             <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-              <CardTitle className="text-xl flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-                    <BookOpen className="h-6 w-6 text-slate-300" />
-                  </div>
-                  <span className="font-bold text-slate-100">Reading Passage</span>
+              <CardTitle className="text-xl flex items-center gap-3">
+                <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+                  <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
-                {currentQuestion.passageTitle && (
-                  <div className="bg-blue-900/30 px-4 py-2 rounded-lg border border-blue-600/40 backdrop-blur-sm">
-                    <span className="text-lg font-medium text-blue-200">
-                      {currentQuestion.passageTitle}
-                    </span>
-                  </div>
-                )}
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-slate-100">Reading Passage</span>
+                  {currentQuestion.passageTitle && (
+                    <>
+                      <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
+                      <span className="text-lg font-medium text-blue-300 bg-blue-900/20 px-3 py-1 rounded-md border border-blue-600/30">
+                        {currentQuestion.passageTitle}
+                      </span>
+                    </>
+                  )}
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-full">
