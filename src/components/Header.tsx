@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut, Settings, BookOpen, GraduationCap } from "lucide-react";
+import { Menu, X, User, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
@@ -125,23 +125,45 @@ const Header = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
-                  className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm"
+                  className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-56"
                   align="end"
                 >
                   <DropdownMenuItem 
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
                     onClick={() => navigate("/account")}
                   >
-                    <Settings className="ml-2 h-4 w-4" />
-                    חשבון משתמש
+                    <Archive className="ml-2 h-4 w-4" />
+                    המחבון שלי
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
+                    onClick={() => navigate("/simulation-history")}
+                  >
+                    <TrendingUp className="ml-2 h-4 w-4" />
+                    התקדמות
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
+                    onClick={() => navigate("/account?tab=saved")}
+                  >
+                    <BookmarkCheck className="ml-2 h-4 w-4" />
+                    שאילות שמורות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
                   <DropdownMenuItem 
-                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
+                    onClick={() => navigate("/account")}
+                  >
+                    <Settings className="ml-2 h-4 w-4" />
+                    הגדרות
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-slate-700/50" />
+                  <DropdownMenuItem 
+                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300 cursor-pointer"
                     onClick={handleLogout}
                   >
                     <LogOut className="ml-2 h-4 w-4" />
-                    התנתק
+                    התנתקות
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -213,8 +235,32 @@ const Header = () => {
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
+                      <Archive className="h-4 w-4 ml-2" />
+                      המחבון שלי
+                    </Link>
+                    <Link 
+                      to="/simulation-history" 
+                      className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <TrendingUp className="h-4 w-4 ml-2" />
+                      התקדמות
+                    </Link>
+                    <Link 
+                      to="/account?tab=saved" 
+                      className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <BookmarkCheck className="h-4 w-4 ml-2" />
+                      שאילות שמורות
+                    </Link>
+                    <Link 
+                      to="/account" 
+                      className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       <Settings className="h-4 w-4 ml-2" />
-                      חשבון משתמש
+                      הגדרות
                     </Link>
                     <button 
                       onClick={() => {
@@ -224,7 +270,7 @@ const Header = () => {
                       className="w-full text-right text-red-400 hover:text-red-300 font-medium py-3 px-4 rounded-lg hover:bg-red-900/30 transition-all duration-300 flex items-center"
                     >
                       <LogOut className="h-4 w-4 ml-2" />
-                      התנתק
+                      התנתקות
                     </button>
                   </>
                 ) : (
