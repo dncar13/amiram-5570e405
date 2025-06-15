@@ -136,14 +136,17 @@ const NavigationPanel = ({
         </div>
       );
     }
-    
-    // Responsive grid with horizontal flow (row-first)
-    const gridClasses = isMobile 
-      ? "grid grid-cols-5 gap-3 justify-items-center max-w-full grid-flow-row" 
-      : "grid grid-cols-6 gap-2 justify-items-center max-w-[480px] mx-auto grid-flow-row";
-    
+
+    // Responsive grid: horizontal flow, wrap naturally, fit as many as possible per row
+    // On desktop: let buttons fill row as space allows, not a hardcoded col count
+    // Use tighter gap for grouped feel
+    const gridClasses = cn(
+      "grid gap-2 justify-center w-full mx-auto",
+      "grid-cols-[repeat(auto-fit,minmax(48px,1fr))] max-w-[700px]"
+    );
+
     return (
-      <div className={cn(gridClasses)} style={{ direction: 'ltr', textAlign: 'left' }}>
+      <div className={gridClasses} style={{ direction: 'ltr', textAlign: 'left' }}>
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
