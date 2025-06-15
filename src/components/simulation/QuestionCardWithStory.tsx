@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -120,7 +121,11 @@ const QuestionCardWithStory = ({
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6">
-            <ReadingPassage question={currentQuestion} />
+            <ReadingPassage 
+              title={currentQuestion.passageTitle}
+              passageWithLines={currentQuestion.passageWithLines}
+              showLineNumbers={currentQuestion.lineNumbers}
+            />
           </CardContent>
         </Card>
       </div>
