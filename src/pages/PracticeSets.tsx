@@ -12,6 +12,7 @@ import {
   Clock,
   Play
 } from 'lucide-react';
+import { getQuestionsByDifficultyAndType } from '@/services/questionsService';
 
 interface PracticeSetData {
   id: number;
@@ -46,16 +47,28 @@ const PracticeSets: React.FC = () => {
 
   const currentType = type ? questionTypesData[type] : null;
 
-  // Generate practice sets data (this would come from your data service)
-  const practiceSets: PracticeSetData[] = Array.from({ length: 10 }, (_, index) => ({
-    id: index + 1,
-    title: `סט תרגול ${index + 1}`,
-    questionCount: 10,
-    description: `שאלות ${index * 10 + 1}-${(index + 1) * 10}`,
-    completed: index < 2, // First 2 sets completed
-    inProgress: index === 2, // Third set in progress
-    score: index < 2 ? Math.floor(Math.random() * 30) + 70 : undefined // Random score 70-100 for completed sets
-  }));
+  // Get available questions and calculate number of sets dynamically
+  const availableQuestions = type && difficulty ? getQuestionsByDifficultyAndType(difficulty, type) : [];
+  const questionsPerSet = 10;
+  const totalSets = Math.ceil(availableQuestions.length / questionsPerSet);
+
+  // Generate practice sets data dynamically based on available questions
+  const practiceSets: PracticeSetData[] = Array.from({ length: totalSets }, (_, index) => {
+    const setNumber = index + 1;
+    const startQuestion = index * questionsPerSet + 1;
+    const endQuestion = Math.min((index + 1) * questionsPerSet, availableQuestions.length);
+    const actualQuestionCount = endQuestion - startQuestion + 1;
+    
+    return {
+      id: setNumber,
+      title: `סט תרגול ${setNumber}`,
+      questionCount: actualQuestionCount,
+      description: `שאלות ${startQuestion}-${endQuestion}`,
+      completed: index < 2, // First 2 sets completed for demo
+      inProgress: index === 2, // Third set in progress for demo
+      score: index < 2 ? Math.floor(Math.random() * 30) + 70 : undefined
+    };
+  });
 
   const handleStartSet = (setId: number) => {
     navigate(`/simulation/${type}/${difficulty}?set=${setId}`);
@@ -109,7 +122,7 @@ const PracticeSets: React.FC = () => {
                 <div>
                   <h1 className="text-4xl font-bold mb-2">סטי תרגול - {currentType.title}</h1>
                   <p className="text-white text-opacity-90 text-xl">
-                    רמת קושי: {difficultyLabels[difficulty]} • בחר סט לתרגול מסודר
+                    רמת קושי: {difficultyLabels[difficulty]} • {totalSets} סטים זמינים ({availableQuestions.length} שאלות)
                   </p>
                 </div>
               </div>
@@ -117,62 +130,74 @@ const PracticeSets: React.FC = () => {
           </motion.div>
 
           {/* Sets Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {practiceSets.map((set, index) => (
-              <motion.div
-                key={set.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-white">{set.title}</h3>
-                  <div className="flex items-center">
-                    {set.completed && (
-                      <CheckCircle className="w-6 h-6 text-green-400 ml-2" />
-                    )}
-                    {set.inProgress && (
-                      <Clock className="w-6 h-6 text-yellow-400 ml-2" />
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <p className="text-gray-300 mb-2">{set.description}</p>
-                  <p className="text-gray-400 text-sm">{set.questionCount} שאלות</p>
-                  
-                  {set.completed && set.score && (
-                    <div className="mt-3 p-3 bg-green-500/10 rounded-xl border border-green-500/20">
-                      <p className="text-green-400 font-semibold">הושלם - ציון: {set.score}%</p>
-                    </div>
-                  )}
-                  
-                  {set.inProgress && (
-                    <div className="mt-3 p-3 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                      <p className="text-yellow-400 font-semibold">בהתקדמות - 6/10 שאלות</p>
-                    </div>
-                  )}
-                </div>
-
-                <button
-                  onClick={() => handleStartSet(set.id)}
-                  className={`w-full py-3 px-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${
-                    set.completed
-                      ? 'bg-gradient-to-r from-green-500/20 to-green-600/20 text-green-400 border border-green-500/30 hover:from-green-500/30 hover:to-green-600/30'
-                      : set.inProgress
-                      ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 text-yellow-400 border border-yellow-500/30 hover:from-yellow-500/30 hover:to-yellow-600/30'
-                      : `bg-gradient-to-r ${currentType.gradient} text-white border border-white/20 hover:shadow-xl`
-                  }`}
+          {totalSets > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {practiceSets.map((set, index) => (
+                <motion.div
+                  key={set.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
                 >
-                  <div className="flex items-center justify-center">
-                    <Play className="w-5 h-5 ml-2" />
-                    {set.completed ? 'תרגל שוב' : set.inProgress ? 'המשך תרגול' : 'התחל תרגול'}
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-bold text-white">{set.title}</h3>
+                    <div className="flex items-center">
+                      {set.completed && (
+                        <CheckCircle className="w-6 h-6 text-green-400 ml-2" />
+                      )}
+                      {set.inProgress && (
+                        <Clock className="w-6 h-6 text-yellow-400 ml-2" />
+                      )}
+                    </div>
                   </div>
-                </button>
-              </motion.div>
-            ))}
-          </div>
+
+                  <div className="mb-4">
+                    <p className="text-gray-300 mb-2">{set.description}</p>
+                    <p className="text-gray-400 text-sm">{set.questionCount} שאלות</p>
+                    
+                    {set.completed && set.score && (
+                      <div className="mt-3 p-3 bg-green-500/10 rounded-xl border border-green-500/20">
+                        <p className="text-green-400 font-semibold">הושלם - ציון: {set.score}%</p>
+                      </div>
+                    )}
+                    
+                    {set.inProgress && (
+                      <div className="mt-3 p-3 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
+                        <p className="text-yellow-400 font-semibold">בהתקדמות - 6/{set.questionCount} שאלות</p>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => handleStartSet(set.id)}
+                    className={`w-full py-3 px-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${
+                      set.completed
+                        ? 'bg-gradient-to-r from-green-500/20 to-green-600/20 text-green-400 border border-green-500/30 hover:from-green-500/30 hover:to-green-600/30'
+                        : set.inProgress
+                        ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 text-yellow-400 border border-yellow-500/30 hover:from-yellow-500/30 hover:to-yellow-600/30'
+                        : `bg-gradient-to-r ${currentType.gradient} text-white border border-white/20 hover:shadow-xl`
+                    }`}
+                  >
+                    <div className="flex items-center justify-center">
+                      <Play className="w-5 h-5 ml-2" />
+                      {set.completed ? 'תרגל שוב' : set.inProgress ? 'המשך תרגול' : 'התחל תרגול'}
+                    </div>
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-300 text-xl mb-4">אין שאלות זמינות עבור {currentType.title} ברמת קושי {difficultyLabels[difficulty]}</p>
+              <button
+                onClick={handleBack}
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+              >
+                חזור לאפשרויות תרגול
+              </button>
+            </div>
+          )}
 
           {/* Info Section */}
           <motion.div
@@ -187,7 +212,7 @@ const PracticeSets: React.FC = () => {
                 <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
                   <Target className="w-8 h-8 text-blue-400 mx-auto mb-3" />
                   <h4 className="text-lg font-bold text-blue-400 mb-2">תרגול מסודר</h4>
-                  <p className="text-gray-300 text-sm">כל סט מכיל 10 שאלות ברמת קושי קבועה לתרגול עמוק ומסודר</p>
+                  <p className="text-gray-300 text-sm">כל סט מכיל עד 10 שאלות ברמת קושי קבועה לתרגול עמוק ומסודר</p>
                 </div>
 
                 <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
