@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -136,11 +137,13 @@ const NavigationPanel = ({
       );
     }
     
-    // Mobile-specific grid layout
-    const gridCols = isMobile ? "grid-cols-5" : "grid-cols-6";
+    // Responsive grid with better spacing
+    const gridClasses = isMobile 
+      ? "grid grid-cols-5 gap-3 justify-items-center max-w-full" 
+      : "grid grid-cols-6 gap-2 justify-items-center max-w-[480px] mx-auto";
     
     return (
-      <div className={cn("grid gap-3 justify-items-center", gridCols)} style={{ direction: 'ltr', textAlign: 'left' }}>
+      <div className={cn(gridClasses)} style={{ direction: 'ltr', textAlign: 'left' }}>
         {indices.map(index => renderQuestionButton(index))}
       </div>
     );
