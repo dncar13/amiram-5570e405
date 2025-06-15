@@ -8,7 +8,8 @@ import {
   getHardQuestions, 
   getMixedDifficultyQuestions,
   getRestatementQuestions,
-  getQuestionsByDifficultyAndType
+  getQuestionsByDifficultyAndType,
+  getSentenceCompletionQuestions
 } from "@/services/questionsService";
 import { useParams, useSearchParams } from "react-router-dom";
 
@@ -96,6 +97,10 @@ export const useSimulation = (
   const questionLimit = searchParams.get('limit');
   const setNumber = searchParams.get('set');
   const startIndex = searchParams.get('start');
+  
+  // Get type from query params if not in URL path
+  const typeFromQuery = searchParams.get('type');
+  const effectiveType = type || typeFromQuery;
 
   const initializeTimer = useCallback(() => {
     console.log("Initializing timer");
@@ -306,8 +311,8 @@ export const useSimulation = (
       
       if (storyQuestions && storyQuestions.length > 0) {
         questionsToUse = [...storyQuestions];
-      } else if (type && difficulty) {
-        questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
+      } else if (effectiveType && difficulty) {
+        questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
         
         // Apply limit if specified in URL
         if (questionLimit) {
@@ -348,7 +353,7 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, type, difficulty, questionLimit]);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit]);
 
   const setSimulationComplete = useCallback((complete: boolean) => {
     setState(prevState => ({ ...prevState, simulationComplete: complete }));
@@ -356,17 +361,17 @@ export const useSimulation = (
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex });
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex, typeFromQuery, effectiveType });
     
     let questionsToUse: Question[] = [];
     
     if (storyQuestions && storyQuestions.length > 0) {
       questionsToUse = [...storyQuestions];
       console.log(`Using ${questionsToUse.length} story questions`);
-    } else if (type && difficulty) {
-      console.log(`Loading questions for type: ${type}, difficulty: ${difficulty}`);
-      questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
-      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${type}`);
+    } else if (effectiveType && difficulty) {
+      console.log(`Loading questions for type: ${effectiveType}, difficulty: ${difficulty}`);
+      questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
+      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${effectiveType}`);
       
       // Handle set-based question selection
       if (setNumber && startIndex) {
@@ -387,6 +392,24 @@ export const useSimulation = (
           questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
           console.log(`Limited questions to ${limit} random questions`);
         }
+      }
+    } else if (effectiveType && questionLimit) {
+      // Handle quick practice with type but no difficulty - mix all difficulty levels
+      console.log(`Loading mixed difficulty questions for type: ${effectiveType}`);
+      
+      if (effectiveType === 'sentence-completion') {
+        questionsToUse = getSentenceCompletionQuestions(); // Gets all difficulty levels
+      } else if (effectiveType === 'restatement') {
+        questionsToUse = getRestatementQuestions(); // Gets all difficulty levels
+      }
+      
+      console.log(`Found ${questionsToUse.length} total questions for ${effectiveType}`);
+      
+      // Apply limit and shuffle
+      const limit = parseInt(questionLimit, 10);
+      if (!isNaN(limit) && limit > 0) {
+        questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+        console.log(`Limited and shuffled to ${limit} random questions from all difficulty levels`);
       }
     } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
       const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
@@ -413,9 +436,9 @@ export const useSimulation = (
         currentQuestion: questionsToUse[0]
       }));
     } else {
-      console.warn("No questions found for simulation", { type, difficulty, simulationId });
+      console.warn("No questions found for simulation", { type, difficulty, effectiveType, simulationId });
     }
-  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty, questionLimit, setNumber, startIndex]);
+  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex]);
 
   useEffect(() => {
     initializeQuestions();
