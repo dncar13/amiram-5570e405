@@ -138,14 +138,7 @@ const QuestionCard = ({
                 <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
                   <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="font-bold text-slate-100">Reading Passage</span>
-                  {currentQuestion.passageTitle && (
-                    <span className="text-lg font-semibold text-slate-200">
-                      - {currentQuestion.passageTitle}
-                    </span>
-                  )}
-                </div>
+                <span className="font-bold text-slate-100">Reading Passage</span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-full">
