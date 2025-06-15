@@ -54,7 +54,8 @@ export const signInWithGoogle = async () => {
       return { user: null, error };
     }
     
-    return { user: data.user ? convertSupabaseUser(data.user) : null, error: null };
+    // OAuth redirects don't return user immediately, they redirect to provider
+    return { user: null, error: null };
   } catch (error) {
     return { user: null, error };
   }
