@@ -14,7 +14,7 @@ import {
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, logout, isLoading } = useAuth();
+  const { currentUser, logout, isLoading, checkAndUpdateSession } = useAuth();
   const navigate = useNavigate();
 
   // Force re-render when auth state changes
@@ -28,6 +28,18 @@ const Header = () => {
     // Force component to re-render to ensure UI updates
     setForceRender(prev => prev + 1);
   }, [currentUser, isLoading]);
+
+  // Additional fallback to check auth state on component mount
+  useEffect(() => {
+    console.log("🔄 Header: Component mounted, checking auth state...");
+    if (!isLoading && !currentUser) {
+      // Add a small delay and check again
+      setTimeout(() => {
+        console.log("🔄 Header: Fallback auth check...");
+        checkAndUpdateSession();
+      }, 500);
+    }
+  }, []);
 
   const handleLogout = async () => {
     try {

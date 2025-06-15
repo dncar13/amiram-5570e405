@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 
 // רשימת אימיילים של משתמשים שהם מנהלי מערכת
 const ADMIN_EMAILS = [
@@ -37,6 +38,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   updatePremiumStatus: (status: boolean) => void;
   hasAccessToTopic: (topicId: number) => boolean; // פונקציה חדשה לבדיקת גישה לנושא
+  checkAndUpdateSession: () => Promise<void>; // פונקציה חדשה לבדיקת סשן
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -48,7 +50,8 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   logout: async () => {},
   updatePremiumStatus: () => {},
-  hasAccessToTopic: () => true // ברירת מחדל - גישה לכל הנושאים
+  hasAccessToTopic: () => true, // ברירת מחדל - גישה לכל הנושאים
+  checkAndUpdateSession: async () => {}
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -143,12 +146,52 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsPremium(false);
       setUserData(null);
     }
+    
+    setIsLoading(false);
+  };
+
+  // פונקציה חדשה לבדיקה ועדכון של הסשן הנוכחי
+  const checkAndUpdateSession = async () => {
+    try {
+      console.log("🔍 Checking current session...");
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error("❌ Error getting session:", error);
+        updateAuthState(null);
+        return;
+      }
+      
+      if (session?.user) {
+        console.log("✅ Found active session for:", session.user.email);
+        const convertedUser: User = {
+          uid: session.user.id,
+          email: session.user.email,
+          displayName: session.user.user_metadata?.full_name || session.user.user_metadata?.name || null,
+          photoURL: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || null,
+          metadata: {
+            creationTime: session.user.created_at,
+            lastSignInTime: session.user.last_sign_in_at,
+          },
+        };
+        updateAuthState(convertedUser);
+      } else {
+        console.log("❌ No active session found");
+        updateAuthState(null);
+      }
+    } catch (error) {
+      console.error("❌ Error in checkAndUpdateSession:", error);
+      updateAuthState(null);
+    }
   };
 
   useEffect(() => {
     console.log("🔧 AuthContext: Setting up auth state listener...");
     
     let isMounted = true;
+    
+    // בדיקה ראשונית של הסשן
+    checkAndUpdateSession();
     
     // Set up auth state listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -160,12 +203,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       if (isMounted) {
         updateAuthState(user);
-        
-        // Set loading to false after we get the first auth response
-        if (isLoading) {
-          console.log("🏁 Auth initialization complete, setting isLoading to false");
-          setIsLoading(false);
-        }
       }
     });
 
@@ -174,7 +211,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       isMounted = false;
       unsubscribe();
     };
-  }, []); // Remove isLoading dependency to prevent re-initialization
+  }, []); // Remove dependencies to prevent re-initialization
 
   // Debug effect to track state changes
   useEffect(() => {
@@ -206,7 +243,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     userData,
     logout,
     updatePremiumStatus,
-    hasAccessToTopic
+    hasAccessToTopic,
+    checkAndUpdateSession
   };
 
   return (

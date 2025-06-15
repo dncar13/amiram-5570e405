@@ -25,7 +25,7 @@ const Login = () => {
   
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { currentUser, isDevEnvironment } = useAuth();
+  const { currentUser, isDevEnvironment, checkAndUpdateSession } = useAuth();
   
   // If user is already logged in, redirect to simulations
   if (currentUser) {
@@ -83,11 +83,19 @@ const Login = () => {
       
       if (user) {
         console.log("Login successful, user:", user.email);
+        
+        // רענון מיידי של מצב Auth
+        await checkAndUpdateSession();
+        
         toast({
           title: "התחברת בהצלחה!",
           description: `ברוך הבא ${user.displayName || user.email}`,
         });
-        navigate("/simulations-entry");
+        
+        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
+        setTimeout(() => {
+          navigate("/simulations-entry");
+        }, 200);
       } else if (error) {
         console.error("Login failed:", error);
         setAuthError(error.message);
@@ -135,11 +143,19 @@ const Login = () => {
       
       if (user) {
         console.log("Registration successful, user:", user.email);
+        
+        // רענון מיידי של מצב Auth
+        await checkAndUpdateSession();
+        
         toast({
           title: "נרשמת בהצלחה!",
           description: `ברוך הבא ${formData.name || user.email}`,
         });
-        navigate("/simulations-entry");
+        
+        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
+        setTimeout(() => {
+          navigate("/simulations-entry");
+        }, 200);
       } else if (error) {
         console.error("Registration failed:", error);
         setAuthError(error.message);

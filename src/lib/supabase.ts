@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -74,6 +73,23 @@ const getErrorMessage = (error: any): string => {
   return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
 };
 
+// פונקציה חדשה לרענון מצב Auth אחרי פעולות הצלחה
+const triggerAuthRefresh = async () => {
+  try {
+    console.log("🔄 Triggering auth refresh...");
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      console.log("✅ Session refreshed successfully");
+      // Trigger a small delay to ensure auth state propagation
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('supabase:auth-refresh'));
+      }, 100);
+    }
+  } catch (error) {
+    console.error("❌ Error refreshing auth:", error);
+  }
+};
+
 export const signInWithGoogle = async () => {
   try {
     console.log("Attempting Google sign in...");
@@ -113,10 +129,8 @@ export const loginWithEmailAndPassword = async (email: string, password: string)
     console.log("Login successful:", data.user?.email);
     const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
     
-    // Force a brief delay to ensure auth state propagation
-    setTimeout(() => {
-      console.log("🔄 Login: Auth state should be updated now");
-    }, 100);
+    // מיידי אחרי login מוצלח - רענון מצב Auth
+    await triggerAuthRefresh();
     
     return { user: convertedUser, error: null };
   } catch (error) {
@@ -144,10 +158,8 @@ export const registerWithEmailAndPassword = async (email: string, password: stri
     console.log("Registration successful:", data.user?.email);
     const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
     
-    // Force a brief delay to ensure auth state propagation
-    setTimeout(() => {
-      console.log("🔄 Registration: Auth state should be updated now");
-    }, 100);
+    // מיידי אחרי register מוצלח - רענון מצב Auth
+    await triggerAuthRefresh();
     
     return { user: convertedUser, error: null };
   } catch (error) {
@@ -203,8 +215,20 @@ export const onAuthStateChanged = (auth: any, callback: (user: User | null) => v
     }, 10);
   });
   
+  // Listen for custom refresh events
+  const handleAuthRefresh = () => {
+    console.log("🔄 Custom auth refresh triggered");
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      const user = session?.user ? convertSupabaseUser(session.user) : null;
+      callback(user);
+    });
+  };
+  
+  window.addEventListener('supabase:auth-refresh', handleAuthRefresh);
+  
   return () => {
     console.log("🧹 Unsubscribing from auth state changes");
     subscription.unsubscribe();
+    window.removeEventListener('supabase:auth-refresh', handleAuthRefresh);
   };
 };
