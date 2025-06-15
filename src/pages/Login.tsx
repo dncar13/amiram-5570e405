@@ -10,26 +10,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-// import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/firebase";
+import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
-
-// פונקציות זמניות עד לחיבור Supabase
-const signInWithGoogle = async () => ({ 
-  user: null, 
-  error: new Error("Google login not implemented yet"), 
-  message: "התחברות באמצעות Google עדיין לא מוכנה" 
-});
-
-const loginWithEmailAndPassword = async (email: string, password: string) => ({ 
-  user: null, 
-  error: new Error("Email login not implemented yet") 
-});
-
-const registerWithEmailAndPassword = async (email: string, password: string) => ({ 
-  user: null, 
-  error: new Error("Email registration not implemented yet") 
-});
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,8 +34,9 @@ const Login = () => {
   
   const handleGoogleLogin = async () => {
     setIsLoading(true);
+    setAuthError(null);
     try {
-      const { user, error, message } = await signInWithGoogle();
+      const { user, error } = await signInWithGoogle();
       
       if (user) {
         toast({
@@ -61,16 +45,23 @@ const Login = () => {
         });
         navigate("/simulations-entry");
       } else {
-        if (error?.message || message) {
-          setAuthError(message || "התחברות באמצעות Google עדיין לא מוכנה");
-        } else {
+        if (error) {
+          setAuthError(error.message || "שגיאה בהתחברות עם Google");
           toast({
             variant: "destructive",
             title: "שגיאה בהתחברות",
-            description: error instanceof Error ? error.message : "אירעה שגיאה. אנא נסה שוב.",
+            description: error.message || "אירעה שגיאה. אנא נסה שוב.",
           });
         }
       }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהתחברות",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -79,6 +70,7 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError(null);
     
     try {
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
@@ -90,12 +82,22 @@ const Login = () => {
         });
         navigate("/simulations-entry");
       } else {
+        const errorMessage = error?.message || "שגיאה בהתחברות";
+        setAuthError(errorMessage);
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
-          description: "התחברות עדיין לא מוכנה - נחבר בקרוב את Supabase",
+          description: errorMessage,
         });
       }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהתחברות",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -104,6 +106,7 @@ const Login = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError(null);
     
     try {
       const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
@@ -115,12 +118,22 @@ const Login = () => {
         });
         navigate("/simulations-entry");
       } else {
+        const errorMessage = error?.message || "שגיאה בהרשמה";
+        setAuthError(errorMessage);
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
-          description: "הרשמה עדיין לא מוכנה - נחבר בקרוב את Supabase",
+          description: errorMessage,
         });
       }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהרשמה",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -141,14 +154,6 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center py-12 bg-electric-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
-            <Alert variant="destructive" className="mb-6">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>מערכת ההתחברות בפיתוח</AlertTitle>
-              <AlertDescription>
-                מערכת ההתחברות עדיין בפיתוח. בקרוב נחבר את Supabase לאימות מלא.
-              </AlertDescription>
-            </Alert>
-            
             {authError && (
               <Alert variant="destructive" className="mb-6">
                 <AlertTriangle className="h-4 w-4" />

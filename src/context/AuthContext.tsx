@@ -1,5 +1,6 @@
+
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/firebase";
+import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 
 // רשימת אימיילים של משתמשים שהם מנהלי מערכת
@@ -104,6 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    // Set up auth state listener FIRST
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed:", user ? user.email : "No user");
       setCurrentUser(user);
