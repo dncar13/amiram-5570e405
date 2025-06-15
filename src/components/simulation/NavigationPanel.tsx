@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -52,7 +53,6 @@ const NavigationPanel = ({
     return "incorrect";
   };
 
-  // פילטור שאלות לפי סטטוס - make sure we don't exceed array bounds
   const validIndices = questionsData
     .map((_, index) => index)
     .filter(index => index < userAnswers.length);
@@ -66,7 +66,6 @@ const NavigationPanel = ({
       return userAnswer !== null && userAnswer !== questionsData[index].correctAnswer;
     });
   
-  // עדכון הדגלים לבדוק גם את השאלות השמורות
   const flaggedQuestions = questionsData
     .map((question, index) => ({ question, index }))
     .filter(item => 
@@ -75,7 +74,6 @@ const NavigationPanel = ({
     )
     .map(item => item.index);
 
-  // חישוב מספר תשובות נכונות - ensure we don't go beyond array bounds
   const correctAnswersCount = validIndices.reduce((count, index) => {
     if (userAnswers[index] !== null && userAnswers[index] === questionsData[index].correctAnswer) {
       return count + 1;
@@ -83,12 +81,10 @@ const NavigationPanel = ({
     return count;
   }, 0);
 
-  // חישוב מספר שאלות שנענו
   const answeredCount = userAnswers.filter((answer, index) => 
     index < questionsData.length && answer !== null
   ).length;
 
-  // רנדור כפתור לשאלה בודדת
   const renderQuestionButton = (index: number) => {
     const status = getQuestionStatus(index);
     const isFlagged = questionFlags[index] || (questionsData[index] && isQuestionSaved(questionsData[index].id));
@@ -124,7 +120,7 @@ const NavigationPanel = ({
       </Button>
     );
   };
-  // Render list of question buttons
+
   const renderQuestionList = (indices: number[]) => {
     if (indices.length === 0) {
       return (
@@ -165,9 +161,13 @@ const NavigationPanel = ({
             <Trash className="h-5 w-5" />
           </Button>
         </CardTitle>
-      </CardHeader>        <CardContent className="pt-6 p-6">
+      </CardHeader>
+
+      <CardContent className="pt-6 p-6">
         {/* Statistics */}
-        <div className="mb-6">          <div className="grid grid-cols-3 gap-3">            <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-4 text-center border border-green-500/30 shadow-lg">
+        <div className="mb-6">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-4 text-center border border-green-500/30 shadow-lg">
               <CheckCircle className="h-6 w-6 text-green-400 mx-auto mb-2" />
               <div className="text-sm text-green-300 font-semibold">Correct</div>
               <div className="text-2xl font-bold text-green-400">{correctAnswersCount}</div>
@@ -186,19 +186,41 @@ const NavigationPanel = ({
             </div>
           </div>
         </div>
-          {/* Question List Tabs */}
-        <Tabs defaultValue="all" className="w-full">          <TabsList className="grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50">
-            <TabsTrigger value="all" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
-              All ({totalQuestions})
+
+        {/* Question List Tabs - Mobile Optimized */}
+        <Tabs defaultValue="all" className="w-full">
+          <TabsList className="grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50 h-auto p-1">
+            <TabsTrigger 
+              value="all" 
+              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+            >
+              <span className="hidden sm:inline">All ({totalQuestions})</span>
+              <span className="sm:hidden">All</span>
+              <span className="sm:hidden block text-xs">({totalQuestions})</span>
             </TabsTrigger>
-            <TabsTrigger value="unanswered" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
-              Unanswered ({unansweredQuestions.length})
+            <TabsTrigger 
+              value="unanswered" 
+              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+            >
+              <span className="hidden sm:inline">Unanswered ({unansweredQuestions.length})</span>
+              <span className="sm:hidden">Unans</span>
+              <span className="sm:hidden block text-xs">({unansweredQuestions.length})</span>
             </TabsTrigger>
-            <TabsTrigger value="incorrect" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
-              Wrong ({incorrectQuestions.length})
+            <TabsTrigger 
+              value="incorrect" 
+              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+            >
+              <span className="hidden sm:inline">Wrong ({incorrectQuestions.length})</span>
+              <span className="sm:hidden">Wrong</span>
+              <span className="sm:hidden block text-xs">({incorrectQuestions.length})</span>
             </TabsTrigger>
-            <TabsTrigger value="flagged" className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-sm font-medium text-slate-300 rounded-lg">
-              Saved ({flaggedQuestions.length})
+            <TabsTrigger 
+              value="flagged" 
+              className="data-[state=active]:bg-slate-700 data-[state=active]:text-slate-100 data-[state=active]:shadow-lg text-slate-300 rounded-lg py-2 px-1 min-h-[36px] text-xs sm:text-sm font-medium"
+            >
+              <span className="hidden sm:inline">Saved ({flaggedQuestions.length})</span>
+              <span className="sm:hidden">Saved</span>
+              <span className="sm:hidden block text-xs">({flaggedQuestions.length})</span>
             </TabsTrigger>
           </TabsList>
           
@@ -220,7 +242,8 @@ const NavigationPanel = ({
             </TabsContent>
           </div>
         </Tabs>
-          <div className="mt-4 flex justify-center items-center gap-4 text-sm text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
+
+        <div className="mt-4 flex justify-center items-center gap-4 text-sm text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 rounded-full bg-green-500 border border-green-400"></div>
             <span>Correct</span>
