@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
@@ -37,6 +36,14 @@ export const useSimulation = (
   console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit });
 
   const { initializeTimer, clearTimer } = useTimer(setState);
+
+  // Save progress whenever state changes (for quick practice)
+  useEffect(() => {
+    if (state.progressLoaded && questionLimit && effectiveType && state.answeredQuestionsCount > 0) {
+      console.log("Auto-saving quick practice progress:", state.answeredQuestionsCount);
+      saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
+    }
+  }, [state.answeredQuestionsCount, state.currentQuestionIndex, simulationId, questionLimit, effectiveType, state.progressLoaded, setNumber, type, difficulty]);
 
   // Create simulation actions
   const actions = createSimulationActions(
