@@ -107,6 +107,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     console.log("🔧 AuthContext: Setting up auth state listener...");
     
+    let authInitialized = false;
+    
     // Set up auth state listener
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("🔔 Auth state changed:");
@@ -152,8 +154,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUserData(null);
       }
       
-      console.log("🏁 Auth loading complete, setting isLoading to false");
-      setIsLoading(false);
+      // Only set loading to false after the first auth check is complete
+      if (!authInitialized) {
+        console.log("🏁 Auth loading complete, setting isLoading to false");
+        setIsLoading(false);
+        authInitialized = true;
+      }
     });
 
     return () => {

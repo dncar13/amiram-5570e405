@@ -17,11 +17,16 @@ const Header = () => {
   const { currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  // Debug effect to track auth state in Header
+  // Force re-render when auth state changes
+  const [forceRender, setForceRender] = useState(0);
+
   useEffect(() => {
-    console.log("🖥️ Header: Auth state update:");
+    console.log("🖥️ Header: Auth state update (forced re-render):");
     console.log("  - currentUser:", currentUser?.email || "null");
     console.log("  - isLoading:", isLoading);
+    
+    // Force component to re-render to ensure UI updates
+    setForceRender(prev => prev + 1);
   }, [currentUser, isLoading]);
 
   const handleLogout = async () => {
@@ -37,6 +42,13 @@ const Header = () => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+  // Add loading state visualization for debugging
+  if (isLoading) {
+    console.log("⏳ Header: Still loading auth state...");
+  }
+
+  const userDisplayName = currentUser?.displayName || currentUser?.email || "משתמש";
 
   return (
     <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
@@ -88,7 +100,7 @@ const Header = () => {
           {/* User Menu / Login */}
           <div className="hidden md:flex items-center space-x-4">
             {isLoading ? (
-              <div className="text-slate-400">טוען...</div>
+              <div className="text-slate-400 px-4 py-2">טוען...</div>
             ) : currentUser ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -97,7 +109,7 @@ const Header = () => {
                     className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300"
                   >
                     <User className="h-5 w-5 ml-2" />
-                    {currentUser.displayName || currentUser.email}
+                    {userDisplayName}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
@@ -182,7 +194,7 @@ const Header = () => {
                   <>
                     <div className="flex items-center px-4 py-2 text-slate-300">
                       <User className="h-5 w-5 ml-2" />
-                      {currentUser.displayName || currentUser.email}
+                      {userDisplayName}
                     </div>
                     <Link 
                       to="/account" 
