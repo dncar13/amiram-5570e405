@@ -20,7 +20,9 @@ export const ReadingPassage = ({
     hasPassageWithLines: !!(passageWithLines && passageWithLines.length > 0),
     hasPassageText: !!passageText,
     showLineNumbers,
-    passageWithLinesLength: passageWithLines?.length || 0
+    passageWithLinesLength: passageWithLines?.length || 0,
+    titlePreview: title?.substring(0, 50),
+    passageTextPreview: passageText?.substring(0, 100)
   });
 
   // If we have passageWithLines, use that format
@@ -28,11 +30,13 @@ export const ReadingPassage = ({
     return (
       <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2">
+          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2" 
+              dir="ltr" 
+              style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-1 leading-relaxed text-sm">
+        <div className="space-y-1 leading-relaxed text-sm" dir="ltr" style={{ textAlign: 'left' }}>
           {passageWithLines.map((line, index) => (
             <div key={index} className="flex gap-3">
               {showLineNumbers && (
@@ -58,11 +62,13 @@ export const ReadingPassage = ({
     return (
       <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2">
+          <h3 className="text-lg font-bold text-slate-900 mb-4 text-center border-b border-slate-300 pb-2"
+              dir="ltr" 
+              style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-1 leading-relaxed text-sm">
+        <div className="space-y-1 leading-relaxed text-sm" dir="ltr" style={{ textAlign: 'left' }}>
           {lines.map((line, index) => (
             <div key={index} className="flex gap-3">
               {showLineNumbers && (
@@ -84,6 +90,9 @@ export const ReadingPassage = ({
   return (
     <div className="bg-slate-50 rounded-lg p-6 border border-slate-200 text-center">
       <div className="text-slate-500">אין קטע קריאה זמין</div>
+      <div className="text-slate-400 text-sm mt-2">
+        Debug: title={!!title}, passageWithLines={!!passageWithLines}, passageText={!!passageText}
+      </div>
     </div>
   );
 };

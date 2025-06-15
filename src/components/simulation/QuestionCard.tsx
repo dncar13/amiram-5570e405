@@ -50,6 +50,19 @@ const QuestionCard = ({
   onToggleQuestionFlag
 }: QuestionCardProps) => {
 
+  // Debug logging to understand what data we're receiving
+  console.log('[QuestionCard] Full question data:', currentQuestion);
+  console.log('[QuestionCard] Question fields:', {
+    id: currentQuestion?.id,
+    text: currentQuestion?.text,
+    type: currentQuestion?.type,
+    options: currentQuestion?.options,
+    answers: currentQuestion?.answers,
+    passageTitle: currentQuestion?.passageTitle,
+    passageText: currentQuestion?.passageText,
+    passageWithLines: currentQuestion?.passageWithLines
+  });
+
   // Add keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -109,6 +122,16 @@ const QuestionCard = ({
   // Get answer options from either new or old format for compatibility
   const answerOptions = currentQuestion.options || currentQuestion.answers || [];
   
+  // Enhanced debug logging for answer options
+  console.log('[QuestionCard] Answer options analysis:', {
+    hasOptions: !!currentQuestion.options,
+    hasAnswers: !!currentQuestion.answers,
+    optionsLength: currentQuestion.options?.length || 0,
+    answersLength: currentQuestion.answers?.length || 0,
+    finalAnswerOptions: answerOptions,
+    finalLength: answerOptions.length
+  });
+  
   // Add additional safety check for answer options array
   if (!answerOptions || !Array.isArray(answerOptions) || answerOptions.length === 0) {
     console.error('QuestionCard: No answer options found', { 
@@ -129,6 +152,14 @@ const QuestionCard = ({
     );
   }
 
+  // Enhanced debug logging for question text
+  const questionText = currentQuestion.text || '';
+  console.log('[QuestionCard] Question text analysis:', {
+    hasText: !!currentQuestion.text,
+    textLength: questionText.length,
+    textPreview: questionText.substring(0, 100)
+  });
+
   const calculatedProgressPercentage = progressPercentage || Math.round(((currentQuestionIndex + 1) / totalQuestions) * 100);
   const isCorrect = isAnswerSubmitted && selectedAnswerIndex === currentQuestion.correctAnswer;
   const isIncorrect = isAnswerSubmitted && selectedAnswerIndex !== null && selectedAnswerIndex !== currentQuestion.correctAnswer;
@@ -136,6 +167,14 @@ const QuestionCard = ({
   // Check if this is a reading comprehension question with passage
   const hasReadingPassage = currentQuestion.type === 'reading-comprehension' && 
     (currentQuestion.passageText || (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0));
+
+  console.log('[QuestionCard] Reading passage analysis:', {
+    isReadingComprehension: currentQuestion.type === 'reading-comprehension',
+    hasPassageText: !!currentQuestion.passageText,
+    hasPassageWithLines: !!(currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0),
+    hasReadingPassage,
+    passageTitle: currentQuestion.passageTitle
+  });
 
   // If it's a reading comprehension question with passage, use two-column layout
   if (hasReadingPassage) {
@@ -149,7 +188,10 @@ const QuestionCard = ({
                 <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
                   <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
-                <span className="font-bold text-slate-100">קטע לקריאה</span>
+                {/* Fix text direction for English passage titles */}
+                <span className="font-bold text-slate-100" dir="ltr" style={{ textAlign: 'left' }}>
+                  {currentQuestion.passageTitle || 'Reading Passage'}
+                </span>
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -209,9 +251,15 @@ const QuestionCard = ({
             <CardContent className="p-8 space-y-8">
               <div className="space-y-6">
                 <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+                  {/* Enhanced question text display with better fallback */}
                   <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
-                    {currentQuestion.text}
+                    {questionText || `שאלה ${currentQuestionIndex + 1} - לא נמצא טקסט שאלה`}
                   </h3>
+                  {!questionText && (
+                    <div className="text-amber-300 text-sm mt-2 p-3 bg-amber-600/20 rounded-lg border border-amber-500/50">
+                      שים לב: לא נמצא טקסט לשאלה זו. ID: {currentQuestion.id}
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-4">
@@ -236,7 +284,10 @@ const QuestionCard = ({
                         disabled={isAnswerSubmitted}
                       >
                         <div className="flex items-center justify-between w-full">
-                          <span className="text-lg font-medium leading-relaxed flex-1 text-right">
+                          {/* Apply LTR direction for English answers */}
+                          <span className="text-lg font-medium leading-relaxed flex-1" 
+                                dir="ltr" 
+                                style={{ textAlign: 'left' }}>
                             {answer}
                           </span>
                           <div className="flex items-center gap-3 mr-4">
