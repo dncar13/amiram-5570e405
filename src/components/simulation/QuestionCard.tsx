@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Question } from "@/data/questionsData";
 import { ChevronRight, ChevronLeft, Flag, Eye, EyeOff, CheckCircle, XCircle, BookOpen } from "lucide-react";
-import { ReadingPassage } from "./ReadingPassage";
+import { ReadingPassage } from "@/components/simulation/ReadingPassage";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 
@@ -138,17 +138,11 @@ const QuestionCard = ({
                 <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
                   <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
-                <div className="flex items-center gap-3">
-                  {currentQuestion.passageTitle && (
-                    <>
-                      <span className="text-lg font-medium text-blue-300 bg-blue-900/20 px-3 py-1 rounded-md border border-blue-600/30">
-                        {currentQuestion.passageTitle}
-                      </span>
-                      <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
-                    </>
-                  )}
-                  <span className="font-bold text-slate-100">Reading Passage</span>
-                </div>
+                {currentQuestion.passageTitle && (
+                  <span className="font-bold text-slate-100">
+                    {currentQuestion.passageTitle}
+                  </span>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-full">
