@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -108,8 +106,8 @@ const SimulationByType: React.FC = () => {
       // Navigate to new practice options page
       navigate(`/simulation/type/${currentType.type}/${difficulty}`);
     } else {
-      // Quick practice with mixed questions - navigate directly to simulation with 10 questions
-      navigate(`/simulation/${currentType.type}?limit=10`);
+      // Quick practice with mixed questions - navigate directly to simulation including type parameter
+      navigate(`/simulation/${currentType.type}?type=${currentType.type}&limit=10`);
     }
   };
 
@@ -276,4 +274,3 @@ const SimulationByType: React.FC = () => {
 };
 
 export default SimulationByType;
-
