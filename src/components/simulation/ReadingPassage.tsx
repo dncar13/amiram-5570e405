@@ -1,4 +1,3 @@
-
 import { PassageLine } from "@/data/types/questionTypes";
 
 interface ReadingPassageProps {
@@ -26,7 +25,7 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 h-[420px] overflow-y-auto">
         {title && (
           <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
             {title}
@@ -56,7 +55,7 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 h-[420px] overflow-y-auto">
         {title && (
           <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
             {title}
@@ -82,7 +81,7 @@ export const ReadingPassage = ({
 
   // If no passage content is available
   return (
-    <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-center">
+    <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-center h-[420px] flex items-center justify-center">
       <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
     </div>
   );
