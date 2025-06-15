@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,8 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { CheckCircle, XCircle, RotateCcw, ArrowLeft, Flag } from "lucide-react";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
+import { saveQuickPracticeProgress } from "@/hooks/simulation/progressUtils";
+import { useParams, useSearchParams } from "react-router-dom";
 
 interface SimulationResultsProps {
   score: number;
@@ -34,6 +37,12 @@ const SimulationResults = ({
 }: SimulationResultsProps) => {
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [savedQuestionIds, setSavedQuestionIds] = useState<Set<string>>(() => new Set());
+  const { type } = useParams<{ type: string }>();
+  const [searchParams] = useSearchParams();
+  const questionLimit = searchParams.get('limit');
+  
+  // Check if this is a quick practice simulation
+  const isQuickPractice = Boolean(type && questionLimit && !searchParams.get('difficulty'));
 
   useEffect(() => {
     // Fix the type error by explicitly casting the map result to string[]
@@ -43,7 +52,13 @@ const SimulationResults = ({
     ) as Set<string>;
     
     setSavedQuestionIds(savedIds);
-  }, []);
+
+    // Save quick practice progress when simulation is completed
+    if (isQuickPractice && type) {
+      saveQuickPracticeProgress(type, score, questionsData.length);
+      console.log(`Quick practice progress saved for ${type}: ${score}% score`);
+    }
+  }, [isQuickPractice, type, score, questionsData.length]);
 
   const percentage = score;
 
@@ -51,7 +66,7 @@ const SimulationResults = ({
     <Card className="shadow-lg border-0">
       <CardContent className="p-6 md:p-8">        <div className="text-center mb-6" dir="ltr" style={{direction: 'ltr'}}>
           <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-            {isQuestionSet ? "Question Set Completed!" : "Simulation Completed!"}
+            {isQuestionSet ? "Question Set Completed!" : isQuickPractice ? "Quick Practice Completed!" : "Simulation Completed!"}
           </h2>
           <p className="text-gray-600">
             You answered {answeredQuestionsCount} out of {questionsData.length} questions.
@@ -107,7 +122,7 @@ const SimulationResults = ({
             style={{direction: 'ltr'}}
           >
             <RotateCcw className="h-4 w-4 mr-2" />
-            Start New Simulation
+            {isQuickPractice ? "Start New Quick Practice" : "Start New Simulation"}
           </Button>
           
           <Button 
@@ -118,7 +133,7 @@ const SimulationResults = ({
             style={{direction: 'ltr'}}
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            {isQuestionSet ? "Back to Question Sets" : "Back to Topics"}
+            {isQuestionSet ? "Back to Question Sets" : isQuickPractice ? "Back to Practice Options" : "Back to Topics"}
           </Button>
         </div>
       </CardContent>

@@ -29,6 +29,19 @@ export const saveSimulationProgress = (simulationId: string, state: any, setNumb
       sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
     }
     
+    // Save quick practice progress
+    if (simulationId.startsWith('quick_') && state.answeredQuestionsCount > 0) {
+      const quickProgressKey = `quick_practice_progress_${type}`;
+      const quickProgress = {
+        completed: false,
+        inProgress: true,
+        score: undefined,
+        answeredQuestions: state.answeredQuestionsCount,
+        totalQuestions: state.totalQuestions
+      };
+      sessionStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
+    }
+    
     console.log(`Simulation progress saved for ${simulationId}`);
   } catch (error) {
     console.error("Error saving simulation progress:", error);
@@ -54,4 +67,36 @@ export const saveSetProgress = (type: string, difficulty: string, setNumber: str
     answeredQuestions: totalQuestions
   };
   sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
+};
+
+export const saveQuickPracticeProgress = (type: string, score: number, totalQuestions: number) => {
+  const quickProgressKey = `quick_practice_progress_${type}`;
+  const quickProgress = {
+    completed: true,
+    inProgress: false,
+    score: Math.round((score / totalQuestions) * 100),
+    answeredQuestions: totalQuestions
+  };
+  sessionStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
+};
+
+export const getQuickPracticeProgress = (type: string) => {
+  try {
+    const quickProgressKey = `quick_practice_progress_${type}`;
+    const savedProgress = sessionStorage.getItem(quickProgressKey);
+    return savedProgress ? JSON.parse(savedProgress) : null;
+  } catch (error) {
+    console.error("Error loading quick practice progress:", error);
+    return null;
+  }
+};
+
+export const clearQuickPracticeProgress = (type: string) => {
+  try {
+    const quickProgressKey = `quick_practice_progress_${type}`;
+    sessionStorage.removeItem(quickProgressKey);
+    console.log(`Quick practice progress cleared for ${type}`);
+  } catch (error) {
+    console.error("Error clearing quick practice progress:", error);
+  }
 };
