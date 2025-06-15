@@ -343,42 +343,46 @@ const SimulationResults = ({
             </div>
           )}
 
-          {/* Recommendations */}
-          <Card className="mb-8 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-500/30">
-            <CardHeader>
-              <CardTitle className="text-lg text-blue-400 flex items-center gap-2">
-                <Star className="h-5 w-5" />
+          {/* Enhanced Recommendations */}
+          <Card className="mb-8 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 border-2 border-blue-400/50 shadow-xl">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold text-blue-200 flex items-center gap-3">
+                <div className="p-2 bg-blue-500/30 rounded-full">
+                  <Star className="h-6 w-6 text-blue-300" />
+                </div>
                 המלצות אישיות
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
+            <CardContent className="pt-0">
+              <div className="space-y-4">
                 {recommendations.map((rec, index) => (
-                  <li key={index} className="flex items-start gap-2 text-blue-300">
-                    <div className="w-2 h-2 rounded-full bg-blue-400 mt-2 flex-shrink-0" />
-                    <span>{rec}</span>
-                  </li>
+                  <div key={index} className="flex items-start gap-4 p-4 bg-blue-600/20 rounded-lg border border-blue-400/30">
+                    <div className="w-6 h-6 rounded-full bg-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-2 h-2 bg-white rounded-full" />
+                    </div>
+                    <span className="text-blue-100 font-medium leading-relaxed text-lg">{rec}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </CardContent>
           </Card>
 
-          {/* Action Buttons */}
+          {/* Enhanced Action Buttons */}
           <div className="flex flex-col gap-4">
             <Button 
               onClick={onRestart}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold rounded-xl transition-all duration-300 hover:scale-105"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl border border-blue-500/30"
             >
-              <RotateCcw className="h-5 w-5 mr-2" />
+              <RotateCcw className="h-6 w-6 mr-3" />
               {isQuickPractice ? "התחל תרגול מהיר חדש" : "התחל סימולציה חדשה"}
             </Button>
             
             <Button 
               variant="outline" 
               onClick={onBackToTopics}
-              className="py-3 text-lg rounded-xl border-2 border-slate-600 text-slate-100 hover:bg-slate-700/50 transition-all duration-300"
+              className="py-4 text-lg font-semibold rounded-xl border-2 border-slate-500 bg-slate-700/50 text-slate-100 hover:bg-slate-600/70 hover:border-slate-400 transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl"
             >
-              <ArrowLeft className="h-5 w-5 mr-2" />
+              <ArrowLeft className="h-6 w-6 mr-3" />
               {isQuestionSet ? "חזרה לקבוצות השאלות" : isQuickPractice ? "חזרה לאפשרויות התרגול" : "חזרה לנושאים"}
             </Button>
           </div>
