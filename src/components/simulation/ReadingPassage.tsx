@@ -28,7 +28,7 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm flex flex-col">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-[calc(100vh-120px)] flex flex-col">
         {title && (
           <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0" 
               dir="ltr" 
@@ -36,7 +36,7 @@ export const ReadingPassage = ({
             {title}
           </h3>
         )}
-        <div className="p-8 pt-6 overflow-y-auto flex-grow" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+        <div className="p-8 pt-6 overflow-y-auto flex-grow">
           <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
             {passageWithLines.map((line, index) => (
               <div key={index} className="flex gap-4">
@@ -62,7 +62,7 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm flex flex-col">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm h-[calc(100vh-120px)] flex flex-col">
         {title && (
           <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0"
               dir="ltr" 
@@ -70,7 +70,7 @@ export const ReadingPassage = ({
             {title}
           </h3>
         )}
-        <div className="p-8 pt-6 overflow-y-auto flex-grow" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+        <div className="p-8 pt-6 overflow-y-auto flex-grow">
           <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
             {lines.map((line, index) => (
               <div key={index} className="flex gap-4">
