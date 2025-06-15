@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -379,13 +378,11 @@ const UnifiedQuestionCard = ({
                 ) : (
                   <Button
                     onClick={onNextQuestion}
-                    disabled={currentQuestionIndex >= totalQuestions - 1}
                     className={cn(
-                      "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-8 py-3 shadow-lg transition-all duration-300 transform",
-                      currentQuestionIndex >= totalQuestions - 1 ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+                      "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-8 py-3 shadow-lg transition-all duration-300 transform hover:scale-105"
                     )}
                   >
-                    Next Question
+                    {currentQuestionIndex >= totalQuestions - 1 ? 'Finish' : 'Next Question'}
                     <ArrowRight className="h-5 w-5 mr-2" />
                   </Button>
                 )}
@@ -670,13 +667,11 @@ const UnifiedQuestionCard = ({
           ) : (
             <Button
               onClick={onNextQuestion}
-              disabled={currentQuestionIndex >= totalQuestions - 1}
               className={cn(
-                "font-semibold rounded-xl px-8 py-3 shadow-lg transition-all duration-300 transform",
+                "font-semibold rounded-xl px-8 py-3 shadow-lg transition-all duration-300 transform hover:scale-105",
                 variant === 'simulation'
                   ? "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white"
-                  : "bg-electric-blue hover:bg-blue-600 text-white",
-                currentQuestionIndex >= totalQuestions - 1 ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+                  : "bg-electric-blue hover:bg-blue-600 text-white"
               )}
             >
               {currentQuestionIndex >= totalQuestions - 1 ? 'Finish' : 'Next Question'}
