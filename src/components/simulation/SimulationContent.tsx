@@ -1,9 +1,8 @@
+
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
-import QuestionCardWithStory from "./QuestionCardWithStory";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";
-import { ReadingPassage } from "./ReadingPassage";
 
 interface SimulationContentProps {
   simulationComplete: boolean;
@@ -73,7 +72,6 @@ const SimulationContent = ({
   onResetProgress
 }: SimulationContentProps) => {
 
-  // הוספת לוגים לדיבוג שאלות הבנת הנקרא
   console.log('[SimulationContent] Current question details:', {
     id: currentQuestion?.id,
     type: currentQuestion?.type,
@@ -104,15 +102,7 @@ const SimulationContent = ({
     );
   }
 
-  // בדיקה אם השאלה הנוכחית היא מסוג reading comprehension עם קטע
-  const isReadingComprehensionWithPassage = currentQuestion?.type === 'reading-comprehension' && 
-    (currentQuestion.passageText || (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0));
-
-  console.log('[SimulationContent] Using question card type:', {
-    isReadingComprehensionWithPassage,
-    questionType: currentQuestion?.type,
-    willUseStoryCard: isReadingComprehensionWithPassage
-  });
+  console.log('[SimulationContent] Using unified QuestionCard for all question types');
 
   return (
     <div className="space-y-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6 rounded-xl">
@@ -132,47 +122,27 @@ const SimulationContent = ({
         setNumber={setNumber}
       />
 
-      {/* Question Display */}
-      {isReadingComprehensionWithPassage ? (
-        <QuestionCardWithStory
-          currentQuestion={currentQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          selectedAnswerIndex={selectedAnswerIndex}
-          isAnswerSubmitted={isAnswerSubmitted}
-          showExplanation={showExplanation}
-          isFlagged={questionFlags[currentQuestionIndex] || false}
-          examMode={examMode}
-          showAnswersImmediately={showAnswersImmediately}
-          answeredQuestionsCount={answeredQuestionsCount}
-          correctQuestionsCount={correctQuestionsCount}
-          progressPercentage={progressPercentage}
-          onAnswerSelect={onAnswerSelect}
-          onSubmitAnswer={onSubmitAnswer}
-          onNextQuestion={onNextQuestion}
-          onPreviousQuestion={onPreviousQuestion}
-          onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-        />
-      ) : (
-        <QuestionCard
-          currentQuestion={currentQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          selectedAnswerIndex={selectedAnswerIndex}
-          isAnswerSubmitted={isAnswerSubmitted}
-          showExplanation={showExplanation}
-          isFlagged={questionFlags[currentQuestionIndex] || false}
-          examMode={examMode}
-          showAnswersImmediately={showAnswersImmediately}
-          onAnswerSelect={onAnswerSelect}
-          onSubmitAnswer={onSubmitAnswer}
-          onNextQuestion={onNextQuestion}
-          onPreviousQuestion={onPreviousQuestion}
-          onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-        />
-      )}
+      {/* Unified Question Display */}
+      <QuestionCard
+        currentQuestion={currentQuestion}
+        currentQuestionIndex={currentQuestionIndex}
+        totalQuestions={totalQuestions}
+        selectedAnswerIndex={selectedAnswerIndex}
+        isAnswerSubmitted={isAnswerSubmitted}
+        showExplanation={showExplanation}
+        isFlagged={questionFlags[currentQuestionIndex] || false}
+        examMode={examMode}
+        showAnswersImmediately={showAnswersImmediately}
+        answeredQuestionsCount={answeredQuestionsCount}
+        correctQuestionsCount={correctQuestionsCount}
+        progressPercentage={progressPercentage}
+        onAnswerSelect={onAnswerSelect}
+        onSubmitAnswer={onSubmitAnswer}
+        onNextQuestion={onNextQuestion}
+        onPreviousQuestion={onPreviousQuestion}
+        onToggleExplanation={onToggleExplanation}
+        onToggleQuestionFlag={onToggleQuestionFlag}
+      />
     </div>
   );
 };
