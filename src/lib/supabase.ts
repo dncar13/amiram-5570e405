@@ -232,3 +232,25 @@ export const onAuthStateChanged = (auth: any, callback: (user: User | null) => v
     window.removeEventListener('supabase:auth-refresh', handleAuthRefresh);
   };
 };
+
+// --- Add resend confirmation email function ---
+export const resendConfirmationEmail = async (email: string) => {
+  try {
+    console.log("Attempting to resend confirmation email to:", email);
+    const { data, error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/`
+      },
+    });
+    if (error) {
+      console.error("Resend email error:", error);
+      return { success: false, error: { message: getErrorMessage(error) } };
+    }
+    return { success: true, error: null };
+  } catch (error) {
+    console.error("Resend catch error:", error);
+    return { success: false, error: { message: getErrorMessage(error) } };
+  }
+}

@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
+import { resendConfirmationEmail } from "@/lib/supabase";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -22,6 +23,7 @@ const Login = () => {
     name: ""
   });
   const [authError, setAuthError] = useState<string | null>(null);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState<string | null>(null);
   
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -69,19 +71,37 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setAuthError(null);
-    
+    setAwaitingConfirmation(null);
+
     // Basic validation
     if (!formData.email || !formData.password) {
       setAuthError("אנא מלאו את כל השדות");
       setIsLoading(false);
       return;
     }
-    
+
     try {
       console.log("Login attempt for:", formData.email);
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
-      
-      if (user) {
+
+      if (error) {
+        // Check for email not confirmed case
+        if (
+          error.message.includes("יש לאשר את כתובת האימייל") ||
+          error.message.toLowerCase().includes("confirm your email") ||
+          error.message.toLowerCase().includes("email not confirmed")
+        ) {
+          setAwaitingConfirmation(formData.email);
+          setIsLoading(false);
+          return;
+        }
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בהתחברות",
+          description: error.message,
+        });
+      } else if (user) {
         console.log("Login successful, user:", user.email);
         
         // רענון מיידי של מצב Auth
@@ -96,14 +116,6 @@ const Login = () => {
         setTimeout(() => {
           navigate("/simulations-entry");
         }, 200);
-      } else if (error) {
-        console.error("Login failed:", error);
-        setAuthError(error.message);
-        toast({
-          variant: "destructive",
-          title: "שגיאה בהתחברות",
-          description: error.message,
-        });
       }
     } catch (error) {
       console.error("Login catch error:", error);
@@ -123,6 +135,7 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     setAuthError(null);
+    setAwaitingConfirmation(null);
     
     // Basic validation
     if (!formData.email || !formData.password || !formData.name) {
@@ -141,7 +154,23 @@ const Login = () => {
       console.log("Registration attempt for:", formData.email);
       const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
       
-      if (user) {
+      if (error) {
+        if (
+          error.message.includes("יש לאשר את כתובת האימייל") ||
+          error.message.toLowerCase().includes("confirm your email") ||
+          error.message.toLowerCase().includes("email not confirmed")
+        ) {
+          setAwaitingConfirmation(formData.email);
+          setIsLoading(false);
+          return;
+        }
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בהרשמה",
+          description: error.message,
+        });
+      } else if (user) {
         console.log("Registration successful, user:", user.email);
         
         // רענון מיידי של מצב Auth
@@ -156,14 +185,6 @@ const Login = () => {
         setTimeout(() => {
           navigate("/simulations-entry");
         }, 200);
-      } else if (error) {
-        console.error("Registration failed:", error);
-        setAuthError(error.message);
-        toast({
-          variant: "destructive",
-          title: "שגיאה בהרשמה",
-          description: error.message,
-        });
       }
     } catch (error) {
       console.error("Registration catch error:", error);
@@ -191,6 +212,30 @@ const Login = () => {
     }
   };
   
+  const handleResendConfirmation = async () => {
+    if (!awaitingConfirmation) return;
+    setIsLoading(true);
+    try {
+      const { success, error } = await resendConfirmationEmail(awaitingConfirmation);
+      if (success) {
+        toast({
+          variant: "success",
+          title: "נשלח שוב",
+          description: "קישור אישור נשלח לכתובת המייל שלך. בדקו את תיבת הדואר.",
+        });
+      } else if (error) {
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בשליחת האישור",
+          description: error.message,
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   return (
     <RTLWrapper className="min-h-screen flex flex-col">
       <Header />
@@ -198,11 +243,23 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center py-12 bg-electric-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
-            {authError && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>שגיאה</AlertTitle>
-                <AlertDescription>{authError}</AlertDescription>
+            {awaitingConfirmation && (
+              <Alert variant="default" className="mb-6 border-l-4 border-yellow-400 bg-yellow-50">
+                <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                <AlertTitle>אימייל לא אושר</AlertTitle>
+                <AlertDescription>
+                  החשבון לא מאושר עדיין. <br />
+                  אנא בדקו את תיבת הדואר שלכם ולחצו על קישור האישור מהמערכת.<br/>
+                  לא קיבלתם את המייל?
+                  <Button
+                    size="sm"
+                    className="mx-2 mt-2"
+                    onClick={handleResendConfirmation}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "שולח..." : "שלח שוב מייל אישור"}
+                  </Button>
+                </AlertDescription>
               </Alert>
             )}
             
