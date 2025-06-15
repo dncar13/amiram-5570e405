@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -134,7 +133,7 @@ const QuestionCard = ({
         {/* Reading Passage */}
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
-            <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+            <CardHeader className="h-[120px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <CardTitle className="text-xl flex items-center gap-3">
                 <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
                   <BookOpen className="h-6 w-6 text-slate-300" />
@@ -157,7 +156,7 @@ const QuestionCard = ({
         {/* Question Area */}
         <div className="lg:order-2 h-full flex flex-col">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
-            <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+            <CardHeader className="h-[120px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl flex items-center gap-3">
                   <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
