@@ -263,12 +263,34 @@ export const useSimulation = (
       sessionStorage.removeItem(`simulation_progress_${simulationId}`);
       console.log(`Simulation progress reset for ${simulationId}`);
       
+      // Get the current questions again to avoid undefined state
+      let questionsToUse: Question[] = [];
+      
+      if (storyQuestions && storyQuestions.length > 0) {
+        questionsToUse = [...storyQuestions];
+      } else if (type && difficulty) {
+        questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
+      } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
+        const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
+        const difficultyType = sessionStorage.getItem('current_difficulty_type');
+        
+        if (difficultyLevel && difficultyType) {
+          if (difficultyType === 'mixed') {
+            questionsToUse = getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
+          } else {
+            questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+          }
+        }
+      }
+      
       setState(prevState => ({
         ...initialSimulationState,
-        questions: prevState.questions,
-        totalQuestions: prevState.totalQuestions,
+        questions: questionsToUse,
+        totalQuestions: questionsToUse.length,
+        currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
         examMode: prevState.examMode,
-        showAnswersImmediately: prevState.showAnswersImmediately
+        showAnswersImmediately: prevState.showAnswersImmediately,
+        progressLoaded: true
       }));
       
       toast({
@@ -279,7 +301,7 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast]);
+  }, [simulationId, toast, storyQuestions, type, difficulty]);
 
   const setSimulationComplete = useCallback((complete: boolean) => {
     setState(prevState => ({ ...prevState, simulationComplete: complete }));
