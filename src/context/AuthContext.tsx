@@ -105,6 +105,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    console.log("Setting up auth state listener...");
+    
     // Set up auth state listener FIRST
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log("Auth state changed:", user ? user.email : "No user");
