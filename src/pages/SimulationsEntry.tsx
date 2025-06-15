@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
@@ -147,11 +148,11 @@ const SimulationsEntry: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
         {/* Background decoration */}
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
         </div>
 
         <div ref={containerRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
@@ -171,7 +172,7 @@ const SimulationsEntry: React.FC = () => {
               <Sparkles className="w-8 h-8 text-white" />
             </motion.div>
             
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
+            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6"
                 style={{ 
                   fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                   fontWeight: '800',
@@ -184,14 +185,14 @@ const SimulationsEntry: React.FC = () => {
               </span>
             </h1>
             
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto"
+            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto"
                style={{ 
                  fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                  fontWeight: '400',
                  letterSpacing: '-0.01em'
                }}>
               בחר את סוג התרגול המתאים לך והתחל להתכונן למבחן הפסיכומטרי
-              <span className="block mt-2 text-gray-500 text-lg">עם הכלים המתקדמים ביותר בשוק</span>
+              <span className="block mt-2 text-gray-400 text-lg">עם הכלים המתקדמים ביותר בשוק</span>
             </p>
           </motion.div>
 
@@ -321,12 +322,12 @@ const SimulationsEntry: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-10">
+            <div className="bg-gray-800/50 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-700/50 p-10">
               <div className="flex items-center mb-8">
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900"
+                <h2 className="text-3xl font-bold text-white"
                     style={{ 
                       fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                       fontWeight: '700'
@@ -350,7 +351,7 @@ const SimulationsEntry: React.FC = () => {
                     onClick={() => handleQuestionTypeClick(type.type)}
                     className="group cursor-pointer"
                   >
-                    <div className="flex items-center p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-transparent hover:border-gray-200 transition-all duration-300">
+                    <div className="flex items-center p-6 rounded-2xl bg-gray-700/30 hover:bg-gray-600/50 hover:shadow-lg border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300">
                       <motion.div 
                         className={`${type.bgColor} ${type.color} p-4 rounded-xl ml-6`}
                         whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -360,12 +361,12 @@ const SimulationsEntry: React.FC = () => {
                       </motion.div>
                       
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 text-lg mb-1">{type.title}</h3>
-                        <p className="text-gray-600">{type.description}</p>
+                        <h3 className="font-semibold text-white text-lg mb-1">{type.title}</h3>
+                        <p className="text-gray-300">{type.description}</p>
                       </div>
                       
                       <motion.div
-                        className="text-gray-400 group-hover:text-gray-600 transition-colors"
+                        className="text-gray-400 group-hover:text-gray-300 transition-colors"
                         animate={{ x: 0 }}
                         whileHover={{ x: 5 }}
                       >
@@ -385,7 +386,7 @@ const SimulationsEntry: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="mt-20"
           >
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-10 overflow-hidden relative">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-10 overflow-hidden relative border border-gray-700/50">
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl" />
