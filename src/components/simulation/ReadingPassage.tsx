@@ -28,27 +28,29 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-black rounded-lg p-8 border border-gray-600 text-white h-full overflow-y-auto shadow-sm">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm flex flex-col">
         {title && (
-          <h3 className="text-2xl font-bold text-white mb-6 text-center border-b border-gray-600 pb-4" 
+          <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0" 
               dir="ltr" 
               style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
-          {passageWithLines.map((line, index) => (
-            <div key={index} className="flex gap-4">
-              {showLineNumbers && (
-                <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
-                  {line.lineNumber}
+        <div className="p-8 pt-6 overflow-y-auto flex-grow" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+          <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
+            {passageWithLines.map((line, index) => (
+              <div key={index} className="flex gap-4">
+                {showLineNumbers && (
+                  <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
+                    {line.lineNumber}
+                  </span>
+                )}
+                <span className="flex-1 text-white leading-relaxed text-lg">
+                  {line.text}
                 </span>
-              )}
-              <span className="flex-1 text-white leading-relaxed text-lg">
-                {line.text}
-              </span>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -60,27 +62,29 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-black rounded-lg p-8 border border-gray-600 text-white h-full overflow-y-auto shadow-sm">
+      <div className="bg-black rounded-lg border border-gray-600 text-white shadow-sm flex flex-col">
         {title && (
-          <h3 className="text-2xl font-bold text-white mb-6 text-center border-b border-gray-600 pb-4"
+          <h3 className="text-2xl font-bold text-white p-6 pb-4 text-center border-b border-gray-600 flex-shrink-0"
               dir="ltr" 
               style={{ textAlign: 'left' }}>
             {title}
           </h3>
         )}
-        <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
-          {lines.map((line, index) => (
-            <div key={index} className="flex gap-4">
-              {showLineNumbers && (
-                <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
-                  {index + 1}
+        <div className="p-8 pt-6 overflow-y-auto flex-grow" style={{ maxHeight: 'calc(100vh - 300px)' }}>
+          <div className="space-y-2 leading-relaxed text-lg" dir="ltr" style={{ textAlign: 'left' }}>
+            {lines.map((line, index) => (
+              <div key={index} className="flex gap-4">
+                {showLineNumbers && (
+                  <span className="text-gray-400 font-mono text-base min-w-[3rem] text-right flex-shrink-0 mt-1 select-none">
+                    {index + 1}
+                  </span>
+                )}
+                <span className="flex-1 text-white leading-relaxed text-lg">
+                  {line}
                 </span>
-              )}
-              <span className="flex-1 text-white leading-relaxed text-lg">
-                {line}
-              </span>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
