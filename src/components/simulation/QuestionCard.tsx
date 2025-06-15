@@ -130,7 +130,7 @@ const QuestionCard = ({
 
   if (hasReadingPassage) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[calc(100vh-100px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 h-[calc(100vh-100px)]">
         {/* Reading Passage */}
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
