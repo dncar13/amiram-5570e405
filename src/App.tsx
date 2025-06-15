@@ -31,6 +31,7 @@ import SimulationByDifficulty from "./pages/SimulationByDifficulty";
 import FullSimulation from "./pages/FullSimulation";
 import SimulationHistory from "./pages/SimulationHistory";
 import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
+import PracticeOptions from "./pages/PracticeOptions";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -128,6 +129,9 @@ const AnimatedRoutes = () => {
           <Route path="/simulation/history" element={<SimulationHistory />} />
           <Route path="/simulation/type/:type" element={<SimulationByType />} />
           <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
+          
+          {/* NEW: Practice options route */}
+          <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
           
           {/* Individual simulation routes */}
           <Route path="/simulation/:type/:difficulty" element={<Simulation />} />

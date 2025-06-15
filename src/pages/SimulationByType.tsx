@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -93,10 +92,13 @@ const SimulationByType: React.FC = () => {
   }
 
   const handleStartPractice = (difficulty?: string) => {
-    const path = difficulty 
-      ? `/simulation/${currentType.type}/${difficulty}`
-      : `/simulation/${currentType.type}`;
-    navigate(path);
+    if (difficulty) {
+      // Navigate to new practice options page
+      navigate(`/simulation/type/${currentType.type}/${difficulty}`);
+    } else {
+      // Keep existing mixed practice
+      navigate(`/simulation/${currentType.type}`);
+    }
   };
 
   return (
@@ -168,25 +170,28 @@ const SimulationByType: React.FC = () => {
                 </div>
               </button>
               
-              <div className="grid grid-cols-3 gap-3">
-                <button
-                  onClick={() => handleStartPractice('easy')}
-                  className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
-                >
-                  קל
-                </button>
-                <button
-                  onClick={() => handleStartPractice('medium')}
-                  className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
-                >
-                  בינוני
-                </button>
-                <button
-                  onClick={() => handleStartPractice('hard')}
-                  className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
-                >
-                  קשה
-                </button>
+              <div className="text-center">
+                <p className="text-gray-400 mb-4 font-semibold">או בחר רמת קושי ספציפית:</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <button
+                    onClick={() => handleStartPractice('easy')}
+                    className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
+                  >
+                    קל
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('medium')}
+                    className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
+                  >
+                    בינוני
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('hard')}
+                    className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
+                  >
+                    קשה
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>
