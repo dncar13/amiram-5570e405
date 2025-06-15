@@ -26,26 +26,9 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 h-[420px] flex flex-col">
-        {/* Header section with title and book icon */}
-        <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-sm text-slate-500 uppercase tracking-wide">
-              Reading Passage
-            </div>
-            {title && (
-              <div className="text-lg font-semibold text-slate-900">
-                {title}
-              </div>
-            )}
-          </div>
-          <div className="text-slate-600">
-            📖
-          </div>
-        </div>
-        
+      <div className="bg-white rounded-lg h-[420px] flex flex-col overflow-hidden">
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto bg-white rounded-b-lg">
+        <div className="flex-1 overflow-y-auto">
           <div className="p-4">
             <div className="space-y-3 leading-relaxed">
               {passageWithLines.map((line, index) => (
@@ -73,26 +56,9 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-50 rounded-lg border border-slate-200 text-slate-800 h-[420px] flex flex-col">
-        {/* Header section with title and book icon */}
-        <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-sm text-slate-500 uppercase tracking-wide">
-              Reading Passage
-            </div>
-            {title && (
-              <div className="text-lg font-semibold text-slate-900">
-                {title}
-              </div>
-            )}
-          </div>
-          <div className="text-slate-600">
-            📖
-          </div>
-        </div>
-        
+      <div className="bg-white rounded-lg h-[420px] flex flex-col overflow-hidden">
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto bg-white rounded-b-lg">
+        <div className="flex-1 overflow-y-auto">
           <div className="p-4">
             <div className="space-y-3 leading-relaxed">
               {lines.map((line, index) => (
@@ -116,22 +82,7 @@ export const ReadingPassage = ({
 
   // If no passage content is available
   return (
-    <div className="bg-slate-50 rounded-lg border border-slate-200 text-center h-[420px] flex flex-col">
-      <div className="flex-shrink-0 p-4 border-b border-slate-300 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="text-sm text-slate-500 uppercase tracking-wide">
-            Reading Passage
-          </div>
-          {title && (
-            <div className="text-lg font-semibold text-slate-900">
-              {title}
-            </div>
-          )}
-        </div>
-        <div className="text-slate-600">
-          📖
-        </div>
-      </div>
+    <div className="bg-white rounded-lg text-center h-[420px] flex flex-col overflow-hidden">
       <div className="flex-1 flex items-center justify-center">
         <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
       </div>
