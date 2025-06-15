@@ -155,10 +155,6 @@ const QuestionCard = ({
         </div>
         {/* Question Area */}
         <div className="lg:order-2 h-full flex flex-col">
-          {/* שים את השאלה מחוץ לקופסה */}
-          <div dir="ltr" className="mb-6 px-4 pt-2">
-            <h3 className="text-2xl font-bold text-left text-white">{currentQuestion.text}</h3>
-          </div>
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
             <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <div className="flex justify-between items-center">
@@ -198,6 +194,11 @@ const QuestionCard = ({
               </div>
             </CardHeader>
             <CardContent className="p-8 space-y-8 flex-1 flex flex-col">
+              {/* Question Text */}
+              <div dir="ltr" className="text-left">
+                <h3 className="text-2xl font-bold text-white">{currentQuestion.text}</h3>
+              </div>
+              
               <div className="space-y-6 flex-1 flex flex-col">
                 <div className="space-y-4 flex-1" dir="ltr">
                   {answerOptions.map((answer, index) => {
@@ -236,6 +237,8 @@ const QuestionCard = ({
                   })}
                 </div>
               </div>
+
+              {/* Answer feedback and explanation section */}
               {isAnswerSubmitted && (
                 <div className={cn(
                   "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
@@ -264,6 +267,8 @@ const QuestionCard = ({
                   </div>
                 </div>
               )}
+
+              {/* Explanation section */}
               {isAnswerSubmitted && currentQuestion.explanation && (
                 <div className="space-y-4">
                   <Button
@@ -291,6 +296,8 @@ const QuestionCard = ({
                   )}
                 </div>
               )}
+
+              {/* Navigation buttons */}
               <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
                 <Button
                   variant="outline"
@@ -342,9 +349,6 @@ const QuestionCard = ({
 
   return (
     <div>
-      <div dir="ltr" className="px-8 pt-6 pb-2">
-        <h3 className="text-2xl font-bold text-left text-white">{currentQuestion.text}</h3>
-      </div>
       <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
         <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
           <div className="flex justify-between items-center">
@@ -387,14 +391,13 @@ const QuestionCard = ({
         </CardHeader>
 
         <CardContent className="p-8 space-y-8">
-          <div className="space-y-6">
-            <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
-              <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
-                {currentQuestion.text}
-              </h3>
-            </div>
+          {/* Question Text */}
+          <div dir="ltr" className="text-left">
+            <h3 className="text-2xl font-bold text-white">{currentQuestion.text}</h3>
+          </div>
 
-            <div className="space-y-4">
+          <div className="space-y-6">
+            <div className="space-y-4" dir="ltr">
               {answerOptions.map((answer, index) => {
                 const isSelected = selectedAnswerIndex === index;
                 const isCorrectAnswer = index === currentQuestion.correctAnswer;
@@ -406,7 +409,7 @@ const QuestionCard = ({
                     key={index}
                     variant="outline"
                     className={cn(
-                      "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-right justify-start text-wrap",
+                      "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-left justify-start text-wrap",
                       "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
                       isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
                       shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
@@ -416,7 +419,7 @@ const QuestionCard = ({
                     disabled={isAnswerSubmitted}
                   >
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-lg font-medium leading-relaxed flex-1 text-right">
+                      <span className="text-lg font-medium leading-relaxed flex-1 text-left">
                         {answer}
                       </span>
                       <div className="flex items-center gap-3 mr-4">
@@ -433,6 +436,7 @@ const QuestionCard = ({
             </div>
           </div>
 
+          {/* Answer feedback */}
           {isAnswerSubmitted && (
             <div className={cn(
               "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
@@ -462,6 +466,7 @@ const QuestionCard = ({
             </div>
           )}
 
+          {/* Explanation */}
           {isAnswerSubmitted && currentQuestion.explanation && (
             <div className="space-y-4">
               <Button
@@ -491,6 +496,7 @@ const QuestionCard = ({
             </div>
           )}
 
+          {/* Navigation */}
           <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
             <Button
               variant="outline"
