@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -56,6 +57,9 @@ const QuestionCard = ({
         return;
       }
 
+      // Get answer options from either new or old format
+      const answerOptions = currentQuestion?.options || currentQuestion?.answers || [];
+
       switch (event.key) {
         case 'ArrowLeft':
           event.preventDefault();
@@ -75,7 +79,7 @@ const QuestionCard = ({
         case '4':
           event.preventDefault();
           const answerIndex = parseInt(event.key) - 1;
-          if (!isAnswerSubmitted && currentQuestion && currentQuestion.answers && answerIndex < currentQuestion.answers.length) {
+          if (!isAnswerSubmitted && currentQuestion && answerOptions && answerIndex < answerOptions.length) {
             onAnswerSelect(answerIndex);
           }
           break;
@@ -102,12 +106,24 @@ const QuestionCard = ({
     );
   }
 
-  // Add additional safety check for answers array
-  if (!currentQuestion.answers || !Array.isArray(currentQuestion.answers)) {
+  // Get answer options from either new or old format for compatibility
+  const answerOptions = currentQuestion.options || currentQuestion.answers || [];
+  
+  // Add additional safety check for answer options array
+  if (!answerOptions || !Array.isArray(answerOptions) || answerOptions.length === 0) {
+    console.error('QuestionCard: No answer options found', { 
+      id: currentQuestion.id,
+      options: currentQuestion.options,
+      answers: currentQuestion.answers,
+      type: currentQuestion.type
+    });
     return (
       <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
         <CardContent className="p-8">
           <div className="text-center text-slate-400">שגיאה בטעינת השאלה - אין תשובות זמינות</div>
+          <div className="text-center text-slate-500 text-sm mt-2">
+            ID: {currentQuestion.id}, Type: {currentQuestion.type}
+          </div>
         </CardContent>
       </Card>
     );
@@ -140,6 +156,7 @@ const QuestionCard = ({
               <ReadingPassage 
                 title={currentQuestion.passageTitle}
                 passageWithLines={currentQuestion.passageWithLines}
+                passageText={currentQuestion.passageText}
                 showLineNumbers={currentQuestion.lineNumbers}
               />
             </CardContent>
@@ -198,7 +215,7 @@ const QuestionCard = ({
                 </div>
 
                 <div className="space-y-4">
-                  {currentQuestion.answers.map((answer, index) => {
+                  {answerOptions.map((answer, index) => {
                     const isSelected = selectedAnswerIndex === index;
                     const isCorrectAnswer = index === currentQuestion.correctAnswer;
                     const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
@@ -257,7 +274,7 @@ const QuestionCard = ({
                         <XCircle className="h-8 w-8 text-red-400" />
                         <div>
                           <h4 className="text-xl font-bold text-red-300">תשובה שגויה</h4>
-                          <p className="text-red-200">התשובה הנכונה היא: {currentQuestion.answers[currentQuestion.correctAnswer]}</p>
+                          <p className="text-red-200">התשובה הנכונה היא: {answerOptions[currentQuestion.correctAnswer]}</p>
                         </div>
                       </>
                     )}
@@ -397,7 +414,7 @@ const QuestionCard = ({
           </div>
 
           <div className="space-y-4">
-            {currentQuestion.answers.map((answer, index) => {
+            {answerOptions.map((answer, index) => {
               const isSelected = selectedAnswerIndex === index;
               const isCorrectAnswer = index === currentQuestion.correctAnswer;
               const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
@@ -456,7 +473,7 @@ const QuestionCard = ({
                   <XCircle className="h-8 w-8 text-red-400" />
                   <div>
                     <h4 className="text-xl font-bold text-red-300">תשובה שגויה</h4>
-                    <p className="text-red-200">התשובה הנכונה היא: {currentQuestion.answers[currentQuestion.correctAnswer]}</p>
+                    <p className="text-red-200">התשובה הנכונה היא: {answerOptions[currentQuestion.correctAnswer]}</p>
                   </div>
                 </>
               )}
