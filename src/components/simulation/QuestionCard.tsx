@@ -142,12 +142,14 @@ const QuestionCard = ({
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-full">
-              <ReadingPassage 
-                title={currentQuestion.passageTitle}
-                passageWithLines={currentQuestion.passageWithLines}
-                passageText={currentQuestion.passageText}
-                showLineNumbers={currentQuestion.lineNumbers}
-              />
+              <div dir="ltr" className="text-left h-full flex flex-col">
+                <ReadingPassage 
+                  title={currentQuestion.passageTitle}
+                  passageWithLines={currentQuestion.passageWithLines}
+                  passageText={currentQuestion.passageText}
+                  showLineNumbers={currentQuestion.lineNumbers}
+                />
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -155,7 +157,7 @@ const QuestionCard = ({
         <div className="lg:order-2 h-full flex flex-col">
           {/* שים את השאלה מחוץ לקופסה */}
           <div dir="ltr" className="mb-6 px-4 pt-2">
-            <h3 className="text-2xl font-bold text-left text-slate-900">{currentQuestion.text}</h3>
+            <h3 className="text-2xl font-bold text-left text-white">{currentQuestion.text}</h3>
           </div>
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
             <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
@@ -339,198 +341,203 @@ const QuestionCard = ({
   }
 
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
-      <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-xl flex items-center gap-3">
-            <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-              <CheckCircle className="h-6 w-6 text-slate-300" />
-            </div>
-            <span className="font-bold text-slate-100">
-              Question {currentQuestionIndex + 1} of {totalQuestions}
-            </span>
-          </CardTitle>
+    <div>
+      <div dir="ltr" className="px-8 pt-6 pb-2">
+        <h3 className="text-2xl font-bold text-left text-white">{currentQuestion.text}</h3>
+      </div>
+      <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl">
+        <CardHeader className="pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-xl flex items-center gap-3">
+              <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+                <CheckCircle className="h-6 w-6 text-slate-300" />
+              </div>
+              <span className="font-bold text-slate-100">
+                Question {currentQuestionIndex + 1} of {totalQuestions}
+              </span>
+            </CardTitle>
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className={cn(
+                "h-10 w-10 rounded-lg border transition-all duration-300",
+                isFlagged 
+                  ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
+                  : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
+              )}
+              onClick={onToggleQuestionFlag}
+              title={isFlagged ? "Remove flag" : "Flag question"}
+            >
+              <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
+            </Button>
+          </div>
           
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            className={cn(
-              "h-10 w-10 rounded-lg border transition-all duration-300",
-              isFlagged 
-                ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
-                : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
-            )}
-            onClick={onToggleQuestionFlag}
-            title={isFlagged ? "Remove flag" : "Flag question"}
-          >
-            <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
-          </Button>
-        </div>
-        
-        <div className="mt-4">
-          <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
-            <span>Progress</span>
-            <span>{calculatedProgressPercentage}%</span>
+          <div className="mt-4">
+            <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
+              <span>Progress</span>
+              <span>{calculatedProgressPercentage}%</span>
+            </div>
+            <Progress 
+              value={calculatedProgressPercentage} 
+              className="h-3 bg-slate-800/60 rounded-full border border-slate-600/50" 
+              indicatorClassName="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
+            />
           </div>
-          <Progress 
-            value={calculatedProgressPercentage} 
-            className="h-3 bg-slate-800/60 rounded-full border border-slate-600/50" 
-            indicatorClassName="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
-          />
-        </div>
-      </CardHeader>
+        </CardHeader>
 
-      <CardContent className="p-8 space-y-8">
-        <div className="space-y-6">
-          <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
-            <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
-              {currentQuestion.text}
-            </h3>
-          </div>
+        <CardContent className="p-8 space-y-8">
+          <div className="space-y-6">
+            <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+              <h3 className="text-xl font-bold text-slate-100 mb-4 leading-relaxed">
+                {currentQuestion.text}
+              </h3>
+            </div>
 
-          <div className="space-y-4">
-            {answerOptions.map((answer, index) => {
-              const isSelected = selectedAnswerIndex === index;
-              const isCorrectAnswer = index === currentQuestion.correctAnswer;
-              const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
-              const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer;
-              
-              return (
-                <Button
-                  key={index}
-                  variant="outline"
-                  className={cn(
-                    "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-right justify-start text-wrap",
-                    "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
-                    isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
-                    shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
-                    shouldShowIncorrect && "bg-red-600/20 border-red-500/50 text-red-300 shadow-lg shadow-red-500/20"
-                  )}
-                  onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
-                  disabled={isAnswerSubmitted}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-lg font-medium leading-relaxed flex-1 text-right">
-                      {answer}
-                    </span>
-                    <div className="flex items-center gap-3 mr-4">
-                      <span className="bg-slate-700/80 text-slate-300 px-3 py-1 rounded-lg text-sm font-bold border border-slate-600/50">
-                        {index + 1}
+            <div className="space-y-4">
+              {answerOptions.map((answer, index) => {
+                const isSelected = selectedAnswerIndex === index;
+                const isCorrectAnswer = index === currentQuestion.correctAnswer;
+                const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
+                const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer;
+                
+                return (
+                  <Button
+                    key={index}
+                    variant="outline"
+                    className={cn(
+                      "w-full p-6 h-auto rounded-xl border-2 transition-all duration-300 text-right justify-start text-wrap",
+                      "bg-slate-800/60 border-slate-600/50 text-slate-200 hover:bg-slate-700/60",
+                      isSelected && !isAnswerSubmitted && "bg-blue-600/20 border-blue-500/50 text-blue-300 shadow-lg shadow-blue-500/20",
+                      shouldShowCorrect && "bg-green-600/20 border-green-500/50 text-green-300 shadow-lg shadow-green-500/20",
+                      shouldShowIncorrect && "bg-red-600/20 border-red-500/50 text-red-300 shadow-lg shadow-red-500/20"
+                    )}
+                    onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
+                    disabled={isAnswerSubmitted}
+                  >
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-lg font-medium leading-relaxed flex-1 text-right">
+                        {answer}
                       </span>
-                      {shouldShowCorrect && <CheckCircle className="h-6 w-6 text-green-400" />}
-                      {shouldShowIncorrect && <XCircle className="h-6 w-6 text-red-400" />}
+                      <div className="flex items-center gap-3 mr-4">
+                        <span className="bg-slate-700/80 text-slate-300 px-3 py-1 rounded-lg text-sm font-bold border border-slate-600/50">
+                          {index + 1}
+                        </span>
+                        {shouldShowCorrect && <CheckCircle className="h-6 w-6 text-green-400" />}
+                        {shouldShowIncorrect && <XCircle className="h-6 w-6 text-red-400" />}
+                      </div>
                     </div>
-                  </div>
-                </Button>
-              );
-            })}
+                  </Button>
+                );
+              })}
+            </div>
           </div>
-        </div>
 
-        {isAnswerSubmitted && (
-          <div className={cn(
-            "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
-            isCorrect 
-              ? "bg-green-600/10 border-green-500/30 shadow-green-500/10" 
-              : "bg-red-600/10 border-red-500/30 shadow-red-500/10"
-          )}>
-            <div className="flex items-center gap-4 mb-4">
-              {isCorrect ? (
-                <>
-                  <CheckCircle className="h-8 w-8 text-green-400" />
-                  <div>
-                    <h4 className="text-xl font-bold text-green-300">Correct answer!</h4>
-                    <p className="text-green-200">Well done, keep going</p>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-8 w-8 text-red-400" />
-                  <div>
-                    <h4 className="text-xl font-bold text-red-300">Wrong answer</h4>
-                    <p className="text-red-200">The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
-                  </div>
-                </>
+          {isAnswerSubmitted && (
+            <div className={cn(
+              "rounded-xl p-6 border-2 shadow-xl backdrop-blur-sm",
+              isCorrect 
+                ? "bg-green-600/10 border-green-500/30 shadow-green-500/10" 
+                : "bg-red-600/10 border-red-500/30 shadow-red-500/10"
+            )}>
+              <div className="flex items-center gap-4 mb-4">
+                {isCorrect ? (
+                  <>
+                    <CheckCircle className="h-8 w-8 text-green-400" />
+                    <div>
+                      <h4 className="text-xl font-bold text-green-300">Correct answer!</h4>
+                      <p className="text-green-200">Well done, keep going</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="h-8 w-8 text-red-400" />
+                    <div>
+                      <h4 className="text-xl font-bold text-red-300">Wrong answer</h4>
+                      <p className="text-red-200">The correct answer is: {answerOptions[currentQuestion.correctAnswer]}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
+
+          {isAnswerSubmitted && currentQuestion.explanation && (
+            <div className="space-y-4">
+              <Button
+                variant="outline"
+                onClick={onToggleExplanation}
+                className="bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl"
+              >
+                {showExplanation ? (
+                  <>
+                    <EyeOff className="h-5 w-5 ml-2" />
+                    Hide explanation
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-5 w-5 ml-2" />
+                    Show explanation
+                  </>
+                )}
+              </Button>
+              
+              {showExplanation && (
+                <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
+                  <h4 className="text-lg font-semibold text-slate-200 mb-3">Explanation:</h4>
+                  <p className="text-slate-300 leading-relaxed">{currentQuestion.explanation}</p>
+                </div>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        {isAnswerSubmitted && currentQuestion.explanation && (
-          <div className="space-y-4">
+          <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
             <Button
               variant="outline"
-              onClick={onToggleExplanation}
-              className="bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl"
-            >
-              {showExplanation ? (
-                <>
-                  <EyeOff className="h-5 w-5 ml-2" />
-                  Hide explanation
-                </>
-              ) : (
-                <>
-                  <Eye className="h-5 w-5 ml-2" />
-                  Show explanation
-                </>
+              onClick={onPreviousQuestion}
+              disabled={currentQuestionIndex === 0}
+              className={cn(
+                "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
+                currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
               )}
+            >
+              <ChevronLeft className="h-5 w-5 ml-2" />
+              Previous question
             </Button>
-            
-            {showExplanation && (
-              <div className="bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 shadow-lg">
-                <h4 className="text-lg font-semibold text-slate-200 mb-3">Explanation:</h4>
-                <p className="text-slate-300 leading-relaxed">{currentQuestion.explanation}</p>
-              </div>
+
+            <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
+              <div>Keyboard: ←→ navigation | 1-4 answers | Enter submit</div>
+            </div>
+
+            {!isAnswerSubmitted ? (
+              <Button
+                onClick={onSubmitAnswer}
+                disabled={selectedAnswerIndex === null}
+                className={cn(
+                  "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                  selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                Submit answer
+                <ChevronRight className="h-5 w-5 mr-2" />
+              </Button>
+            ) : (
+              <Button
+                onClick={onNextQuestion}
+                disabled={currentQuestionIndex >= totalQuestions - 1}
+                className={cn(
+                  "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
+                  currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                Next question
+                <ChevronRight className="h-5 w-5 mr-2" />
+              </Button>
             )}
           </div>
-        )}
-
-        <div className="flex justify-between items-center gap-4 pt-6 border-t border-slate-600/50">
-          <Button
-            variant="outline"
-            onClick={onPreviousQuestion}
-            disabled={currentQuestionIndex === 0}
-            className={cn(
-              "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl px-6 py-3",
-              currentQuestionIndex === 0 && "opacity-50 cursor-not-allowed"
-            )}
-          >
-            <ChevronLeft className="h-5 w-5 ml-2" />
-            Previous question
-          </Button>
-
-          <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
-            <div>Keyboard: ←→ navigation | 1-4 answers | Enter submit</div>
-          </div>
-
-          {!isAnswerSubmitted ? (
-            <Button
-              onClick={onSubmitAnswer}
-              disabled={selectedAnswerIndex === null}
-              className={cn(
-                "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                selectedAnswerIndex === null && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              Submit answer
-              <ChevronRight className="h-5 w-5 mr-2" />
-            </Button>
-          ) : (
-            <Button
-              onClick={onNextQuestion}
-              disabled={currentQuestionIndex >= totalQuestions - 1}
-              className={cn(
-                "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl px-6 py-3 shadow-lg transition-all duration-300",
-                currentQuestionIndex >= totalQuestions - 1 && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              Next question
-              <ChevronRight className="h-5 w-5 mr-2" />
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
