@@ -26,7 +26,7 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[700px] flex flex-col shadow-2xl">
+      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[900px] flex flex-col shadow-2xl">
         {title && (
           <h3 className="text-2xl font-bold text-slate-100 mb-6 text-center border-b border-slate-600/50 pb-4 flex-shrink-0">
             {title}
@@ -58,7 +58,7 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[700px] flex flex-col shadow-2xl">
+      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[900px] flex flex-col shadow-2xl">
         {title && (
           <h3 className="text-2xl font-bold text-slate-100 mb-6 text-center border-b border-slate-600/50 pb-4 flex-shrink-0">
             {title}
@@ -86,7 +86,7 @@ export const ReadingPassage = ({
 
   // If no passage content is available
   return (
-    <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-8 border border-slate-600/50 text-center h-[700px] flex items-center justify-center shadow-2xl">
+    <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-8 border border-slate-600/50 text-center h-[900px] flex items-center justify-center shadow-2xl">
       <div className="text-slate-400 text-lg">אין קטע קריאה זמין</div>
     </div>
   );
