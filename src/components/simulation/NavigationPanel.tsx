@@ -137,10 +137,10 @@ const NavigationPanel = ({
       );
     }
     
-    // Responsive grid with better spacing
+    // Responsive grid with horizontal flow (row-first)
     const gridClasses = isMobile 
-      ? "grid grid-cols-5 gap-3 justify-items-center max-w-full" 
-      : "grid grid-cols-6 gap-2 justify-items-center max-w-[480px] mx-auto";
+      ? "grid grid-cols-5 gap-3 justify-items-center max-w-full grid-flow-row" 
+      : "grid grid-cols-6 gap-2 justify-items-center max-w-[480px] mx-auto grid-flow-row";
     
     return (
       <div className={cn(gridClasses)} style={{ direction: 'ltr', textAlign: 'left' }}>
