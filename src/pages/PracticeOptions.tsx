@@ -56,7 +56,7 @@ const PracticeOptions: React.FC = () => {
   };
 
   const handleChooseSet = () => {
-    console.log('Choose set functionality - coming next!');
+    navigate(`/simulation/type/${type}/${difficulty}/sets`);
   };
 
   const handleBack = () => {
@@ -171,12 +171,6 @@ const PracticeOptions: React.FC = () => {
                   בחר סט תרגול
                 </div>
               </button>
-              
-              <div className="mt-4 text-center">
-                <span className="text-gray-400 text-sm">
-                  (בקרוב - מסך הסטים)
-                </span>
-              </div>
             </motion.div>
           </div>
 
