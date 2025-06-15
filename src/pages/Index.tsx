@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Question } from "@/data/questionsData";
 import { ChevronRight, ChevronLeft, Flag, Eye, EyeOff, CheckCircle, XCircle, BookOpen } from "lucide-react";
-import { ReadingPassage } from "@/components/simulation/ReadingPassage";
+import { ReadingPassage } from "./ReadingPassage";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
 
