@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -343,12 +342,12 @@ const SimulationResults = ({
             </div>
           )}
 
-          {/* Enhanced Recommendations */}
-          <Card className="mb-8 bg-gradient-to-r from-blue-500/30 to-indigo-500/30 border-2 border-blue-400/50 shadow-xl">
+          {/* Enhanced Recommendations with Better Visibility */}
+          <Card className="mb-8 bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-2 border-blue-400/60 shadow-xl">
             <CardHeader className="pb-4">
-              <CardTitle className="text-xl font-bold text-blue-200 flex items-center gap-3">
-                <div className="p-2 bg-blue-500/30 rounded-full">
-                  <Star className="h-6 w-6 text-blue-300" />
+              <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
+                <div className="p-3 bg-blue-500/40 rounded-full border border-blue-400/50">
+                  <Star className="h-7 w-7 text-blue-200" />
                 </div>
                 המלצות אישיות
               </CardTitle>
@@ -356,22 +355,22 @@ const SimulationResults = ({
             <CardContent className="pt-0">
               <div className="space-y-4">
                 {recommendations.map((rec, index) => (
-                  <div key={index} className="flex items-start gap-4 p-4 bg-blue-600/20 rounded-lg border border-blue-400/30">
-                    <div className="w-6 h-6 rounded-full bg-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <div className="w-2 h-2 bg-white rounded-full" />
+                  <div key={index} className="flex items-start gap-4 p-5 bg-slate-600/60 rounded-xl border border-slate-500/50 shadow-lg">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
+                      <div className="w-3 h-3 bg-white rounded-full" />
                     </div>
-                    <span className="text-blue-100 font-medium leading-relaxed text-lg">{rec}</span>
+                    <span className="text-slate-100 font-medium leading-relaxed text-lg">{rec}</span>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
 
-          {/* Enhanced Action Buttons */}
+          {/* Enhanced Action Buttons with Better Styling */}
           <div className="flex flex-col gap-4">
             <Button 
               onClick={onRestart}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 text-lg font-bold rounded-xl transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl border border-blue-500/30"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-5 text-xl font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl border border-blue-500/50"
             >
               <RotateCcw className="h-6 w-6 mr-3" />
               {isQuickPractice ? "התחל תרגול מהיר חדש" : "התחל סימולציה חדשה"}
@@ -380,7 +379,7 @@ const SimulationResults = ({
             <Button 
               variant="outline" 
               onClick={onBackToTopics}
-              className="py-4 text-lg font-semibold rounded-xl border-2 border-slate-500 bg-slate-700/50 text-slate-100 hover:bg-slate-600/70 hover:border-slate-400 transition-all duration-300 hover:scale-[1.02] shadow-lg hover:shadow-xl"
+              className="py-5 text-xl font-semibold rounded-2xl border-2 border-slate-400/70 bg-slate-700/60 text-slate-100 hover:bg-slate-600/80 hover:border-slate-300/80 transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl"
             >
               <ArrowLeft className="h-6 w-6 mr-3" />
               {isQuestionSet ? "חזרה לקבוצות השאלות" : isQuickPractice ? "חזרה לאפשרויות התרגול" : "חזרה לנושאים"}
