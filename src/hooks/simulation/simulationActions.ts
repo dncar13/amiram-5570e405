@@ -1,4 +1,3 @@
-
 import { saveActivity } from "@/hooks/useActivityHistory";
 import { saveSetProgress } from "./progressUtils";
 
@@ -22,6 +21,7 @@ export const createSimulationActions = (
       
       const isCorrect = prevState.selectedAnswerIndex === prevState.currentQuestion.correctAnswer;
       const questionId = prevState.currentQuestion.id;
+      const currentQuestionIndex = prevState.currentQuestionIndex;
       
       // Save activity record
       saveActivity({
@@ -34,10 +34,44 @@ export const createSimulationActions = (
         isCompleted: false
       });
       
-      const updatedUserAnswers = { ...prevState.userAnswers, [prevState.currentQuestionIndex]: prevState.selectedAnswerIndex };
-      const newScore = isCorrect ? prevState.score + 1 : prevState.score;
-      const newCorrectQuestionsCount = isCorrect ? prevState.correctQuestionsCount + 1 : prevState.correctQuestionsCount;
-      const newAnsweredQuestionsCount = prevState.answeredQuestionsCount + 1;
+      const updatedUserAnswers = { ...prevState.userAnswers, [currentQuestionIndex]: prevState.selectedAnswerIndex };
+      
+      // Check if this question was already answered before
+      const wasAlreadyAnswered = prevState.userAnswers[currentQuestionIndex] !== undefined && prevState.userAnswers[currentQuestionIndex] !== null;
+      
+      // Update score: add 1 if correct, subtract 1 if this question was previously correct but now wrong
+      let newScore = prevState.score;
+      let newCorrectQuestionsCount = prevState.correctQuestionsCount;
+      
+      if (wasAlreadyAnswered) {
+        // This question was answered before - we need to update the score accordingly
+        const previousAnswer = prevState.userAnswers[currentQuestionIndex];
+        const wasPreviouslyCorrect = previousAnswer === prevState.currentQuestion.correctAnswer;
+        
+        if (wasPreviouslyCorrect && !isCorrect) {
+          // Was correct, now wrong
+          newScore = prevState.score - 1;
+          newCorrectQuestionsCount = prevState.correctQuestionsCount - 1;
+        } else if (!wasPreviouslyCorrect && isCorrect) {
+          // Was wrong, now correct
+          newScore = prevState.score + 1;
+          newCorrectQuestionsCount = prevState.correctQuestionsCount + 1;
+        }
+        // If both were correct or both were wrong, no change needed
+      } else {
+        // This is a new answer
+        if (isCorrect) {
+          newScore = prevState.score + 1;
+          newCorrectQuestionsCount = prevState.correctQuestionsCount + 1;
+        }
+      }
+      
+      // Calculate answered questions count based on unique questions that have answers
+      const answeredQuestions = Object.keys(updatedUserAnswers).filter(key => 
+        updatedUserAnswers[parseInt(key)] !== null && updatedUserAnswers[parseInt(key)] !== undefined
+      );
+      const newAnsweredQuestionsCount = answeredQuestions.length;
+      
       const newProgressPercentage = Math.round((newAnsweredQuestionsCount / prevState.totalQuestions) * 100);
       const newCurrentScorePercentage = Math.round((newScore / prevState.totalQuestions) * 100);
       
