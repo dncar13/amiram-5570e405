@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -311,9 +312,7 @@ const QuestionCard = ({
                   <ChevronLeft className="h-5 w-5 ml-2" />
                   Previous question
                 </Button>
-                <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
-                  <div>Keyboard: ←→ navigation | 1-4 answers | Enter submit</div>
-                </div>
+
                 {!isAnswerSubmitted ? (
                   <Button
                     onClick={onSubmitAnswer}
@@ -510,10 +509,6 @@ const QuestionCard = ({
               <ChevronLeft className="h-5 w-5 ml-2" />
               Previous question
             </Button>
-
-            <div className="text-center text-sm text-slate-400 bg-slate-800/40 rounded-lg px-4 py-2 border border-slate-600/30">
-              <div>Keyboard: ←→ navigation | 1-4 answers | Enter submit</div>
-            </div>
 
             {!isAnswerSubmitted ? (
               <Button
