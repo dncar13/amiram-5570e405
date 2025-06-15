@@ -32,15 +32,15 @@ export const ReadingPassage = ({
             {title}
           </h3>
         )}
-        <div className="space-y-6 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {passageWithLines.map((line, index) => (
-            <div key={index} className="space-y-2">
+            <div key={index} className="w-full">
               {showLineNumbers && (
-                <div className="text-slate-600 font-bold text-lg bg-slate-200 px-4 py-2 rounded-lg border-l-4 border-slate-400">
+                <div className="text-slate-600 font-bold text-xl mb-2">
                   Line {line.lineNumber}
                 </div>
               )}
-              <div className="text-slate-800 text-lg leading-relaxed px-4 py-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+              <div className="text-slate-800 text-xl leading-relaxed w-full">
                 {line.text}
               </div>
             </div>
@@ -62,15 +62,15 @@ export const ReadingPassage = ({
             {title}
           </h3>
         )}
-        <div className="space-y-6 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {lines.map((line, index) => (
-            <div key={index} className="space-y-2">
+            <div key={index} className="w-full">
               {showLineNumbers && (
-                <div className="text-slate-600 font-bold text-lg bg-slate-200 px-4 py-2 rounded-lg border-l-4 border-slate-400">
+                <div className="text-slate-600 font-bold text-xl mb-2">
                   Line {index + 1}
                 </div>
               )}
-              <div className="text-slate-800 text-lg leading-relaxed px-4 py-3 bg-white rounded-lg border border-slate-200 shadow-sm">
+              <div className="text-slate-800 text-xl leading-relaxed w-full">
                 {line}
               </div>
             </div>
