@@ -38,6 +38,10 @@ const Simulation = () => {
   const shouldShowResetToast = useRef(false);
   const hasShownToast = useRef(false);
   
+  // Debug logs for theme issues
+  console.log('Simulation page rendered with storyId:', storyId);
+  console.log('Current URL pathname:', window.location.pathname);
+  
   // Get query parameters
   const typeFromQuery = searchParams.get('type');
   const questionLimit = searchParams.get('limit');
@@ -53,6 +57,7 @@ const Simulation = () => {
 
   // Check if this is a story-based simulation
   const isStoryBased = Boolean(storyId);
+  console.log('Is story-based simulation:', isStoryBased, 'Story ID:', storyId);
   
   // Get story-specific questions if this is a story simulation - MEMOIZED to prevent infinite loops
   const storyQuestions = useMemo(() => {
@@ -96,6 +101,7 @@ const Simulation = () => {
     }
       // Save simulation mode in sessionStorage to survive refreshes
     if (storyId) {
+      console.log('Setting story simulation flags in sessionStorage');
       window.sessionStorage.setItem('is_story_simulation', 'true');
       window.sessionStorage.setItem('current_story_id', storyId);
     } else if (setId) {
@@ -306,7 +312,11 @@ const Simulation = () => {
   
   // Show loading state while data is being fetched
   if (effectiveIsLoading) {
-    return <SimulationLoading />;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <SimulationLoading />
+      </div>
+    );
   }
   
   // Show empty state if no questions are available
@@ -334,6 +344,8 @@ const Simulation = () => {
       </RTLWrapper>
     );
   }
+  
+  console.log('Rendering main simulation page with dark theme');
   
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
