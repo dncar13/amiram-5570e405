@@ -22,6 +22,7 @@ interface PracticeSetData {
   completed: boolean;
   inProgress: boolean;
   score?: number;
+  answeredQuestions?: number;
 }
 
 const PracticeSets: React.FC = () => {
@@ -57,21 +58,38 @@ const PracticeSets: React.FC = () => {
     const setNumber = index + 1;
     const startQuestion = index * questionsPerSet + 1;
     const endQuestion = Math.min((index + 1) * questionsPerSet, availableQuestions.length);
-    const actualQuestionCount = endQuestion - startQuestion + 1;
+    
+    // Check progress from sessionStorage for this specific set
+    const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
+    const setProgress = sessionStorage.getItem(setProgressKey);
+    let completed = false;
+    let inProgress = false;
+    let score = undefined;
+    let answeredQuestions = 0;
+    
+    if (setProgress) {
+      const progress = JSON.parse(setProgress);
+      completed = progress.completed || false;
+      inProgress = progress.inProgress || false;
+      score = progress.score;
+      answeredQuestions = progress.answeredQuestions || 0;
+    }
     
     return {
       id: setNumber,
       title: `סט תרגול ${setNumber}`,
-      questionCount: actualQuestionCount,
+      questionCount: questionsPerSet,
       description: `שאלות ${startQuestion}-${endQuestion}`,
-      completed: index < 2, // First 2 sets completed for demo
-      inProgress: index === 2, // Third set in progress for demo
-      score: index < 2 ? Math.floor(Math.random() * 30) + 70 : undefined
+      completed,
+      inProgress,
+      score,
+      answeredQuestions
     };
   });
 
   const handleStartSet = (setId: number) => {
-    navigate(`/simulation/${type}/${difficulty}?set=${setId}`);
+    // Navigate with set parameter and specific question range
+    navigate(`/simulation/${type}/${difficulty}?set=${setId}&limit=10&start=${(setId - 1) * 10}`);
   };
 
   const handleBack = () => {
@@ -156,7 +174,7 @@ const PracticeSets: React.FC = () => {
                     <p className="text-gray-300 mb-2">{set.description}</p>
                     <p className="text-gray-400 text-sm">{set.questionCount} שאלות</p>
                     
-                    {set.completed && set.score && (
+                    {set.completed && set.score !== undefined && (
                       <div className="mt-3 p-3 bg-green-500/10 rounded-xl border border-green-500/20">
                         <p className="text-green-400 font-semibold">הושלם - ציון: {set.score}%</p>
                       </div>
@@ -164,7 +182,7 @@ const PracticeSets: React.FC = () => {
                     
                     {set.inProgress && (
                       <div className="mt-3 p-3 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                        <p className="text-yellow-400 font-semibold">בהתקדמות - 6/{set.questionCount} שאלות</p>
+                        <p className="text-yellow-400 font-semibold">בהתקדמות - {set.answeredQuestions}/{set.questionCount} שאלות</p>
                       </div>
                     )}
                   </div>
@@ -212,7 +230,7 @@ const PracticeSets: React.FC = () => {
                 <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
                   <Target className="w-8 h-8 text-blue-400 mx-auto mb-3" />
                   <h4 className="text-lg font-bold text-blue-400 mb-2">תרגול מסודר</h4>
-                  <p className="text-gray-300 text-sm">כל סט מכיל עד 10 שאלות ברמת קושי קבועה לתרגול עמוק ומסודר</p>
+                  <p className="text-gray-300 text-sm">כל סט מכיל בדיוק 10 שאלות ברמת קושי קבועה לתרגול עמוק ומסודר</p>
                 </div>
 
                 <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">

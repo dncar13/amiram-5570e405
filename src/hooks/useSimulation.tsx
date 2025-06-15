@@ -94,6 +94,8 @@ export const useSimulation = (
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [searchParams] = useSearchParams();
   const questionLimit = searchParams.get('limit');
+  const setNumber = searchParams.get('set');
+  const startIndex = searchParams.get('start');
 
   const initializeTimer = useCallback(() => {
     console.log("Initializing timer");
@@ -171,8 +173,19 @@ export const useSimulation = (
           selectedAnswerIndex: null
         };
       } else {
-        // End of simulation
+        // End of simulation - save set progress if this is a set-based simulation
         clearInterval(timerInterval.current!);
+        
+        if (setNumber && type && difficulty) {
+          const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
+          const setProgress = {
+            completed: true,
+            inProgress: false,
+            score: Math.round((prevState.score / prevState.totalQuestions) * 100),
+            answeredQuestions: prevState.totalQuestions
+          };
+          sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
+        }
         
         // Save activity record for completion
         saveActivity({
@@ -190,7 +203,7 @@ export const useSimulation = (
         return { ...prevState, isTimerActive: false, simulationComplete: true };
       }
     });
-  }, []);
+  }, [setNumber, type, difficulty]);
 
   const handlePreviousQuestion = useCallback(() => {
     setState(prevState => {
@@ -264,11 +277,24 @@ export const useSimulation = (
       };
       
       sessionStorage.setItem(`simulation_progress_${simulationId}`, JSON.stringify(progress));
+      
+      // Also save set progress if this is a set-based simulation
+      if (setNumber && type && difficulty && state.answeredQuestionsCount > 0) {
+        const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
+        const setProgress = {
+          completed: false,
+          inProgress: true,
+          score: undefined,
+          answeredQuestions: state.answeredQuestionsCount
+        };
+        sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
+      }
+      
       console.log(`Simulation progress saved for ${simulationId}`);
     } catch (error) {
       console.error("Error saving simulation progress:", error);
     }
-  }, [simulationId, state]);
+  }, [simulationId, state, setNumber, type, difficulty]);
 
   const resetProgress = useCallback(() => {
     try {
@@ -330,7 +356,7 @@ export const useSimulation = (
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit });
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex });
     
     let questionsToUse: Question[] = [];
     
@@ -342,12 +368,24 @@ export const useSimulation = (
       questionsToUse = getQuestionsByDifficultyAndType(difficulty, type);
       console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${type}`);
       
-      // Apply limit if specified in URL
-      if (questionLimit) {
+      // Handle set-based question selection
+      if (setNumber && startIndex) {
+        const setNum = parseInt(setNumber, 10);
+        const start = parseInt(startIndex, 10);
+        const questionsPerSet = 10;
+        
+        if (!isNaN(setNum) && !isNaN(start)) {
+          // Get specific 10 questions for this set
+          questionsToUse = questionsToUse.slice(start, start + questionsPerSet);
+          console.log(`Set ${setNum}: Using questions ${start + 1}-${start + questionsToUse.length}`);
+        }
+      }
+      // Apply general limit if specified in URL (for quick practice)
+      else if (questionLimit) {
         const limit = parseInt(questionLimit, 10);
         if (!isNaN(limit) && limit > 0) {
           questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-          console.log(`Limited questions to ${limit} random questions from ${questionsToUse.length} total`);
+          console.log(`Limited questions to ${limit} random questions`);
         }
       }
     } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
@@ -377,7 +415,7 @@ export const useSimulation = (
     } else {
       console.warn("No questions found for simulation", { type, difficulty, simulationId });
     }
-  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty, questionLimit]);
+  }, [simulationId, isQuestionSet, storyQuestions, type, difficulty, questionLimit, setNumber, startIndex]);
 
   useEffect(() => {
     initializeQuestions();
