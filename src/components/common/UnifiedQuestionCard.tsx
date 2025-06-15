@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Question } from "@/data/questionsData";
 import { Button } from "@/components/ui/button";
@@ -258,16 +259,18 @@ const UnifiedQuestionCard = ({
 
         <CardContent className="p-8 space-y-6">
           {/* Question Text */}
-          <div className="text-xl leading-relaxed font-medium text-gray-100 mb-8 bg-slate-600/30 p-6 rounded-lg border border-slate-500/30">
+          <div className="bg-slate-600/30 p-6 rounded-lg border border-slate-500/30">
             {isEditMode ? (
               <textarea
                 value={editedQuestion?.text || ''}
                 onChange={(e) => setEditedQuestion(prev => prev ? {...prev, text: e.target.value} : null)}
-                className="w-full bg-slate-700 text-white p-4 rounded border border-slate-500 resize-none"
+                className="w-full bg-slate-700 text-white p-4 rounded border border-slate-500 resize-none text-xl leading-relaxed font-medium"
                 rows={3}
               />
             ) : (
-              currentQuestion.text
+              <div className="text-xl leading-relaxed font-medium text-gray-100 whitespace-pre-wrap break-words">
+                {currentQuestion.text}
+              </div>
             )}
           </div>
 
@@ -304,15 +307,17 @@ const UnifiedQuestionCard = ({
                   onClick={() => !isAnswerSubmitted && onAnswerSelect(index)}
                   disabled={isAnswerSubmitted}
                 >
-                  <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center justify-between w-full min-h-[2rem]">
                     <div className="flex items-center gap-3">
-                      {showResult && isCorrect && <CheckCircle className="h-6 w-6 text-green-300" />}
-                      {showResult && isSelected && !isCorrect && <XCircle className="h-6 w-6 text-red-300" />}
+                      {showResult && isCorrect && <CheckCircle className="h-6 w-6 text-green-300 flex-shrink-0" />}
+                      {showResult && isSelected && !isCorrect && <XCircle className="h-6 w-6 text-red-300 flex-shrink-0" />}
                     </div>
                     
-                    <div className="flex items-center gap-4">
-                      <span className="flex-1">{option}</span>
-                      <span className="text-sm font-bold bg-slate-700/50 px-3 py-1 rounded-full">
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                      <span className="flex-1 whitespace-pre-wrap break-words text-right leading-relaxed">
+                        {option}
+                      </span>
+                      <span className="text-sm font-bold bg-slate-700/50 px-3 py-1 rounded-full flex-shrink-0">
                         {index + 1}
                       </span>
                     </div>
@@ -329,7 +334,7 @@ const UnifiedQuestionCard = ({
                 <BookOpen className="h-5 w-5" />
                 הסבר:
               </h3>
-              <p className="text-gray-200 leading-relaxed">{currentQuestion.explanation}</p>
+              <p className="text-gray-200 leading-relaxed whitespace-pre-wrap break-words">{currentQuestion.explanation}</p>
             </div>
           )}
 
