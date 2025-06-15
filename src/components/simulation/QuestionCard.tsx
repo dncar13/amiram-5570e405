@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -133,22 +134,16 @@ const QuestionCard = ({
         {/* Reading Passage */}
         <div className="lg:order-1 h-full">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
-            <CardHeader className="h-[120px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
-              <CardTitle className="text-xl flex items-center gap-3" dir="ltr">
-                <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
+            <CardHeader className="h-[80px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+              <CardTitle className="text-2xl flex items-center" dir="ltr">
+                <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50 mr-3">
                   <BookOpen className="h-6 w-6 text-slate-300" />
                 </div>
-                <div className="flex items-center gap-3">
-                  {currentQuestion.passageTitle && (
-                    <>
-                      <span className="text-lg font-medium text-blue-300 bg-blue-900/20 px-3 py-1 rounded-md border border-blue-600/30">
-                        {currentQuestion.passageTitle}
-                      </span>
-                      <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
-                    </>
-                  )}
-                  <span className="font-bold text-slate-100">Reading Passage</span>
-                </div>
+                {currentQuestion.passageTitle && (
+                  <span className="font-bold text-slate-100">
+                    {currentQuestion.passageTitle}
+                  </span>
+                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6 h-full">
@@ -165,13 +160,13 @@ const QuestionCard = ({
         {/* Question Area */}
         <div className="lg:order-2 h-full flex flex-col">
           <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col">
-            <CardHeader className="h-[120px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+            <CardHeader className="h-[80px] pb-4 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
               <div className="flex justify-between items-center">
-                <CardTitle className="text-xl flex items-center gap-3">
+                <CardTitle className="text-lg flex items-center gap-3">
                   <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
-                    <CheckCircle className="h-6 w-6 text-slate-300" />
+                    <CheckCircle className="h-5 w-5 text-slate-300" />
                   </div>
-                  <span className="font-bold text-slate-100">
+                  <span className="font-medium text-slate-100">
                     Question {currentQuestionIndex + 1} of {totalQuestions}
                   </span>
                 </CardTitle>
@@ -179,7 +174,7 @@ const QuestionCard = ({
                   variant="ghost" 
                   size="icon" 
                   className={cn(
-                    "h-10 w-10 rounded-lg border transition-all duration-300",
+                    "h-8 w-8 rounded-lg border transition-all duration-300",
                     isFlagged 
                       ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
                       : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
@@ -187,17 +182,17 @@ const QuestionCard = ({
                   onClick={onToggleQuestionFlag}
                   title={isFlagged ? "Remove flag" : "Flag question"}
                 >
-                  <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
+                  <Flag className={cn("h-4 w-4", isFlagged && "fill-amber-400")} />
                 </Button>
               </div>
-              <div className="mt-4">
-                <div className="flex justify-between items-center text-sm text-slate-300 mb-2">
+              <div className="mt-3">
+                <div className="flex justify-between items-center text-xs text-slate-300 mb-1">
                   <span>Progress</span>
                   <span>{calculatedProgressPercentage}%</span>
                 </div>
                 <Progress 
                   value={calculatedProgressPercentage} 
-                  className="h-3 bg-slate-800/60 rounded-full border border-slate-600/50" 
+                  className="h-2 bg-slate-800/60 rounded-full border border-slate-600/50" 
                   indicatorClassName="bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-500"
                 />
               </div>
