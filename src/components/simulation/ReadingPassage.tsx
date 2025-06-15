@@ -26,15 +26,13 @@ export const ReadingPassage = ({
   // If we have passageWithLines, use that format
   if (passageWithLines && passageWithLines.length > 0) {
     return (
-      <div className="h-full flex flex-col bg-slate-50 rounded-lg border border-slate-200 text-slate-800">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <div className="p-4 border-b border-slate-300">
-            <h3 className="text-2xl font-bold text-slate-900 text-center">
-              {title}
-            </h3>
-          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
+            {title}
+          </h3>
         )}
-        <div className="flex-1 overflow-y-auto p-8 space-y-4 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {passageWithLines.map((line, index) => (
             <div key={index} className="w-full">
               {showLineNumbers && (
@@ -58,15 +56,13 @@ export const ReadingPassage = ({
     const lines = passageText.split('\n').filter(line => line.trim());
     
     return (
-      <div className="h-full flex flex-col bg-slate-50 rounded-lg border border-slate-200 text-slate-800">
+      <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-slate-800 max-h-[600px] overflow-y-auto">
         {title && (
-          <div className="p-4 border-b border-slate-300">
-            <h3 className="text-2xl font-bold text-slate-900 text-center">
-              {title}
-            </h3>
-          </div>
+          <h3 className="text-2xl font-bold text-slate-900 mb-6 text-center border-b border-slate-300 pb-4">
+            {title}
+          </h3>
         )}
-        <div className="flex-1 overflow-y-auto p-8 space-y-4 leading-relaxed">
+        <div className="space-y-4 leading-relaxed">
           {lines.map((line, index) => (
             <div key={index} className="w-full">
               {showLineNumbers && (
@@ -86,10 +82,8 @@ export const ReadingPassage = ({
 
   // If no passage content is available
   return (
-    <div className="h-full flex flex-col bg-slate-50 rounded-lg border border-slate-200">
-      <div className="flex-1 flex items-center justify-center">
-        <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
-      </div>
+    <div className="bg-slate-50 rounded-lg p-8 border border-slate-200 text-center">
+      <div className="text-slate-500 text-lg">אין קטע קריאה זמין</div>
     </div>
   );
 };
