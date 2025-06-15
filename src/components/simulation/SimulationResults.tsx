@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -176,9 +175,9 @@ const SimulationResults = ({
 
   // תיקון הפונקציה לחזרה
   const handleBackToTopics = () => {
-    if (isQuickPractice) {
+    if (isQuickPractice && type) {
       // אם זה תרגול מהיר, חזור לעמוד האפשרויות
-      navigate(`/practice-options/${type}/medium`);
+      navigate(`/simulation/type/${type}/medium`);
     } else if (isQuestionSet) {
       // אם זה סט שאלות, חזור לרשימת הסטים
       navigate("/questions-sets");
