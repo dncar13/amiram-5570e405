@@ -105,7 +105,7 @@ const SimulationContent = ({
   console.log('[SimulationContent] Using unified QuestionCard for all question types');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6 rounded-xl">
       {/* Navigation Panel */}
       <NavigationPanel
         currentQuestionIndex={currentQuestionIndex}

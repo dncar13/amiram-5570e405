@@ -316,50 +316,48 @@ const Simulation = () => {
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <Header />
-      
-      {/* כפתור חזרה - במיקום קבוע בפינה העליונה */}
-      <div className="absolute top-20 right-4 z-10">
-        <BackButton isQuestionSet={isQuestionSet} />
-      </div>
-      
-      {/* תוכן הסימולציה - מרחב מקסימלי */}
-      <main className="flex-grow" ref={contentRef}>
-        <div className="h-[calc(100vh-64px)] overflow-y-auto px-2 py-2">
-          <div className="container mx-auto max-w-7xl">
-            <SimulationContent 
-              simulationComplete={simulation.simulationComplete}
-              currentQuestionIndex={simulation.currentQuestionIndex}
-              totalQuestions={simulation.totalQuestions}
-              remainingTime={simulation.remainingTime}
-              isTimerActive={simulation.isTimerActive}
-              currentQuestion={simulation.currentQuestion}
-              selectedAnswerIndex={simulation.selectedAnswerIndex}
-              isAnswerSubmitted={simulation.isAnswerSubmitted}
-              showExplanation={simulation.showExplanation}
-              score={simulation.score}
-              questionsData={questionsToUse}
-              userAnswers={simulation.userAnswers}
-              questionFlags={simulation.questionFlags}
-              answeredQuestionsCount={simulation.answeredQuestionsCount}
-              correctQuestionsCount={simulation.correctQuestionsCount}
-              progressPercentage={simulation.progressPercentage}
-              currentScorePercentage={simulation.currentScorePercentage}
-              examMode={simulation.examMode}
-              showAnswersImmediately={simulation.showAnswersImmediately}
-              isQuestionSet={isQuestionSet}
-              setNumber={setIdNumber}
-              onAnswerSelect={simulation.handleAnswerSelect}
-              onSubmitAnswer={simulation.handleSubmitAnswer}
-              onNextQuestion={simulation.handleNextQuestion}
-              onPreviousQuestion={simulation.handlePreviousQuestion}
-              onToggleExplanation={simulation.handleToggleExplanation}
-              onToggleQuestionFlag={() => simulation.toggleQuestionFlag(simulation.currentQuestionIndex)}
-              onNavigateToQuestion={handleNavigateToQuestion}
-              onRestart={simulation.handleRestartSimulation}
-              onBackToTopics={handleBackToTopics}
-              onResetProgress={simulation.resetProgress}
-            />
-          </div>
+      <main className="flex-grow py-4 md:py-6 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" ref={contentRef}>
+        
+        {/* כפתור חזרה - ללא מרכוז */}
+        <div className="w-full px-4">
+          <BackButton isQuestionSet={isQuestionSet} />
+        </div>
+        
+        {/* תוכן הסימולציה - עם מרכוז */}
+        <div className="container mx-auto max-w-5xl px-4">
+          <SimulationContent 
+            simulationComplete={simulation.simulationComplete}
+            currentQuestionIndex={simulation.currentQuestionIndex}
+            totalQuestions={simulation.totalQuestions}
+            remainingTime={simulation.remainingTime}
+            isTimerActive={simulation.isTimerActive}
+            currentQuestion={simulation.currentQuestion}
+            selectedAnswerIndex={simulation.selectedAnswerIndex}
+            isAnswerSubmitted={simulation.isAnswerSubmitted}
+            showExplanation={simulation.showExplanation}
+            score={simulation.score}
+            questionsData={questionsToUse}
+            userAnswers={simulation.userAnswers}
+            questionFlags={simulation.questionFlags}
+            answeredQuestionsCount={simulation.answeredQuestionsCount}
+            correctQuestionsCount={simulation.correctQuestionsCount}
+            progressPercentage={simulation.progressPercentage}
+            currentScorePercentage={simulation.currentScorePercentage}
+            examMode={simulation.examMode}
+            showAnswersImmediately={simulation.showAnswersImmediately}
+            isQuestionSet={isQuestionSet}
+            setNumber={setIdNumber}
+            onAnswerSelect={simulation.handleAnswerSelect}
+            onSubmitAnswer={simulation.handleSubmitAnswer}
+            onNextQuestion={simulation.handleNextQuestion}
+            onPreviousQuestion={simulation.handlePreviousQuestion}
+            onToggleExplanation={simulation.handleToggleExplanation}
+            onToggleQuestionFlag={() => simulation.toggleQuestionFlag(simulation.currentQuestionIndex)}
+            onNavigateToQuestion={handleNavigateToQuestion}
+            onRestart={simulation.handleRestartSimulation}
+            onBackToTopics={handleBackToTopics}
+            onResetProgress={simulation.resetProgress}
+          />
         </div>
       </main>
     </RTLWrapper>
