@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ import {
   Brain,
   Cpu
 } from 'lucide-react';
+import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/services/questionsService';
 
 interface QuestionTypeData {
   type: string;
@@ -35,6 +37,15 @@ const SimulationByType: React.FC = () => {
     }
   }, [type, navigate]);
 
+  // Get actual question counts dynamically
+  const getSentenceCompletionCount = () => {
+    return getSentenceCompletionQuestions().length;
+  };
+
+  const getRestatementCount = () => {
+    return getRestatementQuestions().length;
+  };
+
   const questionTypesData: Record<string, QuestionTypeData> = {
     'sentence-completion': {
       type: 'sentence-completion',
@@ -49,7 +60,7 @@ const SimulationByType: React.FC = () => {
         'בחן את כל האפשרויות לפני קבלת החלטה',
         'שים לב לדקדוק ולצורת הפועל'
       ],
-      questionCount: 45
+      questionCount: getSentenceCompletionCount()
     },
     'restatement': {
       type: 'restatement',
@@ -64,7 +75,7 @@ const SimulationByType: React.FC = () => {
         'שמור על אותה משמעות עם ניסוח שונה',
         'הימנע מביטויים חריגים או מיוחדים'
       ],
-      questionCount: 38
+      questionCount: getRestatementCount()
     }
   };
 
