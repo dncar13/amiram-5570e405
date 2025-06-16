@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
@@ -24,6 +25,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { useAuth } from '@/context/AuthContext';
 
 interface SimulationOption {
   id: string;
@@ -35,6 +37,7 @@ interface SimulationOption {
   requiresAuth?: boolean;
   isPremium?: boolean;
   stats?: string;
+  mode?: string;
 }
 
 interface QuestionTypeOption {
@@ -48,11 +51,18 @@ interface QuestionTypeOption {
 
 const SimulationsEntry: React.FC = () => {
   const navigate = useNavigate();
-  const [isAuthenticated] = useState(false);
-  const [isPremium] = useState(false);
+  const { currentUser, isPremium, isLoading } = useAuth();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+
+  // Debug effect to track auth state in SimulationsEntry
+  React.useEffect(() => {
+    console.log("🎯 SimulationsEntry: Auth state update:");
+    console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - isPremium:", isPremium);
+    console.log("  - isLoading:", isLoading);
+  }, [currentUser, isPremium, isLoading]);
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -62,16 +72,16 @@ const SimulationsEntry: React.FC = () => {
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
   };
-
   const simulationOptions: SimulationOption[] = [
     {
       id: 'full-simulation',
       title: 'סימולציה מלאה',
-      description: '30 שאלות מעורבות מכל הקטגוריות - כמו במבחן האמיתי',
+      description: '80 שאלות מעורבות מכל הקטגוריות - כמו במבחן האמיתי',
       icon: <PlayCircle className="w-8 h-8" />,
       gradient: 'from-blue-600 via-blue-500 to-indigo-600',
       path: '/simulation/full',
-      stats: '25 דקות'
+      stats: '60 דקות',
+      mode: '🎯 מצב מבחן'
     },
     {
       id: 'practice-by-type',
@@ -80,7 +90,8 @@ const SimulationsEntry: React.FC = () => {
       icon: <Target className="w-8 h-8" />,
       gradient: 'from-emerald-600 via-green-500 to-teal-600',
       path: '/simulation/by-type',
-      stats: 'גמיש'
+      stats: 'גמיש',
+      mode: '📚 מצב תרגול'
     },
     {
       id: 'history',
@@ -88,7 +99,7 @@ const SimulationsEntry: React.FC = () => {
       description: 'צפיה בתוצאות קודמות ושאלות שמרת',
       icon: <History className="w-8 h-8" />,
       gradient: 'from-purple-600 via-pink-500 to-rose-600',
-      path: '/simulation/history',
+      path: '/simulation-history',
       requiresAuth: true,
       stats: 'ארכיון אישי'
     },
@@ -122,20 +133,30 @@ const SimulationsEntry: React.FC = () => {
   ];
 
   const handleOptionClick = (option: SimulationOption) => {
-    if (option.requiresAuth && !isAuthenticated) {
+    console.log("🎮 SimulationsEntry: Option clicked:", option.id);
+    console.log("  - Requires auth:", option.requiresAuth);
+    console.log("  - User authenticated:", !!currentUser);
+    console.log("  - Is premium:", option.isPremium);
+    console.log("  - User is premium:", isPremium);
+
+    if (option.requiresAuth && !currentUser) {
+      console.log("🔒 Redirecting to login (auth required)");
       navigate('/login');
       return;
     }
 
     if (option.isPremium && !isPremium) {
+      console.log("💎 Redirecting to premium (premium required)");
       navigate('/premium');
       return;
     }
 
+    console.log("✅ Navigating to:", option.path);
     navigate(option.path);
   };
 
   const handleQuestionTypeClick = (type: string) => {
+    console.log("📚 Question type clicked:", type);
     navigate(`/simulation/type/${type}`);
   };
 
@@ -147,11 +168,11 @@ const SimulationsEntry: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
         {/* Background decoration */}
         <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
         </div>
 
         <div ref={containerRef} className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
@@ -171,7 +192,7 @@ const SimulationsEntry: React.FC = () => {
               <Sparkles className="w-8 h-8 text-white" />
             </motion.div>
             
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
+            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6"
                 style={{ 
                   fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                   fontWeight: '800',
@@ -184,14 +205,14 @@ const SimulationsEntry: React.FC = () => {
               </span>
             </h1>
             
-            <p className="text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto"
+            <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto"
                style={{ 
                  fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                  fontWeight: '400',
                  letterSpacing: '-0.01em'
                }}>
               בחר את סוג התרגול המתאים לך והתחל להתכונן למבחן הפסיכומטרי
-              <span className="block mt-2 text-gray-500 text-lg">עם הכלים המתקדמים ביותר בשוק</span>
+              <span className="block mt-2 text-gray-400 text-lg">עם הכלים המתקדמים ביותר בשוק</span>
             </p>
           </motion.div>
 
@@ -229,7 +250,7 @@ const SimulationsEntry: React.FC = () => {
                   <div className="relative bg-gray-900/95 backdrop-blur-xl rounded-[22px] p-8 h-full">
                     {/* Lock overlay */}
                     <AnimatePresence>
-                      {((option.requiresAuth && !isAuthenticated) || (option.isPremium && !isPremium)) && (
+                      {((option.requiresAuth && !currentUser) || (option.isPremium && !isPremium)) && (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -246,10 +267,10 @@ const SimulationsEntry: React.FC = () => {
                               {option.requiresAuth ? <Lock className="w-8 h-8 text-white" /> : <Shield className="w-8 h-8 text-amber-400" />}
                             </div>
                             <p className="font-semibold text-white text-lg">
-                              {option.requiresAuth && !isAuthenticated ? 'נדרשת התחברות' : 'גרסה פרימיום'}
+                              {option.requiresAuth && !currentUser ? 'נדרשת התחברות' : 'גרסה פרימיום'}
                             </p>
                             <p className="text-white/60 text-sm mt-2">
-                              {option.requiresAuth && !isAuthenticated 
+                              {option.requiresAuth && !currentUser 
                                 ? 'התחבר כדי לגשת לתוכן זה' 
                                 : 'שדרג לפרימיום לגישה מלאה'}
                             </p>
@@ -284,9 +305,17 @@ const SimulationsEntry: React.FC = () => {
                         {option.title}
                       </h3>
                       
-                      <p className="text-white/70 mb-6 leading-relaxed">
+                      <p className="text-white/70 mb-4 leading-relaxed">
                         {option.description}
                       </p>
+
+                      {option.mode && (
+                        <div className="mb-4">
+                          <span className="text-white/80 text-sm bg-white/10 rounded-lg px-3 py-1 inline-block">
+                            {option.mode}
+                          </span>
+                        </div>
+                      )}
 
                       {option.stats && (
                         <div className="flex items-center text-white/50 text-sm">
@@ -321,18 +350,21 @@ const SimulationsEntry: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-10">
+            <div className="bg-gray-800/50 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-700/50 p-10">
               <div className="flex items-center mb-8">
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900"
-                    style={{ 
-                      fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
-                      fontWeight: '700'
-                    }}>
-                  תרגול לפי סוג שאלה
-                </h2>
+                <div>
+                  <h2 className="text-3xl font-bold text-white"
+                      style={{ 
+                        fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
+                        fontWeight: '700'
+                      }}>
+                    תרגול לפי סוג שאלה
+                  </h2>
+                  <p className="text-gray-400 mt-1">מצב תרגול עם הסברים מיידיים</p>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -350,7 +382,7 @@ const SimulationsEntry: React.FC = () => {
                     onClick={() => handleQuestionTypeClick(type.type)}
                     className="group cursor-pointer"
                   >
-                    <div className="flex items-center p-6 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg border border-transparent hover:border-gray-200 transition-all duration-300">
+                    <div className="flex items-center p-6 rounded-2xl bg-gray-700/30 hover:bg-gray-600/50 hover:shadow-lg border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300">
                       <motion.div 
                         className={`${type.bgColor} ${type.color} p-4 rounded-xl ml-6`}
                         whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -360,12 +392,12 @@ const SimulationsEntry: React.FC = () => {
                       </motion.div>
                       
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 text-lg mb-1">{type.title}</h3>
-                        <p className="text-gray-600">{type.description}</p>
+                        <h3 className="font-semibold text-white text-lg mb-1">{type.title}</h3>
+                        <p className="text-gray-300">{type.description}</p>
                       </div>
                       
                       <motion.div
-                        className="text-gray-400 group-hover:text-gray-600 transition-colors"
+                        className="text-gray-400 group-hover:text-gray-300 transition-colors"
                         animate={{ x: 0 }}
                         whileHover={{ x: 5 }}
                       >
@@ -385,7 +417,7 @@ const SimulationsEntry: React.FC = () => {
             transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="mt-20"
           >
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-10 overflow-hidden relative">
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-10 overflow-hidden relative border border-gray-700/50">
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl" />
@@ -400,85 +432,37 @@ const SimulationsEntry: React.FC = () => {
                         fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                         fontWeight: '700'
                       }}>
-                    הסטטיסטיקות שלך
+                    הבדלים בין מצבי התרגול
                   </h2>
                 </div>
                 
-                {isAuthenticated ? (
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    {[
-                      { value: "0", label: "סימולציות הושלמו", icon: <PlayCircle />, color: "from-blue-500 to-indigo-600" },
-                      { value: "0%", label: "אחוז הצלחה ממוצע", icon: <TrendingUp />, color: "from-emerald-500 to-green-600" },
-                      { value: "0", label: "שאלות נענו", icon: <BookOpenCheck />, color: "from-purple-500 to-pink-600" },
-                      { value: "0", label: "שאלות שמורות", icon: <Star />, color: "from-amber-500 to-orange-600" }
-                    ].map((stat, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                        whileHover={{ y: -5 }}
-                        className="relative group"
-                      >
-                        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 h-full">
-                          <motion.div
-                            className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center text-white mb-4`}
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {React.cloneElement(stat.icon as React.ReactElement, { className: "w-5 h-5" })}
-                          </motion.div>
-                          <div className={`text-3xl font-bold mb-2 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}>
-                            {stat.value}
-                          </div>
-                          <div className="text-white/60 text-sm">{stat.label}</div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <motion.div 
-                    className="text-center py-12"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <motion.div 
-                      className="w-24 h-24 mx-auto mb-6 bg-white/10 rounded-full flex items-center justify-center"
-                      animate={{ 
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, -5, 0]
-                      }}
-                      transition={{ 
-                        duration: 3,
-                        repeat: Infinity,
-                        repeatType: "reverse"
-                      }}
-                    >
-                      <User className="w-12 h-12 text-white/50" />
-                    </motion.div>
-                    
-                    <h3 className="text-2xl font-semibold text-white mb-3">
-                      התחבר כדי לראות את הסטטיסטיקות שלך
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center">
+                      <span className="text-2xl ml-2">📚</span>
+                      מצב תרגול
                     </h3>
-                    <p className="text-white/60 mb-8 max-w-md mx-auto">
-                      עקוב אחר ההתקדמות שלך ושמור שאלות למטרות תרגול עתידיות
-                    </p>
-                    
-                    <motion.button
-                      onClick={() => navigate('/login')}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                      style={{ fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif' }}
-                    >
-                      <span className="flex items-center">
-                        <Zap className="w-5 h-5 mr-2" />
-                        התחבר עכשיו
-                      </span>
-                    </motion.button>
-                  </motion.div>
-                )}
+                    <ul className="space-y-2 text-gray-300">
+                      <li>• הסברים מיידיים אחרי כל שאלה</li>
+                      <li>• אפשרות לחזור לשאלות קודמות</li>
+                      <li>• ללא הגבלת זמן</li>
+                      <li>• מתאים ללמידה ושיפור</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                      <span className="text-2xl ml-2">🎯</span>
+                      מצב מבחן
+                    </h3>
+                    <ul className="space-y-2 text-gray-300">
+                      <li>• הסברים רק בסוף המבחן</li>
+                      <li>• אין אפשרות לחזור לשאלות</li>
+                      <li>• הגבלת זמן כמו במבחן האמיתי</li>
+                      <li>• מתאים לבדיקת מוכנות</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>

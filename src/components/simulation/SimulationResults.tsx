@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Question } from "@/data/questionsData";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { CheckCircle, XCircle, RotateCcw, ArrowLeft, Flag } from "lucide-react";
+import { CheckCircle, XCircle, RotateCcw, ArrowLeft, Flag, Trophy, Star, Target, TrendingUp, Award, Zap } from "lucide-react";
 import { useSavedQuestions } from "@/hooks/useSavedQuestions";
+import { saveQuickPracticeProgress } from "@/hooks/simulation/progressUtils";
+import { useParams, useSearchParams } from "react-router-dom";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
 
 interface SimulationResultsProps {
   score: number;
@@ -17,7 +22,16 @@ interface SimulationResultsProps {
   onRestart: () => void;
   onBackToTopics: () => void;
   onNavigateToQuestion: (index: number) => void;
-  isQuestionSet?: boolean; // Added this prop
+  isQuestionSet?: boolean;
+}
+
+interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  earned: boolean;
+  color: string;
 }
 
 const SimulationResults = ({
@@ -34,95 +48,351 @@ const SimulationResults = ({
 }: SimulationResultsProps) => {
   const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
   const [savedQuestionIds, setSavedQuestionIds] = useState<Set<string>>(() => new Set());
+  const [showDetailedStats, setShowDetailedStats] = useState(false);
+  const { type } = useParams<{ type: string }>();
+  const [searchParams] = useSearchParams();
+  const questionLimit = searchParams.get('limit');
+  
+  const isQuickPractice = Boolean(type && questionLimit && !searchParams.get('difficulty'));
 
   useEffect(() => {
-    // Fix the type error by explicitly casting the map result to string[]
     const parsedQuestions = JSON.parse(localStorage.getItem('savedQuestions') || '[]');
     const savedIds = new Set(
       parsedQuestions.map((q: any) => String(q.id))
     ) as Set<string>;
     
     setSavedQuestionIds(savedIds);
-  }, []);
+
+    if (isQuickPractice && type) {
+      saveQuickPracticeProgress(type, score, questionsData.length);
+      console.log(`Quick practice progress saved for ${type}: ${score}% score`);
+    }
+  }, [isQuickPractice, type, score, questionsData.length]);
 
   const percentage = score;
+  const wrongAnswersCount = answeredQuestionsCount - correctQuestionsCount;
+  const skippedCount = questionsData.length - answeredQuestionsCount;
+  const flaggedCount = questionFlags.filter(flag => flag).length;
+
+  // Chart data for pie chart
+  const pieChartData = [
+    { name: 'Correct', value: correctQuestionsCount, color: '#10B981' },
+    { name: 'Wrong', value: wrongAnswersCount, color: '#EF4444' },
+    { name: 'Skipped', value: skippedCount, color: '#6B7280' }
+  ];
+
+  // Chart data for performance breakdown
+  const performanceData = [
+    { category: 'Accuracy', value: percentage, target: 80 },
+    { category: 'Completion', value: Math.round((answeredQuestionsCount / questionsData.length) * 100), target: 90 },
+    { category: 'Focus', value: Math.max(0, 100 - (flaggedCount * 10)), target: 85 }
+  ];
+
+  // Achievements system
+  const achievements: Achievement[] = [
+    {
+      id: 'perfect_score',
+      title: 'ציון מושלם!',
+      description: 'ענית נכון על כל השאלות',
+      icon: Trophy,
+      earned: percentage === 100,
+      color: 'text-yellow-400'
+    },
+    {
+      id: 'high_achiever',
+      title: 'הישג גבוה',
+      description: 'קיבלת ציון של 80% או יותר',
+      icon: Star,
+      earned: percentage >= 80,
+      color: 'text-blue-400'
+    },
+    {
+      id: 'completionist',
+      title: 'השלמת הכל',
+      description: 'ענית על כל השאלות',
+      icon: Target,
+      earned: answeredQuestionsCount === questionsData.length,
+      color: 'text-green-400'
+    },
+    {
+      id: 'focused_learner',
+      title: 'למידה ממוקדת',
+      description: 'השלמת בלי לסמן שאלות',
+      icon: Zap,
+      earned: flaggedCount === 0,
+      color: 'text-purple-400'
+    },
+    {
+      id: 'improving',
+      title: 'מתקדם',
+      description: 'קיבלת ציון מעל 60%',
+      icon: TrendingUp,
+      earned: percentage >= 60,
+      color: 'text-orange-400'
+    }
+  ];
+
+  const earnedAchievements = achievements.filter(a => a.earned);
+
+  // Performance level
+  const getPerformanceLevel = () => {
+    if (percentage >= 90) return { level: 'מעולה', color: 'text-green-400', bg: 'bg-green-500/20 border-green-500/30' };
+    if (percentage >= 80) return { level: 'טוב מאוד', color: 'text-blue-400', bg: 'bg-blue-500/20 border-blue-500/30' };
+    if (percentage >= 70) return { level: 'טוב', color: 'text-yellow-400', bg: 'bg-yellow-500/20 border-yellow-500/30' };
+    if (percentage >= 60) return { level: 'בסדר', color: 'text-orange-400', bg: 'bg-orange-500/20 border-orange-500/30' };
+    return { level: 'צריך שיפור', color: 'text-red-400', bg: 'bg-red-500/20 border-red-500/30' };
+  };
+
+  const performanceLevel = getPerformanceLevel();
+
+  // Recommendations based on performance
+  const getRecommendations = () => {
+    const recommendations = [];
+    
+    if (percentage < 60) {
+      recommendations.push("התמקד בבדיקת ההסברים לתשובות השגויות");
+      recommendations.push("כדאי להתרגל על שאלות קלות יותר תחילה");
+    } else if (percentage < 80) {
+      recommendations.push("התקדמות מעולה! נסה לזהות דפוסים בטעויות שלך");
+      recommendations.push("התרגל על עוד שאלות ברמת קושי דומה");
+    } else {
+      recommendations.push("עבודה מצוינת! אתה מוכן לחומר מאתגר יותר");
+      recommendations.push("שקול לנסות רמות קושי גבוהות יותר");
+    }
+
+    if (flaggedCount > 0) {
+      recommendations.push(`עבור על ${flaggedCount} השאלות שסימנת`);
+    }
+
+    return recommendations;
+  };
+
+  const recommendations = getRecommendations();
+
+  // Handle navigation to simulations entry page
+  const handleBackToSimulations = () => {
+    window.location.href = '/simulations-entry';
+  };
 
   return (
-    <Card className="shadow-lg border-0">
-      <CardContent className="p-6 md:p-8">        <div className="text-center mb-6" dir="ltr" style={{direction: 'ltr'}}>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-3">
-            {isQuestionSet ? "Question Set Completed!" : "Simulation Completed!"}
-          </h2>
-          <p className="text-gray-600">
-            You answered {answeredQuestionsCount} out of {questionsData.length} questions.
-          </p>
-        </div>
-
-        <div className="flex justify-center mb-8">
-          <div style={{ width: 180 }}>
-            <CircularProgressbar
-              value={percentage}
-              text={`${percentage}%`}
-              styles={buildStyles({
-                textColor: percentage >= 60 ? "#4BB543" : "#FF4F4F",
-                trailColor: "#E2E8F0",
-                pathColor: percentage >= 60 ? "#4BB543" : "#FF4F4F",
-                rotation: 0,
-                strokeLinecap: "round",
-                textSize: "24px",
-                // Remove fontFamily property as it's not supported in buildStyles
-              })}
-            />
+    <div className="space-y-6 animate-fade-in bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6">
+      <Card className="shadow-2xl border border-slate-600/50 bg-slate-800/90 backdrop-blur-sm">
+        <CardContent className="p-8">
+          {/* Header Section */}
+          <div className="text-center mb-8">
+            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4 border ${performanceLevel.bg}`}>
+              <Award className={`h-5 w-5 ${performanceLevel.color}`} />
+              <span className={`font-semibold ${performanceLevel.color}`}>
+                {performanceLevel.level}
+              </span>
+            </div>
+            
+            <h2 className="text-3xl font-bold text-slate-100 mb-3">
+              {isQuestionSet ? "קבוצת השאלות הושלמה!" : isQuickPractice ? "התרגול המהיר הושלם!" : "הסימולציה הושלמה!"}
+            </h2>
+            <p className="text-lg text-slate-300">
+              ענית על {answeredQuestionsCount} מתוך {questionsData.length} שאלות
+            </p>
           </div>
-        </div>        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-green-50 border border-green-200" dir="ltr" style={{direction: 'ltr'}}>
-            <CheckCircle className="text-green-600 h-5 w-5" />
-            <div>
-              <div className="text-sm font-medium text-green-700">Correct Answers</div>
-              <div className="text-lg font-bold text-gray-800">{correctQuestionsCount}</div>
+
+          {/* Main Score Display */}
+          <div className="flex justify-center mb-8">
+            <div className="relative">
+              <div style={{ width: 200, height: 200 }}>
+                <CircularProgressbar
+                  value={percentage}
+                  text={`${percentage}%`}
+                  styles={buildStyles({
+                    textColor: percentage >= 60 ? "#10B981" : "#EF4444",
+                    trailColor: "#374151",
+                    pathColor: percentage >= 60 ? "#10B981" : "#EF4444",
+                    rotation: 0,
+                    strokeLinecap: "round",
+                    textSize: "20px",
+                  })}
+                />
+              </div>
+              {percentage === 100 && (
+                <div className="absolute -top-2 -right-2 animate-bounce">
+                  <Trophy className="h-8 w-8 text-yellow-400" />
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-red-50 border border-red-200" dir="ltr" style={{direction: 'ltr'}}>
-            <XCircle className="text-red-600 h-5 w-5" />
-            <div>
-              <div className="text-sm font-medium text-red-700">Wrong Answers</div>
-              <div className="text-lg font-bold text-gray-800">{answeredQuestionsCount - correctQuestionsCount}</div>
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div className="text-center p-4 rounded-xl bg-green-500/20 border border-green-500/30">
+              <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-green-400">{correctQuestionsCount}</div>
+              <div className="text-sm text-green-300">נכונות</div>
+            </div>
+
+            <div className="text-center p-4 rounded-xl bg-red-500/20 border border-red-500/30">
+              <XCircle className="h-8 w-8 text-red-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-red-400">{wrongAnswersCount}</div>
+              <div className="text-sm text-red-300">שגויות</div>
+            </div>
+
+            <div className="text-center p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
+              <Flag className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-blue-400">{flaggedCount}</div>
+              <div className="text-sm text-blue-300">מסומנות</div>
+            </div>
+
+            <div className="text-center p-4 rounded-xl bg-purple-500/20 border border-purple-500/30">
+              <Target className="h-8 w-8 text-purple-400 mx-auto mb-2" />
+              <div className="text-2xl font-bold text-purple-400">{skippedCount}</div>
+              <div className="text-sm text-purple-300">דולגות</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-start gap-2 px-4 py-3 rounded-lg bg-blue-50 border border-blue-200" dir="ltr" style={{direction: 'ltr'}}>
-            <Flag className="text-blue-600 h-5 w-5" />
-            <div>
-              <div className="text-sm font-medium text-blue-700">Flagged Questions</div>
-              <div className="text-lg font-bold text-gray-800">{questionFlags.filter(flag => flag).length}</div>
+          {/* Achievements Section */}
+          {earnedAchievements.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold text-slate-100 mb-4 flex items-center gap-2">
+                <Trophy className="h-6 w-6 text-yellow-400" />
+                הישגים שנפתחו!
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {earnedAchievements.map((achievement) => (
+                  <Badge 
+                    key={achievement.id}
+                    variant="secondary" 
+                    className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 animate-scale-in text-slate-100"
+                  >
+                    <achievement.icon className={`h-4 w-4 mr-2 ${achievement.color}`} />
+                    <span className="font-medium">{achievement.title}</span>
+                  </Badge>
+                ))}
+              </div>
             </div>
+          )}
+
+          {/* Detailed Analytics Toggle */}
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowDetailedStats(!showDetailedStats)}
+              className="w-full bg-slate-700/50 border-slate-600 text-slate-100 hover:bg-slate-600/50"
+            >
+              {showDetailedStats ? 'הסתר' : 'הצג'} ניתוח מפורט
+              <TrendingUp className="h-4 w-4 ml-2" />
+            </Button>
           </div>
-        </div>
-          <div className="flex flex-col gap-4 mt-8">
-          <Button 
-            onClick={onRestart}
-            className="bg-electric-blue hover:bg-blue-600 text-white py-2"
-            dir="ltr"
-            style={{direction: 'ltr'}}
-          >
-            <RotateCcw className="h-4 w-4 mr-2" />
-            Start New Simulation
-          </Button>
-          
-          <Button 
-            variant="outline" 
-            onClick={onBackToTopics}
-            className="py-2"
-            dir="ltr"
-            style={{direction: 'ltr'}}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            {isQuestionSet ? "Back to Question Sets" : "Back to Topics"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+
+          {/* Detailed Analytics */}
+          {showDetailedStats && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 animate-fade-in">
+              {/* Results Breakdown Pie Chart */}
+              <Card className="bg-slate-700/50 border-slate-600">
+                <CardHeader>
+                  <CardTitle className="text-lg text-slate-100">פירוט התוצאות</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer
+                    config={{
+                      correct: { label: "נכונות", color: "#10B981" },
+                      wrong: { label: "שגויות", color: "#EF4444" },
+                      skipped: { label: "דולגות", color: "#6B7280" }
+                    }}
+                    className="h-64"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={pieChartData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={40}
+                          outerRadius={80}
+                          dataKey="value"
+                        >
+                          {pieChartData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+
+              {/* Performance Metrics */}
+              <Card className="bg-slate-700/50 border-slate-600">
+                <CardHeader>
+                  <CardTitle className="text-lg text-slate-100">מדדי ביצועים</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ChartContainer
+                    config={{
+                      value: { label: "הציון שלך", color: "#3B82F6" },
+                      target: { label: "יעד", color: "#10B981" }
+                    }}
+                    className="h-64"
+                  >
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={performanceData}>
+                        <XAxis dataKey="category" />
+                        <YAxis domain={[0, 100]} />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar dataKey="value" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="target" fill="#10B981" radius={[4, 4, 0, 0]} opacity={0.3} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </ChartContainer>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Enhanced Recommendations with Better Visibility */}
+          <Card className="mb-8 bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-2 border-blue-400/60 shadow-xl">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
+                <div className="p-3 bg-blue-500/40 rounded-full border border-blue-400/50">
+                  <Star className="h-7 w-7 text-blue-200" />
+                </div>
+                המלצות אישיות
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-0">
+              <div className="space-y-4">
+                {recommendations.map((rec, index) => (
+                  <div key={index} className="flex items-start gap-4 p-5 bg-slate-600/60 rounded-xl border border-slate-500/50 shadow-lg">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
+                      <div className="w-3 h-3 bg-white rounded-full" />
+                    </div>
+                    <span className="text-slate-100 font-medium leading-relaxed text-lg">{rec}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Enhanced Action Buttons with Better Styling */}
+          <div className="flex flex-col gap-4">
+            <Button 
+              onClick={onRestart}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-5 text-xl font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl border border-blue-500/50"
+            >
+              <RotateCcw className="h-6 w-6 mr-3" />
+              {isQuickPractice ? "התחל תרגול מהיר חדש" : "התחל סימולציה חדשה"}
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              onClick={handleBackToSimulations}
+              className="py-5 text-xl font-semibold rounded-2xl border-2 border-slate-400/70 bg-slate-700/60 text-slate-100 hover:bg-slate-600/80 hover:border-slate-300/80 transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl"
+            >
+              <ArrowLeft className="h-6 w-6 mr-3" />
+              חזרה לסימולציות
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

@@ -13,6 +13,7 @@ import {
   Brain,
   Cpu
 } from 'lucide-react';
+import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/services/questionsService';
 
 interface QuestionTypeData {
   type: string;
@@ -36,6 +37,15 @@ const SimulationByType: React.FC = () => {
     }
   }, [type, navigate]);
 
+  // Get actual question counts dynamically
+  const getSentenceCompletionCount = () => {
+    return getSentenceCompletionQuestions().length;
+  };
+
+  const getRestatementCount = () => {
+    return getRestatementQuestions().length;
+  };
+
   const questionTypesData: Record<string, QuestionTypeData> = {
     'sentence-completion': {
       type: 'sentence-completion',
@@ -50,7 +60,7 @@ const SimulationByType: React.FC = () => {
         'בחן את כל האפשרויות לפני קבלת החלטה',
         'שים לב לדקדוק ולצורת הפועל'
       ],
-      questionCount: 45
+      questionCount: getSentenceCompletionCount()
     },
     'restatement': {
       type: 'restatement',
@@ -65,7 +75,7 @@ const SimulationByType: React.FC = () => {
         'שמור על אותה משמעות עם ניסוח שונה',
         'הימנע מביטויים חריגים או מיוחדים'
       ],
-      questionCount: 38
+      questionCount: getRestatementCount()
     }
   };
 
@@ -93,10 +103,13 @@ const SimulationByType: React.FC = () => {
   }
 
   const handleStartPractice = (difficulty?: string) => {
-    const path = difficulty 
-      ? `/simulation/${currentType.type}/${difficulty}`
-      : `/simulation/${currentType.type}`;
-    navigate(path);
+    if (difficulty) {
+      // Navigate to difficulty-specific practice with training mode
+      navigate(`/simulation/type/${currentType.type}/${difficulty}?practice=1`);
+    } else {
+      // Quick practice with mixed questions - training mode
+      navigate(`/simulation/${currentType.type}?type=${currentType.type}&limit=10&practice=1`);
+    }
   };
 
   return (
@@ -129,6 +142,9 @@ const SimulationByType: React.FC = () => {
                 <p className="text-white text-opacity-90 text-xl">
                   {currentType.description}
                 </p>
+                <p className="text-white text-opacity-80 text-sm mt-3 bg-white/10 rounded-lg px-3 py-1 inline-block">
+                  🎯 מצב תרגול - הסברים מיידיים אחרי כל שאלה
+                </p>
               </div>
             </div>
             <div className="flex items-center text-white text-opacity-90 bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
@@ -154,7 +170,7 @@ const SimulationByType: React.FC = () => {
               <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
             </div>
             <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-              התחל תרגול מיידי עם שאלות מעורבות בנושא זה
+              התחל תרגול מיידי עם 10 שאלות מעורבות בנושא זה
             </p>
             
             <div className="space-y-6">
@@ -168,25 +184,28 @@ const SimulationByType: React.FC = () => {
                 </div>
               </button>
               
-              <div className="grid grid-cols-3 gap-3">
-                <button
-                  onClick={() => handleStartPractice('easy')}
-                  className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
-                >
-                  קל
-                </button>
-                <button
-                  onClick={() => handleStartPractice('medium')}
-                  className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
-                >
-                  בינוני
-                </button>
-                <button
-                  onClick={() => handleStartPractice('hard')}
-                  className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
-                >
-                  קשה
-                </button>
+              <div className="text-center">
+                <p className="text-gray-400 mb-4 font-semibold">או בחר רמת קושי ספציפית:</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <button
+                    onClick={() => handleStartPractice('easy')}
+                    className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
+                  >
+                    קל
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('medium')}
+                    className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
+                  >
+                    בינוני
+                  </button>
+                  <button
+                    onClick={() => handleStartPractice('hard')}
+                    className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
+                  >
+                    קשה
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>

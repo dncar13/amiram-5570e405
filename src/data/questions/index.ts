@@ -25,6 +25,15 @@ export const allQuestions: Question[] = [
   ...vocabularyQuestions,
 ];
 
+console.log(`[index.ts] Loading questions...`);
+console.log(`[index.ts] gigEconomyReadingQuestions: ${gigEconomyReadingQuestions?.length || 0}`);
+console.log(`[index.ts] technologyReadingQuestions: ${technologyReadingQuestions?.length || 0}`);
+console.log(`[index.ts] environmentReadingQuestions: ${environmentReadingQuestions?.length || 0}`);
+console.log(`[index.ts] sentenceCompletionQuestionsWithMetadata: ${sentenceCompletionQuestionsWithMetadata?.length || 0}`);
+console.log(`[index.ts] restatementQuestionsWithMetadata: ${restatementQuestionsWithMetadata?.length || 0}`);
+console.log(`[index.ts] vocabularyQuestions: ${vocabularyQuestions?.length || 0}`);
+console.log(`[index.ts] Total allQuestions: ${allQuestions.length}`);
+
 // פונקציות עזר לקבלת שאלות
 
 /**

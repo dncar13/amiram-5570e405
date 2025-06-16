@@ -1,10 +1,8 @@
 
 import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
-import QuestionCardWithStory from "./QuestionCardWithStory";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";
-import { ReadingPassage } from "./ReadingPassage";
 
 interface SimulationContentProps {
   simulationComplete: boolean;
@@ -74,14 +72,13 @@ const SimulationContent = ({
   onResetProgress
 }: SimulationContentProps) => {
 
-  // הוספת לוגים לדיבוג שאלות הבנת הנקרא
-  console.log('[SimulationContent] Current question details:', {
-    id: currentQuestion?.id,
-    type: currentQuestion?.type,
-    hasPassageText: !!currentQuestion?.passageText,
-    hasPassageWithLines: !!(currentQuestion?.passageWithLines && currentQuestion.passageWithLines.length > 0),
-    hasPassageTitle: !!currentQuestion?.passageTitle,
-    questionText: currentQuestion?.text?.substring(0, 50) + '...'
+  console.log('[SimulationContent] Rendering with:', {
+    totalQuestions,
+    questionsDataLength: questionsData.length,
+    currentQuestionIndex,
+    hasCurrentQuestion: !!currentQuestion,
+    currentQuestionId: currentQuestion?.id,
+    simulationComplete
   });
 
   // Convert Record objects to arrays for child components that expect arrays
@@ -105,75 +102,66 @@ const SimulationContent = ({
     );
   }
 
-  // בדיקה אם השאלה הנוכחית היא מסוג reading comprehension עם קטע
-  const isReadingComprehensionWithPassage = currentQuestion?.type === 'reading-comprehension' && 
-    (currentQuestion.passageText || (currentQuestion.passageWithLines && currentQuestion.passageWithLines.length > 0));
+  // Show loading if we don't have questions or current question
+  if (totalQuestions === 0 || !currentQuestion) {
+    console.log('[SimulationContent] Showing loading state - totalQuestions:', totalQuestions, 'currentQuestion:', !!currentQuestion);
+    return (
+      <div className="w-full max-w-none min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+        <div className="flex items-center justify-center h-64">
+          <div className="flex flex-col items-center">
+            <div className="relative w-12 h-12 mb-4">
+              <div className="absolute top-0 left-0 w-12 h-12 border-4 border-t-blue-600 border-r-blue-600/50 border-b-blue-600/30 border-l-blue-600/10 rounded-full animate-spin"></div>
+            </div>
+            <p className="text-lg font-medium text-slate-300">טוען שאלות...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  console.log('[SimulationContent] Using question card type:', {
-    isReadingComprehensionWithPassage,
-    questionType: currentQuestion?.type,
-    willUseStoryCard: isReadingComprehensionWithPassage
-  });
+  console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
       {/* Navigation Panel */}
-      <NavigationPanel
+      <div className="mb-8">
+        <NavigationPanel
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={totalQuestions}
+          userAnswers={userAnswersArray}
+          questionsData={questionsData}
+          questionFlags={questionFlagsArray}
+          progressPercentage={progressPercentage}
+          currentScorePercentage={currentScorePercentage}
+          onNavigateToQuestion={onNavigateToQuestion}
+          onToggleQuestionFlag={onToggleQuestionFlag}
+          onResetProgress={onResetProgress}
+          simulationType={isQuestionSet ? "question-set" : "topic"}
+          setNumber={setNumber}
+        />
+      </div>
+
+      {/* Unified Question Display */}
+      <QuestionCard
+        currentQuestion={currentQuestion}
         currentQuestionIndex={currentQuestionIndex}
         totalQuestions={totalQuestions}
-        userAnswers={userAnswersArray}
-        questionsData={questionsData}
-        questionFlags={questionFlagsArray}
+        selectedAnswerIndex={selectedAnswerIndex}
+        isAnswerSubmitted={isAnswerSubmitted}
+        showExplanation={showExplanation}
+        isFlagged={questionFlags[currentQuestionIndex] || false}
+        examMode={examMode}
+        showAnswersImmediately={showAnswersImmediately}
+        answeredQuestionsCount={answeredQuestionsCount}
+        correctQuestionsCount={correctQuestionsCount}
         progressPercentage={progressPercentage}
-        currentScorePercentage={currentScorePercentage}
-        onNavigateToQuestion={onNavigateToQuestion}
+        onAnswerSelect={onAnswerSelect}
+        onSubmitAnswer={onSubmitAnswer}
+        onNextQuestion={onNextQuestion}
+        onPreviousQuestion={onPreviousQuestion}
+        onToggleExplanation={onToggleExplanation}
         onToggleQuestionFlag={onToggleQuestionFlag}
-        onResetProgress={onResetProgress}
-        simulationType={isQuestionSet ? "question-set" : "topic"}
-        setNumber={setNumber}
       />
-
-      {/* Question Display */}
-      {isReadingComprehensionWithPassage ? (
-        <QuestionCardWithStory
-          currentQuestion={currentQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          selectedAnswerIndex={selectedAnswerIndex}
-          isAnswerSubmitted={isAnswerSubmitted}
-          showExplanation={showExplanation}
-          isFlagged={questionFlags[currentQuestionIndex] || false}
-          examMode={examMode}
-          showAnswersImmediately={showAnswersImmediately}
-          answeredQuestionsCount={answeredQuestionsCount}
-          correctQuestionsCount={correctQuestionsCount}
-          progressPercentage={progressPercentage}
-          onAnswerSelect={onAnswerSelect}
-          onSubmitAnswer={onSubmitAnswer}
-          onNextQuestion={onNextQuestion}
-          onPreviousQuestion={onPreviousQuestion}
-          onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-        />
-      ) : (
-        <QuestionCard
-          currentQuestion={currentQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          selectedAnswerIndex={selectedAnswerIndex}
-          isAnswerSubmitted={isAnswerSubmitted}
-          showExplanation={showExplanation}
-          isFlagged={questionFlags[currentQuestionIndex] || false}
-          examMode={examMode}
-          showAnswersImmediately={showAnswersImmediately}
-          onAnswerSelect={onAnswerSelect}
-          onSubmitAnswer={onSubmitAnswer}
-          onNextQuestion={onNextQuestion}
-          onPreviousQuestion={onPreviousQuestion}
-          onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-        />
-      )}
     </div>
   );
 };

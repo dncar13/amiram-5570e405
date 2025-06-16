@@ -1,6 +1,8 @@
+
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/firebase";
+import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/lib/supabase";
 
 // רשימת אימיילים של משתמשים שהם מנהלי מערכת
 const ADMIN_EMAILS = [
@@ -36,6 +38,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   updatePremiumStatus: (status: boolean) => void;
   hasAccessToTopic: (topicId: number) => boolean; // פונקציה חדשה לבדיקת גישה לנושא
+  checkAndUpdateSession: () => Promise<void>; // פונקציה חדשה לבדיקת סשן
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -47,7 +50,8 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   logout: async () => {},
   updatePremiumStatus: () => {},
-  hasAccessToTopic: () => true // ברירת מחדל - גישה לכל הנושאים
+  hasAccessToTopic: () => true, // ברירת מחדל - גישה לכל הנושאים
+  checkAndUpdateSession: async () => {}
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -103,54 +107,129 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Auth state changed:", user ? user.email : "No user");
-      setCurrentUser(user);
+  // Function to update auth state
+  const updateAuthState = (user: User | null) => {
+    console.log("🔄 Updating auth state with user:", user?.email || "null");
+    
+    setCurrentUser(user);
+    
+    if (user) {
+      console.log("✅ User found, updating related states...");
       
       // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
-      if (user && ADMIN_EMAILS.includes(user.email || "")) {
-        console.log("User is admin:", user.email);
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+      const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
+      console.log("  - Is admin:", isUserAdmin);
+      setIsAdmin(isUserAdmin);
       
       // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
       const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
-      const isPremiumByEmail = user && PREMIUM_EMAILS.includes(user.email || "");
+      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+      const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
       
-      if (premiumStatusFromStorage || isPremiumByEmail) {
-        console.log("User is premium:", premiumStatusFromStorage ? "from storage" : user?.email);
-        setIsPremium(true);
-      } else {
-        setIsPremium(false);
-      }
+      console.log("  - Premium from storage:", premiumStatusFromStorage);
+      console.log("  - Premium by email:", isPremiumByEmail);
+      console.log("  - Final premium status:", isPremiumUser);
+      setIsPremium(isPremiumUser);
       
       // טעינת נתוני משתמש עם שם מופק מהאימייל
-      if (user) {
-        setUserData({
-          firstName: extractUsernameFromEmail(user.email),
-          lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
-          premiumExpiration: isPremiumByEmail || premiumStatusFromStorage ? 
-            new Date().setMonth(new Date().getMonth() + 1) : undefined
-        });
-      } else {
-        setUserData(null);
+      const newUserData = {
+        firstName: extractUsernameFromEmail(user.email),
+        lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
+        premiumExpiration: isPremiumUser ? 
+          new Date().setMonth(new Date().getMonth() + 1) : undefined
+      };
+      console.log("  - User data:", newUserData);
+      setUserData(newUserData);
+    } else {
+      console.log("❌ No user, resetting states...");
+      setIsAdmin(false);
+      setIsPremium(false);
+      setUserData(null);
+    }
+    
+    setIsLoading(false);
+  };
+
+  // פונקציה חדשה לבדיקה ועדכון של הסשן הנוכחי
+  const checkAndUpdateSession = async () => {
+    try {
+      console.log("🔍 Checking current session...");
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error("❌ Error getting session:", error);
+        updateAuthState(null);
+        return;
       }
       
-      setIsLoading(false);
+      if (session?.user) {
+        console.log("✅ Found active session for:", session.user.email);
+        const convertedUser: User = {
+          uid: session.user.id,
+          email: session.user.email,
+          displayName: session.user.user_metadata?.full_name || session.user.user_metadata?.name || null,
+          photoURL: session.user.user_metadata?.avatar_url || session.user.user_metadata?.picture || null,
+          metadata: {
+            creationTime: session.user.created_at,
+            lastSignInTime: session.user.last_sign_in_at,
+          },
+        };
+        updateAuthState(convertedUser);
+      } else {
+        console.log("❌ No active session found");
+        updateAuthState(null);
+      }
+    } catch (error) {
+      console.error("❌ Error in checkAndUpdateSession:", error);
+      updateAuthState(null);
+    }
+  };
+
+  useEffect(() => {
+    console.log("🔧 AuthContext: Setting up auth state listener...");
+    
+    let isMounted = true;
+    
+    // בדיקה ראשונית של הסשן
+    checkAndUpdateSession();
+    
+    // Set up auth state listener
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("🔔 Auth state changed:");
+      console.log("  - User exists:", !!user);
+      console.log("  - User email:", user?.email || "No email");
+      console.log("  - User ID:", user?.uid || "No ID");
+      console.log("  - Component mounted:", isMounted);
+      
+      if (isMounted) {
+        updateAuthState(user);
+      }
     });
 
-    return unsubscribe;
-  }, []);
+    return () => {
+      console.log("🧹 Cleaning up auth listener");
+      isMounted = false;
+      unsubscribe();
+    };
+  }, []); // Remove dependencies to prevent re-initialization
+
+  // Debug effect to track state changes
+  useEffect(() => {
+    console.log("🔍 Auth state update:");
+    console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - isLoading:", isLoading);
+    console.log("  - isAdmin:", isAdmin);
+    console.log("  - isPremium:", isPremium);
+  }, [currentUser, isLoading, isAdmin, isPremium]);
 
   const logout = async () => {
     try {
+      console.log("🚪 Attempting logout...");
       await logoutUser();
+      console.log("✅ Logout successful");
       return Promise.resolve();
     } catch (error) {
-      console.error("Error during logout:", error);
+      console.error("❌ Error during logout:", error);
       return Promise.reject(error);
     }
   };
@@ -164,7 +243,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     userData,
     logout,
     updatePremiumStatus,
-    hasAccessToTopic
+    hasAccessToTopic,
+    checkAndUpdateSession
   };
 
   return (

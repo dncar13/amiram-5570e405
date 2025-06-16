@@ -1,182 +1,150 @@
+
 import { Question } from "@/data/types/questionTypes";
-import { 
-  gigEconomyReadingQuestions, 
-  technologyReadingQuestions, 
-  environmentReadingQuestions,
-  getAllQuestions as getAllQuestionsFromIndex
-} from "@/data/questions/index";
-import { vocabularyQuestions } from "@/data/questions/by-type/vocabularyQuestions";
+import { allQuestions } from "@/data/questions";
 
-// Import sentence completion questions from the new files
-import easyQuestions from "../../questions-for-lovable/sentence-completion/easy/sentence-completion-easy-2025-06-11";
-import mediumQuestions from "../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11";
-import hardQuestions from "../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11";
+console.log(`[questionsService] Service loaded. allQuestions.length: ${allQuestions?.length || 0}`);
+console.log(`[questionsService] First few questions:`, allQuestions?.slice(0, 3));
 
-// Import restatement questions
-import restatementEasy from "../../questions-for-lovable/restatement/easy/restatement-easy-2025-06-11";
-import restatementMedium from "../../questions-for-lovable/restatement/medium/restatement-medium-2025-06-11";
-import restatementHard from "../../questions-for-lovable/restatement/hard/restatement-hard-2025-06-11";
-
-// Combine all sentence completion questions
-const allSentenceCompletionQuestions: Question[] = [
-  ...easyQuestions,
-  ...mediumQuestions,
-  ...hardQuestions
-];
-
-// Combine all restatement questions
-const allRestatementQuestions: Question[] = [
-  ...restatementEasy,
-  ...restatementMedium,
-  ...restatementHard
-];
-
-// Re-export functions from questions/index
-export {
-  refreshQuestionsFromStorage,
-  initializeQuestions,
-  getSimulationProgress,
-  saveSimulationProgress,
-  resetSimulation,
-  onProgressChange,
-  getProgressKey,
-  type SimulationProgress
-} from "@/services/questions";
-
-/**
- * מחזיר את כל השאלות במערכת
- */
 export const getAllQuestions = (): Question[] => {
-  return getAllQuestionsFromIndex();
+  console.log(`[getAllQuestions] Returning ${allQuestions.length} total questions`);
+  console.log(`[getAllQuestions] Sample questions:`, allQuestions.slice(0, 2));
+  return allQuestions;
 };
 
-/**
- * מחזיר שאלות לפי נושא מסוים
- */
-export const getQuestionsByTopic = (topicId: number): Question[] => {
-  const allQuestions = getAllQuestions();
-  return allQuestions.filter(question => question.topicId === topicId);
-};
-
-/**
- * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
- */
-export const getQuestionsBySet = (setId: number): Question[] => {
-  const allQuestions = getAllQuestions();
-  // חישוב טווח השאלות בסט
-  const startId = (setId - 1) * 50 + 1;
-  const endId = setId * 50;
-  
-  // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
-  return allQuestions.filter(
-    question => question.id >= startId && question.id <= endId
-  );
-};
-
-/**
- * מחזיר שאלות קריאה לפי רמת קושי
- */
-export const getEasyQuestions = (): Question[] => {
-  return gigEconomyReadingQuestions.filter(q => q.difficulty === 'easy');
-};
-
-/**
- * מחזיר שאלות קריאה בינוניות
- */
-export const getMediumQuestions = (): Question[] => {
-  return technologyReadingQuestions.filter(q => q.difficulty === 'medium');
-};
-
-/**
- * מחזיר שאלות קשות
- */
-export const getHardQuestions = (): Question[] => {
-  return environmentReadingQuestions.filter(q => q.difficulty === 'hard');
-};
-
-/**
- * מחזיר שאלות קריאה מעורבות לפי רמת קושי
- */
-export const getMixedDifficultyQuestions = (difficulty: 'easy' | 'medium' | 'hard'): Question[] => {
-  let questions: Question[] = [];
-  
-  if (difficulty === 'easy') {
-    questions = gigEconomyReadingQuestions.filter(q => q.difficulty === 'easy');
-  } else if (difficulty === 'medium') {
-    questions = technologyReadingQuestions.filter(q => q.difficulty === 'medium');
-  } else if (difficulty === 'hard') {
-    questions = environmentReadingQuestions.filter(q => q.difficulty === 'hard');
-  }
-  
-  console.log(`Found ${questions.length} mixed difficulty questions for ${difficulty}`);
-  return questions;
-};
-
-/**
- * מחזיר שאלות אוצר מילים
- */
-export const getVocabularyQuestions = (): Question[] => {
-  return vocabularyQuestions;
-};
-
-/**
- * מחזיר שאלות השלמת משפטים לפי רמת קושי
- */
-export const getSentenceCompletionQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
-  const questions = allSentenceCompletionQuestions.filter(q => q.type === 'sentence-completion');
-  
-  if (difficulty) {
-    const filtered = questions.filter(q => q.difficulty === difficulty);
-    console.log(`[getSentenceCompletionQuestions] Found ${filtered.length} ${difficulty} sentence completion questions`);
-    return filtered;
-  }
-  
-  console.log(`[getSentenceCompletionQuestions] Found ${questions.length} sentence completion questions`);
-  return questions;
-};
-
-/**
- * מחזיר שאלות ניסוח מחדש לפי רמת קושי
- */
-export const getRestatementQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
-  const questions = allRestatementQuestions.filter(q => q.type === 'restatement');
-  
-  if (difficulty) {
-    const filtered = questions.filter(q => q.difficulty === difficulty);
-    console.log(`[getRestatementQuestions] Found ${filtered.length} ${difficulty} restatement questions`);
-    return filtered;
-  }
-  
-  console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
-  return questions;
-};
-
-/**
- * מחזיר שאלות הבנת הנקרא
- */
-export const getReadingComprehensionQuestions = (): Question[] => {
-  const allQuestions = getAllQuestions();
-  return allQuestions.filter(q => q.type === 'reading-comprehension');
-};
-
-/**
- * מחזיר שאלות לפי רמת קושי וסוג
- */
 export const getQuestionsByDifficultyAndType = (difficulty: string, type: string): Question[] => {
-  console.log(`[getQuestionsByDifficultyAndType] Getting questions for difficulty: ${difficulty}, type: ${type}`);
+  console.log(`[getQuestionsByDifficultyAndType] Looking for ${difficulty} ${type} questions`);
   
-  let questions: Question[] = [];
+  const filtered = allQuestions.filter(q => {
+    const matchesDifficulty = q.difficulty === difficulty;
+    const matchesType = q.type === type;
+    return matchesDifficulty && matchesType;
+  });
   
-  if (type === 'sentence-completion') {
-    questions = getSentenceCompletionQuestions(difficulty as 'easy' | 'medium' | 'hard');
-  } else if (type === 'restatement') {
-    questions = getRestatementQuestions(difficulty as 'easy' | 'medium' | 'hard');
-  } else if (type === 'vocabulary') {
-    questions = getVocabularyQuestions().filter(q => q.difficulty === difficulty);
-  }
-  
-  console.log(`[getQuestionsByDifficultyAndType] Found ${questions.length} questions for ${difficulty} ${type}`);
-  return questions;
+  console.log(`[getQuestionsByDifficultyAndType] Found ${filtered.length} questions for ${difficulty} ${type}`);
+  return filtered;
 };
 
-// ... keep existing code (other functions)
+export const getQuestionsByType = (type: string): Question[] => {
+  console.log(`[getQuestionsByType] Looking for ${type} questions`);
+  
+  const filtered = allQuestions.filter(q => q.type === type);
+  
+  console.log(`[getQuestionsByType] Found ${filtered.length} questions for type ${type}`);
+  return filtered;
+};
+
+export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
+  console.log(`[getQuestionsByDifficulty] Looking for ${difficulty} questions`);
+  
+  const filtered = allQuestions.filter(q => q.difficulty === difficulty);
+  
+  console.log(`[getQuestionsByDifficulty] Found ${filtered.length} questions for difficulty ${difficulty}`);
+  return filtered;
+};
+
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  console.log(`[getQuestionsByTopic] Looking for questions with topicId ${topicId}`);
+  
+  const filtered = allQuestions.filter(q => q.topicId === topicId);
+  
+  console.log(`[getQuestionsByTopic] Found ${filtered.length} questions for topic ${topicId}`);
+  return filtered;
+};
+
+export const getQuestionsBySet = (setNumber: number): Question[] => {
+  console.log(`[getQuestionsBySet] Looking for questions in set ${setNumber}`);
+  
+  const startIndex = (setNumber - 1) * 50;
+  const endIndex = setNumber * 50;
+  
+  const setQuestions = allQuestions.slice(startIndex, endIndex);
+  
+  console.log(`[getQuestionsBySet] Found ${setQuestions.length} questions for set ${setNumber} (questions ${startIndex + 1} to ${endIndex})`);
+  return setQuestions;
+};
+
+export const getMixedDifficultyQuestions = (maxDifficulty: 'easy' | 'medium' | 'hard'): Question[] => {
+  console.log(`[getMixedDifficultyQuestions] Getting mixed questions up to ${maxDifficulty} difficulty`);
+  
+  const difficultyOrder = ['easy', 'medium', 'hard'];
+  const maxIndex = difficultyOrder.indexOf(maxDifficulty);
+  const allowedDifficulties = difficultyOrder.slice(0, maxIndex + 1);
+  
+  const filtered = allQuestions.filter(q => allowedDifficulties.includes(q.difficulty));
+  
+  console.log(`[getMixedDifficultyQuestions] Found ${filtered.length} questions for difficulties up to ${maxDifficulty}`);
+  return filtered;
+};
+
+export const getSentenceCompletionQuestions = (): Question[] => {
+  return getQuestionsByType('sentence-completion');
+};
+
+export const getRestatementQuestions = (): Question[] => {
+  return getQuestionsByType('restatement');
+};
+
+export const getVocabularyQuestions = (): Question[] => {
+  return getQuestionsByType('vocabulary');
+};
+
+export const getReadingComprehensionQuestions = (): Question[] => {
+  return getQuestionsByType('reading-comprehension');
+};
+
+export const getEasyQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('easy');
+};
+
+export const getMediumQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('medium');
+};
+
+export const getHardQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('hard');
+};
+
+export const shuffleQuestions = (questions: Question[]): Question[] => {
+  const shuffled = [...questions];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Additional functions that were missing
+export const refreshQuestionsFromStorage = (): Question[] => {
+  console.log('[refreshQuestionsFromStorage] Refreshing questions from storage');
+  return getAllQuestions();
+};
+
+export const getSimulationProgress = (topicId: number) => {
+  console.log(`[getSimulationProgress] Getting progress for topic ${topicId}`);
+  try {
+    const progressKey = `topic_${topicId}_progress`;
+    const savedProgress = localStorage.getItem(progressKey);
+    if (savedProgress) {
+      return JSON.parse(savedProgress);
+    }
+  } catch (error) {
+    console.error('Error getting simulation progress:', error);
+  }
+  return null;
+};
+
+export const resetSimulation = (topicId?: number) => {
+  console.log(`[resetSimulation] Resetting simulation${topicId ? ` for topic ${topicId}` : ''}`);
+  try {
+    if (topicId) {
+      const progressKey = `topic_${topicId}_progress`;
+      localStorage.removeItem(progressKey);
+    } else {
+      // Reset all simulation progress
+      const keys = Object.keys(localStorage).filter(key => key.includes('_progress'));
+      keys.forEach(key => localStorage.removeItem(key));
+    }
+  } catch (error) {
+    console.error('Error resetting simulation:', error);
+  }
+};

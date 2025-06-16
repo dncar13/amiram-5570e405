@@ -1,49 +1,93 @@
 
 import { PassageLine } from "@/data/types/questionTypes";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText } from "lucide-react";
 
 interface ReadingPassageProps {
   title?: string;
   passageWithLines?: PassageLine[];
+  passageText?: string;
   showLineNumbers?: boolean;
 }
 
 export const ReadingPassage = ({ 
   title, 
   passageWithLines, 
-  showLineNumbers = false 
+  passageText,
+  showLineNumbers = true 
 }: ReadingPassageProps) => {
-  if (!passageWithLines || passageWithLines.length === 0) {
-    return null;
+  
+  console.log('[ReadingPassage] Props received:', {
+    hasTitle: !!title,
+    hasPassageWithLines: !!(passageWithLines && passageWithLines.length > 0),
+    hasPassageText: !!passageText,
+    showLineNumbers,
+    passageWithLinesLength: passageWithLines?.length || 0
+  });
+
+  // If we have passageWithLines, use that format
+  if (passageWithLines && passageWithLines.length > 0) {
+    return (
+      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[900px] flex flex-col shadow-2xl">
+        {title && (
+          <h3 className="text-2xl font-bold text-slate-100 mb-6 text-center border-b border-slate-600/50 pb-4 flex-shrink-0">
+            {title}
+          </h3>
+        )}
+        <div className="flex-1 overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+          <div className="space-y-4 leading-relaxed">
+            {passageWithLines.map((line, index) => (
+              <div key={index} className="w-full">
+                {showLineNumbers && (
+                  <div className="text-slate-400 font-bold text-lg mb-2">
+                    Line {line.lineNumber}
+                  </div>
+                )}
+                <div className="text-slate-200 text-lg leading-relaxed w-full mb-4 px-2">
+                  {line.text}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <Card className="bg-blue-50 border-blue-200">
-      <CardHeader className="pb-3">
-        <CardTitle className="text-blue-900 flex items-center gap-2 text-lg">
-          <FileText className="h-5 w-5" />
-          {title || "Reading Passage"}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <div className="space-y-4">
-          {passageWithLines.map((line) => (
-            <div key={line.lineNumber} className="flex gap-3">
-              {showLineNumbers && (
-                <div className="flex-shrink-0 w-8 text-right">
-                  <span className="text-xs text-blue-600 font-mono bg-blue-100 px-1.5 py-0.5 rounded">
-                    {line.startLine}-{line.endLine}
-                  </span>
+  // Fallback to passageText if available
+  if (passageText) {
+    // Split by lines for simple display
+    const lines = passageText.split('\n').filter(line => line.trim());
+    
+    return (
+      <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-6 border border-slate-600/50 text-slate-100 h-[900px] flex flex-col shadow-2xl">
+        {title && (
+          <h3 className="text-2xl font-bold text-slate-100 mb-6 text-center border-b border-slate-600/50 pb-4 flex-shrink-0">
+            {title}
+          </h3>
+        )}
+        <div className="flex-1 overflow-y-auto px-2 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+          <div className="space-y-4 leading-relaxed">
+            {lines.map((line, index) => (
+              <div key={index} className="w-full">
+                {showLineNumbers && (
+                  <div className="text-slate-400 font-bold text-lg mb-2">
+                    Line {index + 1}
+                  </div>
+                )}
+                <div className="text-slate-200 text-lg leading-relaxed w-full mb-4 px-2">
+                  {line}
                 </div>
-              )}
-              <p className="text-gray-800 leading-relaxed text-sm flex-1">
-                {line.text}
-              </p>
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    );
+  }
+
+  // If no passage content is available
+  return (
+    <div className="bg-slate-800/90 backdrop-blur-sm rounded-xl p-8 border border-slate-600/50 text-center h-[900px] flex items-center justify-center shadow-2xl">
+      <div className="text-slate-400 text-lg">אין קטע קריאה זמין</div>
+    </div>
   );
 };

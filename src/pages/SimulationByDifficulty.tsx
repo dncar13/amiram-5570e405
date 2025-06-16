@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -120,11 +121,12 @@ const SimulationByDifficulty: React.FC = () => {
       </div>
     );
   }
+
   const handleStartPractice = (questionType?: string) => {
-    // For mixed practice (when no questionType is provided), use "mixed" as the type
+    // All difficulty-based practice is now training mode (practice=1)
     const path = questionType 
-      ? `/simulation/difficulty/${currentDifficulty.level}/${questionType}`
-      : `/simulation/difficulty/${currentDifficulty.level}/mixed`;
+      ? `/simulation/difficulty/${currentDifficulty.level}/${questionType}?practice=1`
+      : `/simulation/difficulty/${currentDifficulty.level}/mixed?practice=1`;
     navigate(path);
   };
 
@@ -133,6 +135,7 @@ const SimulationByDifficulty: React.FC = () => {
     { type: 'restatement', title: 'ניסוח מחדש', icon: <RotateCcw className="w-5 h-5" /> },
     { type: 'reading-comprehension', title: 'הבנת הנקרא', icon: <BookOpenCheck className="w-5 h-5" /> }
   ];
+
   return (
     <>
       <Header />
@@ -161,6 +164,9 @@ const SimulationByDifficulty: React.FC = () => {
                 <h1 className="text-3xl font-bold">{currentDifficulty.title}</h1>
                 <p className="text-white text-opacity-90 text-lg">
                   {currentDifficulty.description}
+                </p>
+                <p className="text-white text-opacity-80 text-sm mt-2 bg-white/10 rounded-lg px-3 py-1 inline-block">
+                  🎯 מצב תרגול - הסברים מיידיים
                 </p>
               </div>
             </div>
@@ -271,53 +277,6 @@ const SimulationByDifficulty: React.FC = () => {
             </div>
           </motion.div>
         </div>
-
-        {/* Practice Modes */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white rounded-2xl shadow-lg p-8"
-        >
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">מצבי תרגול מתקדמים</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-blue-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
-                  <Clock className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">מבחן מתוזמן</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  תרגול עם הגבלת זמן מדויקת לרמת הקושי
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/difficulty/${currentDifficulty.level}/timed`)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-                >
-                  התחל מבחן
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6 border-2 border-gray-200 rounded-xl hover:border-purple-300 transition-colors cursor-pointer group">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
-                  <TrendingUp className="w-8 h-8 text-purple-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">תרגול מותאם</h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  המערכת מתאימה את הקושי בהתאם לביצועים שלך
-                </p>
-                <button 
-                  onClick={() => navigate(`/simulation/difficulty/${currentDifficulty.level}/adaptive`)}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors"
-                >
-                  התחל תרגול
-                </button>
-              </div>
-            </div>
-          </div>        </motion.div>
       </div>
     </div>
     <Footer />

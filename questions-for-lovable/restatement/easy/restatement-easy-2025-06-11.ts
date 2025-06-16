@@ -1,4 +1,3 @@
-
 import { Question } from '../../../src/data/types/questionTypes';
 
 const questions: Question[] = [

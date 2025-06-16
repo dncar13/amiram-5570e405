@@ -10,26 +10,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-// import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/firebase";
+import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
-
-// פונקציות זמניות עד לחיבור Supabase
-const signInWithGoogle = async () => ({ 
-  user: null, 
-  error: new Error("Google login not implemented yet"), 
-  message: "התחברות באמצעות Google עדיין לא מוכנה" 
-});
-
-const loginWithEmailAndPassword = async (email: string, password: string) => ({ 
-  user: null, 
-  error: new Error("Email login not implemented yet") 
-});
-
-const registerWithEmailAndPassword = async (email: string, password: string) => ({ 
-  user: null, 
-  error: new Error("Email registration not implemented yet") 
-});
+import { resendConfirmationEmail } from "@/lib/supabase";
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,38 +23,45 @@ const Login = () => {
     name: ""
   });
   const [authError, setAuthError] = useState<string | null>(null);
+  const [awaitingConfirmation, setAwaitingConfirmation] = useState<string | null>(null);
   
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { currentUser, isDevEnvironment } = useAuth();
+  const { currentUser, isDevEnvironment, checkAndUpdateSession } = useAuth();
   
+  // If user is already logged in, redirect to simulations
   if (currentUser) {
+    console.log("User already logged in, redirecting to simulations:", currentUser.email);
     navigate("/simulations-entry");
     return null;
   }
   
   const handleGoogleLogin = async () => {
     setIsLoading(true);
+    setAuthError(null);
     try {
-      const { user, error, message } = await signInWithGoogle();
+      console.log("Google login clicked");
+      const { user, error } = await signInWithGoogle();
       
-      if (user) {
+      if (error) {
+        console.error("Google login error:", error);
+        setAuthError(error.message || "שגיאה בהתחברות עם Google");
         toast({
-          title: "התחברת בהצלחה!",
-          description: `ברוך הבא ${user.displayName || user.email}`,
+          variant: "destructive",
+          title: "שגיאה בהתחברות",
+          description: error.message || "אירעה שגיאה. אנא נסה שוב.",
         });
-        navigate("/simulations-entry");
-      } else {
-        if (error?.message || message) {
-          setAuthError(message || "התחברות באמצעות Google עדיין לא מוכנה");
-        } else {
-          toast({
-            variant: "destructive",
-            title: "שגיאה בהתחברות",
-            description: error instanceof Error ? error.message : "אירעה שגיאה. אנא נסה שוב.",
-          });
-        }
       }
+      // For OAuth, we don't get user immediately, redirect happens
+    } catch (error) {
+      console.error("Google login catch error:", error);
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהתחברות",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -79,23 +70,62 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
+    setAuthError(null);
+    setAwaitingConfirmation(null);
+
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      setAuthError("אנא מלאו את כל השדות");
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log("Login attempt for:", formData.email);
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
-      
-      if (user) {
+
+      if (error) {
+        // Check for email not confirmed case
+        if (
+          error.message.includes("יש לאשר את כתובת האימייל") ||
+          error.message.toLowerCase().includes("confirm your email") ||
+          error.message.toLowerCase().includes("email not confirmed")
+        ) {
+          setAwaitingConfirmation(formData.email);
+          setIsLoading(false);
+          return;
+        }
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בהתחברות",
+          description: error.message,
+        });
+      } else if (user) {
+        console.log("Login successful, user:", user.email);
+        
+        // רענון מיידי של מצב Auth
+        await checkAndUpdateSession();
+        
         toast({
           title: "התחברת בהצלחה!",
           description: `ברוך הבא ${user.displayName || user.email}`,
         });
-        navigate("/simulations-entry");
-      } else {
-        toast({
-          variant: "destructive",
-          title: "שגיאה בהתחברות",
-          description: "התחברות עדיין לא מוכנה - נחבר בקרוב את Supabase",
-        });
+        
+        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
+        setTimeout(() => {
+          navigate("/simulations-entry");
+        }, 200);
       }
+    } catch (error) {
+      console.error("Login catch error:", error);
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהתחברות",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -104,23 +134,67 @@ const Login = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setAuthError(null);
+    setAwaitingConfirmation(null);
+    
+    // Basic validation
+    if (!formData.email || !formData.password || !formData.name) {
+      setAuthError("אנא מלאו את כל השדות");
+      setIsLoading(false);
+      return;
+    }
+    
+    if (formData.password.length < 6) {
+      setAuthError("הסיסמה חייבת להכיל לפחות 6 תווים");
+      setIsLoading(false);
+      return;
+    }
     
     try {
+      console.log("Registration attempt for:", formData.email);
       const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
       
-      if (user) {
+      if (error) {
+        if (
+          error.message.includes("יש לאשר את כתובת האימייל") ||
+          error.message.toLowerCase().includes("confirm your email") ||
+          error.message.toLowerCase().includes("email not confirmed")
+        ) {
+          setAwaitingConfirmation(formData.email);
+          setIsLoading(false);
+          return;
+        }
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בהרשמה",
+          description: error.message,
+        });
+      } else if (user) {
+        console.log("Registration successful, user:", user.email);
+        
+        // רענון מיידי של מצב Auth
+        await checkAndUpdateSession();
+        
         toast({
           title: "נרשמת בהצלחה!",
           description: `ברוך הבא ${formData.name || user.email}`,
         });
-        navigate("/simulations-entry");
-      } else {
-        toast({
-          variant: "destructive",
-          title: "שגיאה בהרשמה",
-          description: "הרשמה עדיין לא מוכנה - נחבר בקרוב את Supabase",
-        });
+        
+        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
+        setTimeout(() => {
+          navigate("/simulations-entry");
+        }, 200);
       }
+    } catch (error) {
+      console.error("Registration catch error:", error);
+      const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
+      setAuthError(errorMessage);
+      toast({
+        variant: "destructive",
+        title: "שגיאה בהרשמה",
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -132,6 +206,34 @@ const Login = () => {
       ...prev,
       [id.replace('register-', '')]: value
     }));
+    // Clear error when user starts typing
+    if (authError) {
+      setAuthError(null);
+    }
+  };
+  
+  const handleResendConfirmation = async () => {
+    if (!awaitingConfirmation) return;
+    setIsLoading(true);
+    try {
+      const { success, error } = await resendConfirmationEmail(awaitingConfirmation);
+      if (success) {
+        toast({
+          variant: "success",
+          title: "נשלח שוב",
+          description: "קישור אישור נשלח לכתובת המייל שלך. בדקו את תיבת הדואר.",
+        });
+      } else if (error) {
+        setAuthError(error.message);
+        toast({
+          variant: "destructive",
+          title: "שגיאה בשליחת האישור",
+          description: error.message,
+        });
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -141,19 +243,23 @@ const Login = () => {
       <main className="flex-grow flex items-center justify-center py-12 bg-electric-gray">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
-            <Alert variant="destructive" className="mb-6">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertTitle>מערכת ההתחברות בפיתוח</AlertTitle>
-              <AlertDescription>
-                מערכת ההתחברות עדיין בפיתוח. בקרוב נחבר את Supabase לאימות מלא.
-              </AlertDescription>
-            </Alert>
-            
-            {authError && (
-              <Alert variant="destructive" className="mb-6">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>שגיאה בהתחברות</AlertTitle>
-                <AlertDescription>{authError}</AlertDescription>
+            {awaitingConfirmation && (
+              <Alert variant="default" className="mb-6 border-l-4 border-yellow-400 bg-yellow-50">
+                <AlertTriangle className="h-4 w-4 text-yellow-400" />
+                <AlertTitle>אימייל לא אושר</AlertTitle>
+                <AlertDescription>
+                  החשבון לא מאושר עדיין. <br />
+                  אנא בדקו את תיבת הדואר שלכם ולחצו על קישור האישור מהמערכת.<br/>
+                  לא קיבלתם את המייל?
+                  <Button
+                    size="sm"
+                    className="mx-2 mt-2"
+                    onClick={handleResendConfirmation}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? "שולח..." : "שלח שוב מייל אישור"}
+                  </Button>
+                </AlertDescription>
               </Alert>
             )}
             
@@ -308,6 +414,8 @@ const Login = () => {
                             id="register-password"
                             type="password"
                             required
+                            minLength={6}
+                            placeholder="לפחות 6 תווים"
                             className="pl-3 pr-10"
                             value={formData.password}
                             onChange={handleInputChange}
