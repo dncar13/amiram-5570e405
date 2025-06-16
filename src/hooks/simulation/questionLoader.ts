@@ -4,9 +4,9 @@ import {
   getQuestionsByDifficultyAndType,
   getMixedDifficultyQuestions,
   getSentenceCompletionQuestions,
-  getRestatementQuestions,
-  getAllQuestions
+  getRestatementQuestions
 } from "@/services/questionsService";
+import { getFullExamQuestions } from "@/services/fullExamService";
 
 // Helper function to shuffle array
 export const shuffleArray = <T,>(array: T[]): T[] => {
@@ -37,23 +37,22 @@ export const loadQuestions = ({
   startIndex,
   isFullExam = false
 }: QuestionLoaderParams): Question[] => {
-  console.log("Loading questions with params:", { effectiveType, difficulty, questionLimit, setNumber, startIndex, isFullExam });
+  console.log("Loading questions with params:", { 
+    effectiveType, 
+    difficulty, 
+    questionLimit, 
+    setNumber, 
+    startIndex, 
+    isFullExam 
+  });
   
   let questionsToUse: Question[] = [];
   
-  // Handle full exam - 80 mixed questions from all types and difficulties
+  // Handle full exam case - highest priority
   if (isFullExam) {
-    console.log("[FULL EXAM] Loading 80 mixed questions for full exam");
-    const allQuestions = getAllQuestions();
-    console.log(`[FULL EXAM] Total questions available: ${allQuestions.length}`);
-    
-    if (allQuestions.length === 0) {
-      console.error("[FULL EXAM] No questions found in the system!");
-      return [];
-    }
-    
-    questionsToUse = shuffleArray(allQuestions).slice(0, 80);
-    console.log(`[FULL EXAM] Selected ${questionsToUse.length} questions from ${allQuestions.length} total questions`);
+    console.log("Loading full exam questions (80 questions, mixed types)");
+    questionsToUse = getFullExamQuestions();
+    console.log(`Loaded ${questionsToUse.length} questions for full exam`);
     return questionsToUse;
   }
   
@@ -61,20 +60,8 @@ export const loadQuestions = ({
     questionsToUse = [...storyQuestions];
     console.log(`Using ${questionsToUse.length} story questions`);
   } 
-  // Handle type + difficulty + limit (specific difficulty practice)
-  else if (effectiveType && difficulty && questionLimit) {
-    console.log(`[SPECIFIC PRACTICE] Loading ${difficulty} ${effectiveType} questions with limit ${questionLimit}`);
-    questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
-    console.log(`[SPECIFIC PRACTICE] Found ${questionsToUse.length} ${difficulty} ${effectiveType} questions`);
-    
-    const limit = parseInt(questionLimit, 10);
-    if (!isNaN(limit) && limit > 0) {
-      questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-      console.log(`[SPECIFIC PRACTICE] Limited and shuffled to ${limit} questions`);
-    }
-  }
-  // Handle quick practice with type but no difficulty - mixed difficulty
-  else if (effectiveType && questionLimit && !difficulty) {
+  // Handle quick practice with type but no difficulty - PRIORITIZE THIS CASE
+  else if (effectiveType && questionLimit) {
     console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
     
     if (effectiveType === 'sentence-completion') {

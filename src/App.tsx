@@ -127,7 +127,6 @@ const AnimatedRoutes = () => {
           {/* Existing Simulations Entry Routes */}
           <Route path="/simulations-entry" element={<SimulationsEntry />} />
           <Route path="/simulation/full" element={<FullSimulation />} />
-          <Route path="/simulation/full/start" element={<Simulation />} />
           <Route path="/simulation/by-type" element={<SimulationsEntry />} />
           <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
           <Route path="/simulation-history" element={<SimulationHistory />} />
@@ -147,6 +146,7 @@ const AnimatedRoutes = () => {
           <Route path="/simulation/difficulty/:level/:type" element={<Simulation />} />
           <Route path="/simulation/difficulty/:level/timed" element={<Simulation />} />
           <Route path="/simulation/difficulty/:level/adaptive" element={<Simulation />} />
+          <Route path="/simulation/full/start" element={<Simulation />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
