@@ -45,6 +45,13 @@ export const loadQuestions = ({
   if (isFullExam) {
     console.log("[FULL EXAM] Loading 80 mixed questions for full exam");
     const allQuestions = getAllQuestions();
+    console.log(`[FULL EXAM] Total questions available: ${allQuestions.length}`);
+    
+    if (allQuestions.length === 0) {
+      console.error("[FULL EXAM] No questions found in the system!");
+      return [];
+    }
+    
     questionsToUse = shuffleArray(allQuestions).slice(0, 80);
     console.log(`[FULL EXAM] Selected ${questionsToUse.length} questions from ${allQuestions.length} total questions`);
     return questionsToUse;
