@@ -1,3 +1,4 @@
+
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -35,6 +36,27 @@ export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
   
   console.log(`[getQuestionsByDifficulty] Found ${filtered.length} questions for difficulty ${difficulty}`);
   return filtered;
+};
+
+export const getQuestionsByTopic = (topicId: number): Question[] => {
+  console.log(`[getQuestionsByTopic] Looking for questions with topicId ${topicId}`);
+  
+  const filtered = allQuestions.filter(q => q.topicId === topicId);
+  
+  console.log(`[getQuestionsByTopic] Found ${filtered.length} questions for topic ${topicId}`);
+  return filtered;
+};
+
+export const getQuestionsBySet = (setNumber: number): Question[] => {
+  console.log(`[getQuestionsBySet] Looking for questions in set ${setNumber}`);
+  
+  const startIndex = (setNumber - 1) * 50;
+  const endIndex = setNumber * 50;
+  
+  const setQuestions = allQuestions.slice(startIndex, endIndex);
+  
+  console.log(`[getQuestionsBySet] Found ${setQuestions.length} questions for set ${setNumber} (questions ${startIndex + 1} to ${endIndex})`);
+  return setQuestions;
 };
 
 export const getMixedDifficultyQuestions = (maxDifficulty: 'easy' | 'medium' | 'hard'): Question[] => {
@@ -85,4 +107,40 @@ export const shuffleQuestions = (questions: Question[]): Question[] => {
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
   return shuffled;
+};
+
+// Additional functions that were missing
+export const refreshQuestionsFromStorage = (): Question[] => {
+  console.log('[refreshQuestionsFromStorage] Refreshing questions from storage');
+  return getAllQuestions();
+};
+
+export const getSimulationProgress = (topicId: number) => {
+  console.log(`[getSimulationProgress] Getting progress for topic ${topicId}`);
+  try {
+    const progressKey = `topic_${topicId}_progress`;
+    const savedProgress = localStorage.getItem(progressKey);
+    if (savedProgress) {
+      return JSON.parse(savedProgress);
+    }
+  } catch (error) {
+    console.error('Error getting simulation progress:', error);
+  }
+  return null;
+};
+
+export const resetSimulation = (topicId?: number) => {
+  console.log(`[resetSimulation] Resetting simulation${topicId ? ` for topic ${topicId}` : ''}`);
+  try {
+    if (topicId) {
+      const progressKey = `topic_${topicId}_progress`;
+      localStorage.removeItem(progressKey);
+    } else {
+      // Reset all simulation progress
+      const keys = Object.keys(localStorage).filter(key => key.includes('_progress'));
+      keys.forEach(key => localStorage.removeItem(key));
+    }
+  } catch (error) {
+    console.error('Error resetting simulation:', error);
+  }
 };
