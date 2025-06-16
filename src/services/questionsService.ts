@@ -1,13 +1,6 @@
 import { Question } from "@/data/types/questionTypes";
-import { 
-  gigEconomyReadingQuestions, 
-  technologyReadingQuestions, 
-  environmentReadingQuestions,
-  getAllQuestions as getAllQuestionsFromIndex
-} from "@/data/questions/index";
-import { vocabularyQuestions } from "@/data/questions/by-type/vocabularyQuestions";
+import { allQuestions } from "@/data/questions";
 
-<<<<<<< HEAD
 console.log(`[questionsService] Service loaded. allQuestions.length: ${allQuestions?.length || 0}`);
 console.log(`[questionsService] First few questions:`, allQuestions?.slice(0, 3));
 
@@ -46,178 +39,83 @@ export const getQuestionsByDifficulty = (difficulty: string): Question[] => {
   
   console.log(`[getQuestionsByDifficulty] Found ${filtered.length} questions for difficulty ${difficulty}`);
   return filtered;
-=======
-// Import sentence completion questions from the new files
-import easyQuestions from "../../questions-for-lovable/sentence-completion/easy/sentence-completion-easy-2025-06-11";
-import mediumQuestions from "../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11";
-import hardQuestions from "../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11";
-
-// Import restatement questions
-import restatementEasy from "../../questions-for-lovable/restatement/easy/restatement-easy-2025-06-11";
-import restatementMedium from "../../questions-for-lovable/restatement/medium/restatement-medium-2025-06-11";
-import restatementHard from "../../questions-for-lovable/restatement/hard/restatement-hard-2025-06-11";
-
-// Combine all sentence completion questions
-const allSentenceCompletionQuestions: Question[] = [
-  ...easyQuestions,
-  ...mediumQuestions,
-  ...hardQuestions
-];
-
-// Combine all restatement questions
-const allRestatementQuestions: Question[] = [
-  ...restatementEasy,
-  ...restatementMedium,
-  ...restatementHard
-];
-
-// Re-export functions from questions/index
-export {
-  refreshQuestionsFromStorage,
-  initializeQuestions,
-  getSimulationProgress,
-  saveSimulationProgress,
-  resetSimulation,
-  onProgressChange,
-  getProgressKey,
-  type SimulationProgress
-} from "@/services/questions";
-
-/**
- * מחזיר את כל השאלות במערכת
- */
-export const getAllQuestions = (): Question[] => {
-  return getAllQuestionsFromIndex();
->>>>>>> 9eedf197065e347a111c3748ad9733e84f0d9b4a
 };
 
-/**
- * מחזיר שאלות לפי נושא מסוים
- */
 export const getQuestionsByTopic = (topicId: number): Question[] => {
-  const allQuestions = getAllQuestions();
-  return allQuestions.filter(question => question.topicId === topicId);
-};
-
-/**
- * מחזיר שאלות לפי סט שאלות (לפי מספר סט)
- */
-export const getQuestionsBySet = (setId: number): Question[] => {
-  const allQuestions = getAllQuestions();
-  // חישוב טווח השאלות בסט
-  const startId = (setId - 1) * 50 + 1;
-  const endId = setId * 50;
+  console.log(`[getQuestionsByTopic] Looking for questions with topicId ${topicId}`);
   
-  // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
-  return allQuestions.filter(
-    question => question.id >= startId && question.id <= endId
-  );
-};
-
-/**
- * מחזיר שאלות קריאה לפי רמת קושי
- */
-export const getEasyQuestions = (): Question[] => {
-  return gigEconomyReadingQuestions.filter(q => q.difficulty === 'easy');
-};
-
-/**
- * מחזיר שאלות קריאה בינוניות
- */
-export const getMediumQuestions = (): Question[] => {
-  return technologyReadingQuestions.filter(q => q.difficulty === 'medium');
-};
-
-/**
- * מחזיר שאלות קשות
- */
-export const getHardQuestions = (): Question[] => {
-  return environmentReadingQuestions.filter(q => q.difficulty === 'hard');
-};
-
-/**
- * מחזיר שאלות קריאה מעורבות לפי רמת קושי
- */
-export const getMixedDifficultyQuestions = (difficulty: 'easy' | 'medium' | 'hard'): Question[] => {
-  let questions: Question[] = [];
+  const filtered = allQuestions.filter(q => q.topicId === topicId);
   
-  if (difficulty === 'easy') {
-    questions = gigEconomyReadingQuestions.filter(q => q.difficulty === 'easy');
-  } else if (difficulty === 'medium') {
-    questions = technologyReadingQuestions.filter(q => q.difficulty === 'medium');
-  } else if (difficulty === 'hard') {
-    questions = environmentReadingQuestions.filter(q => q.difficulty === 'hard');
-  }
-  
-  console.log(`Found ${questions.length} mixed difficulty questions for ${difficulty}`);
-  return questions;
+  console.log(`[getQuestionsByTopic] Found ${filtered.length} questions for topic ${topicId}`);
+  return filtered;
 };
 
-/**
- * מחזיר שאלות אוצר מילים
- */
+export const getQuestionsBySet = (setNumber: number): Question[] => {
+  console.log(`[getQuestionsBySet] Looking for questions in set ${setNumber}`);
+  
+  const filtered = allQuestions.filter(q => q.setNumber === setNumber);
+  
+  console.log(`[getQuestionsBySet] Found ${filtered.length} questions for set ${setNumber}`);
+  return filtered;
+};
+
+export const getQuestionsBySubtopic = (subtopicId: number): Question[] => {
+  console.log(`[getQuestionsBySubtopic] Looking for questions with subtopicId ${subtopicId}`);
+  
+  const filtered = allQuestions.filter(q => q.subtopicId === subtopicId);
+  
+  console.log(`[getQuestionsBySubtopic] Found ${filtered.length} questions for subtopic ${subtopicId}`);
+  return filtered;
+};
+
+export const getMixedDifficultyQuestions = (difficultyLevel: 'easy' | 'medium' | 'hard'): Question[] => {
+  console.log(`[getMixedDifficultyQuestions] Looking for ${difficultyLevel} mixed questions`);
+  
+  const filtered = allQuestions.filter(q => q.difficulty === difficultyLevel);
+  
+  console.log(`[getMixedDifficultyQuestions] Found ${filtered.length} questions for ${difficultyLevel} difficulty`);
+  return filtered;
+};
+
+export const getSentenceCompletionQuestions = (): Question[] => {
+  console.log(`[getSentenceCompletionQuestions] Looking for sentence completion questions`);
+  
+  const filtered = allQuestions.filter(q => q.type === 'sentence-completion');
+  
+  console.log(`[getSentenceCompletionQuestions] Found ${filtered.length} sentence completion questions`);
+  return filtered;
+};
+
+export const getRestatementQuestions = (): Question[] => {
+  console.log(`[getRestatementQuestions] Looking for restatement questions`);
+  
+  const filtered = allQuestions.filter(q => q.type === 'restatement');
+  
+  console.log(`[getRestatementQuestions] Found ${filtered.length} restatement questions`);
+  return filtered;
+};
+
 export const getVocabularyQuestions = (): Question[] => {
-  return vocabularyQuestions;
+  console.log(`[getVocabularyQuestions] Looking for vocabulary questions`);
+  
+  const filtered = allQuestions.filter(q => q.type === 'vocabulary');
+  
+  console.log(`[getVocabularyQuestions] Found ${filtered.length} vocabulary questions`);
+  return filtered;
 };
 
-/**
- * מחזיר שאלות השלמת משפטים לפי רמת קושי
- */
-export const getSentenceCompletionQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
-  const questions = allSentenceCompletionQuestions.filter(q => q.type === 'sentence-completion');
-  
-  if (difficulty) {
-    const filtered = questions.filter(q => q.difficulty === difficulty);
-    console.log(`[getSentenceCompletionQuestions] Found ${filtered.length} ${difficulty} sentence completion questions`);
-    return filtered;
-  }
-  
-  console.log(`[getSentenceCompletionQuestions] Found ${questions.length} sentence completion questions`);
-  return questions;
-};
-
-/**
- * מחזיר שאלות ניסוח מחדש לפי רמת קושי
- */
-export const getRestatementQuestions = (difficulty?: 'easy' | 'medium' | 'hard'): Question[] => {
-  const questions = allRestatementQuestions.filter(q => q.type === 'restatement');
-  
-  if (difficulty) {
-    const filtered = questions.filter(q => q.difficulty === difficulty);
-    console.log(`[getRestatementQuestions] Found ${filtered.length} ${difficulty} restatement questions`);
-    return filtered;
-  }
-  
-  console.log(`[getRestatementQuestions] Found ${questions.length} restatement questions`);
-  return questions;
-};
-
-/**
- * מחזיר שאלות הבנת הנקרא
- */
 export const getReadingComprehensionQuestions = (): Question[] => {
-  const allQuestions = getAllQuestions();
-  return allQuestions.filter(q => q.type === 'reading-comprehension');
+  console.log(`[getReadingComprehensionQuestions] Looking for reading comprehension questions`);
+  
+  const filtered = allQuestions.filter(q => q.type === 'reading-comprehension');
+  
+  console.log(`[getReadingComprehensionQuestions] Found ${filtered.length} reading comprehension questions`);
+  return filtered;
 };
 
-/**
- * מחזיר שאלות לפי רמת קושי וסוג
- */
-export const getQuestionsByDifficultyAndType = (difficulty: string, type: string): Question[] => {
-  console.log(`[getQuestionsByDifficultyAndType] Getting questions for difficulty: ${difficulty}, type: ${type}`);
-  
-  let questions: Question[] = [];
-  
-  if (type === 'sentence-completion') {
-    questions = getSentenceCompletionQuestions(difficulty as 'easy' | 'medium' | 'hard');
-  } else if (type === 'restatement') {
-    questions = getRestatementQuestions(difficulty as 'easy' | 'medium' | 'hard');
-  } else if (type === 'vocabulary') {
-    questions = getVocabularyQuestions().filter(q => q.difficulty === difficulty);
-  }
-  
-  console.log(`[getQuestionsByDifficultyAndType] Found ${questions.length} questions for ${difficulty} ${type}`);
-  return questions;
+// Add missing function for useSavedQuestions hook
+export const refreshQuestionsFromStorage = (): void => {
+  console.log('[refreshQuestionsFromStorage] Refreshing questions from storage');
+  // This function refreshes the questions cache if needed
+  // For now, it's a placeholder since questions are loaded statically
 };
-
-// ... keep existing code (other functions)
