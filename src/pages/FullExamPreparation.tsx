@@ -24,7 +24,7 @@ const FullExamPreparation = () => {
     window.scrollTo(0, 0);
     
     // Check for existing progress for full exam
-    hasProgressUnified(0, false, 'full-exam').then(result => {
+    hasProgressUnified('full-exam', false).then(result => {
       if (result.success && result.data) {
         console.log('Found existing progress for full exam');
         setSimulationProgress({
