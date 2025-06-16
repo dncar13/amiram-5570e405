@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { FullExamModal } from '@/components/simulation/FullExamModal';
 import { 
   PlayCircle, 
   Clock, 
@@ -39,6 +40,7 @@ const FullSimulation: React.FC = () => {
   });
   const [showSettings, setShowSettings] = useState(false);
   const [showExamStructure, setShowExamStructure] = useState(false);
+  const [isExamModalOpen, setIsExamModalOpen] = useState(false);
 
   const questionTypes = [
     { 
@@ -64,10 +66,9 @@ const FullSimulation: React.FC = () => {
       details: '6-7 קטעי קריאה, כל אחד עם 3-5 שאלות'
     }
   ];
-
   const handleStartSimulation = () => {
-    // Navigate to actual simulation with settings
-    navigate('/simulation/full/start', { state: { settings } });
+    // Open the exam modal instead of navigating
+    setIsExamModalOpen(true);
   };
 
   const handleBackClick = () => {
@@ -337,10 +338,15 @@ const FullSimulation: React.FC = () => {
                 </ul>
               </div>
             </motion.div>
-          </div>
-        </div>
+          </div>        </div>
       </div>
       <Footer />
+      
+      {/* Full Exam Modal */}
+      <FullExamModal 
+        isOpen={isExamModalOpen} 
+        onClose={() => setIsExamModalOpen(false)} 
+      />
     </>
   );
 };
