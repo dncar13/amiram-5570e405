@@ -1,3 +1,4 @@
+
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -53,7 +54,7 @@ export const getQuestionsByTopic = (topicId: number): Question[] => {
 export const getQuestionsBySet = (setNumber: number): Question[] => {
   console.log(`[getQuestionsBySet] Looking for questions in set ${setNumber}`);
   
-  const filtered = allQuestions.filter(q => q.setNumber === setNumber);
+  const filtered = allQuestions.filter(q => (q as any).setNumber === setNumber);
   
   console.log(`[getQuestionsBySet] Found ${filtered.length} questions for set ${setNumber}`);
   return filtered;
@@ -113,9 +114,37 @@ export const getReadingComprehensionQuestions = (): Question[] => {
   return filtered;
 };
 
-// Add missing function for useSavedQuestions hook
-export const refreshQuestionsFromStorage = (): void => {
+// Add missing functions that are being imported
+export const getMediumQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('medium');
+};
+
+export const getEasyQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('easy');
+};
+
+export const getHardQuestions = (): Question[] => {
+  return getQuestionsByDifficulty('hard');
+};
+
+export const getSimulationProgress = (simulationId: string) => {
+  // Return basic simulation progress structure
+  return {
+    currentIndex: 0,
+    answers: [],
+    startTime: Date.now()
+  };
+};
+
+export const resetSimulation = (simulationId: string): void => {
+  console.log(`[resetSimulation] Resetting simulation ${simulationId}`);
+  // Clear simulation data from localStorage
+  localStorage.removeItem(`simulation_progress_${simulationId}`);
+};
+
+// Fix refreshQuestionsFromStorage to return Question[]
+export const refreshQuestionsFromStorage = (): Question[] => {
   console.log('[refreshQuestionsFromStorage] Refreshing questions from storage');
-  // This function refreshes the questions cache if needed
-  // For now, it's a placeholder since questions are loaded statically
+  // Return fresh copy of all questions
+  return [...allQuestions];
 };

@@ -21,6 +21,11 @@ export interface Question {
   passageWithLines?: PassageLine[];
   tips?: string;
   
+  // Additional fields for reading comprehension
+  passage?: string; // Legacy field for reading comprehension
+  story?: string; // Alternative field for story content
+  setNumber?: number; // For question sets
+  
   // Additional optional metadata
   tags?: string[];
   createdAt?: string;
