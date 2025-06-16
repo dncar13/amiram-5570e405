@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -59,14 +58,9 @@ const UnifiedQuestionCard = ({
   const questionCardRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Check if this is a full exam simulation
-  const isFullExam = window.location.pathname.includes('/simulation/full');
-  
-  // Determine if explanations should be shown
-  // In full exam mode: NO explanations at all
-  // In exam mode (but not full exam): NO explanations during exam
-  // In practice mode: YES explanations
-  const shouldShowExplanations = !isFullExam && showAnswersImmediately;
+  // Determine if explanations should be shown based only on props
+  // This removes the global pathname check and makes the component purely prop-driven
+  const shouldShowExplanations = showAnswersImmediately && !examMode;
 
   // Keyboard navigation
   useEffect(() => {
