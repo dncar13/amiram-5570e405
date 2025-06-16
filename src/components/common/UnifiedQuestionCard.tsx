@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -57,6 +58,15 @@ const UnifiedQuestionCard = ({
 }: UnifiedQuestionCardProps) => {
   const questionCardRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  // Check if this is a full exam simulation
+  const isFullExam = window.location.pathname.includes('/simulation/full');
+  
+  // Determine if explanations should be shown
+  // In full exam mode: NO explanations at all
+  // In exam mode (but not full exam): NO explanations during exam
+  // In practice mode: YES explanations
+  const shouldShowExplanations = !isFullExam && showAnswersImmediately;
 
   // Keyboard navigation
   useEffect(() => {
@@ -249,8 +259,8 @@ const UnifiedQuestionCard = ({
                 {answerOptions.map((answer, index) => {
                   const isSelected = selectedAnswerIndex === index;
                   const isCorrectAnswer = index === currentQuestion.correctAnswer;
-                  const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
-                  const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer;
+                  const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && shouldShowExplanations;
+                  const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && shouldShowExplanations;
                   
                   return (
                     <Button
@@ -284,8 +294,8 @@ const UnifiedQuestionCard = ({
                 })}
               </div>
 
-              {/* Enhanced answer feedback */}
-              {isAnswerSubmitted && (
+              {/* Enhanced answer feedback - only if explanations should be shown */}
+              {isAnswerSubmitted && shouldShowExplanations && (
                 <div className={cn(
                   "rounded-xl p-5 border-2 shadow-xl backdrop-blur-sm animate-fade-in",
                   isCorrect 
@@ -314,8 +324,8 @@ const UnifiedQuestionCard = ({
                 </div>
               )}
 
-              {/* Explanation section */}
-              {isAnswerSubmitted && currentQuestion.explanation && (
+              {/* Explanation section - only if explanations should be shown */}
+              {isAnswerSubmitted && currentQuestion.explanation && shouldShowExplanations && (
                 <div className="space-y-3">
                   <Button
                     variant="outline"
@@ -493,8 +503,8 @@ const UnifiedQuestionCard = ({
           {answerOptions.map((answer, index) => {
             const isSelected = selectedAnswerIndex === index;
             const isCorrectAnswer = index === currentQuestion.correctAnswer;
-            const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && showAnswersImmediately;
-            const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && showAnswersImmediately;
+            const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && shouldShowExplanations;
+            const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && shouldShowExplanations;
             
             return (
               <Button
@@ -548,8 +558,8 @@ const UnifiedQuestionCard = ({
           })}
         </div>
 
-        {/* Enhanced answer feedback */}
-        {isAnswerSubmitted && showAnswersImmediately && (
+        {/* Enhanced answer feedback - only if explanations should be shown */}
+        {isAnswerSubmitted && shouldShowExplanations && (
           <div className={cn(
             "rounded-xl p-5 border-2 shadow-xl backdrop-blur-sm animate-fade-in",
             isCorrect 
@@ -578,8 +588,8 @@ const UnifiedQuestionCard = ({
           </div>
         )}
 
-        {/* Explanation section */}
-        {isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && (
+        {/* Explanation section - only if explanations should be shown */}
+        {isAnswerSubmitted && currentQuestion.explanation && shouldShowExplanations && (
           <div className="space-y-3">
             <Button
               variant="outline"
