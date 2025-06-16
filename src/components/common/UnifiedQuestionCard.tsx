@@ -58,10 +58,6 @@ const UnifiedQuestionCard = ({
   const questionCardRef = useRef<HTMLDivElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Determine if explanations should be shown based only on props
-  // This removes the global pathname check and makes the component purely prop-driven
-  const shouldShowExplanations = showAnswersImmediately && !examMode;
-
   // Keyboard navigation
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -253,8 +249,8 @@ const UnifiedQuestionCard = ({
                 {answerOptions.map((answer, index) => {
                   const isSelected = selectedAnswerIndex === index;
                   const isCorrectAnswer = index === currentQuestion.correctAnswer;
-                  const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && shouldShowExplanations;
-                  const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && shouldShowExplanations;
+                  const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer;
+                  const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer;
                   
                   return (
                     <Button
@@ -288,8 +284,8 @@ const UnifiedQuestionCard = ({
                 })}
               </div>
 
-              {/* Enhanced answer feedback - only if explanations should be shown */}
-              {isAnswerSubmitted && shouldShowExplanations && (
+              {/* Enhanced answer feedback */}
+              {isAnswerSubmitted && (
                 <div className={cn(
                   "rounded-xl p-5 border-2 shadow-xl backdrop-blur-sm animate-fade-in",
                   isCorrect 
@@ -318,8 +314,8 @@ const UnifiedQuestionCard = ({
                 </div>
               )}
 
-              {/* Explanation section - only if explanations should be shown */}
-              {isAnswerSubmitted && currentQuestion.explanation && shouldShowExplanations && (
+              {/* Explanation section */}
+              {isAnswerSubmitted && currentQuestion.explanation && (
                 <div className="space-y-3">
                   <Button
                     variant="outline"
@@ -497,8 +493,8 @@ const UnifiedQuestionCard = ({
           {answerOptions.map((answer, index) => {
             const isSelected = selectedAnswerIndex === index;
             const isCorrectAnswer = index === currentQuestion.correctAnswer;
-            const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && shouldShowExplanations;
-            const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && shouldShowExplanations;
+            const shouldShowCorrect = isAnswerSubmitted && isCorrectAnswer && showAnswersImmediately;
+            const shouldShowIncorrect = isAnswerSubmitted && isSelected && !isCorrectAnswer && showAnswersImmediately;
             
             return (
               <Button
@@ -552,8 +548,8 @@ const UnifiedQuestionCard = ({
           })}
         </div>
 
-        {/* Enhanced answer feedback - only if explanations should be shown */}
-        {isAnswerSubmitted && shouldShowExplanations && (
+        {/* Enhanced answer feedback */}
+        {isAnswerSubmitted && showAnswersImmediately && (
           <div className={cn(
             "rounded-xl p-5 border-2 shadow-xl backdrop-blur-sm animate-fade-in",
             isCorrect 
@@ -582,8 +578,8 @@ const UnifiedQuestionCard = ({
           </div>
         )}
 
-        {/* Explanation section - only if explanations should be shown */}
-        {isAnswerSubmitted && currentQuestion.explanation && shouldShowExplanations && (
+        {/* Explanation section */}
+        {isAnswerSubmitted && currentQuestion.explanation && showAnswersImmediately && (
           <div className="space-y-3">
             <Button
               variant="outline"

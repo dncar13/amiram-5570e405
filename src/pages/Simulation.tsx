@@ -38,13 +38,9 @@ const Simulation = () => {
   const shouldShowResetToast = useRef(false);
   const hasShownToast = useRef(false);
   
-  // Check if this is a full exam simulation
-  const isFullExam = window.location.pathname.includes('/simulation/full');
-  
   // Debug logs for theme issues
   console.log('Simulation page rendered with storyId:', storyId);
   console.log('Current URL pathname:', window.location.pathname);
-  console.log('Is Full Exam:', isFullExam);
   
   // Get query parameters
   const typeFromQuery = searchParams.get('type');
@@ -54,7 +50,7 @@ const Simulation = () => {
   const effectiveType = type || typeFromQuery;
   const isQuickPractice = Boolean(effectiveType && questionLimit && !difficulty);
   
-  console.log("Simulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, isQuickPractice, isFullExam });
+  console.log("Simulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, isQuickPractice });
   
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
@@ -77,7 +73,7 @@ const Simulation = () => {
     return getStoryById(storyId);
   }, [isStoryBased, storyId]);
 
-  // Get simulation data (questions, topic info, etc.) - only for non-full-exam simulations
+  // Get simulation data (questions, topic info, etc.) - only for non-quick-practice simulations
   const { 
     isLoading, 
     topicQuestions, 
@@ -89,18 +85,7 @@ const Simulation = () => {
   } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
 
   useEffect(() => {
-    console.log("Simulation component mounted or parameters changed", { 
-      topicId, 
-      setId, 
-      difficulty, 
-      type, 
-      storyId, 
-      isContinue, 
-      typeFromQuery, 
-      effectiveType, 
-      questionLimit,
-      isFullExam 
-    });
+    console.log("Simulation component mounted or parameters changed", { topicId, setId, difficulty, type, storyId, isContinue, typeFromQuery, effectiveType, questionLimit });
     
     // Check if there's a reset parameter in the URL - only on first load
     if (!initialLoadAttempted.current) {
@@ -114,13 +99,8 @@ const Simulation = () => {
         removeResetParameterFromUrl();
       }
     }
-    
-    // Save simulation mode in sessionStorage to survive refreshes
-    if (isFullExam) {
-      console.log('Setting full exam simulation flags in sessionStorage');
-      window.sessionStorage.setItem('is_full_exam', 'true');
-      window.sessionStorage.setItem('current_simulation_type', 'full_exam');
-    } else if (storyId) {
+      // Save simulation mode in sessionStorage to survive refreshes
+    if (storyId) {
       console.log('Setting story simulation flags in sessionStorage');
       window.sessionStorage.setItem('is_story_simulation', 'true');
       window.sessionStorage.setItem('current_story_id', storyId);
@@ -152,12 +132,9 @@ const Simulation = () => {
     const questSetFlag = window.sessionStorage.getItem('is_question_set');
     setIsQuestionSet(questSetFlag === 'true');
     
-    console.log(`Simulation opened with ${isFullExam ? 'FULL EXAM' : storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : isQuickPractice ? 'QUICK PRACTICE' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
-    
-    // Store the current simulation IDs in sessionStorage to persist across refreshes
-    if (isFullExam) {
-      sessionStorage.setItem('current_simulation_id', 'full');
-    } else if (storyId) {
+    console.log(`Simulation opened with ${storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : isQuickPractice ? 'QUICK PRACTICE' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
+      // Store the current simulation IDs in sessionStorage to persist across refreshes
+    if (storyId) {
       sessionStorage.setItem('current_story_id', storyId);
     }
     
@@ -169,10 +146,9 @@ const Simulation = () => {
       sessionStorage.setItem('current_difficulty_level', difficulty);
       sessionStorage.setItem('current_difficulty_type', type);
     }
-    
-    // Force attempt load on first render
+      // Force attempt load on first render
     initialLoadAttempted.current = true;
-  }, [topicId, setId, difficulty, type, storyId, isContinue, typeFromQuery, effectiveType, questionLimit, isQuickPractice, isFullExam]);
+      }, [topicId, setId, difficulty, type, storyId, isContinue, typeFromQuery, effectiveType, questionLimit, isQuickPractice]);
   
   // Check if this is a difficulty-based simulation
   const isDifficultyBased = Boolean(difficulty && type);
@@ -192,17 +168,15 @@ const Simulation = () => {
   }, [difficulty, type]);
 
   // Use appropriate simulation ID
-  const simulationId = isFullExam
-    ? 'full'
-    : isStoryBased
-      ? `story_${storyId}`
-      : isQuickPractice
-        ? `quick_${effectiveType}_${questionLimit}`
-      : isDifficultyBased 
-        ? `difficulty_${difficulty}_${type}`
-        : setId 
-          ? `qs_${setId}` 
-          : topicId;
+  const simulationId = isStoryBased
+    ? `story_${storyId}`
+    : isQuickPractice
+      ? `quick_${effectiveType}_${questionLimit}`
+    : isDifficultyBased 
+      ? `difficulty_${difficulty}_${type}`
+      : setId 
+        ? `qs_${setId}` 
+        : topicId;
     
   // Ensure the simulationId is properly formatted for storage
   const formattedSimulationId = simulationId ? simulationId : '';    
@@ -210,9 +184,9 @@ const Simulation = () => {
   // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
     
-  // For full exam, use simulation questions; for story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = (isFullExam || isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
-  const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
+  // For story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = (isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
+  const effectiveIsLoading = (isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
   
   useEffect(() => {
     if (contentRef.current) {
@@ -266,9 +240,7 @@ const Simulation = () => {
     questionsToUse.length
   ]);  // Handle navigation to topics
   const handleBackToTopics = () => {
-    if (isFullExam) {
-      return "/simulations-entry";
-    } else if (isStoryBased) {
+    if (isStoryBased) {
       return "/reading-comprehension";
     } else if (isDifficultyBased) {
       return `/simulation/difficulty/${difficulty}`;
