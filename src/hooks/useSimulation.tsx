@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
@@ -38,7 +39,7 @@ export const useSimulation = (
   const typeFromQuery = searchParams.get('type');
   const effectiveType = type || typeFromQuery;
 
-  // Check if this is a full exam
+  // Check if this is a full exam - FIXED DETECTION
   const isFullExam = location.pathname.startsWith('/simulation/full');
 
   // Determine simulation mode based on URL path and parameters
