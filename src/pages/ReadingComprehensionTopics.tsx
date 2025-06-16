@@ -118,13 +118,19 @@ const ReadingComprehensionTopics: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
-          >
-            <button
-              onClick={() => navigate('/simulations-entry')}
+          >            <button
+              onClick={() => {
+                // Try to go back in history, but fallback to simulations entry if no history
+                if (window.history.length > 1) {
+                  navigate(-1);
+                } else {
+                  navigate('/simulations-entry');
+                }
+              }}
               className="flex items-center text-purple-600 hover:text-purple-700 mb-6 font-medium transition-colors group"
             >
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
-              חזור לדף הכניסה
+              חזור לדף הקודם
             </button>
 
             <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white rounded-3xl p-8 mb-8 shadow-2xl relative overflow-hidden">
