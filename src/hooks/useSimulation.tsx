@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams, useLocation } from "react-router-dom";
 import { 
   SimulationState, 
   SimulationActions, 
@@ -26,6 +26,7 @@ export const useSimulation = (
   const { toast } = useToast();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const questionLimit = searchParams.get('limit');
   const setNumber = searchParams.get('set');
   const startIndex = searchParams.get('start');
@@ -38,28 +39,25 @@ export const useSimulation = (
   const typeFromQuery = searchParams.get('type');
   const effectiveType = type || typeFromQuery;
 
-  // Determine simulation mode automatically based on parameters
+  // Determine simulation mode based on URL path and parameters
   const determineSimulationMode = useCallback(() => {
     // Explicit mode parameters take precedence
     if (practiceParam === '1') return { examMode: false, showAnswersImmediately: true };
     if (examParam === '1') return { examMode: true, showAnswersImmediately: false };
     
-    // Auto-detect based on simulation type
-    // Mixed/full simulations = exam mode
-    if (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)) {
+    // Check if this is a full exam based on URL path
+    const isFullExam = location.pathname.startsWith('/simulation/full');
+    if (isFullExam) {
+      console.log("Detected full exam mode from URL path");
       return { examMode: true, showAnswersImmediately: false };
     }
     
-    // Specific type or difficulty = training mode
-    if (effectiveType || difficulty) {
-      return { examMode: false, showAnswersImmediately: true };
-    }
-    
-    // Default to training mode
+    // All other simulations are in practice mode
+    console.log("Setting practice mode for simulation");
     return { examMode: false, showAnswersImmediately: true };
-  }, [practiceParam, examParam, simulationId, effectiveType, difficulty]);
+  }, [practiceParam, examParam, location.pathname]);
 
-  console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, practiceParam, examParam });
+  console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, practiceParam, examParam, pathname: location.pathname });
 
   const { initializeTimer, clearTimer } = useTimer(setState);
 
@@ -331,12 +329,26 @@ export const useSimulation = (
     resetProgress,
     
     // Setters
-    setQuestions,
-    setTotalQuestions,
-    setCurrentQuestion,
-    setSelectedAnswerIndex,
-    setIsTimerActive,
-    setExamMode,
-    setShowAnswersImmediately
+    setQuestions: (questions: Question[]) => {
+      setState(prevState => ({ ...prevState, questions }));
+    },
+    setTotalQuestions: (totalQuestions: number) => {
+      setState(prevState => ({ ...prevState, totalQuestions }));
+    },
+    setCurrentQuestion: (currentQuestion: Question) => {
+      setState(prevState => ({ ...prevState, currentQuestion }));
+    },
+    setSelectedAnswerIndex: (selectedAnswerIndex: number | null) => {
+      setState(prevState => ({ ...prevState, selectedAnswerIndex }));
+    },
+    setIsTimerActive: (isTimerActive: boolean) => {
+      setState(prevState => ({ ...prevState, isTimerActive }));
+    },
+    setExamMode: (examMode: boolean) => {
+      setState(prevState => ({ ...prevState, examMode }));
+    },
+    setShowAnswersImmediately: (showAnswersImmediately: boolean) => {
+      setState(prevState => ({ ...prevState, showAnswersImmediately }));
+    }
   };
 };

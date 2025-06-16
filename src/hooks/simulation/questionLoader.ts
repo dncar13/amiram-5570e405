@@ -42,8 +42,20 @@ export const loadQuestions = ({
     questionsToUse = [...storyQuestions];
     console.log(`Using ${questionsToUse.length} story questions`);
   } 
-  // Handle quick practice with type but no difficulty - PRIORITIZE THIS CASE
-  else if (effectiveType && questionLimit) {
+  // Handle type + difficulty + limit (specific difficulty practice)
+  else if (effectiveType && difficulty && questionLimit) {
+    console.log(`[SPECIFIC PRACTICE] Loading ${difficulty} ${effectiveType} questions with limit ${questionLimit}`);
+    questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
+    console.log(`[SPECIFIC PRACTICE] Found ${questionsToUse.length} ${difficulty} ${effectiveType} questions`);
+    
+    const limit = parseInt(questionLimit, 10);
+    if (!isNaN(limit) && limit > 0) {
+      questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+      console.log(`[SPECIFIC PRACTICE] Limited and shuffled to ${limit} questions`);
+    }
+  }
+  // Handle quick practice with type but no difficulty - mixed difficulty
+  else if (effectiveType && questionLimit && !difficulty) {
     console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
     
     if (effectiveType === 'sentence-completion') {
