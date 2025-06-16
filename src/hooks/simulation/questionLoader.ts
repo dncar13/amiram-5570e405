@@ -4,7 +4,8 @@ import {
   getQuestionsByDifficultyAndType,
   getMixedDifficultyQuestions,
   getSentenceCompletionQuestions,
-  getRestatementQuestions
+  getRestatementQuestions,
+  getAllQuestions
 } from "@/services/questionsService";
 
 // Helper function to shuffle array
@@ -24,6 +25,7 @@ interface QuestionLoaderParams {
   questionLimit?: string | null;
   setNumber?: string | null;
   startIndex?: string | null;
+  isFullExam?: boolean;
 }
 
 export const loadQuestions = ({
@@ -32,11 +34,21 @@ export const loadQuestions = ({
   difficulty,
   questionLimit,
   setNumber,
-  startIndex
+  startIndex,
+  isFullExam = false
 }: QuestionLoaderParams): Question[] => {
-  console.log("Loading questions with params:", { effectiveType, difficulty, questionLimit, setNumber, startIndex });
+  console.log("Loading questions with params:", { effectiveType, difficulty, questionLimit, setNumber, startIndex, isFullExam });
   
   let questionsToUse: Question[] = [];
+  
+  // Handle full exam - 80 mixed questions from all types and difficulties
+  if (isFullExam) {
+    console.log("[FULL EXAM] Loading 80 mixed questions for full exam");
+    const allQuestions = getAllQuestions();
+    questionsToUse = shuffleArray(allQuestions).slice(0, 80);
+    console.log(`[FULL EXAM] Selected ${questionsToUse.length} questions from ${allQuestions.length} total questions`);
+    return questionsToUse;
+  }
   
   if (storyQuestions && storyQuestions.length > 0) {
     questionsToUse = [...storyQuestions];
@@ -115,7 +127,7 @@ export const loadQuestions = ({
   }
   
   if (questionsToUse.length === 0) {
-    console.warn("No questions found for simulation", { effectiveType, difficulty });
+    console.warn("No questions found for simulation", { effectiveType, difficulty, isFullExam });
   }
   
   return questionsToUse;

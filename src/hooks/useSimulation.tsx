@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
@@ -39,25 +38,27 @@ export const useSimulation = (
   const typeFromQuery = searchParams.get('type');
   const effectiveType = type || typeFromQuery;
 
+  // Check if this is a full exam
+  const isFullExam = location.pathname.startsWith('/simulation/full');
+
   // Determine simulation mode based on URL path and parameters
   const determineSimulationMode = useCallback(() => {
-    // Explicit mode parameters take precedence
-    if (practiceParam === '1') return { examMode: false, showAnswersImmediately: true };
-    if (examParam === '1') return { examMode: true, showAnswersImmediately: false };
-    
-    // Check if this is a full exam based on URL path
-    const isFullExam = location.pathname.startsWith('/simulation/full');
+    // Full exam always has exam mode enabled
     if (isFullExam) {
       console.log("Detected full exam mode from URL path");
       return { examMode: true, showAnswersImmediately: false };
     }
     
+    // Explicit mode parameters take precedence
+    if (practiceParam === '1') return { examMode: false, showAnswersImmediately: true };
+    if (examParam === '1') return { examMode: true, showAnswersImmediately: false };
+    
     // All other simulations are in practice mode
     console.log("Setting practice mode for simulation");
     return { examMode: false, showAnswersImmediately: true };
-  }, [practiceParam, examParam, location.pathname]);
+  }, [practiceParam, examParam, isFullExam]);
 
-  console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, practiceParam, examParam, pathname: location.pathname });
+  console.log("useSimulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, practiceParam, examParam, pathname: location.pathname, isFullExam });
 
   const { initializeTimer, clearTimer } = useTimer(setState);
 
@@ -91,7 +92,8 @@ export const useSimulation = (
       difficulty,
       questionLimit,
       setNumber,
-      startIndex
+      startIndex,
+      isFullExam
     });
     
     // Determine mode for restart
@@ -113,7 +115,7 @@ export const useSimulation = (
     if (modeSettings.examMode) {
       initializeTimer();
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, isFullExam, determineSimulationMode]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode
@@ -134,7 +136,8 @@ export const useSimulation = (
         difficulty,
         questionLimit,
         setNumber,
-        startIndex
+        startIndex,
+        isFullExam
       });
       
       // Determine mode for reset
@@ -157,11 +160,11 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode]);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, isFullExam, determineSimulationMode]);
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex, typeFromQuery, effectiveType });
+    console.log("Initializing questions for simulation:", { simulationId, isQuestionSet, type, difficulty, questionLimit, setNumber, startIndex, typeFromQuery, effectiveType, isFullExam });
     console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
     
     const questionsToUse = loadQuestions({
@@ -170,7 +173,8 @@ export const useSimulation = (
       difficulty,
       questionLimit,
       setNumber,
-      startIndex
+      startIndex,
+      isFullExam
     });
     
     // Determine simulation mode
@@ -189,14 +193,14 @@ export const useSimulation = (
         ...modeSettings
       }));
     } else {
-      console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions });
+      console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
       setState(prevState => ({
         ...prevState,
         progressLoaded: true,
         ...modeSettings
       }));
     }
-  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode]);
+  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, isFullExam, determineSimulationMode]);
 
   // Initialize questions when dependencies change
   useEffect(() => {
