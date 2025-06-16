@@ -13,7 +13,6 @@ import { categoryData } from "@/data/categories/categoryData";
 import { Topic, Category } from "@/data/types/topicTypes";
 import { getQuestionsByTopic } from "@/data/questions/index";
 import { SimulationTips } from "@/components/simulation/SimulationTips";
-import { SimulationModeSelector } from "@/components/simulation/SimulationModeSelector";
 import { resetConflictingProgress } from "@/services/cloudSync";
 import { hasProgressUnified } from "@/services/simulationStorage";
 
@@ -29,11 +28,6 @@ const SimulationSetup = () => {
     totalQuestions: number;
   } | null>(null); 
   const [availableQuestionsCount, setAvailableQuestionsCount] = useState<number>(0);
-  
-  // State for mode selection
-  const [selectedMode, setSelectedMode] = useState<'practice' | 'exam'>(
-    settings.examMode ? 'exam' : 'practice'
-  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -91,7 +85,15 @@ const SimulationSetup = () => {
     // Get questions count for this topic
     const topicQuestions = getQuestionsByTopic(topicIdNumber);
     setAvailableQuestionsCount(topicQuestions.length);
-  }, [topicId]);
+
+    // Auto-set training mode for topic-specific simulations
+    updateSettings({
+      examMode: false,
+      timerEnabled: false,
+      showAnswersImmediately: true,
+      timerMinutes: undefined
+    });
+  }, [topicId, updateSettings]);
 
   // Calculate timer based on questions count - wrapped with useMemo to avoid recalculation
   const calculateTimer = useMemo(() => {
@@ -100,19 +102,6 @@ const SimulationSetup = () => {
     // So each question gets 3.6 minutes
     return Math.round(questionsCount * 3.6);
   }, [availableQuestionsCount, settings.questionsCount]);
-
-  // Handle mode selection
-  const handleModeSelect = (mode: 'practice' | 'exam') => {
-    setSelectedMode(mode);
-    const isExamMode = mode === 'exam';
-    
-    updateSettings({
-      examMode: isExamMode,
-      timerEnabled: isExamMode,
-      showAnswersImmediately: !isExamMode,
-      timerMinutes: isExamMode ? calculateTimer : undefined  // undefined במצב תרגול = ללא הגבלת זמן
-    });
-  };
 
   const handleStartSimulation = () => {
     setLoading(true);
@@ -124,8 +113,8 @@ const SimulationSetup = () => {
       // Store reset flag in session storage to signal fresh start
       window.sessionStorage.setItem('reset_simulation_progress', 'true');
       
-      // Navigate to simulation with reset parameter
-      navigate(`/simulation/${topicId}?reset=1`);
+      // Navigate to simulation with training mode parameter
+      navigate(`/simulation/${topicId}?practice=1&reset=1`);
     } catch (error) {
       console.error("Error starting simulation:", error);
       setLoading(false);
@@ -136,7 +125,7 @@ const SimulationSetup = () => {
     setLoading(true);
     // Store continue flag in session storage for persistence through navigation
     sessionStorage.setItem('continue_simulation', 'true');
-    navigate(`/simulation/${topicId}?continue=true`);
+    navigate(`/simulation/${topicId}?practice=1&continue=true`);
   };
 
   const handleBackClick = () => {
@@ -180,26 +169,23 @@ const SimulationSetup = () => {
                     <span className="font-semibold text-electric-blue">{availableQuestionsCount}</span> שאלות זמינות
                   </p>
                 )}
+
+                <div className="mt-4 inline-block">
+                  <span className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-medium">
+                    🎯 מצב תרגול - הסברים מיידיים אחרי כל שאלה
+                  </span>
+                </div>
               </div>
 
               {/* טיפים לפני התחלת הסימולציה */}
               <SimulationTips />
-
-              {/* בחירת מצב מעוצבת */}
-              <SimulationModeSelector 
-                selectedMode={selectedMode} 
-                onModeSelect={handleModeSelect} 
-                timerMinutes={calculateTimer} 
-              />
 
               {/* אזור זמן וכמות שאלות מעוצב */}
               <div className="flex justify-between items-center bg-gray-100 px-6 py-4 rounded-xl mb-8">
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-gray-600" />
                   <span className="font-medium">זמן: </span>
-                  <span className={selectedMode === 'exam' ? 'text-blue-600 font-bold' : 'text-green-600'}>
-                    {selectedMode === 'exam' ? `${calculateTimer} דקות` : 'ללא הגבלה'}
-                  </span>
+                  <span className="text-green-600">ללא הגבלה</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-gray-600" />
@@ -218,7 +204,7 @@ const SimulationSetup = () => {
               {/* כפתורי פעולה מעוצבים */}
               <div className="flex flex-col gap-4">
                 <Button
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-5 text-xl font-bold rounded-xl shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]"
+                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-5 text-xl font-bold rounded-xl shadow-lg transition-all hover:shadow-xl hover:scale-[1.02]"
                   onClick={handleStartSimulation}
                   disabled={loading}
                 >
@@ -228,7 +214,7 @@ const SimulationSetup = () => {
                     ) : (
                       <>
                         <Rocket className="h-6 w-6" />
-                        התחל סימולציה חדשה
+                        התחל תרגול חדש
                       </>
                     )}
                   </span>
@@ -237,7 +223,7 @@ const SimulationSetup = () => {
                 {/* כפתור המשך מוצג רק אם יש התקדמות אמיתית */}
                 {hasSavedProgress && (
                   <Button
-                    className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-4 text-lg font-bold rounded-xl shadow-md transition-all hover:shadow-lg"
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 text-lg font-bold rounded-xl shadow-md transition-all hover:shadow-lg"
                     onClick={handleContinue}
                     disabled={loading}
                   >
@@ -247,7 +233,7 @@ const SimulationSetup = () => {
                       ) : (
                         <>
                           <PlayCircle className="h-6 w-6" />
-                          המשך סימולציה {simulationProgress?.currentQuestionIndex > 1 && `(שאלה ${simulationProgress?.currentQuestionIndex + 1} מתוך ${simulationProgress?.totalQuestions})`}
+                          המשך תרגול {simulationProgress?.currentQuestionIndex > 1 && `(שאלה ${simulationProgress?.currentQuestionIndex + 1} מתוך ${simulationProgress?.totalQuestions})`}
                         </>
                       )}
                     </span>

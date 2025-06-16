@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -103,11 +104,11 @@ const SimulationByType: React.FC = () => {
 
   const handleStartPractice = (difficulty?: string) => {
     if (difficulty) {
-      // Navigate to new practice options page
-      navigate(`/simulation/type/${currentType.type}/${difficulty}`);
+      // Navigate to difficulty-specific practice with training mode
+      navigate(`/simulation/type/${currentType.type}/${difficulty}?practice=1`);
     } else {
-      // Quick practice with mixed questions - navigate directly to simulation including type parameter
-      navigate(`/simulation/${currentType.type}?type=${currentType.type}&limit=10`);
+      // Quick practice with mixed questions - training mode
+      navigate(`/simulation/${currentType.type}?type=${currentType.type}&limit=10&practice=1`);
     }
   };
 
@@ -140,6 +141,9 @@ const SimulationByType: React.FC = () => {
                 <h1 className="text-4xl font-bold mb-2">{currentType.title}</h1>
                 <p className="text-white text-opacity-90 text-xl">
                   {currentType.description}
+                </p>
+                <p className="text-white text-opacity-80 text-sm mt-3 bg-white/10 rounded-lg px-3 py-1 inline-block">
+                  🎯 מצב תרגול - הסברים מיידיים אחרי כל שאלה
                 </p>
               </div>
             </div>

@@ -37,6 +37,7 @@ interface SimulationOption {
   requiresAuth?: boolean;
   isPremium?: boolean;
   stats?: string;
+  mode?: string;
 }
 
 interface QuestionTypeOption {
@@ -79,8 +80,9 @@ const SimulationsEntry: React.FC = () => {
       description: '30 שאלות מעורבות מכל הקטגוריות - כמו במבחן האמיתי',
       icon: <PlayCircle className="w-8 h-8" />,
       gradient: 'from-blue-600 via-blue-500 to-indigo-600',
-      path: '/simulation/full',
-      stats: '25 דקות'
+      path: '/simulation/full?exam=1',
+      stats: '25 דקות',
+      mode: '🎯 מצב מבחן'
     },
     {
       id: 'practice-by-type',
@@ -89,7 +91,8 @@ const SimulationsEntry: React.FC = () => {
       icon: <Target className="w-8 h-8" />,
       gradient: 'from-emerald-600 via-green-500 to-teal-600',
       path: '/simulation/by-type',
-      stats: 'גמיש'
+      stats: 'גמיש',
+      mode: '📚 מצב תרגול'
     },
     {
       id: 'history',
@@ -97,7 +100,7 @@ const SimulationsEntry: React.FC = () => {
       description: 'צפיה בתוצאות קודמות ושאלות שמרת',
       icon: <History className="w-8 h-8" />,
       gradient: 'from-purple-600 via-pink-500 to-rose-600',
-      path: '/simulation/history',
+      path: '/simulation-history',
       requiresAuth: true,
       stats: 'ארכיון אישי'
     },
@@ -303,9 +306,17 @@ const SimulationsEntry: React.FC = () => {
                         {option.title}
                       </h3>
                       
-                      <p className="text-white/70 mb-6 leading-relaxed">
+                      <p className="text-white/70 mb-4 leading-relaxed">
                         {option.description}
                       </p>
+
+                      {option.mode && (
+                        <div className="mb-4">
+                          <span className="text-white/80 text-sm bg-white/10 rounded-lg px-3 py-1 inline-block">
+                            {option.mode}
+                          </span>
+                        </div>
+                      )}
 
                       {option.stats && (
                         <div className="flex items-center text-white/50 text-sm">
@@ -345,13 +356,16 @@ const SimulationsEntry: React.FC = () => {
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-4">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-3xl font-bold text-white"
-                    style={{ 
-                      fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
-                      fontWeight: '700'
-                    }}>
-                  תרגול לפי סוג שאלה
-                </h2>
+                <div>
+                  <h2 className="text-3xl font-bold text-white"
+                      style={{ 
+                        fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
+                        fontWeight: '700'
+                      }}>
+                    תרגול לפי סוג שאלה
+                  </h2>
+                  <p className="text-gray-400 mt-1">מצב תרגול עם הסברים מיידיים</p>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -419,85 +433,37 @@ const SimulationsEntry: React.FC = () => {
                         fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                         fontWeight: '700'
                       }}>
-                    הסטטיסטיקות שלך
+                    הבדלים בין מצבי התרגול
                   </h2>
                 </div>
                 
-                {currentUser ? (
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    {[
-                      { value: "0", label: "סימולציות הושלמו", icon: <PlayCircle />, color: "from-blue-500 to-indigo-600" },
-                      { value: "0%", label: "אחוז הצלחה ממוצע", icon: <TrendingUp />, color: "from-emerald-500 to-green-600" },
-                      { value: "0", label: "שאלות נענו", icon: <BookOpenCheck />, color: "from-purple-500 to-pink-600" },
-                      { value: "0", label: "שאלות שמורות", icon: <Star />, color: "from-amber-500 to-orange-600" }
-                    ].map((stat, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={isInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.5, delay: 0.7 + index * 0.1 }}
-                        whileHover={{ y: -5 }}
-                        className="relative group"
-                      >
-                        <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 h-full">
-                          <motion.div
-                            className={`w-10 h-10 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center text-white mb-4`}
-                            whileHover={{ rotate: 360 }}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {React.cloneElement(stat.icon as React.ReactElement, { className: "w-5 h-5" })}
-                          </motion.div>
-                          <div className={`text-3xl font-bold mb-2 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent`}>
-                            {stat.value}
-                          </div>
-                          <div className="text-white/60 text-sm">{stat.label}</div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <motion.div 
-                    className="text-center py-12"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <motion.div 
-                      className="w-24 h-24 mx-auto mb-6 bg-white/10 rounded-full flex items-center justify-center"
-                      animate={{ 
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, -5, 0]
-                      }}
-                      transition={{ 
-                        duration: 3,
-                        repeat: Infinity,
-                        repeatType: "reverse"
-                      }}
-                    >
-                      <User className="w-12 h-12 text-white/50" />
-                    </motion.div>
-                    
-                    <h3 className="text-2xl font-semibold text-white mb-3">
-                      התחבר כדי לראות את הסטטיסטיקות שלך
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold text-green-400 mb-4 flex items-center">
+                      <span className="text-2xl ml-2">📚</span>
+                      מצב תרגול
                     </h3>
-                    <p className="text-white/60 mb-8 max-w-md mx-auto">
-                      עקוב אחר ההתקדמות שלך ושמור שאלות למטרות תרגול עתידיות
-                    </p>
-                    
-                    <motion.button
-                      onClick={() => navigate('/login')}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-4 rounded-2xl font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                      style={{ fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif' }}
-                    >
-                      <span className="flex items-center">
-                        <Zap className="w-5 h-5 mr-2" />
-                        התחבר עכשיו
-                      </span>
-                    </motion.button>
-                  </motion.div>
-                )}
+                    <ul className="space-y-2 text-gray-300">
+                      <li>• הסברים מיידיים אחרי כל שאלה</li>
+                      <li>• אפשרות לחזור לשאלות קודמות</li>
+                      <li>• ללא הגבלת זמן</li>
+                      <li>• מתאים ללמידה ושיפור</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+                    <h3 className="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                      <span className="text-2xl ml-2">🎯</span>
+                      מצב מבחן
+                    </h3>
+                    <ul className="space-y-2 text-gray-300">
+                      <li>• הסברים רק בסוף המבחן</li>
+                      <li>• אין אפשרות לחזור לשאלות</li>
+                      <li>• הגבלת זמן כמו במבחן האמיתי</li>
+                      <li>• מתאים לבדיקת מוכנות</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </motion.div>
