@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
 import { Question } from '@/data/types/questionTypes';
@@ -24,6 +24,7 @@ const EXAM_DURATION = 180 * 60; // 180 minutes in seconds
 
 export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose }) => {
   const { toast } = useToast();
+  const questionContainerRef = useRef<HTMLDivElement>(null);
   
   const [examState, setExamState] = useState<ExamState>({
     questions: [],
@@ -106,7 +107,6 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
     const secs = seconds % 60;
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
-
   // Start exam
   const startExam = () => {
     setExamState(prev => ({
@@ -114,6 +114,11 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
       isExamStarted: true,
       examStartTime: new Date()
     }));
+    
+    // Scroll to first question after starting
+    setTimeout(() => {
+      scrollToQuestion();
+    }, 200);
     
     toast({
       title: "המבחן התחיל!",
@@ -135,6 +140,16 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
       };
     });
   };
+  // Scroll to top of question
+  const scrollToQuestion = useCallback(() => {
+    if (questionContainerRef.current) {
+      questionContainerRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    }
+  }, []);
 
   // Move to next question
   const nextQuestion = () => {
@@ -143,6 +158,11 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
         ...prev,
         currentQuestionIndex: prev.currentQuestionIndex + 1
       }));
+      
+      // Scroll to top of next question after state update
+      setTimeout(() => {
+        scrollToQuestion();
+      }, 100);
     } else {
       // Last question - finish exam
       finishExam();
@@ -264,17 +284,14 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Content */}
-            <div className="p-6 max-h-[calc(90vh-200px)] overflow-y-auto">
+            </div>            {/* Content */}
+            <div className="p-2 max-h-[calc(90vh-160px)] overflow-y-auto">
               {!examState.isExamStarted ? (
                 // Pre-exam screen
-                <div className="text-center space-y-6">
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-                    <AlertTriangle className="w-12 h-12 text-yellow-600 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-gray-800 mb-4">כללי המבחן</h3>
-                    <div className="text-right space-y-3 text-gray-700">
+                <div className="text-center space-y-4">                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                    <AlertTriangle className="w-10 h-10 text-yellow-600 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold text-gray-800 mb-3">כללי המבחן</h3>
+                    <div className="text-right space-y-2 text-sm text-gray-700">
                       <p>• המבחן כולל 80 שאלות מעורבות</p>
                       <p>• זמן המבחן: 180 דקות (3 שעות)</p>
                       <p>• כל שאלה מוצגת פעם אחת בלבד</p>
@@ -292,13 +309,12 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                     התחל מבחן מלא
                   </button>
                 </div>
-              ) : examState.isExamCompleted ? (
-                // Post-exam screen
-                <div className="text-center space-y-6">
-                  <CheckCircle className="w-16 h-16 text-green-600 mx-auto" />
-                  <h3 className="text-2xl font-bold text-gray-800">המבחן הושלם!</h3>
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                    <div className="space-y-2 text-lg">
+              ) : examState.isExamCompleted ? (                // Post-exam screen
+                <div className="text-center space-y-4">
+                  <CheckCircle className="w-12 h-12 text-green-600 mx-auto" />
+                  <h3 className="text-xl font-bold text-gray-800">המבחן הושלם!</h3>
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                    <div className="space-y-1 text-base">
                       <p>זמן שנותר: {formatTime(examState.timeRemaining)}</p>
                       <p>התוצאות נשמרו בהיסטוריה שלך</p>
                     </div>
@@ -308,101 +324,88 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                     className="bg-gradient-to-r from-blue-600 to-purple-700 text-white px-6 py-2 rounded-lg font-bold hover:from-blue-700 hover:to-purple-800 transition-all duration-200"
                   >
                     סגור
-                  </button>
-                </div>              ) : (
-                // During exam - show current question
+                  </button>                </div>              ) : (                // During exam - show current question
                 currentQuestion && (
-                  <div className="space-y-6">
+                  <div ref={questionContainerRef} className="space-y-3">
                     {/* Reading Comprehension Layout */}
                     {currentQuestion.type === 'reading-comprehension' ? (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[500px]">
-                        {/* Reading Passage */}
-                        <div className="bg-gray-50 rounded-lg p-6 overflow-y-auto">
-                          <h3 className="text-lg font-bold text-gray-800 mb-4">קטע הקריאה</h3>
-                          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 h-[70vh]">                        {/* Reading Passage */}
+                        <div className="bg-gray-50 rounded-lg p-2 overflow-y-auto">
+                          <h3 className="text-sm font-bold text-gray-800 mb-1">קטע הקריאה</h3>
+                          <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
                             {currentQuestion.passage || currentQuestion.story || "No passage available"}
                           </div>
-                        </div>
-
-                        {/* Question */}
+                        </div>                        {/* Question */}
                         <div className="flex flex-col">
-                          <div className="bg-blue-50 rounded-lg p-6 mb-4">
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">
+                          <div className="bg-blue-50 rounded-lg p-2 mb-1">
+                            <h3 className="text-sm font-bold text-gray-800 mb-1">
                               שאלה {questionNumber}: הבנת הנקרא
                             </h3>
-                            <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                            <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
                               {currentQuestion.text}
                             </div>
-                          </div>
-
-                          <div className="space-y-3 flex-1">
+                          </div>                          <div className="space-y-1 flex-1">
                             {currentQuestion.options?.map((option, index) => (
                               <button
                                 key={index}
                                 onClick={() => selectAnswer(index)}
-                                className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                                className={`w-full text-left p-1.5 text-xs rounded-lg border-2 transition-all duration-200 ${
                                   currentAnswer === index
                                     ? 'border-blue-500 bg-blue-50 text-blue-700'
                                     : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                 }`}
                                 dir="ltr"
                               >
-                                <span className="font-bold ml-3">{String.fromCharCode(65 + index)}.</span>
+                                <span className="font-bold ml-1">{String.fromCharCode(65 + index)}.</span>
                                 <span style={{ textAlign: 'left' }}>{option}</span>
                               </button>
                             ))}
                           </div>
                         </div>
                       </div>
-                    ) : (
-                      /* Other Question Types */
+                    ) : (                      /* Other Question Types */
                       <>
-                        <div className="bg-gray-50 rounded-lg p-6">
-                          <h3 className="text-lg font-bold text-gray-800 mb-4">
+                        <div className="bg-gray-50 rounded-lg p-2">
+                          <h3 className="text-sm font-bold text-gray-800 mb-1">
                             שאלה {questionNumber}: {currentQuestion.type === 'restatement' ? 'ניסוח מחדש' :
                                                   currentQuestion.type === 'sentence-completion' ? 'השלמת משפטים' : 'אוצר מילים'}
                           </h3>
-                          <div className="text-gray-700 leading-relaxed whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                          <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
                             {currentQuestion.text}
                           </div>
-                        </div>
-
-                        <div className="space-y-3">
+                        </div>                        <div className="space-y-1">
                           {currentQuestion.options?.map((option, index) => (
                             <button
                               key={index}
                               onClick={() => selectAnswer(index)}
-                              className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+                              className={`w-full text-left p-1.5 text-xs rounded-lg border-2 transition-all duration-200 ${
                                 currentAnswer === index
                                   ? 'border-blue-500 bg-blue-50 text-blue-700'
                                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                               }`}
                               dir="ltr"
                             >
-                              <span className="font-bold ml-3">{String.fromCharCode(65 + index)}.</span>
+                              <span className="font-bold ml-1">{String.fromCharCode(65 + index)}.</span>
                               <span style={{ textAlign: 'left' }}>{option}</span>
                             </button>
                           ))}
                         </div>
                       </>
-                    )}
-
-                    <div className="flex justify-between items-center pt-6">
-                      <div className="text-sm text-gray-500">
+                    )}                    <div className="flex justify-between items-center pt-2">
+                      <div className="text-xs text-gray-500">
                         {currentAnswer !== null ? 'תשובה נבחרה' : 'בחר תשובה'}
                       </div>
                       
                       <button
                         onClick={nextQuestion}
                         disabled={currentAnswer === null}
-                        className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-bold transition-all duration-200 ${
+                        className={`flex items-center space-x-1 px-3 py-1.5 text-xs rounded-lg font-bold transition-all duration-200 ${
                           currentAnswer !== null
                             ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white hover:from-blue-700 hover:to-purple-800'
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         }`}
-                      >
-                        <span>{isLastQuestion ? 'סיים מבחן' : 'שאלה הבאה'}</span>
-                        <ChevronRight className="w-5 h-5" />
+                      >                        <span>{isLastQuestion ? 'סיים מבחן' : 'שאלה הבאה'}</span>
+                        <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
