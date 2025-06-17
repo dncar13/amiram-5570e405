@@ -22,6 +22,7 @@ export const useSimulation = (
 ) => {
   const [state, setState] = useState<SimulationState>(initialSimulationState);
   const progressLoadedRef = useRef(false);
+  const questionContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [searchParams] = useSearchParams();
@@ -52,55 +53,40 @@ export const useSimulation = (
     simulationId 
   });
 
+  // Scroll to top of question
+  const scrollToQuestion = useCallback(() => {
+    if (questionContainerRef.current) {
+      questionContainerRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    }
+  }, []);
+
   // Determine simulation mode automatically based on parameters
-  const determineSimulationMode = useCallback(() => {
-    // Full exam is always in exam mode
-    if (isFullExam) {
-      return { 
-        examMode: true, 
-        showAnswersImmediately: false,
-        timerEnabled: true,
-        timerMinutes: 60 // 60 minutes for full exam
-      };
-    }
-    
-    // Explicit mode parameters take precedence
-    if (practiceParam === '1') return { examMode: false, showAnswersImmediately: true };
-    if (examParam === '1') return { examMode: true, showAnswersImmediately: false };
-    
-    // Auto-detect based on simulation type
-    // Mixed/full simulations = exam mode
-    if (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)) {
-      return { examMode: true, showAnswersImmediately: false };
-    }
-    
-    // Specific type or difficulty = training mode
-    if (effectiveType || difficulty) {
-      return { examMode: false, showAnswersImmediately: true };
-    }
-    
-    // Default to training mode
-    return { examMode: false, showAnswersImmediately: true };
-  }, [practiceParam, examParam, simulationId, effectiveType, difficulty, isFullExam]);
+  const examMode = isFullExam || examParam === '1' || (!practiceParam && (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)));
+  const showAnswersImmediately = !examMode || practiceParam === '1';
 
   const { initializeTimer, clearTimer } = useTimer(setState);
 
   // Auto-save progress for training mode only (not for full exam)
   useEffect(() => {
-    if (state.progressLoaded && !state.examMode && !isFullExam && state.answeredQuestionsCount > 0) {
+    if (state.progressLoaded && !examMode && !isFullExam && state.answeredQuestionsCount > 0) {
       console.log("Auto-saving training progress:", state.answeredQuestionsCount);
       saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
     }
-  }, [state.answeredQuestionsCount, state.currentQuestionIndex, simulationId, state.examMode, state.progressLoaded, setNumber, type, difficulty, isFullExam]);
+  }, [state.answeredQuestionsCount, state.currentQuestionIndex, simulationId, examMode, state.progressLoaded, setNumber, type, difficulty, isFullExam]);
 
-  // Create simulation actions
+  // Create simulation actions with scroll function
   const actions = createSimulationActions(
     state, 
     setState, 
     clearTimer, 
     setNumber, 
     type, 
-    difficulty
+    difficulty,
+    scrollToQuestion
   );
 
   const handleRestartSimulation = useCallback(() => {
@@ -119,10 +105,7 @@ export const useSimulation = (
       isFullExam
     });
     
-    // Determine mode for restart
-    const modeSettings = determineSimulationMode();
-    
-    console.log(`Restart: Setting ${questionsToUse.length} questions for simulation with mode:`, modeSettings);
+    console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
     
     setState({
       ...initialSimulationState,
@@ -130,22 +113,23 @@ export const useSimulation = (
       totalQuestions: questionsToUse.length,
       currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
       isTimerActive: false,
-      remainingTime: isFullExam ? 3600 : 1800, // 60 minutes for full exam, 30 for others
+      remainingTime: isFullExam ? 3600 : 1800,
       progressLoaded: true,
-      ...modeSettings
+      examMode,
+      showAnswersImmediately
     });
     
-    if (modeSettings.examMode) {
+    if (examMode) {
       initializeTimer();
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode, isFullExam]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode and not for full exam
-    if (!state.examMode && !isFullExam) {
+    if (!examMode && !isFullExam) {
       saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
     }
-  }, [simulationId, state, setNumber, type, difficulty, isFullExam]);
+  }, [simulationId, state, setNumber, type, difficulty, examMode, isFullExam]);
 
   const resetProgress = useCallback(() => {
     try {
@@ -163,17 +147,15 @@ export const useSimulation = (
         isFullExam
       });
       
-      // Determine mode for reset
-      const modeSettings = determineSimulationMode();
-      
       setState(prevState => ({
         ...initialSimulationState,
         questions: questionsToUse,
         totalQuestions: questionsToUse.length,
         currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
-        remainingTime: isFullExam ? 3600 : 1800, // 60 minutes for full exam
+        remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
-        ...modeSettings
+        examMode,
+        showAnswersImmediately
       }));
       
       toast({
@@ -184,7 +166,7 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode, isFullExam]);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
@@ -212,10 +194,7 @@ export const useSimulation = (
       isFullExam
     });
     
-    // Determine simulation mode
-    const modeSettings = determineSimulationMode();
-    
-    console.log(`Loaded ${questionsToUse.length} questions for simulation with mode:`, modeSettings);
+    console.log(`Loaded ${questionsToUse.length} questions for simulation`);
     
     if (questionsToUse.length > 0) {
       console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
@@ -224,9 +203,10 @@ export const useSimulation = (
         questions: questionsToUse,
         totalQuestions: questionsToUse.length,
         currentQuestion: questionsToUse[0],
-        remainingTime: isFullExam ? 3600 : 1800, // 60 minutes for full exam
+        remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
-        ...modeSettings
+        examMode,
+        showAnswersImmediately
       }));
     } else {
       console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
@@ -234,10 +214,11 @@ export const useSimulation = (
         ...prevState,
         remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
-        ...modeSettings
+        examMode,
+        showAnswersImmediately
       }));
     }
-  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, determineSimulationMode, isFullExam]);
+  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   // Initialize questions when dependencies change
   useEffect(() => {
@@ -248,10 +229,8 @@ export const useSimulation = (
   // Load saved progress (only for training mode, not for full exam)
   useEffect(() => {
     if (!progressLoadedRef.current) {
-      const modeSettings = determineSimulationMode();
-      
       // Only load progress for training mode and not for full exam
-      if (!modeSettings.examMode && !isFullExam) {
+      if (!examMode && !isFullExam) {
         const savedProgress = loadSimulationProgress(simulationId);
         
         if (savedProgress) {
@@ -268,7 +247,8 @@ export const useSimulation = (
             progressPercentage: savedProgress.progressPercentage || 0,
             currentScorePercentage: savedProgress.currentScorePercentage || 0,
             progressLoaded: true,
-            ...modeSettings
+            examMode,
+            showAnswersImmediately
           }));
           
           progressLoadedRef.current = true;
@@ -279,7 +259,8 @@ export const useSimulation = (
             ...prevState, 
             remainingTime: isFullExam ? 3600 : 1800,
             progressLoaded: true, 
-            ...modeSettings 
+            examMode,
+            showAnswersImmediately
           }));
           progressLoadedRef.current = true;
         }
@@ -290,12 +271,13 @@ export const useSimulation = (
           ...prevState, 
           remainingTime: isFullExam ? 3600 : 1800,
           progressLoaded: true, 
-          ...modeSettings 
+          examMode,
+          showAnswersImmediately
         }));
         progressLoadedRef.current = true;
       }
     }
-  }, [simulationId, determineSimulationMode, isFullExam]);
+  }, [simulationId, examMode, showAnswersImmediately, isFullExam]);
 
   // Update current question when index changes
   useEffect(() => {
@@ -386,6 +368,9 @@ export const useSimulation = (
     setSelectedAnswerIndex,
     setIsTimerActive,
     setExamMode,
-    setShowAnswersImmediately
+    setShowAnswersImmediately,
+    
+    // Ref for scrolling
+    questionContainerRef
   };
 };

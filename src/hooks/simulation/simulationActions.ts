@@ -8,7 +8,8 @@ export const createSimulationActions = (
   clearTimer: () => void,
   setNumber?: string | null,
   type?: string,
-  difficulty?: string
+  difficulty?: string,
+  scrollToQuestion?: () => void
 ) => {
   const handleAnswerSelect = (answerIndex: number) => {
     setState((prevState: any) => ({ ...prevState, selectedAnswerIndex: answerIndex }));
@@ -97,6 +98,13 @@ export const createSimulationActions = (
         const previousAnswer = prevState.userAnswers[nextQuestionIndex];
         const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
         
+        // Scroll to question after state update
+        setTimeout(() => {
+          if (scrollToQuestion) {
+            scrollToQuestion();
+          }
+        }, 100);
+        
         return {
           ...prevState,
           currentQuestionIndex: nextQuestionIndex,
@@ -138,6 +146,13 @@ export const createSimulationActions = (
         const previousAnswer = prevState.userAnswers[prevQuestionIndex];
         const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
         
+        // Scroll to question after state update
+        setTimeout(() => {
+          if (scrollToQuestion) {
+            scrollToQuestion();
+          }
+        }, 100);
+        
         return {
           ...prevState,
           currentQuestionIndex: prevQuestionIndex,
@@ -167,6 +182,13 @@ export const createSimulationActions = (
     setState((prevState: any) => {
       const previousAnswer = prevState.userAnswers[questionIndex];
       const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
+      
+      // Scroll to question after state update
+      setTimeout(() => {
+        if (scrollToQuestion) {
+          scrollToQuestion();
+        }
+      }, 100);
       
       return {
         ...prevState,

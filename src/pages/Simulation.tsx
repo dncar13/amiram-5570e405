@@ -409,6 +409,7 @@ const Simulation = () => {
             showAnswersImmediately={simulation.showAnswersImmediately}
             isQuestionSet={isQuestionSet}
             setNumber={setIdNumber}
+            questionContainerRef={simulation.questionContainerRef}
             onAnswerSelect={simulation.handleAnswerSelect}
             onSubmitAnswer={simulation.handleSubmitAnswer}
             onNextQuestion={simulation.handleNextQuestion}

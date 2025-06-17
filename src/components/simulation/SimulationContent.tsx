@@ -26,6 +26,7 @@ interface SimulationContentProps {
   showAnswersImmediately: boolean;
   isQuestionSet?: boolean;
   setNumber?: number;
+  questionContainerRef?: React.RefObject<HTMLDivElement>;
   onAnswerSelect: (index: number) => void;
   onSubmitAnswer: () => void;
   onNextQuestion: () => void;
@@ -60,6 +61,7 @@ const SimulationContent = ({
   showAnswersImmediately,
   isQuestionSet,
   setNumber,
+  questionContainerRef,
   onAnswerSelect,
   onSubmitAnswer,
   onNextQuestion,
@@ -142,26 +144,28 @@ const SimulationContent = ({
       </div>
 
       {/* Unified Question Display */}
-      <QuestionCard
-        currentQuestion={currentQuestion}
-        currentQuestionIndex={currentQuestionIndex}
-        totalQuestions={totalQuestions}
-        selectedAnswerIndex={selectedAnswerIndex}
-        isAnswerSubmitted={isAnswerSubmitted}
-        showExplanation={showExplanation}
-        isFlagged={questionFlags[currentQuestionIndex] || false}
-        examMode={examMode}
-        showAnswersImmediately={showAnswersImmediately}
-        answeredQuestionsCount={answeredQuestionsCount}
-        correctQuestionsCount={correctQuestionsCount}
-        progressPercentage={progressPercentage}
-        onAnswerSelect={onAnswerSelect}
-        onSubmitAnswer={onSubmitAnswer}
-        onNextQuestion={onNextQuestion}
-        onPreviousQuestion={onPreviousQuestion}
-        onToggleExplanation={onToggleExplanation}
-        onToggleQuestionFlag={onToggleQuestionFlag}
-      />
+      <div ref={questionContainerRef}>
+        <QuestionCard
+          currentQuestion={currentQuestion}
+          currentQuestionIndex={currentQuestionIndex}
+          totalQuestions={totalQuestions}
+          selectedAnswerIndex={selectedAnswerIndex}
+          isAnswerSubmitted={isAnswerSubmitted}
+          showExplanation={showExplanation}
+          isFlagged={questionFlags[currentQuestionIndex] || false}
+          examMode={examMode}
+          showAnswersImmediately={showAnswersImmediately}
+          answeredQuestionsCount={answeredQuestionsCount}
+          correctQuestionsCount={correctQuestionsCount}
+          progressPercentage={progressPercentage}
+          onAnswerSelect={onAnswerSelect}
+          onSubmitAnswer={onSubmitAnswer}
+          onNextQuestion={onNextQuestion}
+          onPreviousQuestion={onPreviousQuestion}
+          onToggleExplanation={onToggleExplanation}
+          onToggleQuestionFlag={onToggleQuestionFlag}
+        />
+      </div>
     </div>
   );
 };
