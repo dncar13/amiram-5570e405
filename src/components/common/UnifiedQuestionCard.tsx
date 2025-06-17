@@ -159,19 +159,18 @@ const UnifiedQuestionCard = ({
       )}
     </div>
   );
-
   if (hasReadingPassage) {
     return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-[calc(100vh-100px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 md:gap-4 h-[calc(100vh-100px)]">
         {/* Reading Passage */}
-        <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full">
-          <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+        <Card className="bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-none md:rounded-2xl h-full">
+          <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-none md:rounded-t-2xl">
             <CardTitle className="text-lg font-semibold text-slate-200 mb-2 flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
               {currentQuestion.passageTitle || 'Reading Passage'}
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4 overflow-auto h-full">
+          <CardContent className="p-2 md:p-4 overflow-auto h-full">
             <div dir="ltr" className="text-left h-full">
               <ReadingPassage 
                 passageWithLines={currentQuestion.passageWithLines}
@@ -183,12 +182,11 @@ const UnifiedQuestionCard = ({
         </Card>
 
         {/* Question Area */}
-        <div className="flex flex-col h-full">
-          <Card className={cn(
-            "bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl h-full flex flex-col transition-all duration-300",
+        <div className="flex flex-col h-full">          <Card className={cn(
+            "bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-none md:rounded-2xl h-full flex flex-col transition-all duration-300",
             isAnimating && "scale-[0.98] opacity-80"
           )}>
-            <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-t-2xl">
+            <CardHeader className="pb-3 border-b border-slate-600/50 bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white rounded-none md:rounded-t-2xl">
               <div className="flex justify-between items-center">
                 <CardTitle className="text-xl flex items-center gap-3">
                   <div className="bg-slate-800/60 p-2 rounded-lg border border-slate-600/50">
@@ -232,9 +230,9 @@ const UnifiedQuestionCard = ({
               />
             </CardHeader>
 
-            <CardContent className="p-6 space-y-6 flex-1 flex flex-col">
+            <CardContent className="p-4 md:p-6 space-y-4 md:space-y-6 flex-1 flex flex-col">
               <div dir="ltr" className="text-left">
-                <h3 className="text-xl font-bold text-white leading-relaxed">{currentQuestion.text}</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white leading-relaxed">{currentQuestion.text}</h3>
               </div>
               
               {currentQuestion.image && (
@@ -393,16 +391,14 @@ const UnifiedQuestionCard = ({
       </div>
     );
   }
-
   // Regular question layout (non-reading comprehension)
   return (
     <Card ref={questionCardRef} className={cn(
-      "bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-2xl transition-all duration-300 max-w-4xl mx-auto",
+      "bg-gradient-to-br from-slate-900 to-slate-800 shadow-2xl border-0 rounded-none md:rounded-2xl transition-all duration-300 w-full md:max-w-4xl mx-auto",
       isAnimating && "scale-[0.98] opacity-80",
       variant === 'practice' && "border-t-4 border-t-electric-blue bg-white shadow-lg"
-    )}>
-      <CardHeader className={cn(
-        "pb-4 border-b border-slate-600/50 rounded-t-2xl",
+    )}>      <CardHeader className={cn(
+        "pb-4 border-b border-slate-600/50 rounded-none md:rounded-t-2xl",
         variant === 'simulation' 
           ? "bg-gradient-to-r from-slate-700 via-slate-600 to-slate-700 text-white" 
           : "bg-electric-blue/8"
@@ -471,10 +467,9 @@ const UnifiedQuestionCard = ({
         />
       </CardHeader>
 
-      <CardContent className="p-8 space-y-6">
-        <div className={variant === 'practice' ? 'text-right' : 'text-left'}>
-          <h3 className={cn(
-            "text-xl font-bold leading-relaxed",
+      <CardContent className="p-4 md:p-8 space-y-4 md:space-y-6">
+        <div className={variant === 'practice' ? 'text-right' : 'text-left'}>          <h3 className={cn(
+            "text-lg md:text-xl font-bold leading-relaxed",
             variant === 'simulation' ? "text-white" : "text-electric-navy"
           )}>
             {currentQuestion.text}

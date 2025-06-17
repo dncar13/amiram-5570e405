@@ -242,16 +242,14 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
             className="absolute inset-0 bg-black/80"
             onClick={handleClose}
           />
-          
-          {/* Modal */}
+            {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-2xl overflow-hidden"
-          >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4">
+            className="relative w-full h-full md:max-w-4xl md:max-h-[90vh] md:rounded-lg bg-white shadow-2xl overflow-hidden"
+          >            {/* Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-2 md:p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <h2 className="text-xl font-bold">מבחן אמיר"ם מלא</h2>
@@ -287,10 +285,8 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Content */}
-            <div className="p-2 max-h-[calc(90vh-160px)] overflow-y-auto">
+            </div>            {/* Content */}
+            <div className="p-1 md:p-2 max-h-[calc(100vh-120px)] md:max-h-[calc(90vh-160px)] overflow-y-auto">
               {!examState.isExamStarted ? (
                 // Pre-exam screen
                 <div className="text-center space-y-4">
@@ -336,74 +332,115 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
               ) : (
                 // During exam - show current question
                 currentQuestion && (
-                  <div ref={questionContainerRef} className="space-y-3">
-                    {/* Reading Comprehension Layout */}
+                  <div ref={questionContainerRef} className="space-y-3">                    {/* Reading Comprehension Layout */}
                     {currentQuestion.type === 'reading-comprehension' ? (
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 h-[70vh]">
-                        {/* Reading Passage */}
-                        <div className="bg-gray-50 rounded-lg p-2 overflow-y-auto">
-                          <h3 className="text-sm font-bold text-gray-800 mb-1">קטע הקריאה</h3>
-                          <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
-                            {currentQuestion.passageText || currentQuestion.text || "No passage available"}
-                          </div>
-                        </div>
-
-                        {/* Question */}
-                        <div className="flex flex-col">
-                          <div className="bg-blue-50 rounded-lg p-2 mb-1">
-                            <h3 className="text-sm font-bold text-gray-800 mb-1">
-                              שאלה {questionNumber}: הבנת הנקרא
-                            </h3>
-                            <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
-                              {currentQuestion.text}
+                      <>                        {/* Mobile Layout - Stack vertically */}
+                        <div className="md:hidden space-y-1">
+                          {/* Reading Passage - Fixed height with scroll */}
+                          <div className="bg-gray-50 rounded-none md:rounded-lg p-2 h-[35vh] overflow-y-auto">
+                            <h3 className="text-base font-bold text-gray-800 mb-1 sticky top-0 bg-gray-50">קטע הקריאה</h3>
+                            <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left', lineHeight: '1.4' }}>
+                              {currentQuestion.passageText || currentQuestion.text || "No passage available"}
                             </div>
                           </div>
 
-                          <div className="space-y-1 flex-1">
-                            {currentQuestion.options?.map((option, index) => (
-                              <button
-                                key={index}
-                                onClick={() => selectAnswer(index)}
-                                className={`w-full text-left p-1.5 text-xs rounded-lg border-2 transition-all duration-200 ${
-                                  currentAnswer === index
-                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                    : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                                }`}
-                                dir="ltr"
-                              >
-                                <span className="font-bold ml-1">{String.fromCharCode(65 + index)}.</span>
-                                <span style={{ textAlign: 'left' }}>{option}</span>
-                              </button>
-                            ))}
+                          {/* Question - Remaining space */}
+                          <div className="bg-blue-50 rounded-none md:rounded-lg p-2">
+                            <h3 className="text-base font-bold text-gray-800 mb-1">
+                              שאלה {questionNumber}: הבנת הנקרא
+                            </h3>
+                            <div className="text-gray-700 leading-relaxed text-sm mb-2 whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left', lineHeight: '1.4' }}>
+                              {currentQuestion.text}
+                            </div>
+
+                            <div className="space-y-1">
+                              {currentQuestion.options?.map((option, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => selectAnswer(index)}
+                                  className={`w-full text-left p-2 text-sm rounded-none md:rounded-lg border-2 transition-all duration-200 ${
+                                    currentAnswer === index
+                                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                  }`}
+                                  dir="ltr"
+                                  style={{ lineHeight: '1.3' }}
+                                >
+                                  <span className="font-bold ml-1">{String.fromCharCode(65 + index)}.</span>
+                                  <span style={{ textAlign: 'left' }}>{option}</span>
+                                </button>
+                              ))}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      /* Other Question Types */
+
+                        {/* Desktop Layout - Side by side */}
+                        <div className="hidden md:grid grid-cols-2 gap-3 h-[70vh]">
+                          {/* Reading Passage */}
+                          <div className="bg-gray-50 rounded-lg p-3 overflow-y-auto">
+                            <h3 className="text-base font-bold text-gray-800 mb-2">קטע הקריאה</h3>
+                            <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                              {currentQuestion.passageText || currentQuestion.text || "No passage available"}
+                            </div>
+                          </div>
+
+                          {/* Question */}
+                          <div className="flex flex-col">
+                            <div className="bg-blue-50 rounded-lg p-3 mb-2">
+                              <h3 className="text-base font-bold text-gray-800 mb-2">
+                                שאלה {questionNumber}: הבנת הנקרא
+                              </h3>
+                              <div className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                                {currentQuestion.text}
+                              </div>
+                            </div>
+
+                            <div className="space-y-2 flex-1">
+                              {currentQuestion.options?.map((option, index) => (
+                                <button
+                                  key={index}
+                                  onClick={() => selectAnswer(index)}
+                                  className={`w-full text-left p-2 text-sm rounded-lg border-2 transition-all duration-200 ${
+                                    currentAnswer === index
+                                      ? 'border-blue-500 bg-blue-50 text-blue-700'
+                                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                  }`}
+                                  dir="ltr"
+                                >
+                                  <span className="font-bold ml-2">{String.fromCharCode(65 + index)}.</span>
+                                  <span style={{ textAlign: 'left' }}>{option}</span>
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (                      /* Other Question Types */
                       <>
-                        <div className="bg-gray-50 rounded-lg p-2">
-                          <h3 className="text-sm font-bold text-gray-800 mb-1">
+                        <div className="bg-gray-50 rounded-none md:rounded-lg p-2 md:p-2">
+                          <h3 className="text-base md:text-sm font-bold text-gray-800 mb-1 md:mb-1">
                             שאלה {questionNumber}: {currentQuestion.type === 'restatement' ? 'ניסוח מחדש' :
                                                   currentQuestion.type === 'sentence-completion' ? 'השלמת משפטים' : 'אוצר מילים'}
                           </h3>
-                          <div className="text-gray-700 leading-relaxed text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left' }}>
+                          <div className="text-gray-700 leading-relaxed text-sm md:text-xs whitespace-pre-wrap" dir="ltr" style={{ textAlign: 'left', lineHeight: '1.4' }}>
                             {currentQuestion.text}
                           </div>
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="space-y-1 md:space-y-1">
                           {currentQuestion.options?.map((option, index) => (
                             <button
                               key={index}
                               onClick={() => selectAnswer(index)}
-                              className={`w-full text-left p-1.5 text-xs rounded-lg border-2 transition-all duration-200 ${
+                              className={`w-full text-left p-2 md:p-1.5 text-sm md:text-xs rounded-none md:rounded-lg border-2 transition-all duration-200 ${
                                 currentAnswer === index
                                   ? 'border-blue-500 bg-blue-50 text-blue-700'
                                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                               }`}
                               dir="ltr"
+                              style={{ lineHeight: '1.3' }}
                             >
-                              <span className="font-bold ml-1">{String.fromCharCode(65 + index)}.</span>
+                              <span className="font-bold ml-1 md:ml-1">{String.fromCharCode(65 + index)}.</span>
                               <span style={{ textAlign: 'left' }}>{option}</span>
                             </button>
                           ))}
@@ -411,15 +448,15 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                       </>
                     )}
 
-                    <div className="flex justify-between items-center pt-2">
-                      <div className="text-xs text-gray-500">
+                    <div className="flex justify-between items-center pt-2 md:pt-2 px-2 md:px-0">
+                      <div className="text-sm md:text-xs text-gray-500">
                         {currentAnswer !== null ? 'תשובה נבחרה' : 'בחר תשובה'}
                       </div>
                       
                       <button
                         onClick={nextQuestion}
                         disabled={currentAnswer === null}
-                        className={`flex items-center space-x-1 px-3 py-1.5 text-xs rounded-lg font-bold transition-all duration-200 ${
+                        className={`flex items-center space-x-2 md:space-x-1 px-4 py-2 md:px-3 md:py-1.5 text-sm md:text-xs rounded-lg font-bold transition-all duration-200 ${
                           currentAnswer !== null
                             ? 'bg-gradient-to-r from-blue-600 to-purple-700 text-white hover:from-blue-700 hover:to-purple-800'
                             : 'bg-gray-300 text-gray-500 cursor-not-allowed'
