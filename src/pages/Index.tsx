@@ -51,8 +51,7 @@ const Index: React.FC = () => {
       transition={{ duration: 0.5 }}
     >
       <Header />
-      
-      {/* Hero Section with parallax */}
+        {/* Hero Section with parallax */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -61,10 +60,12 @@ const Index: React.FC = () => {
         <HeroSection />
       </motion.div>
 
-      {/* Feature Cards - Condensed on mobile */}
-      <AnimatedSection>
-        <FeatureCards />
-      </AnimatedSection>
+      {/* Feature Cards - Condensed on mobile - זוז ישר אחרי ההירו */}
+      <div className="-mt-20 relative z-10">
+        <AnimatedSection>
+          <FeatureCards />
+        </AnimatedSection>
+      </div>
 
       {/* Stats Section - Only show on mobile if space allows */}
       {!isMobile && (

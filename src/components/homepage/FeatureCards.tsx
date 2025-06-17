@@ -73,7 +73,7 @@ const FeatureCards: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <section className="relative pt-8 pb-24 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-200/20 rounded-full blur-3xl transform -translate-y-1/2" />

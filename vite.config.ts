@@ -29,6 +29,6 @@ export default defineConfig(async ({ mode }) => {
       port: 8080,
     },
     // Add project name
-    name: 'TD-academy'
+    name: 'Amiram-Academy'
   };
 });

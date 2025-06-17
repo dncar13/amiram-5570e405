@@ -72,7 +72,7 @@ const Header = () => {
             </div>
             <div className="text-right">
               <h1 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
-                AmirAM Academy
+                Amiram Academy
               </h1>
               <p className="text-sm text-slate-400 font-medium">
                 Your Path to Success

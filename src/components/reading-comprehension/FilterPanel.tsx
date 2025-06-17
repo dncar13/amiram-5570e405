@@ -56,15 +56,14 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   const hasActiveFilters = filters.difficulty !== 'all' || filters.subject !== 'all';
   
-  return (
-    <Card className="shadow-lg border-0 bg-transparent overflow-hidden">
-      <CardHeader className="pb-6">
+  return (    <Card className="shadow-lg border-0 bg-transparent overflow-hidden">
+      <CardHeader className="pb-3 md:pb-6">
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-3 text-2xl">
-            <div className="bg-slate-700/50 backdrop-blur-sm rounded-lg p-2 border border-slate-600/50">
-              <Filter className="h-6 w-6 text-slate-300" />
+          <CardTitle className="flex items-center gap-2 md:gap-3 text-lg md:text-2xl">
+            <div className="bg-slate-700/50 backdrop-blur-sm rounded-lg p-1 md:p-2 border border-slate-600/50">
+              <Filter className="h-4 w-4 md:h-6 md:w-6 text-slate-300" />
             </div>
-            <span className="text-slate-200 font-bold text-2xl">
+            <span className="text-slate-200 font-bold text-lg md:text-2xl">
               סינון מתקדם
             </span>
           </CardTitle>
@@ -73,39 +72,38 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               variant="outline"
               size="sm"
               onClick={resetFilters}
-              className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 border-slate-600 shadow-sm transition-all hover:shadow-md bg-slate-800/50 text-base"
+              className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 border-slate-600 shadow-sm transition-all hover:shadow-md bg-slate-800/50 text-sm md:text-base"
             >
-              <RotateCcw className="h-5 w-5 ml-1" />
-              איפוס
+              <RotateCcw className="h-4 w-4 md:h-5 md:w-5 ml-1" />
+              <span className="hidden md:inline">איפוס</span>
             </Button>
           )}
         </div>
-        <div className="flex items-center gap-2 mt-2">
-          <Sparkles className="h-5 w-5 text-slate-400" />
-          <p className="text-base text-slate-300 font-medium">
+        <div className="flex items-center gap-2 mt-1 md:mt-2">
+          <Sparkles className="h-4 w-4 md:h-5 md:w-5 text-slate-400" />
+          <p className="text-sm md:text-base text-slate-300 font-medium">
             {availableCount > 0 ? (
               <span>
-                נמצאו <span className="font-bold text-slate-200 text-lg">{availableCount}</span> סיפורים מתאימים
+                נמצאו <span className="font-bold text-slate-200 text-base md:text-lg">{availableCount}</span> סיפורים
               </span>
             ) : (
-              'בחר סינון למציאת סיפורים מתאימים'
+              'בחר סינון למציאת סיפורים'
             )}
           </p>
         </div>
       </CardHeader>
-      <CardContent className="space-y-8 p-6">
-        {/* Difficulty Filter */}
-        <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+      <CardContent className="space-y-4 md:space-y-8 p-3 md:p-6">        {/* Difficulty Filter */}
+        <div className="space-y-2 md:space-y-4">
+          <h4 className="text-base md:text-lg font-semibold text-slate-300 mb-2 md:mb-4 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-slate-500 rounded-full"></div>
             רמת קושי
           </h4>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 md:gap-3">
             {difficultyOptions.map((option) => (
               <Badge
                 key={option.value}
                 variant={filters.difficulty === option.value ? "default" : "outline"}
-                className={`cursor-pointer transition-all duration-200 hover:scale-105 transform px-5 py-3 text-base font-medium shadow-sm ${
+                className={`cursor-pointer transition-all duration-200 hover:scale-105 transform px-3 py-2 md:px-5 md:py-3 text-sm md:text-base font-medium shadow-sm ${
                   filters.difficulty === option.value 
                     ? 'bg-gradient-to-r from-slate-600 to-slate-700 text-slate-100 hover:from-slate-500 hover:to-slate-600 shadow-lg border-slate-500' 
                     : `${option.color} hover:bg-slate-600/50 hover:shadow-md`
@@ -119,27 +117,27 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
         </div>
         
         {/* Subject Filter */}
-        <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 bg-slate-500 rounded-full"></div>
+        <div className="space-y-2 md:space-y-4">
+          <h4 className="text-base md:text-lg font-semibold text-slate-300 mb-2 md:mb-4 flex items-center gap-2">
+            <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-slate-500 rounded-full"></div>
             נושא התחום
           </h4>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-3 gap-2 md:gap-3">
             {subjectOptions.map((option) => {
               const IconComponent = option.icon;
               return (
                 <Badge
                   key={option.value}
                   variant={filters.subject === option.value ? "default" : "outline"}
-                  className={`cursor-pointer transition-all duration-200 hover:scale-105 transform p-5 justify-center text-center h-auto flex-col shadow-sm ${
+                  className={`cursor-pointer transition-all duration-200 hover:scale-105 transform p-2 md:p-5 justify-center text-center h-auto flex-col shadow-sm ${
                     filters.subject === option.value 
                       ? 'bg-gradient-to-br from-slate-600 to-slate-700 text-slate-100 hover:from-slate-500 hover:to-slate-600 shadow-lg border-slate-500' 
                       : `${option.color} hover:bg-slate-600/50 hover:shadow-md`
                   }`}
                   onClick={() => handleSubjectChange(option.value)}
                 >
-                  <IconComponent className="h-6 w-6 mb-2" />
-                  <span className="text-sm font-medium">{option.label}</span>
+                  <IconComponent className="h-4 w-4 md:h-6 md:w-6 mb-1 md:mb-2" />
+                  <span className="text-xs md:text-sm font-medium">{option.label}</span>
                 </Badge>
               );
             })}

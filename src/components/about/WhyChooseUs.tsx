@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-3 mb-8 justify-center">
             <Target className="text-blue-600 h-8 w-8" />
-            <h2 className="font-bold text-3xl text-blue-900 text-center">למה לבחור ב-AMIRAM Academy?</h2>
+            <h2 className="font-bold text-3xl text-blue-900 text-center">למה לבחור ב-Amiram Academy?</h2>
           </div>
           
           <div className="text-center mb-8">

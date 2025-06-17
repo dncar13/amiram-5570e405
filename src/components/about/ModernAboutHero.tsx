@@ -31,7 +31,7 @@ const ModernAboutHero = () => {
           
           {/* Description */}
           <p className="text-lg md:text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
-            AMIRAM Academy מעניקה לך תרגול אמיתי למבחן האמירם – 
+            Amiram Academy מעניקה לך תרגול אמיתי למבחן האמירם – 
             עם סימולציות, שאלות והסברים שנכתבו במיוחד בשבילך, 
             כדי שביום המבחן הכל ירגיש מוכר.
           </p>

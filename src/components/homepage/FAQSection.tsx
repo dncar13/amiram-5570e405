@@ -33,6 +33,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState(0);
+  const [showFAQ, setShowFAQ] = useState(false);
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? -1 : index);
@@ -80,53 +81,65 @@ const FAQSection = () => {
       answer: "חד-משמעית כן! אפשר לבחור בסימולציה עם טיימר אמיתי, כך שתתרגלו לנהל את הזמן ולחוות את הלחץ של הבחינה. רוצים לתרגל בלי לחץ? אפשר גם לבחור תרגול חופשי."
     }
   ];
-
   return (
     <section className="py-16 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center mb-4">
             <HelpCircle className="text-blue-600 mr-2" size={24} />
-            <h2 className="text-2xl md:text-3xl font-bold">שאלות נפוצות</h2>
+            <Button
+              onClick={() => setShowFAQ(!showFAQ)}
+              variant="ghost"
+              className="text-2xl md:text-3xl font-bold p-0 h-auto hover:bg-transparent hover:text-blue-600 transition-colors"
+            >
+              שאלות נפוצות
+              <span className="mr-2">
+                {showFAQ ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+              </span>
+            </Button>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            קיבצנו עבורכם את כל מה שחשוב לדעת כדי להתחיל ולנצח במבחן אמיר/אמיר"ם. לא מצאתם תשובה? צרו קשר ונשמח לעזור!
-          </p>
+          {showFAQ && (
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              קיבצנו עבורכם את כל מה שחשוב לדעת כדי להתחיל ולנצח במבחן אמיר/אמיר"ם. לא מצאתם תשובה? צרו קשר ונשמח לעזור!
+            </p>
+          )}
         </div>
 
-        <div className="max-w-3xl mx-auto">
-          {faqs.map((faq, index) => (
-            <FAQItem
-              key={index}
-              question={faq.question}
-              answer={faq.answer}
-              isOpen={openIndex === index}
-              onClick={() => toggleFAQ(index)}
-            />
-          ))}
+        {showFAQ && (
+          <div className="max-w-3xl mx-auto">
+            {faqs.map((faq, index) => (
+              <FAQItem
+                key={index}
+                question={faq.question}
+                answer={faq.answer}
+                isOpen={openIndex === index}
+                onClick={() => toggleFAQ(index)}
+              />
+            ))}
 
-          <div className="bg-blue-50 rounded-lg p-8 mt-10 text-center border border-blue-100">
-            <h3 className="text-lg font-semibold mb-3">מוכנים להתחיל ללמוד?</h3>
-            <p className="text-gray-700 mb-6">
-              הצטרפו למאות תלמידים שכבר מתקדמים איתנו לקראת רישיון החשמלאי – בצורה ממוקדת, גמישה ומעודכנת.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button 
-                asChild
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                <a href="/simulations-entry">להתחלת הלימוד עכשיו</a>
-              </Button>
-              <Button 
-                asChild
-                variant="outline"
-                className="bg-white text-blue-600 border-blue-200 hover:bg-blue-50"
-              >
-                <a href="/contact">לשיחת ייעוץ אישית</a>
-              </Button>
+            <div className="bg-blue-50 rounded-lg p-8 mt-10 text-center border border-blue-100">
+              <h3 className="text-lg font-semibold mb-3">מוכנים להתחיל ללמוד?</h3>
+              <p className="text-gray-700 mb-6">
+                הצטרפו למאות תלמידים שכבר מתקדמים איתנו לקראת רישיון החשמלאי – בצורה ממוקדת, גמישה ומעודכנת.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Button 
+                  asChild
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <a href="/simulations-entry">להתחלת הלימוד עכשיו</a>
+                </Button>
+                <Button 
+                  asChild
+                  variant="outline"
+                  className="bg-white text-blue-600 border-blue-200 hover:bg-blue-50"
+                >
+                  <a href="/contact">לשיחת ייעוץ אישית</a>
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

@@ -114,116 +114,109 @@ const SimulationByType: React.FC = () => {
 
   return (
     <>
-      <Header />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+      <Header />      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-2 md:p-4">
         <div className="max-w-6xl mx-auto">
         
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-4 md:mb-8"
         >
           <button
             onClick={() => navigate('/simulations-entry')}
-            className="flex items-center text-cyan-400 hover:text-cyan-300 mb-6 font-medium transition-colors duration-300"
+            className="flex items-center text-cyan-400 hover:text-cyan-300 mb-3 md:mb-6 font-medium transition-colors duration-300"
           >
             <ArrowRight className="w-5 h-5 ml-2" />
             חזור לדף הכניסה
           </button>
           
-          <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-3xl p-8 mb-8 border border-white/20 backdrop-blur-sm shadow-2xl`}>
-            <div className="flex items-center mb-6">
-              <div className="bg-white bg-opacity-20 rounded-2xl p-4 ml-4 backdrop-blur-sm">
+          <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-3xl p-4 md:p-8 mb-4 md:mb-8 border border-white/20 backdrop-blur-sm shadow-2xl`}>
+            <div className="flex flex-col md:flex-row md:items-center mb-4 md:mb-6">
+              <div className="bg-white bg-opacity-20 rounded-2xl p-3 md:p-4 ml-0 md:ml-4 mb-3 md:mb-0 self-start backdrop-blur-sm">
                 {currentType.icon}
               </div>
-              <div>
-                <h1 className="text-4xl font-bold mb-2">{currentType.title}</h1>
-                <p className="text-white text-opacity-90 text-xl">
+              <div className="text-center md:text-right">
+                <h1 className="text-2xl md:text-4xl font-bold mb-1 md:mb-2">{currentType.title}</h1>
+                <p className="text-white text-opacity-90 text-base md:text-xl">
                   {currentType.description}
                 </p>
-                <p className="text-white text-opacity-80 text-sm mt-3 bg-white/10 rounded-lg px-3 py-1 inline-block">
+                <p className="text-white text-opacity-80 text-xs md:text-sm mt-2 md:mt-3 bg-white/10 rounded-lg px-2 md:px-3 py-1 inline-block">
                   🎯 מצב תרגול - הסברים מיידיים אחרי כל שאלה
                 </p>
               </div>
             </div>
-            <div className="flex items-center text-white text-opacity-90 bg-white bg-opacity-10 rounded-xl p-4 backdrop-blur-sm">
-              <Target className="w-6 h-6 ml-3" />
-              <span className="text-lg font-medium">{currentType.questionCount} שאלות זמינות במערכת</span>
+            <div className="flex items-center text-white text-opacity-90 bg-white bg-opacity-10 rounded-xl p-3 md:p-4 backdrop-blur-sm">
+              <Target className="w-5 h-5 md:w-6 md:h-6 ml-2 md:ml-3" />
+              <span className="text-sm md:text-lg font-medium">{currentType.questionCount} שאלות זמינות במערכת</span>
             </div>
           </div>
-        </motion.div>
-
-        {/* Practice Options Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        </motion.div>        {/* Practice Options Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-8 md:mb-12">
           {/* Quick Practice */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
+            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-4 md:p-8 border border-white/10"
           >
-            <div className="flex items-center mb-6">
-              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-3 ml-4">
-                <Zap className="w-8 h-8 text-white" />
+            <div className="flex items-center mb-4 md:mb-6">
+              <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-2 md:p-3 ml-3 md:ml-4">
+                <Zap className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
+              <h2 className="text-xl md:text-3xl font-bold text-white">תרגול מהיר</h2>
             </div>
-            <p className="text-gray-300 mb-8 text-lg leading-relaxed">
+            <p className="text-gray-300 mb-6 md:mb-8 text-sm md:text-lg leading-relaxed">
               התחל תרגול מיידי עם 10 שאלות מעורבות בנושא זה
             </p>
             
-            <div className="space-y-6">
-              <button
+            <div className="space-y-4 md:space-y-6">              <button
                 onClick={() => handleStartPractice()}
-                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
+                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-3 md:py-5 px-4 md:px-8 rounded-2xl font-bold text-base md:text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
               >
                 <div className="flex items-center justify-center">
-                  <Cpu className="w-6 h-6 ml-3" />
+                  <Cpu className="w-5 h-5 md:w-6 md:h-6 ml-2 md:ml-3" />
                   התחל תרגול (10 שאלות)
                 </div>
               </button>
               
               <div className="text-center">
-                <p className="text-gray-400 mb-4 font-semibold">או בחר רמת קושי ספציפית:</p>
-                <div className="grid grid-cols-3 gap-3">
-                  <button
+                <p className="text-gray-400 mb-3 md:mb-4 font-semibold text-sm md:text-base">או בחר רמת קושי ספציפית:</p>
+                <div className="grid grid-cols-3 gap-2 md:gap-3">                  <button
                     onClick={() => handleStartPractice('easy')}
-                    className="py-4 px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm"
+                    className="py-3 md:py-4 px-2 md:px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm text-sm md:text-base"
                   >
                     קל
                   </button>
                   <button
                     onClick={() => handleStartPractice('medium')}
-                    className="py-4 px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm"
+                    className="py-3 md:py-4 px-2 md:px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm text-sm md:text-base"
                   >
                     בינוני
                   </button>
                   <button
                     onClick={() => handleStartPractice('hard')}
-                    className="py-4 px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm"
+                    className="py-3 md:py-4 px-2 md:px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm text-sm md:text-base"
                   >
                     קשה
                   </button>
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Tips and Strategy */}
+          </motion.div>          {/* Tips and Strategy */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
+            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-4 md:p-8 border border-white/10"
           >
-            <div className="flex items-center mb-6">
-              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-3 ml-4">
-                <Brain className="w-8 h-8 text-white" />
+            <div className="flex items-center mb-4 md:mb-6">
+              <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-2 md:p-3 ml-3 md:ml-4">
+                <Brain className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h2 className="text-3xl font-bold text-white">טיפים לפתרון</h2>
+              <h2 className="text-xl md:text-3xl font-bold text-white">טיפים לפתרון</h2>
             </div>
-            <ul className="space-y-4">
+            <ul className="space-y-3 md:space-y-4">
               {currentType.tips.map((tip, index) => (
                 <motion.li
                   key={index}
@@ -232,39 +225,37 @@ const SimulationByType: React.FC = () => {
                   transition={{ delay: 0.4 + index * 0.1 }}
                   className="flex items-start"
                 >
-                  <div className="w-3 h-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mt-2 ml-4 flex-shrink-0"></div>
-                  <span className="text-gray-300 text-lg leading-relaxed">{tip}</span>
+                  <div className="w-2 h-2 md:w-3 md:h-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full mt-2 ml-3 md:ml-4 flex-shrink-0"></div>
+                  <span className="text-gray-300 text-sm md:text-lg leading-relaxed">{tip}</span>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
-        </div>
-
-        {/* Advanced Features */}
+        </div>        {/* Advanced Features */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
+          className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-4 md:p-8 border border-white/10"
         >
-          <div className="flex items-center mb-8">
-            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-3 ml-4">
-              <Target className="w-8 h-8 text-white" />
+          <div className="flex items-center mb-6 md:mb-8">
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-2 md:p-3 ml-3 md:ml-4">
+              <Target className="w-6 h-6 md:w-8 md:h-8 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-white">מערכת תרגול מתקדמת</h2>
+            <h2 className="text-xl md:text-3xl font-bold text-white">מערכת תרגול מתקדמת</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-blue-400 mb-3">מעקב התקדמות</h3>
-              <p className="text-gray-300 leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-4 md:p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+              <h3 className="text-lg md:text-xl font-bold text-blue-400 mb-2 md:mb-3">מעקב התקדמות</h3>
+              <p className="text-gray-300 leading-relaxed text-sm md:text-base">
                 המערכת שלנו עוקבת אחר ההתקדמות שלך ומספקת משוב מיידי לשיפור הביצועים
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-green-400 mb-3">הסברים מפורטים</h3>
-              <p className="text-gray-300 leading-relaxed">
+            <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-4 md:p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+              <h3 className="text-lg md:text-xl font-bold text-green-400 mb-2 md:mb-3">הסברים מפורטים</h3>
+              <p className="text-gray-300 leading-relaxed text-sm md:text-base">
                 כל שאלה מגיעה עם הסבר מפורט שיעזור לך להבין את התשובה הנכונה
               </p>
             </div>

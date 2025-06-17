@@ -23,7 +23,7 @@ const ModernCTASection = () => {
               ))}
             </div>
             <span className="text-white/90 text-sm font-medium">
-              "בזכות AMIRAM Academy עברתי עם 134!"
+              "בזכות Amiram Academy עברתי עם 134!"
             </span>
           </div>
         </div>

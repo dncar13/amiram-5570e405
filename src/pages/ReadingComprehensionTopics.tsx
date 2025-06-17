@@ -176,16 +176,14 @@ const ReadingComprehensionTopics: React.FC = () => {
             >
               <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
               חזור לדף הכניסה
-            </button>
-
-            <motion.div 
-              className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 rounded-3xl p-8 mb-8 shadow-2xl overflow-hidden"
+            </button>            <motion.div 
+              className="relative bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600 rounded-3xl p-4 md:p-8 mb-4 md:mb-8 shadow-2xl overflow-hidden"
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              {/* Animated background elements */}
-              <div className="absolute inset-0">
+              {/* Animated background elements - רק בדסקטופ */}
+              <div className="absolute inset-0 hidden md:block">
                 <motion.div 
                   className="absolute top-4 right-4 w-32 h-32 bg-white rounded-full opacity-10"
                   animate={{ 
@@ -211,12 +209,11 @@ const ReadingComprehensionTopics: React.FC = () => {
                   transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
                 />
               </div>
-              
-              <div className="relative z-10">
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div className="relative z-10">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-3 md:gap-6">
                   <div className="flex items-center text-center lg:text-right">
                     <motion.div 
-                      className="bg-white bg-opacity-20 rounded-2xl p-4 ml-6 backdrop-blur-sm border border-white/20"
+                      className="bg-white bg-opacity-20 rounded-2xl p-2 md:p-4 ml-3 md:ml-6 backdrop-blur-sm border border-white/20"
                       whileHover={{ scale: 1.05, rotate: 5 }}
                       transition={{ type: "spring", stiffness: 300, damping: 10 }}
                     >
@@ -224,12 +221,12 @@ const ReadingComprehensionTopics: React.FC = () => {
                         animate={{ rotateY: [0, 180, 360] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <Brain className="w-12 h-12" />
+                        <Brain className="w-6 h-6 md:w-12 md:h-12" />
                       </motion.div>
                     </motion.div>
                     <div>
                       <motion.h1 
-                        className="text-4xl lg:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent"
+                        className="text-2xl md:text-4xl lg:text-6xl font-bold mb-2 md:mb-4 bg-gradient-to-r from-white via-cyan-200 to-blue-200 bg-clip-text text-transparent"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3, duration: 0.8 }}
@@ -237,7 +234,7 @@ const ReadingComprehensionTopics: React.FC = () => {
                         הבנת הנקרא
                       </motion.h1>
                       <motion.p 
-                        className="text-white text-opacity-90 text-xl max-w-md leading-relaxed"
+                        className="text-white text-opacity-90 text-sm md:text-xl max-w-md leading-relaxed hidden md:block"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.5, duration: 0.8 }}
@@ -247,9 +244,9 @@ const ReadingComprehensionTopics: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="flex flex-row md:flex-col lg:flex-row gap-2 md:gap-4">
                     <motion.div 
-                      className="flex items-center text-white bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-6 py-4 shadow-2xl border border-white/20"
+                      className="flex items-center text-white bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-3 py-2 md:px-6 md:py-4 shadow-2xl border border-white/20"
                       whileHover={{ scale: 1.05, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 10 }}
                     >
@@ -257,22 +254,22 @@ const ReadingComprehensionTopics: React.FC = () => {
                         animate={{ rotate: [0, 360] }}
                         transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                       >
-                        <Target className="w-6 h-6 ml-2" />
+                        <Target className="w-4 h-4 md:w-6 md:h-6 ml-1 md:ml-2" />
                       </motion.div>
                       <div className="text-right">
                         <motion.div 
-                          className="text-3xl font-bold"
+                          className="text-xl md:text-3xl font-bold"
                           animate={{ scale: [1, 1.1, 1] }}
                           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                         >
                           {stats.filtered}
                         </motion.div>
-                        <div className="text-sm opacity-90">סיפורים זמינים</div>
+                        <div className="text-xs md:text-sm opacity-90">סיפורים</div>
                       </div>
                     </motion.div>
                     
                     <motion.div 
-                      className="flex items-center text-white bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-6 py-4 shadow-2xl border border-white/20"
+                      className="flex items-center text-white bg-white bg-opacity-20 backdrop-blur-sm rounded-xl px-3 py-2 md:px-6 md:py-4 shadow-2xl border border-white/20"
                       whileHover={{ scale: 1.05, y: -2 }}
                       transition={{ type: "spring", stiffness: 300, damping: 10 }}
                     >
@@ -280,49 +277,47 @@ const ReadingComprehensionTopics: React.FC = () => {
                         animate={{ y: [0, -5, 0] }}
                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                       >
-                        <Rocket className="w-6 h-6 ml-2" />
+                        <Rocket className="w-4 h-4 md:w-6 md:h-6 ml-1 md:ml-2" />
                       </motion.div>
                       <div className="text-right">
                         <motion.div 
-                          className="text-3xl font-bold"
+                          className="text-xl md:text-3xl font-bold"
                           animate={{ scale: [1, 1.1, 1] }}
                           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
                         >
                           {stats.percentage}%
                         </motion.div>
-                        <div className="text-sm opacity-90">מהמאגר</div>
+                        <div className="text-xs md:text-sm opacity-90">מהמאגר</div>
                       </div>
                     </motion.div>
                   </div>
                 </div>
               </div>
             </motion.div>
-          </motion.div>
-
-          {/* Filter Panel */}
+          </motion.div>          {/* Filter Panel */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             {isLoading ? (
-              <div className="mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 animate-pulse border border-slate-600/50">
-                <div className="h-6 bg-slate-600 rounded w-1/4 mb-4"></div>
-                <div className="space-y-4">
-                  <div className="flex gap-2">
+              <div className="mb-4 md:mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-3 md:p-6 animate-pulse border border-slate-600/50">
+                <div className="h-4 md:h-6 bg-slate-600 rounded w-1/4 mb-2 md:mb-4"></div>
+                <div className="space-y-2 md:space-y-4">
+                  <div className="flex gap-1 md:gap-2">
                     {[1, 2, 3, 4].map(i => (
-                      <div key={i} className="h-8 bg-slate-600 rounded w-20"></div>
+                      <div key={i} className="h-6 md:h-8 bg-slate-600 rounded w-16 md:w-20"></div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-1 md:gap-2">
                     {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
-                      <div key={i} className="h-16 bg-slate-600 rounded"></div>
+                      <div key={i} className="h-12 md:h-16 bg-slate-600 rounded"></div>
                     ))}
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-6 border border-slate-600/50">
+              <div className="mb-4 md:mb-8 bg-gradient-to-r from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl p-3 md:p-6 border border-slate-600/50">
                 <FilterPanel 
                   filters={filters}
                   onFiltersChange={handleFiltersChange}
