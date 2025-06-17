@@ -1,9 +1,8 @@
-
 import React, { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { History, Calendar, Check, X, SkipForward, Clock, Trophy } from "lucide-react";
+import { History, Calendar, Check, X, SkipForward, Clock, Trophy, Award } from "lucide-react";
 import { useActivityHistory } from "@/hooks/useActivityHistory";
 import { useAuth } from "@/context/AuthContext";
 import { topicsData } from "@/data/topics/topicsData";
@@ -75,6 +74,9 @@ const HistoryTab = () => {
     .slice(-3)
     .map(topic => topic.title);
 
+  // Filter full exam results
+  const fullExamResults = history.filter(activity => activity.questionId === 'full-exam');
+
   return (
     <Card>
       <CardHeader>
@@ -87,6 +89,42 @@ const HistoryTab = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Full Exam Results Section */}
+        {fullExamResults.length > 0 && (
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Award className="h-5 w-5 text-blue-600" />
+              תוצאות מבחנים מלאים
+            </h3>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {fullExamResults.map((exam, index) => (
+                <div key={index} className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="font-medium text-blue-900">מבחן מלא</h4>
+                    <span className={`text-lg font-bold ${exam.score && exam.score >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+                      {exam.score}%
+                    </span>
+                  </div>
+                  <div className="space-y-1 text-sm text-blue-700">
+                    <p>תשובות נכונות: {exam.correctAnswers}/{exam.totalAnswered}</p>
+                    <p>זמן מענה: {exam.time} דקות</p>
+                    <p className="text-xs text-blue-600">{exam.date}</p>
+                  </div>
+                  {exam.score && (
+                    <div className="mt-2">
+                      <Progress 
+                        value={exam.score} 
+                        className="h-2" 
+                        indicatorClassName={exam.score >= 60 ? 'bg-green-600' : 'bg-red-600'} 
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="space-y-6 mb-8">
           {topicProgress.map((topic) => (
             <div key={topic.id} className="bg-gray-50 p-4 rounded-lg border">
@@ -175,6 +213,7 @@ const HistoryTab = () => {
                 <TableHead>שאלה</TableHead>
                 <TableHead>סטטוס תשובה</TableHead>
                 <TableHead>זמן מענה</TableHead>
+                <TableHead>ציון</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -184,18 +223,36 @@ const HistoryTab = () => {
                 <TableRow key={index}>
                   <TableCell>{activity.date}</TableCell>
                   <TableCell>{activity.topic}</TableCell>
-                  <TableCell>שאלה {activity.questionId}</TableCell>
+                  <TableCell>
+                    {activity.questionId === 'full-exam' ? 'מבחן מלא (80 שאלות)' : `שאלה ${activity.questionId}`}
+                  </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      {activity.status === 'correct' && <Check className="h-4 w-4 text-green-500" />}
-                      {activity.status === 'wrong' && <X className="h-4 w-4 text-red-500" />}
-                      {activity.status === 'skipped' && <SkipForward className="h-4 w-4 text-gray-500" />}
-                      {activity.status === 'correct' ? 'נכון ✓' : 
-                       activity.status === 'wrong' ? 'שגוי ✘' : 
-                       'דילוג ⏭️'}
+                      {activity.questionId === 'full-exam' ? (
+                        <>
+                          <Trophy className="h-4 w-4 text-blue-500" />
+                          <span>מבחן הושלם</span>
+                        </>
+                      ) : (
+                        <>
+                          {activity.status === 'correct' && <Check className="h-4 w-4 text-green-500" />}
+                          {activity.status === 'wrong' && <X className="h-4 w-4 text-red-500" />}
+                          {activity.status === 'skipped' && <SkipForward className="h-4 w-4 text-gray-500" />}
+                          {activity.status === 'correct' ? 'נכון ✓' : 
+                           activity.status === 'wrong' ? 'שגוי ✘' : 
+                           'דילוג ⏭️'}
+                        </>
+                      )}
                     </div>
                   </TableCell>
                   <TableCell>{activity.time} דקות</TableCell>
+                  <TableCell>
+                    {activity.score !== undefined ? (
+                      <span className={`font-medium ${activity.score >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+                        {activity.score}%
+                      </span>
+                    ) : '-'}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

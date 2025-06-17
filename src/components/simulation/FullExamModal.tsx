@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
 import { Question } from '@/data/types/questionTypes';
 import { getAllQuestions } from '@/services/questionsService';
 import { useToast } from '@/hooks/use-toast';
+import { saveActivity } from '@/hooks/useActivityHistory';
 
 interface FullExamModalProps {
   isOpen: boolean;
@@ -172,7 +172,7 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
     }
   };
 
-  // Finish exam
+  // Finish exam - Updated to save to history
   const finishExam = () => {
     setExamState(prev => ({
       ...prev,
@@ -187,25 +187,47 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
       return count;
     }, 0);
 
+    const answeredQuestions = examState.selectedAnswers.filter(answer => answer !== null).length;
     const score = Math.round((correctAnswers / examState.questions.length) * 100);
+    const timeSpentMinutes = Math.round((EXAM_DURATION - examState.timeRemaining) / 60);
 
-    // Save to history (you can implement this later)
+    // Save to activity history
     const examResult = {
-      date: new Date(),
+      date: new Date().toLocaleDateString('he-IL', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      topic: 'מבחן מלא - אמיר"ם',
+      questionId: 'full-exam',
+      status: score >= 60 ? 'correct' : 'wrong' as 'correct' | 'wrong',
+      time: timeSpentMinutes.toString(),
       score,
-      totalQuestions: examState.questions.length,
       correctAnswers,
-      timeSpent: EXAM_DURATION - examState.timeRemaining,
-      type: 'full-exam'
+      totalAnswered: answeredQuestions,
+      isCompleted: true
     };
 
-    console.log('[FullExam] Exam completed:', examResult);
-
-    toast({
-      title: "המבחן הושלם!",
-      description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length})`,
-      variant: "default"
-    });
+    // Save the activity
+    const saved = saveActivity(examResult);
+    
+    if (saved) {
+      console.log('[FullExam] Exam results saved to history:', examResult);
+      toast({
+        title: "המבחן הושלם ונשמר!",
+        description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) נשמר בהיסטוריה`,
+        variant: "default"
+      });
+    } else {
+      console.error('[FullExam] Failed to save exam results');
+      toast({
+        title: "המבחן הושלם!",
+        description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) - שגיאה בשמירה`,
+        variant: "destructive"
+      });
+    }
   };
 
   // Handle modal close with warning
@@ -299,7 +321,7 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
                       <p>• כל שאלה מוצגת פעם אחת בלבד</p>
                       <p>• לא ניתן לדלג או לחזור לשאלה קודמת</p>
                       <p>• אין הסברים תוך כדי המבחן</p>
-                      <p>• המבחן מתקדם אוטומטית לשאלה הבאה</p>
+                      <p>• המבחן מתקדם אוטומatically לשאלה הבאה</p>
                       <p className="font-bold text-red-600">• לא ניתן לעצור את המבחן לאחר התחלה!</p>
                     </div>
                   </div>
