@@ -69,16 +69,15 @@ const HeroSection: React.FC = () => {
     damping: 30,
     restDelta: 0.001
   });
-  
-  // Limited opacity fade - never goes below 0.3 (30%)
-  const opacity = useSpring(useTransform(scrollY, [0, 400], [1, 0.3]), {
+    // Limited opacity fade - never goes below 0.7 (70%) on mobile, 0.3 on desktop
+  const opacity = useSpring(useTransform(scrollY, [0, 600], [1, typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 0.3]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
   });
 
-  // Limited scale - never goes below 0.98
-  const scale = useSpring(useTransform(scrollY, [0, 400], [1, 0.98]), {
+  // Limited scale - never goes below 0.99 on mobile, 0.98 on desktop
+  const scale = useSpring(useTransform(scrollY, [0, 600], [1, typeof window !== 'undefined' && window.innerWidth < 768 ? 0.99 : 0.98]), {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001
@@ -97,20 +96,19 @@ const HeroSection: React.FC = () => {
   ];
 
   return (
-    <section ref={containerRef} className="relative bg-black text-white min-h-screen flex items-center overflow-hidden">
+    <section ref={containerRef} className="relative bg-black text-white min-h-screen md:min-h-screen flex items-center overflow-hidden">
       {/* Advanced gradient background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-blue-950/90 to-purple-950/80" />
-        
-        {/* Animated mesh gradient */}
-        <svg className="absolute inset-0 w-full h-full opacity-30" preserveAspectRatio="none">
+          {/* Animated mesh gradient - Mobile optimized */}
+        <svg className="absolute inset-0 w-full h-full opacity-20 md:opacity-30" preserveAspectRatio="none">
           <defs>
             <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.2">
-                <animate attributeName="stop-color" values="#3b82f6;#8b5cf6;#3b82f6" dur="10s" repeatCount="indefinite" />
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity={typeof window !== 'undefined' && window.innerWidth < 768 ? "0.15" : "0.2"}>
+                <animate attributeName="stop-color" values="#3b82f6;#8b5cf6;#3b82f6" dur={typeof window !== 'undefined' && window.innerWidth < 768 ? "12s" : "10s"} repeatCount="indefinite" />
               </stop>
-              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.2">
-                <animate attributeName="stop-color" values="#8b5cf6;#3b82f6;#8b5cf6" dur="10s" repeatCount="indefinite" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity={typeof window !== 'undefined' && window.innerWidth < 768 ? "0.15" : "0.2"}>
+                <animate attributeName="stop-color" values="#8b5cf6;#3b82f6;#8b5cf6" dur={typeof window !== 'undefined' && window.innerWidth < 768 ? "12s" : "10s"} repeatCount="indefinite" />
               </stop>
             </linearGradient>
           </defs>
@@ -121,71 +119,74 @@ const HeroSection: React.FC = () => {
         <div className="absolute inset-0 opacity-[0.015]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`
         }} />
-      </div>
-
-      {/* Floating 3D cards in background */}
+      </div>      {/* Floating 3D cards in background - Mobile optimized */}
       <div className="absolute inset-0 overflow-hidden">
         {floatingCards.map((card, index) => (
           <motion.div
             key={index}
-            className="absolute w-24 h-32 md:w-32 md:h-40"
+            className="absolute w-16 h-20 md:w-32 md:h-40"
             initial={{ 
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
+              x: typeof window !== 'undefined' && window.innerWidth < 768 
+                ? Math.random() * window.innerWidth * 0.8 
+                : Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
               y: (typeof window !== 'undefined' ? window.innerHeight : 600) + 100,
               rotateX: 0,
               rotateY: 0,
-              rotateZ: 0
+              rotateZ: 0,
+              opacity: typeof window !== 'undefined' && window.innerWidth < 768 ? 0.6 : 1
             }}
             animate={{
               y: -200,
-              rotateX: 360,
-              rotateY: 360,
-              rotateZ: 180
+              rotateX: typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 360,
+              rotateY: typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 360,
+              rotateZ: typeof window !== 'undefined' && window.innerWidth < 768 ? 90 : 180
             }}
             transition={{
-              duration: 20,
+              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
               delay: card.delay,
               repeat: Infinity,
               ease: "linear"
             }}
             style={{ 
-              left: `${20 + index * 20}%`,
+              left: typeof window !== 'undefined' && window.innerWidth < 768 
+                ? `${10 + index * 15}%` 
+                : `${20 + index * 20}%`,
               y: y3
             }}
           >
-            <div className={`w-full h-full bg-gradient-to-br ${card.color} rounded-2xl shadow-2xl backdrop-blur-sm bg-opacity-20 flex items-center justify-center text-white/50`}>
-              {card.icon}
+            <div className={`w-full h-full bg-gradient-to-br ${card.color} rounded-xl md:rounded-2xl shadow-xl md:shadow-2xl backdrop-blur-sm bg-opacity-30 md:bg-opacity-20 flex items-center justify-center text-white/60 md:text-white/50`}>
+              <div className="scale-75 md:scale-100">
+                {card.icon}
+              </div>
             </div>
           </motion.div>
         ))}
-      </div>
-
-      {/* Premium animated gradient orbs */}
+      </div>      {/* Premium animated gradient orbs - Mobile optimized */}
       <motion.div 
-        className="absolute top-1/4 right-1/4 w-[600px] h-[600px]"
+        className="absolute top-1/4 right-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
         style={{ y: y1 }}
       >
         <div className="relative w-full h-full">
           <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-transparent rounded-full blur-3xl"
+            className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-transparent md:from-blue-500/30 md:via-purple-500/20 rounded-full blur-2xl md:blur-3xl"
             animate={{
-              scale: [1, 1.3, 1],
+              scale: [1, 1.2, 1],
               rotate: [0, 180, 360],
             }}
             transition={{
-              duration: 20,
+              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
               repeat: Infinity,
               ease: "linear"
             }}
           />
           <motion.div
-            className="absolute inset-10 bg-gradient-to-br from-purple-600/20 via-pink-500/10 to-transparent rounded-full blur-2xl"
+            className="absolute inset-5 md:inset-10 bg-gradient-to-br from-purple-600/15 via-pink-500/8 to-transparent md:from-purple-600/20 md:via-pink-500/10 rounded-full blur-xl md:blur-2xl"
             animate={{
-              scale: [1.2, 1, 1.2],
+              scale: [1.1, 1, 1.1],
               rotate: [360, 180, 0],
             }}
             transition={{
-              duration: 15,
+              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 15,
               repeat: Infinity,
               ease: "linear"
             }}
@@ -194,17 +195,17 @@ const HeroSection: React.FC = () => {
       </motion.div>
       
       <motion.div 
-        className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px]"
+        className="absolute bottom-1/4 left-1/4 w-[250px] h-[250px] md:w-[500px] md:h-[500px]"
         style={{ y: y2 }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-red-500/10 to-transparent rounded-full blur-3xl"
+          className="absolute inset-0 bg-gradient-to-br from-orange-500/15 via-red-500/8 to-transparent md:from-orange-500/20 md:via-red-500/10 rounded-full blur-2xl md:blur-3xl"
           animate={{
-            scale: [1, 1.4, 1],
+            scale: [1, 1.3, 1],
             rotate: [0, -180, -360],
           }}
           transition={{
-            duration: 25,
+            duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 25,
             repeat: Infinity,
             ease: "linear"
           }}
@@ -455,7 +456,7 @@ const HeroSection: React.FC = () => {
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
               {[
                 { 
                   value: studentsCount.count, 
@@ -505,9 +506,8 @@ const HeroSection: React.FC = () => {
                     transition: { type: "spring", stiffness: 400 }
                   }}
                   style={{ transformStyle: "preserve-3d" }}
-                >
-                  <motion.div 
-                    className="bg-white/5 backdrop-blur-3xl rounded-3xl p-8 border border-white/10 text-center overflow-hidden relative"
+                >                  <motion.div 
+                    className="bg-white/5 backdrop-blur-3xl rounded-2xl md:rounded-3xl p-4 md:p-8 border border-white/10 text-center overflow-hidden relative"
                     whileHover={{ 
                       borderColor: "rgba(255,255,255,0.3)",
                       backgroundColor: "rgba(255,255,255,0.08)"
@@ -525,28 +525,29 @@ const HeroSection: React.FC = () => {
                         ease: "easeInOut"
                       }}
                     />
-                    
-                    {/* Icon with animation */}
+                      {/* Icon with animation */}
                     <motion.div 
-                      className={`w-12 h-12 mx-auto mb-4 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center text-white relative z-10`}
+                      className={`w-8 h-8 md:w-12 md:h-12 mx-auto mb-2 md:mb-4 bg-gradient-to-br ${stat.color} rounded-xl md:rounded-2xl flex items-center justify-center text-white relative z-10`}
                       whileHover={{ 
                         rotate: 360,
                         scale: 1.1
                       }}
                       transition={{ duration: 0.5 }}
                     >
-                      {stat.icon}
+                      <div className="w-4 h-4 md:w-6 md:h-6">
+                        {stat.icon}
+                      </div>
                     </motion.div>
                     
                     {/* Animated number */}
                     <motion.div 
-                      className={`text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
+                      className={`text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-3 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent relative z-10`}
                       ref={stat.ref}
                     >
                       {stat.value}
                     </motion.div>
                     
-                    <div className="text-sm text-gray-300 font-medium relative z-10">
+                    <div className="text-xs md:text-sm text-gray-300 font-medium relative z-10">
                       {stat.label}
                     </div>
                     
@@ -561,20 +562,19 @@ const HeroSection: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-            
-            {/* Central floating element */}
+              {/* Central floating element - Mobile optimized */}
             <motion.div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-40 md:h-40"
               animate={{
                 rotate: 360,
               }}
               transition={{
-                duration: 20,
+                duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
                 repeat: Infinity,
                 ease: "linear"
               }}
             >
-              <div className="w-full h-full bg-gradient-to-br from-orange-500/20 to-purple-500/20 rounded-full blur-2xl" />
+              <div className="w-full h-full bg-gradient-to-br from-orange-500/15 to-purple-500/15 md:from-orange-500/20 md:to-purple-500/20 rounded-full blur-xl md:blur-2xl" />
             </motion.div>
           </motion.div>
         </div>

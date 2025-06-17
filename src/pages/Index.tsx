@@ -17,14 +17,26 @@ import { SkeletonPage } from '@/components/ui/skeleton-loader';
 
 const Index: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     // Simulate loading
     const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   // Loading state with skeleton
@@ -49,28 +61,30 @@ const Index: React.FC = () => {
         <HeroSection />
       </motion.div>
 
-      {/* Feature Cards - New Apple-style component */}
+      {/* Feature Cards - Condensed on mobile */}
       <AnimatedSection>
         <FeatureCards />
       </AnimatedSection>
 
-      {/* Stats Section */}
-      <AnimatedSection delay={0.2}>
-        <StatsSection />
-      </AnimatedSection>
+      {/* Stats Section - Only show on mobile if space allows */}
+      {!isMobile && (
+        <AnimatedSection delay={0.2}>
+          <StatsSection />
+        </AnimatedSection>
+      )}
 
-      {/* Testimonials */}
-      <AnimatedSection delay={0.3}>
+      {/* Testimonials - Simplified on mobile */}
+      <AnimatedSection delay={isMobile ? 0.2 : 0.3}>
         <TestimonialsSection />
       </AnimatedSection>
 
-      {/* FAQ Section */}
-      <AnimatedSection delay={0.4}>
+      {/* FAQ Section - Condensed on mobile */}
+      <AnimatedSection delay={isMobile ? 0.3 : 0.4}>
         <FAQSection />
       </AnimatedSection>
 
       {/* CTA Section */}
-      <AnimatedSection delay={0.5}>
+      <AnimatedSection delay={isMobile ? 0.4 : 0.5}>
         <CTASection />
       </AnimatedSection>
 
