@@ -1,3 +1,4 @@
+
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
@@ -113,9 +114,34 @@ export const getReadingComprehensionQuestions = (): Question[] => {
   return filtered;
 };
 
-// Add missing function for useSavedQuestions hook
-export const refreshQuestionsFromStorage = (): void => {
+// Add missing functions that are imported in other files
+export const getEasyQuestions = (): Question[] => {
+  return getMixedDifficultyQuestions('easy');
+};
+
+export const getMediumQuestions = (): Question[] => {
+  return getMixedDifficultyQuestions('medium');
+};
+
+export const getHardQuestions = (): Question[] => {
+  return getMixedDifficultyQuestions('hard');
+};
+
+export const refreshQuestionsFromStorage = (): Question[] => {
   console.log('[refreshQuestionsFromStorage] Refreshing questions from storage');
-  // This function refreshes the questions cache if needed
-  // For now, it's a placeholder since questions are loaded statically
+  // Return the current questions array
+  return allQuestions;
+};
+
+// Add missing simulation-related functions
+export const getSimulationProgress = (simulationId: string | number) => {
+  const progressKey = `simulation_progress_${simulationId}`;
+  const savedProgress = sessionStorage.getItem(progressKey);
+  return savedProgress ? JSON.parse(savedProgress) : null;
+};
+
+export const resetSimulation = (simulationId: string | number) => {
+  const progressKey = `simulation_progress_${simulationId}`;
+  sessionStorage.removeItem(progressKey);
+  console.log(`Reset simulation progress for ${simulationId}`);
 };

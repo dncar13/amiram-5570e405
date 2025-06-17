@@ -20,6 +20,9 @@ export interface Question {
   lineNumbers?: boolean;
   passageWithLines?: PassageLine[];
   tips?: string;
+  setNumber?: number; // Add setNumber property
+  passage?: string; // Add passage property
+  story?: string; // Add story property
   
   // Additional optional metadata
   tags?: string[];
