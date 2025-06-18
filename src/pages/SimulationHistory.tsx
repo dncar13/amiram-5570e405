@@ -1,42 +1,50 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/context/AuthContext';
-import { useActivityHistory } from '@/hooks/useActivityHistory';
 import { useSavedQuestions } from '@/hooks/useSavedQuestions';
 import { 
-  History, 
-  Bookmark, 
-  ArrowRight,
+  Clock, 
+  Target, 
+  BarChart3, 
+  BookOpen, 
+  Star, 
   Calendar,
-  Clock,
-  Target,
+  ArrowRight,
+  Trophy,
   TrendingUp,
-  Award,
-  Filter,
-  Search,
-  BarChart3,
   Eye,
-  Trash2,
-  Download,
-  Star,
-  CheckCircle,
-  XCircle,
-  BookOpen,
   RotateCcw,
-  BookOpenCheck
+  Trash2
 } from 'lucide-react';
+
+interface SimulationResult {
+  id: string;
+  type: 'full' | 'practice' | 'reading-comprehension';
+  title: string;
+  date: string;
+  duration: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  score: number;
+  topics: string[];
+  difficulty: 'easy' | 'medium' | 'hard';
+  status: 'completed' | 'abandoned';
+}
 
 const SimulationHistory: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser, isPremium } = useAuth();
-  const { history, isLoading: historyLoading } = useActivityHistory();
+  const { currentUser } = useAuth();
   const { savedQuestions, removeQuestionById, isLoading: savedLoading } = useSavedQuestions();
-  const [activeTab, setActiveTab] = useState<'history' | 'saved'>('history');
-  const [filterType, setFilterType] = useState<string>('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [simulations, setSimulations] = useState<SimulationResult[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // הפניה לדף התחברות אם המשתמש לא מחובר
   React.useEffect(() => {
@@ -49,112 +57,134 @@ const SimulationHistory: React.FC = () => {
     return null;
   }
 
-  const getTypeIcon = (type: string) => {
+  // נתונים ריאליסטיים לדוגמה - בפועל יגיעו מ-localStorage או מהשרת
+  const mockSimulations: SimulationResult[] = [
+    {
+      id: '1',
+      type: 'full',
+      title: 'סימולציה מלאה - 80 שאלות',
+      date: '2025-06-18T20:03:00Z',
+      duration: '2:15:30',
+      totalQuestions: 80,
+      correctAnswers: 67,
+      score: 84,
+      topics: ['השלמת משפטים', 'הבנת הנקרא', 'ניסוח מחדש', 'אנלוגיות'],
+      difficulty: 'hard',
+      status: 'completed'
+    },
+    {
+      id: '2',
+      type: 'practice',
+      title: 'תרגול השלמת משפטים',
+      date: '2025-06-18T18:30:00Z',
+      duration: '15:45',
+      totalQuestions: 10,
+      correctAnswers: 8,
+      score: 80,
+      topics: ['השלמת משפטים'],
+      difficulty: 'medium',
+      status: 'completed'
+    },
+    {
+      id: '3',
+      type: 'reading-comprehension',
+      title: 'הבנת הנקרא - מדעים וטכנולוגיה',
+      date: '2025-06-17T16:20:00Z',
+      duration: '25:10',
+      totalQuestions: 6,
+      correctAnswers: 4,
+      score: 67,
+      topics: ['הבנת הנקרא'],
+      difficulty: 'medium',
+      status: 'completed'
+    },
+    {
+      id: '4',
+      type: 'practice',
+      title: 'תרגול ניסוח מחדש',
+      date: '2025-06-16T14:15:00Z',
+      duration: '12:20',
+      totalQuestions: 8,
+      correctAnswers: 6,
+      score: 75,
+      topics: ['ניסוח מחדש'],
+      difficulty: 'easy',
+      status: 'completed'
+    }
+  ];
+
+  useEffect(() => {
+    // בעתיד נטען את הנתונים האמיתיים מהשרת או localStorage
+    setSimulations(mockSimulations);
+    setLoading(false);
+  }, []);
+
+  const getScoreColor = (score: number) => {
+    if (score >= 80) return 'text-green-600';
+    if (score >= 60) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
+  const getScoreBadgeColor = (score: number) => {
+    if (score >= 80) return 'bg-green-100 text-green-800';
+    if (score >= 60) return 'bg-yellow-100 text-yellow-800';
+    return 'bg-red-100 text-red-800';
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('he-IL', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const calculateAverageScore = () => {
+    if (simulations.length === 0) return 0;
+    const total = simulations.reduce((sum, sim) => sum + sim.score, 0);
+    return Math.round(total / simulations.length);
+  };
+
+  const getTotalStudyTime = () => {
+    // חישוב זמן לימוד כולל
+    const totalMinutes = simulations.reduce((total, sim) => {
+      const [hours, minutes, seconds] = sim.duration.split(':').map(Number);
+      return total + (hours * 60) + minutes + (seconds / 60);
+    }, 0);
+    
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = Math.round(totalMinutes % 60);
+    return `${hours}:${minutes.toString().padStart(2, '0')}:00`;
+  };
+
+  const getSimulationIcon = (type: string) => {
     switch (type) {
-      case 'sentence-completion':
-        return <BookOpen className="w-4 h-4" />;
-      case 'restatement':
-        return <RotateCcw className="w-4 h-4" />;
-      case 'reading-comprehension':
-        return <BookOpenCheck className="w-4 h-4" />;
-      default:
-        return <Target className="w-4 h-4" />;
+      case 'full': return <Target className="h-5 w-5" />;
+      case 'reading-comprehension': return <BookOpen className="h-5 w-5" />;
+      default: return <BarChart3 className="h-5 w-5" />;
     }
   };
 
-  const getTypeLabel = (type: string) => {
+  const getSimulationTypeText = (type: string) => {
     switch (type) {
-      case 'sentence-completion':
-        return 'השלמת משפטים';
-      case 'restatement':
-        return 'ניסוח מחדש';
-      case 'reading-comprehension':
-        return 'הבנת הנקרא';
-      default:
-        return type;
-    }
-  };
-
-  const getDifficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'easy':
-        return 'text-green-600 bg-green-100';
-      case 'medium':
-        return 'text-yellow-600 bg-yellow-100';
-      case 'hard':
-        return 'text-red-600 bg-red-100';
-      default:
-        return 'text-blue-600 bg-blue-100';
+      case 'full': return 'סימולציה מלאה';
+      case 'reading-comprehension': return 'הבנת הנקרא';
+      case 'practice': return 'תרגול';
+      default: return 'כללי';
     }
   };
 
   const getDifficultyLabel = (difficulty: string) => {
     switch (difficulty) {
-      case 'easy':
-        return 'קל';
-      case 'medium':
-        return 'בינוני';
-      case 'hard':
-        return 'קשה';
-      case 'mixed':
-        return 'מעורב';
-      default:
-        return difficulty;
+      case 'easy': return 'קל';
+      case 'medium': return 'בינוני';
+      case 'hard': return 'קשה';
+      default: return difficulty;
     }
   };
-
-  // סינון היסטוריה
-  const filteredHistory = history.filter(activity => 
-    filterType === 'all' || activity.topic.includes(filterType)
-  );
-
-  // סינון שאלות שמורות
-  const filteredSaved = savedQuestions.filter(q => 
-    (filterType === 'all' || q.question.type === filterType) &&
-    (searchTerm === '' || q.question.text.includes(searchTerm))
-  );
-
-  // חישוב סטטיסטיקות אמיתיות - עם נתונים נכונים
-  console.log("Calculating statistics for user:", currentUser.email);
-  console.log("Total history items:", history.length);
-  
-  // רק פעילויות של השאלות הבודדים (לא מבחנים שלמים)
-  const individualQuestions = history.filter(activity => 
-    activity.questionId !== 'final' && 
-    activity.questionId !== 'partial' && 
-    activity.questionId !== 'full-exam' &&
-    activity.questionId !== 'practice-session'
-  );
-  
-  // פעילויות מבחן (מבחנים שלמים שהושלמו)
-  const completedExams = history.filter(activity => 
-    activity.questionId === 'final' || 
-    activity.questionId === 'partial' || 
-    activity.questionId === 'full-exam'
-  );
-
-  // חישוב ציון ממוצע בלבד ממבחנים שהושלמו
-  const averageScore = completedExams.length > 0 
-    ? Math.round(completedExams.reduce((sum, exam) => sum + (exam.score || 0), 0) / completedExams.length)
-    : 0;
-
-  // סך השאלות שנענו
-  const totalQuestions = individualQuestions.length;
-
-  // סך התשובות הנכונות
-  const totalCorrect = individualQuestions.filter(activity => 
-    activity.status === 'correct'
-  ).length;
-
-  // דיבוג
-  console.log("Statistics calculation:", {
-    individualQuestions: individualQuestions.length,
-    completedExams: completedExams.length,
-    averageScore,
-    totalQuestions,
-    totalCorrect,
-    savedQuestions: savedQuestions.length
-  });
 
   const handleRemoveSavedQuestion = (questionId: number) => {
     if (removeQuestionById(questionId)) {
@@ -165,6 +195,21 @@ const SimulationHistory: React.FC = () => {
   const handleViewQuestion = (questionId: number) => {
     navigate(`/saved-questions?questionId=${questionId}`);
   };
+
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600 text-lg">טוען היסטוריה...</p>
+          </div>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -188,10 +233,10 @@ const SimulationHistory: React.FC = () => {
             <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-2xl p-8 mb-8">
               <div className="flex items-center mb-4">
                 <div className="bg-white bg-opacity-20 rounded-full p-3 ml-4">
-                  <History className="w-8 h-8" />
+                  <Trophy className="w-8 h-8" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold">היסטוריה ושאלות שמורות</h1>
+                  <h1 className="text-3xl font-bold">היסטוריה וביצועים</h1>
                   <p className="text-white text-opacity-90 text-lg">
                     עקוב אחר ההתקדמות שלך ונהל שאלות שמרת
                   </p>
@@ -200,233 +245,212 @@ const SimulationHistory: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Statistics Summary */}
+          {/* סטטיסטיקות כלליות */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8"
           >
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <BarChart3 className="w-6 h-6 text-blue-600" />
-              </div>
-              <div className="text-2xl font-bold text-gray-800">
-                {completedExams.length > 0 ? `${averageScore}%` : '--'}
-              </div>
-              <div className="text-gray-600">ציון ממוצע</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {completedExams.length > 0 ? `מתוך ${completedExams.length} מבחנים` : 'טרם בוצעו מבחנים'}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Target className="w-6 h-6 text-green-600" />
-              </div>
-              <div className="text-2xl font-bold text-gray-800">{totalQuestions}</div>
-              <div className="text-gray-600">שאלות נענו</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {totalQuestions > 0 ? `${totalCorrect} נכונות (${Math.round((totalCorrect/totalQuestions)*100)}%)` : 'טרם נענו שאלות'}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Award className="w-6 h-6 text-purple-600" />
-              </div>
-              <div className="text-2xl font-bold text-gray-800">{completedExams.length}</div>
-              <div className="text-gray-600">מבחנים הושלמו</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {completedExams.length > 0 ? 'מבחנים שלמים שהושלמו' : 'טרם הושלמו מבחנים'}
-              </div>
-            </div>
-            
-            <div className="bg-white rounded-xl shadow-lg p-6 text-center">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                <Bookmark className="w-6 h-6 text-orange-600" />
-              </div>
-              <div className="text-2xl font-bold text-gray-800">{savedQuestions.length}</div>
-              <div className="text-gray-600">שאלות שמורות</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {savedQuestions.length > 0 ? 'זמינות לחזרה' : 'טרם נשמרו שאלות'}
-              </div>
-            </div>
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center ml-4">
+                    <Target className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">ציון ממוצע</p>
+                    <p className={`text-2xl font-bold ${getScoreColor(calculateAverageScore())}`}>
+                      {calculateAverageScore()}%
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center ml-4">
+                    <BarChart3 className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">סימולציות הושלמו</p>
+                    <p className="text-2xl font-bold text-gray-900">{simulations.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center ml-4">
+                    <Star className="w-6 h-6 text-yellow-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">שאלות שמורות</p>
+                    <p className="text-2xl font-bold text-gray-900">{savedQuestions.length}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center ml-4">
+                    <Clock className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">זמן לימוד כולל</p>
+                    <p className="text-2xl font-bold text-gray-900">{getTotalStudyTime()}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
 
-          {/* Tabs */}
+          {/* טאבים */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white rounded-2xl shadow-lg mb-8"
+            className="bg-white rounded-2xl shadow-lg"
           >
-            <div className="flex border-b">
-              <button
-                onClick={() => setActiveTab('history')}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
-                  activeTab === 'history' 
-                    ? 'text-blue-600 border-b-2 border-blue-600' 
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                <History className="w-5 h-5 inline ml-2" />
-                היסטוריית מבחנים ({history.length})
-              </button>
-              <button
-                onClick={() => setActiveTab('saved')}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition-colors ${
-                  activeTab === 'saved' 
-                    ? 'text-blue-600 border-b-2 border-blue-600' 
-                    : 'text-gray-600 hover:text-gray-800'
-                }`}
-              >
-                <Bookmark className="w-5 h-5 inline ml-2" />
-                שאלות שמורות ({savedQuestions.length})
-              </button>
-            </div>
+            <Tabs defaultValue="simulations" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 p-1 bg-gray-100 rounded-t-2xl">
+                <TabsTrigger value="simulations" className="rounded-xl">
+                  היסטוריית סימולציות ({simulations.length})
+                </TabsTrigger>
+                <TabsTrigger value="saved" className="rounded-xl">
+                  שאלות שמורות ({savedQuestions.length})
+                </TabsTrigger>
+              </TabsList>
 
-            {/* Filters */}
-            <div className="p-6 border-b bg-gray-50">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex items-center">
-                  <Filter className="w-5 h-5 text-gray-500 ml-2" />
-                  <select
-                    value={filterType}
-                    onChange={(e) => setFilterType(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="all">כל הסוגים</option>
-                    <option value="השלמת משפטים">השלמת משפטים</option>
-                    <option value="ניסוח מחדש">ניסוח מחדש</option>
-                    <option value="הבנת הנקרא">הבנת הנקרא</option>
-                  </select>
-                </div>
-                
-                {activeTab === 'saved' && (
-                  <div className="flex items-center flex-1">
-                    <Search className="w-5 h-5 text-gray-500 ml-2" />
-                    <input
-                      type="text"
-                      placeholder="חפש שאלות..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
+              {/* היסטוריית סימולציות */}
+              <TabsContent value="simulations" className="p-6">
+                {simulations.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Target className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                      טרם בוצעו סימולציות
+                    </h3>
+                    <p className="text-gray-500 mb-6">
+                      התחל את המסע שלך עם הסימולציה הראשונה
+                    </p>
+                    <Button
+                      onClick={() => navigate('/simulations-entry')}
+                      className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+                    >
+                      התחל סימולציה
+                    </Button>
                   </div>
-                )}
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-6">
-              {activeTab === 'history' ? (
-                <div className="space-y-4">
-                  {historyLoading ? (
-                    <div className="text-center py-12">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                      <p>טוען היסטוריה...</p>
-                    </div>
-                  ) : filteredHistory.length === 0 ? (
-                    <div className="text-center py-12">
-                      <History className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                        אין היסטוריית מבחנים
-                      </h3>
-                      <p className="text-gray-500 mb-6">
-                        התחל לפתור מבחנים כדי לראות את ההיסטוריה שלך כאן
-                      </p>
-                      <button
-                        onClick={() => navigate('/simulations-entry')}
-                        className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
-                      >
-                        התחל מבחן חדש
-                      </button>
-                    </div>
-                  ) : (
-                    filteredHistory.map((activity, index) => (
+                ) : (
+                  <div className="space-y-4">
+                    {simulations.map((simulation, index) => (
                       <motion.div
-                        key={`${activity.date}-${activity.questionId}-${index}`}
+                        key={simulation.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
                         className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
                       >
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center">
-                            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center ml-3">
-                              <Target className="w-5 h-5 text-blue-600" />
+                        <div className="flex items-start justify-between">
+                          {/* פרטי הסימולציה */}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="text-blue-600">
+                                {getSimulationIcon(simulation.type)}
+                              </div>
+                              <h3 className="text-lg font-semibold text-gray-900">
+                                {simulation.title}
+                              </h3>
+                              <Badge variant="secondary">
+                                {getSimulationTypeText(simulation.type)}
+                              </Badge>
+                              <Badge variant="outline">
+                                {getDifficultyLabel(simulation.difficulty)}
+                              </Badge>
                             </div>
-                            <div>
-                              <h3 className="font-semibold text-gray-800">{activity.topic}</h3>
-                              <div className="flex items-center text-sm text-gray-500">
-                                <Calendar className="w-4 h-4 ml-1" />
-                                {activity.date}
+
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                              <div className="flex items-center gap-2">
+                                <Calendar className="h-4 w-4 text-gray-500" />
+                                <span className="text-sm text-gray-600">
+                                  {formatDate(simulation.date)}
+                                </span>
+                              </div>
+                              
+                              <div className="flex items-center gap-2">
+                                <Clock className="h-4 w-4 text-gray-500" />
+                                <span className="text-sm text-gray-600">
+                                  {simulation.duration}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2">
+                                <Target className="h-4 w-4 text-gray-500" />
+                                <span className="text-sm text-gray-600">
+                                  {simulation.correctAnswers}/{simulation.totalQuestions} נכונות
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2">
+                                <Badge className={getScoreBadgeColor(simulation.score)}>
+                                  {simulation.score}% ציון
+                                </Badge>
                               </div>
                             </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            {activity.status === 'correct' && <CheckCircle className="w-5 h-5 text-green-500" />}
-                            {activity.status === 'wrong' && <XCircle className="w-5 h-5 text-red-500" />}
-                          </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-blue-600">
-                              {activity.score ? `${activity.score}%` : activity.status === 'correct' ? '100%' : '0%'}
+
+                            {/* נושאים */}
+                            <div className="flex flex-wrap gap-2 mb-3">
+                              {simulation.topics.map((topic, topicIndex) => (
+                                <Badge key={topicIndex} variant="outline" className="text-xs">
+                                  {topic}
+                                </Badge>
+                              ))}
                             </div>
-                            <div className="text-xs text-gray-500">ציון</div>
                           </div>
-                          <div className="text-center">
-                            <div className="text-lg font-semibold text-gray-700">
-                              {activity.questionId === 'final' || activity.questionId === 'partial' ? 
-                                `${activity.correctAnswers || 0}/${activity.totalAnswered || 0}` : 
-                                activity.status === 'correct' ? '1/1' : '0/1'
-                              }
-                            </div>
-                            <div className="text-xs text-gray-500">נכונות</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-lg font-semibold text-gray-700">{activity.time || 0}ד'</div>
-                            <div className="text-xs text-gray-500">זמן</div>
-                          </div>
-                          <div className="text-center">
-                            <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">
-                              {activity.questionId === 'final' ? 'מבחן מלא' : 
-                               activity.questionId === 'partial' ? 'מבחן חלקי' : 
-                               activity.questionId === 'full-exam' ? 'מבחן שלם' :
-                               `שאלה ${activity.questionId}`}
-                            </span>
+
+                          {/* כפתורי פעולה */}
+                          <div className="flex gap-2 mr-4">
+                            <Button variant="outline" size="sm">
+                              <Eye className="w-4 h-4 ml-1" />
+                              צפה בתוצאות
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <RotateCcw className="w-4 h-4 ml-1" />
+                              חזור על הסימולציה
+                            </Button>
                           </div>
                         </div>
                       </motion.div>
-                    ))
-                  )}
-                </div>
-              ) : (
-                // ... keep existing code (saved questions tab content)
-                <div className="space-y-4">
-                  {savedLoading ? (
-                    <div className="text-center py-12">
-                      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                      <p>טוען שאלות שמורות...</p>
-                    </div>
-                  ) : filteredSaved.length === 0 ? (
-                    <div className="text-center py-12">
-                      <Bookmark className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                        {savedQuestions.length === 0 ? 'אין שאלות שמורות' : 'לא נמצאו תוצאות'}
-                      </h3>
-                      <p className="text-gray-500">
-                        {savedQuestions.length === 0 ? 
-                          'שמור שאלות במהלך תרגול כדי לחזור אליהן מאוחר יותר' :
-                          'נסה לשנות את הפילטרים או תנאי החיפוש'
-                        }
-                      </p>
-                    </div>
-                  ) : (
-                    filteredSaved.map((savedQuestion, index) => (
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+
+              {/* שאלות שמורות */}
+              <TabsContent value="saved" className="p-6">
+                {savedLoading ? (
+                  <div className="text-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p>טוען שאלות שמורות...</p>
+                  </div>
+                ) : savedQuestions.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Star className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                      אין שאלות שמורות
+                    </h3>
+                    <p className="text-gray-500">
+                      שמור שאלות מעניינות במהלך הסימולציות כדי לחזור אליהן מאוחר יותר
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    {savedQuestions.map((savedQuestion, index) => (
                       <motion.div
                         key={savedQuestion.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -434,66 +458,65 @@ const SimulationHistory: React.FC = () => {
                         transition={{ delay: index * 0.1 }}
                         className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow"
                       >
-                        <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center mb-2">
-                              <div className="text-blue-600 ml-2">
-                                {getTypeIcon(savedQuestion.question.type)}
-                              </div>
-                              <span className="text-sm font-medium text-gray-600">
-                                {getTypeLabel(savedQuestion.question.type)}
-                              </span>
-                              <span className="px-2 py-1 rounded-full text-xs font-medium mr-2 bg-blue-100 text-blue-600">
-                                {getDifficultyLabel(savedQuestion.question.difficulty)}
-                              </span>
+                            <div className="flex items-center gap-3 mb-3">
+                              <BookOpen className="h-5 w-5 text-blue-600" />
+                              <Badge variant="secondary">
+                                {savedQuestion.question.type === 'sentence-completion' ? 'השלמת משפטים' : 
+                                 savedQuestion.question.type === 'restatement' ? 'ניסוח מחדש' : 
+                                 savedQuestion.question.type === 'reading-comprehension' ? 'הבנת הנקרא' : 
+                                 savedQuestion.question.type}
+                              </Badge>
+                              <Badge variant="outline">
+                                {savedQuestion.question.difficulty === 'easy' ? 'קל' : 
+                                 savedQuestion.question.difficulty === 'medium' ? 'בינוני' : 
+                                 savedQuestion.question.difficulty === 'hard' ? 'קשה' : 
+                                 savedQuestion.question.difficulty}
+                              </Badge>
                             </div>
+                            
                             <div 
-                              className="text-gray-800 mb-2 cursor-pointer hover:text-blue-600"
+                              className="text-gray-900 mb-3 leading-relaxed cursor-pointer hover:text-blue-600"
                               onClick={() => handleViewQuestion(savedQuestion.question.id)}
                               dangerouslySetInnerHTML={{ __html: savedQuestion.question.text }}
                             />
-                            <div className="flex items-center text-sm text-gray-500">
-                              <Calendar className="w-4 h-4 ml-1" />
-                              נשמר ב: {new Date(savedQuestion.savedDate).toLocaleDateString('he-IL')}
+                            
+                            <div className="flex items-center gap-4 text-sm text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <Calendar className="w-4 h-4" />
+                                נשמר ב-{new Date(savedQuestion.savedDate).toLocaleDateString('he-IL')}
+                              </div>
+                              <span>שאלה #{savedQuestion.question.id}</span>
                             </div>
                           </div>
-                          <div className="flex items-center space-x-2 mr-4">
-                            <button 
+                          
+                          <div className="flex gap-2 mr-4">
+                            <Button 
+                              variant="outline" 
+                              size="sm"
                               onClick={() => handleViewQuestion(savedQuestion.question.id)}
-                              className="p-2 text-gray-500 hover:text-blue-600 transition-colors"
-                              title="צפה בשאלה"
                             >
-                              <Eye className="w-5 h-5" />
-                            </button>
-                            <button 
+                              <Eye className="w-4 h-4 ml-1" />
+                              תרגל שוב
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
                               onClick={() => handleRemoveSavedQuestion(savedQuestion.question.id)}
-                              className="p-2 text-gray-500 hover:text-red-600 transition-colors"
-                              title="הסר מהשמורות"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
                             >
-                              <Trash2 className="w-5 h-5" />
-                            </button>
+                              <Trash2 className="w-4 h-4 ml-1" />
+                              הסר
+                            </Button>
                           </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <span className="text-sm text-blue-600">
-                              שאלה #{savedQuestion.question.id}
-                            </span>
-                          </div>
-                          <button 
-                            onClick={() => handleViewQuestion(savedQuestion.question.id)}
-                            className="bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors"
-                          >
-                            פתח שאלה
-                          </button>
                         </div>
                       </motion.div>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
+                    ))}
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
           </motion.div>
         </div>
       </div>
