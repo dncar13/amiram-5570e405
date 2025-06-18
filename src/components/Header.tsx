@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,13 @@ const Header = () => {
     }
   }, []);
 
-  const handleLogout = async () => {
+  const handleLogout = async (e?: React.MouseEvent) => {
+    // Prevent event propagation to avoid accidental triggers
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
     try {
       console.log("🚪 Header: Initiating logout...");
       await logout();
@@ -52,6 +59,13 @@ const Header = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Prevent accidental logout when clicking on user button
+  const handleUserMenuClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // Don't do anything - just open the dropdown menu
   };
 
   // Add loading state visualization for debugging
@@ -118,6 +132,7 @@ const Header = () => {
                   <Button 
                     variant="ghost" 
                     className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300"
+                    onClick={handleUserMenuClick}
                   >
                     <User className="h-5 w-5 ml-2" />
                     {userDisplayName}
@@ -129,21 +144,33 @@ const Header = () => {
                 >
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={() => navigate("/account")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate("/account");
+                    }}
                   >
                     <Archive className="ml-2 h-4 w-4" />
-                    המחבון שלי
+                    החשבון שלי
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={() => navigate("/progress-stats")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate("/progress-stats");
+                    }}
                   >
                     <TrendingUp className="ml-2 h-4 w-4" />
                     התקדמות
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={() => navigate("/account?tab=saved")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate("/account?tab=saved");
+                    }}
                   >
                     <BookmarkCheck className="ml-2 h-4 w-4" />
                     שאילות שמורות
@@ -151,7 +178,11 @@ const Header = () => {
                   <DropdownMenuSeparator className="bg-slate-700/50" />
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={() => navigate("/account")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      navigate("/account");
+                    }}
                   >
                     <Settings className="ml-2 h-4 w-4" />
                     הגדרות
@@ -235,7 +266,7 @@ const Header = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <Archive className="h-4 w-4 ml-2" />
-                      המחבון שלי
+                      החשבון שלי
                     </Link>
                     <Link 
                       to="/progress-stats" 
@@ -262,8 +293,8 @@ const Header = () => {
                       הגדרות
                     </Link>
                     <button 
-                      onClick={() => {
-                        handleLogout();
+                      onClick={(e) => {
+                        handleLogout(e);
                         setIsMenuOpen(false);
                       }}
                       className="w-full text-right text-red-400 hover:text-red-300 font-medium py-3 px-4 rounded-lg hover:bg-red-900/30 transition-all duration-300 flex items-center"
