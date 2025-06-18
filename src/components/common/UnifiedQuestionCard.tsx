@@ -100,6 +100,10 @@ const UnifiedQuestionCard = ({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  // Use the correct property names based on Question type
+  const questionText = currentQuestion.text || currentQuestion.question || '';
+  const answerOptions = currentQuestion.options || currentQuestion.answers || [];
+
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
       {/* Header with progress and timer */}
@@ -151,7 +155,7 @@ const UnifiedQuestionCard = ({
         <CardHeader className="pb-4">
           <div className="flex justify-between items-start">
             <CardTitle className="text-xl leading-relaxed text-right">
-              {currentQuestion.question}
+              {questionText}
             </CardTitle>
             {isAdmin && onEditQuestion && (
               <Button
@@ -169,7 +173,7 @@ const UnifiedQuestionCard = ({
         <CardContent className="space-y-6">
           {/* Answer Options */}
           <div className="grid gap-3">
-            {currentQuestion.answers.map((answer, index) => {
+            {answerOptions.map((answer, index) => {
               const isSelected = selectedAnswerIndex === index;
               const isCorrectAnswer = index === correctAnswerIndex;
               const shouldShowCorrect = showCorrectAnswer && isCorrectAnswer;
