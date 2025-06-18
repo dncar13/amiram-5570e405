@@ -8,17 +8,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle } from "lucide-react";
+import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { resendConfirmationEmail } from "@/lib/supabase";
 
-
-
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -248,7 +248,7 @@ const Login = () => {
       
       <main className="flex-grow flex items-center justify-center py-12 login-main">
         <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto login-container">
+          <div className="max-w-md mx-auto login-container animate-fade-in">
             {/* Marketing Header */}
             <div className="login-header">
               <h1 className="login-title">הדרך החכמה להצליח במבחן אמיר"ם</h1>
@@ -346,12 +346,19 @@ const Login = () => {
                           <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             required
-                            className="pl-3 pr-10 dark-input"
+                            className="pl-10 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
                           />
+                          <button
+                            type="button"
+                            className="absolute left-3 top-2.5 h-5 w-5 input-icon hover:text-primary transition-colors"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? <EyeOff /> : <Eye />}
+                          </button>
                         </div>
                       </div>
                     </CardContent>
@@ -435,14 +442,21 @@ const Login = () => {
                           <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-password"
-                            type="password"
+                            type={showRegisterPassword ? "text" : "password"}
                             required
                             minLength={6}
                             placeholder="לפחות 6 תווים"
-                            className="pl-3 pr-10 dark-input"
+                            className="pl-10 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
                           />
+                          <button
+                            type="button"
+                            className="absolute left-3 top-2.5 h-5 w-5 input-icon hover:text-primary transition-colors"
+                            onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                          >
+                            {showRegisterPassword ? <EyeOff /> : <Eye />}
+                          </button>
                         </div>
                       </div>
                       
