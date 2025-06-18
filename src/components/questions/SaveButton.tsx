@@ -20,7 +20,7 @@ export const SaveButton = ({
   onSaveStatusChange
 }: SaveButtonProps) => {
   const { isPremium, currentUser } = useAuth();
-  const { saveQuestion, isQuestionSaved, removeQuestionById } = useSavedQuestions();
+  const { saveQuestion, isQuestionSaved, removeQuestionById, isInitialized } = useSavedQuestions();
   
   const isSaved = isQuestionSaved(question.id);
 
@@ -43,11 +43,19 @@ export const SaveButton = ({
       return;
     }
 
+    if (!isInitialized) {
+      toast({
+        title: "מערכת טוענת",
+        description: "אנא המתן רגע עד שהמערכת תסיים לטעון"
+      });
+      return;
+    }
+
     try {
       if (isSaved) {
         if (removeQuestionById(question.id)) {
           toast({
-            title: "הוסר בהצלחה",
+            title: "הוסרה בהצלחה",
             description: "השאלה הוסרה מהשאלות השמורות",
             variant: "default",
           });
@@ -56,7 +64,7 @@ export const SaveButton = ({
       } else {
         if (saveQuestion(question)) {
           toast({
-            title: "נשמר בהצלחה",
+            title: "נשמרה בהצלחה",
             description: "השאלה נשמרה ברשימת המועדפים",
             variant: "default",
           });
@@ -81,6 +89,7 @@ export const SaveButton = ({
         className={`flex items-center gap-1 ${isSaved ? 'text-amber-500' : 'text-muted-foreground hover:text-amber-500'} ${className}`} 
         onClick={handleSaveClick}
         title={!isPremium ? "מנויי פרימיום בלבד" : isSaved ? "הסר מהשאלות השמורות" : "שמור שאלה"}
+        disabled={!isInitialized}
       >
         <BookmarkIcon size={16} className={isSaved ? "fill-amber-500" : ""} />
         <span>{isSaved ? "שמור ✓" : "שמור"}</span>

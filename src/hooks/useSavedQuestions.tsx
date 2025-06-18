@@ -97,8 +97,12 @@ export const useSavedQuestions = () => {
 
     setIsLoading(true);
     try {
+      // קבלת כל השאלות מהזיכרון קודם
+      const allQuestions = refreshQuestionsFromStorage();
+      console.log("Total questions in storage:", allQuestions.length);
+
       // קבלת מזהי השאלות השמורות מהזיכרון המקומי
-      const userSavedIds = JSON.parse(localStorage.getItem(userSavedKey) || '[]');
+      let userSavedIds = JSON.parse(localStorage.getItem(userSavedKey) || '[]');
       console.log("Local saved IDs:", userSavedIds);
       
       // אם המשתמש מחובר, נסה לסנכרן עם הענן
@@ -120,17 +124,12 @@ export const useSavedQuestions = () => {
             }
             
             // עדכון המשתנה המקומי למיפוי למטה
-            userSavedIds.length = 0;
-            userSavedIds.push(...mergedIds);
+            userSavedIds = mergedIds;
           }
         } catch (error) {
           console.error("Error syncing with cloud:", error);
         }
       }
-      
-      // קבלת כל השאלות מהזיכרון
-      const allQuestions = refreshQuestionsFromStorage();
-      console.log("Total questions in storage:", allQuestions.length);
       
       // סינון השאלות שתואמות למזהים השמורים
       const userQuestions = userSavedIds
@@ -154,11 +153,6 @@ export const useSavedQuestions = () => {
     } catch (error) {
       console.error("Error initializing saved questions:", error);
       setSavedQuestions([]);
-      // toast({
-      //   title: "שגיאה",
-      //   description: "שגיאה בטעינת השאלות השמורות",
-      //   variant: "destructive",
-      // });
     } finally {
       setIsLoading(false);
       setIsInitialized(true);
@@ -180,15 +174,11 @@ export const useSavedQuestions = () => {
 
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
-  }, [currentUser, userSavedKey, initializeSavedQuestions]);
+  }, [initializeSavedQuestions]);
 
   const saveQuestion = (question: Question) => {
-    if (!currentUser || !userSavedKey) {
-      toast({
-        title: "אנא התחבר",
-        description: "עליך להתחבר כדי לשמור שאלות",
-        variant: "default",
-      });
+    if (!currentUser || !userSavedKey || !isInitialized) {
+      console.error("Cannot save - user not ready or not initialized");
       return false;
     }
 
@@ -196,14 +186,11 @@ export const useSavedQuestions = () => {
       const userSavedIds = JSON.parse(localStorage.getItem(userSavedKey) || '[]');
       
       if (userSavedIds.includes(question.id)) {
-        toast({
-          title: "כבר שמור",
-          description: "השאלה כבר נמצאת ברשימת השאלות השמורות",
-          variant: "default",
-        });
+        console.log("Question already saved");
         return false;
       }
 
+      // Add to local storage immediately
       userSavedIds.push(question.id);
       localStorage.setItem(userSavedKey, JSON.stringify(userSavedIds));
 
@@ -213,81 +200,70 @@ export const useSavedQuestions = () => {
         savedDate: new Date().toISOString()
       };
 
+      // Update state immediately for instant feedback
       setSavedQuestions(prev => [...prev, newSavedQuestion]);
       console.log(`Question #${question.id} saved successfully`);
       
-      // הצגת הודעת הצלחה
-      toast({
-        title: "נשמרה בהצלחה",
-        description: "השאלה נשמרה ברשימת השאלות השמורות שלך",
-        variant: "default",
-      });
-      
-      // שמירה גם בענן אם המשתמש מחובר
+      // שמירה גם בענן אם המשתמש מחובר (ברקע)
       if (currentUser && auth.currentUser) {
-        saveToCloud(question.id)
-          .then(success => {
-            if (success) {
-              console.log(`Question #${question.id} saved to cloud`);
-            }
-          });
+        saveToCloud(question.id).then(success => {
+          if (success) {
+            console.log(`Question #${question.id} saved to cloud`);
+          }
+        }).catch(error => {
+          console.error("Failed to save to cloud:", error);
+        });
       }
       
       return true;
     } catch (error) {
       console.error("Error saving question:", error);
-      // toast({
-      //   title: "שגיאה",
-      //   description: "שגיאה בשמירת השאלה",
-      //   variant: "destructive",
-      // });
       return false;
     }
   };
 
   const removeQuestionById = (questionId: number) => {
-    if (!currentUser || !userSavedKey) return false;
+    if (!currentUser || !userSavedKey || !isInitialized) {
+      console.error("Cannot remove - user not ready or not initialized");
+      return false;
+    }
 
     try {
       const userSavedIds = JSON.parse(localStorage.getItem(userSavedKey) || '[]');
       const updatedIds = userSavedIds.filter((id: number) => id !== questionId);
       
       if (updatedIds.length === userSavedIds.length) {
-        toast({
-          title: "לא נמצא",
-          description: "השאלה לא נמצאה ברשימת השאלות השמורות",
-          variant: "default",
-        });
+        console.log("Question not found in saved list");
         return false;
       }
 
+      // Update local storage immediately
       localStorage.setItem(userSavedKey, JSON.stringify(updatedIds));
+      
+      // Update state immediately for instant feedback
       setSavedQuestions(prev => prev.filter(sq => sq.question.id !== questionId));
       console.log(`Question #${questionId} removed successfully`);
       
-      // הסרה גם מהענן אם המשתמש מחובר
+      // הסרה גם מהענן אם המשתמש מחובר (ברקע)
       if (currentUser && auth.currentUser) {
-        removeFromCloud(questionId)
-          .then(success => {
-            if (success) {
-              console.log(`Question #${questionId} removed from cloud`);
-            }
-          });
+        removeFromCloud(questionId).then(success => {
+          if (success) {
+            console.log(`Question #${questionId} removed from cloud`);
+          }
+        }).catch(error => {
+          console.error("Failed to remove from cloud:", error);
+        });
       }
       
       return true;
     } catch (error) {
-      console.error("Error removing question:", error);      // toast({
-      //   title: "שגיאה",
-      //   description: "שגיאה בהסרת השאלה",
-      //   variant: "destructive",
-      // });
+      console.error("Error removing question:", error);
       return false;
     }
   };
 
   const isQuestionSaved = (questionId: number) => {
-    if (!userSavedKey) return false;
+    if (!userSavedKey || !isInitialized) return false;
     try {
       const userSavedIds = JSON.parse(localStorage.getItem(userSavedKey) || '[]');
       return userSavedIds.includes(questionId);
