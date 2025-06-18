@@ -15,12 +15,15 @@ import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { resendConfirmationEmail } from "@/lib/supabase";
 
+
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: ""
+    name: "",
+    newsletter: true
   });
   const [authError, setAuthError] = useState<string | null>(null);
   const [awaitingConfirmation, setAwaitingConfirmation] = useState<string | null>(null);
@@ -201,11 +204,14 @@ const Login = () => {
   };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { id, value, type, checked } = e.target;
+    const fieldName = id.replace('register-', '');
+    
     setFormData(prev => ({
       ...prev,
-      [id.replace('register-', '')]: value
+      [fieldName]: type === 'checkbox' ? checked : value
     }));
+    
     // Clear error when user starts typing
     if (authError) {
       setAuthError(null);
@@ -237,15 +243,30 @@ const Login = () => {
   };
   
   return (
-    <RTLWrapper className="min-h-screen flex flex-col">
+    <RTLWrapper className="min-h-screen flex flex-col login-page-wrapper">
       <Header />
       
-      <main className="flex-grow flex items-center justify-center py-12 bg-electric-gray">
+      <main className="flex-grow flex items-center justify-center py-12 login-main">
         <div className="container mx-auto px-4">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto login-container">
+            {/* Marketing Header */}
+            <div className="login-header">
+              <h1 className="login-title">הדרך החכמה להצליח במבחן אמיר"ם</h1>
+              <p className="login-subtitle">📚 התחילו ללמוד נכון – עם סימולציה שמבינה אתכם</p>
+            </div>
+
+            {/* Logo */}
+            <div className="login-logo">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#0a84ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="#0a84ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="#0a84ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+
             {awaitingConfirmation && (
-              <Alert variant="default" className="mb-6 border-l-4 border-yellow-400 bg-yellow-50">
-                <AlertTriangle className="h-4 w-4 text-yellow-400" />
+              <Alert variant="default" className="mb-6 dark-alert-warning">
+                <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>אימייל לא אושר</AlertTitle>
                 <AlertDescription>
                   החשבון לא מאושר עדיין. <br />
@@ -264,16 +285,16 @@ const Login = () => {
             )}
             
             <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">התחברות</TabsTrigger>
-                <TabsTrigger value="register">הרשמה</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 dark-tabs">
+                <TabsTrigger value="login" className="dark-tab-trigger">התחברות</TabsTrigger>
+                <TabsTrigger value="register" className="dark-tab-trigger">הרשמה</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>התחברות</CardTitle>
-                    <CardDescription>
+                <Card className="dark-card">
+                  <CardHeader className="dark-card-header">
+                    <CardTitle className="dark-card-title">התחברות</CardTitle>
+                    <CardDescription className="dark-card-description">
                       התחברו כדי לקבל גישה להתקדמות שלכם ולנושאים נוספים
                     </CardDescription>
                   </CardHeader>
@@ -282,7 +303,7 @@ const Login = () => {
                       <Button 
                         type="button" 
                         variant="outline" 
-                        className="w-full flex items-center justify-center"
+                        className="w-full flex items-center justify-center btn-secondary-dark"
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
                       >
@@ -292,25 +313,23 @@ const Login = () => {
                           <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                         </svg>
-                        התחברות עם גוגל
+                        התחברות עם Google
                       </Button>
                       
-                      <div className="relative flex items-center py-2">
-                        <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="flex-shrink mx-4 text-gray-400 text-sm">או</span>
-                        <div className="flex-grow border-t border-gray-300"></div>
+                      <div className="divider-dark">
+                        <span>או</span>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="email">דוא"ל</Label>
+                        <Label htmlFor="email" className="dark-label">דוא"ל</Label>
                         <div className="relative">
-                          <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                          <Mail className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="email"
                             placeholder="your@email.com"
                             type="email"
                             required
-                            className="pl-3 pr-10"
+                            className="pl-3 pr-10 dark-input"
                             value={formData.email}
                             onChange={handleInputChange}
                           />
@@ -318,18 +337,18 @@ const Login = () => {
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                          <Label htmlFor="password">סיסמה</Label>
-                          <Link to="/forgot-password" className="text-sm text-electric-blue hover:underline">
-                            שכחתם סיסמה?
+                          <Label htmlFor="password" className="dark-label">סיסמה</Label>
+                          <Link to="/forgot-password" className="text-sm link-primary">
+                            שכחת סיסמה?
                           </Link>
                         </div>
                         <div className="relative">
-                          <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                          <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="password"
                             type="password"
                             required
-                            className="pl-3 pr-10"
+                            className="pl-3 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
                           />
@@ -337,19 +356,25 @@ const Login = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button type="submit" className="w-full btn-electric" disabled={isLoading}>
-                        {isLoading ? "מתחבר..." : "התחברות"}
+                      <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
+                        {isLoading ? <span className="loading-spinner"></span> : "התחברות"}
                       </Button>
                     </CardFooter>
                   </form>
+                  
+                  {/* Trust Badges */}
+                  <div className="trust-badges">
+                    <span>⏱ תוך פחות מדקה</span>
+                    <span>🔐 מאובטח לחלוטין</span>
+                  </div>
                 </Card>
               </TabsContent>
               
               <TabsContent value="register">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>הרשמה</CardTitle>
-                    <CardDescription>
+                <Card className="dark-card">
+                  <CardHeader className="dark-card-header">
+                    <CardTitle className="dark-card-title">הרשמה</CardTitle>
+                    <CardDescription className="dark-card-description">
                       צרו חשבון חדש לגישה לנושאים נוספים וסימולציות
                     </CardDescription>
                   </CardHeader>
@@ -358,7 +383,7 @@ const Login = () => {
                       <Button 
                         type="button" 
                         variant="outline" 
-                        className="w-full flex items-center justify-center"
+                        className="w-full flex items-center justify-center btn-secondary-dark"
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
                       >
@@ -368,55 +393,53 @@ const Login = () => {
                           <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                           <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                         </svg>
-                        הרשמה עם גוגל
+                        הרשמה עם Google
                       </Button>
                       
-                      <div className="relative flex items-center py-2">
-                        <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="flex-shrink mx-4 text-gray-400 text-sm">או</span>
-                        <div className="flex-grow border-t border-gray-300"></div>
+                      <div className="divider-dark">
+                        <span>או</span>
                       </div>
                       
                       <div className="space-y-2">
-                        <Label htmlFor="register-name">שם מלא</Label>
+                        <Label htmlFor="register-name" className="dark-label">שם מלא</Label>
                         <div className="relative">
-                          <UserIcon className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                          <UserIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-name"
-                            placeholder="ישראל ישראלי"
+                            placeholder="נועה לוי"
                             required
-                            className="pl-3 pr-10"
+                            className="pl-3 pr-10 dark-input"
                             value={formData.name}
                             onChange={handleInputChange}
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="register-email">דוא"ל</Label>
+                        <Label htmlFor="register-email" className="dark-label">דוא"ל</Label>
                         <div className="relative">
-                          <Mail className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                          <Mail className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-email"
                             placeholder="your@email.com"
                             type="email"
                             required
-                            className="pl-3 pr-10"
+                            className="pl-3 pr-10 dark-input"
                             value={formData.email}
                             onChange={handleInputChange}
                           />
                         </div>
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="register-password">סיסמה</Label>
+                        <Label htmlFor="register-password" className="dark-label">סיסמה</Label>
                         <div className="relative">
-                          <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                          <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-password"
                             type="password"
                             required
                             minLength={6}
                             placeholder="לפחות 6 תווים"
-                            className="pl-3 pr-10"
+                            className="pl-3 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
                           />
@@ -424,15 +447,15 @@ const Login = () => {
                       </div>
                       
                       <div className="pt-2">
-                        <p className="text-sm text-muted-foreground flex items-start space-x-2 space-x-reverse">
-                          <Shield className="h-4 w-4 mt-0.5 text-electric-blue ml-2" />
+                        <p className="text-sm flex items-start space-x-2 space-x-reverse dark-text">
+                          <Shield className="h-4 w-4 mt-0.5 ml-2 text-primary-accent" />
                           <span>
                             בהרשמה, אתם מסכימים ל
-                            <Link to="/terms" className="text-electric-blue hover:underline mx-1">
+                            <Link to="/terms" className="link-primary mx-1">
                               תנאי השימוש
                             </Link>
                             ול
-                            <Link to="/privacy" className="text-electric-blue hover:underline mx-1">
+                            <Link to="/privacy" className="link-primary mx-1">
                               מדיניות הפרטיות
                             </Link>
                             שלנו.
@@ -440,39 +463,40 @@ const Login = () => {
                         </p>
                       </div>
                     </CardContent>
-                    <CardFooter>
-                      <Button type="submit" className="w-full btn-electric" disabled={isLoading}>
-                        {isLoading ? "יוצר חשבון..." : "הרשמה"}
+                    <CardFooter className="flex flex-col">
+                      <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
+                        {isLoading ? <span className="loading-spinner"></span> : "הרשמה"}
                       </Button>
+                      
+                      {/* Trust Badges */}
+                      <div className="trust-badges">
+                        <span>🆓 חינם וללא התחייבות</span>
+                        <span>⏱ נרשמים תוך דקה</span>
+                      </div>
+                      
+                      {/* Newsletter Checkbox */}
+                      <div className="newsletter-opt">
+                        <label>
+                          <input 
+                            type="checkbox" 
+                            id="newsletter"
+                            checked={formData.newsletter}
+                            onChange={handleInputChange}
+                          />
+                          <span>☑️ שלחו לי טיפים למבחן והנחות מיוחדות</span>
+                        </label>
+                      </div>
                     </CardFooter>
                   </form>
                 </Card>
               </TabsContent>
             </Tabs>
             
-            <div className="mt-8 bg-white p-4 rounded-lg border border-border">
-              <h3 className="text-lg font-semibold mb-3 flex items-center">
-                <CheckCircle className="h-5 w-5 text-electric-blue ml-2" />
-                יתרונות החשבון
-              </h3>
-              <ul className="space-y-2">
-                <li className="flex items-start">
-                  <CheckCircle className="h-4 w-4 text-electric-blue ml-2 mt-1" />
-                  <span>גישה לשני נושאים במקום אחד בלבד</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-4 w-4 text-electric-blue ml-2 mt-1" />
-                  <span>שמירת ההתקדמות והציונים שלכם</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-4 w-4 text-electric-blue ml-2 mt-1" />
-                  <span>נתוני ביצועים והמלצות אישיות</span>
-                </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-4 w-4 text-electric-orange ml-2 mt-1" />
-                  <span>אפשרות לשדרוג לחשבון פרימיום עם גישה לכל 7 הנושאים</span>
-                </li>
-              </ul>
+            {/* Testimonial */}
+            <div className="testimonial-box">
+              <p className="testimonial-text">"השתפרתי ב-20 נקודות תוך שבוע. ממליץ בחום!"</p>
+              <span className="testimonial-author">– נועם, ראשון לציון</span>
+              <div className="testimonial-rating">⭐⭐⭐⭐⭐</div>
             </div>
           </div>
         </div>

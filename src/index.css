@@ -625,4 +625,636 @@
   [dir="rtl"] .popover-content {
     text-align: right;
   }
+
+  /* ===============================================
+   Login Page Dark Theme Styles - Apple Inspired
+   =============================================== */
+
+  /* Animated Background */
+  .login-page-wrapper {
+    background: #000000;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-page-wrapper::before {
+    content: "";
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+        circle at 20% 80%,
+        #0a84ff15 0%,
+        transparent 50%
+      ),
+      radial-gradient(circle at 80% 20%, #ff453a10 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, #30d15810 0%, transparent 50%);
+    animation: gradientShift 20s ease infinite;
+    z-index: 0;
+  }
+
+  @keyframes gradientShift {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.5);
+    }
+  }
+
+  .login-main {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Glass Container */
+  .login-container {
+    background: rgba(28, 28, 30, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 48px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 80px rgba(10, 132, 255, 0.1);
+    animation: fadeInScale 0.6s ease-out;
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  /* Marketing Header */
+  .login-header {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: fadeInDown 0.8s ease-out;
+  }
+
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .login-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #0a84ff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+
+  .login-subtitle {
+    font-size: 16px;
+    color: #98989f;
+    font-weight: 400;
+  }
+
+  /* Logo */
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .login-logo svg {
+    width: 60px;
+    height: 60px;
+    filter: drop-shadow(0 0 20px rgba(10, 132, 255, 0.5));
+  }
+
+  /* Dark Theme Tabs */
+  .dark-tabs {
+    background: #2c2c2e !important;
+    border-radius: 12px;
+    padding: 4px;
+  }
+
+  .dark-tab-trigger {
+    color: #98989f !important;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+
+  .dark-tab-trigger[data-state="active"] {
+    background: #1c1c1e !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Dark Theme Card */
+  .dark-card {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff;
+    box-shadow: none !important;
+  }
+
+  .dark-card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .dark-card-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 16px;
+  }
+
+  .dark-card-title {
+    color: #ffffff !important;
+    font-size: 20px;
+  }
+
+  .dark-card-description {
+    color: #98989f !important;
+  }
+
+  /* Dark Theme Inputs */
+  .dark-input {
+    background: #2c2c2e !important;
+    border: 1px solid #38383a !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+  }
+
+  .dark-input:focus {
+    border-color: #0a84ff !important;
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.1),
+      0 0 20px rgba(10, 132, 255, 0.2) !important;
+    transform: translateY(-2px);
+  }
+
+  .dark-input::placeholder {
+    color: #636366 !important;
+  }
+
+  .input-icon {
+    color: #636366;
+    transition: color 0.3s ease;
+  }
+
+  .dark-input:focus ~ .input-icon {
+    color: #0a84ff;
+  }
+
+  /* Dark Theme Labels */
+  .dark-label {
+    color: #98989f !important;
+  }
+
+  /* Enhanced Buttons */
+  .btn-primary-enhanced {
+    background: linear-gradient(135deg, #0a84ff, #0066cc) !important;
+    color: white !important;
+    box-shadow: 0 4px 20px rgba(10, 132, 255, 0.3),
+      0 0 40px rgba(10, 132, 255, 0.2) !important;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border: none !important;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(10, 132, 255, 0.4),
+      0 0 60px rgba(10, 132, 255, 0.3) !important;
+    background: linear-gradient(135deg, #0066cc, #0052a3) !important;
+  }
+
+  .btn-primary-enhanced:active {
+    transform: translateY(0);
+  }
+
+  .btn-secondary-dark {
+    background: #2c2c2e !important;
+    color: #ffffff !important;
+    border: 1px solid #38383a !important;
+  }
+
+  .btn-secondary-dark:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* Divider */
+  .divider-dark {
+    display: flex;
+    align-items: center;
+    margin: 24px 0;
+    color: #636366;
+    font-size: 14px;
+  }
+
+  .divider-dark::before,
+  .divider-dark::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #38383a;
+  }
+
+  .divider-dark span {
+    padding: 0 16px;
+  }
+
+  /* Links */
+  .link-primary {
+    color: #0a84ff !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .link-primary:hover {
+    color: #0066cc !important;
+    text-decoration: underline;
+  }
+
+  /* Alert Styles */
+  .dark-alert-warning {
+    background: rgba(255, 214, 10, 0.1) !important;
+    border: 1px solid rgba(255, 214, 10, 0.3) !important;
+    color: #ffd60a !important;
+    border-radius: 12px;
+  }
+
+  .dark-alert-warning .h-4 {
+    color: #ffd60a !important;
+  }
+
+  /* Trust Badges */
+  .trust-badges {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #98989f;
+  }
+
+  .trust-badges span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Newsletter Opt-in */
+  .newsletter-opt {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #38383a;
+    width: 100%;
+  }
+
+  .newsletter-opt label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #98989f;
+  }
+
+  .newsletter-opt input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #0a84ff;
+  }
+
+  /* Testimonial */
+  .testimonial-box {
+    margin-top: 24px;
+    padding: 20px;
+    background: linear-gradient(
+      135deg,
+      rgba(10, 132, 255, 0.1),
+      rgba(10, 132, 255, 0.05)
+    );
+    border-radius: 16px;
+    border: 1px solid rgba(10, 132, 255, 0.2);
+    text-align: center;
+  }
+
+  .testimonial-text {
+    font-size: 16px;
+    font-style: italic;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .testimonial-author {
+    font-size: 14px;
+    color: #98989f;
+  }
+
+  .testimonial-rating {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+
+  /* Loading Spinner */
+  .loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Additional Dark Theme Text */
+  .dark-text {
+    color: #98989f !important;
+  }
+
+  .text-primary-accent {
+    color: #0a84ff !important;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 480px) {
+    .login-container {
+      padding: 32px 24px;
+      margin: 16px;
+    }
+
+    .login-title {
+      font-size: 20px;
+    }
+
+    .login-subtitle {
+      font-size: 14px;
+    }
+  }
+
+  /* Override default backgrounds for login page */
+  .login-page-wrapper main {
+    background: transparent !important;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  .login-container button,
+  .login-container input,
+  .login-container a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Focus styles for accessibility */
+  .login-container *:focus-visible {
+    outline: 2px solid #0a84ff;
+    outline-offset: 2px;
+  }
+
+  /* Remove Card component hover effects for dark theme */
+  .dark-card.Card {
+    transition: none !important;
+  }
+
+  .dark-card.Card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  /* תיקונים ושיפורים לעמוד Login */
+
+  /* תיקון מיקום הלוגו למרכז */
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+    animation: floatSlow 6s ease-in-out infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* אנימציה איטית ואלגנטית ללוגו */
+  @keyframes floatSlow {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
+  /* הגדלת הלוגו מעט */
+  .login-logo svg {
+    width: 80px;
+    height: 80px;
+    filter: drop-shadow(0 0 30px rgba(10, 132, 255, 0.5));
+  }
+
+  /* תיקון RTL לכל האלמנטים */
+  .login-container {
+    direction: rtl;
+    text-align: right;
+  }
+
+  /* תיקון כפתור Google */
+  .btn-secondary-dark {
+    background: #2c2c2e !important;
+    color: #ffffff !important;
+    border: 1px solid #38383a !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    padding: 12px 24px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    direction: rtl !important;
+  }
+
+  .btn-secondary-dark svg {
+    order: 1;
+    margin-left: 0 !important;
+    margin-right: 8px !important;
+  }
+
+  /* תיקון הטקסט של או */
+  .divider-dark {
+    direction: rtl;
+  }
+
+  /* תיקון Labels ב-RTL */
+  .dark-label {
+    display: block;
+    text-align: right !important;
+    margin-bottom: 8px;
+  }
+
+  /* תיקון Icons בשדות */
+  .login-container .relative {
+    position: relative;
+    direction: ltr; /* השדה עצמו LTR לאימייל */
+  }
+
+  .login-container .relative .input-icon {
+    position: absolute;
+    right: 16px !important;
+    left: auto !important;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* תיקון padding לשדות עם אייקונים */
+  .dark-input {
+    padding-right: 48px !important;
+    padding-left: 16px !important;
+    text-align: left; /* אימייל וסיסמה ב-LTR */
+    direction: ltr;
+  }
+
+  /* שדה השם בעברית - RTL */
+  .dark-input[placeholder="נועה לוי"] {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  /* תיקון Trust Badges */
+  .trust-badges {
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    color: #98989f;
+  }
+
+  .trust-badges span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+  }
+
+  /* תיקון Newsletter */
+  .newsletter-opt label {
+    direction: rtl;
+    justify-content: flex-start;
+  }
+
+  .newsletter-opt input[type="checkbox"] {
+    order: 1;
+    margin-left: 8px;
+    margin-right: 0;
+  }
+
+  /* תיקון הכותרות */
+  .dark-card-header {
+    text-align: right !important;
+  }
+
+  .dark-card-title {
+    text-align: right !important;
+  }
+
+  .dark-card-description {
+    text-align: right !important;
+  }
+
+  /* תיקון כפתורים ראשיים */
+  .btn-primary-enhanced {
+    font-size: 18px !important;
+    padding: 14px 32px !important;
+    font-weight: 600;
+  }
+
+  /* תיקון לינקים */
+  .login-container .flex.items-center.justify-between {
+    direction: rtl;
+  }
+
+  /* תיקון כותרת ראשית */
+  .login-title {
+    font-size: 26px;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+
+  /* תיקון ה-checkbox disclaimer */
+  .dark-text {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .dark-text span {
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  /* אנימציה חלקה יותר לרקע */
+  @keyframes gradientShift {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+      opacity: 0.8;
+    }
+    25% {
+      transform: rotate(90deg) scale(1.2);
+      opacity: 1;
+    }
+    50% {
+      transform: rotate(180deg) scale(1.5);
+      opacity: 0.9;
+    }
+    75% {
+      transform: rotate(270deg) scale(1.2);
+      opacity: 1;
+    }
+  }
+
+  /* הוספת צל עדין ללוגו */
+  .login-logo::after {
+    content: "";
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0a84ff, transparent);
+    opacity: 0.5;
+  }
+
+  /* תיקון התיבה של ההמלצה */
+  .testimonial-box {
+    direction: rtl;
+    text-align: center;
+  }
+
+  /* הוספת Hover Effect לכפתור Google */
+  .btn-secondary-dark:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
 }
