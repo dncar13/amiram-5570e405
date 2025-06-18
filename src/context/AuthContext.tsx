@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
@@ -17,6 +16,7 @@ const PREMIUM_EMAILS = [
   "premium@example.com",
   "dncar13@gmail.com", // הוספת האימייל החדש כמשתמש פרימיום
   "buldir@gmail.com", // הוספת המשתמש החדש כמשתמש פרימיום
+  "dncar20@gmail.com", // הוספת המשתמש החדש כמשתמש פרימיום
   // הוסף כאן אימיילים נוספים של משתמשים פרימיום
 ];
 

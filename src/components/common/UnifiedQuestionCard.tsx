@@ -6,6 +6,7 @@ import { CheckCircle, XCircle, HelpCircle, ArrowLeft, ArrowRight, Flag, Eye, Eye
 import { Question } from "@/data/questionsData";
 import { QuestionImage } from "@/components/common/QuestionImage";
 import { ReadingPassage } from "@/components/simulation/ReadingPassage";
+import { SaveButton } from "@/components/questions/SaveButton";
 import { cn } from "@/lib/utils";
 
 interface UnifiedQuestionCardProps {
@@ -205,19 +206,7 @@ const UnifiedQuestionCard = ({
                       {remainingTime}s
                     </div>
                   )}
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className={cn(
-                      "h-10 w-10 rounded-lg border transition-all duration-300",
-                      isFlagged 
-                        ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
-                        : "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
-                    )}
-                    onClick={onToggleQuestionFlag}
-                  >
-                    <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
-                  </Button>
+                  <SaveButton question={currentQuestion} />
                 </div>
               </div>
               
@@ -430,21 +419,7 @@ const UnifiedQuestionCard = ({
                 {remainingTime}s
               </div>
             )}
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className={cn(
-                "h-10 w-10 rounded-lg border transition-all duration-300",
-                isFlagged 
-                  ? "bg-amber-600/20 border-amber-500/50 text-amber-400 hover:bg-amber-600/30" 
-                  : variant === 'simulation'
-                    ? "bg-slate-800/60 border-slate-600/50 text-slate-300 hover:bg-slate-700/60"
-                    : "bg-gray-100 border-gray-300 text-gray-500 hover:bg-yellow-50"
-              )}
-              onClick={onToggleQuestionFlag}
-            >
-              <Flag className={cn("h-5 w-5", isFlagged && "fill-amber-400")} />
-            </Button>
+            <SaveButton question={currentQuestion} />
           </div>
         </div>
 
