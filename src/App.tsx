@@ -12,6 +12,7 @@ import { useEffect } from 'react';
 // Import all pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
 import SimulationSetup from "./pages/SimulationSetup";
 import Simulation from "./pages/Simulation";
 import TopicQuestions from "./pages/TopicQuestions"; 
