@@ -60,6 +60,12 @@ export const SaveButton = ({
             variant: "default",
           });
           if (onSaveStatusChange) onSaveStatusChange(false);
+        } else {
+          toast({
+            title: "שגיאה",
+            description: "לא ניתן להסיר את השאלה",
+            variant: "destructive",
+          });
         }
       } else {
         if (saveQuestion(question)) {
@@ -69,6 +75,12 @@ export const SaveButton = ({
             variant: "default",
           });
           if (onSaveStatusChange) onSaveStatusChange(true);
+        } else {
+          toast({
+            title: "שגיאה",
+            description: "לא ניתן לשמור את השאלה",
+            variant: "destructive",
+          });
         }
       }
     } catch (error) {
