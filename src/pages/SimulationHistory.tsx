@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -115,27 +114,47 @@ const SimulationHistory: React.FC = () => {
     (searchTerm === '' || q.question.text.includes(searchTerm))
   );
 
-  // חישוב סטטיסטיקות אמיתיות
-  const simulationResults = history.filter(activity => 
-    activity.questionId === 'final' || activity.questionId === 'partial'
+  // חישוב סטטיסטיקות אמיתיות - עם נתונים נכונים
+  console.log("Calculating statistics for user:", currentUser.email);
+  console.log("Total history items:", history.length);
+  
+  // רק פעילויות של השאלות הבודדים (לא מבחנים שלמים)
+  const individualQuestions = history.filter(activity => 
+    activity.questionId !== 'final' && 
+    activity.questionId !== 'partial' && 
+    activity.questionId !== 'full-exam' &&
+    activity.questionId !== 'practice-session'
+  );
+  
+  // פעילויות מבחן (מבחנים שלמים שהושלמו)
+  const completedExams = history.filter(activity => 
+    activity.questionId === 'final' || 
+    activity.questionId === 'partial' || 
+    activity.questionId === 'full-exam'
   );
 
-  const averageScore = simulationResults.length > 0 
-    ? Math.round(simulationResults.reduce((sum, sim) => sum + (sim.score || 0), 0) / simulationResults.length)
+  // חישוב ציון ממוצע בלבד ממבחנים שהושלמו
+  const averageScore = completedExams.length > 0 
+    ? Math.round(completedExams.reduce((sum, exam) => sum + (exam.score || 0), 0) / completedExams.length)
     : 0;
 
-  const totalQuestions = history.filter(activity => 
-    activity.questionId !== 'final' && 
-    activity.questionId !== 'partial' && 
-    activity.questionId !== 'full-exam'
+  // סך השאלות שנענו
+  const totalQuestions = individualQuestions.length;
+
+  // סך התשובות הנכונות
+  const totalCorrect = individualQuestions.filter(activity => 
+    activity.status === 'correct'
   ).length;
 
-  const totalCorrect = history.filter(activity => 
-    activity.status === 'correct' && 
-    activity.questionId !== 'final' && 
-    activity.questionId !== 'partial' && 
-    activity.questionId !== 'full-exam'
-  ).length;
+  // דיבוג
+  console.log("Statistics calculation:", {
+    individualQuestions: individualQuestions.length,
+    completedExams: completedExams.length,
+    averageScore,
+    totalQuestions,
+    totalCorrect,
+    savedQuestions: savedQuestions.length
+  });
 
   const handleRemoveSavedQuestion = (questionId: number) => {
     if (removeQuestionById(questionId)) {
@@ -192,8 +211,13 @@ const SimulationHistory: React.FC = () => {
               <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <BarChart3 className="w-6 h-6 text-blue-600" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{averageScore}%</div>
+              <div className="text-2xl font-bold text-gray-800">
+                {completedExams.length > 0 ? `${averageScore}%` : '--'}
+              </div>
               <div className="text-gray-600">ציון ממוצע</div>
+              <div className="text-xs text-gray-500 mt-1">
+                {completedExams.length > 0 ? `מתוך ${completedExams.length} מבחנים` : 'טרם בוצעו מבחנים'}
+              </div>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6 text-center">
@@ -202,14 +226,20 @@ const SimulationHistory: React.FC = () => {
               </div>
               <div className="text-2xl font-bold text-gray-800">{totalQuestions}</div>
               <div className="text-gray-600">שאלות נענו</div>
+              <div className="text-xs text-gray-500 mt-1">
+                {totalQuestions > 0 ? `${totalCorrect} נכונות (${Math.round((totalCorrect/totalQuestions)*100)}%)` : 'טרם נענו שאלות'}
+              </div>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6 text-center">
               <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Award className="w-6 h-6 text-purple-600" />
               </div>
-              <div className="text-2xl font-bold text-gray-800">{simulationResults.length}</div>
+              <div className="text-2xl font-bold text-gray-800">{completedExams.length}</div>
               <div className="text-gray-600">מבחנים הושלמו</div>
+              <div className="text-xs text-gray-500 mt-1">
+                {completedExams.length > 0 ? 'מבחנים שלמים שהושלמו' : 'טרם הושלמו מבחנים'}
+              </div>
             </div>
             
             <div className="bg-white rounded-xl shadow-lg p-6 text-center">
@@ -218,6 +248,9 @@ const SimulationHistory: React.FC = () => {
               </div>
               <div className="text-2xl font-bold text-gray-800">{savedQuestions.length}</div>
               <div className="text-gray-600">שאלות שמורות</div>
+              <div className="text-xs text-gray-500 mt-1">
+                {savedQuestions.length > 0 ? 'זמינות לחזרה' : 'טרם נשמרו שאלות'}
+              </div>
             </div>
           </motion.div>
 
@@ -238,7 +271,7 @@ const SimulationHistory: React.FC = () => {
                 }`}
               >
                 <History className="w-5 h-5 inline ml-2" />
-                היסטוריית מבחנים
+                היסטוריית מבחנים ({history.length})
               </button>
               <button
                 onClick={() => setActiveTab('saved')}
@@ -341,27 +374,28 @@ const SimulationHistory: React.FC = () => {
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div className="text-center">
                             <div className="text-2xl font-bold text-blue-600">
-                              {activity.score ? `${activity.score}%` : '-'}
+                              {activity.score ? `${activity.score}%` : activity.status === 'correct' ? '100%' : '0%'}
                             </div>
                             <div className="text-xs text-gray-500">ציון</div>
                           </div>
                           <div className="text-center">
                             <div className="text-lg font-semibold text-gray-700">
                               {activity.questionId === 'final' || activity.questionId === 'partial' ? 
-                                `${activity.correctAnswers}/${activity.totalAnswered}` : 
+                                `${activity.correctAnswers || 0}/${activity.totalAnswered || 0}` : 
                                 activity.status === 'correct' ? '1/1' : '0/1'
                               }
                             </div>
                             <div className="text-xs text-gray-500">נכונות</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-lg font-semibold text-gray-700">{activity.time}ד'</div>
+                            <div className="text-lg font-semibold text-gray-700">{activity.time || 0}ד'</div>
                             <div className="text-xs text-gray-500">זמן</div>
                           </div>
                           <div className="text-center">
                             <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">
                               {activity.questionId === 'final' ? 'מבחן מלא' : 
                                activity.questionId === 'partial' ? 'מבחן חלקי' : 
+                               activity.questionId === 'full-exam' ? 'מבחן שלם' :
                                `שאלה ${activity.questionId}`}
                             </span>
                           </div>
@@ -371,6 +405,7 @@ const SimulationHistory: React.FC = () => {
                   )}
                 </div>
               ) : (
+                // ... keep existing code (saved questions tab content)
                 <div className="space-y-4">
                   {savedLoading ? (
                     <div className="text-center py-12">
