@@ -48,119 +48,26 @@ const ProgressStats: React.FC = () => {
   const navigate = useNavigate();
   const { history, isLoading } = useActivityHistory();
 
-  // Calculate real stats from actual history
-  const totalQuestions = history.length;
-  const correctAnswers = history.filter(h => h.status === 'correct').length;
-  const wrongAnswers = history.filter(h => h.status === 'wrong').length;
-  const averageScore = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-  const totalTime = history.reduce((sum, h) => sum + (parseInt(h.time) || 0), 0);
+  // Mock data for demonstration - in real app this would come from activity history
+  const weeklyProgress = [
+    { week: 'שבוע 1', correct: 65, wrong: 35, total: 100 },
+    { week: 'שבוע 2', correct: 72, wrong: 28, total: 100 },
+    { week: 'שבוע 3', correct: 78, wrong: 22, total: 100 },
+    { week: 'שבוע 4', correct: 85, wrong: 15, total: 100 },
+  ];
 
-  // Generate weekly progress from actual history
-  const generateWeeklyData = () => {
-    if (history.length === 0) {
-      return [
-        { week: 'שבוע 1', correct: 0, wrong: 0, total: 0 },
-        { week: 'שבוע 2', correct: 0, wrong: 0, total: 0 },
-        { week: 'שבוע 3', correct: 0, wrong: 0, total: 0 },
-        { week: 'שבוע 4', correct: 0, wrong: 0, total: 0 },
-      ];
-    }
+  const topicPerformance = [
+    { topic: 'השלמת משפטים', score: 85, questions: 45 },
+    { topic: 'הבנת הנקרא', score: 78, questions: 32 },
+    { topic: 'אוצר מילים', score: 92, questions: 28 },
+    { topic: 'ניסוח מחדש', score: 73, questions: 21 },
+  ];
 
-    // Group history by weeks (simplified - using recent activity)
-    const recentHistory = history.slice(-28); // Last 28 entries as 4 weeks
-    const weekSize = Math.ceil(recentHistory.length / 4);
-    
-    return Array.from({ length: 4 }, (_, i) => {
-      const weekStart = i * weekSize;
-      const weekEnd = Math.min((i + 1) * weekSize, recentHistory.length);
-      const weekData = recentHistory.slice(weekStart, weekEnd);
-      
-      const correct = weekData.filter(h => h.status === 'correct').length;
-      const wrong = weekData.filter(h => h.status === 'wrong').length;
-      
-      return {
-        week: `שבוע ${i + 1}`,
-        correct,
-        wrong,
-        total: weekData.length
-      };
-    });
-  };
-
-  // Generate topic performance from actual history
-  const generateTopicPerformance = () => {
-    if (history.length === 0) {
-      return [
-        { topic: 'השלמת משפטים', score: 0, questions: 0 },
-        { topic: 'הבנת הנקרא', score: 0, questions: 0 },
-        { topic: 'אוצר מילים', score: 0, questions: 0 },
-        { topic: 'ניסוח מחדש', score: 0, questions: 0 },
-      ];
-    }
-
-    // Group by topic (simplified categorization)
-    const topicStats = {
-      'השלמת משפטים': { correct: 0, total: 0 },
-      'הבנת הנקרא': { correct: 0, total: 0 },
-      'אוצר מילים': { correct: 0, total: 0 },
-      'ניסוח מחדש': { correct: 0, total: 0 },
-    };
-
-    // Categorize questions based on questionId or type (simplified)
-    history.forEach(h => {
-      const questionId = parseInt(h.questionId);
-      let topic = 'השלמת משפטים'; // default
-      
-      if (questionId >= 1 && questionId <= 250) topic = 'השלמת משפטים';
-      else if (questionId >= 251 && questionId <= 500) topic = 'הבנת הנקרא';
-      else if (questionId >= 501 && questionId <= 750) topic = 'אוצר מילים';
-      else if (questionId >= 751) topic = 'ניסוח מחדש';
-
-      topicStats[topic].total++;
-      if (h.status === 'correct') {
-        topicStats[topic].correct++;
-      }
-    });
-
-    return Object.entries(topicStats).map(([topic, stats]) => ({
-      topic,
-      score: stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0,
-      questions: stats.total
-    }));
-  };
-
-  // Generate difficulty breakdown from actual history
-  const generateDifficultyBreakdown = () => {
-    if (history.length === 0) {
-      return [
-        { name: 'קל', value: 0, color: '#10B981' },
-        { name: 'בינוני', value: 0, color: '#F59E0B' },
-        { name: 'קשה', value: 0, color: '#EF4444' },
-      ];
-    }
-
-    // Simplified difficulty categorization based on questionId
-    const difficultyStats = { easy: 0, medium: 0, hard: 0 };
-    
-    history.forEach(h => {
-      const questionId = parseInt(h.questionId);
-      // Simple categorization - you can improve this based on your data structure
-      if (questionId % 3 === 0) difficultyStats.easy++;
-      else if (questionId % 3 === 1) difficultyStats.medium++;
-      else difficultyStats.hard++;
-    });
-
-    const total = history.length;
-    return [
-      { name: 'קל', value: Math.round((difficultyStats.easy / total) * 100), color: '#10B981' },
-      { name: 'בינוני', value: Math.round((difficultyStats.medium / total) * 100), color: '#F59E0B' },
-      { name: 'קשה', value: Math.round((difficultyStats.hard / total) * 100), color: '#EF4444' },
-    ];
-  };
-
-  const weeklyProgress = generateWeeklyData();
-  const topicPerformance = generateTopicPerformance();
-  const difficultyBreakdown = generateDifficultyBreakdown();
+  const difficultyBreakdown = [
+    { name: 'קל', value: 35, color: '#10B981' },
+    { name: 'בינוני', value: 45, color: '#F59E0B' },
+    { name: 'קשה', value: 20, color: '#EF4444' },
+  ];
 
   const chartConfig = {
     correct: {
@@ -177,8 +84,10 @@ const ProgressStats: React.FC = () => {
     },
   };
 
-  // Calculate study days (simplified)
-  const studyDays = Math.min(Math.ceil(totalQuestions / 10), 30); // Rough estimate
+  const totalQuestions = history.length;
+  const correctAnswers = history.filter(h => h.status === 'correct').length;
+  const averageScore = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+  const totalTime = history.reduce((sum, h) => sum + (parseInt(h.time) || 0), 0);
 
   return (
     <>
@@ -366,7 +275,7 @@ const ProgressStats: React.FC = () => {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, value }) => `${name} ${value}%`}
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
@@ -396,9 +305,9 @@ const ProgressStats: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span>יעד שבועי: 100 שאלות</span>
-                    <span className="font-medium">{Math.min(totalQuestions, 100)}/100</span>
+                    <span className="font-medium">78/100</span>
                   </div>
-                  <Progress value={Math.min((totalQuestions / 100) * 100, 100)} className="h-2" />
+                  <Progress value={78} className="h-2" />
                 </div>
                 
                 <div>
@@ -412,9 +321,9 @@ const ProgressStats: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span>ימי לימוד רצופים</span>
-                    <span className="font-medium">{studyDays} ימים</span>
+                    <span className="font-medium">12 ימים</span>
                   </div>
-                  <Progress value={Math.min((studyDays / 30) * 100, 100)} className="h-2" />
+                  <Progress value={80} className="h-2" />
                 </div>
               </CardContent>
             </Card>

@@ -13,28 +13,11 @@ const OverviewTab = () => {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const { toast } = useToast();
   
-  // Get user display name - prioritize displayName, then extract name from email, fallback to "משתמש"
-  const getUserDisplayName = () => {
-    if (currentUser?.displayName) {
-      return currentUser.displayName;
-    }
-    
-    if (currentUser?.email) {
-      // Extract name from email (part before @)
-      const emailName = currentUser.email.split('@')[0];
-      // Capitalize first letter
-      return emailName.charAt(0).toUpperCase() + emailName.slice(1);
-    }
-    
-    return "משתמש";
-  };
-
-  const userName = getUserDisplayName();
-  
   const userInitials = currentUser?.displayName 
     ? `${currentUser.displayName.split(' ')[0][0]}${currentUser.displayName.split(' ')[1]?.[0] || ''}`
-    : currentUser?.email?.substring(0, 2).toUpperCase() || "מש";
+    : currentUser?.email?.substring(0, 2).toUpperCase() || "משתמש";
   
+  const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || "משתמש";
   const joinDate = currentUser?.metadata?.creationTime 
     ? new Date(currentUser.metadata.creationTime).toLocaleDateString('he-IL')
     : "לא ידוע";

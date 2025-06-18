@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -66,7 +65,7 @@ const UserAccount = () => {
               <TabsList className={`grid ${isAdmin ? 'grid-cols-5' : 'grid-cols-4'} mb-8`}>
                 <TabsTrigger value="settings">הגדרות</TabsTrigger>
                 <TabsTrigger value="history">התקדמות</TabsTrigger>
-                <TabsTrigger value="saved">שאלות שמורות</TabsTrigger>
+                <TabsTrigger value="saved">שמורות</TabsTrigger>
                 <TabsTrigger value="overview">סקירה</TabsTrigger>
                 {isAdmin && (
                   <TabsTrigger value="admin">פאנל ניהול</TabsTrigger>

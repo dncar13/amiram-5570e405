@@ -6,14 +6,13 @@ export interface ActivityRecord {
   date: string;
   topic: string;
   questionId: string;
-  status: "correct" | "wrong" | "skipped" | "flagged";
+  status: "correct" | "wrong" | "skipped";
   time: string;
   score?: number;
   correctAnswers?: number;
   totalAnswered?: number;
   isCorrect?: boolean;
-  isCompleted?: boolean;
-  isFlagged?: boolean; // Track if question was flagged
+  isCompleted?: boolean; // Added the missing property
 }
 
 const ACTIVITY_HISTORY_KEY = "activity_history";
@@ -130,18 +129,4 @@ export const saveActivity = (activity: ActivityRecord) => {
     console.error("Failed to save activity:", err);
     return false;
   }
-};
-
-// Helper function to save flag activity
-export const saveFlagActivity = (questionId: string, topic: string, isFlagged: boolean) => {
-  const activity: ActivityRecord = {
-    date: new Date().toISOString(),
-    topic: topic,
-    questionId: questionId,
-    status: "flagged",
-    time: "0",
-    isFlagged: isFlagged
-  };
-  
-  return saveActivity(activity);
 };

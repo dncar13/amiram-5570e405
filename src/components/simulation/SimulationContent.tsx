@@ -3,7 +3,6 @@ import { Question } from "@/data/questionsData";
 import QuestionCard from "./QuestionCard";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";
-import { saveFlagActivity } from "@/hooks/useActivityHistory";
 
 interface SimulationContentProps {
   simulationComplete: boolean;
@@ -88,20 +87,6 @@ const SimulationContent = ({
   const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
   const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
 
-  // Enhanced flag toggle handler that saves activity
-  const handleToggleQuestionFlag = () => {
-    if (currentQuestion) {
-      const newFlagStatus = !questionFlags[currentQuestionIndex];
-      onToggleQuestionFlag();
-      
-      // Save flag activity
-      const topic = isQuestionSet ? `סט שאלות ${setNumber}` : "סימולציה";
-      saveFlagActivity(currentQuestion.id.toString(), topic, newFlagStatus);
-      
-      console.log(`Question ${currentQuestion.id} flag status changed to: ${newFlagStatus}`);
-    }
-  };
-
   if (simulationComplete) {
     return (
       <SimulationResults
@@ -151,7 +136,7 @@ const SimulationContent = ({
           progressPercentage={progressPercentage}
           currentScorePercentage={currentScorePercentage}
           onNavigateToQuestion={onNavigateToQuestion}
-          onToggleQuestionFlag={handleToggleQuestionFlag}
+          onToggleQuestionFlag={onToggleQuestionFlag}
           onResetProgress={onResetProgress}
           simulationType={isQuestionSet ? "question-set" : "topic"}
           setNumber={setNumber}
@@ -178,7 +163,7 @@ const SimulationContent = ({
           onNextQuestion={onNextQuestion}
           onPreviousQuestion={onPreviousQuestion}
           onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={handleToggleQuestionFlag}
+          onToggleQuestionFlag={onToggleQuestionFlag}
         />
       </div>
     </div>

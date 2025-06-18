@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -60,23 +59,7 @@ const Header = () => {
     console.log("⏳ Header: Still loading auth state...");
   }
 
-  // Get user display name - prioritize displayName, then extract name from email, fallback to "משתמש"
-  const getUserDisplayName = () => {
-    if (currentUser?.displayName) {
-      return currentUser.displayName;
-    }
-    
-    if (currentUser?.email) {
-      // Extract name from email (part before @)
-      const emailName = currentUser.email.split('@')[0];
-      // Capitalize first letter
-      return emailName.charAt(0).toUpperCase() + emailName.slice(1);
-    }
-    
-    return "משתמש";
-  };
-
-  const userDisplayName = getUserDisplayName();
+  const userDisplayName = currentUser?.displayName || currentUser?.email || "משתמש";
 
   return (
     <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
@@ -149,7 +132,7 @@ const Header = () => {
                     onClick={() => navigate("/account")}
                   >
                     <Archive className="ml-2 h-4 w-4" />
-                    החשבון שלי
+                    המחבון שלי
                   </DropdownMenuItem>
                   <DropdownMenuItem 
                     className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
@@ -163,7 +146,7 @@ const Header = () => {
                     onClick={() => navigate("/account?tab=saved")}
                   >
                     <BookmarkCheck className="ml-2 h-4 w-4" />
-                    שאלות שמורות
+                    שאילות שמורות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
                   <DropdownMenuItem 
@@ -252,7 +235,7 @@ const Header = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <Archive className="h-4 w-4 ml-2" />
-                      החשבון שלי
+                      המחבון שלי
                     </Link>
                     <Link 
                       to="/progress-stats" 
@@ -268,7 +251,7 @@ const Header = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <BookmarkCheck className="h-4 w-4 ml-2" />
-                      שאלות שמורות
+                      שאילות שמורות
                     </Link>
                     <Link 
                       to="/account" 
