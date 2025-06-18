@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Question } from "@/data/questionsData";
 import { Button } from "@/components/ui/button";
@@ -101,7 +100,7 @@ const UnifiedQuestionCard = ({
   };
 
   // Use the correct property names based on Question type
-  const questionText = currentQuestion.text || currentQuestion.question || '';
+  const questionText = currentQuestion.text || '';
   const answerOptions = currentQuestion.options || currentQuestion.answers || [];
 
   return (
