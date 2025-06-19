@@ -1,4 +1,3 @@
-
 import { test, expect } from '@playwright/test';
 import { HomePage } from '../pages/HomePage';
 import { SimulationPage } from '../pages/SimulationPage';
@@ -13,35 +12,77 @@ test.describe('בדיקות ביצועים', () => {
       
       const metrics = await page.evaluate(() => {
         return new Promise((resolve) => {
-          new PerformanceObserver((list) => {
+          let lcpValue = null;
+          let clsValue = 0;
+          let fidValue = null;
+          
+          // LCP Observer
+          const lcpObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
-            const lcp = entries.find(entry => entry.entryType === 'largest-contentful-paint');
+            const lastEntry = entries[entries.length - 1];
+            lcpValue = lastEntry.startTime;
+          });
+          lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+          
+          // CLS Observer
+          const clsObserver = new PerformanceObserver((list) => {
+            for (const entry of list.getEntries()) {
+              if (!entry.hadRecentInput) {
+                clsValue += entry.value;
+              }
+            }
+          });
+          clsObserver.observe({ entryTypes: ['layout-shift'] });
+          
+          // FID Observer
+          const fidObserver = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            if (entries.length > 0) {
+              fidValue = entries[0].processingStart - entries[0].startTime;
+            }
+          });
+          fidObserver.observe({ entryTypes: ['first-input'] });
+          
+          // Get FCP
+          const fcpEntry = performance.getEntriesByType('paint')
+            .find(entry => entry.name === 'first-contentful-paint');
+          const fcpValue = fcpEntry ? fcpEntry.startTime : null;
+          
+          // Resolve after timeout
+          setTimeout(() => {
+            lcpObserver.disconnect();
+            clsObserver.disconnect();
+            fidObserver.disconnect();
             
             resolve({
-              LCP: lcp ? lcp.startTime : null,
-              FCP: performance.getEntriesByType('paint').find(entry => entry.name === 'first-contentful-paint')?.startTime,
-              navigationTiming: performance.getEntriesByType('navigation')[0]
+              LCP: lcpValue,
+              FCP: fcpValue,
+              CLS: clsValue,
+              FID: fidValue
             });
-          }).observe({ entryTypes: ['largest-contentful-paint', 'paint'] });
-          
-          // Fallback timeout
-          setTimeout(() => resolve({ LCP: null, FCP: null }), 5000);
+          }, 5000);
         });
       });
       
-      console.log('Performance Metrics:', metrics);
+      console.log('Core Web Vitals:', metrics);
       
-      // LCP should be under 2.5s (good), under 4s (needs improvement)
-      if (metrics.LCP) {
-        expect(metrics.LCP).toBeLessThan(4000);
-        console.log(`LCP: ${metrics.LCP}ms`);
+      // Assertions
+      if (metrics.LCP !== null) {
+        expect(metrics.LCP).toBeLessThan(2500); // Good LCP
+        console.log(`✅ LCP: ${metrics.LCP.toFixed(2)}ms`);
       }
       
-      // FCP should be under 1.8s (good), under 3s (needs improvement)
-      if (metrics.FCP) {
-        expect(metrics.FCP).toBeLessThan(3000);
-        console.log(`FCP: ${metrics.FCP}ms`);
+      if (metrics.FCP !== null) {
+        expect(metrics.FCP).toBeLessThan(1800); // Good FCP
+        console.log(`✅ FCP: ${metrics.FCP.toFixed(2)}ms`);
       }
+      
+      if (metrics.CLS !== null) {
+        expect(metrics.CLS).toBeLessThan(0.1); // Good CLS
+        console.log(`✅ CLS: ${metrics.CLS.toFixed(3)}`);
+      }
+      
+      console.log(`ℹ️ FID: ${metrics.FID !== null ? metrics.FID.toFixed(2) + 'ms' : 'No interaction detected'}`);
     });
 
     test('מדידת זמני טעינה כלליים', async ({ page }) => {

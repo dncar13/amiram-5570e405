@@ -1,0 +1,116 @@
+
+name: E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 6 * * *' # Daily at 6 AM
+  workflow_dispatch: # Manual trigger
+
+env:
+  NODE_VERSION: '18'
+  
+jobs:
+  test:
+    name: Test on ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [desktop-chrome, desktop-firefox, mobile-chrome]
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: 'tests/package-lock.json'
+          
+      - name: Install dependencies
+        run: |
+          cd tests
+          npm ci
+          
+      - name: Install Playwright Browsers
+        run: |
+          cd tests
+          npx playwright install --with-deps chromium firefox
+          
+      - name: Run tests
+        run: |
+          cd tests
+          npm test -- --project=${{ matrix.browser }}
+        env:
+          BASE_URL: ${{ secrets.BASE_URL || 'http://localhost:5173' }}
+          
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.browser }}
+          path: |
+            tests/test-results/
+            tests/playwright-report/
+            tests/test-results.json
+            tests/test-results.xml
+          retention-days: 30
+          
+      - name: Upload screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-${{ matrix.browser }}
+          path: tests/screenshots/
+          retention-days: 7
+          
+  report:
+    name: Generate Test Report
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          
+      - name: Merge test results
+        run: |
+          mkdir -p merged-results
+          find artifacts -name "test-results.json" -exec cp {} merged-results/ \;
+          
+      - name: Generate summary report
+        run: |
+          echo "# Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Browser | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          for browser in desktop-chrome desktop-firefox mobile-chrome; do
+            if [ -f "artifacts/test-results-$browser/test-results.json" ]; then
+              echo "| $browser | ✅ |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| $browser | ❌ |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+      - name: Deploy report to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./artifacts
+          destination_dir: test-reports/${{ github.run_number }}

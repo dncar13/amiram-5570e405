@@ -15,10 +15,19 @@
     "test:critical": "playwright test --grep=\"@critical\"",
     "test:mobile": "playwright test --project=mobile",
     "test:desktop": "playwright test --project=desktop",
+    "test:chrome": "playwright test --project=desktop-chrome",
+    "test:firefox": "playwright test --project=desktop-firefox",
+    "test:safari": "playwright test --project=desktop-safari",
     "report": "playwright show-report",
-    "install-browsers": "playwright install --with-deps"
+    "install-browsers": "playwright install --with-deps",
+    "setup": "chmod +x scripts/initial-setup.sh && ./scripts/initial-setup.sh",
+    "clean": "rm -rf test-results playwright-report screenshots test-summary.*",
+    "coverage": "node scripts/coverage-report.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0"
-  }
+  },
+  "keywords": ["e2e", "testing", "playwright", "amiram-academy"],
+  "author": "Amiram Academy Team",
+  "license": "MIT"
 }
