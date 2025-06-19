@@ -15,19 +15,55 @@ export interface ActivityRecord {
   isCompleted?: boolean; // Added the missing property
 }
 
-const ACTIVITY_HISTORY_KEY = "activity_history";
 // Create a custom event for activity updates
 const ACTIVITY_UPDATED_EVENT = "activity_history_updated";
+
+// Function to get user-specific activity key
+const getUserActivityKey = (userEmail: string | null): string => {
+  if (!userEmail) return "activity_history"; // fallback for no user
+  return `activity_history_${userEmail}`;
+};
+
+// Helper function to get current user email from auth context
+const getCurrentUserEmail = (): string | null => {
+  try {
+    // Try to get user from localStorage directly where Supabase stores auth data
+    const authKeys = Object.keys(localStorage).filter(key => 
+      key.includes('supabase') || key.includes('auth')
+    );
+    
+    for (const key of authKeys) {
+      try {
+        const authData = JSON.parse(localStorage.getItem(key) || '{}');
+        if (authData.user?.email) {
+          return authData.user.email;
+        }
+        if (authData.access_token && authData.user?.email) {
+          return authData.user.email;
+        }
+      } catch {
+        continue;
+      }
+    }
+    
+    return null;
+  } catch {
+    return null;
+  }
+};
 
 export const useActivityHistory = () => {
   const [history, setHistory] = useState<ActivityRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { currentUser } = useAuth();
+  
+  // Get user-specific storage key
+  const activityKey = getUserActivityKey(currentUser?.email || null);
 
   const loadHistory = () => {
     setIsLoading(true);
     try {
-      const storedHistory = localStorage.getItem(ACTIVITY_HISTORY_KEY);
+      const storedHistory = localStorage.getItem(activityKey);
       if (storedHistory) {
         const parsedHistory = JSON.parse(storedHistory) as ActivityRecord[];
         // Sort by date (newest first)
@@ -71,7 +107,12 @@ export const useActivityHistory = () => {
 
 export const saveActivity = (activity: ActivityRecord) => {
   try {
-    const storedHistory = localStorage.getItem(ACTIVITY_HISTORY_KEY);
+    // Check if we have a current user context to get the right storage key
+    // Since this is called from outside the hook, we need to get user info
+    const currentUserEmail = getCurrentUserEmail();
+    const activityKey = getUserActivityKey(currentUserEmail);
+    
+    const storedHistory = localStorage.getItem(activityKey);
     let history: ActivityRecord[] = [];
     
     if (storedHistory) {
@@ -117,8 +158,8 @@ export const saveActivity = (activity: ActivityRecord) => {
     if (history.length > 100) {
       history = history.slice(0, 100);
     }
-    
-    localStorage.setItem(ACTIVITY_HISTORY_KEY, JSON.stringify(history));
+
+    localStorage.setItem(activityKey, JSON.stringify(history));
     console.log("Activity saved:", activityWithFormattedDate);
     
     // Dispatch event to notify listeners that activity has been updated

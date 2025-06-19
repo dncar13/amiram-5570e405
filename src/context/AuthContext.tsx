@@ -149,12 +149,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     setIsLoading(false);
   };
-
   // פונקציה חדשה לבדיקה ועדכון של הסשן הנוכחי
   const checkAndUpdateSession = async () => {
     try {
       console.log("🔍 Checking current session...");
-      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      // Use a timeout to prevent hanging
+      const sessionPromise = supabase.auth.getSession();
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Session check timeout')), 3000)
+      );
+      
+      const { data: { session }, error } = await Promise.race([
+        sessionPromise,
+        timeoutPromise
+      ]) as any;
       
       if (error) {
         console.error("❌ Error getting session:", error);
@@ -184,27 +193,54 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       updateAuthState(null);
     }
   };
-
   useEffect(() => {
     console.log("🔧 AuthContext: Setting up auth state listener...");
     
     let isMounted = true;
+    let initialCheckDone = false;
     
-    // בדיקה ראשונית של הסשן
-    checkAndUpdateSession();
-    
-    // Set up auth state listener
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    // Function to handle auth state changes
+    const handleAuthChange = (user: any) => {
       console.log("🔔 Auth state changed:");
       console.log("  - User exists:", !!user);
       console.log("  - User email:", user?.email || "No email");
       console.log("  - User ID:", user?.uid || "No ID");
       console.log("  - Component mounted:", isMounted);
+      console.log("  - Initial check done:", initialCheckDone);
       
       if (isMounted) {
         updateAuthState(user);
+        if (!initialCheckDone) {
+          initialCheckDone = true;
+          // Ensure loading is set to false after first auth check
+          setTimeout(() => {
+            if (isMounted) {
+              setIsLoading(false);
+            }
+          }, 100);
+        }
       }
-    });
+    };
+    
+    // בדיקה ראשונית של הסשן עם timeout
+    const initialCheck = async () => {
+      try {
+        await checkAndUpdateSession();
+      } catch (error) {
+        console.error("❌ Initial auth check failed:", error);
+        updateAuthState(null);
+      } finally {
+        if (isMounted && !initialCheckDone) {
+          initialCheckDone = true;
+          setIsLoading(false);
+        }
+      }
+    };
+    
+    initialCheck();
+    
+    // Set up auth state listener
+    const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
 
     return () => {
       console.log("🧹 Cleaning up auth listener");
@@ -221,15 +257,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     console.log("  - isAdmin:", isAdmin);
     console.log("  - isPremium:", isPremium);
   }, [currentUser, isLoading, isAdmin, isPremium]);
-
   const logout = async () => {
     try {
       console.log("🚪 Attempting logout...");
-      await logoutUser();
+      
+      // Clear local state first
+      setCurrentUser(null);
+      setIsAdmin(false);
+      setIsPremium(false);
+      setUserData(null);
+      setIsLoading(false);
+      
+      // Clear localStorage premium status
+      localStorage.removeItem("isPremiumUser");
+      
+      // Now call supabase logout
+      const result = await logoutUser();
+      
       console.log("✅ Logout successful");
+      
+      // Force page reload to ensure clean state
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
+      
       return Promise.resolve();
     } catch (error) {
       console.error("❌ Error during logout:", error);
+      
+      // Even if logout fails, clear local state
+      setCurrentUser(null);
+      setIsAdmin(false);
+      setIsPremium(false);
+      setUserData(null);
+      setIsLoading(false);
+      
+      // Force reload anyway
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
+      
       return Promise.reject(error);
     }
   };

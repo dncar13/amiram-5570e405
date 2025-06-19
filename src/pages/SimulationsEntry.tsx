@@ -131,13 +131,23 @@ const SimulationsEntry: React.FC = () => {
       bgColor: 'bg-purple-50'
     },
   ];
-
   const handleOptionClick = (option: SimulationOption) => {
     console.log("🎮 SimulationsEntry: Option clicked:", option.id);
     console.log("  - Requires auth:", option.requiresAuth);
     console.log("  - User authenticated:", !!currentUser);
     console.log("  - Is premium:", option.isPremium);
     console.log("  - User is premium:", isPremium);
+    console.log("  - Auth loading:", isLoading);
+
+    // If auth is still loading, wait before making navigation decisions
+    if (isLoading) {
+      console.log("⏳ Auth still loading, waiting...");
+      // Set a small timeout to allow auth to complete
+      setTimeout(() => {
+        handleOptionClick(option);
+      }, 100);
+      return;
+    }
 
     if (option.requiresAuth && !currentUser) {
       console.log("🔒 Redirecting to login (auth required)");
@@ -164,16 +174,27 @@ const SimulationsEntry: React.FC = () => {
   const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
   const x = useSpring(useTransform(mouseX, [0, 300], [-50, 50]), springConfig);
   const y = useSpring(useTransform(mouseY, [0, 300], [-50, 50]), springConfig);
-
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
-        {/* Background decoration */}
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
-        </div>        <div ref={containerRef} className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-12 lg:py-20">
+      {/* Show loading state while auth is loading */}
+      {isLoading ? (
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative w-16 h-16 mb-6 mx-auto">
+              <div className="absolute top-0 left-0 w-16 h-16 border-4 border-t-orange-500 border-r-orange-500/50 border-b-orange-500/30 border-l-orange-500/10 rounded-full animate-spin"></div>
+            </div>
+            <h2 className="text-xl font-semibold text-white mb-2">טוען...</h2>
+            <p className="text-gray-400">מכין את מרכז הסימולציות</p>
+          </div>
+        </div>
+      ) : (
+        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+          {/* Background decoration */}
+          <div className="fixed inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
+          </div><div ref={containerRef} className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-12 lg:py-20">
           {/* Header Section */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -453,9 +474,9 @@ const SimulationsEntry: React.FC = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
+          </motion.div>        </div>
         </div>
-      </div>
+      )}
       <Footer />
     </>
   );

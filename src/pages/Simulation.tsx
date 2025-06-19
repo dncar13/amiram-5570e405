@@ -21,9 +21,11 @@ import {
 } from "@/services/questionsService";
 import { Question } from "@/data/types/questionTypes";
 import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
+import { useAuth } from "@/context/AuthContext";
 
 const Simulation = () => {
   const navigate = useNavigate();
+  const { currentUser, isPremium, isLoading: authLoading } = useAuth();
   const { topicId, setId, difficulty, type, storyId } = useParams<{ 
     topicId: string; 
     setId: string; 

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -36,6 +35,7 @@ import ProgressStats from "./pages/ProgressStats";
 import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -112,11 +112,26 @@ const AnimatedRoutes = () => {
           <Route path="/premium" element={<Premium />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/account" element={<UserAccount />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/admin/questions" element={<AdminPanel />} />
-          <Route path="/admin/topics" element={<AdminPanel />} />
+          <Route path="/about" element={<About />} />          <Route path="/account" element={
+            <ProtectedRoute requireAuth={true}>
+              <UserAccount />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/questions" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/topics" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
           <Route path="/questions-sets" element={<QuestionsSets />} />
           <Route path="/questions-set/:setId/intro" element={<QuestionsSetPreparation />} />
           <Route path="/questions-set/:setId" element={<Simulation />} />
@@ -130,8 +145,16 @@ const AnimatedRoutes = () => {
           <Route path="/simulation/full" element={<FullSimulation />} />
           <Route path="/simulation/by-type" element={<SimulationsEntry />} />
           <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
-          <Route path="/simulation-history" element={<SimulationHistory />} />
-          <Route path="/progress-stats" element={<ProgressStats />} />
+          <Route path="/simulation-history" element={
+            <ProtectedRoute requireAuth={true}>
+              <SimulationHistory />
+            </ProtectedRoute>
+          } />
+          <Route path="/progress-stats" element={
+            <ProtectedRoute requireAuth={true}>
+              <ProgressStats />
+            </ProtectedRoute>
+          } />
           <Route path="/simulation/type/:type" element={<SimulationByType />} />
           <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
           

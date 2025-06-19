@@ -63,3 +63,9 @@ pogodin-e8784-firebase-adminsdk-*.json
 # MISC
 # ==========================
 *.local
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

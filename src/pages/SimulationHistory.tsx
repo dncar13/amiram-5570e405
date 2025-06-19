@@ -41,8 +41,7 @@ interface SimulationResult {
 
 const SimulationHistory: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
-  const { savedQuestions, removeQuestionById, isLoading: savedLoading } = useSavedQuestions();
+  const { currentUser } = useAuth();  const { savedQuestions, removeQuestionById, isLoading: savedLoading } = useSavedQuestions();
   const [simulations, setSimulations] = useState<SimulationResult[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -55,9 +54,229 @@ const SimulationHistory: React.FC = () => {
 
   if (!currentUser) {
     return null;
-  }
+  }  // חיבור לנתונים אמיתיים מ-localStorage
+  React.useEffect(() => {
+    const loadRealSimulationData = () => {
+      try {
+        setLoading(true);
+        const realSimulations: SimulationResult[] = [];
+        
+        // 1. טוען נתוני Activity History - המקור העיקרי (ספציפי למשתמש)
+        const userActivityKey = currentUser?.email ? `activity_history_${currentUser.email}` : 'activity_history';
+        const activityHistoryStr = localStorage.getItem(userActivityKey);
+        if (activityHistoryStr) {
+          try {
+            const activityHistory = JSON.parse(activityHistoryStr);
+            console.log('Activity history loaded:', activityHistory);
+            
+            // מגדיר מילון לקיבוץ פעילויות לפי נושא ותאריך
+            const groupedActivities = new Map<string, any[]>();
+            
+            activityHistory.forEach((activity: any) => {
+              // רק פעילויות שהושלמו או שיש להן ציון
+              if (activity.isCompleted || activity.score !== undefined || activity.totalAnswered > 0) {
+                const date = new Date(activity.date).toDateString();
+                const topic = activity.topic || 'כללי';
+                const key = `${topic}_${date}`;
+                
+                if (!groupedActivities.has(key)) {
+                  groupedActivities.set(key, []);
+                }
+                groupedActivities.get(key)!.push(activity);
+              }
+            });
+            
+            // המרה לפורמט SimulationResult
+            groupedActivities.forEach((activities, key) => {
+              // אם יש מספר פעילויות באותו יום ונושא, נקבץ אותן
+              const firstActivity = activities[0];
+              const totalQuestions = activities.reduce((sum, act) => sum + (act.totalAnswered || 0), 0);
+              const totalCorrect = activities.reduce((sum, act) => sum + (act.correctAnswers || 0), 0);
+              const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+              
+              // זיהוי סוג הסימולציה
+              const topic = firstActivity.topic || 'כללי';
+              let simulationType: 'full' | 'practice' | 'reading-comprehension' = 'practice';
+              let title = topic;
+              
+              if (topic.includes('מבחן מלא') || topic.includes('full') || totalQuestions >= 50) {
+                simulationType = 'full';
+                title = `מבחן מלא - ${totalQuestions} שאלות`;
+              } else if (topic.includes('קריאה') || topic.includes('הבנת הנקרא') || topic.includes('reading')) {
+                simulationType = 'reading-comprehension';
+                title = `הבנת הנקרא - ${topic}`;
+              } else {
+                title = activities.length > 1 ? `${topic} - ${activities.length} תרגילים` : topic;
+              }
+              
+              // חישוב זמן משוער (אם לא קיים)
+              const duration = firstActivity.time && !isNaN(parseInt(firstActivity.time)) ? 
+                `00:${firstActivity.time.toString().padStart(2, '0')}:00` : 
+                totalQuestions > 30 ? '01:30:00' : '00:25:00';
+              
+              realSimulations.push({
+                id: `activity_${key}_${activities.length}`,
+                type: simulationType,
+                title: title,
+                date: firstActivity.date,
+                duration: duration,
+                totalQuestions: totalQuestions,
+                correctAnswers: totalCorrect,
+                score: avgScore,
+                topics: [topic],
+                difficulty: avgScore >= 80 ? 'easy' : avgScore >= 60 ? 'medium' : 'hard',
+                status: 'completed'
+              });
+            });
+          } catch (error) {
+            console.error('Error parsing activity history:', error);
+          }
+        }
+        
+        // 2. בדיקת נתוני התקדמות סימולציות שנשמרו בלוקל סטורג'
+        const progressKeys = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.includes('_progress_') || key.includes('simulation_progress')) && 
+              !key.includes('activity_history') && !key.includes('conflict')) {
+            progressKeys.push(key);
+          }
+        }
+        
+        progressKeys.forEach(key => {
+          try {
+            const progressData = JSON.parse(localStorage.getItem(key) || '{}');
+            // רק אם יש התקדמות משמעותית
+            if (progressData.answeredCount > 3 || progressData.correctCount > 0) {
+              const simulationType = key.includes('qs_') ? 'practice' : 
+                                   key.includes('topic_') ? 'practice' : 'practice';
+              
+              const score = progressData.score || 
+                           (progressData.correctCount && progressData.totalQuestions ? 
+                            Math.round((progressData.correctCount / progressData.totalQuestions) * 100) : 0);
+              
+              const date = progressData.lastSaved || progressData.timestamp || new Date().toISOString();
+              const formattedDate = new Date(date).toLocaleDateString('he-IL', {
+                year: 'numeric',
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+              });
+              
+              const title = key.includes('qs_') ? `קבוצת שאלות ${key.split('_')[2] || ''}` : 
+                           key.includes('topic_') ? `נושא ${key.split('_')[2] || ''}` : 'סימולציה בהתקדמות';
+              
+              realSimulations.push({
+                id: `progress_${key}`,
+                type: simulationType,
+                title: title,
+                date: formattedDate,
+                duration: progressData.remainingTime ? 
+                         `00:${Math.floor((1800 - progressData.remainingTime) / 60)}:${((1800 - progressData.remainingTime) % 60).toString().padStart(2, '0')}` : 
+                         '00:15:00',
+                totalQuestions: progressData.totalQuestions || progressData.answeredCount || 50,
+                correctAnswers: progressData.correctCount || progressData.correctQuestionsCount || 0,
+                score: score,
+                topics: [progressData.topicId ? `נושא ${progressData.topicId}` : 'כללי'],
+                difficulty: score >= 80 ? 'easy' : score >= 60 ? 'medium' : 'hard',
+                status: progressData.completed ? 'completed' : 'abandoned'
+              });
+            }
+          } catch (error) {
+            console.error(`Error parsing progress data for ${key}:`, error);
+          }
+        });
+        
+        // 3. בדיקת נתוני Quick Practice (מ-sessionStorage)
+        const quickPracticeKeys = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          if (key && key.includes('quick_practice_progress_')) {
+            quickPracticeKeys.push(key);
+          }
+        }
+        
+        quickPracticeKeys.forEach(key => {
+          try {
+            const quickData = JSON.parse(sessionStorage.getItem(key) || '{}');
+            if (quickData.completed || quickData.score) {
+              const practiceType = key.replace('quick_practice_progress_', '');
+              
+              realSimulations.push({
+                id: `quick_${key}`,
+                type: 'practice',
+                title: `תרגול מהיר - ${practiceType}`,
+                date: new Date().toLocaleDateString('he-IL', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                }),
+                duration: '00:10:00',
+                totalQuestions: quickData.totalQuestions || 25,
+                correctAnswers: Math.round((quickData.score / 100) * (quickData.totalQuestions || 25)),
+                score: quickData.score || 0,
+                topics: [practiceType],
+                difficulty: 'medium',
+                status: quickData.completed ? 'completed' : 'abandoned'
+              });
+            }
+          } catch (error) {
+            console.error(`Error parsing quick practice data for ${key}:`, error);
+          }
+        });
+        
+        // מיון לפי תאריך (החדשים ראשון) והסרת כפילויות
+        const uniqueSimulations = realSimulations.filter((sim, index, self) => 
+          index === self.findIndex(s => s.title === sim.title && s.date === sim.date)
+        );
+        
+        const sortedSimulations = uniqueSimulations.sort((a, b) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        
+        setSimulations(sortedSimulations);
+        
+        console.log('Loaded real simulation data:', {
+          total: sortedSimulations.length,
+          byType: {
+            full: sortedSimulations.filter(s => s.type === 'full').length,
+            practice: sortedSimulations.filter(s => s.type === 'practice').length,
+            reading: sortedSimulations.filter(s => s.type === 'reading-comprehension').length
+          },
+          simulations: sortedSimulations
+        });
+        
+        // אם אין נתונים אמיתיים, נשתמש בנתונים לדוגמה
+        if (sortedSimulations.length === 0) {
+          console.log('No real simulation data found, using mock data');
+          setSimulations(mockSimulations);
+        }
+      } catch (error) {
+        console.error('Error loading simulation data:', error);
+        setSimulations(mockSimulations);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadRealSimulationData();
+    
+    // מאזין לעדכונים בhistory
+    const handleActivityUpdate = () => {
+      console.log('Activity updated, reloading simulation data...');
+      loadRealSimulationData();
+    };
+    
+    window.addEventListener('activity_history_updated', handleActivityUpdate);
+    return () => {
+      window.removeEventListener('activity_history_updated', handleActivityUpdate);
+    };
+  }, [currentUser]);
 
-  // נתונים ריאליסטיים לדוגמה - בפועל יגיעו מ-localStorage או מהשרת
+  // נתונים לדוגמה כרזרב (יוצגו רק אם אין נתונים אמיתיים)
   const mockSimulations: SimulationResult[] = [
     {
       id: '1',
@@ -110,15 +329,9 @@ const SimulationHistory: React.FC = () => {
       topics: ['ניסוח מחדש'],
       difficulty: 'easy',
       status: 'completed'
-    }
-  ];
+    }  ];
 
-  useEffect(() => {
-    // בעתיד נטען את הנתונים האמיתיים מהשרת או localStorage
-    setSimulations(mockSimulations);
-    setLoading(false);
-  }, []);
-
+  // פונקציות עזר
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600';
     if (score >= 60) return 'text-yellow-600';
@@ -158,6 +371,14 @@ const SimulationHistory: React.FC = () => {
     const hours = Math.floor(totalMinutes / 60);
     const minutes = Math.round(totalMinutes % 60);
     return `${hours}:${minutes.toString().padStart(2, '0')}:00`;
+  };
+
+  const getCompletedSimulations = () => {
+    return simulations.filter(sim => sim.status === 'completed').length;
+  };
+  const getTotalQuestionsAnswered = () => {
+    return simulations.filter(sim => sim.status === 'completed')
+                     .reduce((total, sim) => total + sim.totalQuestions, 0);
   };
 
   const getSimulationIcon = (type: string) => {
