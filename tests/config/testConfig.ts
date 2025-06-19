@@ -1,78 +1,45 @@
 
 export const TestConfig = {
-  // Timeouts
-  DEFAULT_TIMEOUT: 30000,
-  NETWORK_TIMEOUT: 15000,
-  ELEMENT_TIMEOUT: 10000,
+  // Test users for different scenarios
+  TEST_USERS: {
+    VALID: {
+      email: process.env.TEST_USER_EMAIL || 'test@example.com',
+      password: process.env.TEST_USER_PASSWORD || 'Test@1234!'
+    },
+    PREMIUM: {
+      email: process.env.PREMIUM_USER_EMAIL || 'premium@example.com',
+      password: process.env.PREMIUM_USER_PASSWORD || 'Premium@1234!'
+    },
+    ADMIN: {
+      email: process.env.ADMIN_USER_EMAIL || 'admin@example.com',
+      password: process.env.ADMIN_USER_PASSWORD || 'Admin@1234!'
+    }
+  },
+
+  // Environment settings
+  BASE_URL: process.env.BASE_URL || 'http://localhost:5173',
   
+  // Test timeouts (in milliseconds)
+  TIMEOUTS: {
+    DEFAULT: 30000,
+    NAVIGATION: 15000,
+    API_RESPONSE: 10000,
+    ELEMENT_VISIBLE: 5000
+  },
+
   // Performance thresholds
   PERFORMANCE: {
-    MAX_LOAD_TIME: 5000,
-    MAX_LCP: 4000,
-    MAX_FCP: 3000,
-    MAX_MEMORY_INCREASE: 50 * 1024 * 1024, // 50MB
-    MAX_TRANSITION_TIME: 500,
+    PAGE_LOAD_TIME: 5000,
+    LCP_THRESHOLD: 2500,
+    FCP_THRESHOLD: 1800,
+    CLS_THRESHOLD: 0.1,
+    MEMORY_LEAK_THRESHOLD: 50 * 1024 * 1024 // 50MB
   },
-  
-  // Visual regression
+
+  // Visual regression settings
   VISUAL: {
     MAX_DIFF_PIXELS: 100,
     THRESHOLD: 0.2,
-  },
-  
-  // Test data
-  TEST_USERS: {
-    VALID: {
-      email: 'test@example.com',
-      password: 'Test@1234!'
-    },
-    PREMIUM: {
-      email: 'premium@example.com',
-      password: 'Premium@1234!'
-    },
-    ADMIN: {
-      email: 'admin@example.com',
-      password: 'Admin@1234!'
-    }
-  },
-  
-  // URLs
-  BASE_URL: process.env.BASE_URL || 'http://localhost:5173',
-  
-  // Retry configuration
-  RETRY: {
-    MAX_RETRIES: 3,
-    DELAY: 1000
-  },
-  
-  // Security test payloads
-  SECURITY: {
-    XSS_PAYLOADS: [
-      '<script>alert("XSS")</script>',
-      '<img src=x onerror="alert(1)">',
-      'javascript:alert(1)',
-      '<svg onload=alert(1)>',
-      '"><script>alert(1)</script>'
-    ],
-    SQL_PAYLOADS: [
-      "'; DROP TABLE users; --",
-      "' OR '1'='1",
-      "' UNION SELECT * FROM users --",
-      "admin'--"
-    ]
-  },
-  
-  // Browser configurations
-  BROWSERS: {
-    CHROMIUM: { name: 'chromium' },
-    FIREFOX: { name: 'firefox' },
-    WEBKIT: { name: 'webkit' }
-  },
-  
-  // Viewport sizes
-  VIEWPORTS: {
-    MOBILE: { width: 375, height: 667 },
-    TABLET: { width: 768, height: 1024 },
-    DESKTOP: { width: 1920, height: 1080 }
+    FULL_PAGE_DELAY: 1000
   }
 };

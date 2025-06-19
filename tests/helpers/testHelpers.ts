@@ -1,13 +1,34 @@
 
-import { Page } from '@playwright/test';
+import { Page, expect, Locator } from '@playwright/test';
+import { TestConfig } from '../config/testConfig';
 
 export class TestHelpers {
-  static async waitForNetworkIdle(page: Page, timeout = 30000) {
+  /**
+   * Clear all browser data
+   */
+  static async clearBrowserData(page: Page) {
+    await page.context().clearCookies();
+    await page.context().clearPermissions();
+    
+    // Clear localStorage and sessionStorage
+    await page.evaluate(() => {
+      localStorage.clear();
+      sessionStorage.clear();
+    });
+  }
+
+  /**
+   * Wait for network to be idle
+   */
+  static async waitForNetworkIdle(page: Page, timeout = TestConfig.TIMEOUTS.DEFAULT) {
     await page.waitForLoadState('networkidle', { timeout });
   }
 
+  /**
+   * Mock API response
+   */
   static async mockAPIResponse(page: Page, endpoint: string, response: any, status = 200) {
-    await page.route(`**/api/${endpoint}**`, route => {
+    await page.route(`**/api/${endpoint}*`, route => {
       route.fulfill({
         status,
         contentType: 'application/json',
@@ -16,164 +37,140 @@ export class TestHelpers {
     });
   }
 
-  static async mockAPIError(page: Page, endpoint: string, status = 500, error = 'Internal Server Error') {
-    await page.route(`**/api/${endpoint}**`, route => {
-      route.fulfill({
-        status,
-        contentType: 'application/json',
-        body: JSON.stringify({ error })
-      });
+  /**
+   * Take screenshot with timestamp
+   */
+  static async takeTimestampedScreenshot(page: Page, name: string) {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+    await page.screenshot({ 
+      path: `test-results/screenshots/${name}-${timestamp}.png`,
+      fullPage: true 
     });
   }
 
-  static async clearBrowserData(page: Page) {
-    await page.evaluate(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
-    await page.context().clearCookies();
-  }
-
-  static async simulateSlowNetwork(page: Page, delay = 1000) {
-    await page.route('**/*', async route => {
-      await new Promise(resolve => setTimeout(resolve, delay));
-      route.continue();
-    });
-  }
-
-  static async captureConsoleErrors(page: Page): Promise<string[]> {
-    const errors: string[] = [];
-    
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
-        errors.push(msg.text());
-      }
-    });
-    
-    page.on('pageerror', error => {
-      errors.push(error.message);
-    });
-    
-    return errors;
-  }
-
-  static async measureLoadTime(page: Page, url: string): Promise<number> {
+  /**
+   * Wait for element to be stable (no movement for specified time)
+   */
+  static async waitForElementStable(element: Locator, timeout = 2000) {
+    let lastPosition: { x: number; y: number } | null = null;
     const startTime = Date.now();
-    await page.goto(url);
-    await page.waitForLoadState('networkidle');
-    return Date.now() - startTime;
+    
+    while (Date.now() - startTime < timeout) {
+      try {
+        const boundingBox = await element.boundingBox();
+        if (boundingBox) {
+          const currentPosition = { x: boundingBox.x, y: boundingBox.y };
+          
+          if (lastPosition && 
+              Math.abs(lastPosition.x - currentPosition.x) < 1 && 
+              Math.abs(lastPosition.y - currentPosition.y) < 1) {
+            return; // Element is stable
+          }
+          
+          lastPosition = currentPosition;
+        }
+      } catch (error) {
+        // Element might not be visible yet
+      }
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
   }
 
-  static async getMemoryUsage(page: Page): Promise<number> {
+  /**
+   * Get performance metrics
+   */
+  static async getPerformanceMetrics(page: Page) {
     return await page.evaluate(() => {
-      return (performance as any).memory?.usedJSHeapSize || 0;
+      const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      const paint = performance.getEntriesByType('paint');
+      
+      return {
+        domContentLoaded: navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart,
+        loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
+        firstPaint: paint.find(entry => entry.name === 'first-paint')?.startTime,
+        firstContentfulPaint: paint.find(entry => entry.name === 'first-contentful-paint')?.startTime,
+        memoryUsage: (performance as any).memory?.usedJSHeapSize || 0
+      };
     });
   }
 
-  static async injectCSS(page: Page, css: string) {
-    await page.addStyleTag({ content: css });
+  /**
+   * Simulate slow network connection
+   */
+  static async simulateSlowNetwork(page: Page) {
+    const client = await page.context().newCDPSession(page);
+    await client.send('Network.emulateNetworkConditions', {
+      offline: false,
+      downloadThroughput: 1.5 * 1024 * 1024 / 8, // 1.5 Mbps
+      uploadThroughput: 750 * 1024 / 8, // 750 Kbps
+      latency: 40 // 40ms
+    });
   }
 
-  static async hideAnimations(page: Page) {
-    await this.injectCSS(page, `
-      *, *::before, *::after {
-        animation-duration: 0s !important;
-        transition-duration: 0s !important;
-        animation-delay: 0s !important;
-        transition-delay: 0s !important;
+  /**
+   * Check if element is in viewport
+   */
+  static async isElementInViewport(element: Locator): Promise<boolean> {
+    return await element.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      );
+    });
+  }
+
+  /**
+   * Scroll element into view smoothly
+   */
+  static async scrollToElement(element: Locator) {
+    await element.evaluate((el) => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    await this.waitForElementStable(element);
+  }
+
+  /**
+   * Generate random Hebrew text
+   */
+  static generateHebrewText(length: number): string {
+    const hebrewChars = 'אבגדהוזחטיכלמנסעפצקרשת';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += hebrewChars.charAt(Math.floor(Math.random() * hebrewChars.length));
+    }
+    return result;
+  }
+
+  /**
+   * Validate email format
+   */
+  static isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  /**
+   * Wait with exponential backoff
+   */
+  static async waitWithBackoff(
+    condition: () => Promise<boolean>,
+    maxAttempts = 5,
+    baseDelay = 1000
+  ): Promise<boolean> {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      if (await condition()) {
+        return true;
       }
-    `);
-  }
-
-  static async waitForElement(page: Page, selector: string, timeout = 10000) {
-    await page.waitForSelector(selector, { timeout });
-  }
-
-  static async retry<T>(fn: () => Promise<T>, maxRetries = 3, delay = 1000): Promise<T> {
-    for (let i = 0; i < maxRetries; i++) {
-      try {
-        return await fn();
-      } catch (error) {
-        if (i === maxRetries - 1) throw error;
+      
+      if (attempt < maxAttempts) {
+        const delay = baseDelay * Math.pow(2, attempt - 1);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
-    throw new Error('Max retries reached');
-  }
-
-  static generateUniqueEmail(): string {
-    return `test_${Date.now()}_${Math.random().toString(36).substring(7)}@example.com`;
-  }
-
-  static async checkAccessibility(page: Page) {
-    // Basic accessibility checks
-    const issues: string[] = [];
-    
-    // Check for images without alt text
-    const imagesWithoutAlt = await page.locator('img:not([alt])').count();
-    if (imagesWithoutAlt > 0) {
-      issues.push(`${imagesWithoutAlt} images without alt text`);
-    }
-    
-    // Check for buttons without accessible names
-    const buttonsWithoutNames = await page.locator('button:not([aria-label]):not([title])').count();
-    if (buttonsWithoutNames > 0) {
-      issues.push(`${buttonsWithoutNames} buttons without accessible names`);
-    }
-    
-    // Check for form inputs without labels
-    const inputsWithoutLabels = await page.locator('input:not([aria-label]):not([title])').count();
-    if (inputsWithoutLabels > 0) {
-      issues.push(`${inputsWithoutLabels} inputs without labels`);
-    }
-    
-    return issues;
-  }
-
-  static async simulateUserActions(page: Page, actions: Array<{ type: string, selector?: string, text?: string }>) {
-    for (const action of actions) {
-      switch (action.type) {
-        case 'click':
-          if (action.selector) {
-            await page.click(action.selector);
-          }
-          break;
-        case 'type':
-          if (action.selector && action.text) {
-            await page.fill(action.selector, action.text);
-          }
-          break;
-        case 'wait':
-          await page.waitForTimeout(1000);
-          break;
-        case 'scroll':
-          await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-          break;
-      }
-    }
+    return false;
   }
 }
-
-export const generateTestData = {
-  user: () => ({
-    email: TestHelpers.generateUniqueEmail(),
-    password: 'Test@1234!',
-    firstName: 'בדיקה',
-    lastName: 'אוטומטית'
-  }),
-  
-  longText: (length = 1000) => 'א'.repeat(length),
-  
-  xssPayloads: [
-    '<script>alert("XSS")</script>',
-    '<img src=x onerror="alert(1)">',
-    'javascript:alert(1)',
-    '<svg onload=alert(1)>'
-  ],
-  
-  sqlPayloads: [
-    "'; DROP TABLE users; --",
-    "' OR '1'='1",
-    "' UNION SELECT * FROM users --"
-  ]
-};

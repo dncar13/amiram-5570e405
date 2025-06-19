@@ -24,7 +24,10 @@ test.describe('בדיקות Authentication', () => {
   test.describe('התחברות', () => {
     test('התחברות מוצלחת עם משתמש קיים', async () => {
       await loginPage.goto();
-      await loginPage.login(TestUsers.validUser.email, Test
+      await loginPage.login(TestUsers.validUser.email, TestUsers.validUser.password);
+      await loginPage.expectLoginSuccess();
+    });
+
     test('התחברות עם פרטים שגויים', async () => {
       await loginPage.goto();
       await loginPage.login(TestUsers.invalidUser.email, TestUsers.invalidUser.password);
