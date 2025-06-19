@@ -100,7 +100,7 @@ export default defineConfig({
       },
     },
     
-    // Special configurations for test scripts
+    // Special configurations
     {
       name: 'desktop',
       use: { 
@@ -117,13 +117,13 @@ export default defineConfig({
     }
   ],
 
-  // Local dev server - תיקון הנתיב
+  // Local dev server - שימוש בVite (הפורמט הסטנדרטי)
   webServer: {
-    command: 'cd .. && npm run dev',  // תיקון: הוספת 'cd .. &&'
+    command: 'cd .. && npm run dev || cd .. && npx vite',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
-    cwd: '..',  // הוספת cwd להבהרה
+    cwd: '..',
   },
   
   // התאמות לvisual regression
