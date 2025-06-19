@@ -117,12 +117,13 @@ export default defineConfig({
     }
   ],
 
-  // Local dev server
+  // Local dev server - תיקון הנתיב
   webServer: {
-    command: 'npm run dev',
+    command: 'cd .. && npm run dev',  // תיקון: הוספת 'cd .. &&'
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
+    cwd: '..',  // הוספת cwd להבהרה
   },
   
   // התאמות לvisual regression
