@@ -1,215 +1,286 @@
 
-# Amiram Academy - בדיקות אוטומטיות עם Playwright
+# Amiram Academy - E2E Testing Suite
 
-## סקירה כללית
-מערכת בדיקות אוטומטיות מקיפה לאתר Amiram Academy, הכוללת:
-- בדיקות בסיסיות ביצועים
-- בדיקות Authentication (הרשמה/התחברות)
-- בדיקות מערכת הסימולציה
-- בדיקות עמוד ההיסטוריה
-- בדיקות End-to-End מלאות
+מערכת בדיקות מקיפה ומתקדמת לאתר Amiram Academy עם Playwright.
 
-## התקנה והרצה
+## 🚀 התקנה מהירה
 
-### התקנת תלויות
 ```bash
 cd tests
 npm install
+npx playwright install --with-deps
 ```
 
-### התקנת דפדפנים
+## 🏃‍♂️ הרצת בדיקות
+
+### בדיקות בסיסיות
 ```bash
-npx playwright install
+npm test                    # כל הבדיקות
+npm run test:headed         # עם GUI
+npm run test:debug          # מצב debug
+npm run test:ui             # Playwright UI
 ```
 
-### הרצת הבדיקות
-
-#### כל הבדיקות
+### בדיקות ספציפיות
 ```bash
-npm test
+npm run test:security       # בדיקות אבטחה
+npm run test:performance    # בדיקות ביצועים  
+npm run test:visual         # בדיקות visual regression
+npm run test:smoke          # בדיקות עשן
+npm run test:critical       # בדיקות קריטיות
 ```
 
-#### בדיקות עם UI אינטראקטיבי
+### בדיקות לפי מכשיר
 ```bash
-npm run test:ui
+npm run test:mobile         # מובייל בלבד
+npm run test:desktop        # דסקטופ בלבד
 ```
 
-#### בדיקות עם ראש (headed mode)
+### דוחות
 ```bash
-npm run test:headed
+npm run report              # פתיחת דוח HTML
 ```
 
-#### בדיקות לדיבוג
-```bash
-npm run test:debug
-```
+## 📁 מבנה התיקיות
 
-#### בדיקות בדפדפן ספציפי
-```bash
-npm run test:chrome   # Chrome בלבד
-npm run test:firefox  # Firefox בלבד
-npm run test:safari   # Safari בלבד
-npm run test:mobile   # Mobile Chrome
-```
-
-#### דוח תוצאות
-```bash
-npm run report
-```
-
-## מבנה הבדיקות
-
-### Page Object Model
 ```
 tests/
-├── pages/
-│   ├── BasePage.ts          # פונקציונליות בסיסית משותפת
-│   ├── HomePage.ts          # דף הבית
-│   ├── LoginPage.ts         # דף התחברות
-│   ├── SignupPage.ts        # דף הרשמה
-│   ├── SimulationPage.ts    # דף סימולציה
-│   ├── ResultsPage.ts       # דף תוצאות
-│   └── HistoryPage.ts       # דף היסטוריה
-├── utils/
-│   └── testData.ts          # נתונים לבדיקות
-└── specs/
-    ├── 01-basic.spec.ts     # בדיקות בסיסיות
-    ├── 02-authentication.spec.ts  # בדיקות אימות
-    ├── 03-simulation.spec.ts      # בדיקות סימולציה
-    ├── 04-history.spec.ts         # בדיקות היסטוריה
-    └── 05-e2e.spec.ts            # בדיקות מלאות
+├── specs/                  # קבצי הבדיקות
+│   ├── 01-basic.spec.ts           # בדיקות בסיסיות
+│   ├── 02-authentication.spec.ts  # התחברות והרשמה
+│   ├── 03-simulation.spec.ts      # מערכת סימולציה
+│   ├── 04-history.spec.ts         # היסטוריה והתקדמות
+│   ├── 05-e2e.spec.ts            # End-to-End flows
+│   ├── 06-security.spec.ts        # 🔒 בדיקות אבטחה
+│   ├── 07-error-handling.spec.ts  # טיפול בשגיאות
+│   ├── 08-visual-regression.spec.ts # בדיקות visual
+│   └── 09-performance.spec.ts     # 🚀 בדיקות ביצועים
+├── pages/                  # Page Object Model
+│   ├── BasePage.ts
+│   ├── HomePage.ts
+│   ├── LoginPage.ts
+│   ├── SimulationPage.ts
+│   └── ...
+├── utils/                  # כלי עזר
+│   └── testData.ts
+├── helpers/                # פונקציות עזר
+│   └── testHelpers.ts
+├── config/                 # הגדרות
+│   └── testConfig.ts
+├── fixtures/               # Fixtures מותאמים
+│   └── testFixtures.ts
+├── reporters/              # דוחות מותאמים
+│   └── customReporter.ts
+└── playwright.config.ts    # הגדרות Playwright
 ```
 
-## תצורה
+## 🔒 בדיקות אבטחה
 
-### משתני סביבה
+### מה נבדק:
+- **XSS Protection** - הגנה מפני Cross-Site Scripting
+- **SQL Injection** - הגנה מפני SQL Injection  
+- **Rate Limiting** - הגנה מפני Brute Force
+- **Input Validation** - אימות קלטים
+- **Session Management** - ניהול sessions
+
+### הרצה:
 ```bash
-# .env
-BASE_URL=https://amiram.net  # או http://localhost:5173 לפיתוח
+npm run test:security
 ```
 
-### התאמת נתוני בדיקה
-ערוך את `tests/utils/testData.ts`:
+## 🚀 בדיקות ביצועים
+
+### מה נמדד:
+- **Core Web Vitals** - LCP, FID, CLS
+- **Load Times** - זמני טעינה
+- **Memory Usage** - שימוש בזיכרון
+- **Network Performance** - ביצועי רשת
+- **Question Transitions** - מעבר בין שאלות
+
+### הרצה:
+```bash
+npm run test:performance
+```
+
+## 🎨 בדיקות Visual Regression
+
+### מה נבדק:
+- דפים עיקריים בגדלים שונים
+- רכיבים מרכזיים
+- מצבי שגיאה
+- Hover ו-Focus states
+- Cross-browser compatibility
+
+### הרצה:
+```bash
+npm run test:visual
+```
+
+## 🛠️ תכונות מתקדמות
+
+### Fixtures מותאמים
 ```typescript
-export const TestUsers = {
-  validUser: {
-    email: 'your-test-user@example.com',
-    password: 'YourTestPassword123!'
-  }
-  // ...
-};
+import { test } from './fixtures/testFixtures';
+
+test('בדיקה עם משתמש מחובר', async ({ authenticatedPage }) => {
+  // המש××תמש כבר מחובר
+});
+
+test('בדיקה עם סימולציה פעילה', async ({ simulationInProgress }) => {
+  // סימולציה כבר רצה
+});
 ```
 
-## סוגי בדיקות
-
-### 1. בדיקות בסיסיות (01-basic.spec.ts)
-- ✅ טעינת דף הבית
-- ✅ בדיקת ביצועים
-- ✅ בדיקת Responsive Design
-- ✅ בדיקת ניווט
-- ✅ בדיקת SEO Meta Tags
-- ✅ בדיקת נגישות
-
-### 2. בדיקות Authentication (02-authentication.spec.ts)
-- ✅ התחברות מוצלחת
-- ✅ התחברות עם פרטים שגויים
-- ✅ הרשמת משתמש חדש
-- ✅ בדיקת ולידציות
-- ✅ שכחת סיסמה
-- ✅ Flow מלא הרשמה→התחברות→התנתקות
-
-### 3. בדיקות סימולציה (03-simulation.spec.ts)
-- ✅ כניסה לסימולציה
-- ✅ התחלת סימולציה מלאה/תרגול
-- ✅ מענה על שאלות וניווט
-- ✅ שמירת שאלות
-- ✅ סיום סימולציה וקבלת תוצאות
-- ✅ בדיקת טיימר
-- ✅ בדיקת הסברים
-
-### 4. בדיקות היסטוריה (04-history.spec.ts)
-- ✅ טעינת עמוד היסטוריה
-- ✅ בדיקת סטטיסטיקות
-- ✅ מעבר בין טאבים
-- ✅ צפיה בסימולציות קוד
-- ✅ ניהול שאלות שמורות
-- ✅ חזרה על סימולציות
-
-### 5. בדיקות E2E (05-e2e.spec.ts)
-- ✅ Flow מלא הרשמה עד התנתקות
-- ✅ Flow סימולציה עם שמירת שאלות
-- ✅ התאוששות מסימולציה שנשמרה
-
-## טיפים לשימוש
-
-### הרצת בדיקה ספציפית
-```bash
-npx playwright test tests/specs/01-basic.spec.ts
-```
-
-### הרצת בדיקה ספציפית במצב debug
-```bash
-npx playwright test tests/specs/02-authentication.spec.ts --debug
-```
-
-### הרצה במצב headless עם screenshot בכשל
-```bash
-npx playwright test --screenshot=only-on-failure
-```
-
-### צפיה בדוח HTML
-```bash
-npx playwright show-report
-```
-
-## התאמות נדרשות
-
-### 1. עדכן Selectors
-בדוק את הקבצים ב `tests/pages/` ועדכן את ה-selectors בהתאם לקוד האמיתי:
+### Helper Functions
 ```typescript
-// דוגמה - עדכן את זה בהתאם לקוד שלך
-get loginButton() { 
-  return this.page.locator('button:has-text("התחבר")'); 
+import { TestHelpers } from './helpers/testHelpers';
+
+// Mock API responses
+await TestHelpers.mockAPIResponse(page, 'login', { success: true });
+
+// מדידת ביצועים
+const loadTime = await TestHelpers.measureLoadTime(page, '/');
+
+// בדיקת נגישות  
+const issues = await TestHelpers.checkAccessibility(page);
+```
+
+### Test Data Generators
+```typescript
+import { generateTestData } from './helpers/testHelpers';
+
+const user = generateTestData.user();
+const longText = generateTestData.longText(5000);
+```
+
+## 🏷️ Tags למיון בדיקות
+
+```typescript
+test('@smoke @critical דף הבית נטען', async ({ page }) => {
+  // בדיקה קריטית שרצה בכל build
+});
+
+test('@regression התחברות מורכבת', async ({ page }) => {
+  // בדיקה שרצה רק ב-regression
+});
+```
+
+### הרצה לפי tags:
+```bash
+npx playwright test --grep="@smoke"     # בדיקות עשן
+npx playwright test --grep="@critical"  # בדיקות קריטיות
+```
+
+## 📊 דוחות מתקדמים
+
+### דוח מותאם אישית
+הדוח כולל:
+- סיכום כללי של הבדיקות
+- ביצועים מפורטים  
+- בדיקות אבטחה
+- פירוט כשלים
+
+### CI/CD Integration
+```yaml
+# .github/workflows/e2e-tests.yml
+- name: Run E2E Tests
+  run: |
+    npm ci
+    npx playwright install --with-deps
+    npm test
+    
+- name: Upload Results
+  uses: actions/upload-artifact@v3
+  with:
+    name: test-results
+    path: |
+      test-results/
+      playwright-report/
+```
+
+## 🔧 הגדרות מתקדמות
+
+### playwright.config.ts
+- **Multi-browser testing** - Chrome, Firefox, Safari
+- **Mobile & Desktop viewports**
+- **Parallel execution**
+- **Auto-retry on failure**
+- **Screenshots & videos on failure**
+- **Custom reporters**
+
+### Performance Thresholds
+```typescript
+// בקובץ testConfig.ts
+PERFORMANCE: {
+  MAX_LOAD_TIME: 5000,      // 5 שניות
+  MAX_LCP: 4000,            // 4 שניות LCP
+  MAX_FCP: 3000,            // 3 שניות FCP
+  MAX_memory_INCREASE: 50MB  // עלייה מקסימלית בזיכרון
 }
 ```
 
-### 2. התאם הודעות שגיאה
-עדכן את ההודעות הצפויות ב `testData.ts`:
-```typescript
-texts: {
-  loginError: ['הודעת השגיאה האמיתית מSupabase'],
-  // ...
-}
-```
+## 🚨 Tips ו-Best Practices
 
-### 3. הוסף נתוני Test
-יצור משתמשי בדיקה ב-Supabase וכתוב:
-```typescript
-export const TestUsers = {
-  validUser: {
-    email: 'משתמש-אמיתי@domain.com',
-    password: 'SomeRealPassword123!'
-  }
-};
-```
-
-## דיבוג ופתרון בעיות
-
-### צפיה בבדיקות בזמן אמת
+### 1. לפני שמריצים בדיקות
 ```bash
+# וודא שהשרת רץ
+npm run dev
+
+# התקן dependencies
+npm install
+npx playwright install --with-deps
+```
+
+### 2. Debug בדיקות כושלות
+```bash
+# מצב debug עם breakpoints
+npm run test:debug
+
+# הרצה עם GUI
 npm run test:headed
+
+# רק בדיקה ספציפית  
+npx playwright test -g "שם הבדיקה"
 ```
 
-### הרצה איטית לצפיה
-```bash
-npx playwright test --headed --slowMo=1000
+### 3. עבודה עם selectors
+```typescript
+// עדיף data-testid
+page.locator('[data-testid="login-button"]')
+
+// fallback לtext
+page.locator('text=התחברות')
+
+// או שילוב
+page.locator('button:has-text("התחברות")')
 ```
 
-### שמירת וידאו של כל הבדיקות
-```bash
-npx playwright test --video=on
+### 4. המתנה נכונה
+```typescript
+// המתן לאלמנט
+await page.waitForSelector('[data-testid="result"]');
+
+// המתן לרשת
+await page.waitForLoadState('networkidle');
+
+// המתן מותנה
+await page.waitForFunction(() => document.title.includes('Results'));
 ```
+
+## 🤝 תרומה לפרויקט
+
+1. צור branch חדש: `git checkout -b feature/new-tests`
+2. הוסף בדיקות חדשות בתיקייה המתאימה
+3. הרץ את הבדיקות: `npm test`
+4. צור Pull Request
+
+## 📞 תמיכה
+
+אם יש בעיה עם הבדיקות:
+1. בדוק שכל ה-dependencies מותקנים
+2. וודא שהשרת רץ על הפורט הנכון
+3. הרץ `npm run test:debug` לבדיקה מפורטת
 
 ---
 
-**הערה חשובה**: יש להתאים את כל הקוד לQA הספציפי של האתר שלך - URLs, selectors, הודעות שגיאה, ונתוני בדיקה.
+**נכתב עבור Amiram Academy Testing Team** 🎯

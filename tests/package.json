@@ -1,22 +1,24 @@
 
 {
-  "name": "amiram-academy-e2e-tests",
+  "name": "amiram-academy-tests",
   "version": "1.0.0",
-  "description": "End-to-end tests for Amiram Academy using Playwright",
+  "description": "E2E Tests for Amiram Academy",
   "scripts": {
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
-    "test:chrome": "playwright test --project=chromium",
-    "test:firefox": "playwright test --project=firefox",
-    "test:safari": "playwright test --project=webkit",
-    "test:mobile": "playwright test --project='Mobile Chrome'",
+    "test:security": "playwright test --grep=\"אבטחה|security\"",
+    "test:performance": "playwright test --grep=\"ביצועים|performance\"",
+    "test:visual": "playwright test --grep=\"visual\"",
+    "test:smoke": "playwright test --grep=\"@smoke\"",
+    "test:critical": "playwright test --grep=\"@critical\"",
+    "test:mobile": "playwright test --project=mobile",
+    "test:desktop": "playwright test --project=desktop",
     "report": "playwright show-report",
-    "install": "npx playwright install"
+    "install-browsers": "playwright install --with-deps"
   },
   "devDependencies": {
-    "@playwright/test": "^1.40.0",
-    "@types/node": "^20.0.0"
+    "@playwright/test": "^1.40.0"
   }
 }
