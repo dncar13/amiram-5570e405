@@ -756,7 +756,8 @@
   .login-logo {
     text-align: center;
     margin-bottom: 32px;
-    animation: floatSlow 6s ease-in-out infinite, fadeInLogo 1.2s ease-out 0.4s forwards;
+    animation: floatSlow 6s ease-in-out infinite,
+      fadeInLogo 1.2s ease-out 0.4s forwards;
     display: flex;
     justify-content: center;
     align-items: center;
