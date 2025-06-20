@@ -50,7 +50,7 @@ jobs:
           cd tests
           npm test -- --project=${{ matrix.browser }}
         env:
-          BASE_URL: ${{ secrets.BASE_URL || 'http://localhost:5173' }}
+          BASE_URL: 'http://localhost:5173'
           
       - name: Upload test results
         if: always()
