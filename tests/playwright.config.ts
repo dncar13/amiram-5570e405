@@ -118,7 +118,7 @@ export default defineConfig({
 
   // Local dev server - נתיב מתוקן
   webServer: {
-    command: 'cd ../amiram && npm run dev',
+    command: 'cd .. && npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
