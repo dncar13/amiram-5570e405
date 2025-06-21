@@ -23,7 +23,7 @@ test.describe('Smoke Tests @smoke', () => {
     // Check for navigation links - try multiple selectors to cover different scenarios
     const navigationLinks = page.locator('nav a, [class*="nav"] a, header a, .navbar a');
     const allLinks = page.locator('a');
-    const linksWithHref = page.locator('a[href]:not([href=""]'):not([href="#"])');
+    const linksWithHref = page.locator('a[href]:not([href=""]):not([href="#"])');
     
     // Wait a bit for dynamic content to load
     await page.waitForTimeout(2000);
