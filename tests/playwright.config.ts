@@ -11,7 +11,6 @@ export default defineConfig({
   // דוחות משופרים
   reporter: [
     ['html', { open: 'never' }],
-    ['./reporters/customReporter.ts'],
     ['json', { outputFile: 'test-results.json' }],
     ['junit', { outputFile: 'test-results.xml' }],
     ['list', { printSteps: true }]
@@ -117,13 +116,12 @@ export default defineConfig({
     }
   ],
 
-  // Local dev server - שימוש בVite (הפורמט הסטנדרטי)
+  // Local dev server - נתיב מתוקן
   webServer: {
-    command: 'cd .. && npm run dev || cd .. && npx vite',
+    command: 'cd ../amiram && npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
-    cwd: '..',
   },
   
   // התאמות לvisual regression
