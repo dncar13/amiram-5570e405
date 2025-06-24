@@ -37,6 +37,7 @@ export const test = base.extend<{
     await loginPage.expectLoginSuccess();
     await use(page);
   },
+  // Clean browser fixture
 
   // Clean browser fixture
   cleanBrowser: async ({ page }, use) => {
