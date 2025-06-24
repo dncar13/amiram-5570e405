@@ -6,18 +6,16 @@ import { supabase } from "@/lib/supabase";
 // רשימת אימיילים של משתמשים שהם מנהלי מערכת
 const ADMIN_EMAILS = [
   "admin@example.com",
-  "dncar13@gmail.com", // הוספת האימייל החדש
-  "buldir@gmail.com", // הוספת המשתמש החדש כמנהל
-  // הוסף כאן אימיילים נוספים של מנהלים
+  "dncar13@gmail.com",
+  "buldir@gmail.com",
 ];
 
 // רשימת אימיילים של משתמשים פרימיום
 const PREMIUM_EMAILS = [
   "premium@example.com",
-  "dncar13@gmail.com", // הוספת האימייל החדש כמשתמש פרימיום
-  "buldir@gmail.com", // הוספת המשתמש החדש כמשתמש פרימיום
-  "dncar20@gmail.com", // הוספת המשתמש החדש כמשתמש פרימיום
-  // הוסף כאן אימיילים נוספים של משתמשים פרימיום
+  "dncar13@gmail.com",
+  "buldir@gmail.com",
+  "dncar20@gmail.com",
 ];
 
 // מבנה נתוני משתמש
@@ -25,7 +23,6 @@ interface UserData {
   firstName?: string;
   lastName?: string;
   premiumExpiration?: string | number;
-  // תכונות נוספות של משתמש
 }
 
 interface AuthContextType {
@@ -37,8 +34,8 @@ interface AuthContextType {
   userData: UserData | null;
   logout: () => Promise<void>;
   updatePremiumStatus: (status: boolean) => void;
-  hasAccessToTopic: (topicId: number) => boolean; // פונקציה חדשה לבדיקת גישה לנושא
-  checkAndUpdateSession: () => Promise<void>; // פונקציה חדשה לבדיקת סשן
+  hasAccessToTopic: (topicId: number) => boolean;
+  checkAndUpdateSession: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -50,7 +47,7 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   logout: async () => {},
   updatePremiumStatus: () => {},
-  hasAccessToTopic: () => true, // ברירת מחדל - גישה לכל הנושאים
+  hasAccessToTopic: () => true,
   checkAndUpdateSession: async () => {}
 });
 
@@ -64,30 +61,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const { toast } = useToast();
   
-  // Check if we're in development mode (for handling auth domain issues)
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
-  // כל הנושאים זמינים לכולם עכשיו
   const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   const extractUsernameFromEmail = (email?: string | null) => {
     if (!email) return "משתמש";
     const username = email.split('@')[0];
-    // Convert to title case and replace potential separators
     return username
       .split(/[._-]/)
       .map(part => part.charAt(0).toUpperCase() + part.slice(1))
       .join(' ');
   };
 
-  // פונקציה לבדיקה אם למשתמש יש גישה לנושא מסוים - עכשיו כל הנושאים פתוחים
   const hasAccessToTopic = (topicId: number): boolean => {
-    // כל הנושאים זמינים לכולם עכשיו
     return true;
   };
 
-  // פונקציה חדשה לעדכון סטטוס פרימיום
   const updatePremiumStatus = (status: boolean) => {
     console.log("Updating premium status:", status);
     if (status) {
@@ -97,7 +88,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     setIsPremium(status);
     
-    // עדכון נתוני המשתמש עם תאריך פקיעת הפרימיום
     if (currentUser) {
       setUserData(prevData => ({
         ...prevData,
@@ -107,21 +97,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Function to update auth state
+  // Enhanced auth state update with better Google Auth handling
   const updateAuthState = (user: User | null) => {
     console.log("🔄 Updating auth state with user:", user?.email || "null");
+    console.log("🖼️ User photo URL:", user?.photoURL || "null");
     
     setCurrentUser(user);
     
     if (user) {
       console.log("✅ User found, updating related states...");
       
-      // בדיקה אם המשתמש הוא מנהל על פי האימייל שלו
       const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
       console.log("  - Is admin:", isUserAdmin);
       setIsAdmin(isUserAdmin);
       
-      // בדיקה אם המשתמש הוא פרימיום על פי האימייל שלו או הסטטוס בלוקאל סטורג'
       const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
       const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
       const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
@@ -131,14 +120,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("  - Final premium status:", isPremiumUser);
       setIsPremium(isPremiumUser);
       
-      // טעינת נתוני משתמש עם שם מופק מהאימייל
+      // Enhanced user data with proper display name and photo
+      const displayName = user.displayName || extractUsernameFromEmail(user.email);
       const newUserData = {
-        firstName: extractUsernameFromEmail(user.email),
-        lastName: '', // נשאיר ריק כיוון שאנחנו מסתמכים על האימייל
+        firstName: displayName,
+        lastName: '',
         premiumExpiration: isPremiumUser ? 
           new Date().setMonth(new Date().getMonth() + 1) : undefined
       };
       console.log("  - User data:", newUserData);
+      console.log("  - Photo URL:", user.photoURL);
       setUserData(newUserData);
     } else {
       console.log("❌ No user, resetting states...");
@@ -149,15 +140,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     setIsLoading(false);
   };
-  // פונקציה חדשה לבדיקה ועדכון של הסשן הנוכחי
+
   const checkAndUpdateSession = async () => {
     try {
       console.log("🔍 Checking current session...");
       
-      // Use a timeout to prevent hanging
       const sessionPromise = supabase.auth.getSession();
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Session check timeout')), 3000)
+        setTimeout(() => reject(new Error('Session check timeout')), 5000)
       );
       
       const { data: { session }, error } = await Promise.race([
@@ -173,6 +163,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       if (session?.user) {
         console.log("✅ Found active session for:", session.user.email);
+        console.log("🖼️ Session user photo:", session.user.user_metadata?.avatar_url);
         const convertedUser: User = {
           uid: session.user.id,
           email: session.user.email,
@@ -193,18 +184,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       updateAuthState(null);
     }
   };
+
   useEffect(() => {
-    console.log("🔧 AuthContext: Setting up auth state listener...");
+    console.log("🔧 AuthContext: Setting up enhanced auth state listener...");
     
     let isMounted = true;
     let initialCheckDone = false;
     
-    // Function to handle auth state changes
     const handleAuthChange = (user: any) => {
       console.log("🔔 Auth state changed:");
       console.log("  - User exists:", !!user);
       console.log("  - User email:", user?.email || "No email");
       console.log("  - User ID:", user?.uid || "No ID");
+      console.log("  - User photo:", user?.photoURL || "No photo");
       console.log("  - Component mounted:", isMounted);
       console.log("  - Initial check done:", initialCheckDone);
       
@@ -212,7 +204,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         updateAuthState(user);
         if (!initialCheckDone) {
           initialCheckDone = true;
-          // Ensure loading is set to false after first auth check
           setTimeout(() => {
             if (isMounted) {
               setIsLoading(false);
@@ -222,7 +213,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     
-    // בדיקה ראשונית של הסשן עם timeout
+    // Check for Google Auth redirect on initial load
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('auth') === 'google') {
+      console.log("🔗 Google Auth redirect detected, checking session...");
+      setTimeout(() => {
+        checkAndUpdateSession();
+      }, 1000);
+    }
+    
     const initialCheck = async () => {
       try {
         await checkAndUpdateSession();
@@ -239,7 +238,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     
     initialCheck();
     
-    // Set up auth state listener
     const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
 
     return () => {
@@ -247,36 +245,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       isMounted = false;
       unsubscribe();
     };
-  }, []); // Remove dependencies to prevent re-initialization
+  }, []);
 
   // Debug effect to track state changes
   useEffect(() => {
     console.log("🔍 Auth state update:");
     console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - photoURL:", currentUser?.photoURL || "null");
     console.log("  - isLoading:", isLoading);
     console.log("  - isAdmin:", isAdmin);
     console.log("  - isPremium:", isPremium);
   }, [currentUser, isLoading, isAdmin, isPremium]);
+
   const logout = async () => {
     try {
       console.log("🚪 Attempting logout...");
       
-      // Clear local state first
       setCurrentUser(null);
       setIsAdmin(false);
       setIsPremium(false);
       setUserData(null);
       setIsLoading(false);
       
-      // Clear localStorage premium status
       localStorage.removeItem("isPremiumUser");
       
-      // Now call supabase logout
       const result = await logoutUser();
       
       console.log("✅ Logout successful");
       
-      // Force page reload to ensure clean state
       setTimeout(() => {
         window.location.href = '/';
       }, 100);
@@ -285,14 +281,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error("❌ Error during logout:", error);
       
-      // Even if logout fails, clear local state
       setCurrentUser(null);
       setIsAdmin(false);
       setIsPremium(false);
       setUserData(null);
       setIsLoading(false);
       
-      // Force reload anyway
       setTimeout(() => {
         window.location.href = '/';
       }, 100);

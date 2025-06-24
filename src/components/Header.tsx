@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, User, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck } from "lucide-react";
+import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
@@ -11,29 +11,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import UserAvatar from "@/components/UserAvatar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { currentUser, logout, isLoading, checkAndUpdateSession } = useAuth();
   const navigate = useNavigate();
 
-  // Force re-render when auth state changes
   const [forceRender, setForceRender] = useState(0);
 
   useEffect(() => {
     console.log("🖥️ Header: Auth state update (forced re-render):");
     console.log("  - currentUser:", currentUser?.email || "null");
+    console.log("  - photoURL:", currentUser?.photoURL || "null");
     console.log("  - isLoading:", isLoading);
     
-    // Force component to re-render to ensure UI updates
     setForceRender(prev => prev + 1);
   }, [currentUser, isLoading]);
 
-  // Additional fallback to check auth state on component mount
   useEffect(() => {
     console.log("🔄 Header: Component mounted, checking auth state...");
     if (!isLoading && !currentUser) {
-      // Add a small delay and check again
       setTimeout(() => {
         console.log("🔄 Header: Fallback auth check...");
         checkAndUpdateSession();
@@ -42,7 +40,6 @@ const Header = () => {
   }, []);
 
   const handleLogout = async (e?: React.MouseEvent) => {
-    // Prevent event propagation to avoid accidental triggers
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -61,14 +58,11 @@ const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Prevent accidental logout when clicking on user button
   const handleUserMenuClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    // Don't do anything - just open the dropdown menu
   };
 
-  // Add loading state visualization for debugging
   if (isLoading) {
     console.log("⏳ Header: Still loading auth state...");
   }
@@ -131,11 +125,11 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button 
                     variant="ghost" 
-                    className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300"
+                    className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300 flex items-center space-x-2 space-x-reverse"
                     onClick={handleUserMenuClick}
                   >
-                    <User className="h-5 w-5 ml-2" />
-                    {userDisplayName}
+                    <UserAvatar user={currentUser} size="sm" />
+                    <span className="mr-2">{userDisplayName}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent 
@@ -256,9 +250,9 @@ const Header = () => {
                   <div className="text-slate-400 px-4">טוען...</div>
                 ) : currentUser ? (
                   <>
-                    <div className="flex items-center px-4 py-2 text-slate-300">
-                      <User className="h-5 w-5 ml-2" />
-                      {userDisplayName}
+                    <div className="flex items-center px-4 py-2 text-slate-300 space-x-3 space-x-reverse">
+                      <UserAvatar user={currentUser} size="sm" />
+                      <span>{userDisplayName}</span>
                     </div>
                     <Link 
                       to="/account" 

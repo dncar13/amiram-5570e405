@@ -73,17 +73,21 @@ const getErrorMessage = (error: any): string => {
   return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
 };
 
-// פונקציה חדשה לרענון מצב Auth אחרי פעולות הצלחה
+// Enhanced auth refresh with better session handling
 const triggerAuthRefresh = async () => {
   try {
-    console.log("🔄 Triggering auth refresh...");
-    const { data: { session } } = await supabase.auth.getSession();
+    console.log("🔄 Triggering enhanced auth refresh...");
+    const { data: { session }, error } = await supabase.auth.getSession();
+    if (error) {
+      console.error("❌ Error getting session:", error);
+      return;
+    }
     if (session) {
-      console.log("✅ Session refreshed successfully");
-      // Trigger a small delay to ensure auth state propagation
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('supabase:auth-refresh'));
-      }, 100);
+      console.log("✅ Session refreshed successfully, user:", session.user?.email);
+      // Force auth state change event
+      window.dispatchEvent(new CustomEvent('supabase:auth-refresh', { 
+        detail: { session, user: session.user }
+      }));
     }
   } catch (error) {
     console.error("❌ Error refreshing auth:", error);
@@ -92,23 +96,23 @@ const triggerAuthRefresh = async () => {
 
 export const signInWithGoogle = async () => {
   try {
-    console.log("Attempting Google sign in...");
+    console.log("🔗 Attempting Google sign in...");
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/`
+        redirectTo: `${window.location.origin}/?auth=google`
       }
     });
     
     if (error) {
-      console.error("Google sign in error:", error);
+      console.error("❌ Google sign in error:", error);
       return { user: null, error: { message: getErrorMessage(error) } };
     }
     
-    // OAuth redirects don't return user immediately, they redirect to provider
+    console.log("✅ Google OAuth initiated successfully");
     return { user: null, error: null };
   } catch (error) {
-    console.error("Google sign in catch error:", error);
+    console.error("❌ Google sign in catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };
   }
 };
@@ -129,7 +133,6 @@ export const loginWithEmailAndPassword = async (email: string, password: string)
     console.log("Login successful:", data.user?.email);
     const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
     
-    // מיידי אחרי login מוצלח - רענון מצב Auth
     await triggerAuthRefresh();
     
     return { user: convertedUser, error: null };
@@ -158,7 +161,6 @@ export const registerWithEmailAndPassword = async (email: string, password: stri
     console.log("Registration successful:", data.user?.email);
     const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
     
-    // מיידי אחרי register מוצלח - רענון מצב Auth
     await triggerAuthRefresh();
     
     return { user: convertedUser, error: null };
@@ -196,32 +198,38 @@ export const checkFirebaseConnection = async () => {
 export const auth = supabase.auth;
 export const db = supabase;
 
-// Supabase onAuthStateChanged equivalent with improved handling
+// Enhanced onAuthStateChanged with better Google Auth handling
 export const onAuthStateChanged = (auth: any, callback: (user: User | null) => void) => {
-  console.log("🎯 Setting up onAuthStateChanged listener...");
+  console.log("🎯 Setting up enhanced onAuthStateChanged listener...");
   
   const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
     console.log("🔔 Auth state change event:", event);
     console.log("🔔 Session exists:", !!session);
     console.log("🔔 User exists:", !!session?.user);
     console.log("🔔 User email:", session?.user?.email || "null");
+    console.log("🔔 User photo:", session?.user?.user_metadata?.avatar_url || "null");
     
     const user = session?.user ? convertSupabaseUser(session.user) : null;
     
-    // Add a small delay to ensure state propagation
+    // Special handling for Google Auth redirect
+    if (event === 'SIGNED_IN' && session?.user && window.location.search.includes('auth=google')) {
+      console.log("✅ Google Auth successful redirect detected");
+      // Clean up the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
     setTimeout(() => {
       console.log("🔄 Calling auth callback with user:", user?.email || "null");
       callback(user);
     }, 10);
   });
   
-  // Listen for custom refresh events
-  const handleAuthRefresh = () => {
+  // Enhanced custom refresh event handler
+  const handleAuthRefresh = (event: any) => {
     console.log("🔄 Custom auth refresh triggered");
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      const user = session?.user ? convertSupabaseUser(session.user) : null;
-      callback(user);
-    });
+    const session = event.detail?.session;
+    const user = session?.user ? convertSupabaseUser(session.user) : null;
+    callback(user);
   };
   
   window.addEventListener('supabase:auth-refresh', handleAuthRefresh);
@@ -233,7 +241,6 @@ export const onAuthStateChanged = (auth: any, callback: (user: User | null) => v
   };
 };
 
-// --- Add resend confirmation email function ---
 export const resendConfirmationEmail = async (email: string) => {
   try {
     console.log("Attempting to resend confirmation email to:", email);
