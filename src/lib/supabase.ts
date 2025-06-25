@@ -96,20 +96,37 @@ const triggerAuthRefresh = async () => {
 
 export const signInWithGoogle = async () => {
   try {
-    console.log("🔗 Attempting Google sign in...");
+    console.log("🔗 Google Sign In - Starting process...");
+    console.log("🔗 Current URL:", window.location.href);
+    console.log("🔗 Origin:", window.location.origin);
+    
+    // Check if we're already in a redirect
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('code') || urlParams.get('access_token')) {
+      console.log("🔗 Already in OAuth callback, waiting for processing...");
+      return { user: null, error: null };
+    }
+    
+    const redirectTo = `${window.location.origin}/login`;
+    console.log("🔗 Redirect URL:", redirectTo);
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/?auth=google`
+        redirectTo: redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'consent',
+        }
       }
     });
     
     if (error) {
-      console.error("❌ Google sign in error:", error);
+      console.error("❌ Google OAuth Error:", error);
       return { user: null, error: { message: getErrorMessage(error) } };
     }
     
-    console.log("✅ Google OAuth initiated successfully");
+    console.log("✅ Google OAuth initiated:", data);
     return { user: null, error: null };
   } catch (error) {
     console.error("❌ Google sign in catch error:", error);
@@ -208,14 +225,31 @@ export const onAuthStateChanged = (auth: any, callback: (user: User | null) => v
     console.log("🔔 User exists:", !!session?.user);
     console.log("🔔 User email:", session?.user?.email || "null");
     console.log("🔔 User photo:", session?.user?.user_metadata?.avatar_url || "null");
+    console.log("🔔 Full user metadata:", session?.user?.user_metadata);
+    
+    // Check URL for OAuth parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasOAuthParams = urlParams.get('code') || urlParams.get('access_token') || urlParams.get('error');
+    
+    if (hasOAuthParams) {
+      console.log("🔗 OAuth parameters detected in URL:", {
+        code: urlParams.get('code') ? 'present' : 'absent',
+        access_token: urlParams.get('access_token') ? 'present' : 'absent',
+        error: urlParams.get('error') || 'none'
+      });
+      
+      if (urlParams.get('error')) {
+        console.error("❌ OAuth error in URL:", urlParams.get('error'));
+      }
+    }
     
     const user = session?.user ? convertSupabaseUser(session.user) : null;
     
-    // Special handling for Google Auth redirect
-    if (event === 'SIGNED_IN' && session?.user && window.location.search.includes('auth=google')) {
-      console.log("✅ Google Auth successful redirect detected");
-      // Clean up the URL
-      window.history.replaceState({}, document.title, window.location.pathname);
+    // Clean URL after OAuth redirect
+    if (event === 'SIGNED_IN' && hasOAuthParams) {
+      console.log("✅ Google Auth successful, cleaning URL...");
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState({}, document.title, cleanUrl);
     }
     
     setTimeout(() => {

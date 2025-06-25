@@ -97,30 +97,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Enhanced auth state update with better Google Auth handling
+  // Enhanced auth state update with better Google Auth debugging
   const updateAuthState = (user: User | null) => {
-    console.log("🔄 Updating auth state with user:", user?.email || "null");
-    console.log("🖼️ User photo URL:", user?.photoURL || "null");
+    console.log("🔄 AuthContext: Updating auth state with user:", user?.email || "null");
+    console.log("🖼️ AuthContext: User photo URL:", user?.photoURL || "null");
+    console.log("📧 AuthContext: User display name:", user?.displayName || "null");
+    console.log("🆔 AuthContext: User UID:", user?.uid || "null");
     
     setCurrentUser(user);
     
     if (user) {
-      console.log("✅ User found, updating related states...");
+      console.log("✅ AuthContext: User found, updating related states...");
       
       const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
-      console.log("  - Is admin:", isUserAdmin);
+      console.log("👑 AuthContext: Is admin:", isUserAdmin);
       setIsAdmin(isUserAdmin);
       
       const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
       const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
       const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
       
-      console.log("  - Premium from storage:", premiumStatusFromStorage);
-      console.log("  - Premium by email:", isPremiumByEmail);
-      console.log("  - Final premium status:", isPremiumUser);
+      console.log("💎 AuthContext: Premium from storage:", premiumStatusFromStorage);
+      console.log("💎 AuthContext: Premium by email:", isPremiumByEmail);
+      console.log("💎 AuthContext: Final premium status:", isPremiumUser);
       setIsPremium(isPremiumUser);
       
-      // Enhanced user data with proper display name and photo
+      // Enhanced user data with proper Google data
       const displayName = user.displayName || extractUsernameFromEmail(user.email);
       const newUserData = {
         firstName: displayName,
@@ -128,11 +130,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         premiumExpiration: isPremiumUser ? 
           new Date().setMonth(new Date().getMonth() + 1) : undefined
       };
-      console.log("  - User data:", newUserData);
-      console.log("  - Photo URL:", user.photoURL);
+      console.log("👤 AuthContext: User data:", newUserData);
+      console.log("🖼️ AuthContext: Final photo URL:", user.photoURL);
       setUserData(newUserData);
+      
+      // Show success toast for Google login
+      if (user.photoURL) {
+        toast({
+          title: "התחברת בהצלחה! 🎉",
+          description: `ברוך הבא ${displayName}`,
+        });
+      }
     } else {
-      console.log("❌ No user, resetting states...");
+      console.log("❌ AuthContext: No user, resetting states...");
       setIsAdmin(false);
       setIsPremium(false);
       setUserData(null);
@@ -143,11 +153,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const checkAndUpdateSession = async () => {
     try {
-      console.log("🔍 Checking current session...");
+      console.log("🔍 AuthContext: Checking current session...");
+      
+      // Check URL for OAuth callback
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasOAuthCode = urlParams.get('code');
+      const hasOAuthError = urlParams.get('error');
+      
+      if (hasOAuthError) {
+        console.error("❌ OAuth Error in URL:", hasOAuthError);
+        updateAuthState(null);
+        return;
+      }
+      
+      if (hasOAuthCode) {
+        console.log("🔗 OAuth code detected, waiting for session...");
+        // Wait a bit longer for OAuth processing
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
       
       const sessionPromise = supabase.auth.getSession();
       const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Session check timeout')), 5000)
+        setTimeout(() => reject(new Error('Session check timeout')), 8000)
       );
       
       const { data: { session }, error } = await Promise.race([
@@ -156,14 +183,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ]) as any;
       
       if (error) {
-        console.error("❌ Error getting session:", error);
+        console.error("❌ AuthContext: Error getting session:", error);
         updateAuthState(null);
         return;
       }
       
       if (session?.user) {
-        console.log("✅ Found active session for:", session.user.email);
-        console.log("🖼️ Session user photo:", session.user.user_metadata?.avatar_url);
+        console.log("✅ AuthContext: Found active session for:", session.user.email);
+        console.log("🖼️ AuthContext: Session user photo:", session.user.user_metadata?.avatar_url);
+        console.log("🔍 AuthContext: Full user metadata:", session.user.user_metadata);
+        
         const convertedUser: User = {
           uid: session.user.id,
           email: session.user.email,
@@ -176,11 +205,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         };
         updateAuthState(convertedUser);
       } else {
-        console.log("❌ No active session found");
+        console.log("❌ AuthContext: No active session found");
         updateAuthState(null);
       }
     } catch (error) {
-      console.error("❌ Error in checkAndUpdateSession:", error);
+      console.error("❌ AuthContext: Error in checkAndUpdateSession:", error);
       updateAuthState(null);
     }
   };
@@ -192,11 +221,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     let initialCheckDone = false;
     
     const handleAuthChange = (user: any) => {
-      console.log("🔔 Auth state changed:");
+      console.log("🔔 AuthContext: Auth state changed:");
       console.log("  - User exists:", !!user);
       console.log("  - User email:", user?.email || "No email");
       console.log("  - User ID:", user?.uid || "No ID");
       console.log("  - User photo:", user?.photoURL || "No photo");
+      console.log("  - User display name:", user?.displayName || "No display name");
       console.log("  - Component mounted:", isMounted);
       console.log("  - Initial check done:", initialCheckDone);
       
@@ -213,10 +243,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     
-    // Check for Google Auth redirect on initial load
+    // Check for OAuth parameters immediately
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('auth') === 'google') {
-      console.log("🔗 Google Auth redirect detected, checking session...");
+    const hasOAuthParams = urlParams.get('code') || urlParams.get('access_token') || urlParams.get('error');
+    
+    if (hasOAuthParams) {
+      console.log("🔗 AuthContext: OAuth parameters detected on mount");
       setTimeout(() => {
         checkAndUpdateSession();
       }, 1000);
@@ -226,7 +258,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         await checkAndUpdateSession();
       } catch (error) {
-        console.error("❌ Initial auth check failed:", error);
+        console.error("❌ AuthContext: Initial auth check failed:", error);
         updateAuthState(null);
       } finally {
         if (isMounted && !initialCheckDone) {
@@ -241,7 +273,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, handleAuthChange);
 
     return () => {
-      console.log("🧹 Cleaning up auth listener");
+      console.log("🧹 AuthContext: Cleaning up auth listener");
       isMounted = false;
       unsubscribe();
     };
@@ -249,7 +281,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Debug effect to track state changes
   useEffect(() => {
-    console.log("🔍 Auth state update:");
+    console.log("🔍 AuthContext: Auth state update:");
     console.log("  - currentUser:", currentUser?.email || "null");
     console.log("  - photoURL:", currentUser?.photoURL || "null");
     console.log("  - isLoading:", isLoading);

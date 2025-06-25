@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,30 +34,53 @@ const Login = () => {
   
   // If user is already logged in, redirect to simulations
   if (currentUser) {
-    console.log("User already logged in, redirecting to simulations:", currentUser.email);
+    console.log("✅ Login: User already logged in, redirecting to simulations:", currentUser.email);
     navigate("/simulations-entry");
     return null;
   }
+  
+  // Check for OAuth callback on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasOAuthCode = urlParams.get('code');
+    const hasOAuthError = urlParams.get('error');
+    
+    if (hasOAuthError) {
+      console.error("❌ Login: OAuth error detected:", hasOAuthError);
+      setAuthError("שגיאה בהתחברות עם Google. אנא נסו שוב.");
+      // Clean the URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (hasOAuthCode) {
+      console.log("🔗 Login: OAuth code detected, processing...");
+      setIsLoading(true);
+      // Let the auth system handle the callback
+      setTimeout(() => {
+        console.log("🔗 Login: Checking auth state after OAuth...");
+        checkAndUpdateSession();
+      }, 2000);
+    }
+  }, [checkAndUpdateSession]);
   
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     setAuthError(null);
     try {
-      console.log("Google login clicked");
+      console.log("🔗 Login: Google login clicked");
       const { user, error } = await signInWithGoogle();
       
       if (error) {
-        console.error("Google login error:", error);
+        console.error("❌ Login: Google login error:", error);
         setAuthError(error.message || "שגיאה בהתחברות עם Google");
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
           description: error.message || "אירעה שגיאה. אנא נסה שוב.",
         });
+        setIsLoading(false);
       }
-      // For OAuth, we don't get user immediately, redirect happens
+      // Don't set loading to false here - let the redirect happen
     } catch (error) {
-      console.error("Google login catch error:", error);
+      console.error("❌ Login: Google login catch error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       toast({
@@ -65,7 +88,6 @@ const Login = () => {
         title: "שגיאה בהתחברות",
         description: errorMessage,
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -263,6 +285,16 @@ const Login = () => {
                 <path d="M2 12L12 17L22 12" stroke="#0a84ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
+
+            {/* Debug info for development */}
+            {isDevEnvironment && (
+              <div className="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded text-xs">
+                <div>Loading: {isLoading ? 'true' : 'false'}</div>
+                <div>Current User: {currentUser?.email || 'null'}</div>
+                <div>Auth Error: {authError || 'none'}</div>
+                <div>URL Params: {window.location.search || 'none'}</div>
+              </div>
+            )}
 
             {awaitingConfirmation && (
               <Alert variant="default" className="mb-6 dark-alert-warning">
