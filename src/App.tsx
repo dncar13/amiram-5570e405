@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { SimulationSettingsProvider } from "@/context/SimulationSettingsContext";
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, Variants, Transition } from 'framer-motion';
 import { useEffect } from 'react';
 
 // Import all pages
@@ -76,9 +76,9 @@ const pageVariants = {
   }
 };
 
-const pageTransition = {
+const pageTransition: Transition = {
   type: "tween",
-  ease: [0.25, 0.46, 0.45, 0.94], // Apple's easing curve
+  ease: [0.4, 0, 0.2, 1], // Smooth easing curve (cubic-bezier)
   duration: 0.4
 };
 

@@ -64,8 +64,23 @@ pogodin-e8784-firebase-adminsdk-*.json
 # ==========================
 *.local
 
-# Playwright
+# ==========================
+# PLAYWRIGHT TEST OUTPUTS
+# ==========================
+# Test results and reports
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+playwright-report.json
+
+# Visual regression test output files
+*.actual.png
+*.diff.png
+*.previous.png
+
+# Test artifacts and traces
+test-results/
+playwright-report/
+
+# Note: Baseline snapshot images in tests/ directories are kept for version control
