@@ -56,6 +56,14 @@ const SimulationsEntry: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Smooth spring animations
+  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
+  const x = useSpring(useTransform(mouseX, [0, 300], [-50, 50]), springConfig);
+  const y = useSpring(useTransform(mouseY, [0, 300], [-50, 50]), springConfig);
+
   // Debug effect to track auth state in SimulationsEntry
   React.useEffect(() => {
     console.log("🎯 SimulationsEntry: Auth state update:");
@@ -64,14 +72,12 @@ const SimulationsEntry: React.FC = () => {
     console.log("  - isLoading:", isLoading);
   }, [currentUser, isPremium, isLoading]);
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     mouseX.set(e.clientX - rect.left);
     mouseY.set(e.clientY - rect.top);
   };
+
   const simulationOptions: SimulationOption[] = [
     {
       id: 'full-simulation',
@@ -131,6 +137,7 @@ const SimulationsEntry: React.FC = () => {
       bgColor: 'bg-purple-50'
     },
   ];
+
   const handleOptionClick = (option: SimulationOption) => {
     console.log("🎮 SimulationsEntry: Option clicked:", option.id);
     console.log("  - Requires auth:", option.requiresAuth);
@@ -170,15 +177,11 @@ const SimulationsEntry: React.FC = () => {
     navigate(`/simulation/type/${type}`);
   };
 
-  // Smooth spring animations
-  const springConfig = { stiffness: 100, damping: 30, restDelta: 0.001 };
-  const x = useSpring(useTransform(mouseX, [0, 300], [-50, 50]), springConfig);
-  const y = useSpring(useTransform(mouseY, [0, 300], [-50, 50]), springConfig);
-  return (
-    <>
-      <Header />
-      {/* Show loading state while auth is loading */}
-      {isLoading ? (
+  // Show loading state while auth is loading
+  if (isLoading) {
+    return (
+      <>
+        <Header />
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
           <div className="text-center">
             <div className="relative w-16 h-16 mb-6 mx-auto">
@@ -188,13 +191,22 @@ const SimulationsEntry: React.FC = () => {
             <p className="text-gray-400">מכין את מרכז הסימולציות</p>
           </div>
         </div>
-      ) : (
-        <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
-          {/* Background decoration */}
-          <div className="fixed inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
-          </div><div ref={containerRef} className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-12 lg:py-20">
+        <Footer />
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+        {/* Background decoration */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-900/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-900/30 rounded-full blur-3xl" />
+        </div>
+
+        <div ref={containerRef} className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-12 lg:py-20">
           {/* Header Section */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -233,7 +245,9 @@ const SimulationsEntry: React.FC = () => {
               בחר את סוג התרגול המתאים לך והתחל להתכונן למבחן הפסיכומטרי
               <span className="block mt-1 md:mt-2 text-gray-400 text-sm md:text-lg">עם הכלים המתקדמים ביותר בשוק</span>
             </p>
-          </motion.div>          {/* Main Options Grid */}
+          </motion.div>
+
+          {/* Main Options Grid */}
           <motion.div
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-20"
             onMouseMove={handleMouseMove}
@@ -262,7 +276,9 @@ const SimulationsEntry: React.FC = () => {
                   {/* Card glow effect */}
                   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div className="absolute inset-0 bg-white/20 blur-xl" />
-                  </div>                  <div className="relative bg-gray-900/95 backdrop-blur-xl rounded-[22px] p-4 md:p-8 h-full">
+                  </div>
+
+                  <div className="relative bg-gray-900/95 backdrop-blur-xl rounded-[22px] p-4 md:p-8 h-full">
                     {/* Lock overlay */}
                     <AnimatePresence>
                       {((option.requiresAuth && !currentUser) || (option.isPremium && !isPremium)) && (
@@ -310,7 +326,9 @@ const SimulationsEntry: React.FC = () => {
                         >
                           <ArrowUpRight className="w-6 h-6" />
                         </motion.div>
-                      </div>                      <h3 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-3"
+                      </div>
+
+                      <h3 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-3"
                           style={{ 
                             fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                             fontWeight: '700'
@@ -356,7 +374,8 @@ const SimulationsEntry: React.FC = () => {
             ))}
           </motion.div>
 
-          {/* Question Types Section */}          <motion.div
+          {/* Question Types Section */}
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -399,7 +418,8 @@ const SimulationsEntry: React.FC = () => {
                         className={`${type.bgColor} ${type.color} p-3 md:p-4 rounded-xl ml-4 md:ml-6`}
                         whileHover={{ rotate: [0, -10, 10, 0] }}
                         transition={{ duration: 0.3 }}
-                      >                        {type.icon}
+                      >
+                        {type.icon}
                       </motion.div>
                       
                       <div className="flex-1 min-w-0">
@@ -432,7 +452,8 @@ const SimulationsEntry: React.FC = () => {
               {/* Decorative elements */}
               <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full blur-3xl" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl" />
-                <div className="relative z-10">
+              
+              <div className="relative z-10">
                 <div className="flex items-center mb-6 md:mb-10">
                   <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center ml-3 md:ml-4">
                     <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-white" />
@@ -468,15 +489,16 @@ const SimulationsEntry: React.FC = () => {
                     <ul className="space-y-1 md:space-y-2 text-gray-300 text-sm md:text-base">
                       <li>• הסברים רק בסוף המבחן</li>
                       <li>• אין אפשרות לחזור לשאלות</li>
-                      <li>• הגבלת זמן כמו במבחן האמיתי</li>                      <li>• מתאים לבדיקת מוכנות</li>
+                      <li>• הגבלת זמן כמו במבחן האמיתי</li>
+                      <li>• מתאים לבדיקת מוכנות</li>
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>        </div>
+          </motion.div>
         </div>
-      )}
+      </div>
       <Footer />
     </>
   );
