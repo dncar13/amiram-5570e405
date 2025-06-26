@@ -42,18 +42,30 @@ export class BasePage {
 
   async isLoggedIn(): Promise<boolean> {
     try {
-      await this.userMenu.waitFor({ timeout: 2000 });
-      return true;
+      // Look for user menu or logout button
+      const userMenuVisible = await this.userMenu.isVisible({ timeout: 2000 });
+      const logoutButtonVisible = await this.logoutButton.isVisible({ timeout: 2000 });
+      return userMenuVisible || logoutButtonVisible;
     } catch {
       return false;
     }
   }
 
   async logout() {
-    if (await this.isLoggedIn()) {
-      await this.userMenu.click();
-      await this.logoutButton.click();
-      await this.page.waitForURL('**/');
+    try {
+      if (await this.isLoggedIn()) {
+        // Try to find logout button in user menu
+        if (await this.userMenu.isVisible()) {
+          await this.userMenu.click();
+        }
+        
+        if (await this.logoutButton.isVisible({ timeout: 3000 })) {
+          await this.logoutButton.click();
+          await this.page.waitForURL('**/', { timeout: 10000 });
+        }
+      }
+    } catch (error) {
+      console.log('Logout failed:', error);
     }
   }
 

@@ -3,16 +3,16 @@ export const TestUsers = {
   validUser: {
     email: 'test@example.com',
     password: 'Test@1234!',
-    firstName: 'טסט',
-    lastName: 'משתמש'
+    name: 'Test User'
   },
   invalidUser: {
-    email: 'wrong@example.com',
+    email: 'invalid@example.com',
     password: 'wrongpassword'
   },
-  premiumUser: {
-    email: 'premium@example.com',
-    password: 'Premium@1234!'
+  adminUser: {
+    email: 'admin@example.com',
+    password: 'Admin@1234!',
+    name: 'Admin User'
   }
 };
 
@@ -20,28 +20,26 @@ export const TestData = {
   urls: {
     home: '/',
     login: '/login',
-    register: '/register',
-    simulation: '/simulation',
+    simulationsEntry: '/simulations-entry',
     history: '/simulation-history'
   },
   performance: {
     maxLoadTime: 5000,
-    maxLCP: 2500,
-    maxFCP: 1800,
-    maxCLS: 0.1
+    maxNavigationTime: 3000
   },
   simulation: {
-    minQuestions: 5,
-    maxTimePerQuestion: 30000
+    maxQuestions: 50,
+    timeoutPerQuestion: 120000
   }
 };
 
-export function generateTestUser() {
+export const generateTestUser = () => {
   const timestamp = Date.now();
   return {
     email: `test${timestamp}@example.com`,
     password: 'Test@1234!',
-    firstName: 'טסט',
-    lastName: `משתמש${timestamp}`
+    name: `Test User ${timestamp}`,
+    firstName: 'Test',
+    lastName: `User${timestamp}`
   };
-}
+};

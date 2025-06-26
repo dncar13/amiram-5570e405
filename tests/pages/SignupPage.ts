@@ -3,17 +3,16 @@ import { Page, Locator, expect } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class SignupPage extends BasePage {
-  readonly url = '/register';
+  readonly url = '/login'; // Now uses login page with register tab
 
-  // Form elements
-  get emailInput() { return this.page.locator('input[name="email"], input[type="email"]'); }
-  get passwordInput() { return this.page.locator('input[name="password"], input[type="password"]').first(); }
-  get confirmPasswordInput() { return this.page.locator('input[name="confirmPassword"], input[name="password2"]'); }
-  get firstNameInput() { return this.page.locator('input[name="firstName"], input[name="name"]'); }
-  get lastNameInput() { return this.page.locator('input[name="lastName"], input[name="surname"]'); }
-  get termsCheckbox() { return this.page.locator('input[type="checkbox"]'); }
-  get signupButton() { return this.page.locator('button[type="submit"]').or(this.page.locator('button:has-text("הרשמה")')).first(); }
-  get loginLink() { return this.page.locator('a[href="/login"]').or(this.page.locator('a:has-text("התחבר")')).first(); }
+  // Form elements - updated for actual component structure
+  get emailInput() { return this.page.locator('input[id="register-email"]'); }
+  get passwordInput() { return this.page.locator('input[id="register-password"]'); }
+  get nameInput() { return this.page.locator('input[id="register-name"]'); }
+  get signupButton() { return this.page.locator('button[type="submit"]:has-text("הרשמה")'); }
+  get loginTab() { return this.page.locator('[data-value="login"]'); }
+  get signupTab() { return this.page.locator('[data-value="register"]'); }
+  get googleSignupButton() { return this.page.locator('button:has-text("הרשמה עם Google")'); }
 
   // Messages
   get errorMessage() { return this.page.locator('[class*="error"], [role="alert"], .text-red-500'); }
@@ -22,40 +21,31 @@ export class SignupPage extends BasePage {
 
   async goto() {
     await this.navigateTo(this.url);
+    // Switch to signup tab
+    await this.signupTab.click();
   }
 
   async signup(userData: {
     email: string;
     password: string;
-    confirmPassword?: string;
-    firstName?: string;
-    lastName?: string;
+    name?: string;
   }) {
+    // Make sure we're on signup tab
+    await this.signupTab.click();
+    
     await this.emailInput.fill(userData.email);
     await this.passwordInput.fill(userData.password);
     
-    if (userData.confirmPassword && await this.confirmPasswordInput.isVisible()) {
-      await this.confirmPasswordInput.fill(userData.confirmPassword);
-    }
-    
-    if (userData.firstName && await this.firstNameInput.isVisible()) {
-      await this.firstNameInput.fill(userData.firstName);
-    }
-    
-    if (userData.lastName && await this.lastNameInput.isVisible()) {
-      await this.lastNameInput.fill(userData.lastName);
-    }
-
-    // Accept terms if checkbox exists
-    if (await this.termsCheckbox.isVisible()) {
-      await this.termsCheckbox.check();
+    if (userData.name && await this.nameInput.isVisible()) {
+      await this.nameInput.fill(userData.name);
     }
 
     await this.signupButton.click();
   }
 
   async expectSignupSuccess() {
-    await expect(this.successMessage.or(this.page.locator(':text("הרשמה הושלמה")'))).toBeVisible({ timeout: 60000 });
+    // Wait for redirect to simulations-entry
+    await this.page.waitForURL(/simulations-entry/, { timeout: 60000 });
   }
 
   async expectSignupError(expectedMessage?: string) {
@@ -70,6 +60,6 @@ export class SignupPage extends BasePage {
   }
 
   async goToLogin() {
-    await this.loginLink.click();
+    await this.loginTab.click();
   }
 }

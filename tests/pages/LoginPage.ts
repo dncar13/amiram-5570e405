@@ -5,13 +5,14 @@ import { BasePage } from './BasePage';
 export class LoginPage extends BasePage {
   readonly url = '/login';
 
-  // Form elements
-  get emailInput() { return this.page.locator('input[name="email"], input[type="email"]'); }
-  get passwordInput() { return this.page.locator('input[name="password"], input[type="password"]'); }
-  get loginButton() { return this.page.locator('button[type="submit"]:not(:has-text("Google")):has-text("התחבר"), form button[type="submit"]').first(); }
-  get signupLink() { return this.page.locator('a[href="/signup"], a:has-text("הרשמה")'); }
-  get forgotPasswordLink() { return this.page.locator('a:has-text("שכחת"), a:has-text("איפוס")'); }
-  get googleLoginButton() { return this.page.locator('button:has-text("Google"), [data-testid="google-login"]'); }
+  // Form elements - updated for actual component structure
+  get emailInput() { return this.page.locator('input[id="email"]'); }
+  get passwordInput() { return this.page.locator('input[id="password"]'); }
+  get loginButton() { return this.page.locator('button[type="submit"]:has-text("התחברות")'); }
+  get signupTab() { return this.page.locator('[data-value="register"]'); }
+  get loginTab() { return this.page.locator('[data-value="login"]'); }
+  get forgotPasswordLink() { return this.page.locator('a:has-text("שכחת סיסמה?")'); }
+  get googleLoginButton() { return this.page.locator('button:has-text("התחברות עם Google")'); }
 
   // Error messages
   get errorMessage() { return this.page.locator('[class*="error"], [role="alert"], .text-red-500'); }
@@ -22,6 +23,8 @@ export class LoginPage extends BasePage {
   }
 
   async login(email: string, password: string) {
+    // Make sure we're on login tab
+    await this.loginTab.click();
     await this.emailInput.fill(email);
     await this.passwordInput.fill(password);
     await this.loginButton.click();
@@ -33,8 +36,8 @@ export class LoginPage extends BasePage {
   }
 
   async expectLoginSuccess() {
-    // Wait for redirect or success indicator
-    await this.page.waitForURL(/^(?!.*\/login).*/, { timeout: 60000 });
+    // Wait for redirect to simulations-entry
+    await this.page.waitForURL(/simulations-entry/, { timeout: 60000 });
     expect(await this.isLoggedIn()).toBeTruthy();
   }
 
@@ -50,6 +53,6 @@ export class LoginPage extends BasePage {
   }
 
   async goToSignup() {
-    await this.signupLink.click();
+    await this.signupTab.click();
   }
 }
