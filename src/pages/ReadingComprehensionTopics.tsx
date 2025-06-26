@@ -1,7 +1,6 @@
-
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants, Transition } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BookOpen, ArrowRight, Clock, Target, TrendingUp, Filter, Star, Sparkles, Brain, Zap, Rocket, ChevronLeft, Eye, Award, CircuitBoard } from 'lucide-react';
@@ -122,7 +121,7 @@ const ReadingComprehensionTopics: React.FC = () => {
     navigate(`/simulation/story/${encodedTitle}`);
   };
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -133,14 +132,14 @@ const ReadingComprehensionTopics: React.FC = () => {
     }
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30, scale: 0.9 },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15
       }
