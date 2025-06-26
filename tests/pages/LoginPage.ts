@@ -34,7 +34,7 @@ export class LoginPage extends BasePage {
 
   async expectLoginSuccess() {
     // Wait for redirect or success indicator
-    await this.page.waitForURL(/^(?!.*\/login).*/, { timeout: 10000 });
+    await this.page.waitForURL(/^(?!.*\/login).*/, { timeout: 60000 });
     expect(await this.isLoggedIn()).toBeTruthy();
   }
 

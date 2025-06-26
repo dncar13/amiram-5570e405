@@ -15,7 +15,7 @@ export class BasePage {
   get simulationsLink() { return this.page.locator('nav a[href="/simulations-entry"]'); }
   get readingComprehensionLink() { return this.page.locator('nav a[href="/reading-comprehension"]'); }
   get aboutLink() { return this.page.locator('nav a[href="/about"]'); }
-  get loginButton() { return this.page.locator('a[href="/login"]'); }
+  get loginButton() { return this.page.locator('header a[href="/login"]').or(this.page.locator('nav a[href="/login"]')).first(); }
   get userMenu() { return this.page.locator('[data-testid="user-menu"]').or(this.page.locator('button:has-text("משתמש")')); }
   get logoutButton() { return this.page.locator('button:has-text("התנתקות")'); }
 

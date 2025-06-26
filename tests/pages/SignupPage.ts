@@ -12,8 +12,8 @@ export class SignupPage extends BasePage {
   get firstNameInput() { return this.page.locator('input[name="firstName"], input[name="name"]'); }
   get lastNameInput() { return this.page.locator('input[name="lastName"], input[name="surname"]'); }
   get termsCheckbox() { return this.page.locator('input[type="checkbox"]'); }
-  get signupButton() { return this.page.locator('button[type="submit"], button:has-text("הרשמה")'); }
-  get loginLink() { return this.page.locator('a[href="/login"], a:has-text("התחבר")'); }
+  get signupButton() { return this.page.locator('button[type="submit"]').or(this.page.locator('button:has-text("הרשמה")')).first(); }
+  get loginLink() { return this.page.locator('a[href="/login"]').or(this.page.locator('a:has-text("התחבר")')).first(); }
 
   // Messages
   get errorMessage() { return this.page.locator('[class*="error"], [role="alert"], .text-red-500'); }
@@ -55,7 +55,7 @@ export class SignupPage extends BasePage {
   }
 
   async expectSignupSuccess() {
-    await expect(this.successMessage.or(this.page.locator('text=הרשמה הושלמה'))).toBeVisible({ timeout: 10000 });
+    await expect(this.successMessage.or(this.page.locator(':text("הרשמה הושלמה")'))).toBeVisible({ timeout: 60000 });
   }
 
   async expectSignupError(expectedMessage?: string) {

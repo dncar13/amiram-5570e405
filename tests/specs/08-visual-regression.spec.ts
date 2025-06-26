@@ -194,8 +194,8 @@ test.describe('בדיקות Visual Regression', () => {
           '.loading',
           '.spinner',
           '[data-testid="loading"]',
-          'text=טוען',
-          'text=אנא המתן',
+          ':text("טוען")',
+          ':text("אנא המתן")',
           '.skeleton',
           '[aria-label*="loading"]'
         ];
@@ -218,8 +218,9 @@ test.describe('בדיקות Visual Regression', () => {
           // Create artificial loading state
           await page.evaluate(() => {
             const loadingDiv = document.createElement('div');
-            loadingDiv.textContent = 'טוען...';
-            loadingDiv.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc;';
+            loadingDiv.textContent = 'טוען';
+            loadingDiv.className = 'artificial-loading';
+            loadingDiv.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border: 1px solid #ccc; z-index: 9999;';
             document.body.appendChild(loadingDiv);
           });
           await expect(page).toHaveScreenshot('loading-state.png');

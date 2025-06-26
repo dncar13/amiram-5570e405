@@ -74,6 +74,11 @@ pogodin-e8784-firebase-adminsdk-*.json
 /playwright/.cache/
 playwright-report.json
 
+# Playwright test logs and result files
+playwright-*.txt
+playwright-results-*.txt
+*.log
+
 # Visual regression test output files - ALL IMAGES EXCLUDED
 *.actual.png
 *.diff.png

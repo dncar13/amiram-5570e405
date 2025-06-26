@@ -264,9 +264,9 @@ test.describe('בדיקות Error Handling', () => {
       
       // Should either load quickly or show loading state
       const loadingIndicators = [
-        'טוען...',
-        'אנא המתן',
-        'loading',
+        ':text("טוען")',
+        ':text("אנא המתן")',
+        '.loading',
         '.spinner',
         '.loading'
       ];

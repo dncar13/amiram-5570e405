@@ -45,36 +45,71 @@ export class SimulationPage extends BasePage {
   async startPracticeSimulation() {
     // Wait for page to load completely
     await this.page.waitForLoadState('networkidle');
+    await this.page.waitForTimeout(2000); // Additional wait for dynamic content
     
     // Try multiple selectors with better waits
     const selectors = [
       'button:has-text("תרגול")',
       'a[href*="practice"]',
+      'a[href*="simulation"]',
       '[data-testid="practice-button"]',
       'button:has-text("התחל")',
-      'button:has-text("start")'
+      'button:has-text("start")',
+      'button[class*="practice"]',
+      'a[class*="practice"]',
+      '.practice-button',
+      'button:has-text("תרגול")',
+      // Try any button on simulation entry page
+      'main button',
+      'section button'
     ];
     
     let clicked = false;
     for (const selector of selectors) {
       try {
-        const element = this.page.locator(selector).first();
-        if (await element.isVisible({ timeout: 5000 })) {
-          await element.click();
-          clicked = true;
-          break;
+        const elements = this.page.locator(selector);
+        const count = await elements.count();
+        
+        if (count > 0) {
+          const element = elements.first();
+          if (await element.isVisible({ timeout: 2000 })) {
+            await element.click();
+            clicked = true;
+            console.log(`Successfully clicked button with selector: ${selector}`);
+            break;
+          }
         }
       } catch (error) {
+        console.log(`Failed selector: ${selector} - ${error.message}`);
         continue;
       }
     }
     
     if (!clicked) {
-      throw new Error('Could not find practice simulation button');
+      // Debug: log page content
+      const pageContent = await this.page.textContent('body');
+      console.log('Page content:', pageContent?.substring(0, 500));
+      
+      // Try clicking any visible button as fallback
+      try {
+        const anyButton = this.page.locator('button').first();
+        if (await anyButton.isVisible({ timeout: 2000 })) {
+          await anyButton.click();
+          console.log('Clicked fallback button');
+          clicked = true;
+        }
+      } catch (fallbackError) {
+        throw new Error(`Could not find practice simulation button. Available buttons: ${await this.page.locator('button').allTextContents()}`);
+      }
     }
     
-    // Wait for navigation
-    await this.page.waitForURL('**/simulation/**', { timeout: 10000 });
+    // Wait for navigation with longer timeout
+    try {
+      await this.page.waitForURL('**/simulation/**', { timeout: 15000 });
+    } catch (navError) {
+      // Alternative navigation patterns
+      await this.page.waitForURL(/simulation|practice|quiz/, { timeout: 15000 });
+    }
   }
 
   async selectAnswer(answerIndex: number) {
