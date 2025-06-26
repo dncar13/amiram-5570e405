@@ -74,13 +74,21 @@ pogodin-e8784-firebase-adminsdk-*.json
 /playwright/.cache/
 playwright-report.json
 
-# Visual regression test output files
+# Visual regression test output files - ALL IMAGES EXCLUDED
 *.actual.png
 *.diff.png
 *.previous.png
+*.png
+**/*-snapshots/*.png
+tests/**/*.png
 
 # Test artifacts and traces
 test-results/
 playwright-report/
 
-# Note: Baseline snapshot images in tests/ directories are kept for version control
+# Snapshot directories (exclude all generated images)
+*-snapshots/
+**/*-snapshots/
+tests/specs/*-snapshots/
+
+# Note: NO baseline snapshot images are kept in version control - they are auto-generated

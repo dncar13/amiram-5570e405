@@ -8,7 +8,7 @@ export class LoginPage extends BasePage {
   // Form elements
   get emailInput() { return this.page.locator('input[name="email"], input[type="email"]'); }
   get passwordInput() { return this.page.locator('input[name="password"], input[type="password"]'); }
-  get loginButton() { return this.page.locator('button[type="submit"], button:has-text("התחבר")'); }
+  get loginButton() { return this.page.locator('button[type="submit"]:not(:has-text("Google")):has-text("התחבר"), form button[type="submit"]').first(); }
   get signupLink() { return this.page.locator('a[href="/signup"], a:has-text("הרשמה")'); }
   get forgotPasswordLink() { return this.page.locator('a:has-text("שכחת"), a:has-text("איפוס")'); }
   get googleLoginButton() { return this.page.locator('button:has-text("Google"), [data-testid="google-login"]'); }

@@ -8,7 +8,7 @@ export class SimulationPage extends BasePage {
   // Simulation selection
   get simulationTypes() { return this.page.locator('[data-testid="simulation-type"], button:has-text("סימולציה")'); }
   get fullSimulationButton() { return this.page.locator('button:has-text("מלאה"), a[href*="full"]'); }
-  get practiceSimulationButton() { return this.page.locator('button:has-text("תרגול"), a[href*="practice"]'); }
+  get practiceSimulationButton() { return this.page.locator('button:has-text("תרגול"), a[href*="practice"], [data-testid="practice-button"]'); }
   get readingComprehensionButton() { return this.page.locator('button:has-text("הבנת הנקרא"), a[href*="reading"]'); }
 
   // Question elements
@@ -43,8 +43,38 @@ export class SimulationPage extends BasePage {
   }
 
   async startPracticeSimulation() {
-    await this.practiceSimulationButton.click();
-    await this.page.waitForURL('**/simulation/**');
+    // Wait for page to load completely
+    await this.page.waitForLoadState('networkidle');
+    
+    // Try multiple selectors with better waits
+    const selectors = [
+      'button:has-text("תרגול")',
+      'a[href*="practice"]',
+      '[data-testid="practice-button"]',
+      'button:has-text("התחל")',
+      'button:has-text("start")'
+    ];
+    
+    let clicked = false;
+    for (const selector of selectors) {
+      try {
+        const element = this.page.locator(selector).first();
+        if (await element.isVisible({ timeout: 5000 })) {
+          await element.click();
+          clicked = true;
+          break;
+        }
+      } catch (error) {
+        continue;
+      }
+    }
+    
+    if (!clicked) {
+      throw new Error('Could not find practice simulation button');
+    }
+    
+    // Wait for navigation
+    await this.page.waitForURL('**/simulation/**', { timeout: 10000 });
   }
 
   async selectAnswer(answerIndex: number) {
