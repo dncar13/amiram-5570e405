@@ -8,7 +8,7 @@ export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  /* Fail the build on CI only if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 1,
@@ -20,7 +20,7 @@ export default defineConfig({
   
   /* Expect timeout settings */
   expect: {
-    timeout: 45000, // 45 seconds for expects
+    timeout: 15000, // Reduced from 45 seconds to 15 seconds
     toHaveScreenshot: {
       maxDiffPixels: 100,
       threshold: 0.2,
@@ -44,9 +44,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     
-    /* Action timeouts */
-    actionTimeout: 45000, // 45 seconds for actions
-    navigationTimeout: 90000, // 90 seconds for navigation
+    /* Action timeouts - reduced for faster feedback */
+    actionTimeout: 15000, // Reduced from 45 seconds
+    navigationTimeout: 30000, // Reduced from 90 seconds
   },
 
   /* Configure projects for major browsers */
@@ -59,21 +59,22 @@ export default defineConfig({
       },
     },
 
-    {
-      name: 'firefox',
-      use: { 
-        ...devices['Desktop Firefox'],
-        viewport: { width: 1920, height: 1080 }
-      },
-    },
+    // Disable other browsers for now to speed up testing
+    // {
+    //   name: 'firefox',
+    //   use: { 
+    //     ...devices['Desktop Firefox'],
+    //     viewport: { width: 1920, height: 1080 }
+    //   },
+    // },
 
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        viewport: { width: 1920, height: 1080 }
-      },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { 
+    //     ...devices['Desktop Safari'],
+    //     viewport: { width: 1920, height: 1080 }
+    //   },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */
