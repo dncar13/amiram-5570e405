@@ -1,0 +1,88 @@
+
+# ZAP Configuration for Amiram Academy
+# This file contains custom configuration for ZAP security testing
+
+# Application specific context
+contexts:
+  - name: "amiram-academy"
+    urls:
+      - "http://localhost:8080.*"
+      - "https://amiram-academy.lovable.app.*"
+    
+    # Authentication configuration
+    authentication:
+      type: "form"
+      loginUrl: "http://localhost:8080/login"
+      loginRequestData: "email={%username%}&password={%password%}"
+      usernameParameter: "email"
+      passwordParameter: "password"
+      
+    # Session management
+    sessionManagement:
+      type: "cookie"
+      
+    # Include/Exclude patterns
+    includePaths:
+      - "http://localhost:8080/.*"
+    excludePaths:
+      - ".*logout.*"
+      - ".*\\.css"
+      - ".*\\.js"
+      - ".*\\.png"
+      - ".*\\.jpg"
+      - ".*\\.gif"
+      - ".*\\.ico"
+
+# Custom scan policies
+scanPolicies:
+  - name: "amiram-baseline"
+    rules:
+      # SQL Injection
+      - id: 40018
+        enabled: true
+        threshold: "Low"
+        strength: "Medium"
+      
+      # XSS Reflected
+      - id: 40012
+        enabled: true
+        threshold: "Low"
+        strength: "High"
+      
+      # XSS Stored
+      - id: 40014
+        enabled: true
+        threshold: "Low"
+        strength: "High"
+      
+      # CSRF
+      - id: 20012
+        enabled: true
+        threshold: "Low"
+        strength: "Medium"
+      
+      # Insecure HTTP Methods
+      - id: 90028
+        enabled: true
+        threshold: "Low"
+        strength: "Medium"
+
+# Technology stack specific checks
+technologies:
+  - "React"
+  - "JavaScript"
+  - "Supabase"
+  - "Firebase"
+
+# Custom alerts to ignore (false positives)
+ignoreAlerts:
+  - name: "X-Frame-Options Header Not Set"
+    reason: "Handled by CSP"
+  - name: "X-Content-Type-Options Header Missing"
+    reason: "Modern browsers handle this automatically"
+
+# Performance settings
+performance:
+  maxRequestsPerSecond: 10
+  maxScanTimeInMins: 30
+  delayInMs: 100
