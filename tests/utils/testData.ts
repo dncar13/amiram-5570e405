@@ -3,16 +3,16 @@ export const TestUsers = {
   validUser: {
     email: 'test@example.com',
     password: 'Test@1234!',
-    firstName: 'טסט',
-    lastName: 'משתמש'
+    name: 'Test User',
+    firstName: 'Test',
+    lastName: 'User'
   },
   invalidUser: {
-    email: 'wrong@example.com',
-    password: 'wrongpassword'
-  },
-  premiumUser: {
-    email: 'premium@example.com',
-    password: 'Premium@1234!'
+    email: 'invalid@example.com',
+    password: 'wrongpassword',
+    name: 'Invalid User',
+    firstName: 'Invalid',
+    lastName: 'User'
   }
 };
 
@@ -20,19 +20,19 @@ export const TestData = {
   urls: {
     home: '/',
     login: '/login',
-    register: '/register',
-    simulation: '/simulation',
+    signup: '/signup',
+    simulations: '/simulations-entry',
+    readingComprehension: '/reading-comprehension',
+    about: '/about',
     history: '/simulation-history'
   },
   performance: {
-    maxLoadTime: 5000,
-    maxLCP: 2500,
-    maxFCP: 1800,
-    maxCLS: 0.1
+    maxLoadTime: 5000 // 5 seconds
   },
-  simulation: {
-    minQuestions: 5,
-    maxTimePerQuestion: 30000
+  timeouts: {
+    short: 5000,
+    medium: 10000,
+    long: 30000
   }
 };
 
@@ -41,7 +41,17 @@ export function generateTestUser() {
   return {
     email: `test${timestamp}@example.com`,
     password: 'Test@1234!',
-    firstName: 'טסט',
-    lastName: `משתמש${timestamp}`
+    name: `Test User ${timestamp}`,
+    firstName: 'Test',
+    lastName: `User${timestamp}`
   };
+}
+
+export function generateRandomString(length: number = 8): string {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
 }
