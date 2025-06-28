@@ -318,8 +318,8 @@ const Login = () => {
             
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6 dark-tabs">
-                <TabsTrigger value="login" data-value="login" className="dark-tab-trigger">התחברות</TabsTrigger>
-                <TabsTrigger value="register" data-value="register" className="dark-tab-trigger">הרשמה</TabsTrigger>
+                <TabsTrigger value="login" className="dark-tab-trigger">התחברות</TabsTrigger>
+                <TabsTrigger value="register" className="dark-tab-trigger">הרשמה</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">
@@ -338,7 +338,6 @@ const Login = () => {
                         className="w-full flex items-center justify-center btn-secondary-dark"
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
-                        data-testid="google-login-button"
                       >
                         <svg className="ml-2 h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -365,7 +364,6 @@ const Login = () => {
                             className="pl-3 pr-10 dark-input"
                             value={formData.email}
                             onChange={handleInputChange}
-                            data-testid="email-input"
                           />
                         </div>
                       </div>
@@ -385,7 +383,6 @@ const Login = () => {
                             className="pl-10 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
-                            data-testid="password-input"
                           />
                           <button
                             type="button"
@@ -398,12 +395,7 @@ const Login = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button 
-                        type="submit" 
-                        className="w-full btn-primary-enhanced" 
-                        disabled={isLoading}
-                        data-testid="login-button"
-                      >
+                      <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
                         {isLoading ? <span className="loading-spinner"></span> : "התחברות"}
                       </Button>
                     </CardFooter>
@@ -433,7 +425,6 @@ const Login = () => {
                         className="w-full flex items-center justify-center btn-secondary-dark"
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
-                        data-testid="google-signup-button"
                       >
                         <svg className="ml-2 h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -454,13 +445,11 @@ const Login = () => {
                           <UserIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-name"
-                            placeholder="השם המלא שלך"
-                            type="text"
+                            placeholder="נועה לוי"
                             required
                             className="pl-3 pr-10 dark-input"
                             value={formData.name}
                             onChange={handleInputChange}
-                            data-testid="name-input"
                           />
                         </div>
                       </div>
@@ -476,7 +465,6 @@ const Login = () => {
                             className="pl-3 pr-10 dark-input"
                             value={formData.email}
                             onChange={handleInputChange}
-                            data-testid="register-email-input"
                           />
                         </div>
                       </div>
@@ -488,10 +476,11 @@ const Login = () => {
                             id="register-password"
                             type={showRegisterPassword ? "text" : "password"}
                             required
+                            minLength={6}
+                            placeholder="לפחות 6 תווים"
                             className="pl-10 pr-10 dark-input"
                             value={formData.password}
                             onChange={handleInputChange}
-                            data-testid="register-password-input"
                           />
                           <button
                             type="button"
@@ -520,35 +509,41 @@ const Login = () => {
                         </p>
                       </div>
                     </CardContent>
-                    <CardFooter>
-                      <Button 
-                        type="submit" 
-                        className="w-full btn-primary-enhanced" 
-                        disabled={isLoading}
-                        data-testid="signup-button"
-                      >
+                    <CardFooter className="flex flex-col">
+                      <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
                         {isLoading ? <span className="loading-spinner"></span> : "הרשמה"}
                       </Button>
+                      
+                      {/* Trust Badges */}
+                      <div className="trust-badges">
+                        <span>🆓 חינם וללא התחייבות</span>
+                        <span>⏱ נרשמים תוך דקה</span>
+                      </div>
+                      
+                      {/* Newsletter Checkbox */}
+                      <div className="newsletter-opt">
+                        <label>
+                          <input 
+                            type="checkbox" 
+                            id="newsletter"
+                            checked={formData.newsletter}
+                            onChange={handleInputChange}
+                          />
+                          <span>☑️ שלחו לי טיפים למבחן והנחות מיוחדות</span>
+                        </label>
+                      </div>
                     </CardFooter>
                   </form>
-                  
-                  {/* Trust Badges */}
-                  <div className="trust-badges">
-                    <span>⏱ תוך פחות מדקה</span>
-                    <span>🔐 מאובטח לחלוטין</span>
-                  </div>
                 </Card>
               </TabsContent>
             </Tabs>
-
-            {/* Error Display */}
-            {authError && (
-              <Alert className="mt-4 dark-alert-error" data-testid="auth-error">
-                <AlertTriangle className="h-4 w-4" />
-                <AlertTitle>שגיאה</AlertTitle>
-                <AlertDescription>{authError}</AlertDescription>
-              </Alert>
-            )}
+            
+            {/* Testimonial */}
+            <div className="testimonial-box">
+              <p className="testimonial-text">"השתפרתי ב-20 נקודות תוך שבוע. ממליץ בחום!"</p>
+              <span className="testimonial-author">– נועם, ראשון לציון</span>
+              <div className="testimonial-rating">⭐⭐⭐⭐⭐</div>
+            </div>
           </div>
         </div>
       </main>

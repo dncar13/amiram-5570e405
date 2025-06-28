@@ -6,46 +6,31 @@ export class HomePage extends BasePage {
   readonly url = '/';
 
   // Hero section
-  get heroSection() { return this.page.locator('main, .hero, [class*="hero"]').first(); }
+  get heroSection() { return this.page.locator('[class*="hero"]').or(this.page.locator('main').first()); }
   get heroTitle() { return this.page.locator('h1').first(); }
-  get startSimulationButton() { return this.page.locator('button:has-text("התחל"), a:has-text("התחל"), [data-testid="start-simulation"]').first(); }
+  get startSimulationButton() { return this.page.locator('button:has-text("התחל"), a:has-text("התחל")'); }
 
   // Features section
-  get featuresSection() { return this.page.locator('[class*="features"], .features').first(); }
-  get featureCards() { return this.page.locator('[class*="card"], .card'); }
+  get featuresSection() { return this.page.locator('[class*="features"]'); }
+  get featureCards() { return this.page.locator('[class*="card"]'); }
 
   // CTA buttons
-  get simulationCTA() { return this.page.locator('a[href*="simulation"], button:has-text("סימולציה")').first(); }
-  get readingCTA() { return this.page.locator('a[href*="reading"], button:has-text("הבנת הנקרא")').first(); }
+  get simulationCTA() { return this.page.locator('a[href*="simulation"], button:has-text("סימולציה")'); }
+  get readingCTA() { return this.page.locator('a[href*="reading"], button:has-text("הבנת הנקרא")'); }
 
   async goto() {
     await this.navigateTo(this.url);
   }
 
   async verifyPageElements() {
-    // More flexible verification
-    await expect(this.page).toHaveTitle(/אמירם|Amiram|Academy/i);
-    
-    // Check for header/navigation
-    const hasHeader = await this.header.isVisible({ timeout: 5000 });
-    expect(hasHeader).toBeTruthy();
-    
-    // Check for main content
-    const hasMainContent = await this.heroSection.isVisible({ timeout: 5000 });
-    expect(hasMainContent).toBeTruthy();
-    
-    // Footer is optional
-    try {
-      await expect(this.footer).toBeVisible({ timeout: 3000 });
-    } catch {
-      console.log('Footer not found - might be optional');
-    }
+    await expect(this.page).toHaveTitle(/אמירם|Amiram/i);
+    await expect(this.header).toBeVisible();
+    await expect(this.footer).toBeVisible();
+    await expect(this.heroTitle).toBeVisible();
   }
 
   async clickStartSimulation() {
-    if (await this.startSimulationButton.isVisible()) {
-      await this.startSimulationButton.click();
-    }
+    await this.startSimulationButton.first().click();
   }
 
   async checkPerformance(): Promise<number> {

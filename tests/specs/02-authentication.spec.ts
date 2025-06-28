@@ -17,40 +17,21 @@ test.describe('בדיקות Authentication', () => {
   });
 
   test.afterEach(async () => {
-    try {
-      await homePage.logout();
-    } catch (error) {
-      // Ignore logout errors in tests
-    }
+    // התנתקות אם מחובר
+    await homePage.logout();
   });
 
   test.describe('התחברות', () => {
     test('התחברות מוצלחת עם משתמש קיים', async () => {
       await loginPage.goto();
       await loginPage.login(TestUsers.validUser.email, TestUsers.validUser.password);
-      
-      // More flexible success check
-      try {
-        await loginPage.expectLoginSuccess();
-      } catch {
-        // Alternative success check
-        const isLoggedIn = await loginPage.isLoggedIn();
-        expect(isLoggedIn).toBeTruthy();
-      }
+      await loginPage.expectLoginSuccess();
     });
 
     test('התחברות עם פרטים שגויים', async () => {
       await loginPage.goto();
       await loginPage.login(TestUsers.invalidUser.email, TestUsers.invalidUser.password);
-      
-      // Wait a bit for potential error message
-      await loginPage.page.waitForTimeout(3000);
-      
-      // Check if still on login page or error visible
-      const currentUrl = loginPage.page.url();
-      const hasError = await loginPage.errorMessage.isVisible();
-      
-      expect(currentUrl.includes('/login') || hasError).toBeTruthy();
+      await loginPage.expectLoginError();
     });
 
     test('בדיקת ולידציות בטופס התחברות', async () => {
@@ -58,25 +39,20 @@ test.describe('בדיקות Authentication', () => {
       
       // ניסיון התחברות ללא מילוי
       await loginPage.loginButton.click();
+      await expect(loginPage.errorMessage).toBeVisible();
       
-      // Wait and check for validation
-      await loginPage.page.waitForTimeout(2000);
-      
-      // More flexible validation check
-      const hasValidationError = await loginPage.page.locator('input:invalid, .error, [role="alert"]').count() > 0;
-      expect(hasValidationError).toBeTruthy();
+      // בדיקת פורמט מייל לא תקין
+      await loginPage.emailInput.fill('notanemail');
+      await loginPage.passwordInput.fill('password');
+      await loginPage.loginButton.click();
+      await loginPage.expectLoginError();
     });
 
     test('שכחת סיסמה', async () => {
       await loginPage.goto();
-      
-      if (await loginPage.forgotPasswordLink.isVisible()) {
-        await loginPage.clickForgotPassword();
-        // Check for forgot password functionality
-        await loginPage.page.waitForTimeout(2000);
-      } else {
-        console.log('Forgot password link not available');
-      }
+      await loginPage.clickForgotPassword();
+      // יש לבדוק שעבר לעמוד שחזור סיסמה או הראה דיאלוג
+      await expect(loginPage.page.locator('input[name="email"], input[type="email"]')).toBeVisible();
     });
   });
 
@@ -85,83 +61,51 @@ test.describe('בדיקות Authentication', () => {
       const newUser = generateTestUser();
       
       await signupPage.goto();
+      await signupPage.signup({
+        email: newUser.email,
+        password: newUser.password,
+        confirmPassword: newUser.password,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName
+      });
       
-      // Wait for form to be ready
-      await signupPage.page.waitForTimeout(2000);
-      
-      try {
-        await signupPage.signup({
-          email: newUser.email,
-          password: newUser.password,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName
-        });
-        
-        // More flexible success check
-        await signupPage.page.waitForTimeout(3000);
-        const isLoggedIn = await signupPage.isLoggedIn();
-        const hasSuccessMessage = await signupPage.successMessage.isVisible();
-        
-        expect(isLoggedIn || hasSuccessMessage).toBeTruthy();
-      } catch (error) {
-        console.log('Signup flow might not be fully implemented:', error);
-      }
+      await signupPage.expectSignupSuccess();
     });
 
     test('הרשמה עם מייל קיים', async () => {
       await signupPage.goto();
+      await signupPage.signup({
+        email: TestUsers.validUser.email,
+        password: TestUsers.validUser.password,
+        confirmPassword: TestUsers.validUser.password
+      });
       
-      try {
-        await signupPage.signup({
-          email: TestUsers.validUser.email,
-          password: TestUsers.validUser.password,
-          firstName: TestUsers.validUser.firstName,
-          lastName: TestUsers.validUser.lastName
-        });
-        
-        await signupPage.page.waitForTimeout(3000);
-        
-        // Check for error or still on signup page
-        const hasError = await signupPage.errorMessage.isVisible();
-        const onSignupPage = signupPage.page.url().includes('/login');
-        
-        expect(hasError || onSignupPage).toBeTruthy();
-      } catch (error) {
-        console.log('Signup validation test skipped:', error);
-      }
+      await signupPage.expectSignupError();
     });
 
     test('בדיקת ולידציות בטופס הרשמה', async () => {
       await signupPage.goto();
       
-      try {
-        // ניסיון שליחה ללא מילוי
-        await signupPage.signupButton.click();
-        await signupPage.page.waitForTimeout(2000);
-        
-        const validationErrors = await signupPage.page.locator('input:invalid, .error, [role="alert"]').count();
-        expect(validationErrors).toBeGreaterThan(0);
-      } catch (error) {
-        console.log('Form validation test encountered error:', error);
-      }
+      // ניסיון שליחה ללא מילוי
+      await signupPage.signupButton.click();
+      await signupPage.expectValidationErrors(2); // לפחות email ו-password
+      
+      // בדיקת פורמט מייל
+      await signupPage.emailInput.fill('notanemail');
+      await signupPage.signupButton.click();
+      await signupPage.expectSignupError();
+      
+      // בדיקת חוזק סיסמה
+      await signupPage.emailInput.fill('test@example.com');
+      await signupPage.passwordInput.fill('123');
+      await signupPage.signupButton.click();
+      await signupPage.expectSignupError();
     });
 
     test('מעבר מהרשמה להתחברות', async () => {
       await signupPage.goto();
-      
-      try {
-        await signupPage.goToLogin();
-        await signupPage.page.waitForTimeout(1000);
-        
-        // Check if we're on login tab or page
-        const onLoginTab = await signupPage.loginTab.isVisible() && 
-                          await signupPage.loginTab.getAttribute('data-state') === 'active';
-        const hasLoginForm = await signupPage.page.locator('input[type="email"]').isVisible();
-        
-        expect(onLoginTab || hasLoginForm).toBeTruthy();
-      } catch (error) {
-        console.log('Tab switching test skipped:', error);
-      }
+      await signupPage.goToLogin();
+      await expect(signupPage.page).toHaveURL(/.*login/);
     });
   });
 
@@ -169,42 +113,27 @@ test.describe('בדיקות Authentication', () => {
     test('הרשמה ← התחברות ← התנתקות', async () => {
       const newUser = generateTestUser();
       
-      // Try signup flow
+      // הרשמה
       await signupPage.goto();
+      await signupPage.signup({
+        email: newUser.email,
+        password: newUser.password,
+        confirmPassword: newUser.password
+      });
       
-      try {
-        await signupPage.signup({
-          email: newUser.email,
-          password: newUser.password,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName
-        });
-        
-        await signupPage.page.waitForTimeout(3000);
-        
-        // Check if logged in after signup
-        const isLoggedIn = await signupPage.isLoggedIn();
-        
-        if (isLoggedIn) {
-          // Test logout
-          await homePage.logout();
-          await homePage.page.waitForTimeout(2000);
-          expect(await homePage.isLoggedIn()).toBeFalsy();
-        } else {
-          // Try login instead
-          await loginPage.goto();
-          await loginPage.login(newUser.email, newUser.password);
-          await loginPage.page.waitForTimeout(3000);
-          
-          if (await loginPage.isLoggedIn()) {
-            await homePage.logout();
-            await homePage.page.waitForTimeout(2000);
-            expect(await homePage.isLoggedIn()).toBeFalsy();
-          }
-        }
-      } catch (error) {
-        console.log('Full auth flow test had issues:', error);
+      // אם ההרשמה מצריכה אישור מייל, נעבור להתחברות
+      if (await signupPage.page.locator('text=אישור מייל').isVisible()) {
+        await loginPage.goto();
+        await loginPage.login(newUser.email, newUser.password);
       }
+      
+      // בדיקה שמחובר
+      await homePage.goto();
+      expect(await homePage.isLoggedIn()).toBeTruthy();
+      
+      // התנתקות
+      await homePage.logout();
+      expect(await homePage.isLoggedIn()).toBeFalsy();
     });
   });
 });
