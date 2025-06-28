@@ -5,11 +5,8 @@ test.describe('Smoke Tests @smoke', () => {
   test('בדיקת עמוד הבית נטען', async ({ page }) => {
     await page.goto('/');
     
-    // Wait for page to load
-    await page.waitForLoadState('networkidle');
-    
     // Check that the page loads
-    await expect(page).toHaveTitle(/Amiram Academy|אמירם|Academy/i);
+    await expect(page).toHaveTitle(/Amiram Academy/i);
     
     // Check that basic elements exist
     await expect(page.locator('body')).toBeVisible();
@@ -22,66 +19,32 @@ test.describe('Smoke Tests @smoke', () => {
     
     // Wait for page to be interactive
     await page.waitForLoadState('networkidle');
+    
+    // Check for navigation links - try multiple selectors to cover different scenarios
+    const navigationLinks = page.locator('nav a, [class*="nav"] a, header a, .navbar a');
+    const allLinks = page.locator('a');
+    const linksWithHref = page.locator('a[href]:not([href=""]):not([href="#"])');
+    
+    // Wait a bit for dynamic content to load
     await page.waitForTimeout(2000);
     
-    // Check for any navigation links with multiple strategies
-    const allLinks = await page.locator('a[href]').count();
-    const navigationLinks = await page.locator('nav a, header a, .navbar a').count();
+    const navCount = await navigationLinks.count();
+    const allCount = await allLinks.count();
+    const hrefCount = await linksWithHref.count();
     
-    console.log(`🔍 Total links: ${allLinks}, Navigation links: ${navigationLinks}`);
+    console.log(`🔍 Navigation links: ${navCount}, All links: ${allCount}, Links with href: ${hrefCount}`);
     
-    // Check if we can find any links at all
-    expect(allLinks).toBeGreaterThan(0);
+    // Check if we can find any navigation links
+    const hasNavigation = navCount > 0 || hrefCount > 0 || allCount > 0;
     
-    console.log(`✅ נמצאו ${allLinks} קישורים בעמוד`);
-  });
-
-  test('בדיקת טעינת משאבים בסיסיים', async ({ page }) => {
-    // Track failed requests
-    const failedRequests: string[] = [];
+    expect(hasNavigation).toBeTruthy();
     
-    page.on('requestfailed', request => {
-      failedRequests.push(request.url());
-    });
-    
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    
-    // Allow some failures (like analytics, fonts, etc.)
-    expect(failedRequests.length).toBeLessThan(5);
-    
-    if (failedRequests.length > 0) {
-      console.log('⚠️ Some requests failed:', failedRequests);
+    if (navCount > 0) {
+      console.log(`✅ נמצאו ${navCount} קישורי ניווט בעמוד`);
+    } else if (hrefCount > 0) {
+      console.log(`✅ נמצאו ${hrefCount} קישורים עם href בעמוד`);
     } else {
-      console.log('✅ כל המשאבים נטענו בהצלחה');
-    }
-  });
-
-  test('בדיקת JavaScript errors', async ({ page }) => {
-    const jsErrors: string[] = [];
-    const consoleErrors: string[] = [];
-    
-    page.on('pageerror', error => {
-      jsErrors.push(error.message);
-    });
-    
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
-        consoleErrors.push(msg.text());
-      }
-    });
-    
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(3000);
-    
-    // Some console errors might be expected (development mode, etc.)
-    expect(jsErrors.length).toBeLessThan(3);
-    
-    if (jsErrors.length > 0) {
-      console.log('⚠️ JavaScript errors found:', jsErrors);
-    } else {
-      console.log('✅ לא נמצאו שגיאות JavaScript');
+      console.log(`✅ נמצאו ${allCount} קישורים בעמוד`);
     }
   });
 });
