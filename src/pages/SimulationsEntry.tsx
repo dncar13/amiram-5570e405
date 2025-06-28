@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,58 +8,53 @@ import Footer from "@/components/Footer";
 import { Clock, Target, BookOpen, Trophy, Users, Star } from "lucide-react";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const SimulationsEntry = () => {
   const navigate = useNavigate();
   const { currentUser, isLoading: authLoading } = useAuth();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    if (!authLoading && !currentUser) {
-      console.log("❌ SimulationsEntry: User not authenticated, redirecting to login");
+  const requireAuthForAction = (action: () => void) => {
+    if (!currentUser) {
+      toast({
+        title: "נדרשת התחברות",
+        description: "על מנת להתחיל סימולציה יש להתחבר תחילה",
+        variant: "destructive"
+      });
       navigate('/login');
+      return;
     }
-  }, [currentUser, authLoading, navigate]);
+    action();
+  };
 
   const handleStartPractice = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      navigate('/quiz/practice');
-    }, 100);
+    requireAuthForAction(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate('/quiz/practice');
+      }, 100);
+    });
   };
 
   const handleStartFullSimulation = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      navigate('/quiz/full');
-    }, 100);
+    requireAuthForAction(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate('/quiz/full');
+      }, 100);
+    });
   };
 
   const handleStartReading = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      navigate('/quiz/reading');
-    }, 100);
+    requireAuthForAction(() => {
+      setIsLoading(true);
+      setTimeout(() => {
+        navigate('/quiz/reading');
+      }, 100);
+    });
   };
-
-  if (authLoading) {
-    return (
-      <RTLWrapper className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <div className="loading-spinner mx-auto mb-4"></div>
-            <p>טוען...</p>
-          </div>
-        </main>
-        <Footer />
-      </RTLWrapper>
-    );
-  }
-
-  if (!currentUser) {
-    return null; // Will redirect in useEffect
-  }
 
   return (
     <RTLWrapper className="min-h-screen flex flex-col simulations-entry-page">
@@ -90,6 +85,29 @@ const SimulationsEntry = () => {
               </div>
             </div>
           </div>
+
+          {/* Authentication Notice for Non-Logged Users */}
+          {!authLoading && !currentUser && (
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <BookOpen className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-blue-900">התחברות נדרשת</h3>
+                  <p className="text-blue-700 text-sm">
+                    כדי להתחיל סימולציה יש צורך להתחבר תחילה. 
+                    <button 
+                      onClick={() => navigate('/login')}
+                      className="text-blue-600 hover:text-blue-800 underline mr-1"
+                    >
+                      התחבר כאן
+                    </button>
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Main Simulation Options */}
           <div className="grid md:grid-cols-3 gap-6 mb-8">
