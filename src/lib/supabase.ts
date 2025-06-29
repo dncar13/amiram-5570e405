@@ -1,4 +1,5 @@
 
+
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -31,14 +32,31 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 
 // Helper function to get the correct redirect URL based on environment
 const getRedirectUrl = (): string => {
-  const isLocal = window.location.hostname === "localhost";
-  const redirectTo = isLocal
-    ? "http://localhost:8080/login"
-    : "https://amiram.net/login";
+  const hostname = window.location.hostname;
+  const isLocal = hostname === "localhost";
+  const isLovable = hostname.includes("lovable.app");
+  const isMainDomain = hostname === "amiram.net";
+  
+  let redirectTo: string;
+  
+  if (isLocal) {
+    redirectTo = "http://localhost:8080/login";
+  } else if (isLovable) {
+    // If we're on a Lovable domain, redirect back to the same Lovable domain
+    redirectTo = `${window.location.origin}/login`;
+  } else if (isMainDomain) {
+    redirectTo = "https://amiram.net/login";
+  } else {
+    // Fallback - use current origin
+    redirectTo = `${window.location.origin}/login`;
+  }
   
   console.log("🔗 Environment detection:");
-  console.log("  - Current hostname:", window.location.hostname);
+  console.log("  - Current hostname:", hostname);
+  console.log("  - Current origin:", window.location.origin);
   console.log("  - Is local environment:", isLocal);
+  console.log("  - Is Lovable domain:", isLovable);
+  console.log("  - Is main domain:", isMainDomain);
   console.log("  - Redirect URL:", redirectTo);
   
   return redirectTo;
@@ -234,3 +252,4 @@ export const resendConfirmationEmail = async (email: string) => {
 
 export const auth = supabase.auth;
 export const db = supabase;
+
