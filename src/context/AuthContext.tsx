@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
@@ -33,6 +33,7 @@ interface AuthState {
   loading: boolean;
   loadingState: AuthLoadingState;
   error: Error | null;
+  initialized: boolean; // Add this to track initialization
 }
 
 interface AuthContextType {
@@ -74,51 +75,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     session: null,
     loading: true,
     loadingState: 'initial',
-    error: null
+    error: null,
+    initialized: false
   });
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const { toast } = useToast();
+  const toastShownRef = useRef<Set<string>>(new Set()); // Prevent duplicate toasts
   
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
   const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  // Toast management for auth events
-  const authToastManager = {
-    success: (user: SupabaseUser) => {
-      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email;
-      toast({
-        title: "התחברת בהצלחה! 🎉",
-        description: `ברוך הבא ${name}`,
-        duration: 4000,
-      });
-    },
-    error: (error: Error) => {
-      toast({
-        variant: "destructive",
-        title: "שגיאה בהתחברות",
-        description: error.message,
-        duration: 5000,
-      });
-    },
-    signOut: () => {
-      toast({
-        title: "התנתקת בהצלחה",
-        description: "נתראה בקרוב!",
-        duration: 3000,
-      });
-    },
-    sessionRefreshed: () => {
-      toast({
-        title: "נתוני ההתחברות עודכנו",
-        description: "המשך ללמוד בבטחה",
-        duration: 2000,
-      });
-    }
-  };
+  // Single toast manager with deduplication
+  const showAuthToast = useCallback((type: string, message: string, description?: string) => {
+    const toastKey = `${type}-${message}`;
+    if (toastShownRef.current.has(toastKey)) return;
+    
+    toastShownRef.current.add(toastKey);
+    setTimeout(() => toastShownRef.current.delete(toastKey), 5000);
+    
+    toast({
+      title: message,
+      description,
+      variant: type === 'error' ? 'destructive' : 'default',
+      duration: 4000,
+    });
+  }, [toast]);
 
   const extractUsernameFromEmail = (email?: string | null) => {
     if (!email) return "משתמש";
@@ -151,54 +136,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Unified auth state handler with proper session management
-  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
-    console.log('🔔 Auth event:', event, 'Session:', !!session);
-    
-    try {
-      switch (event) {
-        case 'SIGNED_IN':
-          setAuthState({ session, loading: false, loadingState: 'ready', error: null });
-          if (session?.user) {
-            updateUserRelatedStates(session.user);
-            authToastManager.success(session.user);
-          }
-          break;
-          
-        case 'SIGNED_OUT':
-          setAuthState({ session: null, loading: false, loadingState: 'ready', error: null });
-          resetUserStates();
-          authToastManager.signOut();
-          break;
-          
-        case 'TOKEN_REFRESHED':
-          setAuthState({ session, loading: false, loadingState: 'ready', error: null });
-          if (session?.user) {
-            updateUserRelatedStates(session.user);
-            console.log('🔄 Token refreshed successfully');
-          }
-          break;
-          
-        case 'USER_UPDATED':
-          setAuthState({ session, loading: false, loadingState: 'ready', error: null });
-          if (session?.user) {
-            updateUserRelatedStates(session.user);
-          }
-          break;
-          
-        case 'PASSWORD_RECOVERY':
-          console.log('🔑 Password recovery event');
-          break;
-          
-        default:
-          console.log('🔄 Unknown auth event:', event);
-      }
-    } catch (error) {
-      console.error('❌ Error handling auth change:', error);
-      setAuthState(prev => ({ ...prev, error: error as Error, loading: false, loadingState: 'error' }));
-    }
-  }, [toast]);
-  
   // Update user-related states based on session user
   const updateUserRelatedStates = useCallback((user: SupabaseUser) => {
     console.log("✅ Updating user states for:", user.email);
@@ -229,21 +166,150 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("isPremiumUser");
   }, []);
 
+  // Simplified auth state handler - NO DUPLICATES
+  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
+    console.log('🔔 Auth event:', event, 'Session:', !!session);
+
+    switch (event) {
+      case 'SIGNED_IN':
+        setAuthState({ 
+          session, 
+          loading: false, 
+          loadingState: 'ready', 
+          error: null,
+          initialized: true 
+        });
+        if (session?.user) {
+          updateUserRelatedStates(session.user);
+          const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
+          showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+        }
+        break;
+
+      case 'SIGNED_OUT':
+        setAuthState({ 
+          session: null, 
+          loading: false, 
+          loadingState: 'ready', 
+          error: null,
+          initialized: true 
+        });
+        resetUserStates();
+        showAuthToast('info', 'התנתקת בהצלחה', 'נתראה בקרוב!');
+        break;
+
+      case 'TOKEN_REFRESHED':
+        setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
+        if (session?.user) {
+          updateUserRelatedStates(session.user);
+        }
+        break;
+
+      case 'USER_UPDATED':
+        setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
+        if (session?.user) {
+          updateUserRelatedStates(session.user);
+        }
+        break;
+
+      case 'PASSWORD_RECOVERY':
+        console.log('🔑 Password recovery event');
+        break;
+        
+      default:
+        console.log('🔄 Unknown auth event:', event);
+    }
+  }, [showAuthToast, updateUserRelatedStates, resetUserStates]);
+
+  // Initialize auth ONCE
+  useEffect(() => {
+    let mounted = true;
+    console.log("🔧 Initializing auth system...");
+
+    const initializeAuth = async () => {
+      try {
+        setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
+        
+        const { data: { session }, error } = await supabase.auth.getSession();
+        
+        if (!mounted) return;
+
+        if (error) {
+          console.error("❌ Auth initialization error:", error);
+          setAuthState({
+            session: null,
+            loading: false,
+            loadingState: 'error',
+            error,
+            initialized: true
+          });
+          return;
+        }
+
+        if (session?.user) {
+          console.log("✅ Found existing session for:", session.user.email);
+          setAuthState({
+            session,
+            loading: false,
+            loadingState: 'ready',
+            error: null,
+            initialized: true
+          });
+          updateUserRelatedStates(session.user);
+        } else {
+          console.log("❌ No existing session found");
+          setAuthState({
+            session: null,
+            loading: false,
+            loadingState: 'ready',
+            error: null,
+            initialized: true
+          });
+        }
+      } catch (error) {
+        console.error('❌ Auth initialization catch error:', error);
+        if (mounted) {
+          setAuthState({
+            session: null,
+            loading: false,
+            loadingState: 'error',
+            error: error as Error,
+            initialized: true
+          });
+        }
+      }
+    };
+
+    initializeAuth();
+
+    // Set up listener ONCE
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (mounted && authState.initialized) { // Only handle events after initialization
+        handleAuthChange(event, session);
+      }
+    });
+
+    return () => {
+      console.log("🧹 Cleaning up auth listener");
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, [handleAuthChange, updateUserRelatedStates]); // Dependencies needed for the listener
+
   // Refresh session manually
   const refreshSession = useCallback(async () => {
     try {
-      setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
+      setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
       
       const { data: { session }, error } = await supabase.auth.getSession();
       
       if (error) {
         console.error("❌ Error refreshing session:", error);
-        setAuthState({ session: null, loading: false, loadingState: 'error', error });
-        resetUserStates();
+        setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error }));
         return;
       }
       
-      setAuthState({ session, loading: false, loadingState: 'ready', error: null });
+      setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready', error: null }));
       
       if (session?.user) {
         updateUserRelatedStates(session.user);
@@ -254,76 +320,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       console.error("❌ Error in refreshSession:", error);
-      setAuthState({ session: null, loading: false, loadingState: 'error', error: error as Error });
-      resetUserStates();
+      setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
   }, [updateUserRelatedStates, resetUserStates]);
-
-  // Main auth effect with unified session handling
-  useEffect(() => {
-    console.log("🔧 Setting up unified auth listener...");
-    
-    let isMounted = true;
-    
-    // Initial session check
-    const initializeAuth = async () => {
-      if (!isMounted) return;
-      
-      try {
-        setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
-        
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (!isMounted) return;
-        
-        if (error) {
-          console.error("❌ Initial session check error:", error);
-          setAuthState({ session: null, loading: false, loadingState: 'error', error });
-          return;
-        }
-        
-        if (session?.user) {
-          console.log("✅ Found existing session for:", session.user.email);
-          setAuthState({ session, loading: false, loadingState: 'ready', error: null });
-          updateUserRelatedStates(session.user);
-        } else {
-          console.log("❌ No existing session found");
-          setAuthState({ session: null, loading: false, loadingState: 'ready', error: null });
-        }
-      } catch (error) {
-        console.error("❌ Error initializing auth:", error);
-        if (isMounted) {
-          setAuthState({ session: null, loading: false, loadingState: 'error', error: error as Error });
-        }
-      }
-    };
-    
-    initializeAuth();
-    
-    // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (isMounted) {
-        handleAuthChange(event, session);
-      }
-    });
-
-    return () => {
-      console.log("🧹 Cleaning up auth listener");
-      isMounted = false;
-      subscription.unsubscribe();
-    };
-  }, [handleAuthChange, updateUserRelatedStates]);
-
-  // Debug effect to track state changes
-  useEffect(() => {
-    console.log("🔍 Auth state update:");
-    console.log("  - session:", !!authState.session);
-    console.log("  - user:", authState.session?.user?.email || "null");
-    console.log("  - loading:", authState.loading);
-    console.log("  - loadingState:", authState.loadingState);
-    console.log("  - isAdmin:", isAdmin);
-    console.log("  - isPremium:", isPremium);
-  }, [authState, isAdmin, isPremium]);
 
   const logout = useCallback(async () => {
     try {
@@ -334,7 +333,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       if (error) {
         console.error("❌ Logout error:", error);
-        authToastManager.error(error);
+        showAuthToast('error', 'שגיאה בהתנתקות', error.message);
         setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error }));
         return;
       }
@@ -349,14 +348,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
     } catch (error) {
       console.error("❌ Logout catch error:", error);
-      setAuthState({ session: null, loading: false, loadingState: 'error', error: error as Error });
+      setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
       
       setTimeout(() => {
         window.location.href = '/';
       }, 500);
     }
-  }, [authToastManager, resetUserStates]);
+  }, [showAuthToast, resetUserStates]);
+
+  // Debug effect to track state changes in development
+  useEffect(() => {
+    if (isDevEnvironment) {
+      console.log("🔍 Auth state update:");
+      console.log("  - session:", !!authState.session);
+      console.log("  - user:", authState.session?.user?.email || "null");
+      console.log("  - loading:", authState.loading);
+      console.log("  - loadingState:", authState.loadingState);
+      console.log("  - initialized:", authState.initialized);
+      console.log("  - isAdmin:", isAdmin);
+      console.log("  - isPremium:", isPremium);
+    }
+  }, [authState, isAdmin, isPremium, isDevEnvironment]);
 
   const value = {
     session: authState.session,

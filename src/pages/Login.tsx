@@ -40,18 +40,8 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/simulations-entry";
   const isLoading = loginState !== 'idle' || authLoading;
   
-  // Enhanced redirect logic with intended destination
-  useEffect(() => {
-    if (currentUser && loginState !== 'redirecting') {
-      console.log("✅ User logged in, redirecting to:", from);
-      setLoginState('redirecting');
-      
-      // Small delay to show success state
-      setTimeout(() => {
-        navigate(from, { replace: true });
-      }, 800);
-    }
-  }, [currentUser, navigate, from, loginState]);
+  // Remove the problematic useEffect that causes race conditions
+  // Navigation will be handled directly in login/register handlers
   
   // Enhanced OAuth callback handling
   useEffect(() => {
@@ -177,7 +167,7 @@ const Login = () => {
       } else if (user) {
         console.log("Login successful:", user.email);
         
-        // Success feedback
+        // Success feedback and immediate navigation
         toast({
           title: "התחברת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
@@ -185,7 +175,11 @@ const Login = () => {
         });
         
         setLoginState('redirecting');
-        // Navigation will be handled by useEffect when currentUser updates
+        
+        // Navigate immediately after short delay for toast visibility
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 500);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -274,7 +268,7 @@ const Login = () => {
       } else if (user) {
         console.log("Registration successful:", user.email);
         
-        // Success feedback
+        // Success feedback and immediate navigation
         toast({
           title: "נרשמת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
@@ -282,7 +276,11 @@ const Login = () => {
         });
         
         setLoginState('redirecting');
-        // Navigation will be handled by useEffect when currentUser updates
+        
+        // Navigate immediately after short delay for toast visibility
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 500);
       }
     } catch (error) {
       console.error("Registration error:", error);

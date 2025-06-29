@@ -15,29 +15,12 @@ import UserAvatar from "@/components/UserAvatar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, logout, isLoading, refreshSession, session } = useAuth();
+  const { session, currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  const [forceRender, setForceRender] = useState(0);
-
-  useEffect(() => {
-    console.log("🖥️ Header: Auth state update (forced re-render):");
-    console.log("  - currentUser:", currentUser?.email || "null");
-    console.log("  - photoURL:", currentUser?.photoURL || "null");
-    console.log("  - isLoading:", isLoading);
-    
-    setForceRender(prev => prev + 1);
-  }, [currentUser, isLoading]);
-
-  useEffect(() => {
-    console.log("🔄 Header: Component mounted, checking auth state...");
-    if (!isLoading && !currentUser) {
-      setTimeout(() => {
-        console.log("🔄 Header: Fallback auth check...");
-        refreshSession();
-      }, 500);
-    }
-  }, []);
+  // Use session for real-time updates
+  const user = session?.user || currentUser;
+  const isAuthenticated = !!user;
 
   const handleLogout = async (e?: React.MouseEvent) => {
     if (e) {
@@ -67,21 +50,21 @@ const Header = () => {
     console.log("⏳ Header: Still loading auth state...");
   }
 
-  // Enhanced user display name extraction
+  // Enhanced user display name extraction using real-time user data
   const getUserDisplayName = () => {
-    if (!currentUser) return "משתמש";
+    if (!user) return "משתמש";
     
-    const metadata = currentUser.user_metadata;
+    const metadata = user.user_metadata;
     return (
       metadata?.full_name ||
       metadata?.name ||
-      currentUser.email?.split('@')[0] ||
+      user.email?.split('@')[0] ||
       "משתמש"
     );
   };
   
   const userDisplayName = getUserDisplayName();
-  const userPhotoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
+  const userPhotoURL = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
 
   return (
     <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
@@ -134,7 +117,7 @@ const Header = () => {
           <div className="hidden md:flex items-center space-x-4">
             {isLoading ? (
               <div className="text-slate-400 px-4 py-2">טוען...</div>
-            ) : currentUser ? (
+            ) : isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button 
@@ -142,7 +125,7 @@ const Header = () => {
                     className="bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl shadow-lg transition-all duration-300 flex items-center space-x-2 space-x-reverse"
                     onClick={handleUserMenuClick}
                   >
-                    <UserAvatar user={currentUser} size="sm" />
+                    <UserAvatar user={user} size="sm" />
                     <span className="mr-2">{userDisplayName}</span>
                   </Button>
                 </DropdownMenuTrigger>
@@ -262,10 +245,10 @@ const Header = () => {
               <div className="border-t border-slate-700/50 pt-4 mt-4">
                 {isLoading ? (
                   <div className="text-slate-400 px-4">טוען...</div>
-                ) : currentUser ? (
+                ) : isAuthenticated ? (
                   <>
                     <div className="flex items-center px-4 py-2 text-slate-300 space-x-3 space-x-reverse">
-                      <UserAvatar user={currentUser} size="sm" />
+                      <UserAvatar user={user} size="sm" />
                       <span>{userDisplayName}</span>
                     </div>
                     <Link 
