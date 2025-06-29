@@ -1,3 +1,4 @@
+
 import { defineConfig, devices } from '@playwright/test';
 
 /**
@@ -21,7 +22,6 @@ export default defineConfig({
   expect: {
     timeout: 30000, // 30 seconds for expects
     toHaveScreenshot: {
-      timeout: 30000,
       maxDiffPixels: 100,
       threshold: 0.2,
       animations: 'disabled'
