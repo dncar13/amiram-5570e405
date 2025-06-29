@@ -10,24 +10,20 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-    // Security: Enable session validation
     storageKey: 'amiram-auth-token',
-    flowType: 'pkce', // Use PKCE for enhanced security
+    flowType: 'pkce',
   },
-  // Security: Configure global options
   global: {
     headers: {
       'X-Client-Info': 'amiram-academy',
     },
   },
-  // Security: Configure database options
   db: {
     schema: 'public',
   },
-  // Security: Configure realtime with auth
   realtime: {
     params: {
-      eventsPerSecond: 10, // Rate limiting
+      eventsPerSecond: 10,
     },
   },
 });
@@ -40,6 +36,19 @@ const getErrorMessage = (error: any): string => {
   
   const message = error.message || error.error_description || error.error || '';
   
+  // Google OAuth specific errors
+  if (message.includes('invalid_client') || message.includes('Unauthorized')) {
+    return "בעיה בהגדרות Google OAuth. אנא בדקו שה-Client ID וה-Client Secret מוגדרים נכון ב-Supabase.";
+  }
+  
+  if (message.includes('redirect_uri_mismatch')) {
+    return "כתובת ההפניה לא תואמת להגדרות Google. אנא בדקו את הגדרות ה-Redirect URLs.";
+  }
+  
+  if (message.includes('access_denied')) {
+    return "הגישה נדחתה על ידי Google. אנא נסו שוב או בחרו חשבון אחר.";
+  }
+
   // Common error mappings
   if (message.includes('Invalid login credentials')) {
     return "פרטי ההתחברות שגויים. אנא בדקו את האימייל והסיסמה.";
@@ -60,10 +69,6 @@ const getErrorMessage = (error: any): string => {
   if (message.includes('User already registered')) {
     return "משתמש כבר קיים עם כתובת האימייל הזו. נסו להתחבר.";
   }
-
-  if (message.includes('invalid_client') || message.includes('Unauthorized')) {
-    return "שגיאה בהגדרות Google OAuth. אנא פנו לתמיכה טכנית.";
-  }
   
   return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
 };
@@ -81,7 +86,11 @@ export const signInWithGoogle = async () => {
       return { user: null, error: null };
     }
     
-    const redirectTo = `${window.location.origin}/login`;
+    // Use the correct redirect URL based on environment
+    const redirectTo = window.location.origin === 'http://localhost:8080' 
+      ? 'http://localhost:8080/login'
+      : 'https://preview--amiram.lovable.app/login';
+    
     console.log("🔗 Redirect URL:", redirectTo);
     
     const { data, error } = await supabase.auth.signInWithOAuth({
@@ -89,8 +98,10 @@ export const signInWithGoogle = async () => {
       options: {
         redirectTo: redirectTo,
         queryParams: {
-          prompt: 'select_account', // Force account selection for better UX
-        }
+          prompt: 'select_account',
+          access_type: 'offline',
+        },
+        scopes: 'openid email profile'
       }
     });
     
@@ -100,7 +111,7 @@ export const signInWithGoogle = async () => {
     }
     
     console.log("✅ Google OAuth initiated:", data);
-    return { user: null, error: null }; // User will be set after redirect
+    return { user: null, error: null };
   } catch (error) {
     console.error("❌ Google sign in catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };
