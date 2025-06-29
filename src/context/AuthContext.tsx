@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
@@ -83,8 +84,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
-  const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
   const showAuthToast = useCallback((type: string, message: string, description?: string) => {
     const toastKey = `${type}-${message}`;
     if (toastShownRef.current.has(toastKey)) return;
@@ -159,7 +158,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("isPremiumUser");
   }, []);
 
-  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
+  const handleAuthChange = useCallback((event: AuthChangeEvent, session: Session | null) => {
     console.log('🔔 Auth event:', event, 'Session:', !!session);
 
     switch (event) {
@@ -273,11 +272,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (mounted && authState.initialized) {
-        handleAuthChange(event, session);
-      }
-    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
 
     return () => {
       console.log("🧹 Cleaning up auth listener");
@@ -327,20 +322,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
       
-      console.log("✅ Logout successful");
-      
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
+      console.log("✅ Logout successful - state will be updated by auth listener");
       
     } catch (error) {
       console.error("❌ Logout catch error:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
-      
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 500);
     }
   }, [showAuthToast, resetUserStates]);
 

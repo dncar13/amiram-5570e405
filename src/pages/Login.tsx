@@ -16,7 +16,7 @@ import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { resendConfirmationEmail } from "@/lib/supabase";
 
 // Enhanced login state management
-type LoginState = 'idle' | 'google-auth' | 'email-auth' | 'registering' | 'redirecting' | 'error';
+type LoginState = 'idle' | 'google-auth' | 'email-auth' | 'registering' | 'success' | 'error';
 
 const Login = () => {
   const [loginState, setLoginState] = useState<LoginState>('idle');
@@ -46,6 +46,16 @@ const Login = () => {
       navigate(from, { replace: true });
     }
   }, [session, authLoading, navigate, from]);
+
+  // Handle successful authentication - wait for auth state change
+  useEffect(() => {
+    if (session?.user && loginState === 'success') {
+      console.log("🎉 Login successful, navigating to:", from);
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 500);
+    }
+  }, [session, loginState, navigate, from]);
   
   // Enhanced OAuth callback handling
   useEffect(() => {
@@ -131,7 +141,7 @@ const Login = () => {
     }
 
     try {
-      console.log("Login attempt for:", formData.email);
+      console.log("🔐 Login attempt for:", formData.email);
       
       toast({
         title: "מתחבר...",
@@ -162,19 +172,17 @@ const Login = () => {
           duration: 5000,
         });
       } else if (user) {
-        console.log("Login successful:", user.email);
-        setLoginState('redirecting');
+        console.log("✅ Login successful:", user.email);
+        setLoginState('success');
         
         toast({
           title: "התחברת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
           duration: 3000,
         });
-        
-        // Let auth state change handle navigation - don't force it
       }
     } catch (error) {
-      console.error("Login error:", error);
+      console.error("❌ Login error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       setLoginState('error');
@@ -219,7 +227,7 @@ const Login = () => {
     }
     
     try {
-      console.log("Registration attempt for:", formData.email);
+      console.log("📝 Registration attempt for:", formData.email);
       
       toast({
         title: "מרשם חשבון חדש...",
@@ -256,19 +264,17 @@ const Login = () => {
           duration: 5000,
         });
       } else if (user) {
-        console.log("Registration successful:", user.email);
-        setLoginState('redirecting');
+        console.log("✅ Registration successful:", user.email);
+        setLoginState('success');
         
         toast({
           title: "נרשמת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
           duration: 3000,
         });
-        
-        // Let auth state change handle navigation
       }
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error("❌ Registration error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
       setAuthError(errorMessage);
       setLoginState('error');
@@ -364,7 +370,7 @@ const Login = () => {
               </svg>
             </div>
 
-            {/* Enhanced debug info for development */}
+            {/* Debug info */}
             {isDevEnvironment && (
               <div className="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded text-xs">
                 <div>Login State: {loginState}</div>
@@ -373,11 +379,19 @@ const Login = () => {
                 <div>Session: {session ? 'exists' : 'null'}</div>
                 <div>Auth Error: {authError || 'none'}</div>
                 <div>Intended Destination: {from}</div>
-                <div>URL Params: {window.location.search || 'none'}</div>
               </div>
             )}
 
-            {/* Rest of the component remains the same */}
+            {/* Error Alert */}
+            {authError && (
+              <Alert variant="destructive" className="mb-6">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>שגיאה</AlertTitle>
+                <AlertDescription>{authError}</AlertDescription>
+              </Alert>
+            )}
+
+            {/* Confirmation Alert */}
             {awaitingConfirmation && (
               <Alert variant="default" className="mb-6 dark-alert-warning">
                 <AlertTriangle className="h-4 w-4" />
@@ -484,7 +498,7 @@ const Login = () => {
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             מתחבר...
                           </>
-                        ) : loginState === 'redirecting' ? (
+                        ) : loginState === 'success' ? (
                           <>
                             <CheckCircle className="mr-2 h-4 w-4" />
                             הצלחה! מעביר...
@@ -503,7 +517,7 @@ const Login = () => {
                 </Card>
               </TabsContent>
               
-              {/* ... keep existing code (register tab) the same */}
+              {/* ... keep existing code (register tab) */}
               <TabsContent value="register">
                 <Card className="dark-card">
                   <CardHeader className="dark-card-header">
@@ -611,7 +625,7 @@ const Login = () => {
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             מרשם...
                           </>
-                        ) : loginState === 'redirecting' ? (
+                        ) : loginState === 'success' ? (
                           <>
                             <CheckCircle className="mr-2 h-4 w-4" />
                             הצלחה! מעביר...
