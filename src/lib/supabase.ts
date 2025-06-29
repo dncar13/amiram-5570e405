@@ -10,7 +10,26 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
-  }
+    // Security: Enable session validation
+    storageKey: 'amiram-auth-token',
+    flowType: 'pkce', // Use PKCE for enhanced security
+  },
+  // Security: Configure global options
+  global: {
+    headers: {
+      'X-Client-Info': 'amiram-academy',
+    },
+  },
+  // Security: Configure database options
+  db: {
+    schema: 'public',
+  },
+  // Security: Configure realtime with auth
+  realtime: {
+    params: {
+      eventsPerSecond: 10, // Rate limiting
+    },
+  },
 });
 
 // Supabase User interface that matches the Firebase user structure

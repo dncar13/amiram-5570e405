@@ -1,0 +1,18 @@
+# ZAP Security Scan Rules Configuration
+# Format: RULE_ID	ACTION	REASON
+# Actions: IGNORE, WARN, FAIL
+
+# Ignore informational warnings that are acceptable for development
+10049	IGNORE	Storable but Non-Cacheable Content - acceptable for Vite dev server
+10109	IGNORE	Modern Web Application - informational only
+
+# Keep important security warnings as WARN
+10055	WARN	CSP Wildcard Directive - monitor but acceptable with specific domains
+90003	WARN	Sub Resource Integrity - monitor for external resources
+
+# Fail on critical security issues
+10017	FAIL	Cross-Domain JavaScript Source File Inclusion without protection
+10020	FAIL	Missing Anti-clickjacking Header
+10021	FAIL	X-Content-Type-Options Header Missing
+10038	FAIL	Content Security Policy Header Not Set
+10063	FAIL	Permissions Policy Header Not Set

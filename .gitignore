@@ -97,3 +97,28 @@ playwright-report/
 tests/specs/*-snapshots/
 
 # Note: NO baseline snapshot images are kept in version control - they are auto-generated
+
+# ==========================
+# LARGE FILES & ARCHIVES
+# ==========================
+*.tar.gz
+*.zip
+*.rar
+*.7z
+*.tar
+*.bz2
+*.xz
+
+# ==========================
+# SECURITY TOOLS & REPORTS
+# ==========================
+# ZAP security scanner
+ZAP_*/
+*.tar.gz
+zap-reports/
+security-reports/
+
+# Other security tools
+*.sarif
+*.json.security
+security/reports/

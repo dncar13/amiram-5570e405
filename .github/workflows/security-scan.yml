@@ -1,0 +1,79 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly security scan every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build application
+      run: npm run build
+
+    - name: Start application for scanning
+      run: |
+        npm run preview &
+        sleep 10
+        # Wait for application to be ready
+        npx wait-on http://localhost:4173
+
+    - name: Run ZAP Baseline Scan
+      uses: zaproxy/action-baseline@v0.10.0
+      with:
+        target: 'http://localhost:4173'
+        rules_file_name: '.zap/rules.tsv'
+        cmd_options: '-a'
+        
+    - name: Upload ZAP Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: zap-security-report
+        path: report_html.html
+        
+    - name: Security Headers Check
+      run: |
+        curl -I http://localhost:4173 | grep -E "(Content-Security-Policy|X-Frame-Options|X-Content-Type-Options)"
+        
+    - name: Dependency Security Audit
+      run: npm audit --audit-level=moderate
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
