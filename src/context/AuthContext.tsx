@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { auth, onAuthStateChanged, User, logoutUser } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
@@ -98,16 +97,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Enhanced auth state update with better success messaging
+  // Enhanced auth state update with better Google Auth debugging
   const updateAuthState = (user: User | null) => {
     console.log("🔄 AuthContext: Updating auth state with user:", user?.email || "null");
     console.log("🖼️ AuthContext: User photo URL:", user?.photoURL || "null");
     console.log("📧 AuthContext: User display name:", user?.displayName || "null");
     console.log("🆔 AuthContext: User UID:", user?.uid || "null");
-    
-    // Check if this is a new login (user was null, now has user)
-    const wasLoggedOut = !currentUser;
-    const isNowLoggedIn = !!user;
     
     setCurrentUser(user);
     
@@ -139,9 +134,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("🖼️ AuthContext: Final photo URL:", user.photoURL);
       setUserData(newUserData);
       
-      // Show success toast only for new logins
-      if (wasLoggedOut && isNowLoggedIn) {
-        console.log("🎉 AuthContext: New login detected, showing success toast");
+      // Show success toast for Google login
+      if (user.photoURL) {
         toast({
           title: "התחברת בהצלחה! 🎉",
           description: `ברוך הבא ${displayName}`,
