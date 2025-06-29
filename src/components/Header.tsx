@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ const Header = () => {
     try {
       console.log("🚪 Header: Initiating logout...");
       await logout();
-      navigate("/");
+      // Don't force navigation - let AuthContext handle it
     } catch (error) {
       console.error("❌ Header: Error logging out:", error);
     }
@@ -50,7 +49,6 @@ const Header = () => {
     console.log("⏳ Header: Still loading auth state...");
   }
 
-  // Enhanced user display name extraction using real-time user data
   const getUserDisplayName = () => {
     if (!user) return "משתמש";
     

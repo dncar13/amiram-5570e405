@@ -3,14 +3,12 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
 
-// רשימת אימיילים של משתמשים שהם מנהלי מערכת
 const ADMIN_EMAILS = [
   "admin@example.com",
   "dncar13@gmail.com",
   "buldir@gmail.com",
 ];
 
-// רשימת אימיילים של משתמשים פרימיום
 const PREMIUM_EMAILS = [
   "premium@example.com",
   "dncar13@gmail.com",
@@ -18,14 +16,12 @@ const PREMIUM_EMAILS = [
   "dncar20@gmail.com",
 ];
 
-// מבנה נתוני משתמש
 interface UserData {
   firstName?: string;
   lastName?: string;
   premiumExpiration?: string | number;
 }
 
-// Enhanced auth state with proper typing
 type AuthLoadingState = 'initial' | 'checking-session' | 'signing-in' | 'refreshing-token' | 'signing-out' | 'ready' | 'error';
 
 interface AuthState {
@@ -33,7 +29,7 @@ interface AuthState {
   loading: boolean;
   loadingState: AuthLoadingState;
   error: Error | null;
-  initialized: boolean; // Add this to track initialization
+  initialized: boolean;
 }
 
 interface AuthContextType {
@@ -82,14 +78,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isPremium, setIsPremium] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const { toast } = useToast();
-  const toastShownRef = useRef<Set<string>>(new Set()); // Prevent duplicate toasts
+  const toastShownRef = useRef<Set<string>>(new Set());
   
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
   const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  // Single toast manager with deduplication
   const showAuthToast = useCallback((type: string, message: string, description?: string) => {
     const toastKey = `${type}-${message}`;
     if (toastShownRef.current.has(toastKey)) return;
@@ -136,7 +131,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Update user-related states based on session user
   const updateUserRelatedStates = useCallback((user: SupabaseUser) => {
     console.log("✅ Updating user states for:", user.email);
     
@@ -158,7 +152,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUserData(newUserData);
   }, []);
   
-  // Reset user states on logout
   const resetUserStates = useCallback(() => {
     setIsAdmin(false);
     setIsPremium(false);
@@ -166,7 +159,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("isPremiumUser");
   }, []);
 
-  // Simplified auth state handler - NO DUPLICATES
   const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
     console.log('🔔 Auth event:', event, 'Session:', !!session);
 
@@ -221,7 +213,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [showAuthToast, updateUserRelatedStates, resetUserStates]);
 
-  // Initialize auth ONCE
   useEffect(() => {
     let mounted = true;
     console.log("🔧 Initializing auth system...");
@@ -282,9 +273,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     initializeAuth();
 
-    // Set up listener ONCE
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (mounted && authState.initialized) { // Only handle events after initialization
+      if (mounted && authState.initialized) {
         handleAuthChange(event, session);
       }
     });
@@ -294,9 +284,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [handleAuthChange, updateUserRelatedStates]); // Dependencies needed for the listener
+  }, [handleAuthChange, updateUserRelatedStates]);
 
-  // Refresh session manually
   const refreshSession = useCallback(async () => {
     try {
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
@@ -338,10 +327,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
       
-      // States will be reset by the auth state change listener
       console.log("✅ Logout successful");
       
-      // Small delay to ensure toast is visible before redirect
       setTimeout(() => {
         window.location.href = '/';
       }, 500);
@@ -357,7 +344,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [showAuthToast, resetUserStates]);
 
-  // Debug effect to track state changes in development
   useEffect(() => {
     if (isDevEnvironment) {
       console.log("🔍 Auth state update:");

@@ -34,14 +34,18 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, isDevEnvironment, refreshSession, isLoading: authLoading } = useAuth();
+  const { currentUser, isDevEnvironment, refreshSession, isLoading: authLoading, session } = useAuth();
   
-  // Get intended destination from location state
   const from = location.state?.from?.pathname || "/simulations-entry";
   const isLoading = loginState !== 'idle' || authLoading;
   
-  // Remove the problematic useEffect that causes race conditions
-  // Navigation will be handled directly in login/register handlers
+  // Navigate user if already authenticated
+  useEffect(() => {
+    if (session?.user && !authLoading) {
+      console.log("✅ User already authenticated, redirecting to:", from);
+      navigate(from, { replace: true });
+    }
+  }, [session, authLoading, navigate, from]);
   
   // Enhanced OAuth callback handling
   useEffect(() => {
@@ -57,8 +61,6 @@ const Login = () => {
     } else if (hasOAuthCode) {
       console.log("🔗 OAuth callback detected");
       setLoginState('google-auth');
-      
-      // Clean URL and let auth system handle the session
       window.history.replaceState({}, document.title, window.location.pathname);
       
       setTimeout(() => {
@@ -75,7 +77,6 @@ const Login = () => {
     try {
       console.log("🔗 Initiating Google login");
       
-      // Show immediate feedback
       toast({
         title: "מתחבר עם Google...",
         description: "אנא המתינו רגע",
@@ -96,7 +97,6 @@ const Login = () => {
           duration: 5000,
         });
       }
-      // Success will be handled by auth state change
     } catch (error) {
       console.error("❌ Google login error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
@@ -118,7 +118,6 @@ const Login = () => {
     setAuthError(null);
     setAwaitingConfirmation(null);
 
-    // Enhanced validation
     if (!formData.email || !formData.password) {
       setAuthError("אנא מלאו את כל השדות");
       setLoginState('error');
@@ -134,7 +133,6 @@ const Login = () => {
     try {
       console.log("Login attempt for:", formData.email);
       
-      // Show loading feedback
       toast({
         title: "מתחבר...",
         description: "בודק פרטי התחברות",
@@ -144,7 +142,6 @@ const Login = () => {
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
 
       if (error) {
-        // Check for email not confirmed case
         if (
           error.message.includes("יש לאשר את כתובת האימייל") ||
           error.message.toLowerCase().includes("confirm your email") ||
@@ -166,20 +163,15 @@ const Login = () => {
         });
       } else if (user) {
         console.log("Login successful:", user.email);
+        setLoginState('redirecting');
         
-        // Success feedback and immediate navigation
         toast({
           title: "התחברת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
           duration: 3000,
         });
         
-        setLoginState('redirecting');
-        
-        // Navigate immediately after short delay for toast visibility
-        setTimeout(() => {
-          navigate(from, { replace: true });
-        }, 500);
+        // Let auth state change handle navigation - don't force it
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -202,7 +194,6 @@ const Login = () => {
     setAuthError(null);
     setAwaitingConfirmation(null);
     
-    // Enhanced validation
     if (!formData.email || !formData.password || !formData.name) {
       setAuthError("אנא מלאו את כל השדות");
       setLoginState('error');
@@ -230,7 +221,6 @@ const Login = () => {
     try {
       console.log("Registration attempt for:", formData.email);
       
-      // Show loading feedback
       toast({
         title: "מרשם חשבון חדש...",
         description: "יוצר את החשבון שלך",
@@ -267,20 +257,15 @@ const Login = () => {
         });
       } else if (user) {
         console.log("Registration successful:", user.email);
+        setLoginState('redirecting');
         
-        // Success feedback and immediate navigation
         toast({
           title: "נרשמת בהצלחה! 🎉",
           description: "מעביר אותך לסימולציות...",
           duration: 3000,
         });
         
-        setLoginState('redirecting');
-        
-        // Navigate immediately after short delay for toast visibility
-        setTimeout(() => {
-          navigate(from, { replace: true });
-        }, 500);
+        // Let auth state change handle navigation
       }
     } catch (error) {
       console.error("Registration error:", error);
@@ -306,7 +291,6 @@ const Login = () => {
       [fieldName]: type === 'checkbox' ? checked : value
     }));
     
-    // Clear error and reset state when user starts typing
     if (authError || loginState === 'error') {
       setAuthError(null);
       setLoginState('idle');
@@ -386,12 +370,14 @@ const Login = () => {
                 <div>Login State: {loginState}</div>
                 <div>Auth Loading: {authLoading ? 'true' : 'false'}</div>
                 <div>Current User: {currentUser?.email || 'null'}</div>
+                <div>Session: {session ? 'exists' : 'null'}</div>
                 <div>Auth Error: {authError || 'none'}</div>
                 <div>Intended Destination: {from}</div>
                 <div>URL Params: {window.location.search || 'none'}</div>
               </div>
             )}
 
+            {/* Rest of the component remains the same */}
             {awaitingConfirmation && (
               <Alert variant="default" className="mb-6 dark-alert-warning">
                 <AlertTriangle className="h-4 w-4" />
@@ -418,6 +404,7 @@ const Login = () => {
                 <TabsTrigger value="register" className="dark-tab-trigger">הרשמה</TabsTrigger>
               </TabsList>
               
+              {/* ... keep existing code (tabs content) the same */}
               <TabsContent value="login">
                 <Card className="dark-card">
                   <CardHeader className="dark-card-header">
@@ -509,7 +496,6 @@ const Login = () => {
                     </CardFooter>
                   </form>
                   
-                  {/* Trust Badges */}
                   <div className="trust-badges">
                     <span>⏱ תוך פחות מדקה</span>
                     <span>🔐 מאובטח לחלוטין</span>
@@ -517,6 +503,7 @@ const Login = () => {
                 </Card>
               </TabsContent>
               
+              {/* ... keep existing code (register tab) the same */}
               <TabsContent value="register">
                 <Card className="dark-card">
                   <CardHeader className="dark-card-header">
@@ -634,13 +621,11 @@ const Login = () => {
                         )}
                       </Button>
                       
-                      {/* Trust Badges */}
                       <div className="trust-badges">
                         <span>🆓 חינם וללא התחייבות</span>
                         <span>⏱ נרשמים תוך דקה</span>
                       </div>
                       
-                      {/* Newsletter Checkbox */}
                       <div className="newsletter-opt">
                         <label>
                           <input 
@@ -658,7 +643,6 @@ const Login = () => {
               </TabsContent>
             </Tabs>
             
-            {/* Testimonial */}
             <div className="testimonial-box">
               <p className="testimonial-text">"השתפרתי ב-20 נקודות תוך שבוע. ממליץ בחום!"</p>
               <span className="testimonial-author">– נועם, ראשון לציון</span>
