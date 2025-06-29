@@ -6,64 +6,32 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { loginWithEmailAndPassword, signInWithGoogle } from '@/lib/supabase';
+import { registerWithEmailAndPassword, signInWithGoogle } from '@/lib/supabase';
 import { Eye, EyeOff, Mail, Lock, Chrome } from 'lucide-react';
 
-const Login = () => {
+const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const navigate = useNavigate();
-  const { currentUser, checkAndUpdateSession } = useAuth();
+  const { currentUser } = useAuth();
   const { toast } = useToast();
 
   // Redirect if already logged in
   useEffect(() => {
-    console.log("Login page: Current user status:", !!currentUser);
     if (currentUser) {
-      console.log("User already logged in, redirecting...");
       navigate('/', { replace: true });
     }
   }, [currentUser, navigate]);
 
-  // Check for OAuth callback on mount
-  useEffect(() => {
-    const handleOAuthCallback = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const hasOAuthParams = urlParams.get('code') || urlParams.get('access_token');
-      
-      if (hasOAuthParams) {
-        console.log("OAuth callback detected, checking session...");
-        setIsLoading(true);
-        try {
-          await checkAndUpdateSession();
-          // Wait a bit for auth state to update
-          setTimeout(() => {
-            if (!currentUser) {
-              toast({
-                title: "בעיה בהתחברות",
-                description: "ההתחברות עם Google לא הצליחה. נסה שוב.",
-                variant: "destructive"
-              });
-            }
-            setIsLoading(false);
-          }, 2000);
-        } catch (error) {
-          console.error("OAuth callback error:", error);
-          setIsLoading(false);
-        }
-      }
-    };
-
-    handleOAuthCallback();
-  }, [checkAndUpdateSession, currentUser, toast]);
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!email || !password) {
+    if (!email || !password || !confirmPassword) {
       toast({
         title: "שגיאה",
         description: "אנא מלא את כל השדות",
@@ -72,33 +40,50 @@ const Login = () => {
       return;
     }
 
+    if (password !== confirmPassword) {
+      toast({
+        title: "שגיאה",
+        description: "הסיסמאות אינן תואמות",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (password.length < 6) {
+      toast({
+        title: "שגיאה",
+        description: "הסיסמה חייבת להכיל לפחות 6 תווים",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setIsLoading(true);
-    console.log("Attempting email login for:", email);
+    console.log("Attempting signup for:", email);
 
     try {
-      const { user, error } = await loginWithEmailAndPassword(email, password);
+      const { user, error } = await registerWithEmailAndPassword(email, password);
       
       if (error) {
-        console.error("Login error:", error);
+        console.error("Signup error:", error);
         toast({
-          title: "שגיאת התחברות",
+          title: "שגיאת הרשמה",
           description: error.message,
           variant: "destructive"
         });
-      } else if (user) {
-        console.log("Login successful for:", user.email);
+      } else {
+        console.log("Signup successful for:", email);
         toast({
-          title: "התחברת בהצלחה! 🎉",
-          description: `ברוך הבא ${user.email}`,
+          title: "נרשמת בהצלחה! 🎉",
+          description: "ברוך הבא לאמירם אקדמיה",
         });
         
-        // Wait for auth context to update
         setTimeout(() => {
           navigate('/', { replace: true });
         }, 500);
       }
     } catch (error) {
-      console.error("Login catch error:", error);
+      console.error("Signup catch error:", error);
       toast({
         title: "שגיאה במערכת",
         description: "אירעה שגיאה לא צפויה. נסה שוב.",
@@ -109,17 +94,17 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    console.log("🔗 Starting Google login process...");
+  const handleGoogleSignup = async () => {
+    console.log("🔗 Starting Google signup process...");
     setIsGoogleLoading(true);
     
     try {
       const result = await signInWithGoogle();
       
       if (result.error) {
-        console.error("Google login error:", result.error);
+        console.error("Google signup error:", result.error);
         toast({
-          title: "שגיאת התחברות",
+          title: "שגיאת הרשמה",
           description: result.error.message,
           variant: "destructive"
         });
@@ -128,15 +113,14 @@ const Login = () => {
         console.log("Google OAuth initiated successfully");
         toast({
           title: "מעביר לגוגל...",
-          description: "אנא המתן, מעביר אותך להתחברות עם Google",
+          description: "אנא המתן, מעביר אותך להרשמה עם Google",
         });
-        // Don't set loading to false here - the page will redirect
       }
     } catch (error) {
-      console.error("Google login catch error:", error);
+      console.error("Google signup catch error:", error);
       toast({
         title: "שגיאה במערכת",
-        description: "בעיה בהתחברות עם Google. נסה שוב.",
+        description: "בעיה בהרשמה עם Google. נסה שוב.",
         variant: "destructive"
       });
       setIsGoogleLoading(false);
@@ -148,30 +132,30 @@ const Login = () => {
       <Card className="w-full max-w-md shadow-2xl border-0">
         <CardHeader className="text-center pb-6">
           <CardTitle className="text-2xl font-bold text-electric-navy mb-2">
-            התחברות לחשבון
+            יצירת חשבון חדש
           </CardTitle>
           <p className="text-electric-slate">
-            ברוכים הבאים בחזרה לאמירם אקדמיה
+            הצטרף לאמירם אקדמיה והתחל ללמוד
           </p>
         </CardHeader>
         
         <CardContent className="space-y-6">
-          {/* Google Login Button */}
+          {/* Google Signup Button */}
           <Button
             type="button"
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleSignup}
             disabled={isGoogleLoading || isLoading}
             className="w-full bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 h-12 text-base font-medium shadow-sm"
           >
             {isGoogleLoading ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                מתחבר...
+                נרשם...
               </div>
             ) : (
               <div className="flex items-center gap-3">
                 <Chrome className="w-5 h-5" />
-                התחבר עם Google
+                הירשם עם Google
               </div>
             )}
           </Button>
@@ -185,8 +169,8 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Email Login Form */}
-          <form onSubmit={handleEmailLogin} className="space-y-4">
+          {/* Email Signup Form */}
+          <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-electric-navy">
                 אימייל
@@ -198,7 +182,7 @@ const Login = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="הכנס את כתובת האימייל שלך"
+                  placeholder="הכנס כתובת אימייל"
                   className="pr-10 h-12 text-right"
                   disabled={isLoading || isGoogleLoading}
                   required
@@ -217,7 +201,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="הכנס את הסיסמה שלך"
+                  placeholder="לפחות 6 תווים"
                   className="pr-10 pl-10 h-12 text-right"
                   disabled={isLoading || isGoogleLoading}
                   required
@@ -233,6 +217,33 @@ const Login = () => {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-electric-navy">
+                אישור סיסמה
+              </label>
+              <div className="relative">
+                <Lock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-electric-slate w-4 h-4" />
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="הכנס שוב את הסיסמה"
+                  className="pr-10 pl-10 h-12 text-right"
+                  disabled={isLoading || isGoogleLoading}
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-electric-slate hover:text-electric-navy"
+                  disabled={isLoading || isGoogleLoading}
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
             <Button
               type="submit"
               className="w-full electric-gradient hover:opacity-90 h-12 text-base font-medium"
@@ -241,28 +252,22 @@ const Login = () => {
               {isLoading ? (
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  מתחבר...
+                  נרשם...
                 </div>
               ) : (
-                'התחבר'
+                'הירשם'
               )}
             </Button>
           </form>
 
-          <div className="text-center space-y-2">
-            <Link 
-              to="/forgot-password" 
-              className="text-sm text-electric-blue hover:text-electric-purple transition-colors"
-            >
-              שכחת סיסמה?
-            </Link>
+          <div className="text-center">
             <div className="text-sm text-electric-slate">
-              אין לך חשבון?{' '}
+              כבר יש לך חשבון?{' '}
               <Link 
-                to="/signup" 
+                to="/login" 
                 className="text-electric-blue hover:text-electric-purple font-medium transition-colors"
               >
-                הירשם כאן
+                התחבר כאן
               </Link>
             </div>
           </div>
@@ -272,4 +277,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
