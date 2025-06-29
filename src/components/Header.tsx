@@ -15,7 +15,7 @@ import UserAvatar from "@/components/UserAvatar";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { currentUser, logout, isLoading, checkAndUpdateSession } = useAuth();
+  const { currentUser, logout, isLoading, refreshSession, session } = useAuth();
   const navigate = useNavigate();
 
   const [forceRender, setForceRender] = useState(0);
@@ -34,7 +34,7 @@ const Header = () => {
     if (!isLoading && !currentUser) {
       setTimeout(() => {
         console.log("🔄 Header: Fallback auth check...");
-        checkAndUpdateSession();
+        refreshSession();
       }, 500);
     }
   }, []);
@@ -67,7 +67,21 @@ const Header = () => {
     console.log("⏳ Header: Still loading auth state...");
   }
 
-  const userDisplayName = currentUser?.displayName || currentUser?.email || "משתמש";
+  // Enhanced user display name extraction
+  const getUserDisplayName = () => {
+    if (!currentUser) return "משתמש";
+    
+    const metadata = currentUser.user_metadata;
+    return (
+      metadata?.full_name ||
+      metadata?.name ||
+      currentUser.email?.split('@')[0] ||
+      "משתמש"
+    );
+  };
+  
+  const userDisplayName = getUserDisplayName();
+  const userPhotoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
 
   return (
     <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">

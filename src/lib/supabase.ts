@@ -167,11 +167,7 @@ export const loginWithEmailAndPassword = async (email: string, password: string)
     }
     
     console.log("Login successful:", data.user?.email);
-    const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
-    
-    await triggerAuthRefresh();
-    
-    return { user: convertedUser, error: null };
+    return { user: data.user, error: null };
   } catch (error) {
     console.error("Login catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };
@@ -195,11 +191,7 @@ export const registerWithEmailAndPassword = async (email: string, password: stri
     }
     
     console.log("Registration successful:", data.user?.email);
-    const convertedUser = data.user ? convertSupabaseUser(data.user) : null;
-    
-    await triggerAuthRefresh();
-    
-    return { user: convertedUser, error: null };
+    return { user: data.user, error: null };
   } catch (error) {
     console.error("Registration catch error:", error);
     return { user: null, error: { message: getErrorMessage(error) } };

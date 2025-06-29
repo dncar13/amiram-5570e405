@@ -8,6 +8,12 @@ interface UserAvatarProps {
     photoURL?: string | null;
     displayName?: string | null;
     email?: string | null;
+    user_metadata?: {
+      avatar_url?: string;
+      picture?: string;
+      full_name?: string;
+      name?: string;
+    };
   };
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -24,9 +30,30 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     lg: "h-12 w-12"
   };
 
+  // Enhanced user data extraction for both old and new user structures
+  const getDisplayName = () => {
+    return (
+      user.displayName ||
+      user.user_metadata?.full_name ||
+      user.user_metadata?.name ||
+      user.email?.split('@')[0] ||
+      null
+    );
+  };
+  
+  const getPhotoURL = () => {
+    return (
+      user.photoURL ||
+      user.user_metadata?.avatar_url ||
+      user.user_metadata?.picture ||
+      null
+    );
+  };
+
   const getInitials = () => {
-    if (user.displayName) {
-      return user.displayName
+    const displayName = getDisplayName();
+    if (displayName) {
+      return displayName
         .split(' ')
         .map(name => name.charAt(0))
         .join('')
@@ -39,16 +66,19 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
     return 'U';
   };
 
+  const photoURL = getPhotoURL();
+  const displayName = getDisplayName();
+
   return (
     <Avatar className={`${sizeClasses[size]} ${className}`}>
-      {user.photoURL && (
+      {photoURL && (
         <AvatarImage 
-          src={user.photoURL} 
-          alt={user.displayName || user.email || 'משתמש'}
+          src={photoURL} 
+          alt={displayName || user.email || 'משתמש'}
         />
       )}
       <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
-        {user.photoURL ? (
+        {photoURL ? (
           <User className="h-4 w-4" />
         ) : (
           getInitials()

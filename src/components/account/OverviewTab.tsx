@@ -13,14 +13,29 @@ const OverviewTab = () => {
   const [showCancelDialog, setShowCancelDialog] = useState(false);
   const { toast } = useToast();
   
-  const userInitials = currentUser?.displayName 
-    ? `${currentUser.displayName.split(' ')[0][0]}${currentUser.displayName.split(' ')[1]?.[0] || ''}`
+  // Enhanced user data extraction for Supabase User
+  const getDisplayName = () => {
+    if (!currentUser) return "משתמש";
+    const metadata = currentUser.user_metadata;
+    return (
+      metadata?.full_name ||
+      metadata?.name ||
+      currentUser.email?.split('@')[0] ||
+      "משתמש"
+    );
+  };
+  
+  const displayName = getDisplayName();
+  const userInitials = displayName && displayName !== "משתמש"
+    ? `${displayName.split(' ')[0][0]}${displayName.split(' ')[1]?.[0] || ''}`
     : currentUser?.email?.substring(0, 2).toUpperCase() || "משתמש";
   
-  const userName = currentUser?.displayName || currentUser?.email?.split('@')[0] || "משתמש";
-  const joinDate = currentUser?.metadata?.creationTime 
-    ? new Date(currentUser.metadata.creationTime).toLocaleDateString('he-IL')
+  const userName = displayName;
+  const joinDate = currentUser?.created_at
+    ? new Date(currentUser.created_at).toLocaleDateString('he-IL')
     : "לא ידוע";
+  
+  const photoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
   
   const handleCancelPremium = () => {
     updatePremiumStatus(false);
@@ -47,7 +62,7 @@ const OverviewTab = () => {
         <CardContent className="flex flex-row-reverse items-start gap-6">
           <div className="flex-shrink-0">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={currentUser?.photoURL || undefined} />
+              <AvatarImage src={photoURL || undefined} />
               <AvatarFallback className="bg-electric-blue/10 text-electric-blue text-xl">
                 {userInitials}
               </AvatarFallback>

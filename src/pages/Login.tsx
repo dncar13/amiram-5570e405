@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,15 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff } from "lucide-react";
+import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { resendConfirmationEmail } from "@/lib/supabase";
 
+// Enhanced login state management
+type LoginState = 'idle' | 'google-auth' | 'email-auth' | 'registering' | 'redirecting' | 'error';
+
 const Login = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loginState, setLoginState] = useState<LoginState>('idle');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState({
@@ -30,83 +33,124 @@ const Login = () => {
   
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { currentUser, isDevEnvironment, checkAndUpdateSession } = useAuth();
+  const location = useLocation();
+  const { currentUser, isDevEnvironment, refreshSession, isLoading: authLoading } = useAuth();
   
-  // If user is already logged in, redirect to simulations
-  if (currentUser) {
-    console.log("✅ Login: User already logged in, redirecting to simulations:", currentUser.email);
-    navigate("/simulations-entry");
-    return null;
-  }
+  // Get intended destination from location state
+  const from = location.state?.from?.pathname || "/simulations-entry";
+  const isLoading = loginState !== 'idle' || authLoading;
   
-  // Check for OAuth callback on component mount
+  // Enhanced redirect logic with intended destination
+  useEffect(() => {
+    if (currentUser && loginState !== 'redirecting') {
+      console.log("✅ User logged in, redirecting to:", from);
+      setLoginState('redirecting');
+      
+      // Small delay to show success state
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 800);
+    }
+  }, [currentUser, navigate, from, loginState]);
+  
+  // Enhanced OAuth callback handling
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const hasOAuthCode = urlParams.get('code');
     const hasOAuthError = urlParams.get('error');
     
     if (hasOAuthError) {
-      console.error("❌ Login: OAuth error detected:", hasOAuthError);
+      console.error("❌ OAuth error:", hasOAuthError);
       setAuthError("שגיאה בהתחברות עם Google. אנא נסו שוב.");
-      // Clean the URL
+      setLoginState('error');
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (hasOAuthCode) {
-      console.log("🔗 Login: OAuth code detected, processing...");
-      setIsLoading(true);
-      // Let the auth system handle the callback
+      console.log("🔗 OAuth callback detected");
+      setLoginState('google-auth');
+      
+      // Clean URL and let auth system handle the session
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
       setTimeout(() => {
-        console.log("🔗 Login: Checking auth state after OAuth...");
-        checkAndUpdateSession();
-      }, 2000);
+        refreshSession();
+      }, 1000);
     }
-  }, [checkAndUpdateSession]);
+  }, [refreshSession]);
   
   const handleGoogleLogin = async () => {
-    setIsLoading(true);
+    setLoginState('google-auth');
     setAuthError(null);
+    setAwaitingConfirmation(null);
+    
     try {
-      console.log("🔗 Login: Google login clicked");
+      console.log("🔗 Initiating Google login");
+      
+      // Show immediate feedback
+      toast({
+        title: "מתחבר עם Google...",
+        description: "אנא המתינו רגע",
+        duration: 3000,
+      });
+      
       const { user, error } = await signInWithGoogle();
       
       if (error) {
-        console.error("❌ Login: Google login error:", error);
+        console.error("❌ Google login error:", error);
         setAuthError(error.message || "שגיאה בהתחברות עם Google");
+        setLoginState('error');
+        
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
-          description: error.message || "אירעה שגיאה. אנא נסה שוב.",
+          description: error.message,
+          duration: 5000,
         });
-        setIsLoading(false);
       }
-      // Don't set loading to false here - let the redirect happen
+      // Success will be handled by auth state change
     } catch (error) {
-      console.error("❌ Login: Google login catch error:", error);
+      console.error("❌ Google login error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
+      setLoginState('error');
+      
       toast({
         variant: "destructive",
         title: "שגיאה בהתחברות",
         description: errorMessage,
+        duration: 5000,
       });
-      setIsLoading(false);
     }
   };
   
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoginState('email-auth');
     setAuthError(null);
     setAwaitingConfirmation(null);
 
-    // Basic validation
+    // Enhanced validation
     if (!formData.email || !formData.password) {
       setAuthError("אנא מלאו את כל השדות");
-      setIsLoading(false);
+      setLoginState('error');
+      return;
+    }
+
+    if (!formData.email.includes('@')) {
+      setAuthError("כתובת אימייל לא תקינה");
+      setLoginState('error');
       return;
     }
 
     try {
       console.log("Login attempt for:", formData.email);
+      
+      // Show loading feedback
+      toast({
+        title: "מתחבר...",
+        description: "בודק פרטי התחברות",
+        duration: 2000,
+      });
+      
       const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
 
       if (error) {
@@ -117,66 +161,88 @@ const Login = () => {
           error.message.toLowerCase().includes("email not confirmed")
         ) {
           setAwaitingConfirmation(formData.email);
-          setIsLoading(false);
+          setLoginState('idle');
           return;
         }
+        
         setAuthError(error.message);
+        setLoginState('error');
+        
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
           description: error.message,
+          duration: 5000,
         });
       } else if (user) {
-        console.log("Login successful, user:", user.email);
+        console.log("Login successful:", user.email);
         
-        // רענון מיידי של מצב Auth
-        await checkAndUpdateSession();
-        
+        // Success feedback
         toast({
-          title: "התחברת בהצלחה!",
-          description: `ברוך הבא ${user.displayName || user.email}`,
+          title: "התחברת בהצלחה! 🎉",
+          description: "מעביר אותך לסימולציות...",
+          duration: 3000,
         });
         
-        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
-        setTimeout(() => {
-          navigate("/simulations-entry");
-        }, 200);
+        setLoginState('redirecting');
+        // Navigation will be handled by useEffect when currentUser updates
       }
     } catch (error) {
-      console.error("Login catch error:", error);
+      console.error("Login error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
+      setLoginState('error');
+      
       toast({
         variant: "destructive",
         title: "שגיאה בהתחברות",
         description: errorMessage,
+        duration: 5000,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
   
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    setLoginState('registering');
     setAuthError(null);
     setAwaitingConfirmation(null);
     
-    // Basic validation
+    // Enhanced validation
     if (!formData.email || !formData.password || !formData.name) {
       setAuthError("אנא מלאו את כל השדות");
-      setIsLoading(false);
+      setLoginState('error');
+      return;
+    }
+    
+    if (!formData.email.includes('@')) {
+      setAuthError("כתובת אימייל לא תקינה");
+      setLoginState('error');
       return;
     }
     
     if (formData.password.length < 6) {
       setAuthError("הסיסמה חייבת להכיל לפחות 6 תווים");
-      setIsLoading(false);
+      setLoginState('error');
+      return;
+    }
+    
+    if (formData.name.trim().length < 2) {
+      setAuthError("שם מלא חייב להכיל לפחות 2 תווים");
+      setLoginState('error');
       return;
     }
     
     try {
       console.log("Registration attempt for:", formData.email);
+      
+      // Show loading feedback
+      toast({
+        title: "מרשם חשבון חדש...",
+        description: "יוצר את החשבון שלך",
+        duration: 3000,
+      });
+      
       const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
       
       if (error) {
@@ -186,42 +252,50 @@ const Login = () => {
           error.message.toLowerCase().includes("email not confirmed")
         ) {
           setAwaitingConfirmation(formData.email);
-          setIsLoading(false);
+          setLoginState('idle');
+          
+          toast({
+            title: "אישור אימייל נדרש",
+            description: "בדקו את תיבת הדואר שלכם",
+            duration: 5000,
+          });
           return;
         }
+        
         setAuthError(error.message);
+        setLoginState('error');
+        
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
           description: error.message,
+          duration: 5000,
         });
       } else if (user) {
-        console.log("Registration successful, user:", user.email);
+        console.log("Registration successful:", user.email);
         
-        // רענון מיידי של מצב Auth
-        await checkAndUpdateSession();
-        
+        // Success feedback
         toast({
-          title: "נרשמת בהצלחה!",
-          description: `ברוך הבא ${formData.name || user.email}`,
+          title: "נרשמת בהצלחה! 🎉",
+          description: "מעביר אותך לסימולציות...",
+          duration: 3000,
         });
         
-        // ניווט עם עיכוב קטן כדי לוודא שהמצב התעדכן
-        setTimeout(() => {
-          navigate("/simulations-entry");
-        }, 200);
+        setLoginState('redirecting');
+        // Navigation will be handled by useEffect when currentUser updates
       }
     } catch (error) {
-      console.error("Registration catch error:", error);
+      console.error("Registration error:", error);
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
       setAuthError(errorMessage);
+      setLoginState('error');
+      
       toast({
         variant: "destructive",
         title: "שגיאה בהרשמה",
         description: errorMessage,
+        duration: 5000,
       });
-    } finally {
-      setIsLoading(false);
     }
   };
   
@@ -234,33 +308,55 @@ const Login = () => {
       [fieldName]: type === 'checkbox' ? checked : value
     }));
     
-    // Clear error when user starts typing
-    if (authError) {
+    // Clear error and reset state when user starts typing
+    if (authError || loginState === 'error') {
       setAuthError(null);
+      setLoginState('idle');
     }
   };
   
   const handleResendConfirmation = async () => {
-    if (!awaitingConfirmation) return;
-    setIsLoading(true);
+    if (!awaitingConfirmation || isLoading) return;
+    
+    setLoginState('email-auth');
+    setAuthError(null);
+    
     try {
+      toast({
+        title: "שולח מייל אישור...",
+        description: "אנא המתינו רגע",
+        duration: 2000,
+      });
+      
       const { success, error } = await resendConfirmationEmail(awaitingConfirmation);
+      
       if (success) {
         toast({
-          variant: "success",
-          title: "נשלח שוב",
-          description: "קישור אישור נשלח לכתובת המייל שלך. בדקו את תיבת הדואר.",
+          title: "נשלח בהצלחה! 📧",
+          description: "בדקו את תיבת הדואר שלכם",
+          duration: 4000,
         });
+        setLoginState('idle');
       } else if (error) {
         setAuthError(error.message);
+        setLoginState('error');
         toast({
           variant: "destructive",
-          title: "שגיאה בשליחת האישור",
+          title: "שגיאה בשליחת אישור",
           description: error.message,
+          duration: 5000,
         });
       }
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "שגיאה בשליחת אימייל";
+      setAuthError(errorMessage);
+      setLoginState('error');
+      toast({
+        variant: "destructive",
+        title: "שגיאה",
+        description: errorMessage,
+        duration: 5000,
+      });
     }
   };
   
@@ -286,12 +382,14 @@ const Login = () => {
               </svg>
             </div>
 
-            {/* Debug info for development */}
+            {/* Enhanced debug info for development */}
             {isDevEnvironment && (
               <div className="mb-4 p-3 bg-yellow-100 text-yellow-800 rounded text-xs">
-                <div>Loading: {isLoading ? 'true' : 'false'}</div>
+                <div>Login State: {loginState}</div>
+                <div>Auth Loading: {authLoading ? 'true' : 'false'}</div>
                 <div>Current User: {currentUser?.email || 'null'}</div>
                 <div>Auth Error: {authError || 'none'}</div>
+                <div>Intended Destination: {from}</div>
                 <div>URL Params: {window.location.search || 'none'}</div>
               </div>
             )}
@@ -396,7 +494,19 @@ const Login = () => {
                     </CardContent>
                     <CardFooter>
                       <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
-                        {isLoading ? <span className="loading-spinner"></span> : "התחברות"}
+                        {loginState === 'email-auth' ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            מתחבר...
+                          </>
+                        ) : loginState === 'redirecting' ? (
+                          <>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            הצלחה! מעביר...
+                          </>
+                        ) : (
+                          "התחברות"
+                        )}
                       </Button>
                     </CardFooter>
                   </form>
@@ -511,7 +621,19 @@ const Login = () => {
                     </CardContent>
                     <CardFooter className="flex flex-col">
                       <Button type="submit" className="w-full btn-primary-enhanced" disabled={isLoading}>
-                        {isLoading ? <span className="loading-spinner"></span> : "הרשמה"}
+                        {loginState === 'registering' ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            מרשם...
+                          </>
+                        ) : loginState === 'redirecting' ? (
+                          <>
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            הצלחה! מעביר...
+                          </>
+                        ) : (
+                          "הרשמה"
+                        )}
                       </Button>
                       
                       {/* Trust Badges */}
