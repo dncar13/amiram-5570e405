@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState, useCallback, use
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
+import { getMobileOptimizedConfig, debounce, TimeoutManager, handleMobileNetworkError } from "@/utils/mobile-performance";
 
 const ADMIN_EMAILS = [
   "admin@example.com",
@@ -81,25 +82,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { toast } = useToast();
   const toastShownRef = useRef<Set<string>>(new Set());
   const sessionRetryCount = useRef(0);
-  const maxRetries = 3;
+  const timeoutManager = useRef(new TimeoutManager());
+  
+  // Mobile-optimized configuration
+  const mobileConfig = getMobileOptimizedConfig();
+  const maxRetries = mobileConfig.maxRetries;
   
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
-  const showAuthToast = useCallback((type: string, message: string, description?: string) => {
+  // Mobile-optimized toast management with debouncing
+  const showAuthToast = useCallback(debounce((type: string, message: string, description?: string) => {
     const toastKey = `${type}-${message}`;
     if (toastShownRef.current.has(toastKey)) return;
     
     toastShownRef.current.add(toastKey);
-    setTimeout(() => toastShownRef.current.delete(toastKey), 5000);
+    timeoutManager.current.setTimeout(() => toastShownRef.current.delete(toastKey), 5000);
     
     toast({
       title: message,
-      description,
+      description: type === 'error' ? handleMobileNetworkError(new Error(description || message)) : description,
       variant: type === 'error' ? 'destructive' : 'default',
-      duration: 4000,
+      duration: type === 'error' ? 6000 : 4000, // Longer duration for errors on mobile
     });
-  }, [toast]);
+  }, mobileConfig.inputDebounce), [toast, mobileConfig.inputDebounce]);
 
   const extractUsernameFromEmail = (email?: string | null) => {
     if (!email) return "משתמש";
@@ -363,17 +369,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           console.log("❌ No existing session found");
           
-          // Enhanced recovery for OAuth callbacks
+          // Mobile-optimized recovery for OAuth callbacks
           if (isOAuthCallback && hasOAuthCode) {
-            console.log("🔗 No session found in OAuth callback - attempting extended recovery...");
+            console.log("🔗 No session found in OAuth callback - attempting mobile-optimized recovery...");
             
-            // Try multiple times with increasing delays for OAuth
+            // Mobile-optimized retry attempts
             let recoveryAttempts = 0;
-            const maxOAuthRetries = 6;
+            const maxOAuthRetries = mobileConfig.maxOAuthRetries;
             
             const attemptOAuthRecovery = async () => {
               recoveryAttempts++;
-              console.log(`🔄 OAuth recovery attempt ${recoveryAttempts}/${maxOAuthRetries}`);
+              if (mobileConfig.enableDebugLogging) {
+                console.log(`🔄 OAuth recovery attempt ${recoveryAttempts}/${maxOAuthRetries}`);
+              }
               
               const recoveredSession = await attemptSessionRecovery();
               if (recoveredSession && mounted) {
@@ -390,7 +398,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               }
               
               if (recoveryAttempts < maxOAuthRetries && mounted) {
-                setTimeout(attemptOAuthRecovery, 1000 + (recoveryAttempts * 500));
+                timeoutManager.current.setTimeout(
+                  attemptOAuthRecovery, 
+                  mobileConfig.retryDelay + (recoveryAttempts * 500)
+                );
               } else if (mounted) {
                 console.log("❌ Failed to recover OAuth session after all attempts");
                 setAuthState({
@@ -404,10 +415,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               return false;
             };
             
-            setTimeout(attemptOAuthRecovery, 1000);
+            timeoutManager.current.setTimeout(attemptOAuthRecovery, mobileConfig.retryDelay);
           } else {
-            // Standard recovery for non-OAuth cases
-            setTimeout(async () => {
+            // Mobile-optimized standard recovery for non-OAuth cases
+            timeoutManager.current.setTimeout(async () => {
               if (!mounted) return;
               
               const recoveredSession = await attemptSessionRecovery();
@@ -429,7 +440,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   initialized: true
                 });
               }
-            }, 1500);
+            }, mobileConfig.retryDelay);
           }
         }
       } catch (error) {
@@ -451,9 +462,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
 
     return () => {
-      console.log("🧹 Cleaning up auth listener");
+      console.log("🧹 Cleaning up auth listener and timeouts");
       mounted = false;
       subscription.unsubscribe();
+      timeoutManager.current.clearAll();
+      toastShownRef.current.clear();
     };
   }, []); // Empty deps - this should only run once on mount
 

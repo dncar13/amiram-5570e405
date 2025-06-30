@@ -15,7 +15,7 @@ export const saveSimulationProgress = (simulationId: string, state: any, setNumb
       currentScorePercentage: state.currentScorePercentage
     };
     
-    sessionStorage.setItem(`simulation_progress_${simulationId}`, JSON.stringify(progress));
+    localStorage.setItem(`simulation_progress_${simulationId}`, JSON.stringify(progress));
     
     // Also save set progress if this is a set-based simulation
     if (setNumber && type && difficulty && state.answeredQuestionsCount > 0) {
@@ -26,7 +26,7 @@ export const saveSimulationProgress = (simulationId: string, state: any, setNumb
         score: undefined,
         answeredQuestions: state.answeredQuestionsCount
       };
-      sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
+      localStorage.setItem(setProgressKey, JSON.stringify(setProgress));
     }
     
     // Save quick practice progress
@@ -39,7 +39,7 @@ export const saveSimulationProgress = (simulationId: string, state: any, setNumb
         answeredQuestions: state.answeredQuestionsCount,
         totalQuestions: state.totalQuestions
       };
-      sessionStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
+      localStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
     }
     
     console.log(`Simulation progress saved for ${simulationId}`);
@@ -50,7 +50,7 @@ export const saveSimulationProgress = (simulationId: string, state: any, setNumb
 
 export const loadSimulationProgress = (simulationId: string) => {
   try {
-    const savedProgress = sessionStorage.getItem(`simulation_progress_${simulationId}`);
+    const savedProgress = localStorage.getItem(`simulation_progress_${simulationId}`);
     return savedProgress ? JSON.parse(savedProgress) : null;
   } catch (error) {
     console.error("Error loading simulation progress:", error);
@@ -66,7 +66,7 @@ export const saveSetProgress = (type: string, difficulty: string, setNumber: str
     score: Math.round((score / totalQuestions) * 100),
     answeredQuestions: totalQuestions
   };
-  sessionStorage.setItem(setProgressKey, JSON.stringify(setProgress));
+  localStorage.setItem(setProgressKey, JSON.stringify(setProgress));
 };
 
 export const saveQuickPracticeProgress = (type: string, score: number, totalQuestions: number) => {
@@ -77,13 +77,13 @@ export const saveQuickPracticeProgress = (type: string, score: number, totalQues
     score: Math.round((score / totalQuestions) * 100),
     answeredQuestions: totalQuestions
   };
-  sessionStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
+  localStorage.setItem(quickProgressKey, JSON.stringify(quickProgress));
 };
 
 export const getQuickPracticeProgress = (type: string) => {
   try {
     const quickProgressKey = `quick_practice_progress_${type}`;
-    const savedProgress = sessionStorage.getItem(quickProgressKey);
+    const savedProgress = localStorage.getItem(quickProgressKey);
     return savedProgress ? JSON.parse(savedProgress) : null;
   } catch (error) {
     console.error("Error loading quick practice progress:", error);
@@ -94,7 +94,7 @@ export const getQuickPracticeProgress = (type: string) => {
 export const clearQuickPracticeProgress = (type: string) => {
   try {
     const quickProgressKey = `quick_practice_progress_${type}`;
-    sessionStorage.removeItem(quickProgressKey);
+    localStorage.removeItem(quickProgressKey);
     console.log(`Quick practice progress cleared for ${type}`);
   } catch (error) {
     console.error("Error clearing quick practice progress:", error);

@@ -11,6 +11,7 @@ import { isComprehensiveExamTopic } from "@/data/utils/topicUtils";
 import { topicsData } from "@/data/topicsData";
 import { toast } from "@/hooks/use-toast";
 import { cleanupOldProgress, checkForResetRequest, removeResetParameterFromUrl } from "@/services/storageUtils";
+import { getMobileOptimizedConfig } from "@/utils/mobile-performance";
 
 export const useSimulationData = (
   topicId: string | undefined,
@@ -23,6 +24,9 @@ export const useSimulationData = (
   const [questionCount, setQuestionCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [initComplete, setInitComplete] = useState(false);
+  
+  // Mobile-optimized configuration
+  const mobileConfig = getMobileOptimizedConfig();
   
   // Stable reference for story questions to prevent infinite loops
   const storyQuestionsRef = useRef(storyQuestions);
@@ -63,18 +67,22 @@ export const useSimulationData = (
           removeResetParameterFromUrl();
         }
         
-        // Run cleanup on old progress data
+        // Mobile-optimized cleanup timing
         setTimeout(() => {
           try {
             cleanupOldProgress();
           } catch (err) {
-            console.warn("Failed to clean up old progress:", err);
+            if (mobileConfig.enableDebugLogging) {
+              console.warn("Failed to clean up old progress:", err);
+            }
           }
-        }, 1000);
+        }, mobileConfig.retryDelay);
         
         // Refresh questions from source to ensure we have the latest data
         const freshQuestions = refreshQuestionsFromStorage();
-        console.log(`Refreshed ${freshQuestions.length} questions from source files`);        // If we have a question set ID, determine its title for display
+        if (mobileConfig.enableDebugLogging) {
+          console.log(`Refreshed ${freshQuestions.length} questions from source files`);
+        }        // If we have a question set ID, determine its title for display
         if (setId) {
           const setIdNum = parseInt(setId, 10);
           if (!isNaN(setIdNum) && setIdNum >= 1 && setIdNum <= 20) {
@@ -107,11 +115,16 @@ export const useSimulationData = (
   // Get questions for this simulation
   const topicQuestions = useMemo(() => {
     if (!initComplete) return [];
-      try {      console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, storyQuestionsCount: storyQuestionsRef.current?.length });
+      try {
+      if (mobileConfig.enableDebugLogging) {
+        console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, storyQuestionsCount: storyQuestionsRef.current?.length });
+      }
       
       // If we have story questions, use them first
       if (storyQuestionsRef.current && storyQuestionsRef.current.length > 0) {
-        console.log(`Using ${storyQuestionsRef.current.length} story questions`);
+        if (mobileConfig.enableDebugLogging) {
+          console.log(`Using ${storyQuestionsRef.current.length} story questions`);
+        }
         setQuestionCount(storyQuestionsRef.current.length);
         return storyQuestionsRef.current;
       }

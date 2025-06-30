@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPasswo
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { resendConfirmationEmail } from "@/lib/supabase";
+import { getMobileOptimizedConfig, debounce } from "@/utils/mobile-performance";
 
 // Enhanced login state management
 type LoginState = 'idle' | 'google-auth' | 'email-auth' | 'registering' | 'success' | 'error';
@@ -315,7 +316,21 @@ const Login = () => {
     }
   };
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Mobile-optimized input handling with debouncing
+  const mobileConfig = getMobileOptimizedConfig();
+  
+  const debouncedInputValidation = useCallback(
+    debounce((fieldName: string, value: string) => {
+      // Clear errors when user starts typing (mobile-optimized)
+      if (authError || loginState === 'error') {
+        setAuthError(null);
+        setLoginState('idle');
+      }
+    }, mobileConfig.inputDebounce),
+    [authError, loginState, mobileConfig.inputDebounce]
+  );
+  
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value, type, checked } = e.target;
     const fieldName = id.replace('register-', '');
     
@@ -324,11 +339,17 @@ const Login = () => {
       [fieldName]: type === 'checkbox' ? checked : value
     }));
     
-    if (authError || loginState === 'error') {
-      setAuthError(null);
-      setLoginState('idle');
+    // Debounced validation for mobile performance
+    if (type !== 'checkbox') {
+      debouncedInputValidation(fieldName, value);
+    } else {
+      // Immediate update for checkboxes
+      if (authError || loginState === 'error') {
+        setAuthError(null);
+        setLoginState('idle');
+      }
     }
-  };
+  }, [debouncedInputValidation, authError, loginState]);
   
   const handleResendConfirmation = async () => {
     if (!awaitingConfirmation || isLoading) return;

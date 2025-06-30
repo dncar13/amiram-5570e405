@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck } from "lucide-react";
@@ -11,45 +11,57 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "@/components/UserAvatar";
+import { getMobileOptimizedConfig } from "@/utils/mobile-performance";
 
-const Header = () => {
+const Header = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { session, currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
+  const mobileConfig = getMobileOptimizedConfig();
 
   // Use session for real-time updates
   const user = session?.user || currentUser;
   const isAuthenticated = !!user;
 
-  const handleLogout = async (e?: React.MouseEvent) => {
+  // Mobile-optimized callbacks with useCallback to prevent re-renders
+  const handleLogout = useCallback(async (e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
     
     try {
-      console.log("🚪 Header: Initiating logout...");
+      if (mobileConfig.enableDebugLogging) {
+        console.log("🚪 Header: Initiating logout...");
+      }
       await logout();
       // Don't force navigation - let AuthContext handle it
     } catch (error) {
       console.error("❌ Header: Error logging out:", error);
     }
-  };
+  }, [logout, mobileConfig.enableDebugLogging]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsMenuOpen(prev => !prev);
+  }, []);
 
-  const handleUserMenuClick = (e: React.MouseEvent) => {
+  const handleUserMenuClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-  };
+  }, []);
+  
+  const handleMenuItemClick = useCallback((path: string) => {
+    setIsMenuOpen(false);
+    navigate(path);
+  }, [navigate]);
 
-  if (isLoading) {
+  // Mobile-optimized debug logging
+  if (isLoading && mobileConfig.enableDebugLogging) {
     console.log("⏳ Header: Still loading auth state...");
   }
 
-  const getUserDisplayName = () => {
+  // Memoized user data to prevent unnecessary re-renders
+  const userDisplayName = useMemo(() => {
     if (!user) return "משתמש";
     
     const metadata = user.user_metadata;
@@ -59,10 +71,12 @@ const Header = () => {
       user.email?.split('@')[0] ||
       "משתמש"
     );
-  };
+  }, [user]);
   
-  const userDisplayName = getUserDisplayName();
-  const userPhotoURL = user?.user_metadata?.avatar_url || user?.user_metadata?.picture;
+  const userPhotoURL = useMemo(() => 
+    user?.user_metadata?.avatar_url || user?.user_metadata?.picture,
+    [user]
+  );
 
   return (
     <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
@@ -308,6 +322,8 @@ const Header = () => {
       </div>
     </header>
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;

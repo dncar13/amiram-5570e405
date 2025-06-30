@@ -133,7 +133,7 @@ export const useSimulation = (
 
   const resetProgress = useCallback(() => {
     try {
-      sessionStorage.removeItem(`simulation_progress_${simulationId}`);
+      localStorage.removeItem(`simulation_progress_${simulationId}`);
       console.log(`Simulation progress reset for ${simulationId}`);
       
       // Get the current questions again to avoid undefined state
