@@ -198,6 +198,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     switch (event) {
       case 'SIGNED_IN':
         console.log("🎉 User signed in successfully");
+        console.log("🔍 Session details:", { 
+          user: session?.user?.email, 
+          provider: session?.user?.app_metadata?.provider,
+          confirmed: session?.user?.email_confirmed_at ? 'yes' : 'no'
+        });
+        
         setAuthState({ 
           session, 
           loading: false, 
@@ -205,10 +211,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           error: null,
           initialized: true 
         });
+        
         if (session?.user) {
           updateUserRelatedStates(session.user);
           const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
-          showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+          const provider = session.user.app_metadata?.provider;
+          
+          // Show appropriate success message based on provider
+          if (provider === 'google') {
+            showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
+          } else {
+            showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+          }
+          
           sessionRetryCount.current = 0; // Reset retry count on successful login
         }
         break;
@@ -273,11 +288,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     let mounted = true;
     console.log("🔧 Initializing enhanced auth system...");
 
+    // Enhanced OAuth callback detection
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasOAuthCode = urlParams.get('code');
+    const hasOAuthError = urlParams.get('error');
+    const isOAuthCallback = hasOAuthCode || hasOAuthError;
+
+    console.log("🔍 OAuth callback detection:", { 
+      hasOAuthCode: !!hasOAuthCode, 
+      hasOAuthError: !!hasOAuthError, 
+      isOAuthCallback,
+      url: window.location.href 
+    });
+
     const initializeAuth = async () => {
       try {
         setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
         
-        // First, check for existing session
+        // For OAuth callbacks, wait longer before checking session
+        if (isOAuthCallback && hasOAuthCode) {
+          console.log("🔗 OAuth callback detected - giving Supabase time to process...");
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+        
+        // Check for existing session
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (!mounted) return;
@@ -322,30 +356,74 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           console.log("❌ No existing session found");
           
-          // Wait a bit and try recovery in case we're in an OAuth callback
-          setTimeout(async () => {
-            if (!mounted) return;
+          // Enhanced recovery for OAuth callbacks
+          if (isOAuthCallback && hasOAuthCode) {
+            console.log("🔗 No session found in OAuth callback - attempting extended recovery...");
             
-            const recoveredSession = await attemptSessionRecovery();
-            if (recoveredSession && mounted) {
-              setAuthState({
-                session: recoveredSession,
-                loading: false,
-                loadingState: 'ready',
-                error: null,
-                initialized: true
-              });
-              updateUserRelatedStates(recoveredSession.user);
-            } else if (mounted) {
-              setAuthState({
-                session: null,
-                loading: false,
-                loadingState: 'ready',
-                error: null,
-                initialized: true
-              });
-            }
-          }, 1500);
+            // Try multiple times with increasing delays for OAuth
+            let recoveryAttempts = 0;
+            const maxOAuthRetries = 6;
+            
+            const attemptOAuthRecovery = async () => {
+              recoveryAttempts++;
+              console.log(`🔄 OAuth recovery attempt ${recoveryAttempts}/${maxOAuthRetries}`);
+              
+              const recoveredSession = await attemptSessionRecovery();
+              if (recoveredSession && mounted) {
+                console.log("✅ OAuth session recovered successfully!");
+                setAuthState({
+                  session: recoveredSession,
+                  loading: false,
+                  loadingState: 'ready',
+                  error: null,
+                  initialized: true
+                });
+                updateUserRelatedStates(recoveredSession.user);
+                return true;
+              }
+              
+              if (recoveryAttempts < maxOAuthRetries && mounted) {
+                setTimeout(attemptOAuthRecovery, 1000 + (recoveryAttempts * 500));
+              } else if (mounted) {
+                console.log("❌ Failed to recover OAuth session after all attempts");
+                setAuthState({
+                  session: null,
+                  loading: false,
+                  loadingState: 'ready',
+                  error: null,
+                  initialized: true
+                });
+              }
+              return false;
+            };
+            
+            setTimeout(attemptOAuthRecovery, 1000);
+          } else {
+            // Standard recovery for non-OAuth cases
+            setTimeout(async () => {
+              if (!mounted) return;
+              
+              const recoveredSession = await attemptSessionRecovery();
+              if (recoveredSession && mounted) {
+                setAuthState({
+                  session: recoveredSession,
+                  loading: false,
+                  loadingState: 'ready',
+                  error: null,
+                  initialized: true
+                });
+                updateUserRelatedStates(recoveredSession.user);
+              } else if (mounted) {
+                setAuthState({
+                  session: null,
+                  loading: false,
+                  loadingState: 'ready',
+                  error: null,
+                  initialized: true
+                });
+              }
+            }, 1500);
+          }
         }
       } catch (error) {
         console.error('❌ Auth initialization catch error:', error);
