@@ -79,7 +79,10 @@ const Header = React.memo(() => {
   );
 
   return (
-    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50">
+    <header 
+      className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm sticky top-0 z-50"
+      data-testid="header"
+    >
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -98,7 +101,7 @@ const Header = React.memo(() => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-6" data-testid="desktop-nav">
             <Link 
               to="/" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
@@ -222,7 +225,7 @@ const Header = React.memo(() => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm">
+          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm" data-testid="mobile-nav">
             <div className="flex flex-col space-y-2">
               <Link 
                 to="/" 

@@ -17,6 +17,21 @@
     scroll-behavior: smooth;
   }
 
+  /* WebKit/Safari specific fixes */
+  body {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 100vh;
+  }
+
+  #root {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 100vh;
+  }
+
   /* Reduce motion for users who prefer it */
   @media (prefers-reduced-motion: reduce) {
     *,
