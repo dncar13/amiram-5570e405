@@ -73,25 +73,35 @@ const getErrorMessage = (error: any): string => {
   return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
 };
 
+// Enhanced redirect URL logic
+const getRedirectUrl = (): string => {
+  const currentOrigin = window.location.origin;
+  const currentPath = '/login';
+  
+  console.log("🔗 Determining redirect URL for origin:", currentOrigin);
+  
+  // Always use the current origin to prevent domain switching
+  const redirectUrl = `${currentOrigin}${currentPath}`;
+  
+  console.log("🔗 Final redirect URL:", redirectUrl);
+  return redirectUrl;
+};
+
 export const signInWithGoogle = async () => {
   try {
     console.log("🔗 Google Sign In - Starting process...");
     console.log("🔗 Current URL:", window.location.href);
     console.log("🔗 Origin:", window.location.origin);
     
-    // Check if we're already in a redirect
+    // Check if we're already in a redirect to avoid loops
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('code') || urlParams.get('access_token')) {
-      console.log("🔗 Already in OAuth callback, waiting for processing...");
+      console.log("🔗 Already in OAuth callback, skipping new request...");
       return { user: null, error: null };
     }
     
-    // Use the correct redirect URL based on environment
-    const redirectTo = window.location.origin === 'http://localhost:8080' 
-      ? 'http://localhost:8080/login'
-      : 'https://preview--amiram.lovable.app/login';
-    
-    console.log("🔗 Redirect URL:", redirectTo);
+    const redirectTo = getRedirectUrl();
+    console.log("🔗 Using redirect URL:", redirectTo);
     
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -110,7 +120,7 @@ export const signInWithGoogle = async () => {
       return { user: null, error: { message: getErrorMessage(error) } };
     }
     
-    console.log("✅ Google OAuth initiated:", data);
+    console.log("✅ Google OAuth initiated successfully:", data);
     return { user: null, error: null };
   } catch (error) {
     console.error("❌ Google sign in catch error:", error);

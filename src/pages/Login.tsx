@@ -34,7 +34,7 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  const { currentUser, isDevEnvironment, refreshSession, isLoading: authLoading, session } = useAuth();
+  const { currentUser, isDevEnvironment, isLoading: authLoading, session } = useAuth();
   
   const from = location.state?.from?.pathname || "/simulations-entry";
   const isLoading = loginState !== 'idle' || authLoading;
@@ -57,7 +57,7 @@ const Login = () => {
     }
   }, [session, loginState, navigate, from]);
   
-  // Enhanced OAuth callback handling
+  // Enhanced OAuth callback handling - Let Supabase handle it naturally
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const hasOAuthCode = urlParams.get('code');
@@ -84,9 +84,12 @@ const Login = () => {
         duration: 5000,
       });
       
-      window.history.replaceState({}, document.title, window.location.pathname);
+      // Clean URL after showing error
+      setTimeout(() => {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 100);
     } else if (hasOAuthCode) {
-      console.log("🔗 OAuth callback detected with code");
+      console.log("🔗 OAuth callback detected with code - letting Supabase handle it");
       setLoginState('google-auth');
       
       toast({
@@ -95,13 +98,13 @@ const Login = () => {
         duration: 3000,
       });
       
-      window.history.replaceState({}, document.title, window.location.pathname);
-      
+      // Let Supabase's detectSessionInUrl handle the OAuth flow
+      // Clean URL after a delay to allow Supabase to process
       setTimeout(() => {
-        refreshSession();
-      }, 1000);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }, 2000);
     }
-  }, [refreshSession, toast]);
+  }, [toast]);
   
   const handleGoogleLogin = async () => {
     setLoginState('google-auth');

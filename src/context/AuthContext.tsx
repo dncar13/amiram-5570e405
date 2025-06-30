@@ -80,6 +80,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const { toast } = useToast();
   const toastShownRef = useRef<Set<string>>(new Set());
+  const sessionRetryCount = useRef(0);
+  const maxRetries = 3;
   
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
@@ -156,13 +158,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsPremium(false);
     setUserData(null);
     localStorage.removeItem("isPremiumUser");
+    sessionRetryCount.current = 0;
   }, []);
 
-  const handleAuthChange = useCallback((event: AuthChangeEvent, session: Session | null) => {
+  // Enhanced session recovery mechanism
+  const attemptSessionRecovery = useCallback(async () => {
+    if (sessionRetryCount.current >= maxRetries) {
+      console.log("🔄 Max session recovery attempts reached");
+      return null;
+    }
+
+    sessionRetryCount.current++;
+    console.log(`🔄 Attempting session recovery (attempt ${sessionRetryCount.current}/${maxRetries})`);
+
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error("❌ Session recovery error:", error);
+        return null;
+      }
+
+      if (session?.user) {
+        console.log("✅ Session recovered successfully:", session.user.email);
+        return session;
+      }
+
+      console.log("❌ No session found during recovery");
+      return null;
+    } catch (error) {
+      console.error("❌ Session recovery failed:", error);
+      return null;
+    }
+  }, []);
+
+  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
     console.log('🔔 Auth event:', event, 'Session:', !!session);
 
     switch (event) {
       case 'SIGNED_IN':
+        console.log("🎉 User signed in successfully");
         setAuthState({ 
           session, 
           loading: false, 
@@ -174,10 +209,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           updateUserRelatedStates(session.user);
           const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
           showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+          sessionRetryCount.current = 0; // Reset retry count on successful login
         }
         break;
 
       case 'SIGNED_OUT':
+        console.log("👋 User signed out");
         setAuthState({ 
           session: null, 
           loading: false, 
@@ -190,6 +227,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         break;
 
       case 'TOKEN_REFRESHED':
+        console.log("🔄 Token refreshed");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
           updateUserRelatedStates(session.user);
@@ -197,6 +235,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         break;
 
       case 'USER_UPDATED':
+        console.log("👤 User updated");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
           updateUserRelatedStates(session.user);
@@ -209,23 +248,57 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         
       default:
         console.log('🔄 Unknown auth event:', event);
+        
+        // For unknown events, try session recovery if we don't have a session
+        if (!session && !authState.session) {
+          console.log("🔍 No session in unknown event, attempting recovery...");
+          setTimeout(async () => {
+            const recoveredSession = await attemptSessionRecovery();
+            if (recoveredSession) {
+              setAuthState({
+                session: recoveredSession,
+                loading: false,
+                loadingState: 'ready',
+                error: null,
+                initialized: true
+              });
+              updateUserRelatedStates(recoveredSession.user);
+            }
+          }, 1000);
+        }
     }
-  }, [showAuthToast, updateUserRelatedStates, resetUserStates]);
+  }, [showAuthToast, updateUserRelatedStates, resetUserStates, attemptSessionRecovery, authState.session]);
 
   useEffect(() => {
     let mounted = true;
-    console.log("🔧 Initializing auth system...");
+    console.log("🔧 Initializing enhanced auth system...");
 
     const initializeAuth = async () => {
       try {
         setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
         
+        // First, check for existing session
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (!mounted) return;
 
         if (error) {
           console.error("❌ Auth initialization error:", error);
+          
+          // Try recovery before giving up
+          const recoveredSession = await attemptSessionRecovery();
+          if (recoveredSession && mounted) {
+            setAuthState({
+              session: recoveredSession,
+              loading: false,
+              loadingState: 'ready',
+              error: null,
+              initialized: true
+            });
+            updateUserRelatedStates(recoveredSession.user);
+            return;
+          }
+          
           setAuthState({
             session: null,
             loading: false,
@@ -248,13 +321,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           updateUserRelatedStates(session.user);
         } else {
           console.log("❌ No existing session found");
-          setAuthState({
-            session: null,
-            loading: false,
-            loadingState: 'ready',
-            error: null,
-            initialized: true
-          });
+          
+          // Wait a bit and try recovery in case we're in an OAuth callback
+          setTimeout(async () => {
+            if (!mounted) return;
+            
+            const recoveredSession = await attemptSessionRecovery();
+            if (recoveredSession && mounted) {
+              setAuthState({
+                session: recoveredSession,
+                loading: false,
+                loadingState: 'ready',
+                error: null,
+                initialized: true
+              });
+              updateUserRelatedStates(recoveredSession.user);
+            } else if (mounted) {
+              setAuthState({
+                session: null,
+                loading: false,
+                loadingState: 'ready',
+                error: null,
+                initialized: true
+              });
+            }
+          }, 1500);
         }
       } catch (error) {
         console.error('❌ Auth initialization catch error:', error);
@@ -279,16 +370,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [handleAuthChange, updateUserRelatedStates]);
+  }, [handleAuthChange, updateUserRelatedStates, attemptSessionRecovery]);
 
   const refreshSession = useCallback(async () => {
     try {
+      console.log("🔄 Manual session refresh initiated");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
       
       const { data: { session }, error } = await supabase.auth.getSession();
       
       if (error) {
         console.error("❌ Error refreshing session:", error);
+        
+        // Try recovery
+        const recoveredSession = await attemptSessionRecovery();
+        if (recoveredSession) {
+          setAuthState({
+            session: recoveredSession,
+            loading: false,
+            loadingState: 'ready',
+            error: null,
+            initialized: true
+          });
+          updateUserRelatedStates(recoveredSession.user);
+          return;
+        }
+        
         setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error }));
         return;
       }
@@ -300,13 +407,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("✅ Session refreshed for:", session.user.email);
       } else {
         resetUserStates();
-        console.log("❌ No active session found");
+        console.log("❌ No active session found after refresh");
       }
     } catch (error) {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-  }, [updateUserRelatedStates, resetUserStates]);
+  }, [updateUserRelatedStates, resetUserStates, attemptSessionRecovery]);
 
   const logout = useCallback(async () => {
     try {
@@ -333,7 +440,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isDevEnvironment) {
-      console.log("🔍 Auth state update:");
+      console.log("🔍 Enhanced Auth state update:");
       console.log("  - session:", !!authState.session);
       console.log("  - user:", authState.session?.user?.email || "null");
       console.log("  - loading:", authState.loading);
@@ -341,6 +448,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("  - initialized:", authState.initialized);
       console.log("  - isAdmin:", isAdmin);
       console.log("  - isPremium:", isPremium);
+      console.log("  - retryCount:", sessionRetryCount.current);
     }
   }, [authState, isAdmin, isPremium, isDevEnvironment]);
 
