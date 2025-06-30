@@ -197,6 +197,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     switch (event) {
       case 'SIGNED_IN':
+        // Prevent duplicate SIGNED_IN events for the same session
+        if (authState.session?.user?.id === session?.user?.id && authState.initialized) {
+          console.log('🔄 Duplicate SIGNED_IN event ignored for same user');
+          return;
+        }
+        
         console.log("🎉 User signed in successfully");
         console.log("🔍 Session details:", { 
           user: session?.user?.email, 
@@ -204,20 +210,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           confirmed: session?.user?.email_confirmed_at ? 'yes' : 'no'
         });
         
-        setAuthState({ 
+        setAuthState(prev => ({
+          ...prev,
           session, 
           loading: false, 
           loadingState: 'ready', 
           error: null,
           initialized: true 
-        });
+        }));
         
         if (session?.user) {
           updateUserRelatedStates(session.user);
           const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
           const provider = session.user.app_metadata?.provider;
           
-          // Show appropriate success message based on provider
+          // Show appropriate success message based on provider (only once)
           if (provider === 'google') {
             showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
           } else {
@@ -282,7 +289,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }, 1000);
         }
     }
-  }, [showAuthToast, updateUserRelatedStates, resetUserStates, attemptSessionRecovery, authState.session]);
+  }, [authState.session, authState.initialized]); // Only depend on session and initialized state
 
   useEffect(() => {
     let mounted = true;
@@ -448,7 +455,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       mounted = false;
       subscription.unsubscribe();
     };
-  }, [handleAuthChange, updateUserRelatedStates, attemptSessionRecovery]);
+  }, []); // Empty deps - this should only run once on mount
 
   const refreshSession = useCallback(async () => {
     try {
@@ -491,7 +498,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-  }, [updateUserRelatedStates, resetUserStates, attemptSessionRecovery]);
+  }, []); // Remove dependencies that cause re-renders
 
   const logout = useCallback(async () => {
     try {
@@ -514,21 +521,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
-  }, [showAuthToast, resetUserStates]);
+  }, []); // Remove dependencies that cause re-renders
 
-  useEffect(() => {
-    if (isDevEnvironment) {
-      console.log("🔍 Enhanced Auth state update:");
-      console.log("  - session:", !!authState.session);
-      console.log("  - user:", authState.session?.user?.email || "null");
-      console.log("  - loading:", authState.loading);
-      console.log("  - loadingState:", authState.loadingState);
-      console.log("  - initialized:", authState.initialized);
-      console.log("  - isAdmin:", isAdmin);
-      console.log("  - isPremium:", isPremium);
-      console.log("  - retryCount:", sessionRetryCount.current);
-    }
-  }, [authState, isAdmin, isPremium, isDevEnvironment]);
+  // Debug logging only when needed (removed continuous effect)
+  if (isDevEnvironment && authState.loadingState === 'ready') {
+    console.log("🔍 Auth ready:", {
+      session: !!authState.session,
+      user: authState.session?.user?.email || "null",
+      loading: authState.loading,
+      loadingState: authState.loadingState,
+      initialized: authState.initialized,
+      isAdmin,
+      isPremium
+    });
+  }
 
   const value = {
     session: authState.session,
