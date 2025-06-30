@@ -1,5 +1,3 @@
-
-
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
 
@@ -29,38 +27,6 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     },
   },
 });
-
-// Helper function to get the correct redirect URL based on environment
-const getRedirectUrl = (): string => {
-  const hostname = window.location.hostname;
-  const isLocal = hostname === "localhost";
-  const isLovable = hostname.includes("lovable.app");
-  const isMainDomain = hostname === "amiram.net";
-  
-  let redirectTo: string;
-  
-  if (isLocal) {
-    redirectTo = "http://localhost:8080/login";
-  } else if (isLovable) {
-    // If we're on a Lovable domain, redirect back to the same Lovable domain
-    redirectTo = `${window.location.origin}/login`;
-  } else if (isMainDomain) {
-    redirectTo = "https://amiram.net/login";
-  } else {
-    // Fallback - use current origin
-    redirectTo = `${window.location.origin}/login`;
-  }
-  
-  console.log("🔗 Environment detection:");
-  console.log("  - Current hostname:", hostname);
-  console.log("  - Current origin:", window.location.origin);
-  console.log("  - Is local environment:", isLocal);
-  console.log("  - Is Lovable domain:", isLovable);
-  console.log("  - Is main domain:", isMainDomain);
-  console.log("  - Redirect URL:", redirectTo);
-  
-  return redirectTo;
-};
 
 // Helper function to get user-friendly error messages
 const getErrorMessage = (error: any): string => {
@@ -120,9 +86,12 @@ export const signInWithGoogle = async () => {
       return { user: null, error: null };
     }
     
-    // Get the correct redirect URL based on environment
-    const redirectTo = getRedirectUrl();
-    console.log("🔗 Using redirect URL:", redirectTo);
+    // Use the correct redirect URL based on environment
+    const redirectTo = window.location.origin === 'http://localhost:8080' 
+      ? 'http://localhost:8080/login'
+      : 'https://preview--amiram.lovable.app/login';
+    
+    console.log("🔗 Redirect URL:", redirectTo);
     
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -173,16 +142,11 @@ export const loginWithEmailAndPassword = async (email: string, password: string)
 export const registerWithEmailAndPassword = async (email: string, password: string) => {
   try {
     console.log("Attempting registration for:", email);
-    
-    // Get the correct redirect URL based on environment
-    const redirectTo = getRedirectUrl();
-    console.log("🔗 Registration redirect URL:", redirectTo);
-    
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: redirectTo
+        emailRedirectTo: `${window.location.origin}/`
       }
     });
     
@@ -227,16 +191,11 @@ export const checkFirebaseConnection = async () => {
 export const resendConfirmationEmail = async (email: string) => {
   try {
     console.log("Attempting to resend confirmation email to:", email);
-    
-    // Get the correct redirect URL based on environment
-    const redirectTo = getRedirectUrl();
-    console.log("🔗 Resend email redirect URL:", redirectTo);
-    
     const { data, error } = await supabase.auth.resend({
       type: "signup",
       email,
       options: {
-        emailRedirectTo: redirectTo
+        emailRedirectTo: `${window.location.origin}/`
       },
     });
     if (error) {
@@ -252,4 +211,3 @@ export const resendConfirmationEmail = async (email: string) => {
 
 export const auth = supabase.auth;
 export const db = supabase;
-
