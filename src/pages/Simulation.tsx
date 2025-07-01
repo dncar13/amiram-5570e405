@@ -217,18 +217,9 @@ const Simulation = () => {
   const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
   
   useEffect(() => {
-    if (contentRef.current) {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-      
-      contentRef.current.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'start' 
-      });
-    }
-  }, [simulation.currentQuestionIndex]);
+    // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה
+    simulation.scrollToQuestion();
+  }, [simulation.currentQuestionIndex]); // eslint-disable-line react-hooks/exhaustive-deps
     // Setup auto-save for simulation progress
   useEffect(() => {
     // Only setup auto-save when simulation is loaded and we have questions

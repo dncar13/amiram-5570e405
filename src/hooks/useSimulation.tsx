@@ -54,12 +54,12 @@ export const useSimulation = (
     simulationId 
   });
 
-  // Scroll to top of question
+  // Scroll to question - מיקום השאלה במרכז המסך כדי שהמשתמש יראה אותה ישר
   const scrollToQuestion = useCallback(() => {
     if (questionContainerRef.current) {
       questionContainerRef.current.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'center', // מרכז המסך במקום 'start'
         inline: 'nearest'
       });
     }
@@ -381,6 +381,7 @@ export const useSimulation = (
     handleRestartSimulation,
     saveProgress,
     resetProgress,
+    scrollToQuestion,
     
     // Setters
     setQuestions,

@@ -139,36 +139,89 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   });
 
   return (
-    <div className="w-full max-w-none px-2 sm:px-4">
-      <Card className="mb-6 shadow-2xl border-0 bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm border border-slate-600/50">
-        <CardHeader className="pb-4 bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-3 sm:px-6">
-          <div className="flex items-start justify-between gap-2 sm:gap-4">
+    <div className="w-full max-w-none px-1 sm:px-4">
+      <Card className="mb-4 sm:mb-6 shadow-2xl border-0 bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm border border-slate-600/50">
+        <CardHeader className="pb-3 sm:pb-4 bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-lg sm:text-xl font-bold text-slate-100 mb-3 sm:mb-4">
-                שאלה #{currentQuestionIndex + 1} מתוך {totalQuestions}
-              </CardTitle>
-              <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 gap-2 sm:gap-0">
+                <CardTitle className="text-base sm:text-xl font-bold text-slate-100 text-center sm:text-right">
+                  שאלה #{currentQuestionIndex + 1} מתוך {totalQuestions}
+                </CardTitle>
+                
+                {/* Visual Progress Bar - קו התקדמות ויזואלי */}
+                {totalQuestions > 0 && (
+                  <div className="w-full sm:w-auto sm:min-w-[200px]">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs text-slate-400">התקדמות</span>
+                      <span className="text-xs font-bold text-slate-200">
+                        {currentQuestionIndex + 1}/{totalQuestions}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 h-2 rounded-full bg-slate-700/30 overflow-hidden">
+                      {Array.from({ length: totalQuestions }, (_, index) => {
+                        // קביעת הצבע לכל שאלה
+                        let bgColor = 'bg-slate-600/40'; // אפור בהיר - לא נענה
+                        
+                        if (index < currentQuestionIndex) {
+                          // שאלה שכבר נענתה - כרגע לא יודעים איזו נכונה ואיזו לא
+                          // אז נציג הכל כ"נענה" עד שנקבל מידע מדויק יותר
+                          bgColor = 'bg-blue-400/70';
+                        } else if (index === currentQuestionIndex) {
+                          // השאלה הנוכחית
+                          bgColor = 'bg-blue-500/80 animate-pulse';
+                        }
+                        
+                        return (
+                          <div
+                            key={index}
+                            className={`flex-1 h-full ${bgColor} transition-all duration-300 ${
+                              index === currentQuestionIndex ? 'ring-1 ring-blue-400/50' : ''
+                            }`}
+                            style={{ minWidth: `${100 / totalQuestions}%` }}
+                          />
+                        );
+                      })}
+                    </div>
+                    
+                    {/* מידע קומפקטי על דיוק - תיקון החישוב */}
+                    {correctQuestionsCount !== undefined && answeredQuestionsCount !== undefined && answeredQuestionsCount > 0 && (
+                      <div className="flex items-center justify-between mt-1">
+                        <span className="text-xs text-green-400">
+                          ✓ {correctQuestionsCount}
+                        </span>
+                        <span className="text-xs text-slate-400">
+                          {Math.round((correctQuestionsCount / answeredQuestionsCount) * 100)}% דיוק
+                        </span>
+                        <span className="text-xs text-red-400">
+                          ✗ {answeredQuestionsCount - correctQuestionsCount}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-3 flex-wrap">
                 <Badge 
                   variant="outline" 
-                  className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium bg-blue-500/20 text-blue-300 border-blue-400/30"
+                  className="flex items-center gap-1 px-2 py-1 text-xs font-medium bg-blue-500/20 text-blue-300 border-blue-400/30"
                 >
                   {getTypeIcon(currentQuestion.type)}
                   <span className="hidden sm:inline">{getTypeLabel(currentQuestion.type)}</span>
-                  <span className="sm:hidden">{getTypeLabel(currentQuestion.type).substring(0, 8)}</span>
+                  <span className="sm:hidden text-xs">{getTypeLabel(currentQuestion.type).substring(0, 6)}</span>
                 </Badge>
                 
                 <Badge 
                   variant="outline" 
-                  className={`px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium border ${getDifficultyColor(currentQuestion.difficulty)}`}
+                  className={`px-2 py-1 text-xs font-medium border ${getDifficultyColor(currentQuestion.difficulty)}`}
                 >
                   {getDifficultyLabel(currentQuestion.difficulty)}
                 </Badge>
 
                 {currentQuestion.metadata?.estimatedTime && (
-                  <Badge variant="outline" className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 text-xs sm:text-sm bg-purple-500/20 text-purple-300 border-purple-400/30">
+                  <Badge variant="outline" className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-500/20 text-purple-300 border-purple-400/30">
                     <Clock className="h-3 w-3" />
-                    <span className="hidden sm:inline">{currentQuestion.metadata.estimatedTime} דק'</span>
-                    <span className="sm:hidden">{currentQuestion.metadata.estimatedTime}'</span>
+                    <span>{currentQuestion.metadata.estimatedTime}'</span>
                   </Badge>
                 )}
               </div>
@@ -185,34 +238,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               </Button>
             </div>
           </div>
-
-          {/* Progress Information */}
-          {(answeredQuestionsCount !== undefined || progressPercentage !== undefined) && (
-            <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-blue-500/10 rounded-xl border border-blue-400/30 backdrop-blur-sm">
-              <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0 text-xs sm:text-sm text-blue-300">
-                {answeredQuestionsCount !== undefined && (
-                  <span>נענו: {answeredQuestionsCount} שאלות</span>
-                )}
-                {correctQuestionsCount !== undefined && answeredQuestionsCount !== undefined && answeredQuestionsCount > 0 && (
-                  <span>דיוק: {Math.round((correctQuestionsCount / answeredQuestionsCount) * 100)}%</span>
-                )}
-                {progressPercentage !== undefined && (
-                  <span>התקדמות: {Math.round(progressPercentage)}%</span>
-                )}
-              </div>
-            </div>
-          )}
         </CardHeader>
 
-        <CardContent className="space-y-4 sm:space-y-6 p-3 sm:p-6">
+        <CardContent className="space-y-3 sm:space-y-6 p-4 sm:p-6">
           {/* Passage Text (for reading comprehension) - רחב יותר במובייל */}
           {currentQuestion.passageText && (
             <div 
-              className="bg-slate-700/50 rounded-xl p-4 sm:p-6 border border-slate-600/30 backdrop-blur-sm -mx-1 sm:mx-0"
+              className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm"
               dir="ltr" 
               style={{direction: 'ltr', textAlign: 'left'}}
             >
-              <h4 className="font-bold text-slate-200 mb-3 sm:mb-4 text-base sm:text-lg">
+              <h4 className="font-bold text-slate-200 mb-2 sm:mb-4 text-sm sm:text-lg">
                 {currentQuestion.passageTitle || 'קטע לקריאה'}
               </h4>
               <div className="text-slate-300 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
@@ -221,49 +257,27 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             </div>
           )}
 
-          {/* Question Text - עיצוב משופר כדי להבדיל מהתשובות */}
-          <div 
-            className="bg-gradient-to-r from-blue-600/20 to-blue-700/20 rounded-xl p-4 sm:p-6 border-2 border-blue-400/50 backdrop-blur-sm shadow-lg shadow-blue-500/10 -mx-1 sm:mx-0"
-            dir="ltr" 
-            style={{direction: 'ltr', textAlign: 'left'}}
-          >
-            <div className="flex items-start gap-3">
-              <div className="bg-blue-500/30 rounded-full p-2 flex-shrink-0">
-                <FileText className="h-5 w-5 text-blue-300" />
+          {/* Question Text - Clean and minimal */}
+          <div className="bg-slate-700/30 rounded-lg p-3 sm:p-4 border border-slate-600/30">
+            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+              <div className="bg-blue-500 rounded-full p-1">
+                <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
               </div>
-              <div className="flex-1">
-                <h4 className="text-blue-300 font-bold mb-2 text-sm uppercase tracking-wide">Question</h4>
-                <p className="text-slate-100 font-medium leading-relaxed text-base sm:text-lg">
-                  {currentQuestion.text}
-                </p>
-              </div>
+              <h4 className="font-bold text-blue-300 text-sm sm:text-base">שאלה:</h4>
+            </div>
+            <div 
+              dir="ltr" 
+              style={{direction: 'ltr', textAlign: 'left'}}
+            >
+              <p className="text-slate-200 leading-relaxed text-sm sm:text-base">
+                {currentQuestion.text}
+              </p>
             </div>
           </div>
 
           {/* Answer Options */}
           <div className="space-y-2 sm:space-y-3">
-            <h4 className="font-bold text-slate-200 text-base sm:text-lg">אפשרויות תשובה:</h4>
-            
-            {/* הודעה על תוצאת התשובה */}
-            {isSubmittedOrShowAnswer && selectedAnswerIndex !== null && (
-              <div className={`p-3 rounded-lg border ${
-                selectedAnswerIndex === currentQuestion.correctAnswer
-                  ? 'bg-green-500/20 border-green-400/50 text-green-300'
-                  : 'bg-red-500/20 border-red-400/50 text-red-300'
-              }`}>
-                {selectedAnswerIndex === currentQuestion.correctAnswer ? (
-                  <span className="flex items-center gap-2">
-                    <span className="text-green-400 font-bold">✓</span>
-                    <span>תשובה נכונה! כל הכבוד!</span>
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <span className="text-red-400 font-bold">✗</span>
-                    <span>תשובה שגויה. התשובה הנכונה היא: <strong>{String.fromCharCode(65 + currentQuestion.correctAnswer)}</strong></span>
-                  </span>
-                )}
-              </div>
-            )}
+            <h4 className="font-bold text-slate-200 text-sm sm:text-base mb-2">אפשרויות תשובה:</h4>
             {currentQuestion.options.map((option, index) => {
               const isSelected = selectedAnswerIndex === index;
               const isCorrect = index === currentQuestion.correctAnswer;
@@ -272,7 +286,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               return (
                 <div
                   key={index}
-                  className={`p-3 sm:p-4 rounded-xl border transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base ${
+                  className={`p-3 sm:p-4 rounded-lg border transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base ${
                     isSelected && !isSubmittedOrShowAnswer
                       ? 'bg-blue-500/30 border-blue-400 text-blue-100 shadow-lg shadow-blue-500/20'
                       : isSubmittedOrShowAnswer && isCorrect
@@ -280,7 +294,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       : isIncorrect
                       ? 'bg-red-600/30 border-red-400 text-red-100 shadow-lg shadow-red-500/20'
                       : 'bg-slate-700/30 border-slate-600/30 text-slate-300 hover:bg-slate-600/30 hover:border-slate-500/50'
-                  }`}
+                  } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
                     if (!isSubmittedOrShowAnswer && onAnswerSelect) {
                       onAnswerSelect(index);
@@ -289,19 +303,27 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   dir="ltr" 
                   style={{direction: 'ltr', textAlign: 'left'}}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-start flex-1">
-                      <span className="font-bold text-base sm:text-lg mr-2 sm:mr-3 flex-shrink-0">
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start flex-1 gap-2 sm:gap-3">
+                      <span className={`font-bold text-sm sm:text-base flex-shrink-0 mt-0.5 ${
+                        isSubmittedOrShowAnswer && isCorrect 
+                          ? 'text-green-300' 
+                          : isIncorrect 
+                          ? 'text-red-300' 
+                          : isSelected 
+                          ? 'text-blue-300' 
+                          : 'text-slate-400'
+                      }`}>
                         {String.fromCharCode(65 + index)}.
                       </span>
-                      <span className="flex-1">{option}</span>
+                      <span className="flex-1 leading-relaxed">{option}</span>
                     </div>
-                    <div className="flex items-center gap-2 mr-2 sm:mr-3">
+                    <div className="flex items-center gap-1 mr-1">
                       {isSubmittedOrShowAnswer && isCorrect && (
-                        <span className="text-green-400 font-bold text-lg sm:text-xl">✓</span>
+                        <span className="text-green-400 font-bold text-lg">✓</span>
                       )}
                       {isIncorrect && (
-                        <span className="text-red-400 font-bold text-lg sm:text-xl">✗</span>
+                        <span className="text-red-400 font-bold text-lg">✗</span>
                       )}
                     </div>
                   </div>
@@ -311,60 +333,130 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           </div>
 
           {/* Action Buttons - שיפור תצוגה במובייל */}
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0 pt-4 sm:pt-6">
+          <div className="flex flex-col gap-3 pt-4 sm:pt-6">
             
             {/* Mobile Layout - כפתורי ניווט למעלה */}
-            <div className="flex sm:hidden w-full justify-between items-center">
+            <div className="flex sm:hidden w-full justify-between items-center gap-2">
               {/* Previous button - משמאל במובייל */}
-              {onPreviousQuestion && currentQuestionIndex > 0 && (
+              {onPreviousQuestion && currentQuestionIndex > 0 ? (
                 <Button
                   variant="outline"
                   size="lg"
                   onClick={onPreviousQuestion}
-                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-6 py-3 font-medium"
+                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm flex-1"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="h-4 w-4" />
                   קודם
                 </Button>
+              ) : (
+                <div className="flex-1"></div>
               )}
               
               {/* Next button - מימין במובייל */}
-              {onNextQuestion && currentQuestionIndex < totalQuestions - 1 && (
+              {onNextQuestion && currentQuestionIndex < totalQuestions - 1 ? (
                 <Button
                   variant="outline"
                   size="lg"
                   onClick={onNextQuestion}
-                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-6 py-3 font-medium"
-                >
-                  הבא
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-              )}
-            </div>
-
-            {/* Desktop Layout */}
-            {/* Next button - left side in RTL */}
-            <div className="hidden sm:flex gap-3">
-              {onNextQuestion && currentQuestionIndex < totalQuestions - 1 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onNextQuestion}
-                  className="flex items-center gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200"
+                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm flex-1"
                 >
                   הבא
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
+              ) : (
+                <div className="flex-1"></div>
               )}
             </div>
+            
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex justify-between items-center w-full">
+              {/* Previous button - left side in RTL */}
+              <div className="flex gap-3">
+                {onPreviousQuestion && currentQuestionIndex > 0 && (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={onPreviousQuestion}
+                    className="flex items-center gap-3 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-8 py-4 font-medium text-lg"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                    קודם
+                  </Button>
+                )}
+              </div>
 
-            {/* Center buttons - תמיד במרכז */}
-            <div className="flex gap-2 sm:gap-3 w-full sm:w-auto justify-center">
+              {/* Center buttons - תמיד במרכז */}
+              <div className="flex gap-2 sm:gap-3 justify-center">
+                {!isSubmittedOrShowAnswer && selectedAnswerIndex !== null && onSubmitAnswer && (
+                  <Button
+                    onClick={onSubmitAnswer}
+                    size="lg"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
+                  >
+                    שלח תשובה
+                  </Button>
+                )}
+
+                {onToggleExplanation && isSubmittedOrShowAnswer && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onToggleExplanation}
+                    className="flex items-center gap-1 sm:gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3 sm:px-4"
+                  >
+                    {showExplanation ? (
+                      <>
+                        <EyeOff className="h-4 w-4" />
+                        <span className="hidden sm:inline">הסתר הסבר</span>
+                        <span className="sm:hidden">הסתר</span>
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="h-4 w-4" />
+                        <span className="hidden sm:inline">הצג הסבר</span>
+                        <span className="sm:hidden">הסבר</span>
+                      </>
+                    )}
+                  </Button>
+                )}
+
+                {/* Finish Button */}
+                {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
+                  <Button
+                    onClick={onFinishSimulation}
+                    size="lg"
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
+                  >
+                    <Trophy className="h-4 w-4" />
+                    <span className="hidden sm:inline">סיים סימולציה</span>
+                    <span className="sm:hidden">סיים</span>
+                  </Button>
+                )}
+              </div>
+
+              {/* Next button - right side in RTL */}
+              <div className="flex gap-3">
+                {onNextQuestion && currentQuestionIndex < totalQuestions - 1 && (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={onNextQuestion}
+                    className="flex items-center gap-3 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-8 py-4 font-medium text-lg"
+                  >
+                    הבא
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                )}
+              </div>
+            </div>
+            
+            {/* Mobile Center buttons */}
+            <div className="flex sm:hidden gap-2 w-full justify-center">
               {!isSubmittedOrShowAnswer && selectedAnswerIndex !== null && onSubmitAnswer && (
                 <Button
                   onClick={onSubmitAnswer}
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg flex-1 sm:flex-none"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20 px-6 py-3 text-base flex-1"
                 >
                   שלח תשובה
                 </Button>
@@ -375,19 +467,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   variant="outline"
                   size="sm"
                   onClick={onToggleExplanation}
-                  className="flex items-center gap-1 sm:gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3 sm:px-4"
+                  className="flex items-center gap-1 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3"
                 >
                   {showExplanation ? (
                     <>
                       <EyeOff className="h-4 w-4" />
-                      <span className="hidden sm:inline">הסתר הסבר</span>
-                      <span className="sm:hidden">הסתר</span>
+                      <span>הסתר</span>
                     </>
                   ) : (
                     <>
                       <Eye className="h-4 w-4" />
-                      <span className="hidden sm:inline">הצג הסבר</span>
-                      <span className="sm:hidden">הסבר</span>
+                      <span>הסבר</span>
                     </>
                   )}
                 </Button>
@@ -398,26 +488,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 <Button
                   onClick={onFinishSimulation}
                   size="lg"
-                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg flex-1 sm:flex-none"
+                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 py-3 text-base flex-1"
                 >
                   <Trophy className="h-4 w-4" />
-                  <span className="hidden sm:inline">סיים סימולציה</span>
-                  <span className="sm:hidden">סיים</span>
-                </Button>
-              )}
-            </div>
-
-            {/* Previous button - right side in RTL (Desktop only - במובייל זה למעלה) */}
-            <div className="hidden sm:flex gap-3">
-              {onPreviousQuestion && currentQuestionIndex > 0 && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={onPreviousQuestion}
-                  className="flex items-center gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                  קודם
+                  <span>סיים</span>
                 </Button>
               )}
             </div>
