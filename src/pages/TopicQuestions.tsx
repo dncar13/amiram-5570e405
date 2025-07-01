@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
@@ -86,6 +87,10 @@ const TopicQuestions = () => {
   }, {} as Record<string, Question[]>);
   
   const sortedTopics = Object.keys(questionsByTopic).sort();
+
+  const handleFilterChange = (newFilter: string) => {
+    setFilter(newFilter as "all" | "mine" | "flagged");
+  };
   
   if (isLoading) {
     return (
@@ -117,7 +122,7 @@ const TopicQuestions = () => {
             <FilterTabs 
               questions={userQuestions}
               activeFilter={filter}
-              onFilterChange={setFilter}
+              onFilterChange={handleFilterChange}
             >
               <div></div>
             </FilterTabs>

@@ -2,7 +2,6 @@ import { Question } from "@/data/types/questionTypes";
 import { refreshQuestionsFromStorage } from "./questions/storage";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
-import { useToast } from "@/hooks/use-toast";
 import { optimizeStorage, cleanupOldProgress } from "./storageUtils";
 
 // Key constants for different storage namespaces
@@ -109,7 +108,8 @@ export const clearAllSimulationData = (): void => {
     
   } catch (error) {
     console.error("Error clearing simulation data:", error);
-    toast.error("שגיאה באיפוס נתוני הסימולציה");
+    // Remove the undefined toast call - just log the error
+    console.error("שגיאה באיפוס נתוני הסימולציה");
   }
 };
 

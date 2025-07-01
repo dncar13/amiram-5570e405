@@ -5,13 +5,14 @@ export interface SimulationState {
   currentQuestionIndex: number;
   currentQuestion: Question | null;
   questions: Question[];
-  userAnswers: Record<number, number | null>;
+  userAnswers: Record<number, number>;
   questionFlags: Record<number, boolean>;
   simulationComplete: boolean;
   score: number;
   totalQuestions: number;
   remainingTime: number;
   isTimerActive: boolean;
+  selectedAnswerIndex: number | null;
   isAnswerSubmitted: boolean;
   showExplanation: boolean;
   progressLoaded: boolean;
@@ -21,7 +22,6 @@ export interface SimulationState {
   correctQuestionsCount: number;
   progressPercentage: number;
   currentScorePercentage: number;
-  selectedAnswerIndex: number | null;
 }
 
 export interface SimulationActions {
@@ -30,12 +30,11 @@ export interface SimulationActions {
   handleNextQuestion: () => void;
   handlePreviousQuestion: () => void;
   handleToggleExplanation: () => void;
-  toggleQuestionFlag: (questionIndex: number) => void;
-  navigateToQuestion: (questionIndex: number) => void;
-  handleRestartSimulation: () => void;
-  saveProgress: () => void;
-  resetProgress: () => void;
-  setSimulationComplete: (complete: boolean) => void;
+  toggleQuestionFlag: () => void;
+  handleCompleteSimulation: () => void;
+  handleStartTimer: () => void;
+  handleStopTimer: () => void;
+  handleResetTimer: (newDuration?: number) => void;
 }
 
 export const initialSimulationState: SimulationState = {
@@ -47,16 +46,16 @@ export const initialSimulationState: SimulationState = {
   simulationComplete: false,
   score: 0,
   totalQuestions: 0,
-  remainingTime: 1800, // 30 minutes in seconds
+  remainingTime: 1800,
   isTimerActive: false,
+  selectedAnswerIndex: null,
   isAnswerSubmitted: false,
   showExplanation: false,
   progressLoaded: false,
   examMode: false,
-  showAnswersImmediately: false,
+  showAnswersImmediately: true,
   answeredQuestionsCount: 0,
   correctQuestionsCount: 0,
   progressPercentage: 0,
   currentScorePercentage: 0,
-  selectedAnswerIndex: null,
 };
