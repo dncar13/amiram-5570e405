@@ -1,10 +1,13 @@
 
+import React from 'react';
+import { LucideIcon } from 'lucide-react';
+
 export interface Topic {
   id: number;
   title: string;
   description: string;
   categoryId: number;
-  icon: string | React.ReactNode | IconObject;
+  icon: string | React.ReactNode | IconObject | LucideIcon;
   difficulty: 'easy' | 'medium' | 'hard';
   estimatedTime: number;
   tags: string[];
@@ -33,7 +36,7 @@ export interface Subtopic {
   name?: string;
   description: string;
   topicId: number;
-  icon?: string | React.ReactNode | IconObject;
+  icon?: string | React.ReactNode | IconObject | LucideIcon;
   targetCount: number;
   questionIds?: number[];
   order?: number;
@@ -54,7 +57,7 @@ export interface Category {
   id: number;
   title: string;
   description: string;
-  icon: React.ReactNode | IconObject | string;
+  icon: React.ReactNode | IconObject | string | LucideIcon;
   color: string;
   topicIds: number[];
 }
