@@ -1,5 +1,6 @@
+
 import { Question } from "@/data/types/questionTypes";
-import { SimulationProgress } from "./simulationStorage";
+import type { SimulationProgress } from "./simulationStorage";
 
 export interface CloudSyncConfig {
   apiEndpoint: string;
@@ -14,8 +15,6 @@ export interface SyncResult {
   error?: string;
   data?: Record<string, unknown>;
 }
-
-export { SimulationProgress };
 
 export const uploadProgressData = async (progressData: Record<string, unknown>): Promise<{ success: boolean; error?: string }> => {
   try {
