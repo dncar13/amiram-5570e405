@@ -4,12 +4,39 @@ export interface Topic {
   title: string;
   description: string;
   categoryId: number;
-  icon: string;
+  icon: string | React.ReactNode | IconObject;
   difficulty: 'easy' | 'medium' | 'hard';
   estimatedTime: number;
   tags: string[];
   order: number;
   metadata?: Record<string, unknown>;
+  
+  // Additional properties used throughout the app
+  timeEstimate?: string | number;
+  totalQuestions?: number;
+  targetQuestions?: number;
+  targetCount?: number;
+  completedPercentage?: number;
+  tips?: string[];
+  subtopics?: Subtopic[];
+  recommended?: boolean;
+}
+
+export interface IconObject {
+  type: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  props?: Record<string, unknown>;
+}
+
+export interface Subtopic {
+  id: number;
+  title?: string;
+  name?: string;
+  description: string;
+  topicId: number;
+  icon?: string | React.ReactNode | IconObject;
+  targetCount: number;
+  questionIds?: number[];
+  order?: number;
 }
 
 export interface TopicCategory {
@@ -21,6 +48,15 @@ export interface TopicCategory {
   topics: Topic[];
   order: number;
   metadata?: Record<string, unknown>;
+}
+
+export interface Category {
+  id: number;
+  title: string;
+  description: string;
+  icon: React.ReactNode | IconObject | string;
+  color: string;
+  topicIds: number[];
 }
 
 export interface TopicProgress {

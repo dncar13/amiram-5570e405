@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useMemo } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { Topic } from "@/data/types/topicTypes";
@@ -69,7 +70,7 @@ export const useSimulationData = (
 
           if (setNumber >= 1 && setNumber <= 20) {
             // For sets 1-20, load questions by range
-            questionsForSet = getMixedDifficultyQuestions(setNumber);
+            questionsForSet = getMixedDifficultyQuestions();
           } else if (setNumber === 801) {
             // Special set 801-850
             questionsForSet = getRestatementQuestions();
@@ -96,13 +97,13 @@ export const useSimulationData = (
             let questionsForTopic: Question[] = [];
 
             if (foundTopic.difficulty === 'easy') {
-              questionsForTopic = getEasyQuestions(topicNum);
+              questionsForTopic = getEasyQuestions();
             } else if (foundTopic.difficulty === 'medium') {
-              questionsForTopic = getMediumQuestions(topicNum);
+              questionsForTopic = getMediumQuestions();
             } else if (foundTopic.difficulty === 'hard') {
-              questionsForTopic = getHardQuestions(topicNum);
+              questionsForTopic = getHardQuestions();
             } else {
-              questionsForTopic = getMixedDifficultyQuestions(topicNum);
+              questionsForTopic = getMixedDifficultyQuestions();
             }
 
             if (isMounted) {

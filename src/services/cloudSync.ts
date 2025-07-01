@@ -33,11 +33,23 @@ export const getTopicProgressKey = (topicId: string | number): string => {
  */
 export const resetConflictingProgress = (): void => {
   try {
-    // Clear the global progress key which might be causing conflicts
-    localStorage.removeItem(GLOBAL_PROGRESS_KEY);
-    console.log("Cleared global progress to avoid conflicts between simulations");
+    // Clear any global simulation progress that might conflict with topic-based progress
+    const keysToRemove: string[] = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('simulation_progress') || key.includes('global_progress'))) {
+        keysToRemove.push(key);
+      }
+    }
+    
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+    });
+    
+    console.log(`Cleaned up ${keysToRemove.length} conflicting progress items`);
   } catch (error) {
-    console.error("Error clearing conflicting progress:", error);
+    console.error("Error resetting conflicting progress:", error);
   }
 };
 

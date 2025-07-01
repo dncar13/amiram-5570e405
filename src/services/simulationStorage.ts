@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { SimulationProgress } from "./cloudSync";
 
@@ -25,6 +24,26 @@ export interface SimulationStats {
   totalTimeSpent: number;
   lastSimulationDate: string;
 }
+
+export const hasProgressUnified = async (
+  topicId: number, 
+  isQuestionSet: boolean
+): Promise<{ success: boolean; data?: Record<string, unknown> }> => {
+  try {
+    const key = isQuestionSet ? `questionset_${topicId}_progress` : `topic_${topicId}_progress`;
+    const progressData = localStorage.getItem(key);
+    
+    if (progressData) {
+      const parsed = JSON.parse(progressData);
+      return { success: true, data: parsed };
+    }
+    
+    return { success: false };
+  } catch (error) {
+    console.error('Error checking progress:', error);
+    return { success: false };
+  }
+};
 
 export const saveSimulation = (simulation: SavedSimulation): boolean => {
   try {

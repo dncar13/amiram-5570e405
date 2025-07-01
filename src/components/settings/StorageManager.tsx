@@ -1,164 +1,133 @@
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  clearAllSimulations,
+  getSimulationStats,
+  exportSimulations,
+  importSimulations,
+} from "@/services/simulationStorage";
+import { useToast } from "@/hooks/use-toast";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { runStorageDiagnostics, StorageReport } from '@/services/diagnostics';
-import { clearAllSimulationData } from '@/services/cloudSync';
-import { optimizeStorage, cleanupOldProgress } from '@/services/storageUtils';
-import { toast } from '@/hooks/use-toast';
+interface StorageStats {
+  totalSimulations: number;
+  completedSimulations: number;
+  totalQuestionsAnswered: number;
+  totalCorrectAnswers: number;
+  averageScore: number;
+  totalTimeSpent: number;
+  lastSimulationDate: string;
+}
 
-export function StorageManager() {
-  const [report, setReport] = useState<StorageReport | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const loadReport = () => {
-    setIsLoading(true);
-    try {
-      const data = runStorageDiagnostics();
-      setReport(data);
-    } catch (err) {
-      console.error('Error loading storage report:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
+const StorageManager = () => {
+  const [stats, setStats] = useState<StorageStats>({
+    totalSimulations: 0,
+    completedSimulations: 0,
+    totalQuestionsAnswered: 0,
+    totalCorrectAnswers: 0,
+    averageScore: 0,
+    totalTimeSpent: 0,
+    lastSimulationDate: "",
+  });
+  const [exportData, setExportData] = useState("");
+  const [importData, setImportData] = useState("");
+  const { toast } = useToast();
+
   useEffect(() => {
-    loadReport();
+    setStats(getSimulationStats());
   }, []);
-  
-  const handleOptimize = async () => {
-    setIsLoading(true);
-    try {
-      const removedCount = cleanupOldProgress();
-      const optimized = optimizeStorage();
-      
-      toast({
-        title: "ניקוי אחסון הושלם",
-        description: `הוסרו ${removedCount} פריטים ישנים${optimized ? ' ובוצע דחיסה' : ''}`,
-        variant: "success"
-      });
-      
-      loadReport();
-    } catch (err) {
-      console.error('Error optimizing storage:', err);
-      toast({
-        title: "שגיאה",
-        description: "אירעה שגיאה בעת ניקוי האחסון",
-        variant: "destructive" 
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  
-  const handleClearAll = async () => {
-    if (window.confirm('האם אתה בטוח שברצונך למחוק את כל נתוני הסימולציה? פעולה זו אינה ניתנת לביטול.')) {
-      setIsLoading(true);
-      try {
-        clearAllSimulationData();
-        toast({
-          title: "הפעולה הושלמה",
-          description: "כל נתוני הסימולציה נמחקו בהצלחה",
-          variant: "success"
-        });
-        loadReport();
-      } catch (err) {
-        console.error('Error clearing simulation data:', err);
-        toast({
-          title: "שגיאה",
-          description: "אירעה שגיאה בעת מחיקת נתוני הסימולציה",
-          variant: "destructive"
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-  
-  if (!report) {
-    return <div>טוען נתוני אחסון...</div>;
-  }
-  
-  // Calculate usage percentage
-  const usagePercent = report.browserQuota 
-    ? Math.min(100, Math.round((report.totalSize / report.browserQuota) * 100))
-    : 0;
-  
-  const getStatusColor = () => {
-    if (usagePercent > 80) return 'bg-red-500';
-    if (usagePercent > 60) return 'bg-yellow-500';
-    return 'bg-green-500';
-  };
-  
+
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold">ניהול אחסון</h2>
-      
-      {usagePercent > 80 && (
-        <Alert variant="destructive">
-          <AlertTitle>אחסון כמעט מלא!</AlertTitle>
-          <AlertDescription>
-            אחסון הדפדפן שלך כמעט מלא. מומלץ לנקות נתונים ישנים כדי למנוע אובדן מידע.
-          </AlertDescription>
-        </Alert>
-      )}
-      
-      <div className="space-y-2">
-        <div className="flex justify-between">
-          <span>ניצול אחסון</span>
-          <span>{usagePercent}%</span>
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold">ניהול אחסון מקומי</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-gray-100 p-4 rounded-md">
+          <h3 className="text-md font-semibold mb-2">סטטיסטיקות</h3>
+          <p>סה"כ סימולציות: {stats.totalSimulations}</p>
+          <p>סימולציות שהושלמו: {stats.completedSimulations}</p>
+          <p>שאלות שנענו: {stats.totalQuestionsAnswered}</p>
+          <p>תשובות נכונות: {stats.totalCorrectAnswers}</p>
+          <p>ציון ממוצע: {stats.averageScore.toFixed(2)}%</p>
+          <p>תאריך סימולציה אחרונה: {stats.lastSimulationDate}</p>
         </div>
-        <Progress 
-          value={usagePercent} 
-          className="h-2" 
-          indicatorClassName={getStatusColor()}
-        />
-        <div className="text-sm text-muted-foreground">
-          {(report.simulationSize / 1024 / 1024).toFixed(2)} MB מתוך {(report.browserQuota || 0) / 1024 / 1024} MB
+
+        <div className="bg-gray-100 p-4 rounded-md">
+          <h3 className="text-md font-semibold mb-2">ייצוא נתונים</h3>
+          <Button
+            onClick={() => {
+              const data = exportSimulations();
+              setExportData(data);
+              toast({
+                title: "ייצוא הצליח",
+                description: "הנתונים שלך יוצאו בהצלחה",
+              });
+            }}
+            size="sm"
+          >
+            ייצא נתונים
+          </Button>
+          {exportData && (
+            <Textarea
+              value={exportData}
+              readOnly
+              className="mt-2 h-24"
+            />
+          )}
         </div>
-      </div>
-      
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="space-y-1">
-          <div className="text-sm font-medium">סך הכל פריטים באחסון</div>
-          <div className="text-2xl font-bold">{report.itemCount}</div>
+
+        <div className="bg-gray-100 p-4 rounded-md">
+          <h3 className="text-md font-semibold mb-2">ייבוא נתונים</h3>
+          <Label htmlFor="importData">הדבק נתוני JSON:</Label>
+          <Textarea
+            id="importData"
+            value={importData}
+            onChange={(e) => setImportData(e.target.value)}
+            className="mt-2 h-24"
+          />
+          <Button
+            onClick={() => {
+              const result = importSimulations(importData);
+              if (result) {
+                setStats(getSimulationStats());
+                toast({
+                  title: "ייבוא הצליח",
+                  description: "הנתונים שלך יובאו בהצלחה",
+                });
+              } else {
+                toast({
+                  title: "שגיאת ייבוא",
+                  description: "אירעה שגיאה במהלך הייבוא",
+                  variant: "destructive",
+                });
+              }
+            }}
+            size="sm"
+          >
+            ייבא נתונים
+          </Button>
         </div>
-        <div className="space-y-1">
-          <div className="text-sm font-medium">פריטי סימולציה</div>
-          <div className="text-2xl font-bold">{report.simulationItems}</div>
+
+        <div className="bg-gray-100 p-4 rounded-md">
+          <h3 className="text-md font-semibold mb-2">אפשרויות ניקוי</h3>
+          <Button
+            onClick={() => {
+              const result = clearAllSimulations();
+              if (result) {
+                setStats(getSimulationStats());
+                // toast success message
+              }
+            }}
+            variant="destructive"
+            size="sm"
+          >
+            נקה הכל
+          </Button>
         </div>
-      </div>
-      
-      <div className="space-y-2">
-        <div className="text-sm font-medium">הפריטים הגדולים ביותר:</div>
-        <ul className="space-y-1">
-          {report.largestItems.map((item, i) => (
-            <li key={i} className="text-sm">
-              {item.key.substring(0, 30)}{item.key.length > 30 ? '...' : ''}: 
-              {(item.size / 1024).toFixed(1)} KB
-              {item.age > 0 ? ` (${item.age} ימים)` : ''}
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <div className="flex space-x-4 rtl:space-x-reverse">
-        <Button 
-          onClick={handleOptimize} 
-          disabled={isLoading}
-        >
-          ניקוי אחסון
-        </Button>
-        <Button 
-          variant="destructive" 
-          onClick={handleClearAll} 
-          disabled={isLoading}
-        >
-          מחק הכל
-        </Button>
       </div>
     </div>
   );
-}
+};
+
+export default StorageManager;
