@@ -292,6 +292,12 @@ const Simulation = () => {
     simulation.navigateToQuestion(index);
   }, [simulation]);
 
+  // Handle finishing the simulation
+  const handleFinishSimulation = useCallback(() => {
+    console.log("Finishing simulation manually");
+    simulation.handleCompleteSimulation();
+  }, [simulation]);
+
   // Initial auto-save on page load - show toast only once
   useEffect(() => {
     if (
@@ -421,6 +427,7 @@ const Simulation = () => {
             onRestart={simulation.handleRestartSimulation}
             onBackToTopics={handleBackToTopics}
             onResetProgress={simulation.resetProgress}
+            onFinishSimulation={handleFinishSimulation}
           />
         </div>
       </main>

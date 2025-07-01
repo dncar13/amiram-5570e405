@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, BookOpen, Brain, FileText, Volume2, PenTool, Eye, EyeOff, Flag, ChevronLeft, ChevronRight } from "lucide-react";
+import { Clock, BookOpen, Brain, FileText, Volume2, PenTool, Eye, EyeOff, Flag, ChevronLeft, ChevronRight, Trophy } from "lucide-react";
 import { Question } from "@/data/types/questionTypes";
 
 interface QuestionCardProps {
@@ -25,6 +25,7 @@ interface QuestionCardProps {
   onPreviousQuestion: () => void;
   onToggleExplanation: () => void;
   onToggleQuestionFlag: () => void;
+  onFinishSimulation?: () => void;
 }
 
 const getTypeIcon = (type: Question['type']) => {
@@ -118,7 +119,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onNextQuestion,
   onPreviousQuestion,
   onToggleExplanation,
-  onToggleQuestionFlag
+  onToggleQuestionFlag,
+  onFinishSimulation
 }) => {
   if (!currentQuestion) {
     return null;
@@ -126,6 +128,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   const canShowAnswer = showExplanation && showAnswersImmediately;
   const isSubmittedOrShowAnswer = isAnswerSubmitted;
+  const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
   return (
     <div className="w-full max-w-none">
@@ -289,6 +292,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       הצג הסבר
                     </>
                   )}
+                </Button>
+              )}
+
+              {/* Finish Button - Show when on last question and answer is submitted */}
+              {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
+                <Button
+                  onClick={onFinishSimulation}
+                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20"
+                >
+                  <Trophy className="h-4 w-4" />
+                  סיים סימולציה
                 </Button>
               )}
             </div>

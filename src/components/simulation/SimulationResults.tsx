@@ -102,6 +102,10 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
     questionIndex: index
   }));
 
+  // Separate correct and incorrect answers for easier review
+  const incorrectQuestions = questionAnalysis.filter(analysis => !analysis.isCorrect && analysis.userAnswer !== null);
+  const correctQuestions = questionAnalysis.filter(analysis => analysis.isCorrect);
+
   const formatTime = (seconds?: number): string => {
     if (!seconds) return 'לא זמין';
     const minutes = Math.floor(seconds / 60);
@@ -230,42 +234,73 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
         </Button>
       </div>
 
-      {/* Question Breakdown */}
-      {questionAnalysis.length > 0 && (
-        <Card>
+      {/* Incorrect Answers Section - Highlighted for review */}
+      {incorrectQuestions.length > 0 && (
+        <Card className="border-red-200 bg-red-50/50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-5 w-5" />
-              פירוט תשובות
+            <CardTitle className="flex items-center gap-2 text-red-700">
+              <Target className="h-5 w-5" />
+              שאלות שנענו שגוי - מומלץ לסקור ({incorrectQuestions.length})
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {questionAnalysis.map((analysis, index) => (
+              {incorrectQuestions.map((analysis, index) => (
                 <div
                   key={index}
-                  className={`p-3 rounded-lg border-2 cursor-pointer hover:shadow-md transition-shadow ${
-                    analysis.isCorrect 
-                      ? 'bg-green-50 border-green-200' 
-                      : 'bg-red-50 border-red-200'
-                  }`}
+                  className="p-4 rounded-lg border-2 bg-red-50 border-red-200 cursor-pointer hover:shadow-md transition-shadow hover:bg-red-100"
+                  onClick={() => onNavigateToQuestion && onNavigateToQuestion(analysis.questionIndex)}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-medium text-sm text-red-800">
+                      שאלה #{analysis.questionIndex + 1}
+                    </span>
+                    <span className="text-lg text-red-600">✗</span>
+                  </div>
+                  <div className="text-xs text-red-700 mb-1">
+                    תשובתך: {analysis.userAnswer !== null 
+                      ? String.fromCharCode(65 + analysis.userAnswer)
+                      : 'לא נענה'
+                    }
+                  </div>
+                  <div className="text-xs text-green-700">
+                    תשובה נכונה: {String.fromCharCode(65 + analysis.question.correctAnswer)}
+                  </div>
+                  <div className="text-xs text-gray-600 mt-2 truncate">
+                    {analysis.question.text.substring(0, 50)}...
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Correct Answers Section */}
+      {correctQuestions.length > 0 && (
+        <Card className="border-green-200 bg-green-50/50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-green-700">
+              <CheckCircle className="h-5 w-5" />
+              שאלות שנענו נכון ({correctQuestions.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {correctQuestions.map((analysis, index) => (
+                <div
+                  key={index}
+                  className="p-3 rounded-lg border-2 bg-green-50 border-green-200 cursor-pointer hover:shadow-md transition-shadow hover:bg-green-100"
                   onClick={() => onNavigateToQuestion && onNavigateToQuestion(analysis.questionIndex)}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-sm">
+                    <span className="font-medium text-sm text-green-800">
                       שאלה #{analysis.questionIndex + 1}
                     </span>
-                    <span className={`text-lg ${
-                      analysis.isCorrect ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {analysis.isCorrect ? '✓' : '✗'}
-                    </span>
+                    <span className="text-lg text-green-600">✓</span>
                   </div>
-                  <div className="text-xs text-gray-600 mt-1">
-                    {analysis.userAnswer !== null 
-                      ? `תשובה: ${String.fromCharCode(65 + analysis.userAnswer)}`
-                      : 'לא נענה'
-                    }
+                  <div className="text-xs text-green-700 mt-1">
+                    תשובה: {String.fromCharCode(65 + analysis.userAnswer!)}
                   </div>
                 </div>
               ))}

@@ -37,6 +37,7 @@ interface SimulationContentProps {
   onRestart: () => void;
   onBackToTopics: () => string;
   onResetProgress: () => void;
+  onFinishSimulation?: () => void;
 }
 
 const SimulationContent = ({
@@ -71,7 +72,8 @@ const SimulationContent = ({
   onNavigateToQuestion,
   onRestart,
   onBackToTopics,
-  onResetProgress
+  onResetProgress,
+  onFinishSimulation
 }: SimulationContentProps) => {
 
   console.log('[SimulationContent] Rendering with:', {
@@ -164,6 +166,7 @@ const SimulationContent = ({
           onPreviousQuestion={onPreviousQuestion}
           onToggleExplanation={onToggleExplanation}
           onToggleQuestionFlag={onToggleQuestionFlag}
+          onFinishSimulation={onFinishSimulation}
         />
       </div>
     </div>
