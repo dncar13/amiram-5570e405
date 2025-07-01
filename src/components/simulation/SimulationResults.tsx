@@ -9,18 +9,26 @@ import { useNavigate } from "react-router-dom";
 import { Question } from "@/data/types/questionTypes";
 
 interface SimulationResultsProps {
-  score: number;
-  totalQuestions: number;
+  score?: number;
+  totalQuestions?: number;
   timeSpent?: number;
-  correctAnswers: number;
-  incorrectAnswers: number;
-  questions: Question[];
-  userAnswers: Record<number, number | null>;
-  onRestart: () => void;
+  correctAnswers?: number;
+  incorrectAnswers?: number;
+  questions?: Question[];
+  questionsData?: Question[];
+  userAnswers?: Record<number, number | null> | (number | null)[];
+  onRestart?: () => void;
   onReview?: () => void;
+  onBackToTopics?: () => string;
+  onNavigateToQuestion?: (index: number) => void;
   difficulty?: string;
   type?: string;
   completionTime?: string;
+  isQuestionSet?: boolean;
+  // New props for backward compatibility
+  answeredQuestionsCount?: number;
+  correctQuestionsCount?: number;
+  questionFlags?: boolean[];
 }
 
 interface QuestionAnalysis {
@@ -57,21 +65,40 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
   correctAnswers,
   incorrectAnswers,
   questions,
-  userAnswers,
+  questionsData,
+  userAnswers = {},
   onRestart,
   onReview,
+  onBackToTopics,
+  onNavigateToQuestion,
   difficulty,
   type,
-  completionTime
+  completionTime,
+  isQuestionSet,
+  answeredQuestionsCount,
+  correctQuestionsCount
 }) => {
   const navigate = useNavigate();
-  const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
+  
+  // Use either questions or questionsData
+  const activeQuestions = questions || questionsData || [];
+  const activeTotalQuestions = totalQuestions || activeQuestions.length;
+  const activeScore = score || correctQuestionsCount || 0;
+  const activeCorrectAnswers = correctAnswers || correctQuestionsCount || 0;
+  const activeIncorrectAnswers = incorrectAnswers || (activeTotalQuestions - activeCorrectAnswers);
+  
+  const percentage = activeTotalQuestions > 0 ? Math.round((activeScore / activeTotalQuestions) * 100) : 0;
+
+  // Convert userAnswers to consistent format
+  const normalizedUserAnswers: Record<number, number | null> = Array.isArray(userAnswers) 
+    ? userAnswers.reduce((acc, answer, index) => ({ ...acc, [index]: answer }), {} as Record<number, number | null>)
+    : userAnswers;
 
   // Create question analysis
-  const questionAnalysis: QuestionAnalysis[] = questions.map((question, index) => ({
+  const questionAnalysis: QuestionAnalysis[] = activeQuestions.map((question, index) => ({
     question,
-    userAnswer: userAnswers[index] ?? null,
-    isCorrect: userAnswers[index] === question.correctAnswer,
+    userAnswer: normalizedUserAnswers[index] ?? null,
+    isCorrect: normalizedUserAnswers[index] === question.correctAnswer,
     questionIndex: index
   }));
 
@@ -107,9 +134,9 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
               {percentage}%
             </div>
             <div className="text-gray-600">
-              <span className="text-xl font-semibold">{score}</span>
+              <span className="text-xl font-semibold">{activeScore}</span>
               <span className="text-sm"> מתוך </span>
-              <span className="text-xl font-semibold">{totalQuestions}</span>
+              <span className="text-xl font-semibold">{activeTotalQuestions}</span>
               <span className="text-sm"> שאלות</span>
             </div>
             <Progress value={percentage} className="w-full h-3" />
@@ -132,7 +159,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
             <div className="flex items-center justify-center mb-2">
               <CheckCircle className="h-6 w-6 text-green-600" />
             </div>
-            <div className="text-2xl font-bold text-green-600">{correctAnswers}</div>
+            <div className="text-2xl font-bold text-green-600">{activeCorrectAnswers}</div>
             <div className="text-sm text-gray-600">תשובות נכונות</div>
           </CardContent>
         </Card>
@@ -142,7 +169,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
             <div className="flex items-center justify-center mb-2">
               <Target className="h-6 w-6 text-red-600" />
             </div>
-            <div className="text-2xl font-bold text-red-600">{incorrectAnswers}</div>
+            <div className="text-2xl font-bold text-red-600">{activeIncorrectAnswers}</div>
             <div className="text-sm text-gray-600">תשובות שגויות</div>
           </CardContent>
         </Card>
@@ -172,13 +199,15 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button
-          onClick={onRestart}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-        >
-          <RotateCcw className="h-4 w-4" />
-          התחל מחדש
-        </Button>
+        {onRestart && (
+          <Button
+            onClick={onRestart}
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+          >
+            <RotateCcw className="h-4 w-4" />
+            התחל מחדש
+          </Button>
+        )}
 
         {onReview && (
           <Button
@@ -215,11 +244,12 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
               {questionAnalysis.map((analysis, index) => (
                 <div
                   key={index}
-                  className={`p-3 rounded-lg border-2 ${
+                  className={`p-3 rounded-lg border-2 cursor-pointer hover:shadow-md transition-shadow ${
                     analysis.isCorrect 
                       ? 'bg-green-50 border-green-200' 
                       : 'bg-red-50 border-red-200'
                   }`}
+                  onClick={() => onNavigateToQuestion && onNavigateToQuestion(analysis.questionIndex)}
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-medium text-sm">

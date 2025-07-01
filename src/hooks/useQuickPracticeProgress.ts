@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { getQuickPracticeProgress, clearQuickPracticeProgress } from './simulation/progressUtils';
+import { getQuickPracticeProgress, clearQuickPracticeProgress, ProgressData } from './simulation/progressUtils';
 
 interface QuickPracticeProgress {
   completed: boolean;
@@ -15,8 +15,20 @@ export const useQuickPracticeProgress = (type: string) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const refreshProgress = useCallback(() => {
-    const savedProgress = getQuickPracticeProgress(type);
-    setProgress(savedProgress);
+    const savedProgress: ProgressData | null = getQuickPracticeProgress(type);
+    if (savedProgress) {
+      // Convert ProgressData to QuickPracticeProgress
+      const quickProgress: QuickPracticeProgress = {
+        completed: savedProgress.completed,
+        inProgress: savedProgress.inProgress,
+        score: savedProgress.score,
+        answeredQuestions: savedProgress.answeredQuestions,
+        totalQuestions: savedProgress.totalQuestions || savedProgress.answeredQuestions
+      };
+      setProgress(quickProgress);
+    } else {
+      setProgress(null);
+    }
     setIsLoading(false);
   }, [type]);
 
