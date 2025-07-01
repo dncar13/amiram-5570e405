@@ -1,6 +1,5 @@
-
 // Storage utility functions for managing browser storage
-import { SimulationProgress } from "./cloudSync";
+import { SimulationProgress } from "./simulationStorage";
 
 /**
  * Storage optimization utilities

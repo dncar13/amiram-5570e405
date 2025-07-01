@@ -7,6 +7,7 @@ import { getQuestionsBySubtopic } from "@/data/questionsData";
 import { Subtopic, IconObject } from "@/data/types/topicTypes";
 import { FileText, ChevronLeft, AlertTriangle, Bookmark, BookText } from "lucide-react";
 import React from "react";
+import { LucideIcon } from "lucide-react";
 
 interface SubtopicListProps {
   subtopics: Subtopic[];
@@ -34,7 +35,7 @@ const SubtopicList = ({ subtopics, topicId, isComprehensiveExam = false }: Subto
   };
   
   // Helper function to render the icon
-  const renderIcon = (icon: React.ReactNode | IconObject | undefined) => {
+  const renderIcon = (icon: React.ReactNode | IconObject | LucideIcon | undefined) => {
     if (React.isValidElement(icon)) {
       return icon;
     }
@@ -46,6 +47,12 @@ const SubtopicList = ({ subtopics, topicId, isComprehensiveExam = false }: Subto
       return <IconComponent className="h-4 w-4 text-electric-blue" />;
     }
     
+    // If icon is a LucideIcon component
+    if (typeof icon === 'function') {
+      const IconComponent = icon as LucideIcon;
+      return <IconComponent className="h-4 w-4 text-electric-blue" />;
+    }
+    
     // Fallback
     return <FileText className="h-4 w-4 text-electric-blue" />;
   };
@@ -54,7 +61,7 @@ const SubtopicList = ({ subtopics, topicId, isComprehensiveExam = false }: Subto
   if (isComprehensiveExam) {
     return (
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-electric-navy mb-4 text-right">חלקי המבחן המקיף - 1000 شאلות</h3>
+        <h3 className="text-lg font-medium text-electric-navy mb-4 text-right">חלקי המבחן המקיף - 1000 שאלות</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {subtopics.map((subtopic, index) => {
