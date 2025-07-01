@@ -131,8 +131,8 @@ const NavigationPanel = ({
   const renderQuestionList = (indices: number[]) => {
     if (indices.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center py-8 text-slate-400" dir="ltr" style={{direction: 'ltr'}}>
-          <p className={cn("text-center", isMobile ? "text-base" : "text-lg")}>No questions to display</p>
+        <div className="flex flex-col items-center justify-center py-8 text-slate-400">
+          <p className={cn("text-center", isMobile ? "text-base" : "text-lg")}>אין שאלות להצגה</p>
         </div>
       );
     }
@@ -162,8 +162,8 @@ const NavigationPanel = ({
             </div>
             <span className="font-bold text-slate-100">
               {simulationType === "question-set" 
-                ? `Set ${setNumber || ''}` 
-                : "Quick Navigation"}
+                ? `קבוצה ${setNumber || ''}` 
+                : "ניווט מהיר"}
             </span>
           </div>
           <Button 
@@ -184,19 +184,19 @@ const NavigationPanel = ({
           <div className="grid grid-cols-3 gap-3">
             <div className="bg-gradient-to-br from-green-600/20 to-green-700/20 rounded-xl p-4 text-center border border-green-500/30 shadow-lg">
               <CheckCircle className={cn("text-green-400 mx-auto mb-2", isMobile ? "h-5 w-5" : "h-6 w-6")} />
-              <div className={cn("text-green-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Correct</div>
+              <div className={cn("text-green-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>נכון</div>
               <div className={cn("font-bold text-green-400", isMobile ? "text-xl" : "text-2xl")}>{correctAnswersCount}</div>
             </div>
             
             <div className="bg-gradient-to-br from-red-600/20 to-red-700/20 rounded-xl p-4 text-center border border-red-500/30 shadow-lg">
               <XCircle className={cn("text-red-400 mx-auto mb-2", isMobile ? "h-5 w-5" : "h-6 w-6")} />
-              <div className={cn("text-red-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Wrong</div>
+              <div className={cn("text-red-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>שגוי</div>
               <div className={cn("font-bold text-red-400", isMobile ? "text-xl" : "text-2xl")}>{incorrectQuestions.length}</div>
             </div>
             
             <div className="bg-gradient-to-br from-amber-600/20 to-amber-700/20 rounded-xl p-4 text-center border border-amber-500/30 shadow-lg">
               <Flag className={cn("text-amber-400 mx-auto mb-2 fill-amber-400", isMobile ? "h-5 w-5" : "h-6 w-6")} />
-              <div className={cn("text-amber-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>Saved</div>
+              <div className={cn("text-amber-300 font-semibold", isMobile ? "text-xs" : "text-sm")}>שמור</div>
               <div className={cn("font-bold text-amber-400", isMobile ? "text-xl" : "text-2xl")}>{flaggedQuestions.length}</div>
             </div>
           </div>
@@ -204,7 +204,10 @@ const NavigationPanel = ({
 
         {/* Question List Tabs */}
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50 h-auto p-1">
+          <TabsList className={cn(
+            "grid grid-cols-4 mb-4 bg-slate-800/80 backdrop-blur-sm rounded-xl border border-slate-600/50 h-auto p-1",
+            isMobile ? "text-[10px]" : "text-xs"
+          )}>
             <TabsTrigger 
               value="all" 
               className={cn(
@@ -213,7 +216,7 @@ const NavigationPanel = ({
               )}
             >
               <div className="flex flex-col items-center">
-                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>All</span>
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>כל</span>
                 <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({totalQuestions})</span>
               </div>
             </TabsTrigger>
@@ -225,7 +228,7 @@ const NavigationPanel = ({
               )}
             >
               <div className="flex flex-col items-center">
-                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Unans</span>
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>ללא</span>
                 <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({unansweredQuestions.length})</span>
               </div>
             </TabsTrigger>
@@ -237,7 +240,7 @@ const NavigationPanel = ({
               )}
             >
               <div className="flex flex-col items-center">
-                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Wrong</span>
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>שגוי</span>
                 <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({incorrectQuestions.length})</span>
               </div>
             </TabsTrigger>
@@ -249,7 +252,7 @@ const NavigationPanel = ({
               )}
             >
               <div className="flex flex-col items-center">
-                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>Saved</span>
+                <span className={cn(isMobile ? "text-[10px]" : "text-xs sm:text-sm")}>שמור</span>
                 <span className={cn("text-[10px]", isMobile ? "block" : "hidden sm:inline")}>({flaggedQuestions.length})</span>
               </div>
             </TabsTrigger>
@@ -274,18 +277,18 @@ const NavigationPanel = ({
           </div>
         </Tabs>
 
-        <div className={cn("mt-4 flex justify-center items-center gap-4 text-slate-400", isMobile ? "text-xs" : "text-sm")} dir="ltr" style={{direction: 'ltr'}}>
+        <div className={cn("mt-4 flex justify-center items-center gap-4 text-slate-400", isMobile ? "text-xs" : "text-sm")}>
           <div className="flex items-center gap-2">
             <div className={cn("rounded-full bg-green-500 border border-green-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
-            <span>Correct</span>
+            <span>נכון</span>
           </div>
           <div className="flex items-center gap-2">
             <div className={cn("rounded-full bg-red-500 border border-red-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
-            <span>Wrong</span>
+            <span>שגוי</span>
           </div>
           <div className="flex items-center gap-2">
             <div className={cn("rounded-full bg-amber-500 border border-amber-400", isMobile ? "h-3 w-3" : "h-4 w-4")}></div>
-            <span>Saved</span>
+            <span>שמור</span>
           </div>
         </div>
       </CardContent>

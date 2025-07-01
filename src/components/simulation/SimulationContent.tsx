@@ -126,9 +126,9 @@ const SimulationContent = ({
   console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
 
   return (
-    <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+    <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">
       {/* Navigation Panel */}
-      <div className="mb-8">
+      <div className="mb-4 sm:mb-8">
         <NavigationPanel
           currentQuestionIndex={currentQuestionIndex}
           totalQuestions={totalQuestions}
@@ -146,7 +146,7 @@ const SimulationContent = ({
       </div>
 
       {/* Unified Question Display */}
-      <div ref={questionContainerRef}>
+      <div ref={questionContainerRef} className="max-w-none">
         <QuestionCard
           currentQuestion={currentQuestion}
           currentQuestionIndex={currentQuestionIndex}

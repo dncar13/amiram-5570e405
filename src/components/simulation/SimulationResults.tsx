@@ -39,15 +39,15 @@ interface QuestionAnalysis {
 }
 
 const getScoreColor = (percentage: number): string => {
-  if (percentage >= 80) return 'text-green-600';
-  if (percentage >= 60) return 'text-yellow-600';
-  return 'text-red-600';
+  if (percentage >= 80) return 'text-green-400';
+  if (percentage >= 60) return 'text-yellow-400';
+  return 'text-red-400';
 };
 
 const getScoreBadgeColor = (percentage: number): string => {
-  if (percentage >= 80) return 'bg-green-100 text-green-800 border-green-200';
-  if (percentage >= 60) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-  return 'bg-red-100 text-red-800 border-red-200';
+  if (percentage >= 80) return 'bg-green-600/20 text-green-300 border-green-400/30';
+  if (percentage >= 60) return 'bg-yellow-600/20 text-yellow-300 border-yellow-400/30';
+  return 'bg-red-600/20 text-red-300 border-red-400/30';
 };
 
 const getPerformanceMessage = (percentage: number): string => {
@@ -116,17 +116,17 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Main Results Card */}
-      <Card className="text-center bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+      <Card className="text-center bg-gradient-to-br from-slate-800/90 to-slate-700/90 border-slate-600/50 shadow-2xl">
         <CardHeader className="pb-4">
           <div className="flex justify-center mb-4">
             <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-4 rounded-full">
               <Trophy className="h-8 w-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold text-gray-800">
+          <CardTitle className="text-2xl font-bold text-slate-100">
             סיום הסימולציה!
           </CardTitle>
-          <p className="text-gray-600 mt-2">
+          <p className="text-slate-300 mt-2">
             {getPerformanceMessage(percentage)}
           </p>
         </CardHeader>
@@ -137,7 +137,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
             <div className={`text-6xl font-bold ${getScoreColor(percentage)}`}>
               {percentage}%
             </div>
-            <div className="text-gray-600">
+            <div className="text-slate-300">
               <span className="text-xl font-semibold">{activeScore}</span>
               <span className="text-sm"> מתוך </span>
               <span className="text-xl font-semibold">{activeTotalQuestions}</span>
@@ -158,45 +158,45 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="text-center">
+        <Card className="text-center bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-center mb-2">
-              <CheckCircle className="h-6 w-6 text-green-600" />
+              <CheckCircle className="h-6 w-6 text-green-400" />
             </div>
-            <div className="text-2xl font-bold text-green-600">{activeCorrectAnswers}</div>
-            <div className="text-sm text-gray-600">תשובות נכונות</div>
+            <div className="text-2xl font-bold text-green-400">{activeCorrectAnswers}</div>
+            <div className="text-sm text-slate-300">תשובות נכונות</div>
           </CardContent>
         </Card>
 
-        <Card className="text-center">
+        <Card className="text-center bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-center mb-2">
-              <Target className="h-6 w-6 text-red-600" />
+              <Target className="h-6 w-6 text-red-400" />
             </div>
-            <div className="text-2xl font-bold text-red-600">{activeIncorrectAnswers}</div>
-            <div className="text-sm text-gray-600">תשובות שגויות</div>
+            <div className="text-2xl font-bold text-red-400">{activeIncorrectAnswers}</div>
+            <div className="text-sm text-slate-300">תשובות שגויות</div>
           </CardContent>
         </Card>
 
-        <Card className="text-center">
+        <Card className="text-center bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-center mb-2">
-              <Clock className="h-6 w-6 text-blue-600" />
+              <Clock className="h-6 w-6 text-blue-400" />
             </div>
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-blue-400">
               {formatTime(timeSpent)}
             </div>
-            <div className="text-sm text-gray-600">זמן ביצוע</div>
+            <div className="text-sm text-slate-300">זמן ביצוע</div>
           </CardContent>
         </Card>
 
-        <Card className="text-center">
+        <Card className="text-center bg-gradient-to-br from-slate-800/60 to-slate-700/60 border-slate-600/50">
           <CardContent className="p-4">
             <div className="flex items-center justify-center mb-2">
-              <Award className="h-6 w-6 text-purple-600" />
+              <Award className="h-6 w-6 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-purple-600">{percentage}%</div>
-            <div className="text-sm text-gray-600">אחוז הצלחה</div>
+            <div className="text-2xl font-bold text-purple-400">{percentage}%</div>
+            <div className="text-sm text-slate-300">אחוז הצלחה</div>
           </CardContent>
         </Card>
       </div>
@@ -206,7 +206,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
         {onRestart && (
           <Button
             onClick={onRestart}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20"
           >
             <RotateCcw className="h-4 w-4" />
             התחל מחדש
@@ -217,7 +217,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
           <Button
             onClick={onReview}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200"
           >
             <TrendingUp className="h-4 w-4" />
             סקור תשובות
@@ -227,7 +227,7 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
         <Button
           onClick={() => navigate('/')}
           variant="outline"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200"
         >
           <Home className="h-4 w-4" />
           חזור לעמוד הבית
@@ -236,9 +236,9 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 
       {/* Incorrect Answers Section - Highlighted for review */}
       {incorrectQuestions.length > 0 && (
-        <Card className="border-red-200 bg-red-50/50">
+        <Card className="border-red-500/30 bg-red-600/10 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-red-700">
+            <CardTitle className="flex items-center gap-2 text-red-300">
               <Target className="h-5 w-5" />
               שאלות שנענו שגוי - מומלץ לסקור ({incorrectQuestions.length})
             </CardTitle>
@@ -248,25 +248,25 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
               {incorrectQuestions.map((analysis, index) => (
                 <div
                   key={index}
-                  className="p-4 rounded-lg border-2 bg-red-50 border-red-200 cursor-pointer hover:shadow-md transition-shadow hover:bg-red-100"
+                  className="p-4 rounded-lg border-2 bg-red-600/20 border-red-500/50 cursor-pointer hover:shadow-md transition-shadow hover:bg-red-600/30 backdrop-blur-sm"
                   onClick={() => onNavigateToQuestion && onNavigateToQuestion(analysis.questionIndex)}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-medium text-sm text-red-800">
+                    <span className="font-medium text-sm text-red-200">
                       שאלה #{analysis.questionIndex + 1}
                     </span>
-                    <span className="text-lg text-red-600">✗</span>
+                    <span className="text-lg text-red-400">✗</span>
                   </div>
-                  <div className="text-xs text-red-700 mb-1">
+                  <div className="text-xs text-red-200 mb-1">
                     תשובתך: {analysis.userAnswer !== null 
                       ? String.fromCharCode(65 + analysis.userAnswer)
                       : 'לא נענה'
                     }
                   </div>
-                  <div className="text-xs text-green-700">
+                  <div className="text-xs text-green-300">
                     תשובה נכונה: {String.fromCharCode(65 + analysis.question.correctAnswer)}
                   </div>
-                  <div className="text-xs text-gray-600 mt-2 truncate">
+                  <div className="text-xs text-slate-300 mt-2 truncate">
                     {analysis.question.text.substring(0, 50)}...
                   </div>
                 </div>
@@ -278,9 +278,9 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
 
       {/* Correct Answers Section */}
       {correctQuestions.length > 0 && (
-        <Card className="border-green-200 bg-green-50/50">
+        <Card className="border-green-500/30 bg-green-600/10 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-700">
+            <CardTitle className="flex items-center gap-2 text-green-300">
               <CheckCircle className="h-5 w-5" />
               שאלות שנענו נכון ({correctQuestions.length})
             </CardTitle>
@@ -290,16 +290,16 @@ const SimulationResults: React.FC<SimulationResultsProps> = ({
               {correctQuestions.map((analysis, index) => (
                 <div
                   key={index}
-                  className="p-3 rounded-lg border-2 bg-green-50 border-green-200 cursor-pointer hover:shadow-md transition-shadow hover:bg-green-100"
+                  className="p-3 rounded-lg border-2 bg-green-600/20 border-green-500/50 cursor-pointer hover:shadow-md transition-shadow hover:bg-green-600/30 backdrop-blur-sm"
                   onClick={() => onNavigateToQuestion && onNavigateToQuestion(analysis.questionIndex)}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-sm text-green-800">
+                    <span className="font-medium text-sm text-green-200">
                       שאלה #{analysis.questionIndex + 1}
                     </span>
-                    <span className="text-lg text-green-600">✓</span>
+                    <span className="text-lg text-green-400">✓</span>
                   </div>
-                  <div className="text-xs text-green-700 mt-1">
+                  <div className="text-xs text-green-200 mt-1">
                     תשובה: {String.fromCharCode(65 + analysis.userAnswer!)}
                   </div>
                 </div>
