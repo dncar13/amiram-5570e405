@@ -73,3 +73,40 @@ export const getCloudSyncStatus = (): { isConnected: boolean; lastSync?: string 
     return { isConnected: false };
   }
 };
+
+export const getQuestionSetCount = (setNumber: number): number => {
+  try {
+    // Return a default count based on the set number
+    if (setNumber >= 1 && setNumber <= 20) {
+      return 50; // Each set has 50 questions
+    } else if (setNumber === 801) {
+      return 50; // Special set
+    }
+    return 0;
+  } catch (error) {
+    console.error('Error getting question set count:', error);
+    return 0;
+  }
+};
+
+export const resetConflictingProgress = (): void => {
+  try {
+    // Clear any conflicting progress data from localStorage
+    const keysToRemove = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('progress') || key.includes('simulation'))) {
+        keysToRemove.push(key);
+      }
+    }
+    
+    keysToRemove.forEach(key => {
+      localStorage.removeItem(key);
+    });
+    
+    console.log('Cleared conflicting progress data');
+  } catch (error) {
+    console.error('Error resetting conflicting progress:', error);
+  }
+};

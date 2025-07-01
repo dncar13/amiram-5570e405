@@ -1,5 +1,14 @@
 import { Question } from "@/data/types/questionTypes";
-import { SimulationProgress } from "./cloudSync";
+
+export interface SimulationProgress {
+  currentQuestionIndex: number;
+  totalQuestions: number;
+  answeredQuestions: number;
+  correctAnswers: number;
+  timeSpent?: number;
+  startedAt?: string;
+  lastAnsweredAt?: string;
+}
 
 export interface SavedSimulation {
   id: string;
