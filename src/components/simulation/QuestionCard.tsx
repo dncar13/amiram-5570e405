@@ -130,6 +130,14 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const isSubmittedOrShowAnswer = isAnswerSubmitted;
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
+  console.log('QuestionCard render:', {
+    currentQuestionIndex,
+    totalQuestions,
+    isLastQuestion,
+    isAnswerSubmitted,
+    onFinishSimulation: !!onFinishSimulation
+  });
+
   return (
     <div className="w-full max-w-none">
       <Card className="mb-6 shadow-2xl border-0 bg-gradient-to-br from-slate-800/90 to-slate-700/90 backdrop-blur-sm border border-slate-600/50">
@@ -295,7 +303,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 </Button>
               )}
 
-              {/* Finish Button - Show when on last question and answer is submitted */}
+              {/* Finish Button - Show when on last question and answer is submitted and we have the callback */}
               {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
                 <Button
                   onClick={onFinishSimulation}
