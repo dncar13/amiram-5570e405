@@ -1,30 +1,38 @@
 
-// Firebase User interface that matches the actual Firebase user
-export interface User {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  photoURL: string | null;
-  metadata?: {
-    creationTime?: string;
-    lastSignInTime?: string;
-  };
-}
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-export const signInWithGoogle = async () => ({ user: null, error: new Error("Not implemented") });
-export const loginWithEmailAndPassword = async () => ({ user: null, error: new Error("Not implemented") });
-export const registerWithEmailAndPassword = async () => ({ user: null, error: new Error("Not implemented") });
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
+};
 
-export const logoutUser = async () => ({ success: false, error: new Error("Not implemented") });
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 
-export const checkFirebaseConnection = async () => false;
+// Initialize Firebase services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-export const auth = null;
-export const db = null;
+// Export the app for other Firebase services
+export default app;
 
-// Fix the onAuthStateChanged function signature
-export const onAuthStateChanged = (auth: any, callback: (user: User | null) => void) => {
-  // Mock implementation that calls callback with null user
-  callback(null);
-  return () => {}; // Return unsubscribe function
+// Check Firebase connection
+export const checkFirebaseConnection = async (): Promise<boolean> => {
+  try {
+    const testData = await import('firebase/firestore').then(module => 
+      module.doc(db, 'test', 'connection')
+    );
+    return true;
+  } catch (error: unknown) {
+    console.error('Firebase connection check failed:', error);
+    return false;
+  }
 };

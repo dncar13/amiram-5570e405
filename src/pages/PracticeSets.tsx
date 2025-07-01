@@ -1,256 +1,172 @@
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Target, Clock, Zap, CheckCircle, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { 
-  ArrowRight,
-  BookOpen,
-  Target,
-  CheckCircle,
-  Clock,
-  Play
-} from 'lucide-react';
-import { getQuestionsByDifficultyAndType } from '@/services/questionsService';
-
-interface PracticeSetData {
-  id: number;
+interface PracticeSet {
+  id: string;
   title: string;
-  questionCount: number;
   description: string;
-  completed: boolean;
-  inProgress: boolean;
-  score?: number;
-  answeredQuestions?: number;
+  questionsCount: number;
+  difficulty: "easy" | "medium" | "hard";
+  estimatedTime: number;
+  completionRate: number;
+  tags: string[];
+  icon: React.ReactNode;
+  color: string;
 }
 
-const PracticeSets: React.FC = () => {
+const PracticeSets = () => {
   const navigate = useNavigate();
-  const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
+  const [practiceSets, setPracticeSets] = useState<PracticeSet[]>([]);
+  const [userProgress, setUserProgress] = useState<Record<string, number>>({});
 
-  const questionTypesData: Record<string, any> = {
-    'sentence-completion': {
-      title: 'השלמת משפטים',
-      gradient: 'from-blue-500 via-purple-500 to-cyan-500'
-    },
-    'restatement': {
-      title: 'ניסוח מחדש',
-      gradient: 'from-green-500 via-teal-500 to-emerald-500'
-    }
-  };
-
-  const difficultyLabels: Record<string, string> = {
-    'easy': 'קל',
-    'medium': 'בינוני', 
-    'hard': 'קשה'
-  };
-
-  const currentType = type ? questionTypesData[type] : null;
-
-  // Get available questions and calculate number of sets dynamically
-  const availableQuestions = type && difficulty ? getQuestionsByDifficultyAndType(difficulty, type) : [];
-  const questionsPerSet = 10;
-  const totalSets = Math.ceil(availableQuestions.length / questionsPerSet);
-
-  // Generate practice sets data dynamically based on available questions
-  const practiceSets: PracticeSetData[] = Array.from({ length: totalSets }, (_, index) => {
-    const setNumber = index + 1;
-    const startQuestion = index * questionsPerSet + 1;
-    const endQuestion = Math.min((index + 1) * questionsPerSet, availableQuestions.length);
-    
-    // Check progress from sessionStorage for this specific set
-    const setProgressKey = `set_progress_${type}_${difficulty}_${setNumber}`;
-    const setProgress = sessionStorage.getItem(setProgressKey);
-    let completed = false;
-    let inProgress = false;
-    let score = undefined;
-    let answeredQuestions = 0;
-    
-    if (setProgress) {
-      const progress = JSON.parse(setProgress);
-      completed = progress.completed || false;
-      inProgress = progress.inProgress || false;
-      score = progress.score;
-      answeredQuestions = progress.answeredQuestions || 0;
-    }
-    
-    return {
-      id: setNumber,
-      title: `סט תרגול ${setNumber}`,
-      questionCount: questionsPerSet,
-      description: `שאלות ${startQuestion}-${endQuestion}`,
-      completed,
-      inProgress,
-      score,
-      answeredQuestions
+  useEffect(() => {
+    const loadProgress = () => {
+      const savedProgress: Record<string, unknown> = {};
+      
+      // Load progress from localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('practice_set_')) {
+          try {
+            const value = localStorage.getItem(key);
+            if (value) {
+              const parsedValue = JSON.parse(value);
+              if (typeof parsedValue === 'number') {
+                savedProgress[key.replace('practice_set_', '')] = parsedValue;
+              }
+            }
+          } catch (error) {
+            console.error(`Error parsing progress for ${key}:`, error);
+          }
+        }
+      }
+      
+      setUserProgress(savedProgress as Record<string, number>);
     };
-  });
 
-  const handleStartSet = (setId: number) => {
-    // Navigate with set parameter and specific question range
-    navigate(`/simulation/${type}/${difficulty}?set=${setId}&limit=10&start=${(setId - 1) * 10}`);
-  };
+    const predefinedPracticeSets: PracticeSet[] = [
+      {
+        id: "reading-comprehension",
+        title: "הבנת הנקרא",
+        description: "תרגול ממוקד בטקסטים ושאלות הבנת הנקרא",
+        questionsCount: 50,
+        difficulty: "medium",
+        estimatedTime: 45,
+        completionRate: userProgress["reading-comprehension"] || 0,
+        tags: ["הבנת הנקרא", "טקסטים", "ניתוח"],
+        icon: <BookOpen className="h-4 w-4" />,
+        color: "bg-blue-500",
+      },
+      {
+        id: "vocabulary",
+        title: "אוצר מילים",
+        description: "הרחבת אוצר המילים ושיפור הבנת הניבים והביטויים",
+        questionsCount: 40,
+        difficulty: "medium",
+        estimatedTime: 30,
+        completionRate: userProgress["vocabulary"] || 0,
+        tags: ["מילים", "ביטויים", "ניבים"],
+        icon: <Target className="h-4 w-4" />,
+        color: "bg-green-500",
+      },
+      {
+        id: "time-management",
+        title: "ניהול זמן",
+        description: "שיפור יכולת עמידה בזמנים במבחן",
+        questionsCount: 30,
+        difficulty: "hard",
+        estimatedTime: 60,
+        completionRate: userProgress["time-management"] || 0,
+        tags: ["זמן", "אסטרטגיה", "יעילות"],
+        icon: <Clock className="h-4 w-4" />,
+        color: "bg-yellow-500",
+      },
+      {
+        id: "speed-reading",
+        title: "קריאה מהירה",
+        description: "שיפור מהירות הקריאה והבנת הנקרא",
+        questionsCount: 60,
+        difficulty: "hard",
+        estimatedTime: 45,
+        completionRate: userProgress["speed-reading"] || 0,
+        tags: ["קריאה", "מהירות", "ריכוז"],
+        icon: <Zap className="h-4 w-4" />,
+        color: "bg-red-500",
+      },
+    ];
 
-  const handleBack = () => {
-    navigate(`/simulation/type/${type}/${difficulty}`);
-  };
-
-  if (!currentType || !difficulty) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">שגיאה</h1>
-          <button
-            onClick={() => navigate('/simulations-entry')}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-          >
-            חזור לדף הכניסה
-          </button>
-        </div>
-      </div>
-    );
-  }
+    setPracticeSets(predefinedPracticeSets);
+    loadProgress();
+  }, []);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
-        <div className="max-w-6xl mx-auto">
-          
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
-            <button
-              onClick={handleBack}
-              className="flex items-center text-cyan-400 hover:text-cyan-300 mb-6 font-medium transition-colors duration-300"
-            >
-              <ArrowRight className="w-5 h-5 ml-2" />
-              חזור לאפשרויות תרגול
-            </button>
-            
-            <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-3xl p-8 mb-8 border border-white/20 backdrop-blur-sm shadow-2xl`}>
-              <div className="flex items-center mb-6">
-                <div className="bg-white bg-opacity-20 rounded-2xl p-4 ml-4 backdrop-blur-sm">
-                  <BookOpen className="w-8 h-8" />
-                </div>
-                <div>
-                  <h1 className="text-4xl font-bold mb-2">סטי תרגול - {currentType.title}</h1>
-                  <p className="text-white text-opacity-90 text-xl">
-                    רמת קושי: {difficultyLabels[difficulty]} • {totalSets} סטים זמינים ({availableQuestions.length} שאלות)
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Sets Grid */}
-          {totalSets > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {practiceSets.map((set, index) => (
-                <motion.div
-                  key={set.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-white">{set.title}</h3>
-                    <div className="flex items-center">
-                      {set.completed && (
-                        <CheckCircle className="w-6 h-6 text-green-400 ml-2" />
-                      )}
-                      {set.inProgress && (
-                        <Clock className="w-6 h-6 text-yellow-400 ml-2" />
-                      )}
-                    </div>
+      <main className="flex-grow py-6 bg-electric-gray/50">
+        <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-electric-navy mb-2">
+              ערכות תרגול מומלצות
+            </h1>
+            <p className="text-electric-slate">
+              התחל לתרגל עם ערכות מובנות לשיפור מיומנויות ספציפיות
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {practiceSets.map((set) => (
+              <Card key={set.id} className="bg-white shadow-sm">
+                <CardHeader className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    {set.icon}
+                    <CardTitle className="text-lg font-semibold">
+                      {set.title}
+                    </CardTitle>
                   </div>
-
-                  <div className="mb-4">
-                    <p className="text-gray-300 mb-2">{set.description}</p>
-                    <p className="text-gray-400 text-sm">{set.questionCount} שאלות</p>
-                    
-                    {set.completed && set.score !== undefined && (
-                      <div className="mt-3 p-3 bg-green-500/10 rounded-xl border border-green-500/20">
-                        <p className="text-green-400 font-semibold">הושלם - ציון: {set.score}%</p>
-                      </div>
-                    )}
-                    
-                    {set.inProgress && (
-                      <div className="mt-3 p-3 bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                        <p className="text-yellow-400 font-semibold">בהתקדמות - {set.answeredQuestions}/{set.questionCount} שאלות</p>
-                      </div>
-                    )}
+                </CardHeader>
+                <CardContent className="pl-4">
+                  <CardDescription className="text-sm text-gray-500">
+                    {set.description}
+                  </CardDescription>
+                  <div className="flex items-center mt-4">
+                    <Badge className="bg-blue-100 text-blue-800 border-blue-300 rounded-full px-2 py-1 text-xs font-medium mr-2">
+                      <BookOpen className="h-3 w-3 ml-1" />
+                      {set.questionsCount} שאלות
+                    </Badge>
+                    <Badge className="bg-green-100 text-green-800 border-green-300 rounded-full px-2 py-1 text-xs font-medium mr-2">
+                      <Clock className="h-3 w-3 ml-1" />
+                      {set.estimatedTime} דקות
+                    </Badge>
                   </div>
-
-                  <button
-                    onClick={() => handleStartSet(set.id)}
-                    className={`w-full py-3 px-4 rounded-xl font-bold transition-all duration-300 transform hover:scale-[1.02] ${
-                      set.completed
-                        ? 'bg-gradient-to-r from-green-500/20 to-green-600/20 text-green-400 border border-green-500/30 hover:from-green-500/30 hover:to-green-600/30'
-                        : set.inProgress
-                        ? 'bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 text-yellow-400 border border-yellow-500/30 hover:from-yellow-500/30 hover:to-yellow-600/30'
-                        : `bg-gradient-to-r ${currentType.gradient} text-white border border-white/20 hover:shadow-xl`
-                    }`}
+                  <div className="mt-4">
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700">
+                      התקדמות:
+                    </h4>
+                    <Progress value={set.completionRate} />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {set.completionRate}% השלמה
+                    </p>
+                  </div>
+                  <Button
+                    onClick={() => navigate(`/simulation/${set.id}`)}
+                    className="w-full mt-4"
                   >
-                    <div className="flex items-center justify-center">
-                      <Play className="w-5 h-5 ml-2" />
-                      {set.completed ? 'תרגל שוב' : set.inProgress ? 'המשך תרגול' : 'התחל תרגול'}
-                    </div>
-                  </button>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-gray-300 text-xl mb-4">אין שאלות זמינות עבור {currentType.title} ברמת קושי {difficultyLabels[difficulty]}</p>
-              <button
-                onClick={handleBack}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-              >
-                חזור לאפשרויות תרגול
-              </button>
-            </div>
-          )}
-
-          {/* Info Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
-          >
-            <div className="text-center">
-              <h3 className="text-2xl font-bold text-white mb-4">איך עובדים הסטים?</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
-                  <Target className="w-8 h-8 text-blue-400 mx-auto mb-3" />
-                  <h4 className="text-lg font-bold text-blue-400 mb-2">תרגול מסודר</h4>
-                  <p className="text-gray-300 text-sm">כל סט מכיל בדיוק 10 שאלות ברמת קושי קבועה לתרגול עמוק ומסודר</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
-                  <CheckCircle className="w-8 h-8 text-green-400 mx-auto mb-3" />
-                  <h4 className="text-lg font-bold text-green-400 mb-2">מעקב התקדמות</h4>
-                  <p className="text-gray-300 text-sm">המערכת זוכרת איפה עצרת ומאפשרת לך לחזור ולהמשיך</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-500/10 to-pink-600/10 p-6 rounded-2xl border border-purple-500/20 backdrop-blur-sm">
-                  <BookOpen className="w-8 h-8 text-purple-400 mx-auto mb-3" />
-                  <h4 className="text-lg font-bold text-purple-400 mb-2">חזרה על חומר</h4>
-                  <p className="text-gray-300 text-sm">אפשרות לחזור על סטים שהושלמו לחיזוק והעמקה</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+                    התחל תרגול <ArrowRight className="h-4 w-4 mr-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-      </div>
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

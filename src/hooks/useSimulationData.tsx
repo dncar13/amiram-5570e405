@@ -1,225 +1,168 @@
-
-import { useState, useEffect, useMemo, useRef } from "react";
-import { 
-  getQuestionsByTopic, 
-  getQuestionsBySet, 
-  getAllQuestions, 
-  refreshQuestionsFromStorage 
-} from "@/services/questionsService";
-import { resetConflictingProgress } from "@/services/cloudSync";
-import { isComprehensiveExamTopic } from "@/data/utils/topicUtils";
+import { useState, useEffect, useMemo } from "react";
+import { Question } from "@/data/types/questionTypes";
+import { Topic } from "@/data/types/topicTypes";
 import { topicsData } from "@/data/topicsData";
-import { toast } from "@/hooks/use-toast";
-import { cleanupOldProgress, checkForResetRequest, removeResetParameterFromUrl } from "@/services/storageUtils";
-import { getMobileOptimizedConfig } from "@/utils/mobile-performance";
+import { useToast } from "@/hooks/use-toast";
+import { 
+  getMediumQuestions, 
+  getEasyQuestions, 
+  getHardQuestions, 
+  getMixedDifficultyQuestions,
+  getRestatementQuestions 
+} from "@/services/questionsService";
+import { MobileConfig } from "@/types/mobileConfig";
+
+interface SimulationDataResult {
+  topicQuestions: Question[];
+  topic: Topic | null;
+  questionSetTitle: string;
+  isLoading: boolean;
+  error: string | null;
+  isComprehensiveExam: boolean;
+  setIdNumber: number | null;
+}
 
 export const useSimulationData = (
   topicId: string | undefined,
   setId: string | undefined,
-  isQuestionSet: boolean,
-  storyQuestions?: any[]
-) => {
+  isQuestionSet: boolean = false,
+  storyQuestions: Question[] = []
+): SimulationDataResult => {
+  const [topicQuestions, setTopicQuestions] = useState<Question[]>([]);
+  const [topic, setTopic] = useState<Topic | null>(null);
   const [questionSetTitle, setQuestionSetTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
-  const [questionCount, setQuestionCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [initComplete, setInitComplete] = useState(false);
-  
-  // Mobile-optimized configuration
-  const mobileConfig = getMobileOptimizedConfig();
-  
-  // Stable reference for story questions to prevent infinite loops
-  const storyQuestionsRef = useRef(storyQuestions);
-  const storyQuestionsLength = storyQuestions?.length ?? 0;
-  
-  // Only update ref when actual content changes, not reference
+  const [isComprehensiveExam, setIsComprehensiveExam] = useState(false);
+  const [setIdNumber, setSetIdNumber] = useState<number | null>(null);
+  const { toast } = useToast();
+
+  // Mobile configuration
+  const mobileConfig: MobileConfig = useMemo(() => ({
+    enableDebugLogging: false,
+    retryDelay: 1000,
+    maxRetries: 3,
+    timeoutDuration: 10000,
+    enableOfflineMode: true,
+    cacheExpiryTime: 24 * 60 * 60 * 1000, // 24 hours
+    maxCacheSize: 100,
+    enableProgressSync: true,
+    autoSaveInterval: 5000,
+    enableCrashReporting: false,
+    debugMode: false
+  }), []);
+
   useEffect(() => {
-    if (storyQuestionsLength !== (storyQuestionsRef.current?.length ?? 0)) {
-      storyQuestionsRef.current = storyQuestions;
-    }
-  }, [storyQuestionsLength, storyQuestions]);
-  
-  // Find the topic if we're doing a topic-based simulation
-  const topic = topicId ? topicsData.find(t => t.id === Number(topicId)) : undefined;
-  
-  // Check if this is a comprehensive exam (all questions)
-  const isComprehensiveExam = topicId ? isComprehensiveExamTopic(Number(topicId)) : false;
-  
-  // Parse the set ID if we have one
-  const setIdNumber = setId ? parseInt(setId, 10) : undefined;
-  
-  useEffect(() => {
-    const initializeSimulation = async () => {
-      setIsLoading(true);
-      setError(null);
-      
+    let isMounted = true;
+    setIsLoading(true);
+    setError(null);
+
+    const loadData = async () => {
       try {
-        console.log("Initializing simulation data...", { topicId, setId, isQuestionSet });
-        
-        // Reset conflicting global progress to avoid confusion between topics and question sets
-        resetConflictingProgress();
-        
-        // Check if there's a reset parameter in the URL and process it only once
-        const shouldReset = checkForResetRequest();
-        
-        if (shouldReset) {
-          console.log("Reset parameter detected in URL - simulation will reset");
-          removeResetParameterFromUrl();
-        }
-        
-        // Mobile-optimized cleanup timing
-        setTimeout(() => {
-          try {
-            cleanupOldProgress();
-          } catch (err) {
-            if (mobileConfig.enableDebugLogging) {
-              console.warn("Failed to clean up old progress:", err);
+        if (isQuestionSet && setId) {
+          // Parse setId to number
+          const setNumber = parseInt(setId, 10);
+          setSetIdNumber(setNumber);
+
+          // Load questions for the set
+          let questionsForSet: Question[] = [];
+
+          if (setNumber >= 1 && setNumber <= 20) {
+            // For sets 1-20, load questions by range
+            questionsForSet = getMixedDifficultyQuestions(setNumber);
+          } else if (setNumber === 801) {
+            // Special set 801-850
+            questionsForSet = getRestatementQuestions();
+          } else {
+            questionsForSet = [];
+          }
+
+          if (isMounted) {
+            setTopicQuestions(questionsForSet);
+            setQuestionSetTitle(`קבוצת שאלות מספר ${setNumber}`);
+            setTopic(null);
+            setIsComprehensiveExam(false);
+            setIsLoading(false);
+          }
+        } else if (topicId) {
+          // Load topic questions
+          const topicNum = parseInt(topicId, 10);
+          const foundTopic = topicsData.find(t => t.id === topicNum) || null;
+
+          if (foundTopic) {
+            setTopic(foundTopic);
+
+            // Load questions by difficulty or all
+            let questionsForTopic: Question[] = [];
+
+            if (foundTopic.difficulty === 'easy') {
+              questionsForTopic = getEasyQuestions(topicNum);
+            } else if (foundTopic.difficulty === 'medium') {
+              questionsForTopic = getMediumQuestions(topicNum);
+            } else if (foundTopic.difficulty === 'hard') {
+              questionsForTopic = getHardQuestions(topicNum);
+            } else {
+              questionsForTopic = getMixedDifficultyQuestions(topicNum);
+            }
+
+            if (isMounted) {
+              setTopicQuestions(questionsForTopic);
+              setQuestionSetTitle(foundTopic.title);
+              setIsComprehensiveExam(false);
+              setIsLoading(false);
+            }
+          } else {
+            if (isMounted) {
+              setError("נושא לא נמצא");
+              setIsLoading(false);
             }
           }
-        }, mobileConfig.retryDelay);
-        
-        // Refresh questions from source to ensure we have the latest data
-        const freshQuestions = refreshQuestionsFromStorage();
-        if (mobileConfig.enableDebugLogging) {
-          console.log(`Refreshed ${freshQuestions.length} questions from source files`);
-        }        // If we have a question set ID, determine its title for display
-        if (setId) {
-          const setIdNum = parseInt(setId, 10);
-          if (!isNaN(setIdNum) && setIdNum >= 1 && setIdNum <= 20) {
-            const startQuestion = (setIdNum - 1) * 50 + 1;
-            const endQuestion = setIdNum * 50;
-            setQuestionSetTitle(`שאלות ${startQuestion} עד ${endQuestion}`);
+        } else if (storyQuestions.length > 0) {
+          // Story-based questions
+          if (isMounted) {
+            setTopicQuestions(storyQuestions);
+            setQuestionSetTitle("סימולציית סיפור");
+            setTopic(null);
+            setIsComprehensiveExam(false);
+            setIsLoading(false);
           }
-          
-          // Mark this as a question set simulation in session storage
-          sessionStorage.setItem('is_question_set', 'true');
-          sessionStorage.setItem('question_set_id', setId);
         } else {
-          // Mark this as a topic simulation
-          sessionStorage.removeItem('is_question_set');
-          sessionStorage.removeItem('question_set_id');
+          // Default fallback: empty questions
+          if (isMounted) {
+            setTopicQuestions([]);
+            setQuestionSetTitle("");
+            setTopic(null);
+            setIsComprehensiveExam(false);
+            setIsLoading(false);
+          }
         }
-        
-        setInitComplete(true);
       } catch (err) {
-        console.error("Error initializing simulation:", err);
-        setError("שגיאה בטעינת הסימולציה");
-      } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setError("שגיאה בטעינת הנתונים");
+          setIsLoading(false);
+          toast({
+            title: "שגיאה",
+            description: "אירעה שגיאה בטעינת שאלות הסימולציה",
+            variant: "destructive",
+          });
+        }
       }
     };
-    
-    initializeSimulation();
-  }, [topicId, setId]);
-  
-  // Get questions for this simulation
-  const topicQuestions = useMemo(() => {
-    if (!initComplete) return [];
-      try {
-      if (mobileConfig.enableDebugLogging) {
-        console.log("Loading questions for simulation...", { topicId, setId, isQuestionSet, storyQuestionsCount: storyQuestionsRef.current?.length });
-      }
-      
-      // If we have story questions, use them first
-      if (storyQuestionsRef.current && storyQuestionsRef.current.length > 0) {
-        if (mobileConfig.enableDebugLogging) {
-          console.log(`Using ${storyQuestionsRef.current.length} story questions`);
-        }
-        setQuestionCount(storyQuestionsRef.current.length);
-        return storyQuestionsRef.current;
-      }
-      
-      // If we're viewing a question set (not a topic)
-      if (setId) {
-        const setIdNum = parseInt(setId, 10);
-        if (!isNaN(setIdNum)) {
-          const setQuestions = getQuestionsBySet(setIdNum);
-          setQuestionCount(setQuestions.length);
-          
-          console.log(`Found ${setQuestions.length} questions for set ${setId}`);
-          console.log("First question in set:", setQuestions[0]);
-          
-          if (setQuestions.length === 0) {
-            setError(`לא נמצאו שאלות לקבוצת שאלות ${setId}`);
-            toast({
-              title: "אין שאלות לקבוצה זו",
-              description: "קבוצת שאלות זו אינה מכילה שאלות כרגע.",
-              variant: "destructive",
-            });
-            return [];
-          }
-          
-          return setQuestions;
-        } else {
-          setError("מזהה קבוצת שאלות לא תקין");
-          return [];
-        }
-      }      // Regular topic behavior
-      if (!topic) {
-        // Only show error if we don't have story questions
-        if (!setId && !storyQuestions?.length) {
-          console.log("No topic, setId, or story questions provided");
-          setQuestionCount(0);
-          return [];
-        }
-        console.error("Topic not found for topicId:", topicId);
-        console.log("Available topics:", topicsData.map(t => ({ id: t.id, title: t.title })));
-        setError("הנושא לא נמצא");
-        return [];
-      }// For comprehensive exams, show all questions regardless of topic
-      if (isComprehensiveExam) {
-        const allQs = getAllQuestions();
-        console.log(`Comprehensive exam: showing all ${allQs.length} questions`);
-        setQuestionCount(allQs.length);
-        return allQs;
-      }
-      
-      // Normal filtering by topic ID
-      const filteredQuestions = getQuestionsByTopic(topic.id);
-      console.log(`Topic ${topic.id}: found ${filteredQuestions.length} questions`);
-      console.log("First question in topic:", filteredQuestions[0]);
-      setQuestionCount(filteredQuestions.length);
-      
-      if (filteredQuestions.length === 0) {
-        console.error(`No questions found for topic ${topic.id}. Available topic IDs in questions:`, getAllQuestions().map(q => q.topicId).filter((id, index, arr) => arr.indexOf(id) === index));
-        setError(`לא נמצאו שאלות לנושא ${topic.title || topic.id}`);
-        toast({
-          title: "אין שאלות לנושא זה",
-          description: "נושא זה אינו מכיל שאלות כרגע. אנא בחר נושא אחר.",
-          variant: "destructive",
-        });
-      }
-      
-      return filteredQuestions;    } catch (error) {
-      console.error("Error loading questions:", error);
-      setError("שגיאה בטעינת השאלות");
-      return [];
-    }
-  }, [topic, setId, isComprehensiveExam, initComplete, storyQuestionsLength]);
-  
-  // Helper function for part navigation (question sets divided into parts)
-  const getCurrentPart = () => {
-    if (!isComprehensiveExam && !setId) return null;
-    
-    const currentQuestionNumber = 1; // Default to first question
-    const currentPart = Math.ceil(currentQuestionNumber / 50);
-    
-    return {
-      part: currentPart,
-      firstQuestion: (currentPart - 1) * 50 + 1,
-      lastQuestion: Math.min(currentPart * 50, questionCount)
+
+    loadData();
+
+    return () => {
+      isMounted = false;
     };
-  };
-  
+  }, [topicId, setId, isQuestionSet, storyQuestions, toast]);
+
   return {
-    topic,
     topicQuestions,
+    topic,
     questionSetTitle,
     isLoading,
+    error,
     isComprehensiveExam,
     setIdNumber,
-    getCurrentPart,
-    questionCount,
-    error
   };
 };

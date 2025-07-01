@@ -1,156 +1,257 @@
-import { AuthError } from '@supabase/supabase-js';
 
-// Retry mechanism for auth operations
-export const retryAuth = async <T>(
-  fn: () => Promise<T>, 
-  retries: number = 3,
-  backoff: number = 1000
-): Promise<T> => {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await fn();
-    } catch (error) {
-      if (i === retries - 1) throw error;
-      
-      const delay = backoff * Math.pow(2, i);
-      console.log(`🔄 Retry attempt ${i + 1} after ${delay}ms`);
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-  }
-  throw new Error('Max retries exceeded');
-};
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 
-// Enhanced error message mapping
-export const getLocalizedErrorMessage = (error: AuthError | Error): string => {
-  console.log("🚨 Auth error details:", error);
-  
-  if (!error) return "אירעה שגיאה לא ידועה";
-  
-  const message = error.message || '';
-  
-  // Common error mappings
-  const errorMappings: Record<string, string> = {
-    'Invalid login credentials': "פרטי ההתחברות שגויים. אנא בדקו את האימייל והסיסמה.",
-    'Email not confirmed': "יש לאשר את כתובת האימייל לפני ההתחברות. בדקו את תיבת הדואר שלכם.",
-    'Password cannot be longer than 72 characters': "הסיסמה ארוכה מדי. השתמשו בסיסמה קצרה יותר.",
-    'over_email_send_rate_limit': "נשלחו יותר מדי אימיילים. אנא המתינו כמה דקות ונסו שוב.",
-    'For security purposes': "נשלחו יותר מדי אימיילים. אנא המתינו כמה דקות ונסו שוב.",
-    'User already registered': "משתמש כבר קיים עם כתובת האימייל הזו. נסו להתחבר.",
-    'Signup requires a valid password': "נדרשת סיסמה תקינה להרשמה.",
-    'Unable to validate email address': "כתובת האימייל אינה תקינה.",
-    'Password should be at least 6 characters': "הסיסמה חייבת להכיל לפחות 6 תווים.",
-    'Network request failed': "שגיאת רשת. בדקו את החיבור לאינטרנט ונסו שוב.",
-    'Too many requests': "יותר מדי בקשות. אנא המתינו כמה דקות ונסו שוב.",
-  };
-  
-  // Find matching error message
-  for (const [key, value] of Object.entries(errorMappings)) {
-    if (message.includes(key)) {
-      return value;
-    }
-  }
-  
-  return message || "אירעה שגיאה במערכת. אנא נסו שוב.";
-};
-
-// Auth performance monitoring
-export const authPerformanceMonitor = {
-  startTimer: (operation: string) => {
-    performance.mark(`auth-${operation}-start`);
-  },
-  
-  endTimer: (operation: string) => {
-    performance.mark(`auth-${operation}-end`);
-    performance.measure(
-      `auth-${operation}`,
-      `auth-${operation}-start`,
-      `auth-${operation}-end`
-    );
-    
-    const measure = performance.getEntriesByName(`auth-${operation}`)[0];
-    console.log(`🕒 Auth ${operation} took ${measure.duration}ms`);
-    
-    // Log slow operations
-    if (measure.duration > 3000) {
-      console.warn(`⚠️ Slow auth operation: ${operation} took ${measure.duration}ms`);
-    }
-    
-    return measure.duration;
-  },
-};
-
-// Session persistence utilities
-export const sessionManager = {
-  persist: (sessionData: any) => {
-    try {
-      // Primary storage
-      localStorage.setItem('supabase.auth.token', JSON.stringify(sessionData));
-      
-      // Backup in session storage
-      sessionStorage.setItem('auth_backup', JSON.stringify({
-        timestamp: Date.now(),
-        data: sessionData
-      }));
-      
-      console.log('✅ Session persisted successfully');
-    } catch (error) {
-      console.error('❌ Failed to persist session:', error);
-    }
-  },
-  
-  recover: (): any | null => {
-    try {
-      // Try primary storage first
-      const stored = localStorage.getItem('supabase.auth.token');
-      if (stored) {
-        return JSON.parse(stored);
-      }
-      
-      // Fallback to backup
-      const backup = sessionStorage.getItem('auth_backup');
-      if (backup) {
-        const parsed = JSON.parse(backup);
-        // Check if backup is not too old (1 hour)
-        if (Date.now() - parsed.timestamp < 3600000) {
-          return parsed.data;
-        }
-      }
-    } catch (error) {
-      console.error('❌ Failed to recover session:', error);
-    }
-    return null;
-  },
-  
-  clear: () => {
-    try {
-      localStorage.removeItem('supabase.auth.token');
-      sessionStorage.removeItem('auth_backup');
-      console.log('✅ Session data cleared');
-    } catch (error) {
-      console.error('❌ Failed to clear session:', error);
-    }
-  }
-};
-
-// Debug tools for development
-if (import.meta.env.DEV) {
-  (window as any).__AUTH_DEBUG__ = {
-    retryAuth,
-    getLocalizedErrorMessage,
-    authPerformanceMonitor,
-    sessionManager,
-    clearAllStorage: () => {
-      localStorage.clear();
-      sessionStorage.clear();
-      console.log('🧹 All storage cleared');
-    },
-    simulateNetworkError: () => {
-      throw new Error('Network request failed');
-    },
-    simulateRateLimit: () => {
-      throw new Error('Too many requests');
-    }
-  };
-  
-  console.log('🔧 Auth debug tools available at window.__AUTH_DEBUG__');
+export interface AuthResponse {
+  success: boolean;
+  user?: User;
+  error?: string;
+  message?: string;
 }
+
+export interface ValidationResult {
+  isValid: boolean;
+  errors: string[];
+}
+
+export const validateEmail = (email: string): ValidationResult => {
+  const errors: string[] = [];
+  
+  if (!email) {
+    errors.push('כתובת אימייל נדרשת');
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.push('כתובת אימייל לא תקינה');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+export const validatePassword = (password: string): ValidationResult => {
+  const errors: string[] = [];
+  
+  if (!password) {
+    errors.push('סיסמה נדרשת');
+  } else {
+    if (password.length < 8) {
+      errors.push('הסיסמה חייבת להכיל לפחות 8 תווים');
+    }
+    if (!/(?=.*[a-z])/.test(password)) {
+      errors.push('הסיסמה חייבת להכיל לפחות אות קטנה אחת');
+    }
+    if (!/(?=.*[A-Z])/.test(password)) {
+      errors.push('הסיסמה חייבת להכיל לפחות אות גדולה אחת');
+    }
+    if (!/(?=.*\d)/.test(password)) {
+      errors.push('הסיסמה חייבת להכיל לפחות ספרה אחת');
+    }
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+export const validateConfirmPassword = (password: string, confirmPassword: string): ValidationResult => {
+  const errors: string[] = [];
+  
+  if (!confirmPassword) {
+    errors.push('אישור סיסמה נדרש');
+  } else if (password !== confirmPassword) {
+    errors.push('הסיסמאות אינן תואמות');
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+
+export const signUp = async (email: string, password: string): Promise<AuthResponse> => {
+  try {
+    const emailValidation = validateEmail(email);
+    const passwordValidation = validatePassword(password);
+    
+    if (!emailValidation.isValid || !passwordValidation.isValid) {
+      return {
+        success: false,
+        error: [...emailValidation.errors, ...passwordValidation.errors].join(', ')
+      };
+    }
+    
+    const redirectUrl = `${window.location.origin}/`;
+    
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl
+      }
+    });
+    
+    if (error) {
+      return {
+        success: false,
+        error: getAuthErrorMessage(error.message)
+      };
+    }
+    
+    return {
+      success: true,
+      user: data.user || undefined,
+      message: 'חשבון נוצר בהצלחה! בדוק את האימייל שלך לאישור'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: 'אירעה שגיאה בעת יצירת החשבון'
+    };
+  }
+};
+
+export const signIn = async (email: string, password: string): Promise<AuthResponse> => {
+  try {
+    const emailValidation = validateEmail(email);
+    
+    if (!emailValidation.isValid) {
+      return {
+        success: false,
+        error: emailValidation.errors.join(', ')
+      };
+    }
+    
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+    
+    if (error) {
+      return {
+        success: false,
+        error: getAuthErrorMessage(error.message)
+      };
+    }
+    
+    return {
+      success: true,
+      user: data.user,
+      message: 'התחברת בהצלחה!'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: 'אירעה שגיאה בעת ההתחברות'
+    };
+  }
+};
+
+export const signOut = async (): Promise<AuthResponse> => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      return {
+        success: false,
+        error: 'אירעה שגיאה בעת ההתנתקות'
+      };
+    }
+    
+    return {
+      success: true,
+      message: 'התנתקת בהצלחה!'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: 'אירעה שגיאה בעת ההתנתקות'
+    };
+  }
+};
+
+export const resetPassword = async (email: string): Promise<AuthResponse> => {
+  try {
+    const emailValidation = validateEmail(email);
+    
+    if (!emailValidation.isValid) {
+      return {
+        success: false,
+        error: emailValidation.errors.join(', ')
+      };
+    }
+    
+    const redirectUrl = `${window.location.origin}/reset-password`;
+    
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: redirectUrl
+    });
+    
+    if (error) {
+      return {
+        success: false,
+        error: getAuthErrorMessage(error.message)
+      };
+    }
+    
+    return {
+      success: true,
+      message: 'נשלח אימייל לאיפוס סיסמה'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: 'אירעה שגיאה בעת שליחת אימייל איפוס הסיסמה'
+    };
+  }
+};
+
+const getAuthErrorMessage = (errorMessage: string): string => {
+  const errorMap: Record<string, string> = {
+    'Invalid login credentials': 'פרטי התחברות שגויים',
+    'Email not confirmed': 'האימייל לא אושר',
+    'User already registered': 'משתמש כבר רשום',
+    'Password should be at least 6 characters': 'הסיסמה חייבת להכיל לפחות 6 תווים',
+    'Unable to validate email address': 'לא ניתן לאמת כתובת אימייל',
+    'Signup is disabled': 'הרשמה מושבתת כרגע',
+    'Email address is invalid': 'כתובת אימייל לא תקינה',
+    'Password is too weak': 'הסיסמה חלשה מדי'
+  };
+  
+  return errorMap[errorMessage] || 'אירעה שגיאה לא ידועה';
+};
+
+export const getCurrentUser = async (): Promise<User | null> => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user;
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    return null;
+  }
+};
+
+export const updateUserProfile = async (updates: Record<string, unknown>): Promise<AuthResponse> => {
+  try {
+    const { data, error } = await supabase.auth.updateUser(updates);
+    
+    if (error) {
+      return {
+        success: false,
+        error: 'אירעה שגיאה בעת עדכון הפרופיל'
+      };
+    }
+    
+    return {
+      success: true,
+      user: data.user,
+      message: 'הפרופיל עודכן בהצלחה'
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: 'אירעה שגיאה בעת עדכון הפרופיל'
+    };
+  }
+};

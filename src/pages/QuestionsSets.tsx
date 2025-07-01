@@ -1,201 +1,393 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Card } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, ChevronLeft, BookOpen, Edit3, RotateCcw, Brain, 
-  GraduationCap, ListChecks, Clock, Star, ArrowLeft 
-} from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Users, Clock, Target, Star, TrendingUp, BarChart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { allQuestions } from "@/data/questions";
 
 interface QuestionSet {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  filePath: string;
   questionsCount: number;
+  difficulty: "easy" | "medium" | "hard";
+  estimatedTime: number;
+  completionRate: number;
+  tags: string[];
   icon: React.ReactNode;
-  filter: (q: any) => boolean;
   color: string;
+  totalSets?: number;
 }
 
-export default function QuestionsSets() {
+const QuestionsSets = () => {
   const navigate = useNavigate();
-  const { currentUser, isPremium } = useAuth();
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
-  
-  // הגדרת קבוצות השאלות לפי סוג
-  const predefinedQuestionSets: Omit<QuestionSet, 'questionsCount'>[] = [
+  const [userProgress, setUserProgress] = useState<Record<string, number>>({});
+
+  const predefinedQuestionSets: QuestionSet[] = [
     {
-      id: 1,
-      title: "שאלות הבנת הנקרא",
-      description: "שאלות על טקסטים וקטעי קריאה",
-      filePath: "reading-comprehension",
-      icon: <BookOpen className="h-6 w-6" />,
-      filter: (q) => q.questionType === 'reading-comprehension',
-      color: "border-t-blue-500"
+      id: "qs_1",
+      title: "סט שאלות 1",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
     },
     {
-      id: 2,
-      title: "השלמת משפטים",
-      description: "בחירת המילה המתאימה להשלמת המשפט",
-      filePath: "sentence-completion", 
-      icon: <Edit3 className="h-6 w-6" />,
-      filter: (q) => q.questionType === 'sentence-completion',
-      color: "border-t-green-500"
+      id: "qs_2",
+      title: "סט שאלות 2",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
     },
     {
-      id: 3,
-      title: "שאלות ניסוח מחדש",
-      description: "מציאת הביטוי השווה במשמעותו",
-      filePath: "restatement",
-      icon: <RotateCcw className="h-6 w-6" />,
-      filter: (q) => q.questionType === 'restatement',
-      color: "border-t-purple-500"
+      id: "qs_3",
+      title: "סט שאלות 3",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
     },
     {
-      id: 4,
-      title: "כל השאלות (1-50)",
-      description: "תרגול מעורב מכל הסוגים",
-      filePath: "questions1to50",
-      icon: <FileText className="h-6 w-6" />,
-      filter: (q) => q.id >= 1 && q.id <= 50,
-      color: "border-t-electric-blue"
+      id: "qs_4",
+      title: "סט שאלות 4",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
     },
     {
-      id: 5,
-      title: "קטע מורכב - Gig Economy",
-      description: "שאלות הבנת הנקרא מתקדמות",
-      filePath: "questions51to100",
-      icon: <BookOpen className="h-6 w-6" />,
-      filter: (q) => q.id >= 51 && q.id <= 100 && q.passageTitle === "The Rise of the Gig Economy",
-      color: "border-t-orange-500"
-    }
+      id: "qs_5",
+      title: "סט שאלות 5",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_6",
+      title: "סט שאלות 6",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_7",
+      title: "סט שאלות 7",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_8",
+      title: "סט שאלות 8",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_9",
+      title: "סט שאלות 9",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_10",
+      title: "סט שאלות 10",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_11",
+      title: "סט שאלות 11",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_12",
+      title: "סט שאלות 12",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_13",
+      title: "סט שאלות 13",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_14",
+      title: "סט שאלות 14",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_15",
+      title: "סט שאלות 15",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_16",
+      title: "סט שאלות 16",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_17",
+      title: "סט שאלות 17",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_18",
+      title: "סט שאלות 18",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_19",
+      title: "סט שאלות 19",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
+    {
+      id: "qs_20",
+      title: "סט שאלות 20",
+      description: "קבוצת שאלות בנושאים שונים",
+      questionsCount: 50,
+      difficulty: "medium",
+      estimatedTime: 45,
+      completionRate: 75,
+      tags: ["general", "practice"],
+      icon: <BookOpen className="h-4 w-4" />,
+      color: "bg-blue-500",
+      totalSets: 20,
+    },
   ];
 
   useEffect(() => {
-    // חישוב כמות השאלות לכל קבוצה
-    const sets: QuestionSet[] = predefinedQuestionSets.map((set) => {
-      const questionsInRange = allQuestions ? 
-        allQuestions.filter(set.filter).length : 0;
+    const loadProgress = () => {
+      const savedProgress: Record<string, unknown> = {};
       
-      return {
-        ...set,
-        questionsCount: questionsInRange
-      };
-    });
+      // Load progress from localStorage
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('practice_set_')) {
+          try {
+            const value = localStorage.getItem(key);
+            if (value) {
+              const parsedValue = JSON.parse(value);
+              if (typeof parsedValue === 'number') {
+                savedProgress[key.replace('practice_set_', '')] = parsedValue;
+              }
+            }
+          } catch (error) {
+            console.error(`Error parsing progress for ${key}:`, error);
+          }
+        }
+      }
+      
+      setUserProgress(savedProgress as Record<string, number>);
+    };
+
+    const setPredefinedQuestionSets = () => {
+      setQuestionSets(predefinedQuestionSets);
+    };
     
-    setQuestionSets(sets);
-  }, []);
-
-  // פונקציה לניווט לעמוד הכנה של קבוצת שאלות מסוימת
-  const handleStartQuestionSet = (setId: number) => {
-    navigate(`/questions-set/${setId}/intro`);
-  };
-
-  // פונקציה לקבלת צבע הרקע של האייקון
-  const getIconBgColor = (color: string) => {
-    switch(color) {
-      case "border-t-blue-500": return "bg-blue-100";
-      case "border-t-green-500": return "bg-green-100";
-      case "border-t-purple-500": return "bg-purple-100";
-      case "border-t-electric-blue": return "bg-electric-blue/10";
-      case "border-t-orange-500": return "bg-orange-100";
-      default: return "bg-gray-100";
-    }
-  };
-
-  // פונקציה לקבלת צבע הטקסט של האייקון
-  const getIconTextColor = (color: string) => {
-    switch(color) {
-      case "border-t-blue-500": return "text-blue-600";
-      case "border-t-green-500": return "text-green-600";
-      case "border-t-purple-500": return "text-purple-600";
-      case "border-t-electric-blue": return "text-electric-blue";
-      case "border-t-orange-500": return "text-orange-600";
-      default: return "text-gray-600";
-    }
-  };
+    loadProgress();
+    setPredefinedQuestionSets();
+  }, [predefinedQuestionSets]);
 
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <div className="max-w-6xl mx-auto py-8 px-4">
-        <div className="flex items-center justify-between mb-8">
-          <Button 
-            variant="ghost" 
-            className="flex items-center text-electric-slate"
-            onClick={() => navigate(-1)}
-          >
-            <ChevronLeft className="h-5 w-5 ml-1" />
-            חזרה
-          </Button>
-          <h1 className="text-3xl font-bold text-electric-navy">מאגר השאלות</h1>
-        </div>
-
-        <div className="mb-6 text-center">
-          <p className="text-electric-slate mb-2">בחר סוג שאלות לתרגול</p>
-          <p className="text-sm text-electric-slate">
-            כרגע זמינות {allQuestions?.length || 0} שאלות במאגר
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-          {questionSets.map((set) => (
-            <Card 
-              key={set.id}
-              className={`bg-white p-6 shadow-md ${set.color} border-t-4 rounded-lg flex flex-col hover:shadow-lg transition-all`}
-            >
-              <div className="flex items-center justify-center mb-4">
-                <span className={`p-3 ${getIconBgColor(set.color)} rounded-full`}>
-                  <div className={getIconTextColor(set.color)}>
-                    {set.icon}
+      
+      <main className="flex-grow py-6 bg-electric-gray/50">
+        <div className="container mx-auto px-4">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-electric-navy mb-2">קבוצות שאלות</h1>
+            <p className="text-electric-slate">
+              בחרו קבוצת שאלות לתרגול
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {questionSets.map((set) => (
+              <Card key={set.id} className="bg-white shadow-sm rounded-lg border-0">
+                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                  <CardTitle className="text-sm font-medium">
+                    {set.title}
+                  </CardTitle>
+                  <Star className="h-4 w-4 text-yellow-500" />
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-xs text-gray-500">
+                    {set.description}
+                  </CardDescription>
+                  <div className="flex items-center space-x-4 py-4">
+                    <div className="flex items-center text-gray-600">
+                      <BookOpen className="h-4 w-4 ml-1" />
+                      <span>{set.questionsCount} שאלות</span>
+                    </div>
+                    <div className="flex items-center text-gray-600">
+                      <Clock className="h-4 w-4 ml-1" />
+                      <span>{set.estimatedTime} דקות</span>
+                    </div>
+                    {set.totalSets && (
+                      <div className="flex items-center text-gray-600">
+                        <Users className="h-4 w-4 ml-1" />
+                        <span>{set.totalSets} סטים</span>
+                      </div>
+                    )}
                   </div>
-                </span>
-              </div>
-              
-              <h3 className="text-lg font-semibold text-center mb-2 text-electric-navy">
-                {set.title}
-              </h3>
-              
-              <p className="text-electric-slate text-sm mb-4 text-center min-h-[3rem] flex items-center justify-center">
-                {set.description}
-              </p>
-              
-              <div className="text-center mb-4">
-                {set.questionsCount > 0 ? (
-                  <span className="inline-block px-3 py-1 bg-electric-blue/10 text-electric-blue rounded-full text-sm font-medium">
-                    {set.questionsCount} שאלות זמינות
-                  </span>
-                ) : (
-                  <span className="inline-block px-3 py-1 bg-gray-100 text-gray-400 rounded-full text-sm">
-                    אין שאלות זמינות
-                  </span>
-                )}
-              </div>
-              
-              <Button 
-                className="mt-auto w-full py-2 text-base font-medium bg-electric-blue hover:bg-blue-600 disabled:bg-gray-300 disabled:text-gray-500"
-                onClick={() => handleStartQuestionSet(set.id)}
-                disabled={set.questionsCount === 0}
-              >
-                התחל תרגול
-              </Button>
-            </Card>
-          ))}
+                  <Progress value={set.completionRate} className="h-2 rounded-full" />
+                  <div className="flex justify-between text-xs text-gray-500 mt-2">
+                    <span>התקדמות</span>
+                    <span>{set.completionRate}%</span>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-4 justify-start"
+                    onClick={() => navigate(`/simulation/qs/${set.id.replace('qs_', '')}`)}
+                  >
+                    התחל תרגול
+                    <ArrowRight className="h-4 w-4 mr-2" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
-
-        {/* הוספת הודעה עבור המשתמש על התוכניות העתידיות */}
-        <div className="mt-8 p-4 bg-blue-50 rounded-lg text-center">
-          <p className="text-blue-700 text-sm">
-            🚀 בקרוב יתווספו עוד סוגי שאלות וקטעי קריאה נוספים למאגר
-          </p>
-        </div>
-      </div>
+      </main>
+      
       <Footer />
-    </>
+    </div>
   );
-}
+};
+
+export default QuestionsSets;

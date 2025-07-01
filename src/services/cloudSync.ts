@@ -14,7 +14,7 @@ export interface CloudOperationResponse {
   success: boolean;
   error?: string;
   message?: string;
-  data?: any;
+  data?: unknown;
 }
 
 /**
@@ -379,16 +379,21 @@ export const deleteProgressFromCloud = async (id: string | number): Promise<Clou
  */
 export const populateQuestionSet = () => {
   try {
-    // Check if we've already populated the data
-    const questions801to850 = require('@/data/questions/questions801to850').questions801to850;
-    
-    if (questions801to850 && questions801to850.length > 0) {
-      console.log("Question set 801-850 already populated with data");
-      return true;
-    }
-    
-    console.log("Question set 801-850 is empty, populating with sample data");
-    return false;
+    // Use dynamic import instead of require
+    import('@/data/questions/questions801to850').then(module => {
+      const questions801to850 = module.questions801to850;
+      
+      if (questions801to850 && questions801to850.length > 0) {
+        console.log("Question set 801-850 already populated with data");
+        return true;
+      }
+      
+      console.log("Question set 801-850 is empty, populating with sample data");
+      return false;
+    }).catch(error => {
+      console.error("Error checking question set 801-850:", error);
+      return false;
+    });
   } catch (error) {
     console.error("Error checking question set 801-850:", error);
     return false;
