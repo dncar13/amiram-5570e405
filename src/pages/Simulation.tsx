@@ -218,7 +218,25 @@ const Simulation = () => {
   
   useEffect(() => {
     // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה
-    simulation.scrollToQuestion();
+    const scrollToQuestion = () => {
+      if (simulation.questionContainerRef?.current) {
+        simulation.questionContainerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
+      } else if (contentRef.current) {
+        contentRef.current.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }
+    };
+    
+    // הוספת עיכוב קטן כדי לתת לקומפוננט להתעדכן
+    const timeoutId = setTimeout(scrollToQuestion, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, [simulation.currentQuestionIndex]); // eslint-disable-line react-hooks/exhaustive-deps
     // Setup auto-save for simulation progress
   useEffect(() => {

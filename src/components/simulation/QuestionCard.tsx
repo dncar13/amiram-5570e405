@@ -296,8 +296,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       : 'bg-slate-700/30 border-slate-600/30 text-slate-300 hover:bg-slate-600/30 hover:border-slate-500/50'
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
-                    if (!isSubmittedOrShowAnswer && onAnswerSelect) {
+                    if (!isSubmittedOrShowAnswer && onAnswerSelect && onSubmitAnswer) {
+                      // בחירה ושליחה אוטומטית של התשובה
                       onAnswerSelect(index);
+                      // עיכוב קטן כדי לתת לUI להתעדכן ואז שליחה
+                      setTimeout(() => {
+                        onSubmitAnswer();
+                      }, 100);
                     }
                   }}
                   dir="ltr" 
@@ -387,15 +392,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
               {/* Center buttons - תמיד במרכז */}
               <div className="flex gap-2 sm:gap-3 justify-center">
-                {!isSubmittedOrShowAnswer && selectedAnswerIndex !== null && onSubmitAnswer && (
-                  <Button
-                    onClick={onSubmitAnswer}
-                    size="lg"
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
-                  >
-                    שלח תשובה
-                  </Button>
-                )}
+                {/* הסרנו את כפתור "שלח תשובה" - עכשיו התשובה נשלחת אוטומטית */}
 
                 {onToggleExplanation && isSubmittedOrShowAnswer && (
                   <Button
@@ -452,15 +449,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             
             {/* Mobile Center buttons */}
             <div className="flex sm:hidden gap-2 w-full justify-center">
-              {!isSubmittedOrShowAnswer && selectedAnswerIndex !== null && onSubmitAnswer && (
-                <Button
-                  onClick={onSubmitAnswer}
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold shadow-lg shadow-blue-500/20 px-6 py-3 text-base flex-1"
-                >
-                  שלח תשובה
-                </Button>
-              )}
+              {/* הסרנו את כפתור "שלח תשובה" גם במובייל */}
 
               {onToggleExplanation && isSubmittedOrShowAnswer && (
                 <Button
