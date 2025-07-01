@@ -15,7 +15,7 @@ const SavedQuestionsTab = () => {
   
   // טעינת השאלות השמורות בעת הטעינה הראשונית - אוטומטית לחלוטין
   useEffect(() => {
-    console.log("SavedQuestionsTab mounted, initializing saved questions");
+    // console.log("SavedQuestionsTab mounted, initializing saved questions");
     if (!isInitialized) {
       initializeSavedQuestions();
     }
@@ -116,8 +116,8 @@ const SavedQuestionsTab = () => {
                   </div>
                 </div>
                 <p className="text-base mb-4 cursor-pointer" 
-                   onClick={() => handleViewQuestion(savedQuestion.question.id)}
-                   dangerouslySetInnerHTML={{ __html: savedQuestion.question.text }}>
+                   onClick={() => handleViewQuestion(savedQuestion.question.id)}>
+                  {savedQuestion.question.text}
                 </p>
                 <div className="flex justify-between">
                   <Button

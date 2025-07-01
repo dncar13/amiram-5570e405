@@ -24,25 +24,25 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     // Don't redirect while auth is still loading
     if (isLoading) return;
 
-    console.log("🛡️ ProtectedRoute: Checking access permissions");
-    console.log("  - Require auth:", requireAuth);
-    console.log("  - Require premium:", requirePremium);
-    console.log("  - Current user:", currentUser?.email || "null");
-    console.log("  - Is premium:", isPremium);
+    // console.log("🛡️ ProtectedRoute: Checking access permissions");
+    // console.log("  - Require auth:", requireAuth);
+    // console.log("  - Require premium:", requirePremium);
+    // console.log("  - Current user:", currentUser?.email || "null");
+    // console.log("  - Is premium:", isPremium);
 
     if (requireAuth && !currentUser) {
-      console.log("🔒 Redirecting to login (auth required)");
+      // console.log("🔒 Redirecting to login (auth required)");
       navigate(redirectTo || '/login');
       return;
     }
 
     if (requirePremium && !isPremium) {
-      console.log("💎 Redirecting to premium (premium required)");
+      // console.log("💎 Redirecting to premium (premium required)");
       navigate(redirectTo || '/premium');
       return;
     }
 
-    console.log("✅ Access granted");
+    // console.log("✅ Access granted");
   }, [currentUser, isPremium, isLoading, requireAuth, requirePremium, navigate, redirectTo]);
 
   // Show loading while auth state is being determined

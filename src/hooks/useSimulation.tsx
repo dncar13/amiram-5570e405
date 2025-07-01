@@ -42,17 +42,17 @@ export const useSimulation = (
   // Check if this is a full exam simulation
   const isFullExam = simulationId === 'full' || window.location.pathname.includes('/simulation/full');
   
-  console.log("useSimulation params:", { 
-    type, 
-    difficulty, 
-    typeFromQuery, 
-    effectiveType, 
-    questionLimit, 
-    practiceParam, 
-    examParam,
-    isFullExam,
-    simulationId 
-  });
+  // console.log("useSimulation params:", { 
+  //   type, 
+  //   difficulty, 
+  //   typeFromQuery, 
+  //   effectiveType, 
+  //   questionLimit, 
+  //   practiceParam, 
+  //   examParam,
+  //   isFullExam,
+  //   simulationId 
+  // });
 
   // Scroll to question - מיקום השאלה במרכז המסך כדי שהמשתמש יראה אותה ישר
   const scrollToQuestion = useCallback(() => {
@@ -74,7 +74,7 @@ export const useSimulation = (
   // Auto-save progress for training mode only (not for full exam)
   useEffect(() => {
     if (state.progressLoaded && !examMode && !isFullExam && state.answeredQuestionsCount > 0) {
-      console.log("Auto-saving training progress:", state.answeredQuestionsCount);
+      // console.log("Auto-saving training progress:", state.answeredQuestionsCount);
       saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +89,7 @@ export const useSimulation = (
   );
 
   const handleRestartSimulation = useCallback(() => {
-    console.log("Restarting simulation - clearing state and reinitializing");
+    // console.log("Restarting simulation - clearing state and reinitializing");
     
     clearTimer();
     
@@ -104,7 +104,7 @@ export const useSimulation = (
       isFullExam
     });
     
-    console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
+    // console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
     
     setState({
       ...initialSimulationState,
@@ -133,7 +133,7 @@ export const useSimulation = (
   const resetProgress = useCallback(() => {
     try {
       localStorage.removeItem(`simulation_progress_${simulationId}`);
-      console.log(`Simulation progress reset for ${simulationId}`);
+      // console.log(`Simulation progress reset for ${simulationId}`);
       
       // Get the current questions again to avoid undefined state
       const questionsToUse = loadQuestions({
@@ -169,19 +169,19 @@ export const useSimulation = (
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
-    console.log("Initializing questions for simulation:", { 
-      simulationId, 
-      isQuestionSet, 
-      type, 
-      difficulty, 
-      questionLimit, 
-      setNumber, 
-      startIndex, 
-      typeFromQuery, 
-      effectiveType,
-      isFullExam 
-    });
-    console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
+    // console.log("Initializing questions for simulation:", { 
+    //   simulationId, 
+    //   isQuestionSet, 
+    //   type, 
+    //   difficulty, 
+    //   questionLimit, 
+    //   setNumber, 
+    //   startIndex, 
+    //   typeFromQuery, 
+    //   effectiveType,
+    //   isFullExam 
+    // });
+    // console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
     
     const questionsToUse = loadQuestions({
       storyQuestions,
@@ -193,10 +193,10 @@ export const useSimulation = (
       isFullExam
     });
     
-    console.log(`Loaded ${questionsToUse.length} questions for simulation`);
+    // console.log(`Loaded ${questionsToUse.length} questions for simulation`);
     
     if (questionsToUse.length > 0) {
-      console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
+      // console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
       setState(prevState => ({
         ...prevState,
         questions: questionsToUse,
@@ -208,7 +208,7 @@ export const useSimulation = (
         showAnswersImmediately
       }));
     } else {
-      console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
+      // console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
       setState(prevState => ({
         ...prevState,
         remainingTime: isFullExam ? 3600 : 1800,
@@ -221,7 +221,7 @@ export const useSimulation = (
 
   // Initialize questions when dependencies change
   useEffect(() => {
-    console.log("useEffect for initializeQuestions triggered");
+    // console.log("useEffect for initializeQuestions triggered");
     initializeQuestions();
   }, [initializeQuestions]);
 
@@ -233,7 +233,7 @@ export const useSimulation = (
         const savedProgress = loadSimulationProgress(simulationId);
         
         if (savedProgress) {
-          console.log("Loading saved progress for simulation:", simulationId);
+          // console.log("Loading saved progress for simulation:", simulationId);
           setState(prevState => ({
             ...prevState,
             currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
@@ -251,9 +251,9 @@ export const useSimulation = (
           }));
           
           progressLoadedRef.current = true;
-          console.log(`Simulation progress loaded for ${simulationId}`);
+          // console.log(`Simulation progress loaded for ${simulationId}`);
         } else {
-          console.log("No saved progress found, using initial state");
+          // console.log("No saved progress found, using initial state");
           setState(prevState => ({ 
             ...prevState, 
             remainingTime: isFullExam ? 3600 : 1800,
@@ -265,7 +265,7 @@ export const useSimulation = (
         }
       } else {
         // For exam mode or full exam, don't load progress
-        console.log("Exam mode or full exam - not loading saved progress");
+        // console.log("Exam mode or full exam - not loading saved progress");
         setState(prevState => ({ 
           ...prevState, 
           remainingTime: isFullExam ? 3600 : 1800,
@@ -283,7 +283,7 @@ export const useSimulation = (
     if (state.questions.length > 0 && state.currentQuestionIndex < state.questions.length) {
       const newCurrentQuestion = state.questions[state.currentQuestionIndex];
       if (newCurrentQuestion && newCurrentQuestion !== state.currentQuestion) {
-        console.log("Updating current question to index:", state.currentQuestionIndex, "Question:", newCurrentQuestion);
+        // console.log("Updating current question to index:", state.currentQuestionIndex, "Question:", newCurrentQuestion);
         setState(prevState => ({ 
           ...prevState, 
           currentQuestion: newCurrentQuestion 

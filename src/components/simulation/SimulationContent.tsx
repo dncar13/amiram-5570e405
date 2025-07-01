@@ -76,14 +76,14 @@ const SimulationContent = ({
   onFinishSimulation
 }: SimulationContentProps) => {
 
-  console.log('[SimulationContent] Rendering with:', {
-    totalQuestions,
-    questionsDataLength: questionsData.length,
-    currentQuestionIndex,
-    hasCurrentQuestion: !!currentQuestion,
-    currentQuestionId: currentQuestion?.id,
-    simulationComplete
-  });
+  // console.log('[SimulationContent] Rendering with:', {
+  //   totalQuestions,
+  //   questionsDataLength: questionsData.length,
+  //   currentQuestionIndex,
+  //   hasCurrentQuestion: !!currentQuestion,
+  //   currentQuestionId: currentQuestion?.id,
+  //   simulationComplete
+  // });
 
   // Convert Record objects to arrays for child components that expect arrays
   const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
@@ -108,7 +108,7 @@ const SimulationContent = ({
 
   // Show loading if we don't have questions or current question
   if (totalQuestions === 0 || !currentQuestion) {
-    console.log('[SimulationContent] Showing loading state - totalQuestions:', totalQuestions, 'currentQuestion:', !!currentQuestion);
+    // console.log('[SimulationContent] Showing loading state - totalQuestions:', totalQuestions, 'currentQuestion:', !!currentQuestion);
     return (
       <div className="w-full max-w-none min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="flex items-center justify-center h-64">
@@ -123,7 +123,7 @@ const SimulationContent = ({
     );
   }
 
-  console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
+  // console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
 
   return (
     <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">

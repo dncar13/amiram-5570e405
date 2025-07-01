@@ -44,9 +44,9 @@ const Simulation = () => {
   const isFullExam = window.location.pathname.includes('/simulation/full');
   
   // Debug logs for theme issues
-  console.log('Simulation page rendered with storyId:', storyId);
-  console.log('Current URL pathname:', window.location.pathname);
-  console.log('Is Full Exam:', isFullExam);
+  // console.log('Simulation page rendered with storyId:', storyId);
+  // console.log('Current URL pathname:', window.location.pathname);
+  // console.log('Is Full Exam:', isFullExam);
   
   // Get query parameters
   const typeFromQuery = searchParams.get('type');
@@ -56,20 +56,20 @@ const Simulation = () => {
   const effectiveType = type || typeFromQuery;
   const isQuickPractice = Boolean(effectiveType && questionLimit && !difficulty);
   
-  console.log("Simulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, isQuickPractice, isFullExam });
+  // console.log("Simulation params:", { type, difficulty, typeFromQuery, effectiveType, questionLimit, isQuickPractice, isFullExam });
   
   // Check if we're doing a question set simulation vs a topic simulation
   const [isQuestionSet, setIsQuestionSet] = useState<boolean>(false);
 
   // Check if this is a story-based simulation
   const isStoryBased = Boolean(storyId);
-  console.log('Is story-based simulation:', isStoryBased, 'Story ID:', storyId);
+  // console.log('Is story-based simulation:', isStoryBased, 'Story ID:', storyId);
   
   // Get story-specific questions if this is a story simulation - MEMOIZED to prevent infinite loops
   const storyQuestions = useMemo(() => {
     if (!isStoryBased || !storyId) return [];
     
-    console.log('Getting questions for story:', storyId);
+    // console.log('Getting questions for story:', storyId);
     return getQuestionsByStory(storyId);
   }, [isStoryBased, storyId]);
   
@@ -91,25 +91,25 @@ const Simulation = () => {
   } = useSimulationData(topicId, setId, isQuestionSet, storyQuestions);
 
   useEffect(() => {
-    console.log("Simulation component mounted or parameters changed", { 
-      topicId, 
-      setId, 
-      difficulty, 
-      type, 
-      storyId, 
-      isContinue, 
-      typeFromQuery, 
-      effectiveType, 
-      questionLimit,
-      isFullExam 
-    });
+    // console.log("Simulation component mounted or parameters changed", { 
+    //   topicId, 
+    //   setId, 
+    //   difficulty, 
+    //   type, 
+    //   storyId, 
+    //   isContinue, 
+    //   typeFromQuery, 
+    //   effectiveType, 
+    //   questionLimit,
+    //   isFullExam 
+    // });
     
     // Check if there's a reset parameter in the URL - only on first load
     if (!initialLoadAttempted.current) {
       const hasResetParam = checkForResetRequest();
       
       if (hasResetParam) {
-        console.log("Reset parameter detected - simulation will reset");
+        // console.log("Reset parameter detected - simulation will reset");
         shouldShowResetToast.current = true;
         
         // Remove the reset parameter from URL to prevent reload issues
@@ -119,11 +119,11 @@ const Simulation = () => {
     
     // Save simulation mode in sessionStorage to survive refreshes
     if (isFullExam) {
-      console.log('Setting full exam simulation flags in sessionStorage');
+      // console.log('Setting full exam simulation flags in sessionStorage');
       window.sessionStorage.setItem('is_full_exam', 'true');
       window.sessionStorage.setItem('current_simulation_type', 'full_exam');
     } else if (storyId) {
-      console.log('Setting story simulation flags in sessionStorage');
+      // console.log('Setting story simulation flags in sessionStorage');
       window.sessionStorage.setItem('is_story_simulation', 'true');
       window.sessionStorage.setItem('current_story_id', storyId);
     } else if (setId) {
@@ -135,17 +135,17 @@ const Simulation = () => {
       window.sessionStorage.setItem('is_difficulty_based', 'true');
       window.sessionStorage.setItem('difficulty_level', difficulty);
       window.sessionStorage.setItem('difficulty_type', type);
-      console.log(`[Simulation] Setting difficulty parameters: ${difficulty}, ${type}`);
+      // console.log(`[Simulation] Setting difficulty parameters: ${difficulty}, ${type}`);
     } else if (isQuickPractice) {
       // For quick practice, don't set difficulty-based flags
       window.sessionStorage.setItem('is_question_set', 'false');
       window.sessionStorage.removeItem('is_difficulty_based');
-      console.log(`[Simulation] Setting quick practice parameters: ${effectiveType}, limit: ${questionLimit}`);
+      // console.log(`[Simulation] Setting quick practice parameters: ${effectiveType}, limit: ${questionLimit}`);
     }
     
     // Clean up the continue flag after using it
     if (window.sessionStorage.getItem('continue_simulation') === 'true') {
-      console.log('Detected continue_simulation flag, will attempt to continue simulation');
+      // console.log('Detected continue_simulation flag, will attempt to continue simulation');
       window.sessionStorage.removeItem('continue_simulation');
     }
     
@@ -154,7 +154,7 @@ const Simulation = () => {
     const questSetFlag = window.sessionStorage.getItem('is_question_set');
     setIsQuestionSet(questSetFlag === 'true');
     
-    console.log(`Simulation opened with ${isFullExam ? 'FULL EXAM' : storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : isQuickPractice ? 'QUICK PRACTICE' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
+    // console.log(`Simulation opened with ${isFullExam ? 'FULL EXAM' : storyFlag === 'true' ? 'STORY' : questSetFlag === 'true' ? 'QUESTION SET' : isQuickPractice ? 'QUICK PRACTICE' : difficulty && type ? 'DIFFICULTY-BASED' : 'TOPIC'} - topicId: ${topicId}, setId: ${setId}, difficulty: ${difficulty}, type: ${type}, storyId: ${storyId}, continue: ${isContinue}`);
     
     // Store the current simulation IDs in sessionStorage to persist across refreshes
     if (isFullExam) {
@@ -182,7 +182,7 @@ const Simulation = () => {
   // Store difficulty parameters in sessionStorage for useSimulation
   useEffect(() => {
     if (difficulty && type) {
-      console.log(`Simulation - setting difficulty parameters: ${difficulty}, ${type}`);
+      // console.log(`Simulation - setting difficulty parameters: ${difficulty}, ${type}`);
       sessionStorage.setItem('current_difficulty_level', difficulty);
       sessionStorage.setItem('current_difficulty_type', type);
       sessionStorage.setItem('is_difficulty_based', 'true');
@@ -242,7 +242,7 @@ const Simulation = () => {
   useEffect(() => {
     // Only setup auto-save when simulation is loaded and we have questions
     if (simulation && !effectiveIsLoading && questionsToUse.length > 0) {
-      console.log("Setting up auto-save for simulation");
+      // console.log("Setting up auto-save for simulation");
       
       // Create auto-save with 30 second interval
       const cleanupAutoSave = setupAutoSave(() => {
@@ -263,7 +263,7 @@ const Simulation = () => {
       // Add a short delay to ensure state has settled
       const saveTimeout = setTimeout(() => {
         simulation.saveProgress();
-        console.log("Auto-saving simulation progress after state changes");
+        // console.log("Auto-saving simulation progress after state changes");
       }, 500);
       
       return () => clearTimeout(saveTimeout);
@@ -303,7 +303,7 @@ const Simulation = () => {
 
   // Handle finishing the simulation
   const handleFinishSimulation = useCallback(() => {
-    console.log("Finishing simulation manually");
+    // console.log("Finishing simulation manually");
     simulation.handleCompleteSimulation();
   }, [simulation]);
 
@@ -317,7 +317,7 @@ const Simulation = () => {
     ) {
       // Force save on initial load after a short delay
       const initialSaveTimeout = setTimeout(() => {
-        console.log("Forcing initial save to ensure persistence");
+        // console.log("Forcing initial save to ensure persistence");
         simulation.saveProgress();
         
         // If this is a reset, show toast to confirm
@@ -390,7 +390,7 @@ const Simulation = () => {
     );
   }
   
-  console.log('Rendering main simulation page with dark theme');
+  // console.log('Rendering main simulation page with dark theme');
   
   return (
     <RTLWrapper className="min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
