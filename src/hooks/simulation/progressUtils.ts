@@ -1,7 +1,6 @@
-
 import { SimulationStateData, ProgressData } from "@/types/common";
 
-export { ProgressData }; // Export ProgressData for external use
+export type { ProgressData }; // Export ProgressData for external use
 
 export const saveSimulationProgress = (simulationId: string, state: SimulationStateData, setNumber?: string | null, type?: string, difficulty?: string) => {
   try {

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/Header";
@@ -115,7 +114,13 @@ const TopicQuestions = () => {
           
           <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
             <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-            <FilterTabs filter={filter} setFilter={setFilter} userQuestions={userQuestions} />
+            <FilterTabs 
+              questions={userQuestions}
+              activeFilter={filter}
+              onFilterChange={setFilter}
+            >
+              <div></div>
+            </FilterTabs>
           </div>
           
           {filteredQuestions.length === 0 ? (

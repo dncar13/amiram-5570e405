@@ -1,3 +1,4 @@
+
 import { SimulationState, SimulationActions } from './types';
 import { 
   saveSimulationProgress, 
@@ -110,7 +111,7 @@ export const createSimulationActions = (
     }));
   };
 
-  const handleToggleQuestionFlag = () => {
+  const toggleQuestionFlag = () => {
     setState(prevState => ({
       ...prevState,
       questionFlags: {
@@ -146,10 +147,11 @@ export const createSimulationActions = (
     handleNextQuestion,
     handlePreviousQuestion,
     handleToggleExplanation,
-    handleToggleQuestionFlag,
+    toggleQuestionFlag,
     handleCompleteSimulation,
     handleStartTimer,
     handleStopTimer,
     handleResetTimer
   };
 };
+

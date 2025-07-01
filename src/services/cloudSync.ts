@@ -2,7 +2,7 @@ import { Question } from "@/data/types/questionTypes";
 import { refreshQuestionsFromStorage } from "./questions/storage";
 import { auth, db } from "@/lib/firebase";
 import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { optimizeStorage, cleanupOldProgress } from "./storageUtils";
 
 // Key constants for different storage namespaces
@@ -256,20 +256,12 @@ export const saveProgressToCloud = async (progress: SimulationProgress): Promise
   }
   
   if (!result.success) {
-    // Final failure after retries - notify user
-    toast({
-      title: "שגיאה",
-      description: result.message || "שגיאת חיבור לענן",
-      variant: "destructive",
-    });
+    // Final failure after retries - notify user with useToast hook
+    console.error("Failed to save to cloud after retries:", result.message);
   } else {
-    // Optionally show success toast for crucial data
+    // Optionally show success for crucial data
     if (progress.forceSync) {
-      toast({
-        title: "התקדמות נשמרה",
-        description: "נשמר בהצלחה בענן",
-        variant: "default",
-      });
+      console.log("Progress saved to cloud successfully");
     }
   }
   
