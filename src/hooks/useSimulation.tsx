@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
@@ -329,6 +330,28 @@ export const useSimulation = (
     setState(prevState => ({ ...prevState, showAnswersImmediately }));
   };
 
+  const setSimulationComplete = (simulationComplete: boolean) => {
+    setState(prevState => ({ ...prevState, simulationComplete }));
+  };
+
+  const navigateToQuestion = (questionIndex: number) => {
+    if (questionIndex >= 0 && questionIndex < state.questions.length) {
+      const newQuestion = state.questions[questionIndex];
+      const hasAnswer = questionIndex in state.userAnswers;
+      
+      setState(prevState => ({
+        ...prevState,
+        currentQuestionIndex: questionIndex,
+        currentQuestion: newQuestion,
+        selectedAnswerIndex: hasAnswer ? prevState.userAnswers[questionIndex] : null,
+        isAnswerSubmitted: hasAnswer,
+        showExplanation: false
+      }));
+      
+      scrollToQuestion();
+    }
+  };
+
   return {
     // State
     currentQuestionIndex: state.currentQuestionIndex,
@@ -366,6 +389,8 @@ export const useSimulation = (
     setIsTimerActive,
     setExamMode,
     setShowAnswersImmediately,
+    setSimulationComplete,
+    navigateToQuestion,
     
     // Ref for scrolling
     questionContainerRef
