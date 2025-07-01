@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useSearchParams } from "react-router-dom";
@@ -77,7 +77,7 @@ export const useSimulation = (
       console.log("Auto-saving training progress:", state.answeredQuestionsCount);
       saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
     }
-  }, [state.answeredQuestionsCount, state.currentQuestionIndex, simulationId, examMode, state.progressLoaded, setNumber, type, difficulty, isFullExam]);
+  }, [state.answeredQuestionsCount, state.currentQuestionIndex, state.progressLoaded, simulationId, examMode, setNumber, type, difficulty, isFullExam]);
 
   // Create simulation actions with correct parameters
   const actions = createSimulationActions(
@@ -216,7 +216,7 @@ export const useSimulation = (
         showAnswersImmediately
       }));
     }
-  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
+  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, type, typeFromQuery]);
 
   // Initialize questions when dependencies change
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -63,17 +63,11 @@ const QuestionsManager: React.FC = () => {
   const [questionToDelete, setQuestionToDelete] = useState<Question | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
-  useEffect(() => {
-    loadQuestions(true);
-  }, []);
-
-  const loadQuestions = (forceRefresh = false) => {
+  const loadQuestions = useCallback((forceRefresh = false) => {
     try {
       const allQuestions = forceRefresh ? refreshQuestionsFromStorage() : getAllQuestions();
       console.log("Loaded questions in QuestionsManager:", allQuestions.length);
       setQuestions(allQuestions);
-      
-      applyFiltersAndSearch(allQuestions);
       
       if (forceRefresh) {
         toast.info("נתוני השאלות רועננו בהצלחה");
@@ -82,9 +76,9 @@ const QuestionsManager: React.FC = () => {
       console.error("Error loading questions:", error);
       toast.error("שגיאה בטעינת השאלות");
     }
-  };
+  }, []);
 
-  const applyFiltersAndSearch = (questionsList: Question[]) => {
+  const applyFiltersAndSearch = useCallback((questionsList: Question[]) => {
     let filtered = questionsList;
     
     if (searchTerm) {
@@ -99,11 +93,15 @@ const QuestionsManager: React.FC = () => {
     }
     
     setFilteredQuestions(filtered);
-  };
+  }, [searchTerm, selectedTopicFilter]);
+
+  useEffect(() => {
+    loadQuestions(true);
+  }, [loadQuestions]);
 
   useEffect(() => {
     applyFiltersAndSearch(questions);
-  }, [questions, searchTerm, selectedTopicFilter]);
+  }, [questions, applyFiltersAndSearch]);
 
   const handleSaveQuestion = (updatedQuestion: Question) => {
     if (isCreating) {

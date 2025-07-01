@@ -11,4 +11,10 @@ export interface MobileConfig {
   autoSaveInterval: number;
   enableCrashReporting: boolean;
   debugMode: boolean;
+  maxOAuthRetries?: number;
+  initialTimeout?: number;
+  eventsPerSecond?: number;
+  inputDebounce?: number;
+  sessionDebounce?: number;
+  enableHeavyAnimations?: boolean;
 }

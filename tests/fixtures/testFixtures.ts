@@ -4,13 +4,14 @@ import { LoginPage } from '../pages/LoginPage';
 import { SimulationPage } from '../pages/SimulationPage';
 import { TestConfig } from '../config/testConfig';
 import { TestHelpers } from '../helpers/testHelpers';
+import { Page } from '@playwright/test';
 
 // Extend base test with custom fixtures
 export const test = base.extend<{
-  authenticatedPage: any;
-  simulationInProgress: any;
-  premiumUser: any;
-  cleanBrowser: any;
+  authenticatedPage: Page;
+  simulationInProgress: Page;
+  premiumUser: Page;
+  cleanBrowser: Page;
 }>({
   // Auto-login fixture
   authenticatedPage: async ({ page }, use) => {
@@ -37,7 +38,6 @@ export const test = base.extend<{
     await loginPage.expectLoginSuccess();
     await use(page);
   },
-  // Clean browser fixture
 
   // Clean browser fixture
   cleanBrowser: async ({ page }, use) => {
