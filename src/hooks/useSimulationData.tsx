@@ -69,11 +69,11 @@ export const useSimulationData = (
           let questionsForSet: Question[] = [];
 
           if (setNumber >= 1 && setNumber <= 20) {
-            // For sets 1-20, load questions by range - provide required argument
-            questionsForSet = getMixedDifficultyQuestions(50);
+            // For sets 1-20, load mixed difficulty questions
+            questionsForSet = getMixedDifficultyQuestions('medium').slice(0, 50);
           } else if (setNumber === 801) {
-            // Special set 801-850 - provide required argument
-            questionsForSet = getRestatementQuestions(50);
+            // Special set 801-850 for restatement questions
+            questionsForSet = getRestatementQuestions().slice(0, 50);
           } else {
             questionsForSet = [];
           }
@@ -97,13 +97,13 @@ export const useSimulationData = (
             let questionsForTopic: Question[] = [];
 
             if (foundTopic.difficulty === 'easy') {
-              questionsForTopic = getEasyQuestions(25);
+              questionsForTopic = getEasyQuestions().slice(0, 25);
             } else if (foundTopic.difficulty === 'medium') {
-              questionsForTopic = getMediumQuestions(25);
+              questionsForTopic = getMediumQuestions().slice(0, 25);
             } else if (foundTopic.difficulty === 'hard') {
-              questionsForTopic = getHardQuestions(25);
+              questionsForTopic = getHardQuestions().slice(0, 25);
             } else {
-              questionsForTopic = getMixedDifficultyQuestions(25);
+              questionsForTopic = getMixedDifficultyQuestions('medium').slice(0, 25);
             }
 
             if (isMounted) {
