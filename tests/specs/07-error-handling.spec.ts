@@ -181,7 +181,7 @@ test.describe('בדיקות Error Handling', () => {
     test('בדיקת Memory Leaks בסימולציה', async ({ page }) => {
       const getMemoryUsage = async () => {
         return await page.evaluate(() => {
-          return (performance as any).memory?.usedJSHeapSize || 0;
+          return (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
         });
       };
 

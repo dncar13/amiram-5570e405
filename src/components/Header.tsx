@@ -225,7 +225,7 @@ const Header = React.memo(() => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm" data-testid="mobile-nav">
+          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm" data-testid="mobile-menu">
             <div className="flex flex-col space-y-2">
               <Link 
                 to="/" 

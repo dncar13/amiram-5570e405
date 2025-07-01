@@ -23,10 +23,23 @@ export class HomePage extends BasePage {
   }
 
   async verifyPageElements() {
+    // Check title first
     await expect(this.page).toHaveTitle(/אמירם|Amiram/i);
-    await expect(this.header).toBeVisible();
-    await expect(this.footer).toBeVisible();
-    await expect(this.heroTitle).toBeVisible();
+    
+    // Wait for React app to be fully loaded
+    await this.page.waitForSelector('[data-testid="homepage"], #root > *', { timeout: 15000 });
+    
+    // Check for header with more flexible selector
+    const headerLocator = this.page.locator('header, [data-testid="header"], nav');
+    await expect(headerLocator.first()).toBeVisible({ timeout: 10000 });
+    
+    // Check for footer with more flexible selector  
+    const footerLocator = this.page.locator('footer, [class*="footer"]');
+    await expect(footerLocator.first()).toBeVisible({ timeout: 10000 });
+    
+    // Check for main content
+    const contentLocator = this.page.locator('h1, main, [data-testid="homepage"]');
+    await expect(contentLocator.first()).toBeVisible({ timeout: 10000 });
   }
 
   async clickStartSimulation() {

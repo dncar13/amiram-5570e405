@@ -37,9 +37,14 @@ test.describe('בדיקות Authentication', () => {
     test('בדיקת ולידציות בטופס התחברות', async () => {
       await loginPage.goto();
       
-      // ניסיון התחברות ללא מילוי
+      // ניסיון התחברות ללא מילוי - our app uses JS validation
       await loginPage.loginButton.click();
-      await expect(loginPage.errorMessage).toBeVisible();
+      
+      // Give time for JS validation to trigger and show error
+      await loginPage.page.waitForTimeout(2000);
+      
+      // Check if validation error appears (our app shows JS validation errors)
+      await expect(loginPage.errorMessage).toBeVisible({ timeout: 10000 });
       
       // בדיקת פורמט מייל לא תקין
       await loginPage.emailInput.fill('notanemail');

@@ -77,6 +77,7 @@ export const useSimulation = (
       console.log("Auto-saving training progress:", state.answeredQuestionsCount);
       saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.answeredQuestionsCount, state.currentQuestionIndex, state.progressLoaded, simulationId, examMode, setNumber, type, difficulty, isFullExam]);
 
   // Create simulation actions with correct parameters

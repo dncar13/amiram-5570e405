@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
   const { hasAccessToTopic } = useAuth();
   
   // Load questions with multiple refresh attempts to ensure we get the latest data
-  const loadQuestions = () => {
+  const loadQuestions = useCallback(() => {
     // Clear any cached data first
     localStorage.removeItem(`questions_cache_${topicId}`);
     
@@ -44,7 +44,7 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
     }, 500);
     
     console.log(`Loaded ${filteredQuestions.length} questions for topic ${topicId} (initial attempt)`, filteredQuestions);
-  };
+  }, [topicId]);
   
   // Load questions on component mount and topicId change
   useEffect(() => {
@@ -61,7 +61,7 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
     
     // Clean up the interval on component unmount
     return () => clearInterval(refreshInterval);
-  }, [topicId]);
+  }, [topicId, loadQuestions, questions.length]);
     const startSimulation = () => {
     // Check if user has access to this topic
     if (!hasAccessToTopic(topicId)) {

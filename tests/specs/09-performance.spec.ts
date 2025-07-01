@@ -244,7 +244,7 @@ test.describe('בדיקות ביצועים', () => {
     test('בדיקת שימוש בזיכרון לאורך זמן', async ({ page }) => {
       const getMemoryUsage = async () => {
         return await page.evaluate(() => {
-          const memory = (performance as any).memory;
+          const memory = (performance as Performance & { memory?: { usedJSHeapSize: number; totalJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
           return {
             used: memory?.usedJSHeapSize || 0,
             total: memory?.totalJSHeapSize || 0,
@@ -281,7 +281,7 @@ test.describe('בדיקות ביצועים', () => {
       
       const getMemoryUsage = async () => {
         return await page.evaluate(() => {
-          return (performance as any).memory?.usedJSHeapSize || 0;
+          return (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0;
         });
       };
       
@@ -379,9 +379,9 @@ test.describe('בדיקות ביצועים', () => {
       
       performanceData.resourceCount = resourceCount;
       
-      if ((performance as any).memory) {
+      if ((performance as Performance & { memory?: unknown }).memory) {
         performanceData.memoryUsage = await page.evaluate(() => {
-          return (performance as any).memory.usedJSHeapSize;
+          return (performance as Performance & { memory: { usedJSHeapSize: number } }).memory.usedJSHeapSize;
         });
       }
       

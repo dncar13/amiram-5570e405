@@ -27,7 +27,7 @@ export class TestHelpers {
   /**
    * Mock API response
    */
-  static async mockAPIResponse(page: Page, endpoint: string, response: any, status = 200) {
+  static async mockAPIResponse(page: Page, endpoint: string, response: Record<string, unknown>, status = 200) {
     await page.route(`**/api/${endpoint}*`, route => {
       route.fulfill({
         status,
@@ -90,7 +90,7 @@ export class TestHelpers {
         loadComplete: navigation.loadEventEnd - navigation.loadEventStart,
         firstPaint: paint.find(entry => entry.name === 'first-paint')?.startTime,
         firstContentfulPaint: paint.find(entry => entry.name === 'first-contentful-paint')?.startTime,
-        memoryUsage: (performance as any).memory?.usedJSHeapSize || 0
+        memoryUsage: (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize || 0
       };
     });
   }

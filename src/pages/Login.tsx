@@ -512,6 +512,7 @@ const Login = () => {
                           <Mail className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="email"
+                            name="email"
                             placeholder="your@email.com"
                             type="email"
                             required
@@ -532,6 +533,7 @@ const Login = () => {
                           <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="password"
+                            name="password"
                             type={showPassword ? "text" : "password"}
                             required
                             className="pl-10 pr-10 dark-input"
@@ -633,6 +635,7 @@ const Login = () => {
                           <Mail className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-email"
+                            name="email"
                             placeholder="your@email.com"
                             type="email"
                             required
@@ -648,6 +651,7 @@ const Login = () => {
                           <KeyIcon className="absolute right-3 top-2.5 h-5 w-5 input-icon" />
                           <Input
                             id="register-password"
+                            name="password"
                             type={showRegisterPassword ? "text" : "password"}
                             required
                             minLength={6}

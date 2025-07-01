@@ -96,7 +96,7 @@ export const useActivityHistory = () => {
     return () => {
       window.removeEventListener(ACTIVITY_UPDATED_EVENT, handleActivityUpdate);
     };
-  }, [currentUser]);
+  }, [currentUser, loadHistory]);
 
   return {
     history,

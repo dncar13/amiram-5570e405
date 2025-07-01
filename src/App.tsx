@@ -100,6 +100,7 @@ const AnimatedRoutes = () => {
         <Routes location={location}>
           <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="/topics" element={<SimulationsEntry />} />
           <Route path="/topics/list" element={<SimulationsEntry />} />
           <Route path="/simulations-entry/list" element={<SimulationsEntry />} />

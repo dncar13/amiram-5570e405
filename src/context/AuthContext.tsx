@@ -196,6 +196,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Session recovery failed:", error);
       return null;
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
@@ -295,6 +296,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }, 1000);
         }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authState.session, authState.initialized]); // Only depend on session and initialized state
 
   useEffect(() => {

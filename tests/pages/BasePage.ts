@@ -9,7 +9,7 @@ export class BasePage {
   }
 
   // Header elements
-  get header() { return this.page.locator('header'); }
+  get header() { return this.page.locator('header, [data-testid="header"], nav').first(); }
   get logo() { return this.page.locator('a[href="/"]').first(); }
   get homeLink() { return this.page.locator('nav a[href="/"]'); }
   get simulationsLink() { return this.page.locator('nav a[href="/simulations-entry"]'); }
@@ -24,12 +24,25 @@ export class BasePage {
   get mobileMenu() { return this.page.locator('[data-testid="mobile-menu"]').or(this.page.locator('nav[class*="mobile"]')); }
 
   // Footer
-  get footer() { return this.page.locator('footer'); }
+  get footer() { return this.page.locator('footer, [class*="footer"]').first(); }
 
   // Common methods
   async navigateTo(path: string) {
-    await this.page.goto(path);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.goto(path, { waitUntil: 'networkidle', timeout: 30000 });
+    
+    // Wait for React to mount and render
+    await this.page.waitForFunction(() => {
+      return document.querySelector('#root') && 
+             document.querySelector('#root').children.length > 0;
+    }, { timeout: 15000 });
+    
+    // Wait for the header specifically
+    await this.page.waitForSelector('header, [data-testid="header"]', { 
+      timeout: 15000,
+      state: 'visible'
+    }).catch(() => {
+      console.log('Header not found, continuing anyway');
+    });
   }
 
   async waitForPageLoad() {

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Users, Trophy, BookOpen, Clock } from 'lucide-react';
 
+const targetCounts = {
+  students: 15000,
+  successRate: 94,
+  questions: 1000,
+  hours: 24
+};
+
 const StatsSection: React.FC = () => {
   const [inView, setInView] = useState(false);
   const [counts, setCounts] = useState({
@@ -9,13 +16,6 @@ const StatsSection: React.FC = () => {
     questions: 0,
     hours: 0
   });
-
-  const targetCounts = {
-    students: 15000,
-    successRate: 94,
-    questions: 1000,
-    hours: 24
-  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback, useMemo } from 'react';
 import { TimerConfig } from '@/types/common';
 import { SimulationState } from './types';
 
@@ -34,11 +34,11 @@ export const useTimer = (
     }));
   }, [setState]);
 
-  const config: TimerConfig = {
+  const config: TimerConfig = useMemo(() => ({
     duration: currentTimeRef.current,
     onTick,
     onComplete
-  };
+  }), [onTick, onComplete]);
 
   const startTimer = useCallback(() => {
     if (intervalRef.current) return;
