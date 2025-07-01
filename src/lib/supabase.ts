@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from '@/integrations/supabase/types';
+import { AuthError } from '@supabase/supabase-js';
 
 const supabaseUrl = "https://llyunioulzfbgqvmeaxq.supabase.co";
 const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxseXVuaW91bHpmYmdxdm1lYXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwMTc0MTksImV4cCI6MjA2NTU5MzQxOX0.11tR97IIeYJez9h8-JqgolQTKh-pLpxT6eevHcV9z7I";
@@ -29,12 +30,12 @@ export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
 });
 
 // Helper function to get user-friendly error messages
-const getErrorMessage = (error: any): string => {
+const getErrorMessage = (error: AuthError | Error | unknown): string => {
   console.log("Auth error details:", error);
   
   if (!error) return "אירעה שגיאה לא ידועה";
   
-  const message = error.message || error.error_description || error.error || '';
+  const message = (error as AuthError).message || (error as Error).message || '';
   
   // Google OAuth specific errors
   if (message.includes('invalid_client') || message.includes('Unauthorized')) {

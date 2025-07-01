@@ -1,3 +1,6 @@
+
+import { MobilePerformanceConfig } from '@/types/common';
+
 // Mobile performance utilities for authentication
 export const isMobileDevice = (): boolean => {
   if (typeof window === 'undefined') return false;
@@ -7,7 +10,7 @@ export const isMobileDevice = (): boolean => {
   ) || window.innerWidth <= 768;
 };
 
-export const getMobileOptimizedConfig = () => {
+export const getMobileOptimizedConfig = (): MobilePerformanceConfig => {
   const isMobile = isMobileDevice();
   
   return {
@@ -33,7 +36,7 @@ export const getMobileOptimizedConfig = () => {
 };
 
 // Debounce utility for mobile performance
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {

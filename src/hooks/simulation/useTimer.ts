@@ -1,33 +1,53 @@
 
-import { useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from 'react';
+import { TimerConfig } from '@/types/common';
 
-export const useTimer = (setState: React.Dispatch<React.SetStateAction<any>>) => {
-  const timerInterval = useRef<NodeJS.Timeout | null>(null);
+export const useTimer = (config: TimerConfig) => {
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const currentTimeRef = useRef(config.duration);
 
-  const initializeTimer = useCallback(() => {
-    console.log("Initializing timer");
+  const startTimer = useCallback(() => {
+    if (intervalRef.current) return;
     
-    if (timerInterval.current) {
-      clearInterval(timerInterval.current);
-    }
-    
-    timerInterval.current = setInterval(() => {
-      setState((prevState: any) => {
-        if (!prevState.isTimerActive || prevState.remainingTime <= 0) {
-          clearInterval(timerInterval.current!);
-          return prevState;
+    intervalRef.current = setInterval(() => {
+      currentTimeRef.current -= 1;
+      config.onTick(currentTimeRef.current);
+      
+      if (currentTimeRef.current <= 0) {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
         }
-        
-        return { ...prevState, remainingTime: prevState.remainingTime - 1 };
-      });
+        config.onComplete();
+      }
     }, 1000);
-  }, [setState]);
+  }, [config]);
 
-  const clearTimer = useCallback(() => {
-    if (timerInterval.current) {
-      clearInterval(timerInterval.current);
+  const stopTimer = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
   }, []);
 
-  return { initializeTimer, clearTimer, timerInterval };
+  const resetTimer = useCallback((newDuration?: number) => {
+    stopTimer();
+    currentTimeRef.current = newDuration ?? config.duration;
+    config.onTick(currentTimeRef.current);
+  }, [config, stopTimer]);
+
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  return {
+    startTimer,
+    stopTimer,
+    resetTimer,
+    currentTime: currentTimeRef.current
+  };
 };

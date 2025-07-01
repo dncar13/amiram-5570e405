@@ -1,397 +1,248 @@
-import { useEffect, useState } from "react";
+
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Question } from "@/data/questionsData";
-import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
-import { CheckCircle, XCircle, RotateCcw, ArrowLeft, Flag, Trophy, Star, Target, TrendingUp, Award, Zap } from "lucide-react";
-import { useSavedQuestions } from "@/hooks/useSavedQuestions";
-import { saveQuickPracticeProgress } from "@/hooks/simulation/progressUtils";
-import { useParams, useSearchParams } from "react-router-dom";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { Progress } from "@/components/ui/progress";
+import { Trophy, RotateCcw, Home, TrendingUp, Clock, Target, Award, CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Question } from "@/data/types/questionTypes";
 
 interface SimulationResultsProps {
   score: number;
-  questionsData: Question[];
-  userAnswers: (number | null)[];
-  questionFlags: boolean[];
-  answeredQuestionsCount: number;
-  correctQuestionsCount: number;
+  totalQuestions: number;
+  timeSpent?: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  questions: Question[];
+  userAnswers: Record<number, number | null>;
   onRestart: () => void;
-  onBackToTopics: () => void;
-  onNavigateToQuestion: (index: number) => void;
-  isQuestionSet?: boolean;
+  onReview?: () => void;
+  difficulty?: string;
+  type?: string;
+  completionTime?: string;
 }
 
-interface Achievement {
-  id: string;
-  title: string;
-  description: string;
-  icon: React.ComponentType<any>;
-  earned: boolean;
-  color: string;
+interface QuestionAnalysis {
+  question: Question;
+  userAnswer: number | null;
+  isCorrect: boolean;
+  questionIndex: number;
 }
 
-const SimulationResults = ({
+const getScoreColor = (percentage: number): string => {
+  if (percentage >= 80) return 'text-green-600';
+  if (percentage >= 60) return 'text-yellow-600';
+  return 'text-red-600';
+};
+
+const getScoreBadgeColor = (percentage: number): string => {
+  if (percentage >= 80) return 'bg-green-100 text-green-800 border-green-200';
+  if (percentage >= 60) return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+  return 'bg-red-100 text-red-800 border-red-200';
+};
+
+const getPerformanceMessage = (percentage: number): string => {
+  if (percentage >= 90) return "ביצוע מעולה! 🎉";
+  if (percentage >= 80) return "ביצוע טוב מאוד! 👏";
+  if (percentage >= 70) return "ביצוע טוב! 👍";
+  if (percentage >= 60) return "ביצוע סביר. יש מקום לשיפור.";
+  return "צריך להתאמן יותר. אל תתייאש!";
+};
+
+const SimulationResults: React.FC<SimulationResultsProps> = ({
   score,
-  questionsData,
+  totalQuestions,
+  timeSpent,
+  correctAnswers,
+  incorrectAnswers,
+  questions,
   userAnswers,
-  questionFlags,
-  answeredQuestionsCount,
-  correctQuestionsCount,
   onRestart,
-  onBackToTopics,
-  onNavigateToQuestion,
-  isQuestionSet = false
-}: SimulationResultsProps) => {
-  const { isQuestionSaved, saveQuestion, removeQuestionById } = useSavedQuestions();
-  const [savedQuestionIds, setSavedQuestionIds] = useState<Set<string>>(() => new Set());
-  const [showDetailedStats, setShowDetailedStats] = useState(false);
-  const { type } = useParams<{ type: string }>();
-  const [searchParams] = useSearchParams();
-  const questionLimit = searchParams.get('limit');
-  
-  const isQuickPractice = Boolean(type && questionLimit && !searchParams.get('difficulty'));
+  onReview,
+  difficulty,
+  type,
+  completionTime
+}) => {
+  const navigate = useNavigate();
+  const percentage = totalQuestions > 0 ? Math.round((score / totalQuestions) * 100) : 0;
 
-  useEffect(() => {
-    const parsedQuestions = JSON.parse(localStorage.getItem('savedQuestions') || '[]');
-    const savedIds = new Set(
-      parsedQuestions.map((q: any) => String(q.id))
-    ) as Set<string>;
-    
-    setSavedQuestionIds(savedIds);
+  // Create question analysis
+  const questionAnalysis: QuestionAnalysis[] = questions.map((question, index) => ({
+    question,
+    userAnswer: userAnswers[index] ?? null,
+    isCorrect: userAnswers[index] === question.correctAnswer,
+    questionIndex: index
+  }));
 
-    if (isQuickPractice && type) {
-      saveQuickPracticeProgress(type, score, questionsData.length);
-      console.log(`Quick practice progress saved for ${type}: ${score}% score`);
-    }
-  }, [isQuickPractice, type, score, questionsData.length]);
-
-  const percentage = score;
-  const wrongAnswersCount = answeredQuestionsCount - correctQuestionsCount;
-  const skippedCount = questionsData.length - answeredQuestionsCount;
-  const flaggedCount = questionFlags.filter(flag => flag).length;
-
-  // Chart data for pie chart
-  const pieChartData = [
-    { name: 'Correct', value: correctQuestionsCount, color: '#10B981' },
-    { name: 'Wrong', value: wrongAnswersCount, color: '#EF4444' },
-    { name: 'Skipped', value: skippedCount, color: '#6B7280' }
-  ];
-
-  // Chart data for performance breakdown
-  const performanceData = [
-    { category: 'Accuracy', value: percentage, target: 80 },
-    { category: 'Completion', value: Math.round((answeredQuestionsCount / questionsData.length) * 100), target: 90 },
-    { category: 'Focus', value: Math.max(0, 100 - (flaggedCount * 10)), target: 85 }
-  ];
-
-  // Achievements system
-  const achievements: Achievement[] = [
-    {
-      id: 'perfect_score',
-      title: 'ציון מושלם!',
-      description: 'ענית נכון על כל השאלות',
-      icon: Trophy,
-      earned: percentage === 100,
-      color: 'text-yellow-400'
-    },
-    {
-      id: 'high_achiever',
-      title: 'הישג גבוה',
-      description: 'קיבלת ציון של 80% או יותר',
-      icon: Star,
-      earned: percentage >= 80,
-      color: 'text-blue-400'
-    },
-    {
-      id: 'completionist',
-      title: 'השלמת הכל',
-      description: 'ענית על כל השאלות',
-      icon: Target,
-      earned: answeredQuestionsCount === questionsData.length,
-      color: 'text-green-400'
-    },
-    {
-      id: 'focused_learner',
-      title: 'למידה ממוקדת',
-      description: 'השלמת בלי לסמן שאלות',
-      icon: Zap,
-      earned: flaggedCount === 0,
-      color: 'text-purple-400'
-    },
-    {
-      id: 'improving',
-      title: 'מתקדם',
-      description: 'קיבלת ציון מעל 60%',
-      icon: TrendingUp,
-      earned: percentage >= 60,
-      color: 'text-orange-400'
-    }
-  ];
-
-  const earnedAchievements = achievements.filter(a => a.earned);
-
-  // Performance level
-  const getPerformanceLevel = () => {
-    if (percentage >= 90) return { level: 'מעולה', color: 'text-green-400', bg: 'bg-green-500/20 border-green-500/30' };
-    if (percentage >= 80) return { level: 'טוב מאוד', color: 'text-blue-400', bg: 'bg-blue-500/20 border-blue-500/30' };
-    if (percentage >= 70) return { level: 'טוב', color: 'text-yellow-400', bg: 'bg-yellow-500/20 border-yellow-500/30' };
-    if (percentage >= 60) return { level: 'בסדר', color: 'text-orange-400', bg: 'bg-orange-500/20 border-orange-500/30' };
-    return { level: 'צריך שיפור', color: 'text-red-400', bg: 'bg-red-500/20 border-red-500/30' };
-  };
-
-  const performanceLevel = getPerformanceLevel();
-
-  // Recommendations based on performance
-  const getRecommendations = () => {
-    const recommendations = [];
-    
-    if (percentage < 60) {
-      recommendations.push("התמקד בבדיקת ההסברים לתשובות השגויות");
-      recommendations.push("כדאי להתרגל על שאלות קלות יותר תחילה");
-    } else if (percentage < 80) {
-      recommendations.push("התקדמות מעולה! נסה לזהות דפוסים בטעויות שלך");
-      recommendations.push("התרגל על עוד שאלות ברמת קושי דומה");
-    } else {
-      recommendations.push("עבודה מצוינת! אתה מוכן לחומר מאתגר יותר");
-      recommendations.push("שקול לנסות רמות קושי גבוהות יותר");
-    }
-
-    if (flaggedCount > 0) {
-      recommendations.push(`עבור על ${flaggedCount} השאלות שסימנת`);
-    }
-
-    return recommendations;
-  };
-
-  const recommendations = getRecommendations();
-
-  // Handle navigation to simulations entry page
-  const handleBackToSimulations = () => {
-    window.location.href = '/simulations-entry';
+  const formatTime = (seconds?: number): string => {
+    if (!seconds) return 'לא זמין';
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   return (
-    <div className="space-y-6 animate-fade-in bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen p-6">
-      <Card className="shadow-2xl border border-slate-600/50 bg-slate-800/90 backdrop-blur-sm">
-        <CardContent className="p-8">
-          {/* Header Section */}
-          <div className="text-center mb-8">
-            <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4 border ${performanceLevel.bg}`}>
-              <Award className={`h-5 w-5 ${performanceLevel.color}`} />
-              <span className={`font-semibold ${performanceLevel.color}`}>
-                {performanceLevel.level}
-              </span>
-            </div>
-            
-            <h2 className="text-3xl font-bold text-slate-100 mb-3">
-              {isQuestionSet ? "קבוצת השאלות הושלמה!" : isQuickPractice ? "התרגול המהיר הושלם!" : "הסימולציה הושלמה!"}
-            </h2>
-            <p className="text-lg text-slate-300">
-              ענית על {answeredQuestionsCount} מתוך {questionsData.length} שאלות
-            </p>
-          </div>
-
-          {/* Main Score Display */}
-          <div className="flex justify-center mb-8">
-            <div className="relative">
-              <div style={{ width: 200, height: 200 }}>
-                <CircularProgressbar
-                  value={percentage}
-                  text={`${percentage}%`}
-                  styles={buildStyles({
-                    textColor: percentage >= 60 ? "#10B981" : "#EF4444",
-                    trailColor: "#374151",
-                    pathColor: percentage >= 60 ? "#10B981" : "#EF4444",
-                    rotation: 0,
-                    strokeLinecap: "round",
-                    textSize: "20px",
-                  })}
-                />
-              </div>
-              {percentage === 100 && (
-                <div className="absolute -top-2 -right-2 animate-bounce">
-                  <Trophy className="h-8 w-8 text-yellow-400" />
-                </div>
-              )}
+    <div className="max-w-4xl mx-auto p-6 space-y-6">
+      {/* Main Results Card */}
+      <Card className="text-center bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+        <CardHeader className="pb-4">
+          <div className="flex justify-center mb-4">
+            <div className="bg-gradient-to-br from-blue-600 to-indigo-600 p-4 rounded-full">
+              <Trophy className="h-8 w-8 text-white" />
             </div>
           </div>
-
-          {/* Quick Stats Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div className="text-center p-4 rounded-xl bg-green-500/20 border border-green-500/30">
-              <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-green-400">{correctQuestionsCount}</div>
-              <div className="text-sm text-green-300">נכונות</div>
+          <CardTitle className="text-2xl font-bold text-gray-800">
+            סיום הסימולציה!
+          </CardTitle>
+          <p className="text-gray-600 mt-2">
+            {getPerformanceMessage(percentage)}
+          </p>
+        </CardHeader>
+        
+        <CardContent className="space-y-6">
+          {/* Score Display */}
+          <div className="space-y-3">
+            <div className={`text-6xl font-bold ${getScoreColor(percentage)}`}>
+              {percentage}%
             </div>
-
-            <div className="text-center p-4 rounded-xl bg-red-500/20 border border-red-500/30">
-              <XCircle className="h-8 w-8 text-red-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-red-400">{wrongAnswersCount}</div>
-              <div className="text-sm text-red-300">שגויות</div>
+            <div className="text-gray-600">
+              <span className="text-xl font-semibold">{score}</span>
+              <span className="text-sm"> מתוך </span>
+              <span className="text-xl font-semibold">{totalQuestions}</span>
+              <span className="text-sm"> שאלות</span>
             </div>
-
-            <div className="text-center p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
-              <Flag className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-blue-400">{flaggedCount}</div>
-              <div className="text-sm text-blue-300">מסומנות</div>
-            </div>
-
-            <div className="text-center p-4 rounded-xl bg-purple-500/20 border border-purple-500/30">
-              <Target className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-purple-400">{skippedCount}</div>
-              <div className="text-sm text-purple-300">דולגות</div>
-            </div>
+            <Progress value={percentage} className="w-full h-3" />
           </div>
 
-          {/* Achievements Section */}
-          {earnedAchievements.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold text-slate-100 mb-4 flex items-center gap-2">
-                <Trophy className="h-6 w-6 text-yellow-400" />
-                הישגים שנפתחו!
-              </h3>
-              <div className="flex flex-wrap gap-3">
-                {earnedAchievements.map((achievement) => (
-                  <Badge 
-                    key={achievement.id}
-                    variant="secondary" 
-                    className="px-4 py-2 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 animate-scale-in text-slate-100"
-                  >
-                    <achievement.icon className={`h-4 w-4 mr-2 ${achievement.color}`} />
-                    <span className="font-medium">{achievement.title}</span>
-                  </Badge>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Detailed Analytics Toggle */}
-          <div className="mb-6">
-            <Button
-              variant="outline"
-              onClick={() => setShowDetailedStats(!showDetailedStats)}
-              className="w-full bg-slate-700/50 border-slate-600 text-slate-100 hover:bg-slate-600/50"
-            >
-              {showDetailedStats ? 'הסתר' : 'הצג'} ניתוח מפורט
-              <TrendingUp className="h-4 w-4 ml-2" />
-            </Button>
-          </div>
-
-          {/* Detailed Analytics */}
-          {showDetailedStats && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 animate-fade-in">
-              {/* Results Breakdown Pie Chart */}
-              <Card className="bg-slate-700/50 border-slate-600">
-                <CardHeader>
-                  <CardTitle className="text-lg text-slate-100">פירוט התוצאות</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ChartContainer
-                    config={{
-                      correct: { label: "נכונות", color: "#10B981" },
-                      wrong: { label: "שגויות", color: "#EF4444" },
-                      skipped: { label: "דולגות", color: "#6B7280" }
-                    }}
-                    className="h-64"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={pieChartData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={40}
-                          outerRadius={80}
-                          dataKey="value"
-                        >
-                          {pieChartData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
-
-              {/* Performance Metrics */}
-              <Card className="bg-slate-700/50 border-slate-600">
-                <CardHeader>
-                  <CardTitle className="text-lg text-slate-100">מדדי ביצועים</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ChartContainer
-                    config={{
-                      value: { label: "הציון שלך", color: "#3B82F6" },
-                      target: { label: "יעד", color: "#10B981" }
-                    }}
-                    className="h-64"
-                  >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={performanceData}>
-                        <XAxis dataKey="category" />
-                        <YAxis domain={[0, 100]} />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="value" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="target" fill="#10B981" radius={[4, 4, 0, 0]} opacity={0.3} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </ChartContainer>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          {/* Enhanced Recommendations with Better Visibility */}
-          <Card className="mb-8 bg-gradient-to-r from-slate-700/80 to-slate-600/80 border-2 border-blue-400/60 shadow-xl">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-2xl font-bold text-white flex items-center gap-3">
-                <div className="p-3 bg-blue-500/40 rounded-full border border-blue-400/50">
-                  <Star className="h-7 w-7 text-blue-200" />
-                </div>
-                המלצות אישיות
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-4">
-                {recommendations.map((rec, index) => (
-                  <div key={index} className="flex items-start gap-4 p-5 bg-slate-600/60 rounded-xl border border-slate-500/50 shadow-lg">
-                    <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-1 shadow-md">
-                      <div className="w-3 h-3 bg-white rounded-full" />
-                    </div>
-                    <span className="text-slate-100 font-medium leading-relaxed text-lg">{rec}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Enhanced Action Buttons with Better Styling */}
-          <div className="flex flex-col gap-4">
-            <Button 
-              onClick={onRestart}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-5 text-xl font-bold rounded-2xl transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl border border-blue-500/50"
-            >
-              <RotateCcw className="h-6 w-6 mr-3" />
-              {isQuickPractice ? "התחל תרגול מהיר חדש" : "התחל סימולציה חדשה"}
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              onClick={handleBackToSimulations}
-              className="py-5 text-xl font-semibold rounded-2xl border-2 border-slate-400/70 bg-slate-700/60 text-slate-100 hover:bg-slate-600/80 hover:border-slate-300/80 transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl"
-            >
-              <ArrowLeft className="h-6 w-6 mr-3" />
-              חזרה לסימולציות
-            </Button>
-          </div>
+          {/* Performance Badge */}
+          <Badge 
+            variant="outline" 
+            className={`px-4 py-2 text-lg font-semibold ${getScoreBadgeColor(percentage)}`}
+          >
+            {percentage >= 80 ? 'מצוין' : percentage >= 60 ? 'טוב' : 'דורש שיפור'}
+          </Badge>
         </CardContent>
       </Card>
+
+      {/* Statistics Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <Card className="text-center">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-center mb-2">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+            </div>
+            <div className="text-2xl font-bold text-green-600">{correctAnswers}</div>
+            <div className="text-sm text-gray-600">תשובות נכונות</div>
+          </CardContent>
+        </Card>
+
+        <Card className="text-center">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-center mb-2">
+              <Target className="h-6 w-6 text-red-600" />
+            </div>
+            <div className="text-2xl font-bold text-red-600">{incorrectAnswers}</div>
+            <div className="text-sm text-gray-600">תשובות שגויות</div>
+          </CardContent>
+        </Card>
+
+        <Card className="text-center">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-center mb-2">
+              <Clock className="h-6 w-6 text-blue-600" />
+            </div>
+            <div className="text-2xl font-bold text-blue-600">
+              {formatTime(timeSpent)}
+            </div>
+            <div className="text-sm text-gray-600">זמן ביצוע</div>
+          </CardContent>
+        </Card>
+
+        <Card className="text-center">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-center mb-2">
+              <Award className="h-6 w-6 text-purple-600" />
+            </div>
+            <div className="text-2xl font-bold text-purple-600">{percentage}%</div>
+            <div className="text-sm text-gray-600">אחוז הצלחה</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button
+          onClick={onRestart}
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+        >
+          <RotateCcw className="h-4 w-4" />
+          התחל מחדש
+        </Button>
+
+        {onReview && (
+          <Button
+            onClick={onReview}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <TrendingUp className="h-4 w-4" />
+            סקור תשובות
+          </Button>
+        )}
+
+        <Button
+          onClick={() => navigate('/')}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          <Home className="h-4 w-4" />
+          חזור לעמוד הבית
+        </Button>
+      </div>
+
+      {/* Question Breakdown */}
+      {questionAnalysis.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="h-5 w-5" />
+              פירוט תשובות
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {questionAnalysis.map((analysis, index) => (
+                <div
+                  key={index}
+                  className={`p-3 rounded-lg border-2 ${
+                    analysis.isCorrect 
+                      ? 'bg-green-50 border-green-200' 
+                      : 'bg-red-50 border-red-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-sm">
+                      שאלה #{analysis.questionIndex + 1}
+                    </span>
+                    <span className={`text-lg ${
+                      analysis.isCorrect ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {analysis.isCorrect ? '✓' : '✗'}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-600 mt-1">
+                    {analysis.userAnswer !== null 
+                      ? `תשובה: ${String.fromCharCode(65 + analysis.userAnswer)}`
+                      : 'לא נענה'
+                    }
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

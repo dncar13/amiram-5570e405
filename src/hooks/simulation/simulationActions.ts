@@ -1,208 +1,190 @@
 
-import { saveActivity } from "@/hooks/useActivityHistory";
-import { saveSetProgress } from "./progressUtils";
+import { SimulationState, SimulationActions } from './types';
+import { SimulationStateData } from '@/types/common';
+import { saveSimulationProgress } from './progressUtils';
 
 export const createSimulationActions = (
-  state: any,
-  setState: React.Dispatch<React.SetStateAction<any>>,
-  clearTimer: () => void,
-  setNumber?: string | null,
-  type?: string,
-  difficulty?: string,
-  scrollToQuestion?: () => void
-) => {
+  state: SimulationState,
+  setState: (updater: (prevState: SimulationState) => SimulationState) => void,
+  simulationId: string
+): SimulationActions => {
+  
   const handleAnswerSelect = (answerIndex: number) => {
-    setState((prevState: any) => ({ ...prevState, selectedAnswerIndex: answerIndex }));
+    setState(prevState => ({
+      ...prevState,
+      selectedAnswerIndex: answerIndex,
+      isAnswerSubmitted: false
+    }));
   };
 
   const handleSubmitAnswer = () => {
-    setState((prevState: any) => {
-      if (prevState.isAnswerSubmitted || prevState.currentQuestion === null || prevState.selectedAnswerIndex === null) {
+    setState(prevState => {
+      if (prevState.selectedAnswerIndex === null || prevState.isAnswerSubmitted) {
         return prevState;
       }
-      
-      const isCorrect = prevState.selectedAnswerIndex === prevState.currentQuestion.correctAnswer;
-      const questionId = prevState.currentQuestion.id;
-      const currentQuestionIndex = prevState.currentQuestionIndex;
-      
-      // Save activity record
-      saveActivity({
-        date: new Date().toLocaleDateString(),
-        time: new Date().toLocaleTimeString(),
-        topic: 'General',
-        questionId: String(questionId),
-        status: isCorrect ? 'correct' : 'wrong',
-        isCorrect: isCorrect,
-        isCompleted: false
-      });
-      
-      const updatedUserAnswers = { ...prevState.userAnswers, [currentQuestionIndex]: prevState.selectedAnswerIndex };
-      
-      // Check if this question was already answered before
-      const wasAlreadyAnswered = prevState.userAnswers[currentQuestionIndex] !== undefined && prevState.userAnswers[currentQuestionIndex] !== null;
-      
-      // Update score: add 1 if correct, subtract 1 if this question was previously correct but now wrong
-      let newScore = prevState.score;
-      let newCorrectQuestionsCount = prevState.correctQuestionsCount;
-      
-      if (wasAlreadyAnswered) {
-        // This question was answered before - we need to update the score accordingly
-        const previousAnswer = prevState.userAnswers[currentQuestionIndex];
-        const wasPreviouslyCorrect = previousAnswer === prevState.currentQuestion.correctAnswer;
-        
-        if (wasPreviouslyCorrect && !isCorrect) {
-          // Was correct, now wrong
-          newScore = prevState.score - 1;
-          newCorrectQuestionsCount = prevState.correctQuestionsCount - 1;
-        } else if (!wasPreviouslyCorrect && isCorrect) {
-          // Was wrong, now correct
-          newScore = prevState.score + 1;
-          newCorrectQuestionsCount = prevState.correctQuestionsCount + 1;
-        }
-        // If both were correct or both were wrong, no change needed
-      } else {
-        // This is a new answer
-        if (isCorrect) {
-          newScore = prevState.score + 1;
-          newCorrectQuestionsCount = prevState.correctQuestionsCount + 1;
-        }
-      }
-      
-      // Calculate answered questions count based on unique questions that have answers
-      const answeredQuestions = Object.keys(updatedUserAnswers).filter(key => 
-        updatedUserAnswers[parseInt(key)] !== null && updatedUserAnswers[parseInt(key)] !== undefined
-      );
-      const newAnsweredQuestionsCount = answeredQuestions.length;
-      
-      const newProgressPercentage = Math.round((newAnsweredQuestionsCount / prevState.totalQuestions) * 100);
-      const newCurrentScorePercentage = Math.round((newScore / prevState.totalQuestions) * 100);
-      
-      return {
+
+      const currentQuestion = prevState.currentQuestion;
+      if (!currentQuestion) return prevState;
+
+      const isCorrect = prevState.selectedAnswerIndex === currentQuestion.correctAnswer;
+      const wasAlreadyAnswered = prevState.currentQuestionIndex in prevState.userAnswers;
+
+      const newState = {
         ...prevState,
-        userAnswers: updatedUserAnswers,
-        score: newScore,
+        userAnswers: {
+          ...prevState.userAnswers,
+          [prevState.currentQuestionIndex]: prevState.selectedAnswerIndex
+        },
         isAnswerSubmitted: true,
-        showExplanation: true,
-        correctQuestionsCount: newCorrectQuestionsCount,
-        answeredQuestionsCount: newAnsweredQuestionsCount,
-        progressPercentage: newProgressPercentage,
-        currentScorePercentage: newCurrentScorePercentage
+        showExplanation: prevState.showAnswersImmediately,
+        answeredQuestionsCount: wasAlreadyAnswered 
+          ? prevState.answeredQuestionsCount 
+          : prevState.answeredQuestionsCount + 1,
+        correctQuestionsCount: wasAlreadyAnswered
+          ? (isCorrect ? prevState.correctQuestionsCount + (prevState.userAnswers[prevState.currentQuestionIndex] === currentQuestion.correctAnswer ? 0 : 1) 
+                      : prevState.correctQuestionsCount - (prevState.userAnswers[prevState.currentQuestionIndex] === currentQuestion.correctAnswer ? 1 : 0))
+          : (isCorrect ? prevState.correctQuestionsCount + 1 : prevState.correctQuestionsCount)
       };
+
+      // Calculate progress
+      newState.progressPercentage = (newState.answeredQuestionsCount / newState.totalQuestions) * 100;
+      newState.currentScorePercentage = newState.answeredQuestionsCount > 0 
+        ? (newState.correctQuestionsCount / newState.answeredQuestionsCount) * 100 
+        : 0;
+
+      return newState;
     });
   };
 
   const handleNextQuestion = () => {
-    setState((prevState: any) => {
-      if (prevState.currentQuestionIndex < prevState.totalQuestions - 1) {
-        const nextQuestionIndex = prevState.currentQuestionIndex + 1;
-        const previousAnswer = prevState.userAnswers[nextQuestionIndex];
-        const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
-        
-        // Scroll to question after state update
-        setTimeout(() => {
-          if (scrollToQuestion) {
-            scrollToQuestion();
-          }
-        }, 100);
-        
+    setState(prevState => {
+      if (prevState.currentQuestionIndex >= prevState.questions.length - 1) {
         return {
           ...prevState,
-          currentQuestionIndex: nextQuestionIndex,
-          currentQuestion: prevState.questions[nextQuestionIndex],
-          isAnswerSubmitted: wasAnswered,
-          showExplanation: wasAnswered,
-          selectedAnswerIndex: wasAnswered ? previousAnswer : null
-        };
-      } else {
-        // End of simulation - save set progress if this is a set-based simulation
-        clearTimer();
-        
-        if (setNumber && type && difficulty) {
-          saveSetProgress(type, difficulty, setNumber, prevState.score, prevState.totalQuestions);
-        }
-        
-        // Save activity record for completion
-        saveActivity({
-          date: new Date().toLocaleDateString(),
-          time: new Date().toLocaleTimeString(),
-          topic: 'General',
-          questionId: 'N/A',
-          status: 'correct',
-          score: prevState.score,
-          correctAnswers: prevState.correctQuestionsCount,
-          totalAnswered: prevState.totalQuestions,
-          isCompleted: true
-        });
-        
-        return { ...prevState, isTimerActive: false, simulationComplete: true };
-      }
-    });
-  };
-
-  const handlePreviousQuestion = () => {
-    setState((prevState: any) => {
-      if (prevState.currentQuestionIndex > 0) {
-        const prevQuestionIndex = prevState.currentQuestionIndex - 1;
-        const previousAnswer = prevState.userAnswers[prevQuestionIndex];
-        const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
-        
-        // Scroll to question after state update
-        setTimeout(() => {
-          if (scrollToQuestion) {
-            scrollToQuestion();
-          }
-        }, 100);
-        
-        return {
-          ...prevState,
-          currentQuestionIndex: prevQuestionIndex,
-          currentQuestion: prevState.questions[prevQuestionIndex],
-          isAnswerSubmitted: wasAnswered,
-          showExplanation: wasAnswered,
-          selectedAnswerIndex: wasAnswered ? previousAnswer : null
+          simulationComplete: true,
+          score: prevState.correctQuestionsCount
         };
       }
-      return prevState;
-    });
-  };
 
-  const handleToggleExplanation = () => {
-    setState((prevState: any) => ({ ...prevState, showExplanation: !prevState.showExplanation }));
-  };
+      const nextIndex = prevState.currentQuestionIndex + 1;
+      const nextQuestion = prevState.questions[nextIndex];
+      const hasAnswer = nextIndex in prevState.userAnswers;
 
-  const toggleQuestionFlag = (questionIndex: number) => {
-    setState((prevState: any) => {
-      const questionId = prevState.questions[questionIndex].id;
-      const newFlags = { ...prevState.questionFlags, [questionId]: !prevState.questionFlags[questionId] };
-      return { ...prevState, questionFlags: newFlags };
-    });
-  };
-
-  const navigateToQuestion = (questionIndex: number) => {
-    setState((prevState: any) => {
-      const previousAnswer = prevState.userAnswers[questionIndex];
-      const wasAnswered = previousAnswer !== undefined && previousAnswer !== null;
-      
-      // Scroll to question after state update
-      setTimeout(() => {
-        if (scrollToQuestion) {
-          scrollToQuestion();
-        }
-      }, 100);
-      
       return {
         ...prevState,
-        currentQuestionIndex: questionIndex,
-        currentQuestion: prevState.questions[questionIndex],
-        isAnswerSubmitted: wasAnswered,
-        showExplanation: wasAnswered,
-        selectedAnswerIndex: wasAnswered ? previousAnswer : null
+        currentQuestionIndex: nextIndex,
+        currentQuestion: nextQuestion,
+        selectedAnswerIndex: hasAnswer ? prevState.userAnswers[nextIndex] : null,
+        isAnswerSubmitted: hasAnswer,
+        showExplanation: false
       };
     });
   };
 
+  const handlePreviousQuestion = () => {
+    setState(prevState => {
+      if (prevState.currentQuestionIndex <= 0) return prevState;
+
+      const prevIndex = prevState.currentQuestionIndex - 1;
+      const prevQuestion = prevState.questions[prevIndex];
+      const hasAnswer = prevIndex in prevState.userAnswers;
+
+      return {
+        ...prevState,
+        currentQuestionIndex: prevIndex,
+        currentQuestion: prevQuestion,
+        selectedAnswerIndex: hasAnswer ? prevState.userAnswers[prevIndex] : null,
+        isAnswerSubmitted: hasAnswer,
+        showExplanation: false
+      };
+    });
+  };
+
+  const handleToggleExplanation = () => {
+    setState(prevState => ({
+      ...prevState,
+      showExplanation: !prevState.showExplanation
+    }));
+  };
+
+  const toggleQuestionFlag = (questionIndex: number) => {
+    setState(prevState => ({
+      ...prevState,
+      questionFlags: {
+        ...prevState.questionFlags,
+        [questionIndex]: !prevState.questionFlags[questionIndex]
+      }
+    }));
+  };
+
+  const navigateToQuestion = (questionIndex: number) => {
+    setState(prevState => {
+      if (questionIndex < 0 || questionIndex >= prevState.questions.length) {
+        return prevState;
+      }
+
+      const question = prevState.questions[questionIndex];
+      const hasAnswer = questionIndex in prevState.userAnswers;
+
+      return {
+        ...prevState,
+        currentQuestionIndex: questionIndex,
+        currentQuestion: question,
+        selectedAnswerIndex: hasAnswer ? prevState.userAnswers[questionIndex] : null,
+        isAnswerSubmitted: hasAnswer,
+        showExplanation: false
+      };
+    });
+  };
+
+  const handleRestartSimulation = () => {
+    setState(prevState => ({
+      ...prevState,
+      currentQuestionIndex: 0,
+      currentQuestion: prevState.questions[0] || null,
+      userAnswers: {},
+      questionFlags: {},
+      simulationComplete: false,
+      score: 0,
+      isAnswerSubmitted: false,
+      showExplanation: false,
+      answeredQuestionsCount: 0,
+      correctQuestionsCount: 0,
+      progressPercentage: 0,
+      currentScorePercentage: 0,
+      selectedAnswerIndex: null
+    }));
+  };
+
+  const saveProgress = () => {
+    const stateData: SimulationStateData = {
+      currentQuestionIndex: state.currentQuestionIndex,
+      userAnswers: state.userAnswers,
+      questionFlags: state.questionFlags,
+      remainingTime: state.remainingTime,
+      isTimerActive: state.isTimerActive,
+      examMode: state.examMode,
+      showAnswersImmediately: state.showAnswersImmediately,
+      answeredQuestionsCount: state.answeredQuestionsCount,
+      correctQuestionsCount: state.correctQuestionsCount,
+      progressPercentage: state.progressPercentage,
+      currentScorePercentage: state.currentScorePercentage,
+      selectedAnswerIndex: state.selectedAnswerIndex
+    };
+
+    saveSimulationProgress(simulationId, stateData);
+  };
+
+  const resetProgress = () => {
+    localStorage.removeItem(`simulation_progress_${simulationId}`);
+  };
+
   const setSimulationComplete = (complete: boolean) => {
-    setState((prevState: any) => ({ ...prevState, simulationComplete: complete }));
+    setState(prevState => ({
+      ...prevState,
+      simulationComplete: complete,
+      score: complete ? prevState.correctQuestionsCount : prevState.score
+    }));
   };
 
   return {
@@ -213,6 +195,9 @@ export const createSimulationActions = (
     handleToggleExplanation,
     toggleQuestionFlag,
     navigateToQuestion,
+    handleRestartSimulation,
+    saveProgress,
+    resetProgress,
     setSimulationComplete
   };
 };

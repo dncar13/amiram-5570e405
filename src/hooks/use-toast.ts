@@ -1,21 +1,14 @@
-
 import * as React from "react"
 
-import {
-  Toast,
-  ToastClose,
-  ToastDescription,
-  ToastProvider,
-  ToastTitle,
-  ToastViewport,
-  type ToastProps,
-  type ToastActionElement,
+import type {
+  ToastActionElement,
+  ToastProps,
 } from "@/components/ui/toast"
 
-const TOAST_LIMIT = 5
-const TOAST_REMOVAL_DELAY = 5000
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
 
-export type ToasterToast = ToastProps & {
+type ToasterToast = ToastProps & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
@@ -32,7 +25,7 @@ const actionTypes = {
 let count = 0
 
 function genId() {
-  count = (count + 1) % Number.MAX_VALUE
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
   return count.toString()
 }
 
@@ -45,15 +38,15 @@ type Action =
     }
   | {
       type: ActionType["UPDATE_TOAST"]
-      toast: Partial<ToasterToast> & { id: string }
+      toast: Partial<ToasterToast>
     }
   | {
       type: ActionType["DISMISS_TOAST"]
-      toastId?: string
+      toastId?: ToasterToast["id"]
     }
   | {
       type: ActionType["REMOVE_TOAST"]
-      toastId?: string
+      toastId?: ToasterToast["id"]
     }
 
 interface State {
@@ -73,7 +66,7 @@ const addToRemoveQueue = (toastId: string) => {
       type: "REMOVE_TOAST",
       toastId: toastId,
     })
-  }, TOAST_REMOVAL_DELAY)
+  }, TOAST_REMOVE_DELAY)
 
   toastTimeouts.set(toastId, timeout)
 }
@@ -97,6 +90,8 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
+      // ! Side effects ! - This could be extracted into a dismissToast() action,
+      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {
@@ -142,7 +137,7 @@ function dispatch(action: Action) {
   })
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {}
+type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()
@@ -193,36 +188,4 @@ function useToast() {
   }
 }
 
-// Add custom toast variants for common patterns
-toast.error = (message: string) => {
-  return toast({
-    variant: "destructive",
-    title: "שגיאה",
-    description: message,
-  });
-};
-
-toast.success = (message: string) => {
-  return toast({
-    variant: "success",
-    title: "הצלחה",
-    description: message,
-  });
-};
-
-toast.info = (message: string) => {
-  return toast({
-    title: "הודעה",
-    description: message,
-  });
-};
-
-toast.warning = (message: string) => {
-  return toast({
-    variant: "default",
-    title: "התראה",
-    description: message,
-  });
-};
-
-export { useToast, toast, type ToasterToast as toasts }
+export { useToast, toast }
