@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,10 @@ interface FilterTabsProps {
   activeFilter: string;
   onFilterChange: (filter: string) => void;
   children: React.ReactNode;
+  // Support both prop patterns
+  filter?: string;
+  setFilter?: React.Dispatch<React.SetStateAction<string>>;
+  userQuestions?: Question[];
 }
 
 const getFilteredQuestions = (questions: Question[], filter: string): Question[] => {
@@ -36,18 +39,26 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
   questions, 
   activeFilter, 
   onFilterChange, 
-  children 
+  children,
+  filter,
+  setFilter,
+  userQuestions
 }) => {
-  const allCount = questions.length;
-  const easyCount = questions.filter(q => q.difficulty === 'easy').length;
-  const mediumCount = questions.filter(q => q.difficulty === 'medium').length;
-  const hardCount = questions.filter(q => q.difficulty === 'hard').length;
-  const readingCount = questions.filter(q => q.type === 'reading-comprehension').length;
-  const vocabularyCount = questions.filter(q => q.type === 'vocabulary').length;
-  const grammarCount = questions.filter(q => q.type === 'grammar').length;
+  // Use either prop pattern
+  const currentFilter = activeFilter || filter || 'all';
+  const currentQuestions = questions || userQuestions || [];
+  const handleFilterChange = onFilterChange || setFilter || (() => {});
+
+  const allCount = currentQuestions.length;
+  const easyCount = currentQuestions.filter(q => q.difficulty === 'easy').length;
+  const mediumCount = currentQuestions.filter(q => q.difficulty === 'medium').length;
+  const hardCount = currentQuestions.filter(q => q.difficulty === 'hard').length;
+  const readingCount = currentQuestions.filter(q => q.type === 'reading-comprehension').length;
+  const vocabularyCount = currentQuestions.filter(q => q.type === 'vocabulary').length;
+  const grammarCount = currentQuestions.filter(q => q.type === 'grammar').length;
 
   return (
-    <Tabs value={activeFilter} onValueChange={onFilterChange} className="w-full">
+    <Tabs value={currentFilter} onValueChange={handleFilterChange} className="w-full">
       <TabsList className="grid w-full grid-cols-3 lg:grid-cols-7 mb-6">
         <TabsTrigger value="all" className="flex items-center gap-1">
           הכל
@@ -80,7 +91,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
           </Badge>
         </TabsTrigger>
         <TabsTrigger value="vocabulary" className="flex items-center gap-1">
-          אוצר מילים
+          אוצרמילים
           <Badge variant="secondary" className="text-xs">
             {vocabularyCount}
           </Badge>
@@ -93,7 +104,7 @@ const FilterTabs: React.FC<FilterTabsProps> = ({
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value={activeFilter} className="mt-0">
+      <TabsContent value={currentFilter} className="mt-0">
         {children}
       </TabsContent>
     </Tabs>

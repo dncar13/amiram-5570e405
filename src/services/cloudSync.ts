@@ -109,7 +109,7 @@ export const clearAllSimulationData = (): void => {
     
   } catch (error) {
     console.error("Error clearing simulation data:", error);
-    toast.error("ש��יאה באיפוס נתוני הסימולציה");
+    toast.error("שגיאה באיפוס נתוני הסימולציה");
   }
 };
 
@@ -257,11 +257,11 @@ export const saveProgressToCloud = async (progress: SimulationProgress): Promise
   
   if (!result.success) {
     // Final failure after retries - notify user
-    // toast({
-    //   title: "שגיאה",
-    //   description: result.message || "שגיאת חיבור לענן",
-    //   variant: "destructive",
-    // });
+    toast({
+      title: "שגיאה",
+      description: result.message || "שגיאת חיבור לענן",
+      variant: "destructive",
+    });
   } else {
     // Optionally show success toast for crucial data
     if (progress.forceSync) {

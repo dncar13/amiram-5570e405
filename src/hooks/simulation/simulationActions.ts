@@ -1,12 +1,15 @@
-
 import { SimulationState, SimulationActions } from './types';
-import { SimulationStateData } from '@/types/common';
-import { saveSimulationProgress } from './progressUtils';
+import { 
+  saveSimulationProgress, 
+  saveSetProgress, 
+  saveQuickPracticeProgress 
+} from './progressUtils';
 
 export const createSimulationActions = (
   state: SimulationState,
-  setState: (updater: (prevState: SimulationState) => SimulationState) => void,
-  simulationId: string
+  setState: React.Dispatch<React.SetStateAction<SimulationState>>,
+  clearTimer: () => void,
+  scrollToQuestion?: () => void
 ): SimulationActions => {
   
   const handleAnswerSelect = (answerIndex: number) => {
@@ -107,84 +110,34 @@ export const createSimulationActions = (
     }));
   };
 
-  const toggleQuestionFlag = (questionIndex: number) => {
+  const handleToggleQuestionFlag = () => {
     setState(prevState => ({
       ...prevState,
       questionFlags: {
         ...prevState.questionFlags,
-        [questionIndex]: !prevState.questionFlags[questionIndex]
+        [prevState.currentQuestionIndex]: !prevState.questionFlags[prevState.currentQuestionIndex]
       }
     }));
   };
 
-  const navigateToQuestion = (questionIndex: number) => {
-    setState(prevState => {
-      if (questionIndex < 0 || questionIndex >= prevState.questions.length) {
-        return prevState;
-      }
-
-      const question = prevState.questions[questionIndex];
-      const hasAnswer = questionIndex in prevState.userAnswers;
-
-      return {
-        ...prevState,
-        currentQuestionIndex: questionIndex,
-        currentQuestion: question,
-        selectedAnswerIndex: hasAnswer ? prevState.userAnswers[questionIndex] : null,
-        isAnswerSubmitted: hasAnswer,
-        showExplanation: false
-      };
-    });
-  };
-
-  const handleRestartSimulation = () => {
+  const handleCompleteSimulation = () => {
     setState(prevState => ({
       ...prevState,
-      currentQuestionIndex: 0,
-      currentQuestion: prevState.questions[0] || null,
-      userAnswers: {},
-      questionFlags: {},
-      simulationComplete: false,
-      score: 0,
-      isAnswerSubmitted: false,
-      showExplanation: false,
-      answeredQuestionsCount: 0,
-      correctQuestionsCount: 0,
-      progressPercentage: 0,
-      currentScorePercentage: 0,
-      selectedAnswerIndex: null
+      simulationComplete: true,
+      score: prevState.correctQuestionsCount
     }));
   };
 
-  const saveProgress = () => {
-    const stateData: SimulationStateData = {
-      currentQuestionIndex: state.currentQuestionIndex,
-      userAnswers: state.userAnswers,
-      questionFlags: state.questionFlags,
-      remainingTime: state.remainingTime,
-      isTimerActive: state.isTimerActive,
-      examMode: state.examMode,
-      showAnswersImmediately: state.showAnswersImmediately,
-      answeredQuestionsCount: state.answeredQuestionsCount,
-      correctQuestionsCount: state.correctQuestionsCount,
-      progressPercentage: state.progressPercentage,
-      currentScorePercentage: state.currentScorePercentage,
-      selectedAnswerIndex: state.selectedAnswerIndex
-    };
-
-    saveSimulationProgress(simulationId, stateData);
+  const handleStartTimer = () => {
+    clearTimer();
   };
 
-  const resetProgress = () => {
-    localStorage.removeItem(`simulation_progress_${simulationId}`);
+  const handleStopTimer = () => {
+    clearTimer();
   };
 
-  const setSimulationComplete = (complete: boolean) => {
-    setState(prevState => ({
-      ...prevState,
-      simulationComplete: complete,
-      score: complete ? prevState.correctQuestionsCount : prevState.score
-    }));
+  const handleResetTimer = (newDuration?: number) => {
+    clearTimer();
   };
 
   return {
@@ -193,11 +146,10 @@ export const createSimulationActions = (
     handleNextQuestion,
     handlePreviousQuestion,
     handleToggleExplanation,
-    toggleQuestionFlag,
-    navigateToQuestion,
-    handleRestartSimulation,
-    saveProgress,
-    resetProgress,
-    setSimulationComplete
+    handleToggleQuestionFlag,
+    handleCompleteSimulation,
+    handleStartTimer,
+    handleStopTimer,
+    handleResetTimer
   };
 };

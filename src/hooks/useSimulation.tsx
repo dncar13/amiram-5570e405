@@ -68,7 +68,7 @@ export const useSimulation = (
   const examMode = isFullExam || examParam === '1' || (!practiceParam && (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)));
   const showAnswersImmediately = !examMode || practiceParam === '1';
 
-  const { initializeTimer, clearTimer } = useTimer(setState);
+  const { startTimer, stopTimer, resetTimer, initializeTimer, clearTimer } = useTimer(setState);
 
   // Auto-save progress for training mode only (not for full exam)
   useEffect(() => {
@@ -78,14 +78,11 @@ export const useSimulation = (
     }
   }, [state.answeredQuestionsCount, state.currentQuestionIndex, simulationId, examMode, state.progressLoaded, setNumber, type, difficulty, isFullExam]);
 
-  // Create simulation actions with scroll function
+  // Create simulation actions with correct parameters
   const actions = createSimulationActions(
     state, 
     setState, 
-    clearTimer, 
-    setNumber, 
-    type, 
-    difficulty,
+    clearTimer,
     scrollToQuestion
   );
 
