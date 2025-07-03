@@ -1,33 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from '@/integrations/supabase/types';
-import { AuthError } from '@supabase/supabase-js';
+// Re-export the shared Supabase client to maintain compatibility
+export { supabase } from '@/services/supabaseClient';
 
-const supabaseUrl = "https://llyunioulzfbgqvmeaxq.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxseXVuaW91bHpmYmdxdm1lYXhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAwMTc0MTksImV4cCI6MjA2NTU5MzQxOX0.11tR97IIeYJez9h8-JqgolQTKh-pLpxT6eevHcV9z7I";
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: true,
-    storageKey: 'amiram-auth-token',
-    flowType: 'pkce',
-  },
-  global: {
-    headers: {
-      'X-Client-Info': 'amiram-academy',
-    },
-  },
-  db: {
-    schema: 'public',
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 10,
-    },
-  },
-});
+// Keep all the auth helper functions but use the shared client
+import { supabase } from '@/services/supabaseClient';
+import type { AuthError } from '@supabase/supabase-js';
 
 // Helper function to get user-friendly error messages
 const getErrorMessage = (error: AuthError | Error | unknown): string => {
