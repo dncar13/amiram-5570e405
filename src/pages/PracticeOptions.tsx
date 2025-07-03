@@ -1,230 +1,293 @@
-
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-  BookOpen, 
-  RotateCcw, 
-  BookOpenCheck, 
-  ArrowLeft,
-  Gift,
-  Sparkles,
-  Clock,
-  Target,
-  Zap
-} from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useQuickPracticeProgress } from '@/hooks/useQuickPracticeProgress';
+import { 
+  ArrowRight,
+  Zap,
+  BookOpen,
+  Target,
+  Play,
+  RotateCcw
+} from 'lucide-react';
 
-interface PracticeOption {
+interface PracticeOptionData {
   type: string;
   title: string;
   description: string;
   icon: React.ReactNode;
   color: string;
-  bgColor: string;
   gradient: string;
-  features: string[];
 }
 
 const PracticeOptions: React.FC = () => {
   const navigate = useNavigate();
+  const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
+  
+  // Get quick practice progress and refresh it when component mounts
+  const { progress, isLoading, hasInProgressPractice, hasCompletedPractice, clearProgress, refreshProgress } = useQuickPracticeProgress(type || '');
 
-  const practiceOptions: PracticeOption[] = [
-    {
+  // Refresh progress when component becomes visible (when user returns from simulation)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        refreshProgress();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, [refreshProgress]);
+
+  // Also refresh when component mounts
+  useEffect(() => {
+    refreshProgress();
+  }, [refreshProgress]);
+
+  const questionTypesData: Record<string, PracticeOptionData> = {
+    'sentence-completion': {
       type: 'sentence-completion',
       title: 'השלמת משפטים',
-      description: 'תרגול בשאלות השלמת משפטים ומילים חסרות - חזק את אוצר המילים שלך',
+      description: 'שאלות השלמת משפטים ומילים חסרות',
       icon: <BookOpen className="w-8 h-8" />,
       color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
-      gradient: 'from-blue-600 to-blue-800',
-      features: [
-        'שאלות השלמת חסר',
-        'בחירת מילה מתאימה',
-        'הבנת הקשר המשפט',
-        'הרחבת אוצר מילים'
-      ]
+      gradient: 'from-blue-500 via-purple-500 to-cyan-500'
     },
-    {
+    'restatement': {
       type: 'restatement',
       title: 'ניסוח מחדש',
-      description: 'שאלות ניסוח מחדש והבעת רעיונות - שפר את כישורי ההבעה שלך',
-      icon: <RotateCcw className="w-8 h-8" />,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
-      gradient: 'from-emerald-600 to-teal-800',
-      features: [
-        'ניסוח מחדש של משפטים',
-        'הבעת רעיונות',
-        'שימור משמעות',
-        'שיפור כישורי הבעה'
-      ]
-    },
-    {
-      type: 'reading-comprehension',
-      title: 'הבנת הנקרא',
-      description: 'שאלות הבנת הנקרא עם קטעים מגוונים - פתח את כישורי ההבנה שלך',
-      icon: <BookOpenCheck className="w-8 h-8" />,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
-      gradient: 'from-purple-600 to-indigo-800',
-      features: [
-        'קטעי קריאה מגוונים',
-        'שאלות הבנה',
-        'ניתוח טקסט',
-        'מיומנות קריאה'
-      ]
-    },
-  ];
-
-  const handlePracticeClick = (type: string) => {
-    navigate(`/simulation/type/${type}?practice=1`);
+      description: 'שאלות ניסוח מחדש והבעת רעיונות',
+      icon: <Target className="w-8 h-8" />,
+      color: 'text-green-600',
+      gradient: 'from-green-500 via-teal-500 to-emerald-500'
+    }
   };
 
-  const handleBackClick = () => {
-    navigate('/simulations-entry');
+  const currentType = type ? questionTypesData[type] : null;
+
+  const difficultyLabels: Record<string, string> = {
+    'easy': 'קל',
+    'medium': 'בינוני', 
+    'hard': 'קשה'
   };
+
+  const handleQuickPractice = () => {
+    navigate(`/simulation/${type}/${difficulty}?limit=10`);
+  };
+
+  const handleChooseSet = () => {
+    navigate(`/simulation/type/${type}/${difficulty}/sets`);
+  };
+
+  const handleBack = () => {
+    navigate(`/simulation/type/${type}`);
+  };
+
+  const handleStartNewQuickPractice = () => {
+    if (hasInProgressPractice) {
+      clearProgress();
+    }
+    navigate(`/simulation/${type}?type=${type}&limit=10`);
+  };
+
+  if (!currentType || !difficulty) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <h1 className="text-3xl font-bold text-white mb-4">שגיאה</h1>
+          <button
+            onClick={() => navigate('/simulations-entry')}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+          >
+            חזור לדף הכניסה
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Get button text and icon based on progress
+  const getQuickPracticeButtonContent = () => {
+    if (isLoading) {
+      return {
+        text: 'טוען...',
+        icon: <Zap className="w-6 h-6 ml-3" />,
+        showProgress: false
+      };
+    }
+
+    if (hasInProgressPractice && progress) {
+      return {
+        text: 'המשך תרגול',
+        icon: <Play className="w-6 h-6 ml-3" />,
+        showProgress: true,
+        progressText: `בהתקדמות - ${progress.answeredQuestions}/${progress.totalQuestions} שאלות`
+      };
+    }
+
+    return {
+      text: 'התחל תרגול (10 שאלות)',
+      icon: <Zap className="w-6 h-6 ml-3" />,
+      showProgress: false
+    };
+  };
+
+  const buttonContent = getQuickPracticeButtonContent();
 
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50">
-        <div className="container mx-auto px-4 py-8">
-          {/* Header Section */}
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4">
+        <div className="max-w-6xl mx-auto">
+          
+          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="mb-8"
           >
-            <div className="flex items-center justify-center mb-6">
-              <Button
-                variant="ghost"
-                onClick={handleBackClick}
-                className="mr-4 hover:bg-emerald-100"
-              >
-                <ArrowLeft className="w-4 h-4 ml-2" />
-                חזרה
-              </Button>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-4">
-                  <Gift className="w-6 h-6 text-white" />
+            <button
+              onClick={handleBack}
+              className="flex items-center text-cyan-400 hover:text-cyan-300 mb-6 font-medium transition-colors duration-300"
+            >
+              <ArrowRight className="w-5 h-5 ml-2" />
+              חזור לבחירת רמת קושי
+            </button>
+            
+            <div className={`bg-gradient-to-r ${currentType.gradient} text-white rounded-3xl p-8 mb-8 border border-white/20 backdrop-blur-sm shadow-2xl`}>
+              <div className="flex items-center mb-6">
+                <div className="bg-white bg-opacity-20 rounded-2xl p-4 ml-4 backdrop-blur-sm">
+                  {currentType.icon}
                 </div>
-                <div className="text-right">
-                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                    תרגול חינמי
-                  </h1>
-                  <div className="flex items-center text-emerald-600">
-                    <Sparkles className="w-5 h-5 ml-2" />
-                    <span className="font-semibold">ללא הגבלות וללא תשלום</span>
-                  </div>
+                <div>
+                  <h1 className="text-4xl font-bold mb-2">{currentType.title}</h1>
+                  <p className="text-white text-opacity-90 text-xl">
+                    רמת קושי: {difficultyLabels[difficulty]}
+                  </p>
                 </div>
               </div>
             </div>
-            
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              בחר את סוג השאלות שברצונך להתרגל עליהן. כל התרגול הוא חינמי ללא הגבלות זמן או כמות שאלות
-            </p>
           </motion.div>
 
-          {/* Practice Options Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {practiceOptions.map((option, index) => (
-              <motion.div
-                key={option.type}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
+          {/* Practice Options */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            
+            {/* Quick Practice */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
+            >
+              <div className="flex items-center mb-6">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl p-3 ml-4">
+                  <Zap className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white">תרגול מהיר</h2>
+              </div>
+              
+              {/* Progress indicator */}
+              {buttonContent.showProgress && (
+                <div className="mb-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
+                  <p className="text-blue-400 font-medium text-center">
+                    {buttonContent.progressText}
+                  </p>
+                </div>
+              )}
+              
+              <p className="text-gray-300 mb-8 text-lg leading-relaxed">
+                {hasInProgressPractice 
+                  ? `המשך את התרגול שהתחלת - נותרו ${progress?.totalQuestions && progress?.answeredQuestions ? progress.totalQuestions - progress.answeredQuestions : 0} שאלות`
+                  : `התחל תרגול מיידי עם 10 שאלות רנדומליות ברמת קושי ${difficultyLabels[difficulty]}`
+                }
+              </p>
+              
+              <div className="space-y-3">
+                <button
+                  onClick={handleQuickPractice}
+                  className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20`}
+                >
+                  <div className="flex items-center justify-center">
+                    {buttonContent.icon}
+                    {buttonContent.text}
+                  </div>
+                </button>
+
+                {/* Start new practice button when there's progress */}
+                {hasInProgressPractice && (
+                  <button
+                    onClick={handleStartNewQuickPractice}
+                    className="w-full bg-gradient-to-r from-gray-600 to-gray-700 text-white py-3 px-6 rounded-xl font-medium text-base hover:shadow-lg transition-all duration-300 border border-white/10"
+                  >
+                    <div className="flex items-center justify-center">
+                      <RotateCcw className="w-5 h-5 ml-2" />
+                      התחל תרגול חדש
+                    </div>
+                  </button>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Choose Sets */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
+            >
+              <div className="flex items-center mb-6">
+                <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl p-3 ml-4">
+                  <BookOpen className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-3xl font-bold text-white">תרגול מתקדם</h2>
+              </div>
+              <p className="text-gray-300 mb-8 text-lg leading-relaxed">
+                בחר סט ספציפי לתרגול מסודר ומעקב התקדמות מדויק
+              </p>
+              
+              <button
+                onClick={handleChooseSet}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-600 text-white py-5 px-8 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] border border-white/20"
               >
-                <Card className="h-full border-2 border-gray-200 hover:border-emerald-300 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                      onClick={() => handlePracticeClick(option.type)}>
-                  <CardHeader className="text-center pb-4">
-                    <div className={`w-16 h-16 mx-auto mb-4 ${option.bgColor} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                      <div className={option.color}>
-                        {option.icon}
-                      </div>
-                    </div>
-                    <CardTitle className="text-2xl mb-2">{option.title}</CardTitle>
-                    <CardDescription className="text-base leading-relaxed">
-                      {option.description}
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="space-y-2 mb-6">
-                      {option.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center text-gray-600">
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full ml-3" />
-                          <span className="text-sm">{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <Button 
-                      className={`w-full bg-gradient-to-r ${option.gradient} hover:opacity-90 text-white py-3 text-base font-semibold group-hover:scale-105 transition-transform duration-200`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePracticeClick(option.type);
-                      }}
-                    >
-                      התחל תרגול
-                      <Target className="w-4 h-4 mr-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                <div className="flex items-center justify-center">
+                  <BookOpen className="w-6 h-6 ml-3" />
+                  בחר סט תרגול
+                </div>
+              </button>
+            </motion.div>
           </div>
 
-          {/* Benefits Section */}
+          {/* Info Section */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-white rounded-3xl shadow-lg p-8 border border-gray-200"
+            transition={{ delay: 0.5 }}
+            className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/10"
           >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                למה לבחור בתרגול החינמי שלנו?
-              </h2>
-              <p className="text-gray-600 text-lg">
-                קבל את כל הכלים שאתה צריך כדי להצליח במבחן הפסיכומטרי
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Gift className="w-6 h-6 text-emerald-600" />
+            <div className="text-center">
+              <h3 className="text-2xl font-bold text-white mb-4">מה ההבדל?</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+                  <h4 className="text-xl font-bold text-blue-400 mb-3">תרגול מהיר</h4>
+                  <ul className="text-gray-300 text-right space-y-2">
+                    <li>• 10 שאלות רנדומליות</li>
+                    <li>• זמין מיד ללא הכנה</li>
+                    <li>• מושלם להתחלה</li>
+                    <li>• בדיקה מהירה של הרמה</li>
+                  </ul>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">חינמי לחלוטין</h3>
-                <p className="text-gray-600">
-                  אין צורך בתשלום או הרשמה - תתחיל לתרגל מיד
-                </p>
-              </div>
 
-              <div className="text-center">
-                <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-6 h-6 text-blue-600" />
+                <div className="bg-gradient-to-br from-purple-500/10 to-pink-600/10 p-6 rounded-2xl border border-purple-500/20 backdrop-blur-sm">
+                  <h4 className="text-xl font-bold text-purple-400 mb-3">תרגול מתקדם</h4>
+                  <ul className="text-gray-300 text-right space-y-2">
+                    <li>• סטים מסודרים של שאלות</li>
+                    <li>• מעקב התקדמות מדויק</li>
+                    <li>• אפשרות לחזור למקום שעצרת</li>
+                    <li>• למידה מתמדת וממוקדת</li>
+                  </ul>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">ללא הגבלות</h3>
-                <p className="text-gray-600">
-                  תרגל כמה שבא לך, מתי שבא לך, ללא הגבלות זמן
-                </p>
-              </div>
-
-              <div className="text-center">
-                <div className="w-12 h-12 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Zap className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">הסברים מיידיים</h3>
-                <p className="text-gray-600">
-                  קבל הסבר מפורט לכל שאלה מיד אחרי הענייה
-                </p>
               </div>
             </div>
           </motion.div>

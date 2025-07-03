@@ -1,82 +1,211 @@
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as SonnerToaster } from "sonner";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { AuthProvider } from "@/context/AuthContext";
+import { SimulationSettingsProvider } from "@/context/SimulationSettingsContext";
+import { AnimatePresence, motion, Variants, Transition } from 'framer-motion';
+import { useEffect } from 'react';
 
-// Public pages
-import Index from "@/pages/Index";
-import Login from "@/pages/Login";
-import About from "@/pages/About";
-import Contact from "@/pages/Contact";
-import Premium from "@/pages/Premium";
+// Import all pages
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import SimulationSetup from "./pages/SimulationSetup";
+import Simulation from "./pages/Simulation";
+import TopicQuestions from "./pages/TopicQuestions"; 
+import SavedQuestionViewer from "./pages/SavedQuestionViewer";
+import NotFound from "./pages/NotFound";
+import Premium from "./pages/Premium";
+import ThankYou from "./pages/ThankYou";
+import Contact from "./pages/Contact";
+import About from "./pages/About";
+import AdminPanel from "./pages/AdminPanel";
+import UserAccount from "./pages/UserAccount";
+import QuestionsSets from "./pages/QuestionsSets";
+import QuestionsSetPreparation from "./pages/QuestionsSetPreparation";
+import Categories from "./pages/Categories";
+import SimulationsEntry from "./pages/SimulationsEntry";
+import SimulationByType from "./pages/SimulationByType";
+import SimulationByDifficulty from "./pages/SimulationByDifficulty";
+import FullSimulation from "./pages/FullSimulation";
+import SimulationHistory from "./pages/SimulationHistory";
+import ProgressStats from "./pages/ProgressStats";
+import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
+import PracticeOptions from "./pages/PracticeOptions";
+import PracticeSets from "./pages/PracticeSets";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-// Questions pages
-import QuestionsSets from "@/pages/QuestionsSets";
+// Enhanced ScrollToTop component with smooth behavior
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  
+  useEffect(() => {
+    // Smooth scroll with a slight delay for better UX
+    const timer = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, [pathname]);
+  
+  return null;
+};
 
-// Study pages
-import ReadingComprehensionTopics from "@/pages/ReadingComprehensionTopics";
+// Page transition variants
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    y: 20,
+    scale: 0.98
+  },
+  in: {
+    opacity: 1,
+    y: 0,
+    scale: 1
+  },
+  out: {
+    opacity: 0,
+    y: -20,
+    scale: 0.98
+  }
+};
 
-// Simulation pages
-import SimulationsEntry from "@/pages/SimulationsEntry";
-import Simulation from "@/pages/Simulation";
-import PracticeOptions from "@/pages/PracticeOptions";
-import SimulationHistory from "@/pages/SimulationHistory";
+const pageTransition: Transition = {
+  type: "tween",
+  ease: [0.4, 0, 0.2, 1], // Smooth easing curve (cubic-bezier)
+  duration: 0.4
+};
 
-// Create a client
+// Enhanced AnimatedRoutes component with better transitions
+const AnimatedRoutes = () => {
+  const location = useLocation();
+  
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={location.pathname}
+        initial="initial"
+        animate="in"
+        exit="out"
+        variants={pageVariants}
+        transition={pageTransition}
+        className="min-h-screen"
+      >
+        <Routes location={location}>
+          <Route path="/" element={<Index />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
+          <Route path="/topics" element={<SimulationsEntry />} />
+          <Route path="/topics/list" element={<SimulationsEntry />} />
+          <Route path="/simulations-entry/list" element={<SimulationsEntry />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/topics/:topicId/intro" element={<SimulationSetup />} />
+          <Route path="/simulation/:topicId" element={<Simulation />} />
+          <Route path="/questions" element={<TopicQuestions />} />
+          <Route path="/saved-questions" element={<SavedQuestionViewer />} />
+          <Route path="/questions/category/:categoryId" element={<TopicQuestions />} />
+          <Route path="/premium" element={<Premium />} />
+          <Route path="/thank-you" element={<ThankYou />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />          <Route path="/account" element={
+            <ProtectedRoute requireAuth={true}>
+              <UserAccount />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/questions" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/topics" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/questions-sets" element={<QuestionsSets />} />
+          <Route path="/questions-set/:setId/intro" element={<QuestionsSetPreparation />} />
+          <Route path="/questions-set/:setId" element={<Simulation />} />
+          
+          {/* New Reading Comprehension Routes */}
+          <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
+          <Route path="/simulation/story/:storyId" element={<Simulation />} />
+          
+          {/* Existing Simulations Entry Routes */}
+          <Route path="/simulations-entry" element={<SimulationsEntry />} />
+          <Route path="/simulation/full" element={<FullSimulation />} />
+          <Route path="/simulation/by-type" element={<SimulationsEntry />} />
+          <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
+          <Route path="/simulation-history" element={
+            <ProtectedRoute requireAuth={true}>
+              <SimulationHistory />
+            </ProtectedRoute>
+          } />
+          <Route path="/progress-stats" element={
+            <ProtectedRoute requireAuth={true}>
+              <ProgressStats />
+            </ProtectedRoute>
+          } />
+          <Route path="/simulation/type/:type" element={<SimulationByType />} />
+          <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
+          
+          {/* Practice options and sets routes */}
+          <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
+          <Route path="/simulation/type/:type/:difficulty/sets" element={<PracticeSets />} />
+          
+          {/* Individual simulation routes */}
+          <Route path="/simulation/:type/:difficulty" element={<Simulation />} />
+          <Route path="/simulation/:type/timed" element={<Simulation />} />
+          <Route path="/simulation/:type/practice" element={<Simulation />} />
+          <Route path="/simulation/:type/adaptive" element={<Simulation />} />
+          <Route path="/simulation/difficulty/:level/:type" element={<Simulation />} />
+          <Route path="/simulation/difficulty/:level/timed" element={<Simulation />} />
+          <Route path="/simulation/difficulty/:level/adaptive" element={<Simulation />} />
+          <Route path="/simulation/full/start" element={<Simulation />} />
+          
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes
     },
   },
 });
 
-function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
       <AuthProvider>
-        <Router>
-          <div className="min-h-screen bg-background">
-            <Routes>
-              {/* Public routes */}
-              <Route path="/" element={<Index />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/premium" element={<Premium />} />
-
-              {/* Questions routes */}
-              <Route path="/questions-sets" element={<QuestionsSets />} />
-
-              {/* Study routes */}
-              <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
-
-              {/* Simulation routes */}
-              <Route path="/simulations-entry/*" element={<SimulationsEntry />} />
-              <Route path="/practice-options" element={<PracticeOptions />} />
-              <Route path="/simulation/:topicId" element={<Simulation />} />
-              <Route path="/simulation/set/:setId" element={<Simulation />} />
-              <Route path="/simulation/difficulty/:difficulty/:type" element={<Simulation />} />
-              <Route path="/simulation/type/:type" element={<Simulation />} />
-              <Route path="/simulation/full" element={<Simulation />} />
-              <Route path="/simulation/story/:storyId" element={<Simulation />} />
-              <Route path="/simulation-history" element={
-                <ProtectedRoute requireAuth={true}>
-                  <SimulationHistory />
-                </ProtectedRoute>
-              } />
-            </Routes>
+        <SimulationSettingsProvider>
+          <div dir="rtl" className="rtl">
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <AnimatedRoutes />
+            </BrowserRouter>
           </div>
-          <Toaster />
-          <SonnerToaster position="top-center" richColors />
-        </Router>
+        </SimulationSettingsProvider>
       </AuthProvider>
-    </QueryClientProvider>
-  );
-}
+    </TooltipProvider>
+  </QueryClientProvider>
+);
 
 export default App;
