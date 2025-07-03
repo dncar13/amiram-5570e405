@@ -1,4 +1,3 @@
-
 /**
  * Simulation Service
  * 
@@ -29,13 +28,16 @@ export class SimulationService {
     try {
       const { userId, difficulty, sessionType, questionLimit } = params;
       
+      // Convert difficulty for database storage - handle 'mixed' case
+      const dbDifficulty = difficulty === 'mixed' ? 'medium' : difficulty;
+      
       // Create session in database
       const { data: session, error } = await supabase
         .from('simulation_sessions')
         .insert({
           user_id: userId,
           session_type: sessionType,
-          difficulty: difficulty === 'mixed' ? 'medium' : difficulty,
+          difficulty: dbDifficulty,
           question_limit: questionLimit,
           status: 'in_progress',
           started_at: new Date().toISOString()

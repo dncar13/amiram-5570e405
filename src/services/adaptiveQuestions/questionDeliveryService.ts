@@ -32,8 +32,8 @@ export class QuestionDeliveryService {
         .select('*')
         .eq('is_active', true);
 
-      // Apply difficulty filter if specified
-      if (difficulty !== 'mixed') {
+      // Apply difficulty filter if specified and not mixed
+      if (difficulty && difficulty !== 'mixed') {
         query = query.eq('difficulty', difficulty);
       }
 

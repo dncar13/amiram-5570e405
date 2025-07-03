@@ -1,3 +1,4 @@
+
 /**
  * TypeScript type definitions for Adaptive Question Delivery System
  */
@@ -156,7 +157,8 @@ export interface UserAnalytics {
 // ENUMS AND CONSTANTS
 // =====================================================
 
-export type DifficultyLevel = 'easy' | 'medium' | 'hard';
+// Fixed to include 'mixed' as a valid difficulty level
+export type DifficultyLevel = 'easy' | 'medium' | 'hard' | 'mixed';
 
 export type SessionType = 
   | 'quick'           // 10-15 questions
@@ -192,7 +194,7 @@ export interface StartSimulationResponse {
   questions: Question[];
   sessionConfig: {
     sessionType: SessionType;
-    difficulty: DifficultyLevel | 'mixed';
+    difficulty: DifficultyLevel;
     totalQuestions: number;
     estimatedTimeMinutes: number;
   };
@@ -202,7 +204,7 @@ export interface StartSimulationResponse {
 export interface SubmitAnswerRequest {
   sessionId: string;
   questionId: number;
-  answerSelected: number;
+  selectedAnswer: number; // Added this missing property
   timeSpentSeconds: number;
   flagged?: boolean;
   notes?: string;
