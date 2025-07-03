@@ -21,7 +21,8 @@ import {
   ArrowUpRight,
   Zap,
   Shield,
-  BarChart3
+  BarChart3,
+  Gift
 } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -90,14 +91,14 @@ const SimulationsEntry: React.FC = () => {
       mode: '🎯 מצב מבחן'
     },
     {
-      id: 'practice-by-type',
-      title: 'תרגול לפי סוג שאלה',
-      description: 'השלמת משפטים, ניסוח מחדש, הבנת הנקרא',
-      icon: <Target className="w-8 h-8" />,
+      id: 'free-practice',
+      title: 'סימולציה חינמית',
+      description: 'תרגול חינמי עם שאלות מכל הסוגים - ללא הגבלות',
+      icon: <Gift className="w-8 h-8" />,
       gradient: 'from-emerald-600 via-green-500 to-teal-600',
-      path: '/simulation/by-type',
-      stats: 'גמיש',
-      mode: '📚 מצב תרגול'
+      path: '/practice-options',
+      stats: 'ללא הגבלה',
+      mode: '🎁 חינמי לחלוטין'
     },
     {
       id: 'history',
@@ -374,17 +375,17 @@ const SimulationsEntry: React.FC = () => {
             ))}
           </motion.div>
 
-          {/* Question Types Section */}
+          {/* Free Practice Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="max-w-4xl mx-auto"
           >
-            <div className="bg-gray-800/50 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-700/50 p-4 md:p-10">
+            <div className="bg-gradient-to-br from-emerald-500/10 to-teal-600/10 backdrop-blur-xl rounded-3xl shadow-xl border border-emerald-500/20 p-4 md:p-10">
               <div className="flex items-center mb-6 md:mb-8">
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-3 md:ml-4">
-                  <Target className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  <Gift className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
                 <div>
                   <h2 className="text-xl md:text-3xl font-bold text-white"
@@ -392,9 +393,9 @@ const SimulationsEntry: React.FC = () => {
                         fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
                         fontWeight: '700'
                       }}>
-                    תרגול לפי סוג שאלה
+                    תרגול חינמי לפי סוג שאלה
                   </h2>
-                  <p className="text-gray-400 mt-1 text-sm md:text-base">מצב תרגול עם הסברים מיידיים</p>
+                  <p className="text-gray-400 mt-1 text-sm md:text-base">בחר סוג שאלה ותרגל חינם ללא הגבלות</p>
                 </div>
               </div>
 
@@ -413,7 +414,7 @@ const SimulationsEntry: React.FC = () => {
                     onClick={() => handleQuestionTypeClick(type.type)}
                     className="group cursor-pointer"
                   >
-                    <div className="flex items-center p-4 md:p-6 rounded-2xl bg-gray-700/30 hover:bg-gray-600/50 hover:shadow-lg border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300">
+                    <div className="flex items-center p-4 md:p-6 rounded-2xl bg-gray-700/30 hover:bg-gray-600/50 hover:shadow-lg border border-gray-600/30 hover:border-emerald-500/50 transition-all duration-300">
                       <motion.div 
                         className={`${type.bgColor} ${type.color} p-3 md:p-4 rounded-xl ml-4 md:ml-6`}
                         whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -428,7 +429,7 @@ const SimulationsEntry: React.FC = () => {
                       </div>
                       
                       <motion.div
-                        className="text-gray-400 group-hover:text-gray-300 transition-colors flex-shrink-0"
+                        className="text-gray-400 group-hover:text-emerald-400 transition-colors flex-shrink-0"
                         animate={{ x: 0 }}
                         whileHover={{ x: 5 }}
                       >

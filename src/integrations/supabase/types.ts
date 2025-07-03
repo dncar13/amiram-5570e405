@@ -9,7 +9,140 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      questions: {
+        Row: {
+          correct_answer: number
+          created_at: string | null
+          difficulty: string | null
+          explanation: string | null
+          id: string
+          is_active: boolean | null
+          metadata: Json | null
+          options: Json
+          original_id: number | null
+          passage_text: string | null
+          passage_title: string | null
+          tags: Json | null
+          text: string
+          topic_id: number | null
+          type: string
+        }
+        Insert: {
+          correct_answer: number
+          created_at?: string | null
+          difficulty?: string | null
+          explanation?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          options: Json
+          original_id?: number | null
+          passage_text?: string | null
+          passage_title?: string | null
+          tags?: Json | null
+          text: string
+          topic_id?: number | null
+          type: string
+        }
+        Update: {
+          correct_answer?: number
+          created_at?: string | null
+          difficulty?: string | null
+          explanation?: string | null
+          id?: string
+          is_active?: boolean | null
+          metadata?: Json | null
+          options?: Json
+          original_id?: number | null
+          passage_text?: string | null
+          passage_title?: string | null
+          tags?: Json | null
+          text?: string
+          topic_id?: number | null
+          type?: string
+        }
+        Relationships: []
+      }
+      simulations: {
+        Row: {
+          correct_answers: number | null
+          created_at: string | null
+          id: string
+          score: number | null
+          status: string | null
+          time_completed: string | null
+          time_limit_minutes: number | null
+          time_started: string | null
+          total_questions: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          correct_answers?: number | null
+          created_at?: string | null
+          id?: string
+          score?: number | null
+          status?: string | null
+          time_completed?: string | null
+          time_limit_minutes?: number | null
+          time_started?: string | null
+          total_questions?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          correct_answers?: number | null
+          created_at?: string | null
+          id?: string
+          score?: number | null
+          status?: string | null
+          time_completed?: string | null
+          time_limit_minutes?: number | null
+          time_started?: string | null
+          total_questions?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "simulations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean | null
+          name: string | null
+          role: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id: string
+          is_active?: boolean | null
+          name?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string | null
+          role?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
