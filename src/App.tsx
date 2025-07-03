@@ -9,35 +9,21 @@ import ProtectedRoute from "@/components/auth/ProtectedRoute";
 // Public pages
 import Index from "@/pages/Index";
 import Login from "@/pages/Login";
-import Register from "@/pages/Register";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import Premium from "@/pages/Premium";
-import PasswordReset from "@/pages/PasswordReset";
-
-// Account pages
-import Account from "@/pages/Account";
 
 // Questions pages
-import QuestionsMenu from "@/pages/QuestionsMenu";
-import Questions from "@/pages/Questions";
 import QuestionsSets from "@/pages/QuestionsSets";
-import QuestionSetIntro from "@/pages/QuestionSetIntro";
-import SavedQuestions from "@/pages/SavedQuestions";
 
 // Study pages
-import StudyModes from "@/pages/StudyModes";
-import ReadingComprehension from "@/pages/ReadingComprehension";
-import StorySimulation from "@/pages/StorySimulation";
+import ReadingComprehensionTopics from "@/pages/ReadingComprehensionTopics";
 
 // Simulation pages
 import SimulationsEntry from "@/pages/SimulationsEntry";
 import Simulation from "@/pages/Simulation";
 import PracticeOptions from "@/pages/PracticeOptions";
 import SimulationHistory from "@/pages/SimulationHistory";
-
-// Practice pages
-import PracticeDifficulty from "@/pages/PracticeDifficulty";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -59,30 +45,15 @@ function App() {
               {/* Public routes */}
               <Route path="/" element={<Index />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/premium" element={<Premium />} />
-              <Route path="/password-reset" element={<PasswordReset />} />
-
-              {/* Account routes - protected */}
-              <Route path="/account/*" element={
-                <ProtectedRoute requireAuth={true}>
-                  <Account />
-                </ProtectedRoute>
-              } />
 
               {/* Questions routes */}
-              <Route path="/questions-menu" element={<QuestionsMenu />} />
-              <Route path="/questions/:topicId" element={<Questions />} />
               <Route path="/questions-sets" element={<QuestionsSets />} />
-              <Route path="/questions-set/:setId/intro" element={<QuestionSetIntro />} />
-              <Route path="/saved-questions" element={<SavedQuestions />} />
 
               {/* Study routes */}
-              <Route path="/study-modes" element={<StudyModes />} />
-              <Route path="/reading-comprehension" element={<ReadingComprehension />} />
-              <Route path="/reading-comprehension/:storyId" element={<StorySimulation />} />
+              <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
 
               {/* Simulation routes */}
               <Route path="/simulations-entry/*" element={<SimulationsEntry />} />
@@ -98,9 +69,6 @@ function App() {
                   <SimulationHistory />
                 </ProtectedRoute>
               } />
-
-              {/* Practice routes */}
-              <Route path="/practice/:difficulty" element={<PracticeDifficulty />} />
             </Routes>
           </div>
           <Toaster />
