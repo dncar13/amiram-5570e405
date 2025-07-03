@@ -149,6 +149,12 @@ export const DIFFICULTY_LEVELS: Record<DifficultyLevel, {
     description: 'Advanced concepts and complex scenarios',
     estimatedTimePerQuestion: 75,
     passingScore: 60
+  },
+  mixed: {
+    name: 'Mixed',
+    description: 'Questions from all difficulty levels combined',
+    estimatedTimePerQuestion: 60,
+    passingScore: 65
   }
 };
 
