@@ -35,6 +35,7 @@ import ProgressStats from "./pages/ProgressStats";
 import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
+import AdaptiveSimulation from "./pages/AdaptiveSimulation";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 // Enhanced ScrollToTop component with smooth behavior
@@ -162,6 +163,9 @@ const AnimatedRoutes = () => {
           {/* Practice options and sets routes */}
           <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
           <Route path="/simulation/type/:type/:difficulty/sets" element={<PracticeSets />} />
+          
+          {/* Adaptive Simulation Route */}
+          <Route path="/adaptive-simulation" element={<AdaptiveSimulation />} />
           
           {/* Individual simulation routes */}
           <Route path="/simulation/:type/:difficulty" element={<Simulation />} />
