@@ -1,4 +1,3 @@
-
 /**
  * TypeScript type definitions for Adaptive Question Delivery System
  */
@@ -43,18 +42,14 @@ export interface SimulationSession {
   id: string;
   userId: string;
   sessionType: SessionType;
-  difficulty: DifficultyLevel | 'mixed';
-  topicFilter?: string[];
+  difficulty: DifficultyLevel;
   questionLimit: number;
   questionsAttempted: number;
   questionsCorrect: number;
-  totalTimeSeconds: number;
-  scorePercentage: number;
-  status: SessionStatus;
+  status: 'in_progress' | 'completed' | 'abandoned';
   startedAt: Date;
-  completedAt?: Date;
-  questionIds: number[];
-  userAgent?: string;
+  completedAt: Date | null;
+  totalTimeSeconds: number;
 }
 
 export interface QuestionInteraction {
@@ -103,25 +98,12 @@ export interface DeliveryResult {
 
 export interface UserPreferences {
   userId: string;
-  
-  // Core simulation preferences
   preferredDifficulty: DifficultyLevel;
   questionsPerSession: number;
   deliveryStrategy: DeliveryStrategy;
-  preferredQuestionGroup?: string;
-  
-  // UI preferences
   showExplanations: boolean;
   enableSound: boolean;
-  theme: 'light' | 'dark' | 'system';
-  fontSize: 'small' | 'medium' | 'large';
-  
-  // Notifications
-  dailyReminderEnabled: boolean;
-  achievementNotifications: boolean;
-  
-  // Analytics
-  allowAnalytics: boolean;
+  preferredQuestionGroup?: string;
 }
 
 // Add missing types

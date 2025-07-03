@@ -1,4 +1,3 @@
-
 /**
  * Adaptive Simulation Component
  * 
@@ -102,7 +101,6 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
   const progressTrackingService = useMemo(() => new ProgressTrackingService(), []);
   const simulationService = useMemo(() => new SimulationService(), []);
-  const userPreferencesService = useMemo(() => new UserPreferencesService(), []);
 
   // Initialize simulation
   const initializeSimulation = useCallback(async () => {
@@ -126,7 +124,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
 
       setSessionId(sessionResult.sessionId);
 
-      // Get initial questions
+      // Get personalized questions
       const questions = await questionDeliveryService.getPersonalizedQuestions({
         userId: currentUser.id,
         difficulty: initialDifficulty,
@@ -135,8 +133,12 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         sessionId: sessionResult.sessionId
       });
 
+      if (!questions.questions || questions.questions.length === 0) {
+        throw new Error('לא נמצאו שאלות מתאימות לפרמטרים שנבחרו');
+      }
+
       setDeliveryResult(questions);
-      setCurrentQuestion(questions.questions[0] || null);
+      setCurrentQuestion(questions.questions[0]);
       setTotalQuestions(questions.questions.length);
       setQuestionIndex(0);
       setIsInitialized(true);
@@ -381,6 +383,16 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
           <CardTitle className="text-lg">
             {currentQuestion.text}
           </CardTitle>
+          {currentQuestion.passageText && (
+            <div className="mt-4 p-4 bg-slate-50 rounded-lg border">
+              <h4 className="font-medium text-slate-700 mb-2">
+                {currentQuestion.passageTitle || 'קטע לקריאה:'}
+              </h4>
+              <div className="text-slate-600 whitespace-pre-wrap text-left" dir="ltr">
+                {currentQuestion.passageText}
+              </div>
+            </div>
+          )}
         </CardHeader>
         <CardContent>
           {/* Question Options */}
