@@ -1,3 +1,4 @@
+
 /**
  * Simulation Tracking Hook
  * 
@@ -87,8 +88,8 @@ export const useSimulationTracking = (options: UseSimulationTrackingOptions = {}
         ...prev,
         progress,
         analytics,
-        accuracy: progress?.accuracy || 0,
-        streak: progress?.currentStreak || 0,
+        accuracy: progress?.averageAccuracy || 0,
+        streak: progress?.currentStreakDays || 0,
         isLoading: false
       }));
 

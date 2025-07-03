@@ -1,3 +1,4 @@
+
 /**
  * TypeScript type definitions for Adaptive Question Delivery System
  */
@@ -106,7 +107,7 @@ export interface UserPreferences {
   // Core simulation preferences
   preferredDifficulty: DifficultyLevel;
   questionsPerSession: number;
-  deliveryStrategy: string;
+  deliveryStrategy: DeliveryStrategy;
   preferredQuestionGroup?: string;
   
   // UI preferences
@@ -121,6 +122,52 @@ export interface UserPreferences {
   
   // Analytics
   allowAnalytics: boolean;
+}
+
+// Add missing types
+export interface QuestionDeliveryResult {
+  questions: Question[];
+  strategy: DeliveryStrategy;
+  metadata: {
+    totalPoolSize: number;
+    unseenPoolSize: number;
+    algorithmVersion: string;
+    selectionTimeMs: number;
+    weightFactors: Record<string, number>;
+  };
+}
+
+export interface SimulationSessionResult {
+  sessionId: string;
+  score: number;
+  totalQuestions: number;
+  accuracy: number;
+  timeSpent: number;
+  completedAt: Date;
+}
+
+export interface QuestionAnswer {
+  questionId: number;
+  selectedAnswer: number;
+  isCorrect: boolean;
+  timeSpent: number;
+  answeredAt: Date;
+  sessionId: string;
+  difficulty: DifficultyLevel;
+}
+
+export interface UserAnalytics {
+  overall: {
+    accuracy: number;
+    totalQuestions: number;
+    currentStreak: number;
+    averageTime: number;
+  };
+  byDifficulty?: {
+    [key: string]: {
+      accuracy: number;
+    };
+  };
 }
 
 // =====================================================

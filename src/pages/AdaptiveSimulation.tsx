@@ -1,3 +1,4 @@
+
 /**
  * Adaptive Simulation Page
  * 
@@ -412,7 +413,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                           <Label className="text-sm font-medium mb-3 block">אסטרטגיית בחירת שאלות</Label>
                           <Select 
                             value={deliveryStrategy} 
-                            onValueChange={(value: DeliveryStrategy) => setDeliveryStrategy(value)}
+                            onValueChange={(value) => setDeliveryStrategy(value as DeliveryStrategy)}
                             disabled={!isPremium}
                           >
                             <SelectTrigger>
