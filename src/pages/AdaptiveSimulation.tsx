@@ -95,7 +95,6 @@ const AdaptiveSimulationPage: React.FC = () => {
   // Core settings that determine practice vs exam mode
   const [showExplanations, setShowExplanations] = useState(true);
   const [showTimer, setShowTimer] = useState(false);
-  const [enableSound, setEnableSound] = useState(false);
   
   // Question type selection state
   const [selectedQuestionType, setSelectedQuestionType] = useState<string>('mixed');
@@ -133,7 +132,6 @@ const AdaptiveSimulationPage: React.FC = () => {
         setQuestionLimit(preferences.questionsPerSession);
         setDeliveryStrategy(preferences.deliveryStrategy);
         setShowExplanations(preferences.showExplanations);
-        setEnableSound(preferences.enableSound);
         if (preferences.preferredQuestionGroup) {
           setSelectedQuestionType(preferences.preferredQuestionGroup);
         }
@@ -199,7 +197,6 @@ const AdaptiveSimulationPage: React.FC = () => {
         questionsPerSession: questionLimit,
         deliveryStrategy,
         showExplanations,
-        enableSound,
         preferredQuestionGroup: selectedQuestionType
       }).catch(console.error);
     }
@@ -239,21 +236,14 @@ const AdaptiveSimulationPage: React.FC = () => {
 
   if (isSimulationActive) {
     return (
-      <RTLWrapper>
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-          <Header />
-          <main className="container mx-auto px-4 py-8">
-            <AdaptiveSimulation
-              initialDifficulty={difficulty}
-              sessionType={getSessionType()}
-              questionLimit={questionLimit}
-              questionGroup={toQuestionGroup(selectedQuestionType)}
-              onComplete={handleSimulationComplete}
-              onError={handleSimulationError}
-            />
-          </main>
-        </div>
-      </RTLWrapper>
+      <AdaptiveSimulation
+        initialDifficulty={difficulty}
+        sessionType={getSessionType()}
+        questionLimit={questionLimit}
+        questionGroup={toQuestionGroup(selectedQuestionType)}
+        onComplete={handleSimulationComplete}
+        onError={handleSimulationError}
+      />
     );
   }
 
@@ -354,13 +344,15 @@ const AdaptiveSimulationPage: React.FC = () => {
                     </div>
 
                     {/* Practice/Exam Mode Settings */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div className="space-y-4 mb-6 p-4 bg-gray-50 rounded-lg">
                       <div className="flex items-center justify-between">
                         <Label htmlFor="explanations" className="text-sm font-medium">הצג הסברים אחרי כל תשובה</Label>
                         <Switch 
                           id="explanations" 
                           checked={showExplanations} 
                           onCheckedChange={setShowExplanations}
+                          className="data-[state=checked]:bg-blue-600"
+                          dir="rtl"
                         />
                       </div>
                       <div className="flex items-center justify-between">
@@ -369,6 +361,8 @@ const AdaptiveSimulationPage: React.FC = () => {
                           id="timer" 
                           checked={showTimer} 
                           onCheckedChange={setShowTimer}
+                          className="data-[state=checked]:bg-blue-600"
+                          dir="rtl"
                         />
                       </div>
                     </div>
@@ -399,49 +393,6 @@ const AdaptiveSimulationPage: React.FC = () => {
                     </Button>
                   </CardContent>
                 </Card>
-
-                {/* Advanced Settings - Simplified */}
-                {isPremium && (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Settings className="h-5 w-5 text-slate-600" />
-                        הגדרות מתקדמות
-                        <Badge variant="secondary">Premium</Badge>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <Label className="text-sm font-medium mb-3 block">אסטרטגיית בחירת שאלות</Label>
-                          <Select 
-                            value={deliveryStrategy} 
-                            onValueChange={(value) => setDeliveryStrategy(value as DeliveryStrategy)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="unseen_priority">עדיפות לשאלות חדשות</SelectItem>
-                              <SelectItem value="random_weighted">בחירה מותאמת</SelectItem>
-                              <SelectItem value="spaced_repetition">חזרה מרווחת</SelectItem>
-                              <SelectItem value="mistake_review">חזרה על טעויות</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <Label htmlFor="sound" className="text-sm font-medium">אפקטי קול</Label>
-                          <Switch 
-                            id="sound" 
-                            checked={enableSound} 
-                            onCheckedChange={setEnableSound}
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )}
               </div>
 
               {/* Sidebar - Stats and Progress */}
@@ -500,7 +451,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                       <div>
                         <h4 className="text-sm font-medium mb-3">ביצועים לפי רמת קושי</h4>
                         <div className="space-y-2">
-                          {Object.entries(userStats.byDifficulty || {}).map(([diff, data]: [string, any]) => (
+                          {Object.entries(userStats.byDifficulty || {}).map(([diff, data]: [string, { accuracy: number }]) => (
                             <div key={diff} className="flex items-center justify-between text-sm">
                               <Badge className={getDifficultyColor(diff as DifficultyLevel)} variant="outline">
                                 {diff === 'easy' ? 'קל' : diff === 'medium' ? 'בינוני' : 'קשה'}

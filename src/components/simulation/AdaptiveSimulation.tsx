@@ -24,6 +24,9 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Brain, Target, TrendingUp, Clock, AlertCircle, RefreshCw } from 'lucide-react';
+import QuestionCard from './QuestionCard';
+import NavigationPanel from './NavigationPanel';
+import { RTLWrapper } from '@/components/ui/rtl-wrapper';
 
 // Hebrew error message mapping
 const ERROR_MESSAGES = {
@@ -96,6 +99,8 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
+  const [questionFlags, setQuestionFlags] = useState<Record<number, boolean>>({});
 
   // Initialize services
   const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
@@ -164,7 +169,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentUser?.id, initialDifficulty, sessionType, questionLimit, simulationService, questionDeliveryService, onError]);
+  }, [currentUser?.id, initialDifficulty, sessionType, questionLimit, questionGroup, simulationService, questionDeliveryService, onError]);
 
   // Submit answer
   const submitAnswer = useCallback(async () => {
@@ -187,6 +192,12 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         difficulty: initialDifficulty
       });
 
+      // Update userAnswers state for UI compatibility
+      setUserAnswers(prev => ({
+        ...prev,
+        [questionIndex]: selectedAnswer
+      }));
+      
       if (isCorrect) {
         setScore(prev => prev + 1);
       }
@@ -206,7 +217,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty]);
+  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex]);
 
   // Move to next question
   const nextQuestion = useCallback(async () => {
@@ -275,202 +286,215 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   // Loading state
   if (isLoading && !isInitialized) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-blue-600" />
-          <p className="text-lg font-medium text-slate-700">מכין סימולציה מותאמת אישית...</p>
-          <p className="text-sm text-slate-500 mt-2">מנתח את ההיסטוריה שלך ובוחר שאלות מתאימות</p>
+      <RTLWrapper>
+        <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen">
+          <div className="flex items-center justify-center h-64">
+            <div className="flex flex-col items-center">
+              <div className="relative w-12 h-12 mb-4">
+                <div className="absolute top-0 left-0 w-12 h-12 border-4 border-t-blue-600 border-r-blue-600/50 border-b-blue-600/30 border-l-blue-600/10 rounded-full animate-spin"></div>
+              </div>
+              <p className="text-lg font-medium text-slate-300">מכין סימולציה מותאמת אישית...</p>
+              <p className="text-sm text-slate-500 mt-2">מנתח את ההיסטוריה שלך ובוחר שאלות מתאימות</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </RTLWrapper>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <Card className="max-w-lg mx-auto border-red-200 bg-red-50">
-        <CardHeader>
-          <CardTitle className="text-center text-red-600 flex items-center justify-center gap-2">
-            <AlertCircle className="h-6 w-6" />
-            שגיאה בטעינת הסימולציה
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="text-center space-y-4">
-          <p className="text-slate-700 bg-white p-3 rounded-md border">{error}</p>
-          <div className="flex flex-col sm:flex-row gap-2 justify-center">
-            <Button 
-              onClick={initializeSimulation} 
-              disabled={isLoading}
-              className="flex items-center gap-2"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="h-4 w-4" />
-              )}
-              נסה שוב
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={() => window.location.reload()}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className="h-4 w-4" />
-              רענן דף
-            </Button>
-          </div>
-          <p className="text-xs text-slate-500">
-            אם השגיאה נמשכת, אנא פנה לתמיכה הטכנית
-          </p>
-        </CardContent>
-      </Card>
+      <RTLWrapper>
+        <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-4 py-8">
+          <Card className="max-w-lg mx-auto border-red-500/50 bg-red-900/20 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-center text-red-300 flex items-center justify-center gap-2">
+                <AlertCircle className="h-6 w-6" />
+                שגיאה בטעינת הסימולציה
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="text-center space-y-4">
+              <p className="text-red-200 bg-red-950/50 p-3 rounded-md border border-red-500/30">{error}</p>
+              <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                <Button 
+                  onClick={initializeSimulation} 
+                  disabled={isLoading}
+                  className="flex items-center gap-2 bg-red-700/80 hover:bg-red-600/80 text-white"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <RefreshCw className="h-4 w-4" />
+                  )}
+                  נסה שוב
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => window.location.reload()}
+                  className="flex items-center gap-2 border-slate-500 text-slate-200 hover:bg-slate-700/50"
+                >
+                  <RefreshCw className="h-4 w-4" />
+                  רענן דף
+                </Button>
+              </div>
+              <p className="text-xs text-slate-400">
+                אם השגיאה נמשכת, אנא פנה לתמיכה הטכנית
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </RTLWrapper>
     );
   }
 
   // No questions state
   if (!currentQuestion || !deliveryResult) {
     return (
-      <Card className="max-w-lg mx-auto">
-        <CardHeader>
-          <CardTitle className="text-center">אין שאלות זמינות</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center">
-          <p className="text-slate-600 mb-4">לא נמצאו שאלות מתאימות לפרמטרים הנבחרים</p>
-          <Button onClick={initializeSimulation} disabled={isLoading}>
-            נסה שוב
-          </Button>
-        </CardContent>
-      </Card>
+      <RTLWrapper>
+        <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-4 py-8">
+          <Card className="max-w-lg mx-auto bg-slate-800/60 border-slate-600/50">
+            <CardHeader>
+              <CardTitle className="text-center text-slate-200">אין שאלות זמינות</CardTitle>
+            </CardHeader>
+            <CardContent className="text-center">
+              <p className="text-slate-400 mb-4">לא נמצאו שאלות מתאימות לפרמטרים הנבחרים</p>
+              <Button 
+                onClick={initializeSimulation} 
+                disabled={isLoading}
+                className="bg-blue-700/80 hover:bg-blue-600/80 text-white"
+              >
+                נסה שוב
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </RTLWrapper>
     );
   }
 
+  // Convert to arrays for compatibility
+  const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
+  const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
+
+  // Handle navigation and flags
+  const handleNavigateToQuestion = (index: number) => {
+    if (deliveryResult?.questions[index]) {
+      setQuestionIndex(index);
+      setCurrentQuestion(deliveryResult.questions[index]);
+      setSelectedAnswer(null);
+      setIsAnswerSubmitted(false);
+      setShowExplanation(false);
+    }
+  };
+
+  const handleToggleFlag = () => {
+    setQuestionFlags(prev => ({
+      ...prev,
+      [questionIndex]: !prev[questionIndex]
+    }));
+  };
+
+  const handleResetProgress = () => {
+    setUserAnswers({});
+    setQuestionFlags({});
+    setScore(0);
+    setAnsweredQuestions(0);
+    setQuestionIndex(0);
+    setCurrentQuestion(deliveryResult?.questions[0] || null);
+    setSelectedAnswer(null);
+    setIsAnswerSubmitted(false);
+    setShowExplanation(false);
+  };
+
   return (
-    <div className={`max-w-4xl mx-auto p-4 ${className}`}>
-      {/* Progress Header */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-blue-600" />
-            <span className="font-medium">סימולציה מותאמת אישית</span>
-            <Badge variant="outline">{getStrategyDisplayName(deliveryResult.strategy)}</Badge>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-slate-600">
-            <div className="flex items-center gap-1">
-              <Target className="h-4 w-4" />
-              <span>{score}/{totalQuestions}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <TrendingUp className="h-4 w-4" />
-              <span>{Math.round((score / Math.max(answeredQuestions, 1)) * 100)}%</span>
-            </div>
-          </div>
+    <RTLWrapper>
+      <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">
+        {/* Navigation Panel */}
+        <div className="mb-4 sm:mb-8">
+          <NavigationPanel
+            currentQuestionIndex={questionIndex}
+            totalQuestions={totalQuestions}
+            userAnswers={userAnswersArray}
+            questionsData={deliveryResult?.questions || []}
+            questionFlags={questionFlagsArray}
+            progressPercentage={(questionIndex / totalQuestions) * 100}
+            currentScorePercentage={(score / Math.max(answeredQuestions, 1)) * 100}
+            onNavigateToQuestion={handleNavigateToQuestion}
+            onToggleQuestionFlag={handleToggleFlag}
+            onResetProgress={handleResetProgress}
+            simulationType="topic"
+          />
         </div>
-        
-        <Progress 
-          value={(questionIndex / totalQuestions) * 100} 
-          className="h-2 mb-2"
-        />
-        
-        <div className="flex justify-between text-sm text-slate-600">
-          <span>שאלה {questionIndex + 1} מתוך {totalQuestions}</span>
-          <span>נענו: {answeredQuestions} שאלות</span>
-        </div>
-      </div>
 
-      {/* Question Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">
-            {currentQuestion.text}
-          </CardTitle>
-          {currentQuestion.passageText && (
-            <div className="mt-4 p-4 bg-slate-50 rounded-lg border">
-              <h4 className="font-medium text-slate-700 mb-2">
-                {currentQuestion.passageTitle || 'קטע לקריאה:'}
-              </h4>
-              <div className="text-slate-600 whitespace-pre-wrap text-left" dir="ltr">
-                {currentQuestion.passageText}
-              </div>
-            </div>
-          )}
-        </CardHeader>
-        <CardContent>
-          {/* Question Options */}
-          <div className="space-y-3 mb-6">
-            {currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => !isAnswerSubmitted && setSelectedAnswer(index)}
-                disabled={isAnswerSubmitted}
-                className={`w-full p-4 text-right rounded-lg border-2 transition-all ${
-                  selectedAnswer === index
-                    ? isAnswerSubmitted
-                      ? index === currentQuestion.correctAnswer
-                        ? 'border-green-500 bg-green-50'
-                        : 'border-red-500 bg-red-50'
-                      : 'border-blue-500 bg-blue-50'
-                    : isAnswerSubmitted && index === currentQuestion.correctAnswer
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-slate-500">
-                    {String.fromCharCode(65 + index)}
-                  </span>
-                  <span className="text-slate-800">{option}</span>
+        {/* Question Card */}
+        <div className="max-w-none">
+          <QuestionCard
+            currentQuestion={currentQuestion}
+            currentQuestionIndex={questionIndex}
+            totalQuestions={totalQuestions}
+            selectedAnswerIndex={selectedAnswer}
+            isAnswerSubmitted={isAnswerSubmitted}
+            showExplanation={showExplanation}
+            isFlagged={questionFlags[questionIndex] || false}
+            examMode={false}
+            showAnswersImmediately={true}
+            answeredQuestionsCount={answeredQuestions}
+            correctQuestionsCount={score}
+            progressPercentage={(questionIndex / totalQuestions) * 100}
+            onAnswerSelect={setSelectedAnswer}
+            onSubmitAnswer={submitAnswer}
+            onNextQuestion={nextQuestion}
+            onPreviousQuestion={() => {
+              if (questionIndex > 0) {
+                const prevIndex = questionIndex - 1;
+                setQuestionIndex(prevIndex);
+                setCurrentQuestion(deliveryResult?.questions[prevIndex] || null);
+                setSelectedAnswer(null);
+                setIsAnswerSubmitted(false);
+                setShowExplanation(false);
+              }
+            }}
+            onToggleExplanation={() => setShowExplanation(!showExplanation)}
+            onToggleQuestionFlag={handleToggleFlag}
+            onFinishSimulation={() => {
+              // This will be called when finishing
+              nextQuestion();
+            }}
+          />
+        </div>
+
+        {/* Delivery Metadata (Debug Info) - Dark themed */}
+        {deliveryResult?.metadata && (
+          <div className="mt-6 p-4 bg-slate-800/60 rounded-lg border border-slate-600/50 text-sm backdrop-blur-sm">
+            <details>
+              <summary className="cursor-pointer font-medium text-slate-300 mb-2 hover:text-slate-200">
+                <div className="flex items-center gap-2">
+                  <Brain className="h-4 w-4 text-blue-400" />
+                  <span>מידע על בחירת השאלות - {getStrategyDisplayName(deliveryResult.strategy)}</span>
                 </div>
-              </button>
-            ))}
+              </summary>
+              <div className="space-y-1 text-slate-400 mt-3 mr-6">
+                <p>מספר שאלות זמינות: <span className="text-slate-300">{deliveryResult.metadata.totalPoolSize}</span></p>
+                <p>שאלות שלא נראו: <span className="text-slate-300">{deliveryResult.metadata.unseenPoolSize}</span></p>
+                <p>זמן בחירה: <span className="text-slate-300">{deliveryResult.metadata.selectionTimeMs}ms</span></p>
+                <p>גרסת אלגוריתם: <span className="text-slate-300">{deliveryResult.metadata.algorithmVersion}</span></p>
+                <div className="flex items-center gap-4 text-sm pt-2">
+                  <div className="flex items-center gap-1">
+                    <Target className="h-4 w-4 text-green-400" />
+                    <span className="text-slate-300">{score}/{totalQuestions}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <TrendingUp className="h-4 w-4 text-blue-400" />
+                    <span className="text-slate-300">{Math.round((score / Math.max(answeredQuestions, 1)) * 100)}%</span>
+                  </div>
+                </div>
+              </div>
+            </details>
           </div>
-
-          {/* Explanation */}
-          {showExplanation && (
-            <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="font-medium text-blue-900 mb-2">הסבר:</h4>
-              <p className="text-blue-800">{currentQuestion.explanation}</p>
-            </div>
-          )}
-
-          {/* Action Buttons */}
-          <div className="flex justify-between">
-            <Button
-              onClick={nextQuestion}
-              disabled={!isAnswerSubmitted || isLoading}
-              className="flex items-center gap-2"
-            >
-              {questionIndex + 1 >= totalQuestions ? 'סיים סימולציה' : 'שאלה הבאה'}
-              {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-            </Button>
-            
-            <Button
-              onClick={submitAnswer}
-              disabled={selectedAnswer === null || isAnswerSubmitted || isLoading}
-              variant="outline"
-            >
-              {isAnswerSubmitted ? 'נשלח' : 'שלח תשובה'}
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Delivery Metadata (Debug Info) */}
-      {deliveryResult.metadata && (
-        <div className="mt-6 p-4 bg-slate-50 rounded-lg text-sm">
-          <details>
-            <summary className="cursor-pointer font-medium text-slate-700 mb-2">
-              מידע על בחירת השאלות
-            </summary>
-            <div className="space-y-1 text-slate-600">
-              <p>מספר שאלות זמינות: {deliveryResult.metadata.totalPoolSize}</p>
-              <p>שאלות שלא נראו: {deliveryResult.metadata.unseenPoolSize}</p>
-              <p>זמן בחירה: {deliveryResult.metadata.selectionTimeMs}ms</p>
-              <p>גרסת אלגוריתם: {deliveryResult.metadata.algorithmVersion}</p>
-            </div>
-          </details>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </RTLWrapper>
   );
 };
 
