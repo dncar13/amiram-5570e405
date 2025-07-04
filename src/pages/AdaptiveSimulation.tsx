@@ -83,29 +83,25 @@ const AdaptiveSimulationPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const { currentUser, isPremium } = useAuth();
   
-  // Simulation configuration
+  // Simulation configuration - simplified without sessionType
   const [difficulty, setDifficulty] = useState<DifficultyLevel>(
     (searchParams.get('difficulty') as DifficultyLevel) || 'medium'
-  );
-  const [sessionType, setSessionType] = useState<SessionType>(
-    (searchParams.get('type') as SessionType) || 'quick'
   );
   const [questionLimit, setQuestionLimit] = useState<number>(
     parseInt(searchParams.get('limit') || '10') || 10
   );
   const [deliveryStrategy, setDeliveryStrategy] = useState<DeliveryStrategy>('unseen_priority');
   
-  // Preferences state
+  // Core settings that determine practice vs exam mode
   const [showExplanations, setShowExplanations] = useState(true);
   const [showTimer, setShowTimer] = useState(false);
   const [enableSound, setEnableSound] = useState(false);
   
-  // Question type selection state - exposed in main form
+  // Question type selection state
   const [selectedQuestionType, setSelectedQuestionType] = useState<string>('mixed');
   
   // UI state
   const [isSimulationActive, setIsSimulationActive] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
   const [userStats, setUserStats] = useState<{
     overall: {
       accuracy: number;
@@ -121,7 +117,7 @@ const AdaptiveSimulationPage: React.FC = () => {
   } | null>(null);
   const [isLoadingStats, setIsLoadingStats] = useState(false);
 
-  // Services - Memoized to prevent re-creation on every render
+  // Services
   const userPreferencesService = useMemo(() => new UserPreferencesService(), []);
   const analyticsService = useMemo(() => new AnalyticsService(), []);
 
@@ -136,6 +132,8 @@ const AdaptiveSimulationPage: React.FC = () => {
         setDifficulty(preferences.preferredDifficulty);
         setQuestionLimit(preferences.questionsPerSession);
         setDeliveryStrategy(preferences.deliveryStrategy);
+        setShowExplanations(preferences.showExplanations);
+        setEnableSound(preferences.enableSound);
         if (preferences.preferredQuestionGroup) {
           setSelectedQuestionType(preferences.preferredQuestionGroup);
         }
@@ -159,6 +157,13 @@ const AdaptiveSimulationPage: React.FC = () => {
     }
   }, [currentUser?.id, loadUserData]);
 
+  // Determine session type based on settings
+  const getSessionType = (): SessionType => {
+    if (showExplanations && !showTimer) return 'practice';
+    if (!showExplanations && showTimer) return 'full';
+    return 'quick'; // Default fallback
+  };
+
   // Helper function to convert question type to question group array
   const toQuestionGroup = (id: string): string[] =>
     id === 'mixed'
@@ -177,13 +182,14 @@ const AdaptiveSimulationPage: React.FC = () => {
 
     // Show loading toast
     const selectedGroupLabel = QUESTION_GROUPS.find(g => g.id === selectedQuestionType)?.label || 'מעורב';
+    const modeLabel = showExplanations ? 'תרגול' : 'מבחן';
     toast({
       title: "מכין סימולציה",
-      description: `טוען שאלות מסוג ${selectedGroupLabel}...`,
+      description: `טוען שאלות מסוג ${selectedGroupLabel} במצב ${modeLabel}...`,
       duration: 2000,
     });
     
-    // Start the simulation immediately with the selected question type
+    // Start the simulation
     setIsSimulationActive(true);
     
     // Save preferences
@@ -199,11 +205,9 @@ const AdaptiveSimulationPage: React.FC = () => {
     }
   };
 
-
   const handleSimulationComplete = (result: SimulationSessionResult) => {
     setIsSimulationActive(false);
     
-    // Show completion modal or navigate to results
     toast({
       title: "סימולציה הושלמה בהצלחה!",
       description: `ציון: ${result.score}/${result.totalQuestions} (${Math.round((result.score / result.totalQuestions) * 100)}%)`,
@@ -233,17 +237,6 @@ const AdaptiveSimulationPage: React.FC = () => {
     }
   };
 
-  const getSessionTypeDisplay = (type: SessionType) => {
-    const types = {
-      'quick': 'תרגול מהיר',
-      'practice': 'תרגול רגיל',
-      'full': 'מבחן מלא',
-      'review_mistakes': 'חזרה על טעויות',
-      'custom': 'מותאם אישית'
-    };
-    return types[type] || type;
-  };
-
   if (isSimulationActive) {
     return (
       <RTLWrapper>
@@ -252,7 +245,7 @@ const AdaptiveSimulationPage: React.FC = () => {
           <main className="container mx-auto px-4 py-8">
             <AdaptiveSimulation
               initialDifficulty={difficulty}
-              sessionType={sessionType}
+              sessionType={getSessionType()}
               questionLimit={questionLimit}
               questionGroup={toQuestionGroup(selectedQuestionType)}
               onComplete={handleSimulationComplete}
@@ -293,7 +286,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Zap className="h-5 w-5 text-blue-600" />
-                      התחלה מהירה
+                      הגדרות סימולציה
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -310,27 +303,6 @@ const AdaptiveSimulationPage: React.FC = () => {
                             <SelectItem value="easy">קל</SelectItem>
                             <SelectItem value="medium">בינוני</SelectItem>
                             <SelectItem value="hard">קשה</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      {/* Session Type */}
-                      <div>
-                        <Label className="text-sm font-medium mb-2 block">סוג תרגול</Label>
-                        <Select value={sessionType} onValueChange={(value: SessionType) => setSessionType(value)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="quick">תרגול מהיר</SelectItem>
-                            <SelectItem value="practice">תרגול רגיל</SelectItem>
-                            <SelectItem value="review_mistakes">חזרה על טעויות</SelectItem>
-                            {isPremium && (
-                              <>
-                                <SelectItem value="full">מבחן מלא</SelectItem>
-                                <SelectItem value="custom">מותאם אישית</SelectItem>
-                              </>
-                            )}
                           </SelectContent>
                         </Select>
                       </div>
@@ -363,6 +335,42 @@ const AdaptiveSimulationPage: React.FC = () => {
                           max={isPremium ? "50" : "20"}
                         />
                       </div>
+
+                      {/* Mode indicator based on settings */}
+                      <div>
+                        <Label className="text-sm font-medium mb-2 block">מצב</Label>
+                        <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md">
+                          <span className={`text-sm font-medium ${
+                            showExplanations && !showTimer ? 'text-green-600' : 
+                            !showExplanations && showTimer ? 'text-blue-600' : 
+                            'text-gray-600'
+                          }`}>
+                            {showExplanations && !showTimer ? '📚 תרגול' : 
+                             !showExplanations && showTimer ? '⏱️ מבחן' : 
+                             '🎯 מעורב'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Practice/Exam Mode Settings */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="explanations" className="text-sm font-medium">הצג הסברים אחרי כל תשובה</Label>
+                        <Switch 
+                          id="explanations" 
+                          checked={showExplanations} 
+                          onCheckedChange={setShowExplanations}
+                        />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="timer" className="text-sm font-medium">הצג טיימר</Label>
+                        <Switch 
+                          id="timer" 
+                          checked={showTimer} 
+                          onCheckedChange={setShowTimer}
+                        />
+                      </div>
                     </div>
 
                     {/* Current Configuration Display */}
@@ -371,13 +379,13 @@ const AdaptiveSimulationPage: React.FC = () => {
                         {difficulty === 'easy' ? 'קל' : difficulty === 'medium' ? 'בינוני' : 'קשה'}
                       </Badge>
                       <Badge variant="outline">
-                        {getSessionTypeDisplay(sessionType)}
-                      </Badge>
-                      <Badge variant="outline">
                         {QUESTION_GROUPS.find(g => g.id === selectedQuestionType)?.label || 'מעורב'}
                       </Badge>
                       <Badge variant="outline">
                         {questionLimit} שאלות
+                      </Badge>
+                      <Badge className={showExplanations ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
+                        {showExplanations ? 'מצב תרגול' : 'מצב מבחן'}
                       </Badge>
                     </div>
 
@@ -392,29 +400,23 @@ const AdaptiveSimulationPage: React.FC = () => {
                   </CardContent>
                 </Card>
 
-                {/* Advanced Settings */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Settings className="h-5 w-5 text-slate-600" />
-                      הגדרות מתקדמות
-                      {isPremium && <Badge variant="secondary">Premium</Badge>}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Tabs defaultValue="strategy" className="w-full">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="strategy">אסטרטגיית בחירה</TabsTrigger>
-                        <TabsTrigger value="preferences">העדפות</TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="strategy" className="space-y-4">
+                {/* Advanced Settings - Simplified */}
+                {isPremium && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Settings className="h-5 w-5 text-slate-600" />
+                        הגדרות מתקדמות
+                        <Badge variant="secondary">Premium</Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
                         <div>
                           <Label className="text-sm font-medium mb-3 block">אסטרטגיית בחירת שאלות</Label>
                           <Select 
                             value={deliveryStrategy} 
                             onValueChange={(value) => setDeliveryStrategy(value as DeliveryStrategy)}
-                            disabled={!isPremium}
                           >
                             <SelectTrigger>
                               <SelectValue />
@@ -426,45 +428,20 @@ const AdaptiveSimulationPage: React.FC = () => {
                               <SelectItem value="mistake_review">חזרה על טעויות</SelectItem>
                             </SelectContent>
                           </Select>
-                          {!isPremium && (
-                            <p className="text-sm text-slate-500 mt-2">
-                              אסטרטגיות מתקדמות זמינות למנויי Premium
-                            </p>
-                          )}
                         </div>
-                      </TabsContent>
-                      
-                      <TabsContent value="preferences" className="space-y-4">
-                        <div className="space-y-4">
-                          <div className="flex items-center justify-between">
-                            <Label htmlFor="explanations">הצג הסברים אחרי כל תשובה</Label>
-                            <Switch 
-                              id="explanations" 
-                              checked={showExplanations} 
-                              onCheckedChange={setShowExplanations}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label htmlFor="timer">הצג טיימר</Label>
-                            <Switch 
-                              id="timer" 
-                              checked={showTimer} 
-                              onCheckedChange={setShowTimer}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label htmlFor="sound">אפקטי קול</Label>
-                            <Switch 
-                              id="sound" 
-                              checked={enableSound} 
-                              onCheckedChange={setEnableSound}
-                            />
-                          </div>
+                        
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="sound" className="text-sm font-medium">אפקטי קול</Label>
+                          <Switch 
+                            id="sound" 
+                            checked={enableSound} 
+                            onCheckedChange={setEnableSound}
+                          />
                         </div>
-                      </TabsContent>
-                    </Tabs>
-                  </CardContent>
-                </Card>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
 
               {/* Sidebar - Stats and Progress */}
@@ -537,7 +514,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                   </Card>
                 )}
 
-                {/* Quick Actions */}
+                {/* Quick Actions - Simplified */}
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -550,66 +527,46 @@ const AdaptiveSimulationPage: React.FC = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        setSessionType('review_mistakes');
-                        setQuestionLimit(15);
+                        setShowExplanations(true);
+                        setShowTimer(false);
+                        setSelectedQuestionType('mixed');
+                        setQuestionLimit(10);
                       }}
                     >
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      חזרה על טעויות
+                      <BookOpen className="h-4 w-4 mr-2" />
+                      תרגול מהיר (10 שאלות)
                     </Button>
                     
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        setDifficulty('hard');
-                        setSessionType('practice');
+                        setShowExplanations(false);
+                        setShowTimer(true);
+                        setSelectedQuestionType('mixed');
                         setQuestionLimit(20);
                       }}
                     >
-                      <TrendingUp className="h-4 w-4 mr-2" />
-                      אתגר קשה
+                      <Clock className="h-4 w-4 mr-2" />
+                      מבחן מדומה (20 שאלות)
                     </Button>
-                    
+
                     <Button 
                       variant="outline" 
                       className="w-full justify-start"
-                      onClick={() => navigate('/simulations')}
+                      onClick={loadUserData}
+                      disabled={isLoadingStats}
                     >
-                      <BarChart3 className="h-4 w-4 mr-2" />
-                      היסטוריית סימולציות
+                      <RefreshCw className={`h-4 w-4 mr-2 ${isLoadingStats ? 'animate-spin' : ''}`} />
+                      רענן סטטיסטיקות
                     </Button>
                   </CardContent>
                 </Card>
-
-                {/* Premium Upsell */}
-                {!isPremium && (
-                  <Card className="border-blue-200 bg-blue-50">
-                    <CardHeader>
-                      <CardTitle className="text-blue-800">שדרג ל-Premium</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="text-sm text-blue-700 space-y-1 mb-4">
-                        <li>• אסטרטגיות בחירה מתקדמות</li>
-                        <li>• אנליטיקות מפורטות</li>
-                        <li>• מבחנים מלאים ללא הגבלה</li>
-                        <li>• המלצות מותאמות אישית</li>
-                      </ul>
-                      <Button 
-                        className="w-full bg-blue-600 hover:bg-blue-700"
-                        onClick={() => navigate('/premium')}
-                      >
-                        שדרג עכשיו
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )}
               </div>
             </div>
           </div>
         </main>
       </div>
-
     </RTLWrapper>
   );
 };
