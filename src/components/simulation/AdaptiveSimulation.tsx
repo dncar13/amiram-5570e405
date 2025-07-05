@@ -1,3 +1,4 @@
+
 /**
  * Adaptive Simulation Component
  * 
@@ -121,8 +122,61 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
   const progressTrackingService = useMemo(() => new ProgressTrackingService(), []);
   const simulationService = useMemo(() => new SimulationService(), []);
-  
-  // Timer functions
+
+  // Submit answer - MOVED BEFORE startTimer to fix initialization order
+  const submitAnswer = useCallback(async () => {
+    if (!currentQuestion || selectedAnswer === null || !sessionId || !currentUser?.id) return;
+
+    setIsAnswerSubmitted(true);
+    setIsLoading(true);
+
+    try {
+      const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+      
+      // Record the answer
+      await progressTrackingService.recordAnswer({
+        userId: currentUser.id,
+        questionId: currentQuestion.id,
+        selectedAnswer,
+        isCorrect,
+        timeSpent: 60, // TODO: Track actual time
+        sessionId,
+        difficulty: initialDifficulty
+      });
+
+      // Update userAnswers state for UI compatibility
+      setUserAnswers(prev => ({
+        ...prev,
+        [questionIndex]: selectedAnswer
+      }));
+      
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+
+      setAnsweredQuestions(prev => prev + 1);
+      setShowExplanation(true);
+      
+      // Stop timer after submission
+      if (enableTimer && isTimerActive) {
+        stopTimer();
+      }
+
+    } catch (error) {
+      const originalMessage = error instanceof Error ? error.message : 'שגיאה בשמירת התשובה';
+      const hebrewMessage = getHebrewErrorMessage(originalMessage);
+      toast({
+        title: "שגיאה בשמירת התשובה",
+        description: hebrewMessage,
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, isTimerActive]);
+
+  // Timer functions - NOW submitAnswer is available
   const startTimer = useCallback(() => {
     if (!enableTimer || timeRemaining === null) return;
     
@@ -235,59 +289,6 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       setIsLoading(false);
     }
   }, [currentUser?.id, initialDifficulty, sessionType, questionLimit, questionGroup, simulationService, questionDeliveryService, onError]);
-
-  // Submit answer
-  const submitAnswer = useCallback(async () => {
-    if (!currentQuestion || selectedAnswer === null || !sessionId || !currentUser?.id) return;
-
-    setIsAnswerSubmitted(true);
-    setIsLoading(true);
-
-    try {
-      const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
-      
-      // Record the answer
-      await progressTrackingService.recordAnswer({
-        userId: currentUser.id,
-        questionId: currentQuestion.id,
-        selectedAnswer,
-        isCorrect,
-        timeSpent: 60, // TODO: Track actual time
-        sessionId,
-        difficulty: initialDifficulty
-      });
-
-      // Update userAnswers state for UI compatibility
-      setUserAnswers(prev => ({
-        ...prev,
-        [questionIndex]: selectedAnswer
-      }));
-      
-      if (isCorrect) {
-        setScore(prev => prev + 1);
-      }
-
-      setAnsweredQuestions(prev => prev + 1);
-      setShowExplanation(true);
-      
-      // Stop timer after submission
-      if (enableTimer && isTimerActive) {
-        stopTimer();
-      }
-
-    } catch (error) {
-      const originalMessage = error instanceof Error ? error.message : 'שגיאה בשמירת התשובה';
-      const hebrewMessage = getHebrewErrorMessage(originalMessage);
-      toast({
-        title: "שגיאה בשמירת התשובה",
-        description: hebrewMessage,
-        variant: "destructive",
-        duration: 5000,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, stopTimer]);
 
   // Move to next question
   const nextQuestion = useCallback(async () => {
