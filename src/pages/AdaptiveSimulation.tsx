@@ -50,31 +50,35 @@ import {
   FileText
 } from 'lucide-react';
 
-// Question type options
+// Question type options with counts
 const QUESTION_GROUPS = [
   { 
     id: 'sentence-completion', 
     label: 'השלמת משפט', 
     description: 'מלא את החלק החסר במשפט',
-    icon: Edit
+    icon: Edit,
+    count: 300
   },
   { 
     id: 'restatement', 
     label: 'ניסוח מחדש', 
     description: 'בחר את הביטוי הנכון לאותה מחשבה',
-    icon: Repeat
+    icon: Repeat,
+    count: 300
   },
   { 
     id: 'reading-comprehension', 
     label: 'הבנת הנקרא', 
     description: 'ענה על שאלות בעקבות קריאת קטע',
-    icon: BookOpen
+    icon: BookOpen,
+    count: 5
   },
   { 
     id: 'mixed', 
     label: 'מעורב', 
     description: 'שילוב של כל סוגי השאלות',
-    icon: Shuffle
+    icon: Shuffle,
+    count: 635
   }
 ];
 
@@ -154,6 +158,18 @@ const AdaptiveSimulationPage: React.FC = () => {
       loadUserData();
     }
   }, [currentUser?.id, loadUserData]);
+
+  // Show warning for reading-comprehension type
+  useEffect(() => {
+    if (selectedQuestionType === 'reading-comprehension') {
+      toast({
+        title: "הערה חשובה",
+        description: "כרגע יש מספר מוגבל של שאלות הבנת הנקרא (5 שאלות). מומלץ לבחור במצב מעורב לחוויה טובה יותר",
+        variant: "destructive",
+        duration: 6000
+      });
+    }
+  }, [selectedQuestionType]);
 
   // Determine session type based on settings
   const getSessionType = (): SessionType => {
@@ -308,8 +324,17 @@ const AdaptiveSimulationPage: React.FC = () => {
                           </SelectTrigger>
                           <SelectContent>
                             {QUESTION_GROUPS.map((group) => (
-                              <SelectItem key={group.id} value={group.id}>
-                                {group.label}
+                              <SelectItem 
+                                key={group.id} 
+                                value={group.id}
+                                disabled={group.count < 10}
+                              >
+                                <div className="flex items-center justify-between w-full">
+                                  <span>{group.label}</span>
+                                  <span className={`text-xs ${group.count < 10 ? 'text-red-500' : 'text-gray-500'}`}>
+                                    ({group.count} שאלות)
+                                  </span>
+                                </div>
                               </SelectItem>
                             ))}
                           </SelectContent>

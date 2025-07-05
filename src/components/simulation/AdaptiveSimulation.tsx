@@ -246,6 +246,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         difficulty: initialDifficulty,
         sessionType,
         questionLimit,
+        questionGroup,
         sessionId: sessionResult.sessionId
       });
 

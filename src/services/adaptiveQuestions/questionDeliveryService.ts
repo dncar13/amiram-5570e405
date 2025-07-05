@@ -21,10 +21,11 @@ export class QuestionDeliveryService {
     difficulty: DifficultyLevel;
     sessionType: SessionType;
     questionLimit: number;
+    questionGroup?: string[];
     sessionId?: string;
   }): Promise<QuestionDeliveryResult> {
     try {
-      const { userId, difficulty, sessionType, questionLimit } = options;
+      const { userId, difficulty, sessionType, questionLimit, questionGroup } = options;
       
       // Build base query
       let query = supabase
@@ -35,6 +36,14 @@ export class QuestionDeliveryService {
       // Apply difficulty filter if specified and not mixed
       if (difficulty && difficulty !== 'mixed') {
         query = query.eq('difficulty', difficulty);
+      }
+
+      // Apply question type filter if specified
+      if (questionGroup && questionGroup.length > 0) {
+        // If not mixed mode, filter by specific types
+        if (!questionGroup.includes('mixed')) {
+          query = query.in('type', questionGroup);
+        }
       }
 
       // Get user's question history to prioritize unseen questions
@@ -55,6 +64,39 @@ export class QuestionDeliveryService {
 
       if (!allQuestions || allQuestions.length === 0) {
         throw new Error('No questions available for the selected criteria');
+      }
+
+      // FALLBACK LOGIC: If insufficient questions found for specific type, fall back to mixed
+      const minRequiredQuestions = Math.min(questionLimit, 5);
+      if (questionGroup && questionGroup.length === 1 && questionGroup[0] !== 'mixed' && 
+          allQuestions.length < minRequiredQuestions) {
+        
+        console.warn(`Only ${allQuestions.length} questions found for type ${questionGroup[0]}. Falling back to mixed mode.`);
+        
+        // Retry with mixed mode (all question types)
+        let fallbackQuery = supabase
+          .from('questions')
+          .select('*')
+          .eq('is_active', true);
+
+        // Keep difficulty filter
+        if (difficulty && difficulty !== 'mixed') {
+          fallbackQuery = fallbackQuery.eq('difficulty', difficulty);
+        }
+
+        const { data: fallbackQuestions, error: fallbackError } = await fallbackQuery;
+        
+        if (fallbackError) {
+          console.error('Error in fallback query:', fallbackError);
+          throw new Error('Failed to fetch fallback questions');
+        }
+
+        if (fallbackQuestions && fallbackQuestions.length > 0) {
+          // Use fallback questions and show warning in metadata
+          const originalQuestionCount = allQuestions.length;
+          Object.assign(allQuestions, fallbackQuestions);
+          console.log(`Fallback successful: Found ${fallbackQuestions.length} mixed questions (originally ${originalQuestionCount} for ${questionGroup[0]})`);
+        }
       }
 
       // Convert database questions to our Question type
@@ -111,6 +153,39 @@ export class QuestionDeliveryService {
     } catch (error) {
       console.error('Error getting personalized questions:', error);
       throw error;
+    }
+  }
+
+  async getQuestionTypeCounts(): Promise<Record<string, number>> {
+    try {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('type')
+        .eq('is_active', true);
+
+      if (error) {
+        console.error('Error fetching question type counts:', error);
+        return {};
+      }
+
+      if (!data) {
+        return {};
+      }
+
+      const counts = data.reduce((acc, question) => {
+        const type = question.type;
+        acc[type] = (acc[type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
+
+      // Add mixed count (sum of all types)
+      const totalCount = Object.values(counts).reduce((sum, count) => sum + count, 0);
+      counts['mixed'] = totalCount;
+
+      return counts;
+    } catch (error) {
+      console.error('Error getting question type counts:', error);
+      return {};
     }
   }
 
