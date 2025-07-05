@@ -1,4 +1,3 @@
-
 /**
  * Adaptive Simulation Component
  * 
@@ -351,7 +350,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     }
   }, [initializeSimulation, isInitialized]);
 
-  // Start timer when question changes
+  // PHASE 1 FIX: Start timer when question changes - THIS IS THE CRITICAL FIX
   useEffect(() => {
     if (enableTimer && currentQuestion && timeRemaining !== null && !isAnswerSubmitted) {
       startTimer();
