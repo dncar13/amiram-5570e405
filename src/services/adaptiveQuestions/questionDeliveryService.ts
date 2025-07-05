@@ -26,8 +26,6 @@ export class QuestionDeliveryService {
   }): Promise<QuestionDeliveryResult> {
     try {
       const { userId, difficulty, sessionType, questionLimit, questionGroup } = options;
-<<<<<<< HEAD
-=======
       
       console.log('[QuestionDeliveryService] Getting personalized questions with options:', {
         userId,
@@ -37,7 +35,6 @@ export class QuestionDeliveryService {
         questionGroup,
         hasQuestionGroup: !!(questionGroup && questionGroup.length > 0)
       });
->>>>>>> 758732d7410fba92049fc100446956bbd8c5921b
       
       // Build base query
       let query = supabase
@@ -90,7 +87,13 @@ export class QuestionDeliveryService {
         throw new Error('No questions available for the selected criteria');
       }
 
-<<<<<<< HEAD
+      console.log('[QuestionDeliveryService] Found questions:', {
+        totalFound: allQuestions.length,
+        questionTypes: [...new Set(allQuestions.map(q => q.type))],
+        difficulties: [...new Set(allQuestions.map(q => q.difficulty))],
+        seenQuestionIds: seenQuestionIds.length
+      });
+
       // FALLBACK LOGIC: If insufficient questions found for specific type, fall back to mixed
       const minRequiredQuestions = Math.min(questionLimit, 5);
       if (questionGroup && questionGroup.length === 1 && questionGroup[0] !== 'mixed' && 
@@ -123,24 +126,16 @@ export class QuestionDeliveryService {
           console.log(`Fallback successful: Found ${fallbackQuestions.length} mixed questions (originally ${originalQuestionCount} for ${questionGroup[0]})`);
         }
       }
-=======
-      console.log('[QuestionDeliveryService] Found questions:', {
-        totalFound: allQuestions.length,
-        questionTypes: [...new Set(allQuestions.map(q => q.type))],
-        difficulties: [...new Set(allQuestions.map(q => q.difficulty))],
-        seenQuestionIds: seenQuestionIds.length
-      });
->>>>>>> 758732d7410fba92049fc100446956bbd8c5921b
 
       // Convert database questions to our Question type
       const convertedQuestions: Question[] = allQuestions.map(q => ({
         id: q.original_id || parseInt(q.id),
-        type: q.type as any,
+        type: q.type as Question['type'],
         text: q.text,
         options: Array.isArray(q.options) ? q.options : [],
         correctAnswer: q.correct_answer,
         explanation: q.explanation || '',
-        difficulty: q.difficulty as any || 'medium',
+        difficulty: (q.difficulty as Question['difficulty']) || 'medium',
         passage_text: q.passage_text,
         passage_title: q.passage_title,
         passageText: q.passage_text,
