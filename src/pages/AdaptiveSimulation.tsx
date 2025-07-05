@@ -243,6 +243,8 @@ const AdaptiveSimulationPage: React.FC = () => {
         questionGroup={toQuestionGroup(selectedQuestionType)}
         onComplete={handleSimulationComplete}
         onError={handleSimulationError}
+        enableTimer={showTimer}
+        timePerQuestion={90} // 90 seconds per question
       />
     );
   }

@@ -5,7 +5,7 @@
  * personalized question selection and progress tracking.
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { QuestionDeliveryService } from '@/services/adaptiveQuestions/questionDeliveryService';
 import { ProgressTrackingService } from '@/services/adaptiveQuestions/progressTrackingService';
@@ -27,6 +27,7 @@ import { Loader2, Brain, Target, TrendingUp, Clock, AlertCircle, RefreshCw } fro
 import QuestionCard from './QuestionCard';
 import NavigationPanel from './NavigationPanel';
 import { RTLWrapper } from '@/components/ui/rtl-wrapper';
+import { ReadingPassage } from './ReadingPassage';
 
 // Hebrew error message mapping
 const ERROR_MESSAGES = {
@@ -74,6 +75,8 @@ interface AdaptiveSimulationProps {
   onComplete?: (result: SimulationSessionResult) => void;
   onError?: (error: Error) => void;
   className?: string;
+  enableTimer?: boolean;
+  timePerQuestion?: number; // seconds per question
 }
 
 export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
@@ -83,7 +86,9 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   questionGroup,
   onComplete,
   onError,
-  className = ''
+  className = '',
+  enableTimer = false,
+  timePerQuestion = 90
 }) => {
   const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -101,11 +106,63 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   const [error, setError] = useState<string | null>(null);
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
   const [questionFlags, setQuestionFlags] = useState<Record<number, boolean>>({});
+  
+  // Timer state
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [totalTimeLimit, setTotalTimeLimit] = useState<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  
+  // Additional UI state
+  const [showTimer, setShowTimer] = useState(false);
+  const [simulationComplete, setSimulationComplete] = useState(false);
 
   // Initialize services
   const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
   const progressTrackingService = useMemo(() => new ProgressTrackingService(), []);
   const simulationService = useMemo(() => new SimulationService(), []);
+  
+  // Timer functions
+  const startTimer = useCallback(() => {
+    if (!enableTimer || timeRemaining === null) return;
+    
+    setIsTimerActive(true);
+    timerRef.current = setInterval(() => {
+      setTimeRemaining(prev => {
+        if (prev === null || prev <= 1) {
+          setIsTimerActive(false);
+          // Auto-submit current answer or move to next question
+          if (!isAnswerSubmitted) {
+            submitAnswer();
+          }
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, [enableTimer, timeRemaining, isAnswerSubmitted, submitAnswer]);
+  
+  const stopTimer = useCallback(() => {
+    setIsTimerActive(false);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
+  
+  const resetTimer = useCallback(() => {
+    stopTimer();
+    setTimeRemaining(timePerQuestion);
+  }, [stopTimer, timePerQuestion]);
+  
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   // Initialize simulation
   const initializeSimulation = useCallback(async () => {
@@ -147,6 +204,14 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       setTotalQuestions(questions.questions.length);
       setQuestionIndex(0);
       setIsInitialized(true);
+      
+      // Initialize timer if enabled
+      if (enableTimer) {
+        const totalTime = questions.questions.length * timePerQuestion;
+        setTotalTimeLimit(totalTime);
+        setTimeRemaining(timePerQuestion);
+        setShowTimer(true);
+      }
 
       // Show delivery strategy info
       toast({
@@ -204,6 +269,11 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
 
       setAnsweredQuestions(prev => prev + 1);
       setShowExplanation(true);
+      
+      // Stop timer after submission
+      if (enableTimer && isTimerActive) {
+        stopTimer();
+      }
 
     } catch (error) {
       const originalMessage = error instanceof Error ? error.message : 'שגיאה בשמירת התשובה';
@@ -217,7 +287,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex]);
+  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, stopTimer]);
 
   // Move to next question
   const nextQuestion = useCallback(async () => {
@@ -228,6 +298,9 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     if (nextIndex >= deliveryResult.questions.length) {
       // Finish simulation
       try {
+        setSimulationComplete(true);
+        stopTimer();
+        
         const result = await simulationService.completeSession({
           userId: currentUser.id,
           sessionId,
@@ -262,6 +335,12 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     setSelectedAnswer(null);
     setIsAnswerSubmitted(false);
     setShowExplanation(false);
+    
+    // Reset timer for next question
+    if (enableTimer) {
+      resetTimer();
+      startTimer();
+    }
   }, [deliveryResult, questionIndex, sessionId, currentUser?.id, score, totalQuestions, simulationService, onComplete]);
 
   // Initialize on mount
@@ -380,11 +459,18 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   // Handle navigation and flags
   const handleNavigateToQuestion = (index: number) => {
     if (deliveryResult?.questions[index]) {
+      stopTimer(); // Stop current timer
       setQuestionIndex(index);
       setCurrentQuestion(deliveryResult.questions[index]);
-      setSelectedAnswer(null);
-      setIsAnswerSubmitted(false);
+      setSelectedAnswer(userAnswers[index] ?? null); // Restore previous answer if exists
+      setIsAnswerSubmitted(userAnswers[index] !== undefined);
       setShowExplanation(false);
+      
+      // Restart timer if enabled and not already answered
+      if (enableTimer && userAnswers[index] === undefined) {
+        resetTimer();
+        startTimer();
+      }
     }
   };
 
@@ -394,8 +480,21 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       [questionIndex]: !prev[questionIndex]
     }));
   };
+  
+  const handleResetQuestion = () => {
+    setSelectedAnswer(null);
+    setIsAnswerSubmitted(false);
+    setShowExplanation(false);
+    
+    // Reset timer for current question
+    if (enableTimer) {
+      resetTimer();
+      startTimer();
+    }
+  };
 
   const handleResetProgress = () => {
+    stopTimer();
     setUserAnswers({});
     setQuestionFlags({});
     setScore(0);
@@ -405,6 +504,13 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     setSelectedAnswer(null);
     setIsAnswerSubmitted(false);
     setShowExplanation(false);
+    setSimulationComplete(false);
+    
+    // Restart timer if enabled
+    if (enableTimer) {
+      resetTimer();
+      startTimer();
+    }
   };
 
   return (
@@ -427,6 +533,18 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
           />
         </div>
 
+        {/* Reading Passage for reading comprehension questions */}
+        {currentQuestion?.type === 'reading-comprehension' && (
+          <div className="mb-4 sm:mb-8">
+            <ReadingPassage
+              title={currentQuestion.passageTitle}
+              passageText={currentQuestion.passageText || currentQuestion.passage}
+              passageWithLines={currentQuestion.passageWithLines}
+              showLineNumbers={currentQuestion.lineNumbers}
+            />
+          </div>
+        )}
+
         {/* Question Card */}
         <div className="max-w-none">
           <QuestionCard
@@ -437,8 +555,8 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
             isAnswerSubmitted={isAnswerSubmitted}
             showExplanation={showExplanation}
             isFlagged={questionFlags[questionIndex] || false}
-            examMode={false}
-            showAnswersImmediately={true}
+            examMode={sessionType === 'full'}
+            showAnswersImmediately={sessionType !== 'full'}
             answeredQuestionsCount={answeredQuestions}
             correctQuestionsCount={score}
             progressPercentage={(questionIndex / totalQuestions) * 100}
@@ -447,21 +565,52 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
             onNextQuestion={nextQuestion}
             onPreviousQuestion={() => {
               if (questionIndex > 0) {
-                const prevIndex = questionIndex - 1;
-                setQuestionIndex(prevIndex);
-                setCurrentQuestion(deliveryResult?.questions[prevIndex] || null);
-                setSelectedAnswer(null);
-                setIsAnswerSubmitted(false);
-                setShowExplanation(false);
+                handleNavigateToQuestion(questionIndex - 1);
               }
             }}
             onToggleExplanation={() => setShowExplanation(!showExplanation)}
             onToggleQuestionFlag={handleToggleFlag}
             onFinishSimulation={() => {
-              // This will be called when finishing
               nextQuestion();
             }}
           />
+        </div>
+        
+        {/* Timer Display */}
+        {showTimer && timeRemaining !== null && (
+          <div className="mt-4 p-4 bg-slate-800/60 rounded-lg border border-slate-600/50 backdrop-blur-sm">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Clock className="h-5 w-5 text-blue-400" />
+                <span className="text-slate-300 font-medium">זמן נותר לשאלה:</span>
+              </div>
+              <div className={`text-2xl font-bold ${
+                timeRemaining <= 10 ? 'text-red-400' : 
+                timeRemaining <= 30 ? 'text-yellow-400' : 'text-green-400'
+              }`}>
+                {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
+              </div>
+            </div>
+            <div className="mt-2">
+              <Progress 
+                value={(timeRemaining / timePerQuestion) * 100} 
+                className="h-2"
+              />
+            </div>
+          </div>
+        )}
+        
+        {/* Reset Question Button */}
+        <div className="mt-4 flex justify-center">
+          <Button
+            variant="outline"
+            onClick={handleResetQuestion}
+            disabled={isLoading}
+            className="bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            איפוס שאלה
+          </Button>
         </div>
 
         {/* Delivery Metadata (Debug Info) - Dark themed */}
