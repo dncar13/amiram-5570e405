@@ -331,7 +331,22 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     }
 
     setQuestionIndex(nextIndex);
-    setCurrentQuestion(deliveryResult.questions[nextIndex]);
+    const newQuestion = deliveryResult.questions[nextIndex];
+    setCurrentQuestion(newQuestion);
+    
+    // Debug logging for reading comprehension questions
+    if (newQuestion.type === 'reading-comprehension') {
+      console.log('[AdaptiveSimulation] Loading reading comprehension question:', {
+        questionId: newQuestion.id,
+        hasPassageText: !!(newQuestion.passage_text || newQuestion.passageText),
+        hasPassageTitle: !!(newQuestion.passage_title || newQuestion.passageTitle),
+        passageTextLength: (newQuestion.passage_text || newQuestion.passageText || '').length,
+        passageTitle: newQuestion.passage_title || newQuestion.passageTitle,
+        hasPassageWithLines: !!(newQuestion.passageWithLines && newQuestion.passageWithLines.length > 0),
+        questionText: newQuestion.text.substring(0, 100) + '...'
+      });
+    }
+    
     setSelectedAnswer(null);
     setIsAnswerSubmitted(false);
     setShowExplanation(false);
@@ -341,7 +356,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       resetTimer();
       startTimer();
     }
-  }, [deliveryResult, questionIndex, sessionId, currentUser?.id, score, totalQuestions, simulationService, onComplete]);
+  }, [deliveryResult, questionIndex, sessionId, currentUser?.id, score, totalQuestions, simulationService, onComplete, enableTimer, resetTimer, startTimer]);
 
   // Initialize on mount
   useEffect(() => {
@@ -473,7 +488,20 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     if (deliveryResult?.questions[index]) {
       stopTimer(); // Stop current timer
       setQuestionIndex(index);
-      setCurrentQuestion(deliveryResult.questions[index]);
+      const selectedQuestion = deliveryResult.questions[index];
+      setCurrentQuestion(selectedQuestion);
+      
+      // Debug logging for reading comprehension questions
+      if (selectedQuestion.type === 'reading-comprehension') {
+        console.log('[AdaptiveSimulation] Navigating to reading comprehension question:', {
+          questionId: selectedQuestion.id,
+          hasPassageText: !!(selectedQuestion.passage_text || selectedQuestion.passageText),
+          hasPassageTitle: !!(selectedQuestion.passage_title || selectedQuestion.passageTitle),
+          passageTextLength: (selectedQuestion.passage_text || selectedQuestion.passageText || '').length,
+          passageTitle: selectedQuestion.passage_title || selectedQuestion.passageTitle
+        });
+      }
+      
       setSelectedAnswer(userAnswers[index] ?? null); // Restore previous answer if exists
       setIsAnswerSubmitted(userAnswers[index] !== undefined);
       setShowExplanation(false);
