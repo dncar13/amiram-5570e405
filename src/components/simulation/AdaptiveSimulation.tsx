@@ -549,8 +549,8 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         {currentQuestion?.type === 'reading-comprehension' && (
           <div className="mb-4 sm:mb-8">
             <ReadingPassage
-              title={currentQuestion.passage_title}
-              passageText={currentQuestion.passage_text || currentQuestion.passageText || currentQuestion.passage}
+              title={currentQuestion.passage_title || currentQuestion.passageTitle || ''}
+              passageText={currentQuestion.passage_text || currentQuestion.passageText || currentQuestion.passage || ''}
               passageWithLines={currentQuestion.passageWithLines}
               showLineNumbers={currentQuestion.lineNumbers}
             />
