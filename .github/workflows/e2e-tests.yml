@@ -2,8 +2,7 @@
 name: E2E Tests
 
 on:
-  push:
-    branches: [main]
+  # Only run on workflow dispatch (manual trigger) or pull requests
   pull_request:
     branches: [main]
   workflow_dispatch:
