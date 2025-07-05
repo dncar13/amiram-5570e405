@@ -25,6 +25,7 @@ interface QuestionCardProps {
   onToggleExplanation: () => void;
   onToggleQuestionFlag: () => void;
   onFinishSimulation?: () => void;
+  onResetQuestion?: () => void;
 }
 
 const getTypeIcon = (type: Question['type']) => {
@@ -119,7 +120,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onPreviousQuestion,
   onToggleExplanation,
   onToggleQuestionFlag,
-  onFinishSimulation
+  onFinishSimulation,
+  onResetQuestion
 }) => {
   if (!currentQuestion) {
     return null;
@@ -239,10 +241,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  // Reset functionality can be added here
-                  console.log('Reset clicked');
-                }}
+                onClick={onResetQuestion}
                 className="flex items-center gap-2 flex-shrink-0 hover:bg-slate-600/50 px-3 py-2"
               >
                 <RotateCcw className="h-4 w-4 text-slate-400" />
@@ -254,17 +253,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
         <CardContent className="space-y-3 sm:space-y-6 p-4 sm:p-6">
           {/* Passage Text (for reading comprehension) - רחב יותר במובייל */}
-          {currentQuestion.passageText && (
+          {(currentQuestion.passage_text || currentQuestion.passageText) && (
             <div 
               className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm"
               dir="ltr" 
               style={{direction: 'ltr', textAlign: 'left'}}
             >
               <h4 className="font-bold text-slate-200 mb-2 sm:mb-4 text-sm sm:text-lg">
-                {currentQuestion.passageTitle || 'קטע לקריאה'}
+                {currentQuestion.passage_title || currentQuestion.passageTitle || 'קטע לקריאה'}
               </h4>
               <div className="text-slate-300 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
-                {currentQuestion.passageText}
+                {currentQuestion.passage_text || currentQuestion.passageText}
               </div>
             </div>
           )}

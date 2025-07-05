@@ -351,6 +351,18 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     }
   }, [initializeSimulation, isInitialized]);
 
+  // Start timer when question changes
+  useEffect(() => {
+    if (enableTimer && currentQuestion && timeRemaining !== null && !isAnswerSubmitted) {
+      startTimer();
+    }
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [currentQuestion, enableTimer, startTimer, timeRemaining, isAnswerSubmitted]);
+
   // Helper function to get strategy display name
   const getStrategyDisplayName = (strategy: string): string => {
     const strategyNames = {
@@ -538,8 +550,8 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         {currentQuestion?.type === 'reading-comprehension' && (
           <div className="mb-4 sm:mb-8">
             <ReadingPassage
-              title={currentQuestion.passageTitle}
-              passageText={currentQuestion.passageText || currentQuestion.passage}
+              title={currentQuestion.passage_title}
+              passageText={currentQuestion.passage_text || currentQuestion.passageText || currentQuestion.passage}
               passageWithLines={currentQuestion.passageWithLines}
               showLineNumbers={currentQuestion.lineNumbers}
             />
@@ -574,6 +586,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
             onFinishSimulation={() => {
               nextQuestion();
             }}
+            onResetQuestion={handleResetQuestion}
           />
         </div>
         
@@ -600,19 +613,6 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
             </div>
           </div>
         )}
-        
-        {/* Reset Question Button */}
-        <div className="mt-4 flex justify-center">
-          <Button
-            variant="outline"
-            onClick={handleResetQuestion}
-            disabled={isLoading}
-            className="bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50"
-          >
-            <RefreshCw className="h-4 w-4 mr-2" />
-            איפוס שאלה
-          </Button>
-        </div>
 
         {/* Delivery Metadata (Debug Info) - Dark themed */}
         {deliveryResult?.metadata && (
