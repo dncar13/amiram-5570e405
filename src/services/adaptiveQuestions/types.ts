@@ -15,6 +15,7 @@ export interface QuestionDeliveryOptions {
   sessionType: SessionType;
   questionLimit: number;
   topicFilter?: string[];
+  questionGroup?: string[]; // Add this for question type filtering
   excludeQuestionIds?: number[];
   forceReshuffle?: boolean;
   deliveryStrategy?: DeliveryStrategy;

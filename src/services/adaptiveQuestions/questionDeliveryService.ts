@@ -26,6 +26,18 @@ export class QuestionDeliveryService {
   }): Promise<QuestionDeliveryResult> {
     try {
       const { userId, difficulty, sessionType, questionLimit, questionGroup } = options;
+<<<<<<< HEAD
+=======
+      
+      console.log('[QuestionDeliveryService] Getting personalized questions with options:', {
+        userId,
+        difficulty,
+        sessionType,
+        questionLimit,
+        questionGroup,
+        hasQuestionGroup: !!(questionGroup && questionGroup.length > 0)
+      });
+>>>>>>> 758732d7410fba92049fc100446956bbd8c5921b
       
       // Build base query
       let query = supabase
@@ -33,8 +45,15 @@ export class QuestionDeliveryService {
         .select('*')
         .eq('is_active', true);
 
+      // Apply question type filtering FIRST if questionGroup is specified
+      if (questionGroup && questionGroup.length > 0) {
+        console.log('[QuestionDeliveryService] Filtering by question types:', questionGroup);
+        query = query.in('type', questionGroup);
+      }
+
       // Apply difficulty filter if specified and not mixed
       if (difficulty && difficulty !== 'mixed') {
+        console.log('[QuestionDeliveryService] Filtering by difficulty:', difficulty);
         query = query.eq('difficulty', difficulty);
       }
 
@@ -63,9 +82,15 @@ export class QuestionDeliveryService {
       }
 
       if (!allQuestions || allQuestions.length === 0) {
+        console.error('[QuestionDeliveryService] No questions found with criteria:', {
+          questionGroup,
+          difficulty,
+          totalQuestionsInDb: 0
+        });
         throw new Error('No questions available for the selected criteria');
       }
 
+<<<<<<< HEAD
       // FALLBACK LOGIC: If insufficient questions found for specific type, fall back to mixed
       const minRequiredQuestions = Math.min(questionLimit, 5);
       if (questionGroup && questionGroup.length === 1 && questionGroup[0] !== 'mixed' && 
@@ -98,6 +123,14 @@ export class QuestionDeliveryService {
           console.log(`Fallback successful: Found ${fallbackQuestions.length} mixed questions (originally ${originalQuestionCount} for ${questionGroup[0]})`);
         }
       }
+=======
+      console.log('[QuestionDeliveryService] Found questions:', {
+        totalFound: allQuestions.length,
+        questionTypes: [...new Set(allQuestions.map(q => q.type))],
+        difficulties: [...new Set(allQuestions.map(q => q.difficulty))],
+        seenQuestionIds: seenQuestionIds.length
+      });
+>>>>>>> 758732d7410fba92049fc100446956bbd8c5921b
 
       // Convert database questions to our Question type
       const convertedQuestions: Question[] = allQuestions.map(q => ({
@@ -108,6 +141,8 @@ export class QuestionDeliveryService {
         correctAnswer: q.correct_answer,
         explanation: q.explanation || '',
         difficulty: q.difficulty as any || 'medium',
+        passage_text: q.passage_text,
+        passage_title: q.passage_title,
         passageText: q.passage_text,
         passageTitle: q.passage_title,
         topicId: q.topic_id,
@@ -117,6 +152,12 @@ export class QuestionDeliveryService {
       // Prioritize unseen questions
       const unseenQuestions = convertedQuestions.filter(q => !seenQuestionIds.includes(q.id));
       const seenQuestions = convertedQuestions.filter(q => seenQuestionIds.includes(q.id));
+
+      console.log('[QuestionDeliveryService] Question distribution:', {
+        unseenQuestions: unseenQuestions.length,
+        seenQuestions: seenQuestions.length,
+        requestedLimit: questionLimit
+      });
 
       // Combine questions with priority to unseen ones
       let finalQuestions: Question[] = [];
@@ -135,13 +176,20 @@ export class QuestionDeliveryService {
       // Determine strategy used
       const strategy: DeliveryStrategy = unseenQuestions.length > 0 ? 'unseen_priority' : 'random_weighted';
 
+      console.log('[QuestionDeliveryService] Final delivery result:', {
+        strategy,
+        finalQuestionsCount: finalQuestions.length,
+        finalQuestionTypes: [...new Set(finalQuestions.map(q => q.type))],
+        finalDifficulties: [...new Set(finalQuestions.map(q => q.difficulty))]
+      });
+
       return {
         questions: finalQuestions,
         strategy,
         metadata: {
           totalPoolSize: convertedQuestions.length,
           unseenPoolSize: unseenQuestions.length,
-          algorithmVersion: '1.0.0',
+          algorithmVersion: '1.0.1',
           selectionTimeMs: 25,
           weightFactors: {
             recency: 0.4,

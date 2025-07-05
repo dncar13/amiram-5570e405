@@ -17,6 +17,9 @@ export interface Question {
   subtopicId?: number;
   passageText?: string;
   passageTitle?: string;
+  // Database field names (snake_case) - for Supabase compatibility
+  passage_text?: string;
+  passage_title?: string;
   lineNumbers?: boolean;
   passageWithLines?: PassageLine[];
   tips?: string;
