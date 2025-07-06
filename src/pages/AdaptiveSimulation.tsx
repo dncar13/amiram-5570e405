@@ -97,9 +97,8 @@ const AdaptiveSimulationPage: React.FC = () => {
   );
   const [deliveryStrategy, setDeliveryStrategy] = useState<DeliveryStrategy>('unseen_priority');
   
-  // Core settings that determine practice vs exam mode
-  const [showExplanations, setShowExplanations] = useState(true);
-  const [showTimer, setShowTimer] = useState(false);
+  // Simplified mode selection - either practice or exam
+  const [simulationMode, setSimulationMode] = useState<'practice' | 'exam'>('practice');
   
   // Question type selection state
   const [selectedQuestionType, setSelectedQuestionType] = useState<string>('mixed');
@@ -138,7 +137,8 @@ const AdaptiveSimulationPage: React.FC = () => {
         setDifficulty(preferences.preferredDifficulty);
         setQuestionLimit(preferences.questionsPerSession);
         setDeliveryStrategy(preferences.deliveryStrategy);
-        setShowExplanations(preferences.showExplanations);
+        // Map old preferences to new simplified mode
+        setSimulationMode(preferences.showExplanations ? 'practice' : 'exam');
         if (preferences.preferredQuestionGroup) {
           setSelectedQuestionType(preferences.preferredQuestionGroup);
         }
@@ -187,11 +187,9 @@ const AdaptiveSimulationPage: React.FC = () => {
     }
   }, [selectedQuestionType]);
 
-  // Determine session type based on settings
+  // Determine session type based on simulation mode
   const getSessionType = (): SessionType => {
-    if (showExplanations && !showTimer) return 'practice';
-    if (!showExplanations && showTimer) return 'full';
-    return 'quick'; // Default fallback
+    return simulationMode === 'practice' ? 'practice' : 'full';
   };
 
   // Helper function to convert question type to question group array
@@ -212,7 +210,7 @@ const AdaptiveSimulationPage: React.FC = () => {
 
     // Show loading toast
     const selectedGroupLabel = QUESTION_GROUPS.find(g => g.id === selectedQuestionType)?.label || 'מעורב';
-    const modeLabel = showExplanations ? 'תרגול' : 'מבחן';
+    const modeLabel = simulationMode === 'practice' ? 'תרגול' : 'מבחן';
     toast({
       title: "מכין סימולציה",
       description: `טוען שאלות מסוג ${selectedGroupLabel} במצב ${modeLabel}...`,
@@ -228,7 +226,7 @@ const AdaptiveSimulationPage: React.FC = () => {
         preferredDifficulty: difficulty,
         questionsPerSession: questionLimit,
         deliveryStrategy,
-        showExplanations,
+        showExplanations: simulationMode === 'practice',
         preferredQuestionGroup: selectedQuestionType
       }).catch(console.error);
     }
@@ -275,7 +273,7 @@ const AdaptiveSimulationPage: React.FC = () => {
         questionGroup={toQuestionGroup(selectedQuestionType)}
         onComplete={handleSimulationComplete}
         onError={handleSimulationError}
-        enableTimer={showTimer}
+        enableTimer={simulationMode === 'exam'}
         timePerQuestion={90} // 90 seconds per question
       />
     );
@@ -372,44 +370,50 @@ const AdaptiveSimulationPage: React.FC = () => {
                         />
                       </div>
 
-                      {/* Mode indicator based on settings */}
+                      {/* Simulation Mode Selection - Simple and Clear */}
                       <div>
-                        <Label className="text-sm font-medium mb-2 block">מצב</Label>
-                        <div className="flex items-center h-10 px-3 bg-gray-50 rounded-md">
-                          <span className={`text-sm font-medium ${
-                            showExplanations && !showTimer ? 'text-green-600' : 
-                            !showExplanations && showTimer ? 'text-blue-600' : 
-                            'text-gray-600'
-                          }`}>
-                            {showExplanations && !showTimer ? '📚 תרגול' : 
-                             !showExplanations && showTimer ? '⏱️ מבחן' : 
-                             '🎯 מעורב'}
-                          </span>
+                        <Label className="text-sm font-medium mb-3 block">סוג הסימולציה</Label>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div 
+                            className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                              simulationMode === 'practice' 
+                                ? 'border-green-500 bg-green-50 text-green-700' 
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }`}
+                            onClick={() => setSimulationMode('practice')}
+                          >
+                            <div className="text-center">
+                              <div className="text-2xl mb-2">📚</div>
+                              <div className="font-semibold">מצב תרגול</div>
+                              <div className="text-xs mt-1 opacity-75">
+                                תשובות מיידיות + הסברים
+                              </div>
+                              <div className="text-xs opacity-75">
+                                בלי טיימר
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div 
+                            className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
+                              simulationMode === 'exam' 
+                                ? 'border-blue-500 bg-blue-50 text-blue-700' 
+                                : 'border-gray-200 bg-white hover:border-gray-300'
+                            }`}
+                            onClick={() => setSimulationMode('exam')}
+                          >
+                            <div className="text-center">
+                              <div className="text-2xl mb-2">⏱️</div>
+                              <div className="font-semibold">מצב מבחן</div>
+                              <div className="text-xs mt-1 opacity-75">
+                                עם טיימר
+                              </div>
+                              <div className="text-xs opacity-75">
+                                תשובות רק בסוף
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Practice/Exam Mode Settings */}
-                    <div className="space-y-4 mb-6 p-4 bg-gray-50 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="explanations" className="text-sm font-medium">הצג הסברים אחרי כל תשובה</Label>
-                        <Switch 
-                          id="explanations" 
-                          checked={showExplanations} 
-                          onCheckedChange={setShowExplanations}
-                          className="data-[state=checked]:bg-blue-600"
-                          dir="rtl"
-                        />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="timer" className="text-sm font-medium">הצג טיימר</Label>
-                        <Switch 
-                          id="timer" 
-                          checked={showTimer} 
-                          onCheckedChange={setShowTimer}
-                          className="data-[state=checked]:bg-blue-600"
-                          dir="rtl"
-                        />
                       </div>
                     </div>
 
@@ -424,8 +428,8 @@ const AdaptiveSimulationPage: React.FC = () => {
                       <Badge variant="outline">
                         {questionLimit} שאלות
                       </Badge>
-                      <Badge className={showExplanations ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
-                        {showExplanations ? 'מצב תרגול' : 'מצב מבחן'}
+                      <Badge className={simulationMode === 'practice' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'}>
+                        {simulationMode === 'practice' ? 'מצב תרגול' : 'מצב מבחן'}
                       </Badge>
                     </div>
 
@@ -524,8 +528,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        setShowExplanations(true);
-                        setShowTimer(false);
+                        setSimulationMode('practice');
                         setSelectedQuestionType('mixed');
                         setQuestionLimit(10);
                       }}
@@ -538,8 +541,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                       variant="outline" 
                       className="w-full justify-start"
                       onClick={() => {
-                        setShowExplanations(false);
-                        setShowTimer(true);
+                        setSimulationMode('exam');
                         setSelectedQuestionType('mixed');
                         setQuestionLimit(20);
                       }}

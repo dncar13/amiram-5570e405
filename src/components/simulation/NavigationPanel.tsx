@@ -22,6 +22,7 @@ interface NavigationPanelProps {
   onResetProgress: () => void;
   simulationType?: "topic" | "question-set";
   setNumber?: number;
+  examMode?: boolean;
 }
 
 const NavigationPanel = ({
@@ -36,7 +37,8 @@ const NavigationPanel = ({
   onToggleQuestionFlag,
   onResetProgress,
   simulationType,
-  setNumber
+  setNumber,
+  examMode = false
 }: NavigationPanelProps) => {
   const { isQuestionSaved } = useSavedQuestions();
   const isMobile = useIsMobile();
@@ -47,9 +49,15 @@ const NavigationPanel = ({
     }
     
     const userAnswer = userAnswers[index];
-    const correctAnswer = questionsData[index].correctAnswer;
     
     if (userAnswer === null) return "unanswered";
+    
+    // In exam mode, don't reveal if answer is correct or incorrect
+    if (examMode) {
+      return "answered";
+    }
+    
+    const correctAnswer = questionsData[index].correctAnswer;
     if (userAnswer === correctAnswer) return "correct";
     return "incorrect";
   };
@@ -75,7 +83,7 @@ const NavigationPanel = ({
     )
     .map(item => item.index);
 
-  const correctAnswersCount = validIndices.reduce((count, index) => {
+  const correctAnswersCount = examMode ? 0 : validIndices.reduce((count, index) => {
     if (userAnswers[index] !== null && userAnswers[index] === questionsData[index].correctAnswer) {
       return count + 1;
     }
@@ -105,6 +113,7 @@ const NavigationPanel = ({
           buttonSize,
           textSize,
           isCurrent && "bg-gradient-to-br from-blue-600 to-blue-700 shadow-xl shadow-blue-500/30 border-blue-400 text-white",
+          !isCurrent && status === 'answered' && "bg-gradient-to-br from-blue-600/20 to-blue-700/20 border-blue-500/50 hover:border-blue-400 text-blue-400 hover:bg-blue-600/30",
           !isCurrent && status === 'correct' && "bg-gradient-to-br from-green-600/20 to-green-700/20 border-green-500/50 hover:border-green-400 text-green-400 hover:bg-green-600/30",
           !isCurrent && status === 'incorrect' && "bg-gradient-to-br from-red-600/20 to-red-700/20 border-red-500/50 hover:border-red-400 text-red-400 hover:bg-red-600/30",
           !isCurrent && status === 'unanswered' && isFlagged && "bg-gradient-to-br from-amber-600/20 to-amber-700/20 border-amber-500/50 hover:border-amber-400 text-amber-400 hover:bg-amber-600/30",
@@ -112,6 +121,9 @@ const NavigationPanel = ({
         )}
         onClick={() => onNavigateToQuestion(index)}
       >
+        {status === 'answered' && (
+          <CheckCircle className={cn("absolute -top-1 -right-1 bg-slate-900 rounded-full p-0.5 text-blue-400", isMobile ? "h-4 w-4" : "h-5 w-5")} />
+        )}
         {status === 'correct' && (
           <CheckCircle className={cn("absolute -top-1 -right-1 bg-slate-900 rounded-full p-0.5 text-green-400", isMobile ? "h-4 w-4" : "h-5 w-5")} />
         )}

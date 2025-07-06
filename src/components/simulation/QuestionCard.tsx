@@ -131,15 +131,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const isSubmittedOrShowAnswer = isAnswerSubmitted;
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
-  console.log('QuestionCard render:', {
-    currentQuestionIndex,
-    totalQuestions,
-    isLastQuestion,
-    isAnswerSubmitted,
-    examMode,
-    showAnswersImmediately,
-    onFinishSimulation: !!onFinishSimulation
-  });
 
   return (
     <div className="w-full max-w-none px-1 sm:px-4">
@@ -274,18 +265,23 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
           {/* Answer Options */}
           <div className="space-y-2 sm:space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm sm:text-base mb-2">אפשרויות תשובה:</h4>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-bold text-slate-200 text-sm sm:text-base">אפשרויות תשובה:</h4>
+              {examMode && selectedAnswerIndex !== null && !isAnswerSubmitted && (
+                <span className="text-xs text-blue-300 animate-pulse">לחץ שוב לאישור ומעבר לשאלה הבאה</span>
+              )}
+            </div>
             {currentQuestion.options.map((option, index) => {
               const isSelected = selectedAnswerIndex === index;
               const isCorrect = index === currentQuestion.correctAnswer;
               const isIncorrect = isSelected && isSubmittedOrShowAnswer && !isCorrect;
+              
+              // Show feedback colors only in practice mode OR after submission in exam mode
+              const showColors = !examMode || isSubmittedOrShowAnswer;
+              
               // Always use bright text after submission for readability
               const answerTextColor = isSubmittedOrShowAnswer
                 ? 'text-slate-100'
-                : isSubmittedOrShowAnswer && isCorrect
-                ? 'text-green-100'
-                : isIncorrect
-                ? 'text-red-100'
                 : isSelected
                 ? 'text-blue-100'
                 : 'text-slate-300';
@@ -295,9 +291,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   className={`p-3 sm:p-4 rounded-lg border transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base ${
                     isSelected && !isSubmittedOrShowAnswer
                       ? 'bg-blue-500/30 border-blue-400 text-blue-100 shadow-lg shadow-blue-500/20'
-                      : isSubmittedOrShowAnswer && isCorrect
+                      : showColors && isSubmittedOrShowAnswer && isCorrect
                       ? 'bg-green-600/30 border-green-400 text-green-100 shadow-lg shadow-green-500/20'
-                      : isIncorrect
+                      : showColors && isIncorrect
                       ? 'bg-red-600/30 border-red-400 text-red-100 shadow-lg shadow-red-500/20'
                       : 'bg-slate-700/30 border-slate-600/30 hover:bg-slate-600/30 hover:border-slate-500/50'
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
@@ -307,21 +303,19 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       examMode, 
                       isSubmittedOrShowAnswer,
                       selectedAnswerIndex,
-                      showAnswersImmediately,
-                      hasOnAnswerSelect: !!onAnswerSelect,
-                      hasOnSubmitAnswer: !!onSubmitAnswer
+                      showAnswersImmediately
                     });
                     
                     if (!isSubmittedOrShowAnswer) {
                       if (examMode) {
-                        // Exam Mode: Only select the answer, don't submit/show feedback immediately
-                        console.log('Exam mode: calling onAnswerSelect only');
+                        // Exam Mode: Only select the answer, no immediate feedback
+                        console.log('Exam mode: selecting answer without feedback');
                         if (onAnswerSelect) {
                           onAnswerSelect(index);
                         }
                       } else {
                         // Practice Mode: Submit answer and show immediate feedback
-                        console.log('Practice mode: calling onSubmitAnswer for immediate feedback');
+                        console.log('Practice mode: submitting answer with immediate feedback');
                         if (onSubmitAnswer) {
                           onSubmitAnswer(index);
                         }
@@ -334,9 +328,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   <div className="flex items-start justify-between">
                     <div className="flex items-start flex-1 gap-2 sm:gap-3">
                       <span className={`font-bold text-sm sm:text-base flex-shrink-0 mt-0.5 ${
-                        isSubmittedOrShowAnswer && isCorrect 
+                        showColors && isSubmittedOrShowAnswer && isCorrect 
                           ? 'text-green-300' 
-                          : isIncorrect 
+                          : showColors && isIncorrect 
                           ? 'text-red-300' 
                           : isSelected 
                           ? 'text-blue-300' 
@@ -347,10 +341,10 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       <span className={`flex-1 leading-relaxed ${answerTextColor}`}>{option}</span>
                     </div>
                     <div className="flex items-center gap-1 mr-1">
-                      {isSubmittedOrShowAnswer && isCorrect && (
+                      {showColors && isSubmittedOrShowAnswer && isCorrect && (
                         <span className="text-green-400 font-bold text-lg">✓</span>
                       )}
-                      {isIncorrect && (
+                      {showColors && isIncorrect && (
                         <span className="text-red-400 font-bold text-lg">✗</span>
                       )}
                     </div>
@@ -376,19 +370,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               </Button>
             )}
             
-            {/* Submit Answer Button - Only in exam mode when answer is selected but not submitted */}
-            {examMode && selectedAnswerIndex !== null && !isSubmittedOrShowAnswer && onSubmitAnswer && (
-              <Button
-                onClick={() => onSubmitAnswer()}
-                size="lg"
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg shadow-blue-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
-              >
-                שלח תשובה
-              </Button>
-            )}
-            
-            {/* Explanation button */}
-            {onToggleExplanation && isSubmittedOrShowAnswer && (
+            {/* Explanation button - Only in practice mode */}
+            {!examMode && onToggleExplanation && isSubmittedOrShowAnswer && (
               <Button
                 variant="outline"
                 size="sm"
@@ -436,8 +419,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
           </div>
 
-          {/* Explanation - Enhanced with clear border */}
-          {canShowAnswer && showExplanation && currentQuestion.explanation && (
+          {/* Explanation - Enhanced with clear border - Only in practice mode */}
+          {!examMode && showExplanation && currentQuestion.explanation && (
             <div className="bg-blue-500/10 rounded-xl p-4 sm:p-6 border-2 border-blue-400/50 backdrop-blur-sm shadow-lg shadow-blue-500/10">
               <h4 className="font-bold text-blue-300 mb-2 sm:mb-3 text-base sm:text-lg">הסבר:</h4>
               <p 

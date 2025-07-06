@@ -127,6 +127,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     const finalAnswerIndex = answerIndex !== undefined ? answerIndex : selectedAnswer;
     if (!currentQuestion || finalAnswerIndex === null || !sessionId || !currentUser?.id) return;
 
+
     // If answerIndex was provided, update selectedAnswer
     if (answerIndex !== undefined) {
       setSelectedAnswer(answerIndex);
@@ -179,7 +180,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, isTimerActive]);
+  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, isTimerActive, sessionType]);
 
   // Timer functions - NOW submitAnswer is available
   const startTimer = useCallback(() => {
@@ -577,6 +578,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
             onToggleQuestionFlag={handleToggleFlag}
             onResetProgress={handleResetProgress}
             simulationType="topic"
+            examMode={sessionType === 'full'}
           />
         </div>
 
