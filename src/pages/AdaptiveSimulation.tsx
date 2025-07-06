@@ -31,6 +31,7 @@ import {
 } from '@/services/adaptiveQuestions/types';
 import { UserPreferencesService } from '@/services/adaptiveQuestions/userPreferencesService';
 import { AnalyticsService } from '@/services/adaptiveQuestions/analyticsService';
+import { QuestionDeliveryService } from '@/services/adaptiveQuestions/questionDeliveryService';
 import { 
   Brain, 
   Settings, 
@@ -50,7 +51,7 @@ import {
   FileText
 } from 'lucide-react';
 
-// Question type options with counts
+// Question type options with counts (actual database values)
 const QUESTION_GROUPS = [
   { 
     id: 'sentence-completion', 
@@ -105,6 +106,7 @@ const AdaptiveSimulationPage: React.FC = () => {
   
   // UI state
   const [isSimulationActive, setIsSimulationActive] = useState(false);
+  const [questionTypeCounts, setQuestionTypeCounts] = useState<Record<string, number> | null>(null);
   const [userStats, setUserStats] = useState<{
     overall: {
       accuracy: number;
@@ -123,6 +125,7 @@ const AdaptiveSimulationPage: React.FC = () => {
   // Services
   const userPreferencesService = useMemo(() => new UserPreferencesService(), []);
   const analyticsService = useMemo(() => new AnalyticsService(), []);
+  const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
 
   const loadUserData = useCallback(async () => {
     if (!currentUser?.id) return;
@@ -158,6 +161,19 @@ const AdaptiveSimulationPage: React.FC = () => {
       loadUserData();
     }
   }, [currentUser?.id, loadUserData]);
+
+  // Load question type counts on mount
+  useEffect(() => {
+    const loadQuestionCounts = async () => {
+      try {
+        const counts = await questionDeliveryService.getQuestionTypeCounts();
+        setQuestionTypeCounts(counts);
+      } catch (error) {
+        console.error('Failed to load question type counts:', error);
+      }
+    };
+    loadQuestionCounts();
+  }, [questionDeliveryService]);
 
   // Show warning for reading-comprehension type
   useEffect(() => {
@@ -323,20 +339,23 @@ const AdaptiveSimulationPage: React.FC = () => {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            {QUESTION_GROUPS.map((group) => (
-                              <SelectItem 
-                                key={group.id} 
-                                value={group.id}
-                                disabled={group.count < 10}
-                              >
-                                <div className="flex items-center justify-between w-full">
-                                  <span>{group.label}</span>
-                                  <span className={`text-xs ${group.count < 10 ? 'text-red-500' : 'text-gray-500'}`}>
-                                    ({group.count} שאלות)
-                                  </span>
-                                </div>
-                              </SelectItem>
-                            ))}
+                            {QUESTION_GROUPS.map((group) => {
+                              const count = questionTypeCounts?.[group.id] || group.count;
+                              return (
+                                <SelectItem 
+                                  key={group.id} 
+                                  value={group.id}
+                                  disabled={count < 3}
+                                >
+                                  <div className="flex items-center justify-between w-full">
+                                    <span>{group.label}</span>
+                                    <span className={`text-xs ${count < 5 ? 'text-red-500' : count < 10 ? 'text-yellow-500' : 'text-gray-500'}`}>
+                                      ({count} שאלות)
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              );
+                            })}
                           </SelectContent>
                         </Select>
                       </div>
