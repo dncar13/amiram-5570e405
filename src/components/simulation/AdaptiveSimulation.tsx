@@ -116,6 +116,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   // Additional UI state
   const [showTimer, setShowTimer] = useState(false);
   const [simulationComplete, setSimulationComplete] = useState(false);
+  const [startTime, setStartTime] = useState<Date | null>(null);
 
   // Initialize services
   const questionDeliveryService = useMemo(() => new QuestionDeliveryService(), []);
@@ -180,7 +181,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, isTimerActive, sessionType]);
+  }, [currentQuestion, selectedAnswer, sessionId, currentUser?.id, progressTrackingService, initialDifficulty, questionIndex, enableTimer, isTimerActive]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer functions - NOW submitAnswer is available
   const startTimer = useCallback(() => {
@@ -265,6 +266,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       setTotalQuestions(questions.questions.length);
       setQuestionIndex(0);
       setIsInitialized(true);
+      setStartTime(new Date()); // Track simulation start time
       
       // Initialize timer if enabled
       if (enableTimer) {
@@ -295,7 +297,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
     } finally {
       setIsLoading(false);
     }
-  }, [currentUser?.id, initialDifficulty, sessionType, questionLimit, questionGroup, simulationService, questionDeliveryService, onError]);
+  }, [currentUser?.id, initialDifficulty, sessionType, questionLimit, questionGroup, simulationService, questionDeliveryService, onError, enableTimer, timePerQuestion]);
 
   // Move to next question
   const nextQuestion = useCallback(async () => {
@@ -317,7 +319,19 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
           completedAt: new Date()
         });
 
-        onComplete?.(result);
+        // Calculate actual time spent
+        const endTime = new Date();
+        const actualTimeSpent = startTime ? Math.floor((endTime.getTime() - startTime.getTime()) / 1000) : 0;
+
+        // Pass comprehensive data to the results page
+        const enhancedResult = {
+          ...result,
+          questions: deliveryResult.questions,
+          userAnswers: userAnswers,
+          timeSpent: actualTimeSpent
+        };
+
+        onComplete?.(enhancedResult);
         
         toast({
           title: "סימולציה הושלמה!",
@@ -364,7 +378,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       resetTimer();
       startTimer();
     }
-  }, [deliveryResult, questionIndex, sessionId, currentUser?.id, score, totalQuestions, simulationService, onComplete, enableTimer, resetTimer, startTimer]);
+  }, [deliveryResult, questionIndex, sessionId, currentUser?.id, score, totalQuestions, simulationService, onComplete, enableTimer, resetTimer, startTimer, startTime, stopTimer, userAnswers]);
 
   // Initialize on mount
   useEffect(() => {

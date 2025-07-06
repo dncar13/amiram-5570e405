@@ -29,9 +29,11 @@ import {
   SimulationSessionResult,
   DeliveryStrategy 
 } from '@/services/adaptiveQuestions/types';
+import { Question } from '@/data/types/questionTypes';
 import { UserPreferencesService } from '@/services/adaptiveQuestions/userPreferencesService';
 import { AnalyticsService } from '@/services/adaptiveQuestions/analyticsService';
 import { QuestionDeliveryService } from '@/services/adaptiveQuestions/questionDeliveryService';
+import SimulationResults from '@/components/simulation/SimulationResults';
 import { 
   Brain, 
   Settings, 
@@ -105,6 +107,25 @@ const AdaptiveSimulationPage: React.FC = () => {
   
   // UI state
   const [isSimulationActive, setIsSimulationActive] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  // Extended simulation results type
+  interface ExtendedSimulationResults {
+    score: number;
+    totalQuestions: number;
+    timeSpent: number;
+    correctAnswers: number;
+    incorrectAnswers: number;
+    questions: Question[];
+    questionsData: Question[];
+    userAnswers: Record<number, number>;
+    difficulty: DifficultyLevel;
+    type: string;
+    completionTime: string;
+    answeredQuestionsCount: number;
+    correctQuestionsCount: number;
+  }
+
+  const [simulationResults, setSimulationResults] = useState<ExtendedSimulationResults | null>(null);
   const [questionTypeCounts, setQuestionTypeCounts] = useState<Record<string, number> | null>(null);
   const [userStats, setUserStats] = useState<{
     overall: {
@@ -232,14 +253,32 @@ const AdaptiveSimulationPage: React.FC = () => {
     }
   };
 
-  const handleSimulationComplete = (result: SimulationSessionResult) => {
+  const handleSimulationComplete = (result: SimulationSessionResult & { 
+    questions?: Question[], 
+    userAnswers?: Record<number, number>,
+    timeSpent?: number 
+  }) => {
     setIsSimulationActive(false);
     
-    toast({
-      title: "סימולציה הושלמה בהצלחה!",
-      description: `ציון: ${result.score}/${result.totalQuestions} (${Math.round((result.score / result.totalQuestions) * 100)}%)`,
-      duration: 5000,
+    // Store comprehensive results data
+    setSimulationResults({
+      score: result.score,
+      totalQuestions: result.totalQuestions,
+      timeSpent: result.timeSpent || 0,
+      correctAnswers: result.score,
+      incorrectAnswers: result.totalQuestions - result.score,
+      questions: result.questions || [],
+      questionsData: result.questions || [],
+      userAnswers: result.userAnswers || {},
+      difficulty: difficulty,
+      type: selectedQuestionType,
+      completionTime: new Date().toLocaleTimeString('he-IL'),
+      answeredQuestionsCount: result.totalQuestions,
+      correctQuestionsCount: result.score
     });
+    
+    // Show results page instead of toast
+    setShowResults(true);
 
     // Refresh user stats
     loadUserData();
@@ -255,6 +294,25 @@ const AdaptiveSimulationPage: React.FC = () => {
     });
   };
 
+  // Results page navigation functions
+  const handleRestart = () => {
+    setShowResults(false);
+    setSimulationResults(null);
+    // Keep current settings and restart
+  };
+
+  const handleReview = () => {
+    // TODO: Implement review mode
+    setShowResults(false);
+    setIsSimulationActive(true);
+  };
+
+  const handleBackToHome = () => {
+    setShowResults(false);
+    setSimulationResults(null);
+    return '/'; // Navigate to home
+  };
+
   const getDifficultyColor = (diff: DifficultyLevel) => {
     switch (diff) {
       case 'easy': return 'bg-green-100 text-green-800';
@@ -263,6 +321,17 @@ const AdaptiveSimulationPage: React.FC = () => {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  if (showResults && simulationResults) {
+    return (
+      <SimulationResults
+        {...simulationResults}
+        onRestart={handleRestart}
+        onReview={handleReview}
+        onBackToTopics={handleBackToHome}
+      />
+    );
+  }
 
   if (isSimulationActive) {
     return (
