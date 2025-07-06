@@ -123,20 +123,26 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   const simulationService = useMemo(() => new SimulationService(), []);
 
   // Submit answer - MOVED BEFORE startTimer to fix initialization order
-  const submitAnswer = useCallback(async () => {
-    if (!currentQuestion || selectedAnswer === null || !sessionId || !currentUser?.id) return;
+  const submitAnswer = useCallback(async (answerIndex?: number) => {
+    const finalAnswerIndex = answerIndex !== undefined ? answerIndex : selectedAnswer;
+    if (!currentQuestion || finalAnswerIndex === null || !sessionId || !currentUser?.id) return;
+
+    // If answerIndex was provided, update selectedAnswer
+    if (answerIndex !== undefined) {
+      setSelectedAnswer(answerIndex);
+    }
 
     setIsAnswerSubmitted(true);
     setIsLoading(true);
 
     try {
-      const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+      const isCorrect = finalAnswerIndex === currentQuestion.correctAnswer;
       
       // Record the answer
       await progressTrackingService.recordAnswer({
         userId: currentUser.id,
         questionId: currentQuestion.id,
-        selectedAnswer,
+        selectedAnswer: finalAnswerIndex,
         isCorrect,
         timeSpent: 60, // TODO: Track actual time
         sessionId,
@@ -146,7 +152,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
       // Update userAnswers state for UI compatibility
       setUserAnswers(prev => ({
         ...prev,
-        [questionIndex]: selectedAnswer
+        [questionIndex]: finalAnswerIndex
       }));
       
       if (isCorrect) {
