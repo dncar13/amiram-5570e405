@@ -574,49 +574,89 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
           />
         </div>
 
-        {/* Reading Passage for reading comprehension questions */}
-        {currentQuestion?.type === 'reading-comprehension' && (
-          <div className="mb-4 sm:mb-8">
-            <ReadingPassage
-              title={currentQuestion.passage_title || currentQuestion.passageTitle || ''}
-              passageText={currentQuestion.passage_text || currentQuestion.passageText || currentQuestion.passage || ''}
-              passageWithLines={currentQuestion.passageWithLines}
-              showLineNumbers={currentQuestion.lineNumbers}
-            />
-          </div>
-        )}
+        {/* Main Content Area */}
+        {currentQuestion?.type === 'reading-comprehension' ? (
+          /* Two Column Layout for Reading Comprehension */
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8" dir="ltr">
+            {/* Left Column - Reading Passage (Story) */}
+            <div className="lg:order-1">
+              <div className="sticky top-4">
+                <ReadingPassage
+                  title={currentQuestion.passage_title || currentQuestion.passageTitle || ''}
+                  passageText={currentQuestion.passage_text || currentQuestion.passageText || currentQuestion.passage || ''}
+                  passageWithLines={currentQuestion.passageWithLines}
+                  showLineNumbers={currentQuestion.lineNumbers}
+                />
+              </div>
+            </div>
 
-        {/* Question Card */}
-        <div className="max-w-none">
-          <QuestionCard
-            currentQuestion={currentQuestion}
-            currentQuestionIndex={questionIndex}
-            totalQuestions={totalQuestions}
-            selectedAnswerIndex={selectedAnswer}
-            isAnswerSubmitted={isAnswerSubmitted}
-            showExplanation={showExplanation}
-            isFlagged={questionFlags[questionIndex] || false}
-            examMode={sessionType === 'full'}
-            showAnswersImmediately={sessionType !== 'full'}
-            answeredQuestionsCount={answeredQuestions}
-            correctQuestionsCount={score}
-            progressPercentage={(questionIndex / totalQuestions) * 100}
-            onAnswerSelect={setSelectedAnswer}
-            onSubmitAnswer={submitAnswer}
-            onNextQuestion={nextQuestion}
-            onPreviousQuestion={() => {
-              if (questionIndex > 0) {
-                handleNavigateToQuestion(questionIndex - 1);
-              }
-            }}
-            onToggleExplanation={() => setShowExplanation(!showExplanation)}
-            onToggleQuestionFlag={handleToggleFlag}
-            onFinishSimulation={() => {
-              nextQuestion();
-            }}
-            onResetQuestion={handleResetQuestion}
-          />
-        </div>
+            {/* Right Column - Question Card */}
+            <div className="lg:order-2" dir="rtl">
+              <QuestionCard
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={questionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswerIndex={selectedAnswer}
+                isAnswerSubmitted={isAnswerSubmitted}
+                showExplanation={showExplanation}
+                isFlagged={questionFlags[questionIndex] || false}
+                examMode={sessionType === 'full'}
+                showAnswersImmediately={sessionType !== 'full'}
+                answeredQuestionsCount={answeredQuestions}
+                correctQuestionsCount={score}
+                progressPercentage={(questionIndex / totalQuestions) * 100}
+                onAnswerSelect={setSelectedAnswer}
+                onSubmitAnswer={submitAnswer}
+                onNextQuestion={nextQuestion}
+                onPreviousQuestion={() => {
+                  if (questionIndex > 0) {
+                    handleNavigateToQuestion(questionIndex - 1);
+                  }
+                }}
+                onToggleExplanation={() => setShowExplanation(!showExplanation)}
+                onToggleQuestionFlag={handleToggleFlag}
+                onFinishSimulation={() => {
+                  nextQuestion();
+                }}
+                onResetQuestion={handleResetQuestion}
+              />
+            </div>
+          </div>
+        ) : (
+          /* Single Column Layout for Other Question Types */
+          <>
+            <div className="max-w-none">
+              <QuestionCard
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={questionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswerIndex={selectedAnswer}
+                isAnswerSubmitted={isAnswerSubmitted}
+                showExplanation={showExplanation}
+                isFlagged={questionFlags[questionIndex] || false}
+                examMode={sessionType === 'full'}
+                showAnswersImmediately={sessionType !== 'full'}
+                answeredQuestionsCount={answeredQuestions}
+                correctQuestionsCount={score}
+                progressPercentage={(questionIndex / totalQuestions) * 100}
+                onAnswerSelect={setSelectedAnswer}
+                onSubmitAnswer={submitAnswer}
+                onNextQuestion={nextQuestion}
+                onPreviousQuestion={() => {
+                  if (questionIndex > 0) {
+                    handleNavigateToQuestion(questionIndex - 1);
+                  }
+                }}
+                onToggleExplanation={() => setShowExplanation(!showExplanation)}
+                onToggleQuestionFlag={handleToggleFlag}
+                onFinishSimulation={() => {
+                  nextQuestion();
+                }}
+                onResetQuestion={handleResetQuestion}
+              />
+            </div>
+          </>
+        )}
         
         {/* Timer Display */}
         {showTimer && timeRemaining !== null && (
