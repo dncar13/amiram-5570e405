@@ -136,6 +136,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
     totalQuestions,
     isLastQuestion,
     isAnswerSubmitted,
+    examMode,
+    showAnswersImmediately,
     onFinishSimulation: !!onFinishSimulation
   });
 
@@ -300,14 +302,26 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       : 'bg-slate-700/30 border-slate-600/30 hover:bg-slate-600/30 hover:border-slate-500/50'
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
+                    console.log('Answer clicked:', { 
+                      index, 
+                      examMode, 
+                      isSubmittedOrShowAnswer,
+                      selectedAnswerIndex,
+                      showAnswersImmediately,
+                      hasOnAnswerSelect: !!onAnswerSelect,
+                      hasOnSubmitAnswer: !!onSubmitAnswer
+                    });
+                    
                     if (!isSubmittedOrShowAnswer) {
                       if (examMode) {
-                        // Exam Mode: Only select the answer, don't submit/show feedback
+                        // Exam Mode: Only select the answer, don't submit/show feedback immediately
+                        console.log('Exam mode: calling onAnswerSelect only');
                         if (onAnswerSelect) {
                           onAnswerSelect(index);
                         }
                       } else {
                         // Practice Mode: Submit answer and show immediate feedback
+                        console.log('Practice mode: calling onSubmitAnswer for immediate feedback');
                         if (onSubmitAnswer) {
                           onSubmitAnswer(index);
                         }
@@ -361,6 +375,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 קודם
               </Button>
             )}
+            
+            {/* Submit Answer Button - Only in exam mode when answer is selected but not submitted */}
+            {examMode && selectedAnswerIndex !== null && !isSubmittedOrShowAnswer && onSubmitAnswer && (
+              <Button
+                onClick={() => onSubmitAnswer()}
+                size="lg"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold shadow-lg shadow-blue-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
+              >
+                שלח תשובה
+              </Button>
+            )}
+            
             {/* Explanation button */}
             {onToggleExplanation && isSubmittedOrShowAnswer && (
               <Button
