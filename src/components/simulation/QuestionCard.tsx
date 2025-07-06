@@ -300,9 +300,18 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       : 'bg-slate-700/30 border-slate-600/30 hover:bg-slate-600/30 hover:border-slate-500/50'
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
-                    if (!isSubmittedOrShowAnswer && onSubmitAnswer) {
-                      // Submit answer directly with the selected index
-                      onSubmitAnswer(index);
+                    if (!isSubmittedOrShowAnswer) {
+                      if (examMode) {
+                        // Exam Mode: Only select the answer, don't submit/show feedback
+                        if (onAnswerSelect) {
+                          onAnswerSelect(index);
+                        }
+                      } else {
+                        // Practice Mode: Submit answer and show immediate feedback
+                        if (onSubmitAnswer) {
+                          onSubmitAnswer(index);
+                        }
+                      }
                     }
                   }}
                   dir="ltr" 
