@@ -252,22 +252,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         </CardHeader>
 
         <CardContent className="space-y-3 sm:space-y-6 p-4 sm:p-6">
-          {/* Passage Text (for reading comprehension) - רחב יותר במובייל */}
-          {(currentQuestion.passage_text || currentQuestion.passageText) && (
-            <div 
-              className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm"
-              dir="ltr" 
-              style={{direction: 'ltr', textAlign: 'left'}}
-            >
-              <h4 className="font-bold text-slate-200 mb-2 sm:mb-4 text-sm sm:text-lg">
-                {currentQuestion.passage_title || currentQuestion.passageTitle || 'קטע לקריאה'}
-              </h4>
-              <div className="text-slate-300 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
-                {currentQuestion.passage_text || currentQuestion.passageText}
-              </div>
-            </div>
-          )}
-
           {/* Question Text - Clean and minimal */}
           <div className="bg-slate-700/30 rounded-lg p-3 sm:p-4 border border-slate-600/30">
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -317,10 +301,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
                     if (!isSubmittedOrShowAnswer && onAnswerSelect && onSubmitAnswer) {
+                      // Select and immediately submit the answer without delay
                       onAnswerSelect(index);
-                      setTimeout(() => {
-                        onSubmitAnswer();
-                      }, 100);
+                      onSubmitAnswer();
                     }
                   }}
                   dir="ltr" 
