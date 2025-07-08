@@ -402,10 +402,10 @@ const AdaptiveSimulationPage: React.FC = () => {
                       <div>
                         <Label className="text-sm font-medium mb-2 block">סוג שאלות</Label>
                         <Select value={selectedQuestionType} onValueChange={setSelectedQuestionType}>
-                          <SelectTrigger>
+                          <SelectTrigger data-testid="question-type-select">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent data-testid="question-type-options">
                             {QUESTION_GROUPS.map((group) => {
                               const count = questionTypeCounts?.[group.id] || group.count;
                               return (
@@ -413,6 +413,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                                   key={group.id} 
                                   value={group.id}
                                   disabled={count < 3}
+                                  data-testid={`question-type-${group.id}`}
                                 >
                                   <div className="flex items-center justify-between w-full">
                                     <span>{group.label}</span>
@@ -452,6 +453,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                               : 'border-slate-200 bg-gradient-to-br from-white to-slate-50 hover:border-green-300 hover:shadow-md'
                           }`}
                           onClick={() => setSimulationMode('practice')}
+                          data-testid="practice-mode-card"
                         >
                           <div className="text-center space-y-3">
                             <div className={`text-4xl mb-3 transition-transform duration-300 ${
@@ -496,6 +498,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                               : 'border-slate-200 bg-gradient-to-br from-white to-slate-50 hover:border-blue-300 hover:shadow-md'
                           }`}
                           onClick={() => setSimulationMode('exam')}
+                          data-testid="exam-mode-card"
                         >
                           <div className="text-center space-y-3">
                             <div className={`text-4xl mb-3 transition-transform duration-300 ${

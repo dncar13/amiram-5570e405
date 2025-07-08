@@ -223,8 +223,10 @@ const Header = React.memo(() => {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300"
+            className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300 min-h-[44px] min-w-[44px] h-11 w-11"
             onClick={toggleMenu}
+            data-testid="mobile-menu-button"
+            aria-label={isMenuOpen ? "סגור תפריט" : "פתח תפריט"}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -247,6 +249,14 @@ const Header = React.memo(() => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 סימולציות
+              </Link>
+              <Link 
+                to="/adaptive-simulation" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Brain className="h-4 w-4 ml-2" />
+                סימולציה חכמה
               </Link>
               <Link 
                 to="/reading-comprehension" 
