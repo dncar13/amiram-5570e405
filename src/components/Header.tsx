@@ -252,10 +252,10 @@ const Header = React.memo(() => {
               </Link>
               <Link 
                 to="/adaptive-simulation" 
-                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center gap-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Brain className="h-4 w-4 ml-2" />
+                <Brain className="h-4 w-4" />
                 סימולציה חכמה
               </Link>
               <Link 
