@@ -7,7 +7,7 @@
  * 3. הרץ: node upload-questions-script.js
  */
 
-const { createClient } = require('@supabase/supabase-js');
+import { createClient } from '@supabase/supabase-js';
 
 // פרטי החיבור לפרויקט Supabase שלך
 const SUPABASE_URL = 'https://llyunioulzfbgqvmeaxq.supabase.co';
@@ -468,13 +468,4 @@ async function main() {
 }
 
 // הפעלת הסקריפט
-if (require.main === module) {
-  main().catch(console.error);
-}
-
-module.exports = {
-  uploadQuestions,
-  gigEconomyQuestions,
-  environmentQuestions,
-  technologyQuestions
-};
+main().catch(console.error);
