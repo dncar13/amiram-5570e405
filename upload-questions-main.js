@@ -9,8 +9,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 import { gigEconomyQuestions } from './data/gig-economy-questions.js';
-import { environmentQuestions } from './data/environment-questions.js';
-import { technologyQuestions } from './data/technology-questions.js';
+import { fullEnvironmentQuestions } from './data/full-environment-questions.js';
+import { fullTechnologyQuestions } from './data/full-technology-questions.js';
 import {
   uploadQuestions,
   testConnection,
@@ -45,14 +45,15 @@ async function main() {
   
   // הכנת רשימות שאלות חדשות
   const newGigQuestions = filterNewQuestions(gigEconomyQuestions, existingIds);
-  const newEnvQuestions = filterNewQuestions(environmentQuestions, existingIds);
-  const newTechQuestions = filterNewQuestions(technologyQuestions, existingIds);
+  const newEnvQuestions = filterNewQuestions(fullEnvironmentQuestions, existingIds);
+  const newTechQuestions = filterNewQuestions(fullTechnologyQuestions, existingIds);
   
   console.log(`\n📊 סיכום שאלות להעלאה:`);
-  console.log(`- Gig Economy: ${newGigQuestions.length} שאלות חדשות`);
-  console.log(`- Environment: ${newEnvQuestions.length} שאלות חדשות`);
-  console.log(`- Technology: ${newTechQuestions.length} שאלות חדשות`);
-  console.log(`- סה"כ: ${newGigQuestions.length + newEnvQuestions.length + newTechQuestions.length} שאלות חדשות`);
+  console.log(`- Gig Economy: ${newGigQuestions.length} שאלות חדשות (מתוך ${gigEconomyQuestions.length})`);
+  console.log(`- Environment: ${newEnvQuestions.length} שאלות חדשות (מתוך ${fullEnvironmentQuestions.length})`);
+  console.log(`- Technology: ${newTechQuestions.length} שאלות חדשות (מתוך ${fullTechnologyQuestions.length})`);
+  console.log(`- סה"כ שאלות להעלאה: ${newGigQuestions.length + newEnvQuestions.length + newTechQuestions.length}`);
+  console.log(`- סה"כ שאלות זמינות: ${gigEconomyQuestions.length + fullEnvironmentQuestions.length + fullTechnologyQuestions.length} שאלות! 🎯`);
   
   if (newGigQuestions.length === 0 && newEnvQuestions.length === 0 && newTechQuestions.length === 0) {
     console.log('\n✅ כל השאלות כבר קיימות במסד הנתונים!');
