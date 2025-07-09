@@ -28,8 +28,18 @@ const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhY
 ### 4. הרץ את הסקריפט
 
 ```bash
-node upload-questions-script.js
+node upload-questions-main.js
 ```
+
+## מבנה הקבצים
+
+הסקריפט מחולק למספר קבצים קטנים ומרוכזים:
+
+- **`upload-questions-main.js`** - הקובץ הראשי לריצה
+- **`data/gig-economy-questions.js`** - שאלות כלכלת הגיג (10 שאלות)
+- **`data/environment-questions.js`** - שאלות סביבה (2 שאלות)
+- **`data/technology-questions.js`** - שאלות טכנולוגיה (1 שאלה)
+- **`utils/upload-utils.js`** - פונקציות עזר
 
 ## מה הסקריפט עושה?
 
