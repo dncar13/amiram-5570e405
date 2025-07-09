@@ -58,7 +58,6 @@
 
 ### ✅ בדיקות דפדפנים
 - [ ] Chrome (Desktop)
-- [ ] Firefox (Desktop)
 - [ ] Safari (Desktop)
 - [ ] Chrome (Mobile)
 - [ ] Safari (Mobile)

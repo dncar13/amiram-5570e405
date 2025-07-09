@@ -19,10 +19,9 @@ npm install @supabase/supabase-js
 
 פתח את הקובץ `upload-questions-script.js` ותחליף:
 ```javascript
-const SERVICE_ROLE_KEY = 'YOUR_SERVICE_ROLE_KEY_HERE';
-```
+const SUPABASE_URL = 'https://llyunioulzfbgqvmeaxq.supabase.co';  // ✅ כבר מוגדר נכון!
+const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxseXVuaW91bHpmYmdxdm1lYXhxIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDAxNzQxOSwiZXhwIjoyMDY1NTkzNDE5fQ.vJIwW5tBQws8tA3F2jojd2sROVgZ6Scq605GzeUZ2nc'; 
 
-ב-Service Role Key שלך.
 
 ### 4. הרץ את הסקריפט
 
