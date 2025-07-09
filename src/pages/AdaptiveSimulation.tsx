@@ -74,7 +74,7 @@ const QUESTION_GROUPS = [
     label: 'הבנת הנקרא', 
     description: 'ענה על שאלות בעקבות קריאת קטע',
     icon: BookOpen,
-    count: 60
+    count: 5
   },
   { 
     id: 'mixed', 
@@ -201,7 +201,7 @@ const AdaptiveSimulationPage: React.FC = () => {
     if (selectedQuestionType === 'reading-comprehension') {
       toast({
         title: "הבנת הנקרא",
-        description: "נטענו 60 שאלות הבנת הנקרא עם קטעים מגוונים. בהצלחה!",
+        description: "שאלות הבנת הנקרא עם קטעים מגוונים. בהצלחה!",
         variant: "default",
         duration: 3000
       });
