@@ -74,7 +74,7 @@ const QUESTION_GROUPS = [
     label: 'הבנת הנקרא', 
     description: 'ענה על שאלות בעקבות קריאת קטע',
     icon: BookOpen,
-    count: 5
+    count: 60
   },
   { 
     id: 'mixed', 
@@ -196,14 +196,14 @@ const AdaptiveSimulationPage: React.FC = () => {
     loadQuestionCounts();
   }, [questionDeliveryService]);
 
-  // Show warning for reading-comprehension type
+  // Show info for reading-comprehension type
   useEffect(() => {
     if (selectedQuestionType === 'reading-comprehension') {
       toast({
-        title: "הערה חשובה",
-        description: "כרגע יש מספר מוגבל של שאלות הבנת הנקרא (5 שאלות). מומלץ לבחור במצב מעורב לחוויה טובה יותר",
-        variant: "destructive",
-        duration: 6000
+        title: "הבנת הנקרא",
+        description: "נטענו 60 שאלות הבנת הנקרא עם קטעים מגוונים. בהצלחה!",
+        variant: "default",
+        duration: 3000
       });
     }
   }, [selectedQuestionType]);
