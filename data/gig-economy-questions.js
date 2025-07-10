@@ -3,6 +3,21 @@
  * Gig Economy Reading Comprehension Questions (1-10)
  */
 
+// Full passage text for all gig economy questions
+const gigEconomyFullPassage = `The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in recent decades. The emergence of the "gig economy" has fundamentally altered how millions of people work and earn their living.
+
+The gig economy refers to a labor market characterized by short-term contracts, freelance work, and independent contracting rather than permanent employment. This shift has been largely facilitated by digital platforms such as Uber, Lyft, TaskRabbit, and Upwork, which connect workers directly with customers seeking specific services.
+
+For many workers, the gig economy offers unprecedented flexibility and autonomy. Freelancers can choose their own schedules, work on multiple projects in the morning, own a ride-share service in the afternoon, and deliver food in the evening, all while maintaining control over their time and earning potential.
+
+However, this flexibility comes at a significant cost. Gig workers typically lack the benefits and protections that traditional employees enjoy, such as health insurance, paid vacation, unemployment benefits, and job security. They also bear the financial burden of their own equipment, vehicle maintenance, and business expenses. During economic downturns, gig workers are often the first to see their income disappear as they have no job security or guaranteed minimum wage.
+
+The social implications of this economic shift are profound. As more people become gig workers, income inequality has widened. While highly skilled freelancers can earn substantial incomes, many gig workers struggle to make ends meet, working multiple jobs without benefits or stable income. This has created a new class of "working poor" - people who are employed but still live in poverty.
+
+Governments worldwide are grappling with how to regulate this new economic model. Some countries have begun classifying certain gig workers as employees rather than independent contractors, entitling them to basic labor protections. Others are exploring new forms of portable benefits that could move from job to job, rather than being tied to a single employer.
+
+The future of work will likely involve finding a balance between the flexibility that both workers and businesses desire and the security and stability that workers need to thrive. As technology continues to evolve, society must adapt its economic and social structures to ensure that the benefits of this new economy are shared more equitably among all participants.`;
+
 export const gigEconomyQuestions = [
   {
     id: 1,
@@ -17,7 +32,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The text states that the traditional model 'has undergone a dramatic transformation in recent decades.'",
-    passageText: "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in recent decades. The emergence of the \"gig economy\" has fundamentally altered how millions of people work and earn their living.\n\nThe gig economy refers to a labor market characterized by short-term contracts, freelance work, and independent contracting rather than permanent employment. This shift has been largely facilitated by digital platforms such as Uber, Lyft, TaskRabbit, and Upwork, which connect workers directly with customers seeking specific services.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["employment-change", "transformation"],
@@ -36,7 +51,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The text explicitly mentions 'digital platforms such as Uber, Lyft, TaskRabbit, and Upwork.'",
-    passageText: "The traditional model of employment, where workers held steady, full-time jobs with a single employer for decades, has undergone a dramatic transformation in recent decades. The emergence of the \"gig economy\" has fundamentally altered how millions of people work and earn their living.\n\nThe gig economy refers to a labor market characterized by short-term contracts, freelance work, and independent contracting rather than permanent employment. This shift has been largely facilitated by digital platforms such as Uber, Lyft, TaskRabbit, and Upwork, which connect workers directly with customers seeking specific services.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy", 
     topicId: 3,
     tags: ["platforms", "examples"],
@@ -55,7 +70,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The passage states that 'the gig economy offers unprecedented flexibility and autonomy' and workers 'can choose their own schedules.'",
-    passageText: "For many workers, the gig economy offers unprecedented flexibility and autonomy. Freelancers can choose their own schedules, work on multiple projects in the morning, own a ride-share service in the afternoon, and deliver food in the evening, all while maintaining control over their time and earning potential.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["benefits", "flexibility"],
@@ -74,7 +89,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 1,
     difficulty: "medium",
     explanation: "The text clearly states that 'Gig workers typically lack the benefits and protections that traditional employees enjoy.'",
-    passageText: "However, this flexibility comes at a significant cost. Gig workers typically lack the benefits and protections that traditional employees enjoy, such as health insurance, paid vacation, unemployment benefits, and job security. They also bear the financial burden of their own equipment, vehicle maintenance, and business expenses.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["disadvantages", "trade-offs"],
@@ -93,7 +108,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The passage mentions that gig workers 'bear the financial burden of their own equipment, vehicle maintenance, and business expenses.'",
-    passageText: "However, this flexibility comes at a significant cost. Gig workers typically lack the benefits and protections that traditional employees enjoy, such as health insurance, paid vacation, unemployment benefits, and job security. They also bear the financial burden of their own equipment, vehicle maintenance, and business expenses.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["financial-burden", "expenses"],
@@ -112,7 +127,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The text explicitly states: 'As more people become gig workers, income inequality has widened.'",
-    passageText: "The social implications of this economic shift are profound. As more people become gig workers, income inequality has widened. While highly skilled freelancers can earn substantial incomes, many gig workers struggle to make ends meet, working multiple jobs without benefits or stable income.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["social-impact", "inequality"], 
@@ -131,7 +146,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 1,
     difficulty: "medium",
     explanation: "The text introduces the term 'working poor' - people who are employed but still live in poverty.",
-    passageText: "While highly skilled freelancers can earn substantial incomes, many gig workers struggle to make ends meet, working multiple jobs without benefits or stable income. This has created a new class of \"working poor\" - people who are employed but still live in poverty.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["vocabulary", "social-class"],
@@ -150,7 +165,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 1,
     difficulty: "medium",
     explanation: "The passage states that 'Some countries have begun classifying certain gig workers as employees rather than independent contractors.'",
-    passageText: "Governments worldwide are grappling with how to regulate this new economic model. Some countries have begun classifying certain gig workers as employees rather than independent contractors, entitling them to basic labor protections.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["government-response", "regulation"],
@@ -169,7 +184,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 1,
     difficulty: "medium",
     explanation: "The text mentions that governments are 'exploring new forms of portable benefits that could move from job to job.'",
-    passageText: "Others are exploring new forms of portable benefits that could move from job to job, rather than being tied to a single employer.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["benefits", "policy-solutions"],
@@ -188,7 +203,7 @@ export const gigEconomyQuestions = [
     correctAnswer: 2,
     difficulty: "medium",
     explanation: "The text presents a balanced view, discussing both benefits (flexibility) and challenges (lack of security), concluding that balance is needed.",
-    passageText: "The future of work will likely involve finding a balance between the flexibility that both workers and businesses desire and the security and stability that workers need to thrive. As technology continues to evolve, society must adapt its economic and social structures to ensure that the benefits of this new economy are shared more equitably among all participants.",
+    passageText: gigEconomyFullPassage,
     passageTitle: "The Rise of the Gig Economy",
     topicId: 3,
     tags: ["main-idea", "synthesis"],

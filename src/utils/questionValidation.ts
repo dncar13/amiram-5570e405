@@ -215,10 +215,19 @@ export function sanitizeQuestion(question: any): any {
       const parsed = JSON.parse(sanitized.options);
       if (Array.isArray(parsed)) {
         sanitized.options = parsed;
+      } else {
+        console.warn(`Options parsed but not an array for question ${sanitized.id}:`, parsed);
+        sanitized.options = [];
       }
     } catch (e) {
-      console.error(`Failed to parse options for question ${sanitized.id}:`, e);
-      sanitized.options = [];
+      console.error(`Failed to parse options for question ${sanitized.id}:`, {
+        error: e,
+        optionsString: sanitized.options,
+        optionsType: typeof sanitized.options,
+        optionsLength: sanitized.options?.length
+      });
+      // Don't set empty array - keep original string and let it fail validation
+      // This will help us see what the actual data looks like
     }
   }
 
