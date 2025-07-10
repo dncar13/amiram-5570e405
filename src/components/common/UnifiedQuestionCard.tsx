@@ -308,13 +308,13 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
 
       <CardContent className="space-y-4">
         {/* Passage Text (for reading comprehension) */}
-        {activeQuestion.passageText && (
+        {(activeQuestion.passageText || activeQuestion.passage_text) && (
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
             <h4 className="font-semibold text-blue-900 mb-2">
               {activeQuestion.passageTitle || 'קטע לקריאה'}
             </h4>
             <div className="text-sm text-blue-800 leading-relaxed whitespace-pre-wrap">
-              {activeQuestion.passageText}
+              {activeQuestion.passageText || activeQuestion.passage_text}
             </div>
           </div>
         )}
