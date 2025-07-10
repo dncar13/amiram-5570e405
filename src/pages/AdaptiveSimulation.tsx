@@ -103,6 +103,10 @@ const AdaptiveSimulationPage: React.FC = () => {
     sessionType?: string;
   } | null;
 
+  // Check URL parameters for reading comprehension navigation
+  const urlQuestionType = searchParams.get('type');
+  const showTopicsParam = searchParams.get('showTopics');
+
   // Simulation configuration - simplified without sessionType
   const [difficulty, setDifficulty] = useState<DifficultyLevel>(
     navigationState?.difficulty || (searchParams.get('difficulty') as DifficultyLevel) || 'medium'
@@ -119,7 +123,7 @@ const AdaptiveSimulationPage: React.FC = () => {
   
   // Question type selection state
   const [selectedQuestionType, setSelectedQuestionType] = useState<string>(
-    navigationState?.questionType || 'mixed'
+    navigationState?.questionType || urlQuestionType || 'mixed'
   );
   
   // Topic filtering for reading comprehension
@@ -222,9 +226,33 @@ const AdaptiveSimulationPage: React.FC = () => {
     loadQuestionCounts();
   }, [questionDeliveryService]);
 
+  // Handle URL parameters for reading comprehension navigation
+  useEffect(() => {
+    if (urlQuestionType === 'reading-comprehension' && showTopicsParam === 'true') {
+      // Set reading comprehension mode and show topic selection
+      setSelectedQuestionType('reading-comprehension');
+      setSimulationMode('practice');
+      setQuestionLimit(5);
+      setShowTopicSelection(true);
+      
+      // Clean up URL parameters
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('type');
+      newUrl.searchParams.delete('showTopics');
+      window.history.replaceState({}, '', newUrl.toString());
+      
+      toast({
+        title: "הבנת הנקרא",
+        description: "בחר נושא לתרגול שאלות הבנת הנקרא",
+        variant: "default",
+        duration: 3000
+      });
+    }
+  }, [urlQuestionType, showTopicsParam]);
+
   // Show info for reading-comprehension type
   useEffect(() => {
-    if (selectedQuestionType === 'reading-comprehension') {
+    if (selectedQuestionType === 'reading-comprehension' && !showTopicsParam) {
       toast({
         title: "הבנת הנקרא",
         description: "שאלות הבנת הנקרא עם קטעים מגוונים. בהצלחה!",
@@ -232,7 +260,7 @@ const AdaptiveSimulationPage: React.FC = () => {
         duration: 3000
       });
     }
-  }, [selectedQuestionType]);
+  }, [selectedQuestionType, showTopicsParam]);
 
   // Determine session type based on simulation mode
   const getSessionType = (): SessionType => {
@@ -255,8 +283,8 @@ const AdaptiveSimulationPage: React.FC = () => {
       return;
     }
 
-    // If mixed mode is selected, show topic selection first
-    if (selectedQuestionType === 'mixed') {
+    // If mixed mode or reading comprehension is selected, show topic selection first
+    if (selectedQuestionType === 'mixed' || selectedQuestionType === 'reading-comprehension') {
       setShowTopicSelection(true);
       return;
     }

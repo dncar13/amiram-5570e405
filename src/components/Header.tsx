@@ -122,7 +122,7 @@ const Header = React.memo(() => {
               סימולציה חכמה
             </Link>
             <Link 
-              to="/reading-comprehension" 
+              to="/adaptive-simulation?type=reading-comprehension&showTopics=true" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
               הבנת הנקרא
@@ -259,7 +259,7 @@ const Header = React.memo(() => {
                 סימולציה חכמה
               </Link>
               <Link 
-                to="/reading-comprehension" 
+                to="/adaptive-simulation?type=reading-comprehension&showTopics=true" 
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
