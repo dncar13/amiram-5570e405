@@ -50,8 +50,10 @@ import {
   Edit,
   Repeat,
   Shuffle,
-  FileText
+  FileText,
+  ArrowLeft
 } from 'lucide-react';
+import { StoryTopicSelector } from '@/components/simulation/StoryTopicSelector';
 
 // Question type options with counts (actual database values)
 const QUESTION_GROUPS = [
@@ -131,6 +133,7 @@ const AdaptiveSimulationPage: React.FC = () => {
   // UI state
   const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showTopicSelection, setShowTopicSelection] = useState(false);
   // Extended simulation results type
   interface ExtendedSimulationResults {
     score: number;
@@ -252,6 +255,17 @@ const AdaptiveSimulationPage: React.FC = () => {
       return;
     }
 
+    // If mixed mode is selected, show topic selection first
+    if (selectedQuestionType === 'mixed') {
+      setShowTopicSelection(true);
+      return;
+    }
+
+    // Start simulation directly for non-mixed modes
+    startSimulationDirect();
+  };
+
+  const startSimulationDirect = () => {
     // Show loading toast
     const selectedGroupLabel = QUESTION_GROUPS.find(g => g.id === selectedQuestionType)?.label || 'מעורב';
     const modeLabel = simulationMode === 'practice' ? 'תרגול' : 'מבחן';
@@ -336,6 +350,20 @@ const AdaptiveSimulationPage: React.FC = () => {
     return '/'; // Navigate to home
   };
 
+  // Topic selection handlers
+  const handleTopicSelect = (topicId: number | null) => {
+    setSelectedTopicId(topicId || undefined);
+  };
+
+  const handleTopicSelectionContinue = () => {
+    // Start the simulation with the selected topic
+    startSimulationDirect();
+  };
+
+  const handleBackToConfiguration = () => {
+    setShowTopicSelection(false);
+  };
+
   const getDifficultyColor = (diff: DifficultyLevel) => {
     switch (diff) {
       case 'easy': return 'bg-green-100 text-green-800';
@@ -353,6 +381,42 @@ const AdaptiveSimulationPage: React.FC = () => {
         onReview={handleReview}
         onBackToTopics={handleBackToHome}
       />
+    );
+  }
+
+  // Show topic selection for mixed mode
+  if (showTopicSelection) {
+    return (
+      <RTLWrapper>
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+          <Header />
+          
+          <main className="container mx-auto px-4 py-8">
+            <div className="max-w-4xl mx-auto">
+              {/* Back button */}
+              <div className="mb-6">
+                <Button
+                  variant="ghost"
+                  onClick={handleBackToConfiguration}
+                  className="flex items-center gap-2 text-slate-600 hover:text-slate-800"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  חזרה להגדרות
+                </Button>
+              </div>
+              
+              {/* Topic Selection */}
+              <StoryTopicSelector
+                selectedTopicId={selectedTopicId || null}
+                onTopicSelect={handleTopicSelect}
+                onContinue={handleTopicSelectionContinue}
+                showQuestionCounts={true}
+                className="w-full"
+              />
+            </div>
+          </main>
+        </div>
+      </RTLWrapper>
     );
   }
 

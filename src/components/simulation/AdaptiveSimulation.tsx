@@ -29,6 +29,81 @@ import NavigationPanel from './NavigationPanel';
 import { RTLWrapper } from '@/components/ui/rtl-wrapper';
 import { ReadingPassage } from './ReadingPassage';
 
+// Helper function to group reading comprehension questions together
+const groupReadingComprehensionQuestions = (questions: Question[], topicId: number): Question[] => {
+  // Separate reading comprehension questions from others
+  const readingQuestions = questions.filter(q => 
+    q.type === 'reading-comprehension' && 
+    (q.topicId === topicId || q.categoryId === topicId)
+  );
+  
+  const otherQuestions = questions.filter(q => 
+    q.type !== 'reading-comprehension' || 
+    (q.topicId !== topicId && q.categoryId !== topicId)
+  );
+
+  // Group reading questions by passage/story
+  const groupedReading: Question[][] = [];
+  const processedQuestions = new Set<number>();
+
+  readingQuestions.forEach(question => {
+    if (processedQuestions.has(question.id)) return;
+
+    // Find all questions that share the same passage
+    const samePassageQuestions = readingQuestions.filter(q => 
+      !processedQuestions.has(q.id) &&
+      (
+        (q.passage_text && question.passage_text && q.passage_text === question.passage_text) ||
+        (q.passageText && question.passageText && q.passageText === question.passageText) ||
+        (q.passage && question.passage && q.passage === question.passage) ||
+        (q.passage_title && question.passage_title && q.passage_title === question.passage_title)
+      )
+    );
+
+    if (samePassageQuestions.length > 0) {
+      groupedReading.push(samePassageQuestions);
+      samePassageQuestions.forEach(q => processedQuestions.add(q.id));
+    } else {
+      // Single question group
+      groupedReading.push([question]);
+      processedQuestions.add(question.id);
+    }
+  });
+
+  // Interleave reading groups with other questions for better variety
+  const result: Question[] = [];
+  const maxGroups = Math.max(groupedReading.length, 1);
+  const questionsPerGroup = Math.ceil(otherQuestions.length / maxGroups);
+
+  let otherIndex = 0;
+  groupedReading.forEach((group, groupIndex) => {
+    // Add other questions before this reading group (except for first group)
+    if (groupIndex > 0) {
+      const questionsToAdd = otherQuestions.slice(otherIndex, otherIndex + questionsPerGroup);
+      result.push(...questionsToAdd);
+      otherIndex += questionsPerGroup;
+    }
+
+    // Add all questions from the reading group consecutively
+    result.push(...group);
+  });
+
+  // Add any remaining other questions at the end
+  if (otherIndex < otherQuestions.length) {
+    result.push(...otherQuestions.slice(otherIndex));
+  }
+
+  console.log('[AdaptiveSimulation] Grouped questions:', {
+    totalQuestions: questions.length,
+    readingQuestions: readingQuestions.length,
+    otherQuestions: otherQuestions.length,
+    readingGroups: groupedReading.length,
+    finalOrder: result.map(q => ({ id: q.id, type: q.type }))
+  });
+
+  return result;
+};
+
 // Hebrew error message mapping
 const ERROR_MESSAGES = {
   'Failed to fetch question pool': 'לא ניתן לטעון את מאגר השאלות. אנא נסה שוב.',
@@ -264,16 +339,25 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         throw new Error('לא נמצאו שאלות מתאימות לפרמטרים שנבחרו');
       }
 
-      setDeliveryResult(questions);
-      setCurrentQuestion(questions.questions[0]);
-      setTotalQuestions(questions.questions.length);
+      // For mixed simulations with reading comprehension, ensure reading questions are grouped
+      let processedQuestions = questions.questions;
+      if (topicId && questionGroup && questionGroup.includes('reading-comprehension')) {
+        processedQuestions = groupReadingComprehensionQuestions(questions.questions, topicId);
+      }
+
+      setDeliveryResult({
+        ...questions,
+        questions: processedQuestions
+      });
+      setCurrentQuestion(processedQuestions[0]);
+      setTotalQuestions(processedQuestions.length);
       setQuestionIndex(0);
       setIsInitialized(true);
       setStartTime(new Date()); // Track simulation start time
       
       // Initialize timer if enabled
       if (enableTimer) {
-        const totalTime = questions.questions.length * timePerQuestion;
+        const totalTime = processedQuestions.length * timePerQuestion;
         setTotalTimeLimit(totalTime);
         setTimeRemaining(timePerQuestion);
         setShowTimer(true);
