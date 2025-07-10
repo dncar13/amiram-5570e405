@@ -799,6 +799,7 @@ const AdaptiveSimulationPage: React.FC = () => {
                     <Button 
                       variant="outline" 
                       className="w-full justify-between h-12 sm:h-14 group hover:bg-purple-50 hover:border-purple-300 transition-all duration-300 text-sm sm:text-base"
+                      data-testid="reading-comprehension-button"
                       onClick={() => {
                         setSimulationMode('practice');
                         setSelectedQuestionType('reading-comprehension');

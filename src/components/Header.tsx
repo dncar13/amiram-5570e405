@@ -122,8 +122,19 @@ const Header = React.memo(() => {
               סימולציה חכמה
             </Link>
             <Link 
-              to="/reading-comprehension" 
+              to="/adaptive-simulation" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+              onClick={() => {
+                // Navigate and set reading comprehension as selected type
+                navigate('/adaptive-simulation');
+                setTimeout(() => {
+                  // This will trigger the button click programmatically
+                  const readingButton = document.querySelector('[data-testid="reading-comprehension-button"]');
+                  if (readingButton) {
+                    (readingButton as HTMLButtonElement).click();
+                  }
+                }, 100);
+              }}
             >
               הבנת הנקרא
             </Link>
@@ -259,9 +270,18 @@ const Header = React.memo(() => {
                 סימולציה חכמה
               </Link>
               <Link 
-                to="/reading-comprehension" 
+                to="/adaptive-simulation" 
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  navigate('/adaptive-simulation');
+                  setTimeout(() => {
+                    const readingButton = document.querySelector('[data-testid="reading-comprehension-button"]');
+                    if (readingButton) {
+                      (readingButton as HTMLButtonElement).click();
+                    }
+                  }, 100);
+                }}
               >
                 הבנת הנקרא
               </Link>
