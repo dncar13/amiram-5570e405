@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck, Brain, ChevronDown } from "lucide-react";
+import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck, Brain } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
@@ -12,16 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "@/components/UserAvatar";
 import { getMobileOptimizedConfig } from "@/utils/mobile-performance";
-import { getAllReadingTopicsWithMixed } from '@/data/readingComprehensionTopics';
 
 const Header = React.memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { session, currentUser, logout, isLoading } = useAuth();
   const navigate = useNavigate();
   const mobileConfig = getMobileOptimizedConfig();
-  
-  // Get reading comprehension topics
-  const readingTopics = useMemo(() => getAllReadingTopicsWithMixed(), []);
 
   // Use session for real-time updates
   const user = session?.user || currentUser;
@@ -58,27 +54,6 @@ const Header = React.memo(() => {
     setIsMenuOpen(false);
     navigate(path);
   }, [navigate]);
-
-  // Handle reading comprehension topic selection
-  const handleReadingTopicSelect = useCallback((topicId: number) => {
-    const selectedTopic = readingTopics.find(topic => topic.id === topicId);
-    
-    if (selectedTopic) {
-      console.log('[Header] Selected reading topic:', selectedTopic.nameHebrew);
-      
-      // Navigate to adaptive simulation with selected topic
-      navigate('/adaptive-simulation', {
-        state: {
-          questionType: 'reading-comprehension',
-          topicId: topicId,
-          topicName: selectedTopic.nameHebrew,
-          questionLimit: 20,
-          difficulty: 'mixed',
-          sessionType: 'practice'
-        }
-      });
-    }
-  }, [readingTopics, navigate]);
 
   // Mobile-optimized debug logging
   if (isLoading && mobileConfig.enableDebugLogging) {
@@ -146,50 +121,12 @@ const Header = React.memo(() => {
               <Brain className="h-4 w-4" />
               סימולציה חכמה
             </Link>
-            {/* Reading Comprehension Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50 flex items-center gap-1"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  הבנת הנקרא
-                  <ChevronDown className="h-3 w-3" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-56"
-                align="end"
-              >
-                {readingTopics.map((topic) => (
-                  <DropdownMenuItem 
-                    key={topic.id}
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleReadingTopicSelect(topic.id);
-                    }}
-                  >
-                    <topic.icon className="ml-2 h-4 w-4" />
-                    <span dir="rtl">{topic.nameHebrew}</span>
-                  </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator className="bg-slate-700/50" />
-                <DropdownMenuItem 
-                  className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    navigate("/reading-comprehension");
-                  }}
-                >
-                  <BookOpen className="ml-2 h-4 w-4" />
-                  <span dir="rtl">כל הסיפורים</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Link 
+              to="/reading-comprehension" 
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+            >
+              הבנת הנקרא
+            </Link>
             <Link 
               to="/about" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
@@ -321,35 +258,13 @@ const Header = React.memo(() => {
                 <Brain className="h-4 w-4" />
                 סימולציה חכמה
               </Link>
-              {/* Reading Comprehension Section in Mobile */}
-              <div className="py-2">
-                <div className="text-slate-300 font-medium py-2 px-4 flex items-center gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  הבנת הנקרא
-                </div>
-                <div className="pr-6 space-y-1">
-                  {readingTopics.map((topic) => (
-                    <button
-                      key={topic.id}
-                      onClick={() => {
-                        handleReadingTopicSelect(topic.id);
-                        setIsMenuOpen(false);
-                      }}
-                      className="w-full text-right text-slate-400 hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center gap-2"
-                    >
-                      <topic.icon className="h-3 w-3" />
-                      <span dir="rtl">{topic.nameHebrew}</span>
-                    </button>
-                  ))}
-                  <Link 
-                    to="/reading-comprehension" 
-                    className="block text-right text-slate-400 hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    כל הסיפורים
-                  </Link>
-                </div>
-              </div>
+              <Link 
+                to="/reading-comprehension" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                הבנת הנקרא
+              </Link>
               <Link 
                 to="/about" 
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
