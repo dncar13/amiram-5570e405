@@ -33,7 +33,7 @@ import FullSimulation from "./pages/FullSimulation";
 import SimulationHistory from "./pages/SimulationHistory";
 import ProgressStats from "./pages/ProgressStats";
 import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
-import ReadingComprehensionTopicsPage from "./pages/ReadingComprehensionTopicsPage";
+import { ReadingComprehensionTopicsPage } from "./pages/ReadingComprehensionTopicsPage";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
 import AdaptiveSimulation from "./pages/AdaptiveSimulation";

@@ -3,7 +3,7 @@
  * Handles topic-related operations for reading comprehension questions
  */
 
-import { supabase } from './supabaseClient';
+import { supabase } from '@/integrations/supabase/client';
 import { READING_COMPREHENSION_TOPICS } from '@/data/readingComprehensionTopics';
 
 export interface TopicStats {
@@ -133,7 +133,7 @@ export class ReadingTopicsService {
         .select(`
           question_id,
           is_correct,
-          answered_at,
+          last_seen_at,
           questions!inner (
             topic_id,
             type
@@ -175,7 +175,7 @@ export class ReadingTopicsService {
 
       // Process history
       history?.forEach(record => {
-        const topicId = record.questions?.topic_id || 0;
+        const topicId = (record as any).questions?.topic_id || 0;
         
         if (!progressMap[topicId]) {
           progressMap[topicId] = {
@@ -188,19 +188,19 @@ export class ReadingTopicsService {
         }
 
         progressMap[topicId].questionsAnswered++;
-        if (record.is_correct) {
+        if ((record as any).is_correct) {
           progressMap[topicId].correctAnswers++;
         }
 
         // Update last accessed date
-        const answeredDate = new Date(record.answered_at);
+        const answeredDate = new Date((record as any).last_seen_at);
         if (!progressMap[topicId].lastAccessed || answeredDate > progressMap[topicId].lastAccessed!) {
           progressMap[topicId].lastAccessed = answeredDate;
         }
 
         // Also update mixed topic stats
         progressMap[0].questionsAnswered++;
-        if (record.is_correct) {
+        if ((record as any).is_correct) {
           progressMap[0].correctAnswers++;
         }
         if (!progressMap[0].lastAccessed || answeredDate > progressMap[0].lastAccessed!) {

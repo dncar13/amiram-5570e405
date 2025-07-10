@@ -3,14 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { ReadingTopicSelector } from '@/components/reading/ReadingTopicSelector';
 import { readingTopicsService } from '@/services/readingTopicsService';
 import { getReadingTopicById } from '@/data/readingComprehensionTopics';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import { Loader2, ArrowRight } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
 export const ReadingComprehensionTopicsPage: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [topicCounts, setTopicCounts] = useState<Record<number, number>>({});
   const [userProgress, setUserProgress] = useState<Record<number, { completed: number; total: number }>>({});
@@ -18,7 +18,7 @@ export const ReadingComprehensionTopicsPage: React.FC = () => {
 
   useEffect(() => {
     loadTopicData();
-  }, [user]);
+  }, [currentUser]);
 
   const loadTopicData = async () => {
     try {
@@ -30,8 +30,8 @@ export const ReadingComprehensionTopicsPage: React.FC = () => {
       setTopicCounts(counts);
 
       // Get user progress if logged in
-      if (user) {
-        const progress = await readingTopicsService.getUserTopicProgress(user.id);
+      if (currentUser) {
+        const progress = await readingTopicsService.getUserTopicProgress(currentUser.id);
         
         // Convert to the format expected by the topic selector
         const formattedProgress: Record<number, { completed: number; total: number }> = {};
@@ -101,7 +101,7 @@ export const ReadingComprehensionTopicsPage: React.FC = () => {
           </Alert>
         )}
 
-        {!user && (
+        {!currentUser && (
           <Alert className="mb-6 max-w-2xl mx-auto">
             <AlertDescription>
               התחבר כדי לשמור את ההתקדמות שלך ולקבל המלצות מותאמות אישית
@@ -112,7 +112,7 @@ export const ReadingComprehensionTopicsPage: React.FC = () => {
         <ReadingTopicSelector
           onTopicSelect={handleTopicSelect}
           topicCounts={topicCounts}
-          userProgress={user ? userProgress : undefined}
+          userProgress={currentUser ? userProgress : undefined}
         />
 
         {/* Additional info section */}
