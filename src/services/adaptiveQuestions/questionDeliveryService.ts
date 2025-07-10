@@ -24,9 +24,10 @@ export class QuestionDeliveryService {
     questionLimit: number;
     questionGroup?: string[];
     sessionId?: string;
+    topicId?: number; // Add topic filtering support
   }): Promise<QuestionDeliveryResult> {
     try {
-      const { userId, difficulty, sessionType, questionLimit, questionGroup } = options;
+      const { userId, difficulty, sessionType, questionLimit, questionGroup, topicId } = options;
       
       console.log('[QuestionDeliveryService] Getting personalized questions with options:', {
         userId,
@@ -34,6 +35,7 @@ export class QuestionDeliveryService {
         sessionType,
         questionLimit,
         questionGroup,
+        topicId,
         hasQuestionGroup: !!(questionGroup && questionGroup.length > 0)
       });
       
@@ -53,6 +55,12 @@ export class QuestionDeliveryService {
       if (difficulty && difficulty !== 'mixed') {
         console.log('[QuestionDeliveryService] Filtering by difficulty:', difficulty);
         query = query.eq('difficulty', difficulty);
+      }
+
+      // Apply topic filter for reading comprehension questions
+      if (topicId !== undefined && topicId !== 0) {
+        console.log('[QuestionDeliveryService] Filtering by topic ID:', topicId);
+        query = query.eq('topic_id', topicId);
       }
 
       // Apply question type filter if specified

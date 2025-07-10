@@ -72,6 +72,7 @@ interface AdaptiveSimulationProps {
   sessionType?: SessionType;
   questionLimit?: number;
   questionGroup?: string[];
+  topicId?: number; // Add topic filtering support
   onComplete?: (result: SimulationSessionResult) => void;
   onError?: (error: Error) => void;
   className?: string;
@@ -84,6 +85,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
   sessionType = 'quick',
   questionLimit = 10,
   questionGroup,
+  topicId,
   onComplete,
   onError,
   className = '',
@@ -254,6 +256,7 @@ export const AdaptiveSimulation: React.FC<AdaptiveSimulationProps> = ({
         sessionType,
         questionLimit,
         questionGroup,
+        topicId, // Pass topic filtering
         sessionId: sessionResult.sessionId
       });
 

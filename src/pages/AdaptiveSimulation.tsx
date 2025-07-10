@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { RTLWrapper } from '@/components/ui/rtl-wrapper';
 import Header from '@/components/Header';
 import { AdaptiveSimulation } from '@/components/simulation/AdaptiveSimulation';
@@ -88,22 +88,45 @@ const QUESTION_GROUPS = [
 const AdaptiveSimulationPage: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const { currentUser, isPremium } = useAuth();
   
+  // Check if we have navigation state from ReadingComprehensionTopicsPage
+  const navigationState = location.state as {
+    questionType?: string;
+    topicId?: number;
+    topicName?: string;
+    questionLimit?: number;
+    difficulty?: DifficultyLevel;
+    sessionType?: string;
+  } | null;
+
   // Simulation configuration - simplified without sessionType
   const [difficulty, setDifficulty] = useState<DifficultyLevel>(
-    (searchParams.get('difficulty') as DifficultyLevel) || 'medium'
+    navigationState?.difficulty || (searchParams.get('difficulty') as DifficultyLevel) || 'medium'
   );
   const [questionLimit, setQuestionLimit] = useState<number>(
-    parseInt(searchParams.get('limit') || '10') || 10
+    navigationState?.questionLimit || parseInt(searchParams.get('limit') || '10') || 10
   );
   const [deliveryStrategy, setDeliveryStrategy] = useState<DeliveryStrategy>('unseen_priority');
   
   // Simplified mode selection - either practice or exam
-  const [simulationMode, setSimulationMode] = useState<'practice' | 'exam'>('practice');
+  const [simulationMode, setSimulationMode] = useState<'practice' | 'exam'>(
+    navigationState?.sessionType === 'practice' ? 'practice' : 'practice'
+  );
   
   // Question type selection state
-  const [selectedQuestionType, setSelectedQuestionType] = useState<string>('mixed');
+  const [selectedQuestionType, setSelectedQuestionType] = useState<string>(
+    navigationState?.questionType || 'mixed'
+  );
+  
+  // Topic filtering for reading comprehension
+  const [selectedTopicId, setSelectedTopicId] = useState<number | undefined>(
+    navigationState?.topicId
+  );
+  const [selectedTopicName, setSelectedTopicName] = useState<string | undefined>(
+    navigationState?.topicName
+  );
   
   // UI state
   const [isSimulationActive, setIsSimulationActive] = useState(false);
@@ -340,6 +363,7 @@ const AdaptiveSimulationPage: React.FC = () => {
         sessionType={getSessionType()}
         questionLimit={questionLimit}
         questionGroup={toQuestionGroup(selectedQuestionType)}
+        topicId={selectedTopicId} // Pass topic filtering
         onComplete={handleSimulationComplete}
         onError={handleSimulationError}
         enableTimer={simulationMode === 'exam'}
@@ -365,6 +389,11 @@ const AdaptiveSimulationPage: React.FC = () => {
               <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto px-4">
                 מערכת חכמה הבוחרת שאלות בהתאם לרמתך ולהיסטוריית הלמידה שלך
               </p>
+              {selectedTopicName && (
+                <Badge className="mt-2 text-base px-4 py-2 bg-blue-100 text-blue-800">
+                  נושא נבחר: {selectedTopicName}
+                </Badge>
+              )}
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
