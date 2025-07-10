@@ -902,9 +902,7 @@
     letter-spacing: 0.5px;
     border: none !important;
     transition: all 0.3s ease;
-    padding: 16px 32px !important;
-    min-height: 48px !important;
-    height: auto !important;
+    padding: 14px 32px !important;
   }
 
   .btn-primary-enhanced:hover {

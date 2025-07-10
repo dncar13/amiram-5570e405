@@ -40,10 +40,6 @@ dist-ssr/
 Thumbs.db
 
 # ==========================
-# SECURITY: Ignore import-questions.cjs
-import-questions.cjs
-
-# ==========================
 # FIREBASE
 # ==========================
 firebase-debug.log

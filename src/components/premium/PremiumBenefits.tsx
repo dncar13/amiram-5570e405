@@ -1,72 +1,58 @@
 
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, BookOpen, Target, BarChart3, Clock, Zap } from "lucide-react";
+import { CheckCircle2, Play } from "lucide-react";
 
 const PremiumBenefits = () => {
   return (
     <>
-      <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full px-4 py-2 mb-4">
-          <Zap className="h-4 w-4 text-blue-400" />
-          <span className="text-blue-300 text-sm font-medium">Premium</span>
-        </div>
-        
-        <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
-          גישה מלאה לכל התכנים
-        </h2>
-        <p className="text-slate-300 text-lg leading-relaxed">
-          שדרגו עכשיו וקבלו גישה מיידית לכל נושאי הלימוד ומאגר השאלות המלא למבחן אמירם
+      <div className="mb-6">
+        <Badge className="bg-electric-blue/10 text-electric-blue border-0 px-3 py-1.5">
+          חשבון פרימיום
+        </Badge>
+        <h2 className="text-2xl md:text-3xl font-bold mt-3 mb-2">גישה מלאה לכל התכנים</h2>
+        <p className="text-electric-slate">
+          שדרגו עכשיו וקבלו גישה מיידית לכל נושאי הלימוד והסימולציות
         </p>
       </div>
       
-      <div className="space-y-6">
-        <div className="flex gap-4 items-start group">
-          <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center group-hover:bg-blue-500/30 transition-colors">
-            <CheckCircle2 className="h-6 w-6 text-blue-400" />
-          </div>
+      <div className="space-y-4">
+        <div className="flex gap-2 items-start">
+          <CheckCircle2 className="h-5 w-5 text-electric-blue mt-1 flex-shrink-0" />
           <div>
-            <h3 className="text-white text-lg font-semibold mb-2">גישה לכל נושאי הסימולציה</h3>
-            <p className="text-slate-300">מאגר שאלות מלא בכל התחומים הנדרשים למבחן</p>
+            <p className="font-medium">גישה לכל 7 נושאי הסימולציה</p>
+            <p className="text-sm text-electric-slate">יותר מ-950 שאלות סימולציה ותרגול</p>
           </div>
         </div>
         
-        <div className="flex gap-4 items-start group">
-          <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center group-hover:bg-purple-500/30 transition-colors">
-            <BookOpen className="h-6 w-6 text-purple-400" />
-          </div>
+        <div className="flex gap-2 items-start">
+          <Play className="h-5 w-5 text-electric-blue mt-1 flex-shrink-0" />
           <div>
-            <h3 className="text-white text-lg font-semibold mb-2">קטעי קריאה ותרגול מקיף</h3>
-            <p className="text-slate-300">קטעי קריאה מגוונים עם שאלות הבנה ופירוש</p>
+            <p className="font-medium">סרטוני הסבר מאת טימור</p>
+            <p className="text-sm text-electric-slate">סרטוני הסבר מפורטים לשאלות נבחרות</p>
           </div>
         </div>
         
-        <div className="flex gap-4 items-start group">
-          <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center group-hover:bg-green-500/30 transition-colors">
-            <Target className="h-6 w-6 text-green-400" />
-          </div>
+        <div className="flex gap-2 items-start">
+          <CheckCircle2 className="h-5 w-5 text-electric-blue mt-1 flex-shrink-0" />
           <div>
-            <h3 className="text-white text-lg font-semibold mb-2">סימולציות אמיתיות</h3>
-            <p className="text-slate-300">תנאי מבחן אמיתיים עם מגבלת זמן ומבנה זהה למבחן</p>
+            <p className="font-medium">עדכוני תוכן ושאלות חדשות</p>
+            <p className="text-sm text-electric-slate">אנחנו מוסיפים שאלות ועדכונים באופן קבוע</p>
           </div>
         </div>
         
-        <div className="flex gap-4 items-start group">
-          <div className="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center group-hover:bg-orange-500/30 transition-colors">
-            <BarChart3 className="h-6 w-6 text-orange-400" />
-          </div>
+        <div className="flex gap-2 items-start">
+          <CheckCircle2 className="h-5 w-5 text-electric-blue mt-1 flex-shrink-0" />
           <div>
-            <h3 className="text-white text-lg font-semibold mb-2">מעקב אחר התקדמות</h3>
-            <p className="text-slate-300">סטטיסטיקות מפורטות וניתוח ביצועים אישיים</p>
+            <p className="font-medium">מסלולי למידה מותאמים אישית</p>
+            <p className="text-sm text-electric-slate">התקדמו בקצב שלכם עם מסלולים המותאמים לרמתכם</p>
           </div>
         </div>
         
-        <div className="flex gap-4 items-start group">
-          <div className="w-12 h-12 bg-cyan-500/20 rounded-xl flex items-center justify-center group-hover:bg-cyan-500/30 transition-colors">
-            <Clock className="h-6 w-6 text-cyan-400" />
-          </div>
+        <div className="flex gap-2 items-start">
+          <CheckCircle2 className="h-5 w-5 text-electric-blue mt-1 flex-shrink-0" />
           <div>
-            <h3 className="text-white text-lg font-semibold mb-2">תרגול בהתאמה אישית</h3>
-            <p className="text-slate-300">יכולת לתרגל נושאים ספציפיים לפי הצורך האישי</p>
+            <p className="font-medium">סטטיסטיקות וניתוח ביצועים</p>
+            <p className="text-sm text-electric-slate">עקבו אחר ההתקדמות שלכם וזהו תחומים לשיפור</p>
           </div>
         </div>
       </div>

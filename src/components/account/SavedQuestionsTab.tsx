@@ -13,9 +13,7 @@ const SavedQuestionsTab = () => {
   const { savedQuestions, removeQuestionById, isInitialized, initializeSavedQuestions, isLoading } = useSavedQuestions();
   const navigate = useNavigate();
   
-  // טעינת השאלות השמורות בעת הטעינה הראשונית - אוטומטית לחלוטין
   useEffect(() => {
-    // console.log("SavedQuestionsTab mounted, initializing saved questions");
     if (!isInitialized) {
       initializeSavedQuestions();
     }
@@ -53,7 +51,6 @@ const SavedQuestionsTab = () => {
     return topic ? topic.title : `נושא ${topicId}`;
   };
 
-  // הצגת מצב טעינה
   if (isLoading || !isInitialized) {
     return (
       <Card>

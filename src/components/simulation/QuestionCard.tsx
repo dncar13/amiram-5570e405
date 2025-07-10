@@ -1,8 +1,9 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, BookOpen, Brain, FileText, Volume2, PenTool, Eye, EyeOff, Flag, ChevronLeft, ChevronRight, Trophy, RotateCcw } from "lucide-react";
+import { Clock, BookOpen, Brain, FileText, Volume2, PenTool, Eye, EyeOff, Flag, ChevronLeft, ChevronRight, Trophy } from "lucide-react";
 import { Question } from "@/data/types/questionTypes";
 
 interface QuestionCardProps {
@@ -19,13 +20,12 @@ interface QuestionCardProps {
   correctQuestionsCount?: number;
   progressPercentage?: number;
   onAnswerSelect: (index: number) => void;
-  onSubmitAnswer: (answerIndex?: number) => void;
+  onSubmitAnswer: () => void;
   onNextQuestion: () => void;
   onPreviousQuestion: () => void;
   onToggleExplanation: () => void;
   onToggleQuestionFlag: () => void;
   onFinishSimulation?: () => void;
-  onResetQuestion?: () => void;
 }
 
 const getTypeIcon = (type: Question['type']) => {
@@ -120,8 +120,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onPreviousQuestion,
   onToggleExplanation,
   onToggleQuestionFlag,
-  onFinishSimulation,
-  onResetQuestion
+  onFinishSimulation
 }) => {
   if (!currentQuestion) {
     return null;
@@ -131,6 +130,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   const isSubmittedOrShowAnswer = isAnswerSubmitted;
   const isLastQuestion = currentQuestionIndex === totalQuestions - 1;
 
+  console.log('QuestionCard render:', {
+    currentQuestionIndex,
+    totalQuestions,
+    isLastQuestion,
+    isAnswerSubmitted,
+    onFinishSimulation: !!onFinishSimulation
+  });
 
   return (
     <div className="w-full max-w-none px-1 sm:px-4">
@@ -221,30 +227,36 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               </div>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onToggleQuestionFlag}
-                className="flex items-center gap-2 flex-shrink-0 hover:bg-slate-600/50 px-3 py-2"
+                className="flex-shrink-0 hover:bg-slate-600/50"
               >
-                <Flag className={`h-4 w-4 ${isFlagged ? 'text-red-400 fill-current' : 'text-slate-400'}`} />
-                <span className="text-xs text-slate-400">שמור</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onResetQuestion}
-                className="flex items-center gap-2 flex-shrink-0 hover:bg-slate-600/50 px-3 py-2"
-              >
-                <RotateCcw className="h-4 w-4 text-slate-400" />
-                <span className="text-xs text-slate-400">איפוס</span>
+                <Flag className={`h-5 w-5 ${isFlagged ? 'text-red-400 fill-current' : 'text-slate-400'}`} />
               </Button>
             </div>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-3 sm:space-y-6 p-4 sm:p-6">
+          {/* Passage Text (for reading comprehension) - רחב יותר במובייל */}
+          {currentQuestion.passageText && (
+            <div 
+              className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm"
+              dir="ltr" 
+              style={{direction: 'ltr', textAlign: 'left'}}
+            >
+              <h4 className="font-bold text-slate-200 mb-2 sm:mb-4 text-sm sm:text-lg">
+                {currentQuestion.passageTitle || 'קטע לקריאה'}
+              </h4>
+              <div className="text-slate-300 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+                {currentQuestion.passageText}
+              </div>
+            </div>
+          )}
+
           {/* Question Text - Clean and minimal */}
           <div className="bg-slate-700/30 rounded-lg p-3 sm:p-4 border border-slate-600/30">
             <div className="flex items-center gap-2 mb-2 sm:mb-3">
@@ -265,61 +277,32 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
           {/* Answer Options */}
           <div className="space-y-2 sm:space-y-3">
-            <div className="flex items-center justify-between mb-2">
-              <h4 className="font-bold text-slate-200 text-sm sm:text-base">אפשרויות תשובה:</h4>
-              {examMode && selectedAnswerIndex !== null && !isAnswerSubmitted && (
-                <span className="text-xs text-blue-300 animate-pulse">לחץ שוב לאישור ומעבר לשאלה הבאה</span>
-              )}
-            </div>
+            <h4 className="font-bold text-slate-200 text-sm sm:text-base mb-2">אפשרויות תשובה:</h4>
             {currentQuestion.options.map((option, index) => {
               const isSelected = selectedAnswerIndex === index;
               const isCorrect = index === currentQuestion.correctAnswer;
               const isIncorrect = isSelected && isSubmittedOrShowAnswer && !isCorrect;
               
-              // Show feedback colors only in practice mode OR after submission in exam mode
-              const showColors = !examMode || isSubmittedOrShowAnswer;
-              
-              // Always use bright text after submission for readability
-              const answerTextColor = isSubmittedOrShowAnswer
-                ? 'text-slate-100'
-                : isSelected
-                ? 'text-blue-100'
-                : 'text-slate-300';
               return (
                 <div
                   key={index}
                   className={`p-3 sm:p-4 rounded-lg border transition-all duration-300 cursor-pointer backdrop-blur-sm text-sm sm:text-base ${
                     isSelected && !isSubmittedOrShowAnswer
                       ? 'bg-blue-500/30 border-blue-400 text-blue-100 shadow-lg shadow-blue-500/20'
-                      : showColors && isSubmittedOrShowAnswer && isCorrect
+                      : isSubmittedOrShowAnswer && isCorrect
                       ? 'bg-green-600/30 border-green-400 text-green-100 shadow-lg shadow-green-500/20'
-                      : showColors && isIncorrect
+                      : isIncorrect
                       ? 'bg-red-600/30 border-red-400 text-red-100 shadow-lg shadow-red-500/20'
-                      : 'bg-slate-700/30 border-slate-600/30 hover:bg-slate-600/30 hover:border-slate-500/50'
+                      : 'bg-slate-700/30 border-slate-600/30 text-slate-300 hover:bg-slate-600/30 hover:border-slate-500/50'
                   } ${!isSubmittedOrShowAnswer ? 'active:scale-95' : ''}`}
                   onClick={() => {
-                    console.log('Answer clicked:', { 
-                      index, 
-                      examMode, 
-                      isSubmittedOrShowAnswer,
-                      selectedAnswerIndex,
-                      showAnswersImmediately
-                    });
-                    
-                    if (!isSubmittedOrShowAnswer) {
-                      if (examMode) {
-                        // Exam Mode: Only select the answer, no immediate feedback
-                        console.log('Exam mode: selecting answer without feedback');
-                        if (onAnswerSelect) {
-                          onAnswerSelect(index);
-                        }
-                      } else {
-                        // Practice Mode: Submit answer and show immediate feedback
-                        console.log('Practice mode: submitting answer with immediate feedback');
-                        if (onSubmitAnswer) {
-                          onSubmitAnswer(index);
-                        }
-                      }
+                    if (!isSubmittedOrShowAnswer && onAnswerSelect && onSubmitAnswer) {
+                      // בחירה ושליחה אוטומטית של התשובה
+                      onAnswerSelect(index);
+                      // עיכוב קטן כדי לתת לUI להתעדכן ואז שליחה
+                      setTimeout(() => {
+                        onSubmitAnswer();
+                      }, 100);
                     }
                   }}
                   dir="ltr" 
@@ -328,9 +311,9 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                   <div className="flex items-start justify-between">
                     <div className="flex items-start flex-1 gap-2 sm:gap-3">
                       <span className={`font-bold text-sm sm:text-base flex-shrink-0 mt-0.5 ${
-                        showColors && isSubmittedOrShowAnswer && isCorrect 
+                        isSubmittedOrShowAnswer && isCorrect 
                           ? 'text-green-300' 
-                          : showColors && isIncorrect 
+                          : isIncorrect 
                           ? 'text-red-300' 
                           : isSelected 
                           ? 'text-blue-300' 
@@ -338,13 +321,13 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                       }`}>
                         {String.fromCharCode(65 + index)}.
                       </span>
-                      <span className={`flex-1 leading-relaxed ${answerTextColor}`}>{option}</span>
+                      <span className="flex-1 leading-relaxed">{option}</span>
                     </div>
                     <div className="flex items-center gap-1 mr-1">
-                      {showColors && isSubmittedOrShowAnswer && isCorrect && (
+                      {isSubmittedOrShowAnswer && isCorrect && (
                         <span className="text-green-400 font-bold text-lg">✓</span>
                       )}
-                      {showColors && isIncorrect && (
+                      {isIncorrect && (
                         <span className="text-red-400 font-bold text-lg">✗</span>
                       )}
                     </div>
@@ -355,72 +338,156 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
           </div>
 
           {/* Action Buttons - שיפור תצוגה במובייל */}
-          {/* SINGLE ROW OF BUTTONS ONLY! No duplication between mobile/desktop. */}
-          <div className="flex w-full flex-wrap gap-2 justify-between items-center pt-4 sm:pt-6">
-            {/* Previous button */}
-            {onPreviousQuestion && currentQuestionIndex > 0 && (
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={onPreviousQuestion}
-                className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm sm:text-lg"
-              >
-                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                קודם
-              </Button>
-            )}
+          <div className="flex flex-col gap-3 pt-4 sm:pt-6">
             
-            {/* Explanation button - Only in practice mode */}
-            {!examMode && onToggleExplanation && isSubmittedOrShowAnswer && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={onToggleExplanation}
-                className="flex items-center gap-1 sm:gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3 sm:px-4"
-              >
-                {showExplanation ? (
-                  <>
-                    <EyeOff className="h-4 w-4" />
-                    <span className="hidden sm:inline">הסתר הסבר</span>
-                    <span className="sm:hidden">הסתר</span>
-                  </>
-                ) : (
-                  <>
-                    <Eye className="h-4 w-4" />
-                    <span className="hidden sm:inline">הצג הסבר</span>
-                    <span className="sm:hidden">הסבר</span>
-                  </>
+            {/* Mobile Layout - כפתורי ניווט למעלה */}
+            <div className="flex sm:hidden w-full justify-between items-center gap-2">
+              {/* Previous button - משמאל במובייל */}
+              {onPreviousQuestion && currentQuestionIndex > 0 ? (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={onPreviousQuestion}
+                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm flex-1"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                  קודם
+                </Button>
+              ) : (
+                <div className="flex-1"></div>
+              )}
+              
+              {/* Next button - מימין במובייל */}
+              {onNextQuestion && currentQuestionIndex < totalQuestions - 1 ? (
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={onNextQuestion}
+                  className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm flex-1"
+                >
+                  הבא
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+              ) : (
+                <div className="flex-1"></div>
+              )}
+            </div>
+            
+            {/* Desktop Layout */}
+            <div className="hidden sm:flex justify-between items-center w-full">
+              {/* Previous button - left side in RTL */}
+              <div className="flex gap-3">
+                {onPreviousQuestion && currentQuestionIndex > 0 && (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={onPreviousQuestion}
+                    className="flex items-center gap-3 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-8 py-4 font-medium text-lg"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                    קודם
+                  </Button>
                 )}
-              </Button>
-            )}
-            {/* Finish Button */}
-            {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
-              <Button
-                onClick={onFinishSimulation}
-                size="lg"
-                className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
-              >
-                <Trophy className="h-4 w-4" />
-                <span className="hidden sm:inline">סיים סימולציה</span>
-                <span className="sm:hidden">סיים</span>
-              </Button>
-            )}
-            {/* Next button */}
-            {onNextQuestion && currentQuestionIndex < totalQuestions - 1 && (
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={onNextQuestion}
-                className="flex items-center gap-2 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-4 py-3 font-medium text-sm sm:text-lg"
-              >
-                הבא
-                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-              </Button>
-            )}
+              </div>
+
+              {/* Center buttons - תמיד במרכז */}
+              <div className="flex gap-2 sm:gap-3 justify-center">
+                {/* הסרנו את כפתור "שלח תשובה" - עכשיו התשובה נשלחת אוטומטית */}
+
+                {onToggleExplanation && isSubmittedOrShowAnswer && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onToggleExplanation}
+                    className="flex items-center gap-1 sm:gap-2 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3 sm:px-4"
+                  >
+                    {showExplanation ? (
+                      <>
+                        <EyeOff className="h-4 w-4" />
+                        <span className="hidden sm:inline">הסתר הסבר</span>
+                        <span className="sm:hidden">הסתר</span>
+                      </>
+                    ) : (
+                      <>
+                        <Eye className="h-4 w-4" />
+                        <span className="hidden sm:inline">הצג הסבר</span>
+                        <span className="sm:hidden">הסבר</span>
+                      </>
+                    )}
+                  </Button>
+                )}
+
+                {/* Finish Button */}
+                {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
+                  <Button
+                    onClick={onFinishSimulation}
+                    size="lg"
+                    className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 sm:px-8 py-3 text-base sm:text-lg"
+                  >
+                    <Trophy className="h-4 w-4" />
+                    <span className="hidden sm:inline">סיים סימולציה</span>
+                    <span className="sm:hidden">סיים</span>
+                  </Button>
+                )}
+              </div>
+
+              {/* Next button - right side in RTL */}
+              <div className="flex gap-3">
+                {onNextQuestion && currentQuestionIndex < totalQuestions - 1 && (
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={onNextQuestion}
+                    className="flex items-center gap-3 bg-slate-700/80 border-slate-500 text-slate-200 hover:bg-slate-600 hover:text-white px-8 py-4 font-medium text-lg"
+                  >
+                    הבא
+                    <ChevronLeft className="h-5 w-5" />
+                  </Button>
+                )}
+              </div>
+            </div>
+            
+            {/* Mobile Center buttons */}
+            <div className="flex sm:hidden gap-2 w-full justify-center">
+              {/* הסרנו את כפתור "שלח תשובה" גם במובייל */}
+
+              {onToggleExplanation && isSubmittedOrShowAnswer && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={onToggleExplanation}
+                  className="flex items-center gap-1 bg-slate-700/50 border-slate-600/50 text-slate-300 hover:bg-slate-600/50 hover:text-slate-200 px-3"
+                >
+                  {showExplanation ? (
+                    <>
+                      <EyeOff className="h-4 w-4" />
+                      <span>הסתר</span>
+                    </>
+                  ) : (
+                    <>
+                      <Eye className="h-4 w-4" />
+                      <span>הסבר</span>
+                    </>
+                  )}
+                </Button>
+              )}
+
+              {/* Finish Button */}
+              {isLastQuestion && isSubmittedOrShowAnswer && onFinishSimulation && (
+                <Button
+                  onClick={onFinishSimulation}
+                  size="lg"
+                  className="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-bold shadow-lg shadow-green-500/20 px-6 py-3 text-base flex-1"
+                >
+                  <Trophy className="h-4 w-4" />
+                  <span>סיים</span>
+                </Button>
+              )}
+            </div>
           </div>
 
-          {/* Explanation - Enhanced with clear border - Only in practice mode */}
-          {!examMode && showExplanation && currentQuestion.explanation && (
+          {/* Explanation - Enhanced with clear border */}
+          {canShowAnswer && showExplanation && currentQuestion.explanation && (
             <div className="bg-blue-500/10 rounded-xl p-4 sm:p-6 border-2 border-blue-400/50 backdrop-blur-sm shadow-lg shadow-blue-500/10">
               <h4 className="font-bold text-blue-300 mb-2 sm:mb-3 text-base sm:text-lg">הסבר:</h4>
               <p 

@@ -23,9 +23,6 @@ export default defineConfig(async ({ mode }) => {
         '@': path.resolve(__dirname, './src'),
       },
     },
-    define: {
-      'process.env': {},
-    },
     server: {
       host: "::",
       port: 8080,

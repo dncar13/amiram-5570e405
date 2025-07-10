@@ -20,9 +20,7 @@ export const ReadingPassage = ({
     hasPassageWithLines: !!(passageWithLines && passageWithLines.length > 0),
     hasPassageText: !!passageText,
     showLineNumbers,
-    passageWithLinesLength: passageWithLines?.length || 0,
-    titleValue: title,
-    passageTextLength: passageText?.length || 0
+    passageWithLinesLength: passageWithLines?.length || 0
   });
 
   // If we have passageWithLines, use that format

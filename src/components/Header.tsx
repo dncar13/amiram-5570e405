@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck, Brain } from "lucide-react";
+import { Menu, X, LogOut, Settings, BookOpen, GraduationCap, Archive, TrendingUp, BookmarkCheck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import {
   DropdownMenu,
@@ -115,26 +115,8 @@ const Header = React.memo(() => {
               סימולציות
             </Link>
             <Link 
-              to="/adaptive-simulation" 
-              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50 flex items-center gap-1"
-            >
-              <Brain className="h-4 w-4" />
-              סימולציה חכמה
-            </Link>
-            <Link 
-              to="/adaptive-simulation" 
+              to="/reading-comprehension" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
-              onClick={() => {
-                // Navigate and set reading comprehension as selected type
-                navigate('/adaptive-simulation');
-                setTimeout(() => {
-                  // This will trigger the button click programmatically
-                  const readingButton = document.querySelector('[data-testid="reading-comprehension-button"]');
-                  if (readingButton) {
-                    (readingButton as HTMLButtonElement).click();
-                  }
-                }, 100);
-              }}
             >
               הבנת הנקרא
             </Link>
@@ -234,10 +216,8 @@ const Header = React.memo(() => {
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300 min-h-[44px] min-w-[44px] h-11 w-11"
+            className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300"
             onClick={toggleMenu}
-            data-testid="mobile-menu-button"
-            aria-label={isMenuOpen ? "סגור תפריט" : "פתח תפריט"}
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -262,26 +242,9 @@ const Header = React.memo(() => {
                 סימולציות
               </Link>
               <Link 
-                to="/adaptive-simulation" 
-                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center gap-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Brain className="h-4 w-4" />
-                סימולציה חכמה
-              </Link>
-              <Link 
-                to="/adaptive-simulation" 
+                to="/reading-comprehension" 
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  navigate('/adaptive-simulation');
-                  setTimeout(() => {
-                    const readingButton = document.querySelector('[data-testid="reading-comprehension-button"]');
-                    if (readingButton) {
-                      (readingButton as HTMLButtonElement).click();
-                    }
-                  }, 100);
-                }}
+                onClick={() => setIsMenuOpen(false)}
               >
                 הבנת הנקרא
               </Link>

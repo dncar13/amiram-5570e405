@@ -168,41 +168,6 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
     return null;
   }
 
-  // Enhanced debugging for display issues
-  React.useEffect(() => {
-    if (activeQuestion) {
-      console.log('[UnifiedQuestionCard] Active question debug:', {
-        id: activeQuestion.id,
-        type: activeQuestion.type,
-        hasPassageText: !!activeQuestion.passageText,
-        hasPassage_text: !!activeQuestion.passage_text,
-        passageTextLength: activeQuestion.passageText?.length || 0,
-        passage_textLength: activeQuestion.passage_text?.length || 0,
-        passageTextPreview: activeQuestion.passageText?.substring(0, 100) + '...' || 'None',
-        hasOptions: !!activeQuestion.options,
-        optionsLength: activeQuestion.options?.length || 0,
-        optionsContent: activeQuestion.options,
-        selectedAnswerIndex,
-        isAnswerSubmitted
-      });
-      
-      // Log specific issues
-      if (activeQuestion.type === 'reading-comprehension' && !activeQuestion.passageText && !activeQuestion.passage_text) {
-        console.error('[UnifiedQuestionCard] Reading comprehension question missing passage!', {
-          questionId: activeQuestion.id,
-          questionText: activeQuestion.text
-        });
-      }
-      
-      if (!activeQuestion.options || activeQuestion.options.length === 0) {
-        console.error('[UnifiedQuestionCard] Question missing options!', {
-          questionId: activeQuestion.id,
-          questionType: activeQuestion.type
-        });
-      }
-    }
-  }, [activeQuestion, selectedAnswerIndex, isAnswerSubmitted]);
-
   const canShowAnswer = showAnswer || (showExplanation && showAnswersImmediately);
   const isSubmittedOrShowAnswer = isAnswerSubmitted || showAnswer;
 
@@ -308,13 +273,13 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
 
       <CardContent className="space-y-4">
         {/* Passage Text (for reading comprehension) */}
-        {(activeQuestion.passageText || activeQuestion.passage_text) && (
+        {activeQuestion.passageText && (
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
             <h4 className="font-semibold text-blue-900 mb-2">
               {activeQuestion.passageTitle || 'קטע לקריאה'}
             </h4>
             <div className="text-sm text-blue-800 leading-relaxed whitespace-pre-wrap">
-              {activeQuestion.passageText || activeQuestion.passage_text}
+              {activeQuestion.passageText}
             </div>
           </div>
         )}

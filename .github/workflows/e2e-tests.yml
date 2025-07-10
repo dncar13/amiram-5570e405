@@ -1,33 +1,35 @@
+
 name: E2E Tests
 
 on:
-  # Only run on workflow dispatch (manual trigger) or pull requests
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
 
 env:
-  NODE_VERSION: "18"
-
+  NODE_VERSION: '18'
+  
 jobs:
   test:
     name: E2E Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
-
+          cache: 'npm'
+          
       - name: Install dependencies
         run: npm ci
-
+          
       - name: Check if tests directory exists
         id: check_tests
         run: |
@@ -36,33 +38,33 @@ jobs:
           else
             echo "tests_exist=false" >> $GITHUB_OUTPUT
           fi
-
+          
       - name: Install test dependencies
         if: steps.check_tests.outputs.tests_exist == 'true'
         run: |
           cd tests
           npm ci
-
+          
       - name: Install Playwright Browsers
         if: steps.check_tests.outputs.tests_exist == 'true'
         run: |
           cd tests
           npx playwright install --with-deps chromium
-
+          
       - name: Run smoke tests
         if: steps.check_tests.outputs.tests_exist == 'true'
         run: |
           cd tests
           npm run test:smoke || echo "Smoke tests not configured yet"
         env:
-          BASE_URL: "http://localhost:5173"
-
+          BASE_URL: 'http://localhost:5173'
+          
       - name: Skip tests (not configured)
         if: steps.check_tests.outputs.tests_exist == 'false'
         run: |
           echo "⚠️ E2E tests are not configured yet"
           echo "Tests directory or package.json not found"
-
+          
       - name: Upload test results
         if: always() && steps.check_tests.outputs.tests_exist == 'true'
         uses: actions/upload-artifact@v4
