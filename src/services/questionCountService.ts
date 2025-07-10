@@ -29,6 +29,8 @@ export class QuestionCountService {
    */
   async getTopicQuestionCount(topicId: number, options: QuestionCountOptions = {}): Promise<number> {
     try {
+      console.log(`[QuestionCountService] Getting count for topic ${topicId} with options:`, options);
+      
       let query = supabase
         .from('questions')
         .select('id', { count: 'exact', head: true });
@@ -57,6 +59,7 @@ export class QuestionCountService {
         return 0;
       }
 
+      console.log(`[QuestionCountService] Found ${count || 0} questions for topic ${topicId}`);
       return count || 0;
     } catch (error) {
       console.error('Error in getTopicQuestionCount:', error);
@@ -152,7 +155,8 @@ export class QuestionCountService {
 
         topicData[topicId].count++;
         if (difficulty in topicData[topicId].byDifficulty) {
-          topicData[topicId].byDifficulty[difficulty as keyof typeof topicData[topicId].byDifficulty]++;
+          const diffKey = difficulty as 'easy' | 'medium' | 'hard';
+          topicData[topicId].byDifficulty[diffKey]++;
         }
       });
 

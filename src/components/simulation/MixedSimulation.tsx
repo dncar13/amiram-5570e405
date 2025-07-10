@@ -67,6 +67,8 @@ export const MixedSimulation: React.FC<MixedSimulationProps> = ({
 
   // Handle continue to simulation
   const handleContinueToSimulation = useCallback(async () => {
+    console.log('[MixedSimulation] Starting simulation with topic:', selectedTopicId);
+    
     if (!selectedTopicId) {
       setError('אנא בחר נושא לפני המשך');
       return;
@@ -76,12 +78,16 @@ export const MixedSimulation: React.FC<MixedSimulationProps> = ({
     setError(null);
     
     try {
+      console.log('[MixedSimulation] Checking topic sufficiency...');
+      
       // Check if there are sufficient questions for the selected topic
       const sufficiency = await questionCountService.checkTopicSufficiency(
         selectedTopicId, 
         questionLimit, 
         'reading-comprehension'
       );
+      
+      console.log('[MixedSimulation] Sufficiency check result:', sufficiency);
       
       if (!sufficiency.hasSufficient && !sufficiency.fallbackAvailable) {
         setError(`לא נמצאו מספיק שאלות לנושא שנבחר. נדרשות ${questionLimit} שאלות, נמצאו ${sufficiency.actualCount}.`);
@@ -99,10 +105,12 @@ export const MixedSimulation: React.FC<MixedSimulationProps> = ({
         });
       }
       
+      console.log('[MixedSimulation] Moving to simulation step...');
       setCurrentStep('simulation');
       
       // Add small delay to show loading state
       setTimeout(() => {
+        console.log('[MixedSimulation] Simulation ready, stopping loading...');
         setIsLoading(false);
       }, 500);
       
@@ -315,10 +323,10 @@ export const MixedSimulation: React.FC<MixedSimulationProps> = ({
               {/* Results summary */}
               <div className="text-center space-y-2">
                 <div className="text-4xl font-bold text-blue-400">
-                  {simulationResult.finalScore || 0}/{simulationResult.totalQuestions || 0}
+                  {simulationResult.score || 0}/{simulationResult.totalQuestions || 0}
                 </div>
                 <div className="text-lg text-slate-300">
-                  {Math.round(((simulationResult.finalScore || 0) / Math.max(simulationResult.totalQuestions || 1, 1)) * 100)}% הצלחה
+                  {Math.round(((simulationResult.score || 0) / Math.max(simulationResult.totalQuestions || 1, 1)) * 100)}% הצלחה
                 </div>
                 <div className="text-sm text-slate-400">
                   נושא: {getReadingTopicById(selectedTopicId || 0)?.nameHebrew || 'לא ידוע'}

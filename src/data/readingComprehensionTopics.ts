@@ -18,43 +18,7 @@ export interface ReadingTopic {
 
 export const READING_COMPREHENSION_TOPICS: ReadingTopic[] = [
   {
-    id: 1,
-    name: 'Philosophy',
-    nameHebrew: 'פילוסופיה',
-    description: 'Philosophical concepts, ethics, and critical thinking',
-    descriptionHebrew: 'מושגים פילוסופיים, אתיקה וחשיבה ביקורתית',
-    icon: Brain,
-    color: 'bg-purple-100 text-purple-800 border-purple-200'
-  },
-  {
     id: 2,
-    name: 'Science',
-    nameHebrew: 'מדע',
-    description: 'Scientific discoveries, research, and innovations',
-    descriptionHebrew: 'תגליות מדעיות, מחקרים וחידושים',
-    icon: Microscope,
-    color: 'bg-blue-100 text-blue-800 border-blue-200'
-  },
-  {
-    id: 3,
-    name: 'Society',
-    nameHebrew: 'חברה',
-    description: 'Social issues, culture, and human behavior',
-    descriptionHebrew: 'נושאים חברתיים, תרבות והתנהגות אנושית',
-    icon: Users,
-    color: 'bg-green-100 text-green-800 border-green-200'
-  },
-  {
-    id: 4,
-    name: 'Economy',
-    nameHebrew: 'כלכלה',
-    description: 'Economic concepts, business, and finance',
-    descriptionHebrew: 'מושגים כלכליים, עסקים ופיננסים',
-    icon: TrendingUp,
-    color: 'bg-orange-100 text-orange-800 border-orange-200'
-  },
-  {
-    id: 5,
     name: 'Technology',
     nameHebrew: 'טכנולוגיה',
     description: 'Technological advances and digital transformation',
@@ -63,40 +27,22 @@ export const READING_COMPREHENSION_TOPICS: ReadingTopic[] = [
     color: 'bg-indigo-100 text-indigo-800 border-indigo-200'
   },
   {
-    id: 6,
+    id: 3,
+    name: 'Economy',
+    nameHebrew: 'כלכלה',
+    description: 'Economic concepts, business, and finance',
+    descriptionHebrew: 'מושגים כלכליים, עסקים ופיננסים',
+    icon: TrendingUp,
+    color: 'bg-orange-100 text-orange-800 border-orange-200'
+  },
+  {
+    id: 7,
     name: 'Environment',
     nameHebrew: 'סביבה',
     description: 'Environmental issues, climate, and sustainability',
     descriptionHebrew: 'נושאי סביבה, אקלים וקיימות',
     icon: Leaf,
     color: 'bg-emerald-100 text-emerald-800 border-emerald-200'
-  },
-  {
-    id: 7,
-    name: 'History',
-    nameHebrew: 'היסטוריה',
-    description: 'Historical events, figures, and civilizations',
-    descriptionHebrew: 'אירועים היסטוריים, דמויות וציביליזציות',
-    icon: Clock,
-    color: 'bg-amber-100 text-amber-800 border-amber-200'
-  },
-  {
-    id: 8,
-    name: 'Psychology',
-    nameHebrew: 'פסיכולוגיה',
-    description: 'Human psychology, behavior, and mental health',
-    descriptionHebrew: 'פסיכולוגיה אנושית, התנהגות ובריאות נפשית',
-    icon: Heart,
-    color: 'bg-pink-100 text-pink-800 border-pink-200'
-  },
-  {
-    id: 9,
-    name: 'Education',
-    nameHebrew: 'חינוך',
-    description: 'Educational methods, learning, and pedagogy',
-    descriptionHebrew: 'שיטות חינוך, למידה ופדגוגיה',
-    icon: GraduationCap,
-    color: 'bg-cyan-100 text-cyan-800 border-cyan-200'
   }
 ];
 
