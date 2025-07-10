@@ -14,6 +14,7 @@ import {
   SessionType,
   DifficultyLevel
 } from './types';
+import { validateQuestion, sanitizeQuestion, validateQuestionBatch } from '@/utils/questionValidation';
 
 export class QuestionDeliveryService {
   async getPersonalizedQuestions(options: {
@@ -94,6 +95,24 @@ export class QuestionDeliveryService {
         seenQuestionIds: seenQuestionIds.length
       });
 
+      // Validate all questions before processing
+      const validationResults = validateQuestionBatch(allQuestions);
+      
+      if (validationResults.invalidQuestions > 0) {
+        console.error('[QuestionDeliveryService] Validation found invalid questions:', {
+          totalQuestions: validationResults.totalQuestions,
+          invalidCount: validationResults.invalidQuestions,
+          invalidIds: validationResults.invalidQuestionIds,
+          errors: validationResults.errors.slice(0, 10) // Log first 10 errors
+        });
+      }
+      
+      if (validationResults.warnings.length > 0) {
+        console.warn('[QuestionDeliveryService] Validation warnings:', 
+          validationResults.warnings.slice(0, 10) // Log first 10 warnings
+        );
+      }
+
       // FALLBACK LOGIC: If insufficient questions found for specific type, fall back to mixed
       const minRequiredQuestions = Math.min(questionLimit, 5);
       if (questionGroup && questionGroup.length === 1 && questionGroup[0] !== 'mixed' && 
@@ -128,21 +147,55 @@ export class QuestionDeliveryService {
       }
 
       // Convert database questions to our Question type
-      const convertedQuestions: Question[] = allQuestions.map(q => ({
-        id: q.original_id || parseInt(q.id),
-        type: q.type as Question['type'],
-        text: q.text,
-        options: Array.isArray(q.options) ? q.options : [],
-        correctAnswer: q.correct_answer,
-        explanation: q.explanation || '',
-        difficulty: (q.difficulty as Question['difficulty']) || 'medium',
-        passage_text: q.passage_text,
-        passage_title: q.passage_title,
-        passageText: q.passage_text,
-        passageTitle: q.passage_title,
-        topicId: q.topic_id,
-        tags: Array.isArray(q.tags) ? q.tags : []
-      }));
+      const convertedQuestions: Question[] = allQuestions.map(q => {
+        // First sanitize the question data
+        const sanitized = sanitizeQuestion(q);
+        
+        // Validate the sanitized question
+        const validation = validateQuestion(sanitized);
+        
+        // Enhanced logging for debugging
+        const debugInfo = {
+          id: sanitized.id,
+          originalId: sanitized.original_id,
+          type: sanitized.type,
+          optionsType: typeof sanitized.options,
+          optionsIsArray: Array.isArray(sanitized.options),
+          optionsContent: sanitized.options,
+          optionsLength: Array.isArray(sanitized.options) ? sanitized.options.length : 'N/A',
+          hasPassageText: !!sanitized.passage_text,
+          passageTextLength: sanitized.passage_text ? sanitized.passage_text.length : 0,
+          passageTextPreview: sanitized.passage_text ? sanitized.passage_text.substring(0, 50) + '...' : 'None',
+          validationErrors: validation.errors,
+          validationWarnings: validation.warnings
+        };
+
+        // Log detailed info for reading comprehension questions
+        if (sanitized.type === 'reading-comprehension') {
+          console.log('[QuestionDeliveryService] Reading comprehension question debug:', debugInfo);
+        }
+
+        // Log any questions with validation issues
+        if (!validation.isValid) {
+          console.error('[QuestionDeliveryService] Question failed validation after sanitization:', debugInfo);
+        }
+
+        return {
+          id: sanitized.original_id || parseInt(sanitized.id),
+          type: sanitized.type as Question['type'],
+          text: sanitized.text,
+          options: sanitized.options,
+          correctAnswer: sanitized.correct_answer,
+          explanation: sanitized.explanation || '',
+          difficulty: (sanitized.difficulty as Question['difficulty']) || 'medium',
+          passage_text: sanitized.passage_text,
+          passage_title: sanitized.passage_title,
+          passageText: sanitized.passageText,
+          passageTitle: sanitized.passageTitle,
+          topicId: sanitized.topic_id,
+          tags: Array.isArray(sanitized.tags) ? sanitized.tags : []
+        };
+      });
 
       // Prioritize unseen questions
       const unseenQuestions = convertedQuestions.filter(q => !seenQuestionIds.includes(q.id));

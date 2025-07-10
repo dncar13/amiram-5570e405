@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "diagnose:questions": "node scripts/diagnose-questions.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

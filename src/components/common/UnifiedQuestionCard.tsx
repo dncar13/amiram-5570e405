@@ -168,6 +168,41 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
     return null;
   }
 
+  // Enhanced debugging for display issues
+  React.useEffect(() => {
+    if (activeQuestion) {
+      console.log('[UnifiedQuestionCard] Active question debug:', {
+        id: activeQuestion.id,
+        type: activeQuestion.type,
+        hasPassageText: !!activeQuestion.passageText,
+        hasPassage_text: !!activeQuestion.passage_text,
+        passageTextLength: activeQuestion.passageText?.length || 0,
+        passage_textLength: activeQuestion.passage_text?.length || 0,
+        passageTextPreview: activeQuestion.passageText?.substring(0, 100) + '...' || 'None',
+        hasOptions: !!activeQuestion.options,
+        optionsLength: activeQuestion.options?.length || 0,
+        optionsContent: activeQuestion.options,
+        selectedAnswerIndex,
+        isAnswerSubmitted
+      });
+      
+      // Log specific issues
+      if (activeQuestion.type === 'reading-comprehension' && !activeQuestion.passageText && !activeQuestion.passage_text) {
+        console.error('[UnifiedQuestionCard] Reading comprehension question missing passage!', {
+          questionId: activeQuestion.id,
+          questionText: activeQuestion.text
+        });
+      }
+      
+      if (!activeQuestion.options || activeQuestion.options.length === 0) {
+        console.error('[UnifiedQuestionCard] Question missing options!', {
+          questionId: activeQuestion.id,
+          questionType: activeQuestion.type
+        });
+      }
+    }
+  }, [activeQuestion, selectedAnswerIndex, isAnswerSubmitted]);
+
   const canShowAnswer = showAnswer || (showExplanation && showAnswersImmediately);
   const isSubmittedOrShowAnswer = isAnswerSubmitted || showAnswer;
 
