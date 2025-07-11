@@ -450,6 +450,10 @@
     @apply bg-[#FF8200];
   }
 
+  .bg-electric-gray {
+    @apply bg-gray-100;
+  }
+
   .text-electric-blue {
     @apply text-[#0052CC];
   }
@@ -460,6 +464,14 @@
 
   .text-electric-orange {
     @apply text-[#FF8200];
+  }
+
+  .text-electric-gray {
+    @apply text-gray-600;
+  }
+
+  .text-electric-slate {
+    @apply text-slate-600;
   }
 
   .hero-section {

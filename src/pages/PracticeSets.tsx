@@ -66,6 +66,11 @@ const PracticeSets = () => {
       setUserProgress(savedProgress as Record<string, number>);
     };
 
+    // Load progress only on mount
+    loadProgress();
+  }, []);
+
+  useEffect(() => {
     // Generate practice sets based on type and difficulty
     const generatePracticeSets = () => {
       const sets: PracticeSet[] = [];
@@ -92,13 +97,12 @@ const PracticeSets = () => {
 
     if (type && difficulty) {
       setPracticeSets(generatePracticeSets());
-      loadProgress();
     }
   }, [type, difficulty, userProgress]);
 
   const handleStartSet = (setId: string) => {
     // Navigate to simulation with specific set
-    navigate(`/simulation/${type}/${difficulty}?set=${setId.split('-').pop()}`);
+    navigate(`/simulation/type/${type}/${difficulty}?set=${setId.split('-').pop()}`);
   };
 
   const handleBack = () => {
