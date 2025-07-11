@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { allQuestions } from "@/data/questions";
 
