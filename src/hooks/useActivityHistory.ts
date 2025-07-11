@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 export interface ActivityRecord {
@@ -60,7 +60,7 @@ export const useActivityHistory = () => {
   // Get user-specific storage key
   const activityKey = getUserActivityKey(currentUser?.email || null);
 
-  const loadHistory = () => {
+  const loadHistory = useCallback(() => {
     setIsLoading(true);
     try {
       const storedHistory = localStorage.getItem(activityKey);
@@ -80,7 +80,7 @@ export const useActivityHistory = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [activityKey]);
 
   useEffect(() => {
     loadHistory();

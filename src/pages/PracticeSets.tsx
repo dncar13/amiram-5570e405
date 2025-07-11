@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,17 +29,17 @@ const PracticeSets = () => {
   const [userProgress, setUserProgress] = useState<Record<string, number>>({});
 
   // Type translations
-  const typeTranslations: Record<string, string> = {
+  const typeTranslations = useMemo(() => ({
     'sentence-completion': 'השלמת משפטים',
     'restatement': 'ניסוח מחדש'
-  };
+  }), []);
 
   // Difficulty translations
-  const difficultyTranslations: Record<string, string> = {
+  const difficultyTranslations = useMemo(() => ({
     'easy': 'קל',
     'medium': 'בינוני',
     'hard': 'קשה'
-  };
+  }), []);
 
   useEffect(() => {
     const loadProgress = () => {
@@ -102,7 +102,7 @@ const PracticeSets = () => {
 
   const handleStartSet = (setId: string) => {
     // Navigate to simulation with specific set
-    navigate(`/simulation/type/${type}/${difficulty}?set=${setId.split('-').pop()}`);
+    navigate(`/simulation/${type}/${difficulty}?set=${setId.split('-').pop()}`);
   };
 
   const handleBack = () => {

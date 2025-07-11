@@ -470,7 +470,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       timeoutManager.current.clearAll();
       toastShownRef.current.clear();
     };
-  }, []); // Empty deps - this should only run once on mount
+  }, [attemptSessionRecovery, handleAuthChange, mobileConfig.enableDebugLogging, mobileConfig.maxOAuthRetries, mobileConfig.retryDelay, updateUserRelatedStates]);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -513,7 +513,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-  }, []); // Remove dependencies that cause re-renders
+  }, [attemptSessionRecovery, updateUserRelatedStates, resetUserStates]);
 
   const logout = useCallback(async () => {
     try {
@@ -536,7 +536,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
-  }, []); // Remove dependencies that cause re-renders
+  }, [resetUserStates, showAuthToast]);
 
   // Debug logging only when needed (removed continuous effect)
   if (isDevEnvironment && authState.loadingState === 'ready') {
