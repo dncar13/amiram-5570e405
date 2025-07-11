@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -319,8 +319,8 @@ const Login = () => {
   // Mobile-optimized input handling with debouncing
   const mobileConfig = getMobileOptimizedConfig();
   
-  const debouncedInputValidation = useMemo(
-    () => debounce((fieldName: string, value: string) => {
+  const debouncedInputValidation = useCallback(
+    debounce((fieldName: string, value: string) => {
       // Clear errors when user starts typing (mobile-optimized)
       if (authError || loginState === 'error') {
         setAuthError(null);

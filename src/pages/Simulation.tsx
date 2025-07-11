@@ -398,7 +398,7 @@ const Simulation = () => {
       <main className="flex-grow py-3 sm:py-6 px-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" ref={contentRef}>
           {/* כפתור חזרה */}
         <div className="w-full mb-3 sm:mb-6 px-2 sm:px-4 max-w-none sm:max-w-7xl sm:mx-auto">
-          <BackButton isQuestionSet={isQuestionSet} setId={setId} />
+          <BackButton isQuestionSet={isQuestionSet} />
         </div>
         
         {/* תוכן הסימולציה - רחב יותר במובייל */}

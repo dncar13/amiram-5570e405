@@ -1,11 +1,10 @@
-
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BookOpen, Target, Clock, Zap, CheckCircle, ArrowRight } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -24,22 +23,8 @@ interface PracticeSet {
 
 const PracticeSets = () => {
   const navigate = useNavigate();
-  const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [practiceSets, setPracticeSets] = useState<PracticeSet[]>([]);
   const [userProgress, setUserProgress] = useState<Record<string, number>>({});
-
-  // Type translations
-  const typeTranslations = useMemo(() => ({
-    'sentence-completion': 'השלמת משפטים',
-    'restatement': 'ניסוח מחדש'
-  }), []);
-
-  // Difficulty translations
-  const difficultyTranslations = useMemo(() => ({
-    'easy': 'קל',
-    'medium': 'בינוני',
-    'hard': 'קשה'
-  }), []);
 
   useEffect(() => {
     const loadProgress = () => {
@@ -66,66 +51,61 @@ const PracticeSets = () => {
       setUserProgress(savedProgress as Record<string, number>);
     };
 
-    // Load progress only on mount
+    const predefinedPracticeSets: PracticeSet[] = [
+      {
+        id: "reading-comprehension",
+        title: "הבנת הנקרא",
+        description: "תרגול ממוקד בטקסטים ושאלות הבנת הנקרא",
+        questionsCount: 50,
+        difficulty: "medium",
+        estimatedTime: 45,
+        completionRate: userProgress["reading-comprehension"] || 0,
+        tags: ["הבנת הנקרא", "טקסטים", "ניתוח"],
+        icon: <BookOpen className="h-4 w-4" />,
+        color: "bg-blue-500",
+      },
+      {
+        id: "vocabulary",
+        title: "אוצר מילים",
+        description: "הרחבת אוצר המילים ושיפור הבנת הניבים והביטויים",
+        questionsCount: 40,
+        difficulty: "medium",
+        estimatedTime: 30,
+        completionRate: userProgress["vocabulary"] || 0,
+        tags: ["מילים", "ביטויים", "ניבים"],
+        icon: <Target className="h-4 w-4" />,
+        color: "bg-green-500",
+      },
+      {
+        id: "time-management",
+        title: "ניהול זמן",
+        description: "שיפור יכולת עמידה בזמנים במבחן",
+        questionsCount: 30,
+        difficulty: "hard",
+        estimatedTime: 60,
+        completionRate: userProgress["time-management"] || 0,
+        tags: ["זמן", "אסטרטגיה", "יעילות"],
+        icon: <Clock className="h-4 w-4" />,
+        color: "bg-yellow-500",
+      },
+      {
+        id: "speed-reading",
+        title: "קריאה מהירה",
+        description: "שיפור מהירות הקריאה והבנת הנקרא",
+        questionsCount: 60,
+        difficulty: "hard",
+        estimatedTime: 45,
+        completionRate: userProgress["speed-reading"] || 0,
+        tags: ["קריאה", "מהירות", "ריכוז"],
+        icon: <Zap className="h-4 w-4" />,
+        color: "bg-red-500",
+      },
+    ];
+
+    setPracticeSets(predefinedPracticeSets);
     loadProgress();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    // Generate practice sets based on type and difficulty
-    const generatePracticeSets = () => {
-      const sets: PracticeSet[] = [];
-      
-      // Create 5 sets for each type/difficulty combination
-      for (let i = 1; i <= 5; i++) {
-        const setId = `${type}-${difficulty}-set-${i}`;
-        sets.push({
-          id: setId,
-          title: `סט ${i} - ${typeTranslations[type || '']} - ${difficultyTranslations[difficulty || '']}`,
-          description: `סט תרגול מספר ${i} עם שאלות ברמת קושי ${difficultyTranslations[difficulty || '']}`,
-          questionsCount: 20,
-          difficulty: difficulty as "easy" | "medium" | "hard",
-          estimatedTime: 25,
-          completionRate: userProgress[setId] || 0,
-          tags: [typeTranslations[type || ''], difficultyTranslations[difficulty || '']],
-          icon: type === 'sentence-completion' ? <BookOpen className="h-4 w-4" /> : <Target className="h-4 w-4" />,
-          color: type === 'sentence-completion' ? "bg-blue-500" : "bg-green-500",
-        });
-      }
-      
-      return sets;
-    };
-
-    if (type && difficulty) {
-      setPracticeSets(generatePracticeSets());
-    }
-  }, [type, difficulty, userProgress]);
-
-  const handleStartSet = (setId: string) => {
-    // Navigate to simulation with specific set
-    navigate(`/simulation/set/${setId}`);
-  };
-
-  const handleBack = () => {
-    navigate(`/simulation/type/${type}/${difficulty}`);
-  };
-
-  if (!type || !difficulty) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow py-6 bg-electric-gray/50">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-2xl font-bold text-electric-navy mb-4">שגיאה</h1>
-            <p className="text-electric-slate mb-4">לא נמצא סוג שאלה או רמת קושי</p>
-            <Button onClick={() => navigate('/simulations-entry')}>
-              חזור לעמוד הכניסה
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -133,26 +113,16 @@ const PracticeSets = () => {
       <main className="flex-grow py-6 bg-electric-gray/50">
         <div className="container mx-auto px-4">
           <div className="mb-6">
-            <Button 
-              onClick={handleBack}
-              variant="ghost"
-              className="mb-4 text-electric-navy hover:text-electric-navy/80"
-            >
-              <ArrowRight className="h-4 w-4 ml-2" />
-              חזור
-            </Button>
-            
             <h1 className="text-2xl font-bold text-electric-navy mb-2">
-              סטי תרגול - {typeTranslations[type]} - {difficultyTranslations[difficulty]}
+              ערכות תרגול מומלצות
             </h1>
             <p className="text-electric-slate">
-              בחר סט תרגול לתחילת התרגול המסודר
+              התחל לתרגל עם ערכות מובנות לשיפור מיומנויות ספציפיות
             </p>
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {practiceSets.map((set) => (
-              <Card key={set.id} className="bg-white shadow-sm hover:shadow-md transition-shadow">
+              <Card key={set.id} className="bg-white shadow-sm">
                 <CardHeader className="space-y-1">
                   <div className="flex items-center gap-2">
                     {set.icon}
@@ -161,50 +131,34 @@ const PracticeSets = () => {
                     </CardTitle>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="pl-4">
                   <CardDescription className="text-sm text-gray-500">
                     {set.description}
                   </CardDescription>
-                  
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-blue-100 text-blue-800 border-blue-300 rounded-full px-2 py-1 text-xs font-medium">
+                  <div className="flex items-center mt-4">
+                    <Badge className="bg-blue-100 text-blue-800 border-blue-300 rounded-full px-2 py-1 text-xs font-medium mr-2">
                       <BookOpen className="h-3 w-3 ml-1" />
                       {set.questionsCount} שאלות
                     </Badge>
-                    <Badge className="bg-green-100 text-green-800 border-green-300 rounded-full px-2 py-1 text-xs font-medium">
+                    <Badge className="bg-green-100 text-green-800 border-green-300 rounded-full px-2 py-1 text-xs font-medium mr-2">
                       <Clock className="h-3 w-3 ml-1" />
                       {set.estimatedTime} דקות
                     </Badge>
                   </div>
-                  
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-sm font-semibold text-gray-700">
-                        התקדמות:
-                      </h4>
-                      <span className="text-xs text-gray-500">
-                        {set.completionRate}%
-                      </span>
-                    </div>
-                    <Progress value={set.completionRate} className="h-2" />
+                  <div className="mt-4">
+                    <h4 className="mb-1 text-sm font-semibold text-gray-700">
+                      התקדמות:
+                    </h4>
+                    <Progress value={set.completionRate} />
+                    <p className="text-xs text-gray-500 mt-1">
+                      {set.completionRate}% השלמה
+                    </p>
                   </div>
-                  
                   <Button
-                    onClick={() => handleStartSet(set.id)}
-                    className="w-full"
-                    variant={set.completionRate > 0 ? "outline" : "default"}
+                    onClick={() => navigate(`/simulation/${set.id}`)}
+                    className="w-full mt-4"
                   >
-                    {set.completionRate > 0 ? (
-                      <>
-                        <CheckCircle className="h-4 w-4 ml-2" />
-                        המשך תרגול
-                      </>
-                    ) : (
-                      <>
-                        <Zap className="h-4 w-4 ml-2" />
-                        התחל סט
-                      </>
-                    )}
+                    התחל תרגול <ArrowRight className="h-4 w-4 mr-2" />
                   </Button>
                 </CardContent>
               </Card>

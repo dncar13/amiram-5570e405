@@ -25,10 +25,10 @@ export const useSimulation = (
   const progressLoadedRef = useRef(false);
   const questionContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { type, difficulty, setId } = useParams<{ type: string; difficulty: string; setId: string }>();
+  const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [searchParams] = useSearchParams();
   const questionLimit = searchParams.get('limit');
-  const setNumber = searchParams.get('set') || (setId ? setId.split('-').pop() : null);
+  const setNumber = searchParams.get('set');
   const startIndex = searchParams.get('start');
   
   // Check for explicit mode parameters
@@ -37,8 +37,7 @@ export const useSimulation = (
   
   // Get type from query params if not in URL path
   const typeFromQuery = searchParams.get('type');
-  const effectiveType = type || typeFromQuery || (setId ? setId.split('-')[0] : null);
-  const effectiveDifficulty = difficulty || (setId ? setId.split('-')[1] : null);
+  const effectiveType = type || typeFromQuery;
 
   // Check if this is a full exam simulation
   const isFullExam = simulationId === 'full' || window.location.pathname.includes('/simulation/full');
@@ -98,7 +97,7 @@ export const useSimulation = (
     const questionsToUse = loadQuestions({
       storyQuestions,
       effectiveType,
-      difficulty: effectiveDifficulty,
+      difficulty,
       questionLimit,
       setNumber,
       startIndex,
@@ -122,7 +121,7 @@ export const useSimulation = (
     if (examMode) {
       initializeTimer();
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, effectiveDifficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode and not for full exam
@@ -140,7 +139,7 @@ export const useSimulation = (
       const questionsToUse = loadQuestions({
         storyQuestions,
         effectiveType,
-      difficulty: effectiveDifficulty,
+        difficulty,
         questionLimit,
         setNumber,
         startIndex,
@@ -166,7 +165,7 @@ export const useSimulation = (
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
     }
-  }, [simulationId, toast, storyQuestions, effectiveType, effectiveDifficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(() => {
@@ -187,7 +186,7 @@ export const useSimulation = (
     const questionsToUse = loadQuestions({
       storyQuestions,
       effectiveType,
-      difficulty: effectiveDifficulty,
+      difficulty,
       questionLimit,
       setNumber,
       startIndex,
@@ -218,7 +217,7 @@ export const useSimulation = (
         showAnswersImmediately
       }));
     }
-  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, effectiveDifficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, type, typeFromQuery]);
+  }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, type, typeFromQuery]);
 
   // Initialize questions when dependencies change
   useEffect(() => {
