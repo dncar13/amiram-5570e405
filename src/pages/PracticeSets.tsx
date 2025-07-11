@@ -102,7 +102,7 @@ const PracticeSets = () => {
 
   const handleStartSet = (setId: string) => {
     // Navigate to simulation with specific set
-    navigate(`/simulation/${type}/${difficulty}?set=${setId.split('-').pop()}`);
+    navigate(`/simulation/set/${setId}`);
   };
 
   const handleBack = () => {
