@@ -5,20 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 interface BackButtonProps {
   isQuestionSet: boolean;
+  setId?: string;
 }
 
-export const BackButton = ({ isQuestionSet }: BackButtonProps) => {
+export const BackButton = ({ isQuestionSet, setId }: BackButtonProps) => {
   const navigate = useNavigate();
   
   const handleBackClick = () => {
     // Check if this is a story simulation
     const isStorySimulation = window.sessionStorage.getItem('is_story_simulation') === 'true';
     
-    console.log('BackButton clicked - isStorySimulation:', isStorySimulation, 'isQuestionSet:', isQuestionSet);
+    console.log('BackButton clicked - isStorySimulation:', isStorySimulation, 'isQuestionSet:', isQuestionSet, 'setId:', setId);
     
     if (isStorySimulation) {
       console.log('Navigating to reading comprehension page');
       navigate("/reading-comprehension");
+    } else if (setId) {
+      // Navigate back to practice sets for set-based simulations
+      const [type, difficulty] = setId.split('-');
+      console.log('Navigating back to practice sets:', type, difficulty);
+      navigate(`/simulation/type/${type}/${difficulty}/sets`);
     } else if (isQuestionSet) {
       console.log('Navigating to question sets page');
       navigate("/questions-sets");
@@ -33,6 +39,8 @@ export const BackButton = ({ isQuestionSet }: BackButtonProps) => {
     
     if (isStorySimulation) {
       return "חזרה לסיפורי הבנת הנקרא";
+    } else if (setId) {
+      return "חזרה לסטי התרגול";
     } else if (isQuestionSet) {
       return "חזרה לקבוצות השאלות";
     } else {

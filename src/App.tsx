@@ -59,9 +59,10 @@ function App() {
               <Route path="/simulation/full" element={<FullSimulation />} />
               <Route path="/simulation/story/:storyTitle" element={<Simulation />} />
               <Route path="/simulation/type/:type" element={<SimulationByType />} />
-              <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
+              <Route path="/simulation/type/:type/:difficulty" element={<Simulation />} />
               <Route path="/simulation/type/:type/:difficulty/sets" element={<PracticeSets />} />
               <Route path="/simulation/:type/:difficulty" element={<SimulationByDifficulty />} />
+              <Route path="/simulation/set/:setId" element={<Simulation />} />
               <Route path="/simulation/:simulationId" element={<Simulation />} />
               <Route path="/simulation-history" element={<SimulationHistory />} />
               <Route path="/categories" element={<Categories />} />

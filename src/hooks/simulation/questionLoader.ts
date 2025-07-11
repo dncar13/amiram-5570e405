@@ -6,6 +6,7 @@ import {
   getSentenceCompletionQuestions,
   getRestatementQuestions
 } from "@/services/questionsService";
+import { getReadingComprehensionQuestions } from "@/data/questions/by-type/index";
 import { getFullExamQuestions } from "@/services/fullExamService";
 
 // Helper function to shuffle array
@@ -61,7 +62,7 @@ export const loadQuestions = ({
     console.log(`Using ${questionsToUse.length} story questions`);
   } 
   // Handle quick practice with type but no difficulty - PRIORITIZE THIS CASE
-  else if (effectiveType && questionLimit) {
+  else if (effectiveType && !difficulty && questionLimit) {
     console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
     
     if (effectiveType === 'sentence-completion') {
