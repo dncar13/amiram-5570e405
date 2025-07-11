@@ -4,7 +4,9 @@ import {
   getQuestionsByDifficultyAndType,
   getMixedDifficultyQuestions,
   getSentenceCompletionQuestions,
-  getRestatementQuestions
+  getRestatementQuestions,
+  getReadingComprehensionQuestions,
+  getVocabularyQuestions
 } from "@/services/questionsService";
 import { getFullExamQuestions } from "@/services/fullExamService";
 
@@ -70,6 +72,12 @@ export const loadQuestions = ({
     } else if (effectiveType === 'restatement') {
       questionsToUse = getRestatementQuestions();
       console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} restatement questions`);
+    } else if (effectiveType === 'vocabulary') {
+      questionsToUse = getVocabularyQuestions();
+      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} vocabulary questions`);
+    } else if (effectiveType === 'reading-comprehension') {
+      questionsToUse = getReadingComprehensionQuestions();
+      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} reading comprehension questions`);
     }
     
     // Apply limit and shuffle
