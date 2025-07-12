@@ -238,8 +238,8 @@ const TypeSpecificSets = () => {
                         tabIndex={0}
                       >
                         <div className="flex items-center justify-center">
-                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                           התחל סט {set.id}
+                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                         </div>
                       </Button>
                     </CardContent>
