@@ -149,56 +149,56 @@ const Header = React.memo(() => {
                   align="end"
                 >
                   <DropdownMenuItem 
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex justify-start"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       navigate("/account");
                     }}
                   >
-                    <Archive className="mr-2 h-4 w-4" />
+                    <Archive className="ml-2 h-4 w-4" />
                     החשבון שלי
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex justify-start"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       navigate("/progress-stats");
                     }}
                   >
-                    <TrendingUp className="mr-2 h-4 w-4" />
+                    <TrendingUp className="ml-2 h-4 w-4" />
                     התקדמות
                   </DropdownMenuItem>
                   <DropdownMenuItem 
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex justify-start"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       navigate("/account?tab=saved");
                     }}
                   >
-                    <BookmarkCheck className="mr-2 h-4 w-4" />
+                    <BookmarkCheck className="ml-2 h-4 w-4" />
                     שאלות שמורות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
                   <DropdownMenuItem 
-                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex justify-start"
+                    className="text-slate-300 hover:text-slate-100 hover:bg-slate-700/50 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
                       navigate("/account");
                     }}
                   >
-                    <Settings className="mr-2 h-4 w-4" />
+                    <Settings className="ml-2 h-4 w-4" />
                     הגדרות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
                   <DropdownMenuItem 
-                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300 cursor-pointer flex justify-start"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={handleLogout}
                   >
-                    <LogOut className="mr-2 h-4 w-4" />
+                    <LogOut className="ml-2 h-4 w-4" />
                     התנתקות
                   </DropdownMenuItem>
                 </DropdownMenuContent>
