@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ModernAboutHero from "@/components/about/ModernAboutHero";
 import ModernStorySection from "@/components/about/ModernStorySection";
+import ModernStatsSection from "@/components/about/ModernStatsSection";
 import ModernFeaturesSection from "@/components/about/ModernFeaturesSection";
 import ModernCTASection from "@/components/about/ModernCTASection";
 
@@ -19,6 +20,7 @@ const About = () => {
       <main className="overflow-hidden">
         <ModernAboutHero />
         <ModernStorySection />
+        <ModernStatsSection />
         <ModernFeaturesSection />
         <ModernCTASection />
       </main>

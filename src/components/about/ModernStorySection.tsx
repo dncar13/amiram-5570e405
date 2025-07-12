@@ -11,43 +11,46 @@ const ModernStorySection = () => {
                 הסיפור שלנו
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-                נולדנו מתוך
+                <span className="text-blue-600">הכל התחיל</span>
                 <br />
-                <span className="text-blue-600">תסכול אמיתי</span>
+                בסלון שלנו
               </h2>
             </div>
             
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
               <p>
-                אחרי שנים של ליווי סטודנטים, הבנתי שרוב הקורסים והאתרים מציעים חומר כללי 
-                ולא נוגעים באמת בלב של מבחן האמירם.
+                במשך 5 שנים לימדנו יחד יותר מ-80 תלמידים לאנגלית פסיכומטרי. 
+                ראינו איך כל תלמיד צריך גישה שונה, איך השיטות המסורתיות לא עובדות לכולם,
+                ובעיקר - איך תלמידים מוכשרים מוותרים על חלומות בגלל מחירי ההכנה הגבוהים.
               </p>
               
               <p>
-                ראיתי תלמידים מתאמנים בלי סוף – ועדיין מופתעים מהמבנה, מהסגנון 
-                ומהשאלות הייחודיות של האמירם.
+                אז החלטנו לשנות את הכללים. 
+                לקחנו את כל הידע שצברנו, השיטות שפיתחנו, והטעויות הנפוצות שזיהינו -
+                והעברנו הכל לפלטפורמה דיגיטלית נגישה.
               </p>
               
               <p className="font-semibold text-gray-900">
-                החלטתי להקים פלטפורמה שבאמת מבינה אותך: לא עוד שיעורים משעממים, 
-                לא עוד חומר מיותר.
+                היום כל תלמיד יכול לקבל הכנה איכותית, מותאמת אישית, במחיר הוגן.
               </p>
             </div>
           </div>
 
-          {/* Visual element */}
+          {/* Visual element - Living room photo */}
           <div className="relative">
-            <div className="aspect-square bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 shadow-xl">
-              <div className="h-full bg-white rounded-2xl shadow-inner flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="w-20 h-20 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center">
-                    <span className="text-white text-2xl font-bold">א</span>
-                  </div>
-                  <p className="text-gray-600 font-medium">
-                    בניתי את האקדמיה הזו כדי לתת לך שקט, ביטחון, 
-                    ולהביא אותך לציון שמגיע לך
-                  </p>
-                </div>
+            <div className="aspect-square overflow-hidden shadow-xl" style={{borderRadius: '18px'}}>
+              <img 
+                src="https://i.postimg.cc/cCDTZvjk/pexels-cottonbro-7128754.jpg"
+                alt="Living room where our teaching journey began"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              
+              {/* Simple caption overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6">
+                <p className="text-white font-semibold text-lg">
+                  "כאן הכל התחיל"
+                </p>
               </div>
             </div>
           </div>

@@ -1,27 +1,37 @@
 
-import { Target, Zap, Users, MessageCircle } from "lucide-react";
+import { Target, Smartphone, DollarSign, Users, BarChart, HeadphonesIcon } from "lucide-react";
 
 const ModernFeaturesSection = () => {
   const features = [
     {
       icon: Target,
-      title: "תרגול 1:1 עם המבחן האמיתי",
-      description: "כל שאלה, טקסט וסימולציה אצלנו בנויים לפי המבנה והניסוח של מבחני האמירם האחרונים."
+      title: "🎯 מותאם אישית",
+      description: "כל תלמיד מקבל תוכנית לימוד המותאמת לרמתו ומטרותיו"
     },
     {
-      icon: Zap,
-      title: "פידבק מיידי והכוונה אישית",
-      description: "בסוף כל תרגול תקבל הסבר קצר וברור על כל טעות, כולל המלצות ממוקדות למה כדאי לחזור."
+      icon: Smartphone,
+      title: "📱 גמיש ונוח",
+      description: "לומדים מהבית, בקצב שלכם, עם גישה 24/7"
+    },
+    {
+      icon: DollarSign,
+      title: "💰 מחיר הוגן",
+      description: "הכנה איכותית במחיר שכל סטודנט יכול להרשות לעצמו"
     },
     {
       icon: Users,
-      title: "מאגר שמתעדכן כל הזמן",
-      description: "אנחנו עוקבים אחרי שינויים אמיתיים במבחן, ומוסיפים שאלות וטקסטים חדשים."
+      title: "👨‍🏫 ניסיון מוכח",
+      description: "שיטות הוראה שנבדקו על עשרות תלמידים במשך שנים"
     },
     {
-      icon: MessageCircle,
-      title: "ליווי אמיתי, בלי מסך עשן",
-      description: "אני כאן כדי לעזור, לייעץ וללוות – בין אם זו שאלה על חומר, התלבטות או טיפ ליום המבחן."
+      icon: BarChart,
+      title: "📊 מעקב התקדמות",
+      description: "רואים בדיוק איפה אתם ואיך להתקדם"
+    },
+    {
+      icon: HeadphonesIcon,
+      title: "🔄 תמיכה אישית",
+      description: "שאלות? אנחנו כאן לעזור בכל שלב"
     }
   ];
 
@@ -34,20 +44,20 @@ const ModernFeaturesSection = () => {
         {/* Section header */}
         <div className="text-center mb-20">
           <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
-            למה דווקא אצלנו?
+            מה מייחד אותנו?
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mt-4 mb-6">
-            כי כאן אתה מתאמן בדיוק על
+            הכנה איכותית שבאמת
             <br />
-            <span className="text-blue-600">מה שמצפה לך</span>
+            <span className="text-blue-600">מתאימה לכולם</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            לא על "בערך" – על הדבר האמיתי
+            ניסיון, נגישות ותמיכה אישית
           </p>
         </div>
 
         {/* Features grid */}
-        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {features.map((feature, index) => {
             const IconComponent = feature.icon;
             return (

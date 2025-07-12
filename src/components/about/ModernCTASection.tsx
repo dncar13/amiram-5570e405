@@ -1,10 +1,15 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Star } from "lucide-react";
+import { ArrowLeft, Star, Play, Quote, Shield, Clock, Users } from "lucide-react";
 
 const ModernCTASection = () => {
   return (
-    <section className="py-32 bg-gradient-to-br from-blue-600 to-blue-800 relative overflow-hidden">
+    <section 
+      className="py-20 md:py-32 relative overflow-hidden"
+      style={{
+        background: "linear-gradient(rgba(36,91,219,0.8), rgba(36,91,219,0.8)), url('https://i.postimg.cc/vTR3Kk4q/good.jpg') center center/cover no-repeat"
+      }}
+    >
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-blue-500/20 to-transparent"></div>
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-to-t from-blue-900/30 to-transparent"></div>
@@ -16,14 +21,15 @@ const ModernCTASection = () => {
       <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
         {/* Testimonial highlight */}
         <div className="mb-12">
-          <div className="inline-flex items-center space-x-2 space-x-reverse bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm">
+          <div className="inline-flex items-center space-x-3 space-x-reverse bg-white/10 rounded-full px-6 py-3 backdrop-blur-sm">
+            <Quote className="w-5 h-5 text-white/80 flex-shrink-0" />
             <div className="flex space-x-1 space-x-reverse">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
               ))}
             </div>
             <span className="text-white/90 text-sm font-medium">
-              "בזכות Amiram Academy עברתי עם 134!"
+              "יעל שיפרה מ-85 ל-115 בזכות השיטה שלכם!"
             </span>
           </div>
         </div>
@@ -31,11 +37,11 @@ const ModernCTASection = () => {
         {/* Main CTA content */}
         <div className="space-y-8">
           <h2 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-            בוא תנסה סימולציה אחת
+            מוכנים להתחיל?
           </h2>
           
           <p className="text-xl md:text-2xl text-blue-100 font-light max-w-3xl mx-auto">
-            תבין מיד למה תלמידים נשארים איתנו עד יום הבחינה
+            הצטרפו לתלמידים שכבר שיפרו את הציונים שלהם
           </p>
 
           {/* CTA buttons */}
@@ -45,33 +51,33 @@ const ModernCTASection = () => {
               className="bg-white text-blue-600 hover:bg-blue-50 font-bold py-4 px-8 rounded-2xl text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group"
               to="/simulations-entry"
             >
-              נסה סימולציה חינם
-              <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
+              <Play className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+              התחילו לימודים חינם
             </Button>
             
             <Button 
               size="lg" 
-              variant="outline" 
-              className="border-2 border-white/30 text-white hover:bg-white hover:text-blue-600 font-bold py-4 px-8 rounded-2xl text-lg backdrop-blur-sm transition-all duration-300 transform hover:scale-105"
+              className="border-2 border-white text-white bg-white/10 hover:bg-white hover:text-blue-600 font-bold py-4 px-8 rounded-2xl text-lg backdrop-blur-sm transition-all duration-300 transform hover:scale-105"
               to="/topics"
             >
-              התחל ללמוד עכשיו
+              לפרטים נוספים
+              <ArrowLeft className="mr-2 h-5 w-5 group-hover:-translate-x-1 transition-transform" />
             </Button>
           </div>
 
           {/* Trust indicators */}
-          <div className="pt-8 text-blue-200 text-sm flex items-center justify-center space-x-6 space-x-reverse">
+          <div className="pt-8 text-blue-200 text-sm flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <span className="flex items-center space-x-2 space-x-reverse">
-              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span>אין צורך בכרטיס אשראי</span>
+              <Clock className="w-4 h-4 text-green-400" />
+              <span>ניסיון חינם ל-7 ימים</span>
             </span>
             <span className="flex items-center space-x-2 space-x-reverse">
-              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span>תמיכה 24/7</span>
+              <Shield className="w-4 h-4 text-green-400" />
+              <span>ביטול בכל עת</span>
             </span>
             <span className="flex items-center space-x-2 space-x-reverse">
-              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-              <span>אפשר לבטל בכל רגע</span>
+              <Users className="w-4 h-4 text-green-400" />
+              <span>תמיכה אישית</span>
             </span>
           </div>
         </div>
