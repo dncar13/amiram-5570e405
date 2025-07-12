@@ -98,7 +98,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2">              <li>
                 <Link 
-                  to="/topics/1/intro" 
+                  to="/reading-comprehension" 
                   className="text-gray-300 hover:text-white transition-colors"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
