@@ -34,18 +34,18 @@ const CancelPremiumDialog = ({
         <AlertDialogHeader className="text-right">
           <AlertDialogTitle className="text-xl flex items-center gap-2 justify-end">
             <DollarSign className="h-5 w-5 text-electric-orange" />
-            ביטול מנוי פרימיום
+            איפוס גישה פרימיום
           </AlertDialogTitle>
           <AlertDialogDescription className="text-lg text-right">
-            האם אתה בטוח שברצונך לבטל את מנוי הפרימיום שלך?
+            האם אתה בטוח שברצונך לאפס את הגישה הפרימיום שלך?
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="py-4 space-y-3 text-right">
-          <p className="text-muted-foreground">לאחר הביטול:</p>
+          <p className="text-muted-foreground">לאחר האיפוס:</p>
           <ul className="list-disc mr-6 space-y-2 text-sm text-muted-foreground">
-            <li>תמשיך להנות מתכונות הפרימיום עד לסוף תקופת החיוב הנוכחית</li>
-            <li>לא יבוצעו חיובים נוספים בהמשך</li>
-            <li>תוכל להצטרף מחדש בכל עת ללא אובדן היסטוריית הלימוד שלך</li>
+            <li>הגישה שלך לתכנים יסתיימה מיידית</li>
+            <li>לא קיימים חיובים נוספים (התשלום הוא חד-פעמי)</li>
+            <li>תוכל לרכוש תוכנית חדשה בכל עת</li>
           </ul>
         </div>
         <AlertDialogFooter className="flex-row-reverse sm:justify-start">
@@ -56,7 +56,7 @@ const CancelPremiumDialog = ({
             onClick={handleConfirm}
             className="bg-red-500 hover:bg-red-600 text-white"
           >
-            אישור ביטול מנוי
+            אישור איפוס
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
