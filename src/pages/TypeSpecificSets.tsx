@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, ArrowRight, ArrowLeft, Target, Zap, Gamepad2 } from "lucide-react";
+import { BookOpen, Clock, ArrowLeft, Target, Zap, Gamepad2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -239,7 +239,7 @@ const TypeSpecificSets = () => {
                       >
                         <div className="flex items-center justify-center">
                           התחל סט {set.id}
-                          <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                         </div>
                       </Button>
                     </CardContent>
