@@ -100,7 +100,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">טלפון</h3>
-                      <p className="text-gray-600">03-1234567</p>
+                      <p className="text-gray-600">0525602218 (ווצאפ בלבד)</p>
                     </div>
                   </div>
                   
@@ -110,7 +110,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-medium">אימייל</h3>
-                      <p className="text-gray-600">info@electriclearning.co.il</p>
+                      <p className="text-gray-600">support@amiram.net</p>
                     </div>
                   </div>
                   
@@ -132,7 +132,7 @@ const Contact = () => {
                 <p className="mb-4">צוות התמיכה שלנו זמין לענות על כל שאלותיך</p>
                 <div className="border-t border-white/30 pt-4 mt-4">
                   <p className="font-medium">מספר חירום לתמיכה טכנית:</p>
-                  <p className="text-xl font-bold">050-1234567</p>
+                  <p className="text-xl font-bold">0525602218 (ווצאפ בלבד)</p>
                 </div>
               </div>
             </div>
