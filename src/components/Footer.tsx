@@ -25,7 +25,7 @@ const Footer = () => {
                   className="text-gray-300 text-sm"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
-                  info@amiram-academy.co.il
+                  support@amiram.net
                 </span>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse">
@@ -34,7 +34,7 @@ const Footer = () => {
                   className="text-gray-300 text-sm"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
-                  03-1234567
+                  0525602218 (ווצאפ בלבד)
                 </span>
               </div>
             </div>
