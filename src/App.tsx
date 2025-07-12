@@ -106,7 +106,7 @@ const AnimatedRoutes = () => {
           <Route path="/topics/list" element={<SimulationsEntry />} />
           <Route path="/simulations-entry/list" element={<SimulationsEntry />} />
           <Route path="/categories" element={<Categories />} />
-          <Route path="/topics/:topicId/intro" element={<SimulationSetup />} />
+          
           <Route path="/simulation/:topicId" element={<Simulation />} />
           <Route path="/questions" element={<TopicQuestions />} />
           <Route path="/saved-questions" element={<SavedQuestionViewer />} />
