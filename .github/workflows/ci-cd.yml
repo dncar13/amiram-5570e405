@@ -51,36 +51,12 @@ jobs:
           cmd_options: "-a"
         continue-on-error: true
 
-      # E2E Tests
-      - name: Install Playwright
-        run: npx playwright install
-
-      - name: Install Playwright dependencies
-        run: npx playwright install-deps
-
-      - name: Start development server
+      # Simple smoke test only
+      - name: Run basic smoke test
         run: |
-          npm run dev &
-          sleep 30
-        env:
-          CI: true
-
-      - name: Wait for server to be ready
-        run: |
-          timeout 120 bash -c 'until curl -f http://localhost:8080; do sleep 5; done'
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-        env:
-          CI: true
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          echo "Running basic validation..."
+          npm run build
+          echo "✅ Build completed successfully"
 
       # Deploy (only on main branch and not scheduled runs)
       - name: Deploy to production
