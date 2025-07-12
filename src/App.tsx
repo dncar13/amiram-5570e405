@@ -32,7 +32,7 @@ import SimulationByDifficulty from "./pages/SimulationByDifficulty";
 import FullSimulation from "./pages/FullSimulation";
 import SimulationHistory from "./pages/SimulationHistory";
 import ProgressStats from "./pages/ProgressStats";
-
+import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
 import TypeSpecificSets from "./pages/TypeSpecificSets";
@@ -139,7 +139,7 @@ const AnimatedRoutes = () => {
           <Route path="/questions-set/:setId" element={<Simulation />} />
           
           {/* New Reading Comprehension Routes */}
-          
+          <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
           <Route path="/simulation/story/:storyId" element={<Simulation />} />
           
           {/* Existing Simulations Entry Routes */}
