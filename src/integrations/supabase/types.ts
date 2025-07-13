@@ -14,13 +14,372 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      migration_logs: {
+        Row: {
+          batch_id: string
+          created_at: string | null
+          errors: Json | null
+          file_path: string | null
+          id: string
+          records_processed: number | null
+          status: string | null
+        }
+        Insert: {
+          batch_id: string
+          created_at?: string | null
+          errors?: Json | null
+          file_path?: string | null
+          id?: string
+          records_processed?: number | null
+          status?: string | null
+        }
+        Update: {
+          batch_id?: string
+          created_at?: string | null
+          errors?: Json | null
+          file_path?: string | null
+          id?: string
+          records_processed?: number | null
+          status?: string | null
+        }
+        Relationships: []
+      }
+      passages: {
+        Row: {
+          content: string
+          created_at: string | null
+          difficulty: string | null
+          estimated_reading_time: number | null
+          general_subject: string | null
+          id: string
+          line_count: number | null
+          metadata: Json | null
+          original_id: number | null
+          title: string
+          topic: string | null
+          word_count: number | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          difficulty?: string | null
+          estimated_reading_time?: number | null
+          general_subject?: string | null
+          id?: string
+          line_count?: number | null
+          metadata?: Json | null
+          original_id?: number | null
+          title: string
+          topic?: string | null
+          word_count?: number | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          difficulty?: string | null
+          estimated_reading_time?: number | null
+          general_subject?: string | null
+          id?: string
+          line_count?: number | null
+          metadata?: Json | null
+          original_id?: number | null
+          title?: string
+          topic?: string | null
+          word_count?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      question_sets: {
+        Row: {
+          created_at: string | null
+          difficulty: string | null
+          id: string
+          metadata: Json | null
+          name: string
+          passage_id: string | null
+          question_count: number | null
+          type: string
+        }
+        Insert: {
+          created_at?: string | null
+          difficulty?: string | null
+          id?: string
+          metadata?: Json | null
+          name: string
+          passage_id?: string | null
+          question_count?: number | null
+          type: string
+        }
+        Update: {
+          created_at?: string | null
+          difficulty?: string | null
+          id?: string
+          metadata?: Json | null
+          name?: string
+          passage_id?: string | null
+          question_count?: number | null
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_sets_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "passages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      questions: {
+        Row: {
+          answer_options: Json
+          correct_answer: string
+          created_at: string
+          difficulty: string
+          explanation: string | null
+          id: string
+          image_url: string | null
+          line_numbers: boolean | null
+          original_id: number | null
+          passage_content: string | null
+          passage_id: string | null
+          passage_line_range: Json | null
+          passage_title: string | null
+          question_subtype: string | null
+          question_text: string
+          set_id: string | null
+          set_order: number | null
+          subtopic_id: number | null
+          topic_id: number | null
+          type: string
+          updated_at: string
+          version: number | null
+        }
+        Insert: {
+          answer_options: Json
+          correct_answer: string
+          created_at?: string
+          difficulty: string
+          explanation?: string | null
+          id?: string
+          image_url?: string | null
+          line_numbers?: boolean | null
+          original_id?: number | null
+          passage_content?: string | null
+          passage_id?: string | null
+          passage_line_range?: Json | null
+          passage_title?: string | null
+          question_subtype?: string | null
+          question_text: string
+          set_id?: string | null
+          set_order?: number | null
+          subtopic_id?: number | null
+          topic_id?: number | null
+          type: string
+          updated_at?: string
+          version?: number | null
+        }
+        Update: {
+          answer_options?: Json
+          correct_answer?: string
+          created_at?: string
+          difficulty?: string
+          explanation?: string | null
+          id?: string
+          image_url?: string | null
+          line_numbers?: boolean | null
+          original_id?: number | null
+          passage_content?: string | null
+          passage_id?: string | null
+          passage_line_range?: Json | null
+          passage_title?: string | null
+          question_subtype?: string | null
+          question_text?: string
+          set_id?: string | null
+          set_order?: number | null
+          subtopic_id?: number | null
+          topic_id?: number | null
+          type?: string
+          updated_at?: string
+          version?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "questions_passage_id_fkey"
+            columns: ["passage_id"]
+            isOneToOne: false
+            referencedRelation: "passages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "questions_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "question_sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      saved_questions: {
+        Row: {
+          id: string
+          question_id: string
+          saved_at: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          question_id: string
+          saved_at?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          question_id?: string
+          saved_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subscriptions: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          plan_type: string
+          start_date: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          plan_type: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          plan_type?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      topics: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: number
+          name: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          name: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      user_progress: {
+        Row: {
+          answered_at: string
+          answered_correctly: boolean
+          id: string
+          question_id: string
+          time_spent: number | null
+          user_id: string
+        }
+        Insert: {
+          answered_at?: string
+          answered_correctly: boolean
+          id?: string
+          question_id: string
+          time_spent?: number | null
+          user_id: string
+        }
+        Update: {
+          answered_at?: string
+          answered_correctly?: boolean
+          id?: string
+          question_id?: string
+          time_spent?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_progress_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_active_premium: {
+        Args: { user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

@@ -37,6 +37,7 @@ import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
 import TypeSpecificSets from "./pages/TypeSpecificSets";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import Migration from "./pages/Migration";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -114,7 +115,9 @@ const AnimatedRoutes = () => {
           <Route path="/premium" element={<Premium />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/about" element={<About />} />          <Route path="/account" element={
+          <Route path="/about" element={<About />} />
+          <Route path="/migration" element={<Migration />} />
+          <Route path="/account" element={
             <ProtectedRoute requireAuth={true}>
               <UserAccount />
             </ProtectedRoute>

@@ -4,6 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
 import { getMobileOptimizedConfig, debounce, TimeoutManager, handleMobileNetworkError } from "@/utils/mobile-performance";
+import { SupabaseAuthService, UserProfile, UserSubscription } from "@/services/supabaseAuth";
 
 const ADMIN_EMAILS = [
   "admin@example.com",
@@ -138,25 +139,55 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateUserRelatedStates = useCallback((user: SupabaseUser) => {
+  const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {
     // console.log("✅ Updating user states for:", user.email);
     
     const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
     setIsAdmin(isUserAdmin);
     
-    const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
-    const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
-    const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
-    setIsPremium(isPremiumUser);
-    
-    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
-    const newUserData = {
-      firstName: displayName,
-      lastName: '',
-      premiumExpiration: isPremiumUser ? 
-        new Date().setMonth(new Date().getMonth() + 1) : undefined
-    };
-    setUserData(newUserData);
+    // Check database for active premium subscription
+    try {
+      const hasDbPremium = await SupabaseAuthService.hasActivePremium(user.id);
+      const subscription = await SupabaseAuthService.getUserSubscription(user.id);
+      
+      // Fallback to email list for backwards compatibility
+      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+      const isPremiumUser = hasDbPremium || isPremiumByEmail;
+      
+      setIsPremium(isPremiumUser);
+      
+      const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
+      const newUserData = {
+        firstName: displayName,
+        lastName: '',
+        premiumExpiration: subscription?.end_date || (isPremiumUser ? 
+          new Date().setMonth(new Date().getMonth() + 1) : undefined)
+      };
+      setUserData(newUserData);
+      
+      // Update localStorage for backwards compatibility
+      if (isPremiumUser) {
+        localStorage.setItem("isPremiumUser", "true");
+      } else {
+        localStorage.removeItem("isPremiumUser");
+      }
+    } catch (error) {
+      console.error('Error checking premium status:', error);
+      // Fallback to old logic if database check fails
+      const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
+      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+      const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
+      setIsPremium(isPremiumUser);
+      
+      const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
+      const newUserData = {
+        firstName: displayName,
+        lastName: '',
+        premiumExpiration: isPremiumUser ? 
+          new Date().setMonth(new Date().getMonth() + 1) : undefined
+      };
+      setUserData(newUserData);
+    }
   }, []);
   
   const resetUserStates = useCallback(() => {

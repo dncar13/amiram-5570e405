@@ -37,6 +37,7 @@ import {
 } from "lucide-react";
 import CardcomPaymentForm from "@/components/payment/CardcomPaymentForm";
 import SuccessDialog from "@/components/premium/SuccessDialog";
+import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
 
 const Premium = () => {
   const navigate = useNavigate();
