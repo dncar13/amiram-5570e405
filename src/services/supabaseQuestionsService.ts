@@ -49,7 +49,7 @@ function setCachedData<T>(key: string, data: T): void {
 /**
  * Transform database question to app format
  */
-function transformQuestion(dbQuestion: any, passage?: any): Question {
+function transformQuestion(dbQuestion: any): Question {
   return {
     id: parseInt(dbQuestion.id), // Convert string to number for app compatibility
     text: dbQuestion.question_text,
@@ -60,8 +60,8 @@ function transformQuestion(dbQuestion: any, passage?: any): Question {
     explanation: dbQuestion.explanation || '',
     difficulty: dbQuestion.difficulty as 'easy' | 'medium' | 'hard',
     type: dbQuestion.type as 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'vocabulary',
-    passageText: passage?.content || dbQuestion.passage_content,
-    passageTitle: passage?.title || dbQuestion.passage_title,
+    passageText: dbQuestion.passage_content,
+    passageTitle: dbQuestion.passage_title,
     topicId: dbQuestion.topic_id,
     tags: [], // We can extract from metadata if needed
     metadata: dbQuestion.metadata || {}
@@ -83,29 +83,10 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promis
   try {
     console.log('🔍 Fetching questions from database...', filters)
 
-    // Build query
+    // Build query - simplified to avoid foreign key issues
     let query = supabase
       .from('questions')
-      .select(`
-        *,
-        passages:passage_id (
-          id,
-          title,
-          content,
-          topic,
-          general_subject
-        ),
-        topics:topic_id (
-          id,
-          name,
-          category
-        ),
-        question_sets:set_id (
-          id,
-          name,
-          type
-        )
-      `)
+      .select('*')
 
     // Apply filters
     if (filters.type) {
@@ -143,7 +124,7 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promis
     }
 
     // Transform questions
-    const transformedQuestions = questions.map(q => transformQuestion(q, q.passages))
+    const transformedQuestions = questions.map(q => transformQuestion(q))
 
     const result: QuestionsResponse = {
       questions: transformedQuestions,
@@ -201,8 +182,8 @@ export async function getReadingQuestions(difficulty?: string): Promise<Question
   
   const response = await getQuestionsFromDB(filters)
   
-  // Ensure all reading questions have passage text
-  return response.questions.filter(q => q.passageText && q.passageText.length > 0)
+  // Return all reading questions (passage text will be in passage_content field)
+  return response.questions
 }
 
 /**
