@@ -1,21 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { Database } from '@/integrations/supabase/types'
 
-// Types for the transformed data
-export interface Question {
-  id: string
-  text: string
-  options: string[]
-  correctAnswer: number
-  explanation: string | null
-  difficulty: string
-  type: string
-  passageText?: string
-  passageTitle?: string
-  topicId?: number
-  tags?: string[]
-  metadata?: any
-}
+// Import the app's Question type
+import { Question } from '@/data/types/questionTypes'
 
 export interface QuestionsFilters {
   type?: string
@@ -64,15 +51,15 @@ function setCachedData<T>(key: string, data: T): void {
  */
 function transformQuestion(dbQuestion: any, passage?: any): Question {
   return {
-    id: dbQuestion.id,
+    id: parseInt(dbQuestion.id), // Convert string to number for app compatibility
     text: dbQuestion.question_text,
     options: Array.isArray(dbQuestion.answer_options) 
       ? dbQuestion.answer_options 
       : JSON.parse(dbQuestion.answer_options || '[]'),
     correctAnswer: parseInt(dbQuestion.correct_answer), // Convert string back to number
-    explanation: dbQuestion.explanation,
-    difficulty: dbQuestion.difficulty,
-    type: dbQuestion.type,
+    explanation: dbQuestion.explanation || '',
+    difficulty: dbQuestion.difficulty as 'easy' | 'medium' | 'hard',
+    type: dbQuestion.type as 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'vocabulary',
     passageText: passage?.content || dbQuestion.passage_content,
     passageTitle: passage?.title || dbQuestion.passage_title,
     topicId: dbQuestion.topic_id,

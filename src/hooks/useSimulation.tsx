@@ -88,40 +88,49 @@ export const useSimulation = (
     scrollToQuestion
   );
 
-  const handleRestartSimulation = useCallback(() => {
+  const handleRestartSimulation = useCallback(async () => {
     // console.log("Restarting simulation - clearing state and reinitializing");
     
     clearTimer();
     
     // Get fresh questions for restart
-    const questionsToUse = loadQuestions({
-      storyQuestions,
-      effectiveType,
-      difficulty,
-      questionLimit,
-      setNumber,
-      startIndex,
-      isFullExam
-    });
-    
-    // console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
-    
-    setState({
-      ...initialSimulationState,
-      questions: questionsToUse,
-      totalQuestions: questionsToUse.length,
-      currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
-      isTimerActive: false,
-      remainingTime: isFullExam ? 3600 : 1800,
-      progressLoaded: true,
-      examMode,
-      showAnswersImmediately
-    });
-    
-    if (examMode) {
-      initializeTimer();
+    try {
+      const questionsToUse = await loadQuestions({
+        storyQuestions,
+        effectiveType,
+        difficulty,
+        questionLimit,
+        setNumber,
+        startIndex,
+        isFullExam
+      });
+      
+      // console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
+      
+      setState({
+        ...initialSimulationState,
+        questions: questionsToUse,
+        totalQuestions: questionsToUse.length,
+        currentQuestion: questionsToUse.length > 0 ? questionsToUse[0] : null,
+        isTimerActive: false,
+        remainingTime: isFullExam ? 3600 : 1800,
+        progressLoaded: true,
+        examMode,
+        showAnswersImmediately
+      });
+      
+      if (examMode) {
+        initializeTimer();
+      }
+    } catch (error) {
+      console.error("Error restarting simulation:", error);
+      toast({
+        title: "שגיאה",
+        description: "שגיאה בטעינת השאלות. נסה שוב.",
+        variant: "destructive",
+      });
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, toast]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode and not for full exam
@@ -130,13 +139,13 @@ export const useSimulation = (
     }
   }, [simulationId, state, setNumber, type, difficulty, examMode, isFullExam]);
 
-  const resetProgress = useCallback(() => {
+  const resetProgress = useCallback(async () => {
     try {
       localStorage.removeItem(`simulation_progress_${simulationId}`);
       // console.log(`Simulation progress reset for ${simulationId}`);
       
       // Get the current questions again to avoid undefined state
-      const questionsToUse = loadQuestions({
+      const questionsToUse = await loadQuestions({
         storyQuestions,
         effectiveType,
         difficulty,
@@ -164,11 +173,16 @@ export const useSimulation = (
       });
     } catch (error) {
       console.error("Error resetting simulation progress:", error);
+      toast({
+        title: "שגיאה",
+        description: "שגיאה באיפוס הסימולציה. נסה שוב.",
+        variant: "destructive",
+      });
     }
   }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
 
   // Initialize questions based on simulation type
-  const initializeQuestions = useCallback(() => {
+  const initializeQuestions = useCallback(async () => {
     // console.log("Initializing questions for simulation:", { 
     //   simulationId, 
     //   isQuestionSet, 
@@ -183,32 +197,43 @@ export const useSimulation = (
     // });
     // console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
     
-    const questionsToUse = loadQuestions({
-      storyQuestions,
-      effectiveType,
-      difficulty,
-      questionLimit,
-      setNumber,
-      startIndex,
-      isFullExam
-    });
-    
-    // console.log(`Loaded ${questionsToUse.length} questions for simulation`);
-    
-    if (questionsToUse.length > 0) {
-      // console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
-      setState(prevState => ({
-        ...prevState,
-        questions: questionsToUse,
-        totalQuestions: questionsToUse.length,
-        currentQuestion: questionsToUse[0],
-        remainingTime: isFullExam ? 3600 : 1800,
-        progressLoaded: true,
-        examMode,
-        showAnswersImmediately
-      }));
-    } else {
-      // console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
+    try {
+      const questionsToUse = await loadQuestions({
+        storyQuestions,
+        effectiveType,
+        difficulty,
+        questionLimit,
+        setNumber,
+        startIndex,
+        isFullExam
+      });
+      
+      // console.log(`Loaded ${questionsToUse.length} questions for simulation`);
+      
+      if (questionsToUse.length > 0) {
+        // console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
+        setState(prevState => ({
+          ...prevState,
+          questions: questionsToUse,
+          totalQuestions: questionsToUse.length,
+          currentQuestion: questionsToUse[0],
+          remainingTime: isFullExam ? 3600 : 1800,
+          progressLoaded: true,
+          examMode,
+          showAnswersImmediately
+        }));
+      } else {
+        // console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
+        setState(prevState => ({
+          ...prevState,
+          remainingTime: isFullExam ? 3600 : 1800,
+          progressLoaded: true,
+          examMode,
+          showAnswersImmediately
+        }));
+      }
+    } catch (error) {
+      console.error("Error initializing questions:", error);
       setState(prevState => ({
         ...prevState,
         remainingTime: isFullExam ? 3600 : 1800,
