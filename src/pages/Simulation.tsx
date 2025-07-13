@@ -65,18 +65,39 @@ const Simulation = () => {
   const isStoryBased = Boolean(storyId);
   // console.log('Is story-based simulation:', isStoryBased, 'Story ID:', storyId);
   
-  // Get story-specific questions if this is a story simulation - MEMOIZED to prevent infinite loops
-  const storyQuestions = useMemo(() => {
-    if (!isStoryBased || !storyId) return [];
-    
-    // console.log('Getting questions for story:', storyId);
-    return getQuestionsByStory(storyId);
-  }, [isStoryBased, storyId]);
-  
-  const story = useMemo(() => {
-    if (!isStoryBased || !storyId) return undefined;
-    
-    return getStoryById(storyId);
+  // State for story-specific data
+  const [storyQuestions, setStoryQuestions] = useState<Question[]>([]);
+  const [story, setStory] = useState<any>(undefined);
+  const [storyLoading, setStoryLoading] = useState(false);
+
+  // Load story-specific questions if this is a story simulation
+  useEffect(() => {
+    if (!isStoryBased || !storyId) {
+      setStoryQuestions([]);
+      setStory(undefined);
+      return;
+    }
+
+    const loadStoryData = async () => {
+      setStoryLoading(true);
+      try {
+        console.log('Getting questions for story:', storyId);
+        const [questionsData, storyData] = await Promise.all([
+          getQuestionsByStory(storyId),
+          getStoryById(storyId)
+        ]);
+        setStoryQuestions(questionsData);
+        setStory(storyData);
+      } catch (error) {
+        console.error('Error loading story data:', error);
+        setStoryQuestions([]);
+        setStory(undefined);
+      } finally {
+        setStoryLoading(false);
+      }
+    };
+
+    loadStoryData();
   }, [isStoryBased, storyId]);
 
   // Get simulation data (questions, topic info, etc.) - only for non-full-exam simulations
@@ -214,7 +235,7 @@ const Simulation = () => {
     
   // For full exam, use simulation questions; for story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
   const questionsToUse = (isFullExam || isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
-  const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? false : isLoading);
+  const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? storyLoading : isLoading);
   
   useEffect(() => {
     // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה

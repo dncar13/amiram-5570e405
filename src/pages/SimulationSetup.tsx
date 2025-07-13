@@ -11,7 +11,7 @@ import { resetSimulation } from "@/services/questionsService";
 import { topicsData } from "@/data/topicsData";
 import { categoryData } from "@/data/categories/categoryData";
 import { Topic, Category } from "@/data/types/topicTypes";
-import { getQuestionsByTopic } from "@/data/questions/index";
+import { getQuestionsByTopic } from "@/services/questionsService";
 import { SimulationTips } from "@/components/simulation/SimulationTips";
 import { resetConflictingProgress } from "@/services/cloudSync";
 import { hasProgressUnified } from "@/services/simulationStorage";
@@ -69,30 +69,39 @@ const SimulationSetup = () => {
       return;
     }
 
-    const topicIdNumber = parseInt(topicId, 10);
-    const foundTopic = topicsData.find((t) => t.id === topicIdNumber);
-    if (!foundTopic) {
-      return;
-    }
-    
-    setTopic(foundTopic);
+    const loadTopicData = async () => {
+      const topicIdNumber = parseInt(topicId, 10);
+      const foundTopic = topicsData.find((t) => t.id === topicIdNumber);
+      if (!foundTopic) {
+        return;
+      }
+      
+      setTopic(foundTopic);
 
-    const foundCategory = categoryData.find((c) => c.id === foundTopic.categoryId);
-    if (foundCategory) {
-      setCategory(foundCategory);
-    }
-    
-    // Get questions count for this topic
-    const topicQuestions = getQuestionsByTopic(topicIdNumber);
-    setAvailableQuestionsCount(topicQuestions.length);
+      const foundCategory = categoryData.find((c) => c.id === foundTopic.categoryId);
+      if (foundCategory) {
+        setCategory(foundCategory);
+      }
+      
+      // Get questions count for this topic
+      try {
+        const topicQuestions = await getQuestionsByTopic(topicIdNumber);
+        setAvailableQuestionsCount(topicQuestions.length);
+      } catch (error) {
+        console.error('Error loading topic questions:', error);
+        setAvailableQuestionsCount(0);
+      }
 
-    // Auto-set training mode for topic-specific simulations
-    updateSettings({
-      examMode: false,
-      timerEnabled: false,
-      showAnswersImmediately: true,
-      timerMinutes: undefined
-    });
+      // Auto-set training mode for topic-specific simulations
+      updateSettings({
+        examMode: false,
+        timerEnabled: false,
+        showAnswersImmediately: true,
+        timerMinutes: undefined
+      });
+    };
+
+    loadTopicData();
   }, [topicId, updateSettings]);
 
   // Calculate timer based on questions count - wrapped with useMemo to avoid recalculation

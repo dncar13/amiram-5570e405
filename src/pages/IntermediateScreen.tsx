@@ -22,6 +22,8 @@ const IntermediateScreen = () => {
     currentQuestionIndex: number;
     totalQuestions: number;
   } | null>(null);
+  const [topicQuestionsCount, setTopicQuestionsCount] = useState(0);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
 
   // Find the topic if this is a topic-based simulation
   const topicId = id ? parseInt(id, 10) : undefined;
@@ -35,22 +37,37 @@ const IntermediateScreen = () => {
     // Scroll to top of the page
     window.scrollTo(0, 0);
     
-    // Load simulation progress
-    if (topicId) {
-      const progress = getSimulationProgress(topicId);
-      
-      if (progress) {
-        setSimulationProgress(progress);
+    // Load simulation progress and topic questions
+    const loadData = async () => {
+      if (topicId) {
+        // Load simulation progress (sync)
+        const progress = getSimulationProgress(topicId);
+        if (progress) {
+          setSimulationProgress(progress);
+        }
+        
+        // Load topic questions (async)
+        setIsLoadingQuestions(true);
+        try {
+          const questions = await getQuestionsByTopic(topicId);
+          setTopicQuestionsCount(questions.length);
+        } catch (error) {
+          console.error('Error loading topic questions:', error);
+          setTopicQuestionsCount(0);
+        } finally {
+          setIsLoadingQuestions(false);
+        }
+      } else {
+        setIsLoadingQuestions(false);
       }
-    }
+    };
+    
+    loadData();
   }, [topicId]);
   
-  // Count questions for this topic using the service
-  const topicQuestions = topic ? getQuestionsByTopic(topic.id) : [];
-  
   // Display question count (limited by settings if necessary)
-  const displayQuestionCount = topicQuestions.length > 0 
-    ? Math.min(topicQuestions.length, settings?.questionsCount || 50)
+  const displayQuestionCount = topicQuestionsCount > 0 
+    ? Math.min(topicQuestionsCount, settings?.questionsCount || 50)
     : settings?.questionsCount || 50;
   
   const handleStartSimulation = () => {
@@ -124,7 +141,7 @@ const IntermediateScreen = () => {
               </span>
             </div>
             <h3 className="text-lg font-semibold mb-2">
-              {displayQuestionCount} שאלות
+              {isLoadingQuestions ? "טוען..." : `${displayQuestionCount} שאלות`}
             </h3>
             <p className="text-sm text-electric-slate">
               נושא: {topic.title}

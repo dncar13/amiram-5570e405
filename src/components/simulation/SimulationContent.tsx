@@ -1,5 +1,5 @@
 
-import { Question } from "@/data/questionsData";
+import { Question } from "@/data/types/questionTypes";
 import QuestionCard from "./QuestionCard";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";

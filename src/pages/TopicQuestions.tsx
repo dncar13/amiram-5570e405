@@ -30,7 +30,7 @@ const TopicQuestions = () => {
     const loadUserQuestions = async () => {
       setIsLoading(true);
       try {
-        const allQuestions = getAllQuestions();
+        const allQuestions = await getAllQuestions();
         
         // If categoryId is provided, filter questions by that category
         let filteredQuestions = allQuestions;

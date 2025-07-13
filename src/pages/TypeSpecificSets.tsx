@@ -29,31 +29,41 @@ const TypeSpecificSets = () => {
   useEffect(() => {
     if (!type || !difficulty) return;
 
-    // Get questions for this type and difficulty
-    const questions = getQuestionsByDifficultyAndType(difficulty, type);
-    setTotalQuestions(questions.length);
+    const loadQuestions = async () => {
+      try {
+        // Get questions for this type and difficulty
+        const questions = await getQuestionsByDifficultyAndType(difficulty, type);
+        setTotalQuestions(questions.length);
 
-    // Create sets of 10 questions each
-    const questionsPerSet = 10;
-    const numberOfSets = Math.ceil(questions.length / questionsPerSet);
-    
-    const sets: QuestionSet[] = [];
-    for (let i = 0; i < numberOfSets; i++) {
-      const startIndex = i * questionsPerSet;
-      const endIndex = Math.min(startIndex + questionsPerSet, questions.length);
-      const actualCount = endIndex - startIndex;
-      
-      sets.push({
-        id: i + 1,
-        title: `סט ${i + 1}`,
-        description: `שאלות ${startIndex + 1}-${endIndex} ברמת קושי ${getDifficultyInHebrew(difficulty)}`,
-        questionsCount: actualCount,
-        startIndex,
-        endIndex: endIndex - 1
-      });
-    }
-    
-    setQuestionSets(sets);
+        // Create sets of 10 questions each
+        const questionsPerSet = 10;
+        const numberOfSets = Math.ceil(questions.length / questionsPerSet);
+        
+        const sets: QuestionSet[] = [];
+        for (let i = 0; i < numberOfSets; i++) {
+          const startIndex = i * questionsPerSet;
+          const endIndex = Math.min(startIndex + questionsPerSet, questions.length);
+          const actualCount = endIndex - startIndex;
+          
+          sets.push({
+            id: i + 1,
+            title: `סט ${i + 1}`,
+            description: `שאלות ${startIndex + 1}-${endIndex} ברמת קושי ${getDifficultyInHebrew(difficulty)}`,
+            questionsCount: actualCount,
+            startIndex,
+            endIndex: endIndex - 1
+          });
+        }
+        
+        setQuestionSets(sets);
+      } catch (error) {
+        console.error('Error loading questions for sets:', error);
+        setTotalQuestions(0);
+        setQuestionSets([]);
+      }
+    };
+
+    loadQuestions();
   }, [type, difficulty]);
 
   const getDifficultyInHebrew = (diff: string) => {

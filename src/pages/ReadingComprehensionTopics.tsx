@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, Variants, Transition } from 'framer-motion';
 import Header from '@/components/Header';
@@ -16,24 +16,54 @@ const ReadingComprehensionTopics: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [stories, setStories] = useState<any[]>([]);
+  const [allStories, setAllStories] = useState<any[]>([]);
+  const [storiesLoading, setStoriesLoading] = useState(true);
 
-  // Get filtered stories based on current filters
-  const stories = useMemo(() => {
-    return getFilteredStories(filters.difficulty, filters.subject);
-  }, [filters]);
+  // Load all stories initially
+  useEffect(() => {
+    const loadAllStories = async () => {
+      setStoriesLoading(true);
+      try {
+        const allStoriesData = await getAvailableStories();
+        setAllStories(allStoriesData);
+      } catch (error) {
+        console.error('Error loading all stories:', error);
+        setAllStories([]);
+      } finally {
+        setStoriesLoading(false);
+      }
+    };
 
-  // Get all stories for statistics
-  const allStories = useMemo(() => {
-    return getAvailableStories();
+    loadAllStories();
   }, []);
 
-  // Simulate loading for better UX
+  // Load filtered stories when filters change
+  useEffect(() => {
+    const loadFilteredStories = async () => {
+      if (storiesLoading) return; // Wait for initial load
+      
+      try {
+        const filteredStoriesData = await getFilteredStories(filters.difficulty, filters.subject);
+        setStories(filteredStoriesData);
+      } catch (error) {
+        console.error('Error loading filtered stories:', error);
+        setStories([]);
+      }
+    };
+
+    loadFilteredStories();
+  }, [filters, storiesLoading]);
+
+  // Update loading state based on stories loading
   React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!storiesLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [storiesLoading]);
 
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters);

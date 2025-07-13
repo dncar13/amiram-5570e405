@@ -70,10 +70,12 @@ export const useSimulationData = (
 
           if (setNumber >= 1 && setNumber <= 20) {
             // For sets 1-20, load mixed difficulty questions
-            questionsForSet = getMixedDifficultyQuestions('medium').slice(0, 50);
+            const allQuestions = await getMixedDifficultyQuestions('medium');
+            questionsForSet = allQuestions.slice(0, 50);
           } else if (setNumber === 801) {
             // Special set 801-850 for restatement questions
-            questionsForSet = getRestatementQuestions().slice(0, 50);
+            const restatementQuestions = await getRestatementQuestions();
+            questionsForSet = restatementQuestions.slice(0, 50);
           } else {
             questionsForSet = [];
           }
@@ -97,13 +99,17 @@ export const useSimulationData = (
             let questionsForTopic: Question[] = [];
 
             if (foundTopic.difficulty === 'easy') {
-              questionsForTopic = getEasyQuestions().slice(0, 25);
+              const easyQuestions = await getEasyQuestions();
+              questionsForTopic = easyQuestions.slice(0, 25);
             } else if (foundTopic.difficulty === 'medium') {
-              questionsForTopic = getMediumQuestions().slice(0, 25);
+              const mediumQuestions = await getMediumQuestions();
+              questionsForTopic = mediumQuestions.slice(0, 25);
             } else if (foundTopic.difficulty === 'hard') {
-              questionsForTopic = getHardQuestions().slice(0, 25);
+              const hardQuestions = await getHardQuestions();
+              questionsForTopic = hardQuestions.slice(0, 25);
             } else {
-              questionsForTopic = getMixedDifficultyQuestions('medium').slice(0, 25);
+              const mixedQuestions = await getMixedDifficultyQuestions('medium');
+              questionsForTopic = mixedQuestions.slice(0, 25);
             }
 
             if (isMounted) {

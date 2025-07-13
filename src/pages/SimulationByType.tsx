@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import Header from '@/components/Header';
@@ -34,6 +34,11 @@ const SimulationByType: React.FC = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+  
+  // State for question counts
+  const [sentenceCompletionCount, setSentenceCompletionCount] = useState(0);
+  const [restatementCount, setRestatementCount] = useState(0);
+  const [isLoadingCounts, setIsLoadingCounts] = useState(true);
 
   // Redirect reading comprehension directly to stories page
   useEffect(() => {
@@ -42,14 +47,28 @@ const SimulationByType: React.FC = () => {
     }
   }, [type, navigate]);
 
-  // Get actual question counts dynamically
-  const getSentenceCompletionCount = () => {
-    return getSentenceCompletionQuestions().length;
-  };
+  // Load question counts
+  useEffect(() => {
+    const loadQuestionCounts = async () => {
+      setIsLoadingCounts(true);
+      try {
+        const [sentenceQuestions, restatementQuestions] = await Promise.all([
+          getSentenceCompletionQuestions(),
+          getRestatementQuestions()
+        ]);
+        setSentenceCompletionCount(sentenceQuestions.length);
+        setRestatementCount(restatementQuestions.length);
+      } catch (error) {
+        console.error('Error loading question counts:', error);
+        setSentenceCompletionCount(0);
+        setRestatementCount(0);
+      } finally {
+        setIsLoadingCounts(false);
+      }
+    };
 
-  const getRestatementCount = () => {
-    return getRestatementQuestions().length;
-  };
+    loadQuestionCounts();
+  }, []);
 
   const questionTypesData: Record<string, QuestionTypeData> = {
     'sentence-completion': {
@@ -65,7 +84,7 @@ const SimulationByType: React.FC = () => {
         'בחן את כל האפשרויות לפני קבלת החלטה',
         'שים לב לדקדוק ולצורת הפועל'
       ],
-      questionCount: getSentenceCompletionCount()
+      questionCount: sentenceCompletionCount
     },
     'restatement': {
       type: 'restatement',
@@ -80,7 +99,7 @@ const SimulationByType: React.FC = () => {
         'שמור על אותה משמעות עם ניסוח שונה',
         'הימנע מביטויים חריגים או מיוחדים'
       ],
-      questionCount: getRestatementCount()
+      questionCount: restatementCount
     }
   };
 

@@ -2,9 +2,9 @@
 import { Question } from "@/data/types/questionTypes";
 import { 
   getSentenceCompletionQuestions,
-  getRestatementQuestions
+  getRestatementQuestions,
+  getReadingComprehensionQuestions
 } from "@/services/questionsService";
-import { getReadingComprehensionQuestions } from "@/data/questions/by-type/index";
 import { FULL_EXAM_SETTINGS } from "@/config/fullExamConfig";
 
 /**
@@ -23,13 +23,13 @@ const shuffleAndPick = <T>(array: T[], count: number): T[] => {
  * Creates a full exam question set with proper distribution
  * Returns exactly 80 questions: 27 sentence completion, 26 restatement, 27 reading comprehension
  */
-export const getFullExamQuestions = (): Question[] => {
+export const getFullExamQuestions = async (): Promise<Question[]> => {
   console.log("Creating full exam question set...");
   
   // Get all available questions by type
-  const sentenceCompletionQuestions = getSentenceCompletionQuestions();
-  const restatementQuestions = getRestatementQuestions();
-  const readingComprehensionQuestions = getReadingComprehensionQuestions();
+  const sentenceCompletionQuestions = await getSentenceCompletionQuestions();
+  const restatementQuestions = await getRestatementQuestions();
+  const readingComprehensionQuestions = await getReadingComprehensionQuestions();
   
   console.log("Available questions:", {
     sentenceCompletion: sentenceCompletionQuestions.length,

@@ -1,4 +1,3 @@
-
 import { Question } from "@/data/types/questionTypes";
 import { 
   getQuestionsByDifficultyAndType,
@@ -30,7 +29,7 @@ interface QuestionLoaderParams {
   isFullExam?: boolean;
 }
 
-export const loadQuestions = ({
+export const loadQuestions = async ({
   storyQuestions,
   effectiveType,
   difficulty,
@@ -38,7 +37,7 @@ export const loadQuestions = ({
   setNumber,
   startIndex,
   isFullExam = false
-}: QuestionLoaderParams): Question[] => {
+}: QuestionLoaderParams): Promise<Question[]> => {
   console.log("Loading questions with params:", { 
     effectiveType, 
     difficulty, 
@@ -53,9 +52,14 @@ export const loadQuestions = ({
   // Handle full exam case - highest priority
   if (isFullExam) {
     console.log("Loading full exam questions (80 questions, mixed types)");
-    questionsToUse = getFullExamQuestions();
-    console.log(`Loaded ${questionsToUse.length} questions for full exam`);
-    return questionsToUse;
+    try {
+      questionsToUse = await getFullExamQuestions();
+      console.log(`Loaded ${questionsToUse.length} questions for full exam`);
+      return questionsToUse;
+    } catch (error) {
+      console.error("Error loading full exam questions:", error);
+      return [];
+    }
   }
   
   if (storyQuestions && storyQuestions.length > 0) {
@@ -66,51 +70,62 @@ export const loadQuestions = ({
   else if (effectiveType && questionLimit) {
     console.log(`[QUICK PRACTICE] Loading mixed difficulty questions for type: ${effectiveType}`);
     
-    if (effectiveType === 'sentence-completion') {
-      questionsToUse = getSentenceCompletionQuestions();
-      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} sentence completion questions`);
-    } else if (effectiveType === 'restatement') {
-      questionsToUse = getRestatementQuestions();
-      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} restatement questions`);
-    } else if (effectiveType === 'vocabulary') {
-      questionsToUse = getVocabularyQuestions();
-      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} vocabulary questions`);
-    } else if (effectiveType === 'reading-comprehension') {
-      questionsToUse = getReadingComprehensionQuestions();
-      console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} reading comprehension questions`);
-    }
-    
-    // Apply limit and shuffle
-    const limit = parseInt(questionLimit, 10);
-    if (!isNaN(limit) && limit > 0) {
-      questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-      console.log(`[QUICK PRACTICE] Limited and shuffled to ${limit} random questions from all difficulty levels`);
+    try {
+      if (effectiveType === 'sentence-completion') {
+        questionsToUse = await getSentenceCompletionQuestions();
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} sentence completion questions`);
+      } else if (effectiveType === 'restatement') {
+        questionsToUse = await getRestatementQuestions();
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} restatement questions`);
+      } else if (effectiveType === 'vocabulary') {
+        questionsToUse = await getVocabularyQuestions();
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} vocabulary questions`);
+      } else if (effectiveType === 'reading-comprehension') {
+        questionsToUse = await getReadingComprehensionQuestions();
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} reading comprehension questions`);
+      }
+      
+      // Apply limit and shuffle
+      const limit = parseInt(questionLimit, 10);
+      if (!isNaN(limit) && limit > 0) {
+        questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+        console.log(`[QUICK PRACTICE] Limited and shuffled to ${limit} random questions from all difficulty levels`);
+      }
+    } catch (error) {
+      console.error(`Error loading ${effectiveType} questions:`, error);
+      questionsToUse = [];
     }
   }
   else if (effectiveType && difficulty) {
     console.log(`Loading questions for type: ${effectiveType}, difficulty: ${difficulty}`);
-    questionsToUse = getQuestionsByDifficultyAndType(difficulty, effectiveType);
-    console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${effectiveType}`);
     
-    // Handle set-based question selection
-    if (setNumber && startIndex) {
-      const setNum = parseInt(setNumber, 10);
-      const start = parseInt(startIndex, 10);
-      const questionsPerSet = 10;
+    try {
+      questionsToUse = await getQuestionsByDifficultyAndType(difficulty, effectiveType);
+      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${effectiveType}`);
       
-      if (!isNaN(setNum) && !isNaN(start)) {
-        // Get specific 10 questions for this set
-        questionsToUse = questionsToUse.slice(start, start + questionsPerSet);
-        console.log(`Set ${setNum}: Using questions ${start + 1}-${start + questionsToUse.length}`);
+      // Handle set-based question selection
+      if (setNumber && startIndex) {
+        const setNum = parseInt(setNumber, 10);
+        const start = parseInt(startIndex, 10);
+        const questionsPerSet = 10;
+        
+        if (!isNaN(setNum) && !isNaN(start)) {
+          // Get specific 10 questions for this set
+          questionsToUse = questionsToUse.slice(start, start + questionsPerSet);
+          console.log(`Set ${setNum}: Using questions ${start + 1}-${start + questionsToUse.length}`);
+        }
       }
-    }
-    // Apply general limit if specified in URL (for quick practice)
-    else if (questionLimit) {
-      const limit = parseInt(questionLimit, 10);
-      if (!isNaN(limit) && limit > 0) {
-        questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
-        console.log(`Limited questions to ${limit} random questions`);
+      // Apply general limit if specified in URL (for quick practice)
+      else if (questionLimit) {
+        const limit = parseInt(questionLimit, 10);
+        if (!isNaN(limit) && limit > 0) {
+          questionsToUse = shuffleArray(questionsToUse).slice(0, limit);
+          console.log(`Limited questions to ${limit} random questions`);
+        }
       }
+    } catch (error) {
+      console.error(`Error loading ${effectiveType} ${difficulty} questions:`, error);
+      questionsToUse = [];
     }
   } else if (sessionStorage.getItem('is_difficulty_based') === 'true') {
     const difficultyLevel = sessionStorage.getItem('current_difficulty_level');
@@ -119,12 +134,17 @@ export const loadQuestions = ({
     console.log(`Getting difficulty-based questions from sessionStorage: ${difficultyLevel}, ${difficultyType}`);
     
     if (difficultyLevel && difficultyType) {
-      if (difficultyType === 'mixed') {
-        questionsToUse = getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
-      } else {
-        questionsToUse = getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+      try {
+        if (difficultyType === 'mixed') {
+          questionsToUse = await getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
+        } else {
+          questionsToUse = await getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+        }
+        console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${difficultyType}`);
+      } catch (error) {
+        console.error(`Error loading difficulty-based questions:`, error);
+        questionsToUse = [];
       }
-      console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${difficultyType}`);
     }
   }
   

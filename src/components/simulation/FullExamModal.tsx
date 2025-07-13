@@ -40,34 +40,43 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
   const [showWarning, setShowWarning] = useState(false);
 
   // Initialize exam questions
-  const initializeExam = useCallback(() => {
-    const allQuestions = getAllQuestions();
-    console.log(`[FullExam] Total questions available: ${allQuestions.length}`);
-    
-    if (allQuestions.length < 80) {
+  const initializeExam = useCallback(async () => {
+    try {
+      const allQuestions = await getAllQuestions();
+      console.log(`[FullExam] Total questions available: ${allQuestions.length}`);
+      
+      if (allQuestions.length < 80) {
+        toast({
+          title: "שגיאה",
+          description: "אין מספיק שאלות למבחן מלא",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Shuffle and take 80 questions
+      const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+      const examQuestions = shuffled.slice(0, 80);
+      
+      console.log(`[FullExam] Selected ${examQuestions.length} questions for exam`);
+      
+      setExamState({
+        questions: examQuestions,
+        currentQuestionIndex: 0,
+        selectedAnswers: new Array(80).fill(null),
+        timeRemaining: EXAM_DURATION,
+        isExamStarted: false,
+        isExamCompleted: false,
+        examStartTime: null
+      });
+    } catch (error) {
+      console.error('Error loading questions for full exam:', error);
       toast({
         title: "שגיאה",
-        description: "אין מספיק שאלות למבחן מלא",
+        description: "שגיאה בטעינת שאלות למבחן",
         variant: "destructive"
       });
-      return;
     }
-
-    // Shuffle and take 80 questions
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    const examQuestions = shuffled.slice(0, 80);
-    
-    console.log(`[FullExam] Selected ${examQuestions.length} questions for exam`);
-    
-    setExamState({
-      questions: examQuestions,
-      currentQuestionIndex: 0,
-      selectedAnswers: new Array(80).fill(null),
-      timeRemaining: EXAM_DURATION,
-      isExamStarted: false,
-      isExamCompleted: false,
-      examStartTime: null
-    });
   }, [toast]);
 
   // Timer effect
