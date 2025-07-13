@@ -3,7 +3,6 @@ const { createClient } = require('@supabase/supabase-js')
 const fs = require('fs')
 const path = require('path')
 
-// Initialize Supabase client with service role key for migration
 const supabase = createClient(
   process.env.VITE_SUPABASE_URL,
   process.env.VITE_SUPABASE_SERVICE_ROLE_KEY
@@ -13,7 +12,6 @@ async function migrateQuestions() {
   const batchId = `migration-${Date.now()}`
   console.log(`🚀 Starting migration batch: ${batchId}`)
   
-  // Check if we can access the database
   console.log('🔐 Checking database access...')
   const { data: testData, error: testError } = await supabase
     .from('passages')
@@ -22,10 +20,6 @@ async function migrateQuestions() {
     
   if (testError) {
     console.error('❌ Database access error:', testError)
-    console.log('💡 Note: You may need to:')
-    console.log('   1. Use a service role key instead of anon key')
-    console.log('   2. Disable RLS temporarily for migration')
-    console.log('   3. Create proper RLS policies for migration')
     throw testError
   }
   
@@ -57,25 +51,12 @@ async function migrateQuestions() {
     
   } catch (error) {
     console.error('❌ Migration failed:', error)
-    process.exit(1)
+    throw error
   }
 }
 
 async function extractAndUploadPassages() {
   const passages = []
-
-  // First, let's try to find what values are allowed for general_subject
-  console.log('🔍 Checking allowed values for general_subject...')
-  try {
-    const { data: schemaData, error: schemaError } = await supabase
-      .rpc('get_enum_values', { enum_name: 'general_subject' })
-    
-    if (schemaData) {
-      console.log('✅ Allowed general_subject values:', schemaData)
-    }
-  } catch (e) {
-    console.log('ℹ️ Could not fetch enum values, using common values...')
-  }
 
   // Extract passage from gigEconomyReadingQuestions.ts
   const gigEconomyContent = fs.readFileSync('/home/daniel_pogodin/amiram/src/data/questions/by-type/gigEconomyReadingQuestions.ts', 'utf8')
@@ -87,7 +68,7 @@ async function extractAndUploadPassages() {
       title: "The Rise of the Gig Economy",
       content: passageText,
       topic: "Gig Economy",
-      general_subject: "History",
+      general_subject: "Economics", // Valid per schema: Technology, Economics, Engineering, Health, Society, Education, Environment, History, Psychology, Ethics
       word_count: passageText.split(/\s+/).length,
       estimated_reading_time: 3,
       line_count: passageText.split('\n').length,
@@ -109,7 +90,7 @@ async function extractAndUploadPassages() {
       title: "Technology Reading",
       content: passageText,
       topic: "Technology",
-      general_subject: "History",
+      general_subject: "Technology", // Valid per schema
       word_count: passageText.split(/\s+/).length,
       estimated_reading_time: 3,
       line_count: passageText.split('\n').length,
@@ -131,7 +112,7 @@ async function extractAndUploadPassages() {
       title: "Environment Reading",
       content: passageText,
       topic: "Environment",
-      general_subject: "History",
+      general_subject: "Environment", // Valid per schema
       word_count: passageText.split(/\s+/).length,
       estimated_reading_time: 3,
       line_count: passageText.split('\n').length,
@@ -155,7 +136,6 @@ async function extractAndUploadPassages() {
 
   console.log(`✅ Uploaded ${data.length} passages`)
   
-  // Create mapping from title to passage_id
   const passageMap = {}
   data.forEach(passage => {
     passageMap[passage.title] = passage
@@ -166,18 +146,18 @@ async function extractAndUploadPassages() {
 
 async function uploadTopics() {
   const topics = [
-    { id: 1, name: "vocabulary", category: "Language", description: "Vocabulary questions" },
-    { id: 2, name: "restatement", category: "Language", description: "Restatement questions" },
-    { id: 3, name: "sentence-completion", category: "Language", description: "Sentence completion questions" },
-    { id: 4, name: "reading-comprehension", category: "Reading", description: "Reading comprehension questions" },
-    { id: 5, name: "Technology", category: "Subject", description: "Technology-related content" },
-    { id: 6, name: "Gig Economy", category: "Subject", description: "Gig economy content" },
-    { id: 7, name: "Environment", category: "Subject", description: "Environmental content" }
+    { name: "vocabulary", category: "Language", description: "Vocabulary questions" },
+    { name: "restatement", category: "Language", description: "Restatement questions" },
+    { name: "sentence-completion", category: "Language", description: "Sentence completion questions" },
+    { name: "reading-comprehension", category: "Reading", description: "Reading comprehension questions" },
+    { name: "Technology", category: "Subject", description: "Technology-related content" },
+    { name: "Gig Economy", category: "Subject", description: "Gig economy content" },
+    { name: "Environment", category: "Subject", description: "Environmental content" }
   ]
 
   const { data, error } = await supabase
     .from('topics')
-    .upsert(topics, { onConflict: 'id' })
+    .upsert(topics, { onConflict: 'name' })
     .select('id, name')
 
   if (error) {
@@ -187,7 +167,6 @@ async function uploadTopics() {
 
   console.log(`✅ Uploaded ${data.length} topics`)
   
-  // Create mapping from name to topic_id
   const topicMap = {}
   data.forEach(topic => {
     topicMap[topic.name] = topic
@@ -210,19 +189,16 @@ async function loadAllQuestions() {
     try {
       const fileContent = fs.readFileSync(filePath, 'utf8')
       
-      // Extract passage text first
       let passageText = ''
       const passageMatch = fileContent.match(/const \w+PassageText = `(.*?)`;/s)
       if (passageMatch) {
         passageText = passageMatch[1]
       }
       
-      // Extract the exported questions array manually
       const exportMatch = fileContent.match(/export const \w+ReadingQuestions: Question\[\] = \[(.*?)\];/s)
       if (exportMatch) {
         const questionsStr = '[' + exportMatch[1] + ']'
         
-        // Replace passage text references with actual text
         const processedQuestionsStr = questionsStr
           .replace(/gigEconomyPassageText/g, JSON.stringify(passageText))
           .replace(/technologyPassageText/g, JSON.stringify(passageText))
@@ -253,7 +229,6 @@ async function loadAllQuestions() {
     try {
       const fileContent = fs.readFileSync(filePath, 'utf8')
       
-      // Extract questions array from the file content
       const questionsMatch = fileContent.match(/const questions.*?= \[(.*?)\];/s)
       if (questionsMatch) {
         const questionsStr = '[' + questionsMatch[1] + ']'
@@ -302,8 +277,11 @@ async function createQuestionSets(passages, allQuestions) {
 
   setGroups.forEach((questions, key) => {
     const [type, difficulty] = key.split('-')
-    // Map difficulty to valid values
-    const validDifficulty = difficulty === 'easy' ? 'easy' : difficulty === 'medium' ? 'medium' : 'hard'
+    console.log(`📋 Creating set for: ${type} - ${difficulty} (${questions.length} questions)`)
+    
+    // Ensure valid difficulty values
+    const validDifficulty = ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium'
+    
     questionSets.push({
       name: `${type.charAt(0).toUpperCase() + type.slice(1)} - ${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}`,
       type: type,
@@ -329,7 +307,6 @@ async function createQuestionSets(passages, allQuestions) {
 
   console.log(`✅ Created ${data.length} question sets`)
   
-  // Create mapping from set characteristics to set_id
   const setMap = {}
   data.forEach(set => {
     setMap[set.name] = set
@@ -348,19 +325,31 @@ async function uploadQuestions(allQuestions, passages, topics, questionSets) {
     
     const transformedQuestions = batch.map(q => {
       let passage_id = null
-      let topic_id = topics[q.type]?.id || 1
+      let topic_id = topics[q.type]?.id || null
       let set_id = null
+      let question_subtype = null
 
       // Handle reading comprehension questions
       if (q.type === 'reading-comprehension') {
         const passage = Object.values(passages).find(p => p.title === q.passageTitle)
         passage_id = passage?.id || null
-        topic_id = topics['reading-comprehension']?.id || 4
+        topic_id = topics['reading-comprehension']?.id || null
         set_id = Object.values(questionSets).find(s => s.passage_id === passage_id)?.id || null
+        
+        // Map to valid question_subtype values per schema
+        if (q.tags?.includes('detail')) question_subtype = 'detail'
+        else if (q.tags?.includes('main-idea')) question_subtype = 'main-idea'
+        else if (q.tags?.includes('inference')) question_subtype = 'inference'
+        else if (q.tags?.includes('vocabulary')) question_subtype = 'vocabulary-in-context'
+        else question_subtype = 'detail' // default
       } else {
         // Handle other question types
         const setName = `${q.type.charAt(0).toUpperCase() + q.type.slice(1)} - ${q.difficulty.charAt(0).toUpperCase() + q.difficulty.slice(1)}`
         set_id = questionSets[setName]?.id || null
+        
+        if (q.type === 'sentence-completion') {
+          question_subtype = 'sentence-completion'
+        }
       }
 
       return {
@@ -368,13 +357,13 @@ async function uploadQuestions(allQuestions, passages, topics, questionSets) {
         type: q.type,
         question_text: q.text,
         answer_options: q.options,
-        correct_answer: q.correctAnswer.toString(), // Convert to string!
+        correct_answer: q.correctAnswer.toString(),
         explanation: q.explanation,
         difficulty: q.difficulty,
         passage_id: passage_id,
         topic_id: topic_id,
         set_id: set_id,
-        question_subtype: q.type,
+        question_subtype: question_subtype,
         version: 1
       }
     })
@@ -407,8 +396,8 @@ async function uploadQuestions(allQuestions, passages, topics, questionSets) {
 async function logMigrationSummary(batchId, totalQuestions) {
   const summary = {
     batch_id: batchId,
-    total_questions: totalQuestions,
-    status: 'completed'
+    status: 'completed',
+    records_processed: totalQuestions
   }
 
   const { error } = await supabase
