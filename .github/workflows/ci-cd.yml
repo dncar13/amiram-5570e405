@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: CI/CD Pipeline
 
 on:
   push:
@@ -15,7 +15,7 @@ env:
 
 jobs:
   ci-cd:
-    name: Build and Deploy
+    name: CI/CD Pipeline
     runs-on: ubuntu-latest
     timeout-minutes: 45
 
@@ -69,7 +69,7 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Build and Deploy completed successfully"
+            echo "✅ CI/CD Pipeline completed successfully"
           else
-            echo "❌ Build and Deploy failed"
+            echo "❌ CI/CD Pipeline failed"
           fi
