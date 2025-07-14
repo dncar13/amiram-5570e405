@@ -75,17 +75,30 @@ const ProgressStats: React.FC = () => {
       setRealStats(stats);
       
       // Load chart data
-      const [weeklyData, topicData, difficultyData] = await Promise.all([
-        ProgressService.getWeeklyProgressData(user.id),
-        ProgressService.getTopicPerformanceData(user.id),
-        ProgressService.getDifficultyBreakdownData(user.id)
-      ]);
-      
-      console.log('✅ Chart data loaded:', { weeklyData, topicData, difficultyData });
-      
+      const weeklyData = await ProgressService.getWeeklyProgressData(user.id);
+      console.log('✅ Chart data loaded:', { weeklyData });
       setWeeklyProgress(weeklyData);
-      setTopicPerformance(topicData);
-      setDifficultyBreakdown(difficultyData);
+      
+      // Create topic performance data from stats
+      if (stats && stats.questions_by_type) {
+        const topicData = Object.entries(stats.questions_by_type).map(([type, data]: [string, any]) => ({
+          topic: type,
+          score: Math.round(data.accuracy),
+          questions: data.total
+        }));
+        setTopicPerformance(topicData);
+      }
+      
+      // Create difficulty breakdown data from stats
+      if (stats && stats.questions_by_difficulty) {
+        const colors = { easy: '#10B981', medium: '#F59E0B', hard: '#EF4444' };
+        const difficultyData = Object.entries(stats.questions_by_difficulty).map(([difficulty, data]: [string, any]) => ({
+          name: difficulty === 'easy' ? 'קל' : difficulty === 'medium' ? 'בינוני' : 'קשה',
+          value: data.total,
+          color: colors[difficulty as keyof typeof colors] || '#6B7280'
+        }));
+        setDifficultyBreakdown(difficultyData);
+      }
       
     } catch (error) {
       console.error('❌ Error loading real stats:', error);
@@ -116,8 +129,8 @@ const ProgressStats: React.FC = () => {
 
   // Use real statistics when available, fallback to local history
   const totalQuestions = realStats ? realStats.total_questions_answered : history.length;
-  const correctAnswers = realStats ? realStats.correct_answers : history.filter(h => h.status === 'correct').length;
-  const averageScore = realStats ? Math.round(realStats.average_score * 100) : (totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0);
+  const correctAnswers = realStats ? realStats.total_correct_answers : history.filter(h => h.status === 'correct').length;
+  const averageScore = realStats ? Math.round(realStats.accuracy_percentage) : (totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0);
   const totalTime = realStats ? Math.round(realStats.total_time_spent / 60) : history.reduce((sum, h) => sum + (parseInt(h.time) || 0), 0);
 
   return (
