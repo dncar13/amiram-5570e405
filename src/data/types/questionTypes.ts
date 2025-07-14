@@ -3,7 +3,7 @@ import { LucideIcon } from 'lucide-react';
 
 // Define Question type for the application - updated to match new structure
 export interface Question {
-  id: string; // Changed from number to string to match Supabase UUID format
+  id: string; // Supabase UUID format
   type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive' | 'vocabulary' | 'grammar' | 'writing' | 'listening';
   text: string; // Main question text field
   options: string[];

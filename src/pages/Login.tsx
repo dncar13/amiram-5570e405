@@ -192,10 +192,11 @@ const Login = () => {
       const { user, error } = result;
 
       if (error) {
+        const errorMessage = typeof error === 'string' ? error : error.message || "שגיאה בהתחברות";
         if (
-          error.message.includes("יש לאשר את כתובת האימייל") ||
-          error.message.toLowerCase().includes("confirm your email") ||
-          error.message.toLowerCase().includes("email not confirmed")
+          errorMessage.includes("יש לאשר את כתובת האימייל") ||
+          errorMessage.toLowerCase().includes("confirm your email") ||
+          errorMessage.toLowerCase().includes("email not confirmed")
         ) {
           setAwaitingConfirmation(formData.email);
           setLoginState('idle');
@@ -279,10 +280,11 @@ const Login = () => {
       const { user, error } = result;
       
       if (error) {
+        const errorMessage = typeof error === 'string' ? error : error.message || "שגיאה בהרשמה";
         if (
-          error.message.includes("יש לאשר את כתובת האימייל") ||
-          error.message.toLowerCase().includes("confirm your email") ||
-          error.message.toLowerCase().includes("email not confirmed")
+          errorMessage.includes("יש לאשר את כתובת האימייל") ||
+          errorMessage.toLowerCase().includes("confirm your email") ||
+          errorMessage.toLowerCase().includes("email not confirmed")
         ) {
           setAwaitingConfirmation(formData.email);
           setLoginState('idle');
