@@ -6,6 +6,7 @@ import {
   saveQuickPracticeProgress 
 } from './progressUtils';
 import { ProgressService } from '@/services/progressService';
+import { SetProgressService, SetMetadata } from '@/services/setProgressService';
 import { supabase } from '@/integrations/supabase/client';
 
 export const createSimulationActions = (
@@ -93,6 +94,43 @@ export const createSimulationActions = (
                 
                 // Notify activity history to refresh
                 window.dispatchEvent(new Event('activity_history_updated'));
+                
+                // Check if this is a set-based simulation and save set progress
+                const urlParams = new URLSearchParams(window.location.search);
+                const setId = urlParams.get('set');
+                const setStart = urlParams.get('start');
+                
+                if (setId && setStart && prevState.type && prevState.difficulty) {
+                  const setMetadata: SetMetadata = {
+                    set_id: parseInt(setId),
+                    set_type: prevState.type,
+                    set_difficulty: prevState.difficulty,
+                    start_index: parseInt(setStart),
+                    end_index: parseInt(setStart) + (prevState.questions.length - 1),
+                    questions_in_set: prevState.questions.length,
+                    set_title: `סט ${setId}`,
+                    last_question_index: newState.currentQuestionIndex,
+                    paused_at: new Date().toISOString()
+                  };
+                  
+                  const setProgressData = {
+                    current_question_index: newState.currentQuestionIndex,
+                    questions_answered: newState.answeredQuestionsCount,
+                    correct_answers: newState.correctQuestionsCount,
+                    time_spent: Math.round((Date.now() - (prevState.startTime || Date.now())) / 1000),
+                    is_completed: newState.simulationComplete
+                  };
+                  
+                  SetProgressService.saveSetProgress(user.id, setMetadata, setProgressData).then(setResult => {
+                    if (setResult.success) {
+                      console.log('✅ [handleSubmitAnswer] Set progress saved successfully');
+                    } else {
+                      console.error('❌ [handleSubmitAnswer] Failed to save set progress:', setResult.error);
+                    }
+                  }).catch(setError => {
+                    console.error('❌ [handleSubmitAnswer] Error saving set progress:', setError);
+                  });
+                }
               } else {
                 console.error('❌ [handleSubmitAnswer] Failed to save progress:', result.error);
               }

@@ -9,6 +9,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getQuestionsByDifficultyAndType } from "@/services/questionsService";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSetProgressSummary } from "@/hooks/useSetProgress";
+import { SetProgressCard } from "@/components/ui/SetProgressCard";
+import { SetProgressService } from "@/services/setProgressService";
 
 interface QuestionSet {
   id: number;
@@ -25,6 +28,13 @@ const TypeSpecificSets = () => {
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const isMobile = useIsMobile();
+  
+  // Load set progress summary
+  const { 
+    progressSummary, 
+    isLoading: progressLoading, 
+    refreshSummary 
+  } = useSetProgressSummary(type || '', difficulty || '');
 
   useEffect(() => {
     if (!type || !difficulty) return;
@@ -103,9 +113,37 @@ const TypeSpecificSets = () => {
     }
   };
 
-  const handleSetClick = (set: QuestionSet) => {
+  const handleSetStart = (set: QuestionSet) => {
     // Navigate to simulation with set parameters
     navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
+  };
+  
+  const handleSetContinue = (set: QuestionSet) => {
+    // Navigate to simulation with continue flag
+    navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}&continue=true`);
+  };
+  
+  const handleSetRestart = async (set: QuestionSet) => {
+    if (!type || !difficulty) return;
+    
+    try {
+      await SetProgressService.resetSetProgress(
+        'current_user_id', // This will be replaced with actual user ID in the service
+        set.id,
+        type,
+        difficulty
+      );
+      
+      // Refresh progress summary
+      await refreshSummary();
+      
+      // Start fresh simulation
+      navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
+    } catch (error) {
+      console.error('Error resetting set progress:', error);
+      // Fallback to normal start
+      handleSetStart(set);
+    }
   };
 
   const handleBackClick = () => {
@@ -214,46 +252,19 @@ const TypeSpecificSets = () => {
                   transition={{ delay: 0.3 + index * 0.1 }}
                   className="group"
                 >
-                  <Card className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 hover:shadow-2xl shadow-xl text-white h-full">
-                    <CardHeader className="space-y-2 sm:space-y-3">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-lg sm:text-xl font-bold text-white">
-                          {set.title}
-                        </CardTitle>
-                        <div className={`p-2 sm:p-3 rounded-xl bg-gradient-to-r ${getDifficultyColor(difficulty)} bg-opacity-20 backdrop-blur-sm`}>
-                          {getDifficultyIcon(difficulty)}
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4 sm:space-y-6">
-                      <CardDescription className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                        {set.description}
-                      </CardDescription>
-                      
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3">
-                        <Badge className="bg-blue-500/20 text-blue-300 border border-blue-500/30 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium">
-                          <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
-                          {set.questionsCount} שאלות
-                        </Badge>
-                        <Badge className="bg-green-500/20 text-green-300 border border-green-500/30 backdrop-blur-sm rounded-full px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium">
-                          <Clock className="h-3 w-3 sm:h-4 sm:w-4 ml-1" />
-                          ~{Math.ceil(set.questionsCount * 1.5)} דקות
-                        </Badge>
-                      </div>
-                      
-                      <Button
-                        onClick={() => handleSetClick(set)}
-                        className={`w-full bg-gradient-to-r ${getDifficultyColor(difficulty)} text-white py-3 sm:py-4 px-4 sm:px-6 rounded-xl font-bold text-sm sm:text-base hover:shadow-2xl transition-all duration-300 ${isMobile ? '' : 'transform hover:scale-[1.02]'} border border-white/20 touch-manipulation focus:outline-none focus:ring-2 focus:ring-white/50`}
-                        aria-label={`התחל סט ${set.id} - ${set.questionsCount} שאלות`}
-                        tabIndex={0}
-                      >
-                        <div className="flex items-center justify-center">
-                          התחל סט {set.id}
-                          <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                        </div>
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <SetProgressCard
+                    setId={set.id}
+                    setTitle={set.title}
+                    setDescription={set.description}
+                    questionsCount={set.questionsCount}
+                    progress={progressSummary[set.id]}
+                    onStart={() => handleSetStart(set)}
+                    onContinue={() => handleSetContinue(set)}
+                    onRestart={() => handleSetRestart(set)}
+                    isLoading={progressLoading}
+                    difficultyColor={getDifficultyColor(difficulty)}
+                    className="h-full"
+                  />
                 </motion.div>
               ))}
             </motion.div>

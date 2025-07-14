@@ -45,7 +45,6 @@ import {
 import { useActivityHistory } from '@/hooks/useActivityHistory';
 import { ProgressService } from '@/services/progressService';
 import { supabase } from '@/integrations/supabase/client';
-import ProgressTest from '@/components/test/ProgressTest';
 
 const ProgressStats: React.FC = () => {
   const navigate = useNavigate();
@@ -174,16 +173,6 @@ const ProgressStats: React.FC = () => {
                 </div>
               </div>
             </div>
-          </motion.div>
-
-          {/* Debug Test Component */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="mb-8"
-          >
-            <ProgressTest />
           </motion.div>
 
           {/* Key Metrics */}
