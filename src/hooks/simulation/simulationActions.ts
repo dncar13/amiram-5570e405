@@ -58,12 +58,11 @@ export const createSimulationActions = (
         ? (newState.correctQuestionsCount / newState.answeredQuestionsCount) * 100 
         : 0;
 
-      // Save progress to database (asynchronously)
-      (async () => {
-        try {
-          const { data: { user } } = await supabase.auth.getUser();
-          if (user && currentQuestion.id) {
-            console.log('🎯 Attempting to save progress for user:', user.id, 'question:', currentQuestion.id);
+      // Save progress to database
+      if (currentQuestion.id) {
+        supabase.auth.getUser().then(({ data: { user } }) => {
+          if (user) {
+            console.log('🎯 [handleSubmitAnswer] Attempting to save progress for user:', user.id, 'question:', currentQuestion.id);
             
             const progressData = {
               user_id: user.id,
@@ -73,20 +72,26 @@ export const createSimulationActions = (
               time_spent: Math.round((Date.now() - (prevState.questionStartTime || Date.now())) / 1000)
             };
             
-            const result = await ProgressService.saveUserProgress(progressData);
-            if (result.success) {
-              console.log('✅ Progress saved to database successfully');
-            } else {
-              console.error('❌ Failed to save progress:', result.error);
-            }
+            console.log('📊 [handleSubmitAnswer] Progress data:', progressData);
+            
+            ProgressService.saveUserProgress(progressData).then(result => {
+              if (result.success) {
+                console.log('✅ [handleSubmitAnswer] Progress saved to database successfully');
+              } else {
+                console.error('❌ [handleSubmitAnswer] Failed to save progress:', result.error);
+              }
+            }).catch(error => {
+              console.error('❌ [handleSubmitAnswer] Error saving progress:', error);
+            });
           } else {
-            if (!user) console.error('❌ No authenticated user found');
-            if (!currentQuestion.id) console.error('❌ No question ID found');
+            console.error('❌ [handleSubmitAnswer] No authenticated user found');
           }
-        } catch (error) {
-          console.error('❌ Error saving progress to database:', error);
-        }
-      })();
+        }).catch(error => {
+          console.error('❌ [handleSubmitAnswer] Error getting user:', error);
+        });
+      } else {
+        console.error('❌ [handleSubmitAnswer] No question ID found');
+      }
 
       return newState;
     });

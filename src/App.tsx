@@ -22,6 +22,7 @@ import ThankYou from "./pages/ThankYou";
 import Contact from "./pages/Contact";
 import About from "./pages/About";
 import AdminPanel from "./pages/AdminPanel";
+import AdminUsers from "./pages/admin/AdminUsers";
 import UserAccount from "./pages/UserAccount";
 import QuestionsSets from "./pages/QuestionsSets";
 import QuestionsSetPreparation from "./pages/QuestionsSetPreparation";
@@ -126,6 +127,11 @@ const AnimatedRoutes = () => {
           <Route path="/admin" element={
             <ProtectedRoute requireAuth={true}>
               <AdminPanel />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/users" element={
+            <ProtectedRoute requireAuth={true}>
+              <AdminUsers />
             </ProtectedRoute>
           } />
           <Route path="/admin/questions" element={

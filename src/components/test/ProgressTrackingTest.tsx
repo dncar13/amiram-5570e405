@@ -358,6 +358,16 @@ const ProgressTrackingTest: React.FC = () => {
                 <Database className="h-4 w-4" />
                 Run Migration
               </Button>
+              
+              <Button 
+                onClick={ProgressService.testProfileCreation}
+                variant="outline"
+                disabled={isRunning}
+                className="flex items-center gap-2"
+              >
+                <Users className="h-4 w-4" />
+                Test Profile Creation
+              </Button>
             </div>
 
             {testResults.length > 0 && (

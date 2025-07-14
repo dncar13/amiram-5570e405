@@ -468,6 +468,63 @@ export class ProgressService {
       return {};
     }
   }
+  /**
+   * Test function to manually trigger profile creation
+   */
+  static async testProfileCreation() {
+    try {
+      console.log('🔍 [testProfileCreation] Starting profile creation test...');
+      
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        console.log('❌ [testProfileCreation] No authenticated user found');
+        return;
+      }
+      
+      console.log('👤 [testProfileCreation] Current user:', user.email);
+      
+      // Check if profile exists
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+        
+      console.log('📊 [testProfileCreation] Profile exists?', !!profile);
+      console.log('📊 [testProfileCreation] Profile data:', profile);
+      
+      if (profileError) {
+        console.error('❌ [testProfileCreation] Error checking profile:', profileError);
+      }
+      
+      if (!profile) {
+        console.log('🔧 [testProfileCreation] Creating profile manually...');
+        
+        // Manually create profile
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: user.id,
+            email: user.email,
+            display_name: user.email?.split('@')[0] || 'User'
+          });
+          
+        console.log('🎯 [testProfileCreation] Manual profile creation:', insertError ? `Failed: ${insertError.message}` : 'Success');
+        
+        if (!insertError) {
+          // Verify creation
+          const { data: newProfile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          console.log('✅ [testProfileCreation] New profile created:', newProfile);
+        }
+      }
+    } catch (error) {
+      console.error('❌ [testProfileCreation] Exception:', error);
+    }
+  }
 }
 
 export default ProgressService;
