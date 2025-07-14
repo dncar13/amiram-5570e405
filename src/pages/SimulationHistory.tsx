@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SimulationResult {
   id: string;
@@ -47,6 +48,8 @@ const SimulationHistory = () => {
   const [simulations, setSimulations] = useState<SimulationResult[]>([]);
   const [weeklyStats, setWeeklyStats] = useState<WeeklyStats[]>([]);
   const [topicPerformance, setTopicPerformance] = useState<TopicPerformance[]>([]);
+  const [realSessions, setRealSessions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Mock data for demonstration
   const mockSimulations: SimulationResult[] = [
@@ -365,12 +368,74 @@ const SimulationHistory = () => {
     return startOfWeek.toISOString().split('T')[0];
   };
 
-  // Initialize data only once when component mounts
+  // Load real simulation sessions from database
   useEffect(() => {
-    setSimulations(mockSimulations);
-    setWeeklyStats(calculateWeeklyStats(mockSimulations));
-    setTopicPerformance(calculateTopicPerformance(mockSimulations));
-  }, []);
+    loadRealSessions();
+  }, [currentUser]);
+
+  const loadRealSessions = async () => {
+    try {
+      if (!currentUser) {
+        setIsLoading(false);
+        return;
+      }
+      
+      console.log('📊 Loading real simulation sessions for user:', currentUser.id);
+      
+      // Query simulation_sessions table
+      const { data: sessions, error } = await supabase
+        .from('simulation_sessions')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('❌ Error loading sessions:', error);
+        // Fallback to mock data
+        setSimulations(mockSimulations);
+        setWeeklyStats(calculateWeeklyStats(mockSimulations));
+        setTopicPerformance(calculateTopicPerformance(mockSimulations));
+      } else {
+        console.log('✅ Real sessions loaded:', sessions);
+        setRealSessions(sessions || []);
+        
+        // Convert real sessions to simulation format
+        const convertedSessions = sessions?.map(session => ({
+          id: session.id,
+          title: `${session.session_type} - ${new Date(session.created_at).toLocaleDateString('he-IL')}`,
+          type: session.session_type,
+          date: new Date(session.created_at).toISOString().split('T')[0],
+          duration: Math.round(session.time_spent / 60), // Convert seconds to minutes
+          score: session.total_questions > 0 ? Math.round((session.correct_answers / session.total_questions) * 100) : 0,
+          totalQuestions: session.total_questions,
+          correctAnswers: session.correct_answers,
+          difficulty: "medium" as const, // Default difficulty
+          topics: session.topic_id ? [`נושא ${session.topic_id}`] : ['כללי'],
+          status: session.completed_at ? "completed" : "incomplete" as const,
+        })) || [];
+        
+        if (convertedSessions.length > 0) {
+          setSimulations(convertedSessions);
+          setWeeklyStats(calculateWeeklyStats(convertedSessions));
+          setTopicPerformance(calculateTopicPerformance(convertedSessions));
+        } else {
+          // If no real sessions, show mock data
+          setSimulations(mockSimulations);
+          setWeeklyStats(calculateWeeklyStats(mockSimulations));
+          setTopicPerformance(calculateTopicPerformance(mockSimulations));
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ Error in loadRealSessions:', error);
+      // Fallback to mock data
+      setSimulations(mockSimulations);
+      setWeeklyStats(calculateWeeklyStats(mockSimulations));
+      setTopicPerformance(calculateTopicPerformance(mockSimulations));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -381,7 +446,10 @@ const SimulationHistory = () => {
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-electric-navy mb-2">היסטוריית סימולציות</h1>
             <p className="text-electric-slate">
-              סקירה של תוצאות הסימולציות הקודמות שלך
+              {realSessions.length > 0 ? 
+                `סקירה של ${realSessions.length} סימולציות שלך מהמסד נתונים` : 
+                'סקירה של תוצאות הסימולציות הקודמות שלך (נתונים לדוגמה)'
+              }
             </p>
           </div>
           

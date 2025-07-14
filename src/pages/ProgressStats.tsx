@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
@@ -43,12 +43,38 @@ import {
   AreaChart
 } from 'recharts';
 import { useActivityHistory } from '@/hooks/useActivityHistory';
+import { ProgressService } from '@/services/progressService';
+import { supabase } from '@/integrations/supabase/client';
 
 const ProgressStats: React.FC = () => {
   const navigate = useNavigate();
   const { history, isLoading } = useActivityHistory();
+  const [realStats, setRealStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for demonstration - in real app this would come from activity history
+  useEffect(() => {
+    loadRealStats();
+  }, []);
+
+  const loadRealStats = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setLoading(false);
+        return;
+      }
+      
+      const stats = await ProgressService.getUserProgressStats(user.id);
+      console.log('📊 Real progress stats loaded:', stats);
+      setRealStats(stats);
+    } catch (error) {
+      console.error('❌ Error loading real stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Use real data when available, fallback to mock for visualization
   const weeklyProgress = [
     { week: 'שבוע 1', correct: 65, wrong: 35, total: 100 },
     { week: 'שבוע 2', correct: 72, wrong: 28, total: 100 },
@@ -84,10 +110,11 @@ const ProgressStats: React.FC = () => {
     },
   };
 
-  const totalQuestions = history.length;
-  const correctAnswers = history.filter(h => h.status === 'correct').length;
-  const averageScore = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-  const totalTime = history.reduce((sum, h) => sum + (parseInt(h.time) || 0), 0);
+  // Use real statistics when available, fallback to local history
+  const totalQuestions = realStats ? realStats.total_questions_answered : history.length;
+  const correctAnswers = realStats ? realStats.correct_answers : history.filter(h => h.status === 'correct').length;
+  const averageScore = realStats ? Math.round(realStats.average_score * 100) : (totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0);
+  const totalTime = realStats ? Math.round(realStats.total_time_spent / 60) : history.reduce((sum, h) => sum + (parseInt(h.time) || 0), 0);
 
   return (
     <>
@@ -166,7 +193,7 @@ const ProgressStats: React.FC = () => {
                   <Clock className="w-6 h-6 text-white" />
                 </div>
                 <div className="text-2xl font-bold text-orange-700">{totalTime}</div>
-                <div className="text-orange-600">דקות למידה</div>
+                <div className="text-orange-600">{realStats ? 'דקות למידה' : 'דקות למידה (נתונים מקומיים)'}</div>
               </CardContent>
             </Card>
           </motion.div>

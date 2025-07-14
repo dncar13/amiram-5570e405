@@ -74,9 +74,22 @@ export const createSimulationActions = (
             
             console.log('📊 [handleSubmitAnswer] Progress data:', progressData);
             
-            ProgressService.saveUserProgress(progressData).then(result => {
+            ProgressService.saveUserProgress(progressData).then(async (result) => {
               if (result.success) {
                 console.log('✅ [handleSubmitAnswer] Progress saved to database successfully');
+                
+                // VERIFY it actually saved
+                const { data } = await supabase
+                  .from('user_progress')
+                  .select('*')
+                  .eq('question_id', currentQuestion.id)
+                  .eq('user_id', user.id)
+                  .single();
+                
+                console.log('🔍 Verification - Record in DB:', !!data);
+                if (data) {
+                  console.log('📊 Database record:', data);
+                }
               } else {
                 console.error('❌ [handleSubmitAnswer] Failed to save progress:', result.error);
               }
