@@ -468,6 +468,158 @@ export class ProgressService {
       return {};
     }
   }
+
+  /**
+   * Get weekly progress data for charts
+   */
+  static async getWeeklyProgressData(
+    userId: string,
+    weeks: number = 4
+  ): Promise<Array<{ week: string; correct: number; wrong: number; total: number }>> {
+    try {
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(endDate.getDate() - (weeks * 7));
+      
+      const { data, error } = await supabase
+        .from('user_progress')
+        .select('*')
+        .eq('user_id', userId)
+        .gte('answered_at', startDate.toISOString())
+        .order('answered_at', { ascending: false });
+      
+      if (error) {
+        console.error('❌ Error fetching weekly progress:', error);
+        return [];
+      }
+      
+      if (!data || data.length === 0) {
+        return [];
+      }
+      
+      // Group by week
+      const weeklyStats: Record<string, { correct: number; wrong: number; total: number }> = {};
+      
+      data.forEach(progress => {
+        const date = new Date(progress.answered_at);
+        const weekStart = new Date(date.setDate(date.getDate() - date.getDay()));
+        const weekKey = `שבוע ${weekStart.toLocaleDateString('he-IL', { month: 'short', day: 'numeric' })}`;
+        
+        if (!weeklyStats[weekKey]) {
+          weeklyStats[weekKey] = { correct: 0, wrong: 0, total: 0 };
+        }
+        
+        weeklyStats[weekKey].total++;
+        if (progress.answered_correctly) {
+          weeklyStats[weekKey].correct++;
+        } else {
+          weeklyStats[weekKey].wrong++;
+        }
+      });
+      
+      return Object.entries(weeklyStats).map(([week, stats]) => ({
+        week,
+        ...stats
+      }));
+      
+    } catch (error) {
+      console.error('❌ Exception in getWeeklyProgressData:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get topic performance data for charts
+   */
+  static async getTopicPerformanceData(
+    userId: string
+  ): Promise<Array<{ topic: string; score: number; questions: number }>> {
+    try {
+      const topicProgress = await this.getUserTopicProgress(userId);
+      
+      return Object.entries(topicProgress).map(([topicKey, stats]) => ({
+        topic: this.getTopicDisplayName(topicKey),
+        score: Math.round(stats.accuracy),
+        questions: stats.total
+      }));
+      
+    } catch (error) {
+      console.error('❌ Exception in getTopicPerformanceData:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get difficulty breakdown data for pie charts
+   */
+  static async getDifficultyBreakdownData(
+    userId: string
+  ): Promise<Array<{ name: string; value: number; color: string }>> {
+    try {
+      const { data, error } = await supabase
+        .from('user_progress')
+        .select(`
+          *,
+          questions:question_id (
+            id,
+            difficulty
+          )
+        `)
+        .eq('user_id', userId);
+      
+      if (error) {
+        console.error('❌ Error fetching difficulty breakdown:', error);
+        return [];
+      }
+      
+      if (!data || data.length === 0) {
+        return [];
+      }
+      
+      const difficultyStats = { easy: 0, medium: 0, hard: 0 };
+      
+      data.forEach(progress => {
+        const question = progress.questions as any;
+        if (question && question.difficulty) {
+          difficultyStats[question.difficulty as keyof typeof difficultyStats]++;
+        }
+      });
+      
+      const total = Object.values(difficultyStats).reduce((sum, count) => sum + count, 0);
+      
+      if (total === 0) {
+        return [];
+      }
+      
+      return [
+        { name: 'קל', value: Math.round((difficultyStats.easy / total) * 100), color: '#10B981' },
+        { name: 'בינוני', value: Math.round((difficultyStats.medium / total) * 100), color: '#F59E0B' },
+        { name: 'קשה', value: Math.round((difficultyStats.hard / total) * 100), color: '#EF4444' },
+      ].filter(item => item.value > 0);
+      
+    } catch (error) {
+      console.error('❌ Exception in getDifficultyBreakdownData:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Helper function to get display name for topics
+   */
+  private static getTopicDisplayName(topicKey: string): string {
+    const topicMap: Record<string, string> = {
+      'topic_1': 'השלמת משפטים',
+      'topic_2': 'הבנת הנקרא',
+      'topic_3': 'אוצר מילים',
+      'topic_4': 'ניסוח מחדש',
+      'topic_5': 'דקדוק',
+      'topic_6': 'כתיבה',
+      'topic_7': 'הבנת הנשמע'
+    };
+    
+    return topicMap[topicKey] || topicKey.replace('topic_', 'נושא ');
+  }
+
   /**
    * Test function to manually trigger profile creation
    */

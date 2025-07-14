@@ -4,7 +4,8 @@ import { X, Clock, AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react
 import { Question } from '@/data/types/questionTypes';
 import { getAllQuestions } from '@/services/questionsService';
 import { useToast } from '@/hooks/use-toast';
-import { saveActivity } from '@/hooks/useActivityHistory';
+import { ProgressService } from '@/services/progressService';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FullExamModalProps {
   isOpen: boolean;
@@ -181,8 +182,8 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
     }
   };
 
-  // Finish exam - Updated to save to history
-  const finishExam = () => {
+  // Finish exam - Updated to save to Supabase
+  const finishExam = async () => {
     setExamState(prev => ({
       ...prev,
       isExamCompleted: true
@@ -198,39 +199,59 @@ export const FullExamModal: React.FC<FullExamModalProps> = ({ isOpen, onClose })
 
     const answeredQuestions = examState.selectedAnswers.filter(answer => answer !== null).length;
     const score = Math.round((correctAnswers / examState.questions.length) * 100);
-    const timeSpentMinutes = Math.round((EXAM_DURATION - examState.timeRemaining) / 60);
+    const timeSpentSeconds = EXAM_DURATION - examState.timeRemaining;
 
-    // Save to activity history
-    const examResult = {
-      date: new Date().toLocaleDateString('he-IL', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-      topic: 'מבחן מלא - אמיר"ם',
-      questionId: 'full-exam',
-      status: score >= 60 ? 'correct' : 'wrong' as 'correct' | 'wrong',
-      time: timeSpentMinutes.toString(),
-      score,
-      correctAnswers,
-      totalAnswered: answeredQuestions,
-      isCompleted: true
-    };
+    try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "המבחן הושלם!",
+          description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) - לא ניתן לשמור ללא התחברות`,
+          variant: "default"
+        });
+        return;
+      }
 
-    // Save the activity
-    const saved = saveActivity(examResult);
-    
-    if (saved) {
-      console.log('[FullExam] Exam results saved to history:', examResult);
-      toast({
-        title: "המבחן הושלם ונשמר!",
-        description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) נשמר בהיסטוריה`,
-        variant: "default"
-      });
-    } else {
-      console.error('[FullExam] Failed to save exam results');
+      // Save simulation session to database
+      const sessionData = {
+        user_id: user.id,
+        session_type: 'exam' as const,
+        questions_answered: answeredQuestions,
+        correct_answers: correctAnswers,
+        total_questions: examState.questions.length,
+        time_spent: timeSpentSeconds,
+        completed_at: new Date().toISOString(),
+        metadata: {
+          exam_type: 'full_exam',
+          score_percentage: score,
+          is_passing: score >= 60
+        }
+      };
+
+      const result = await ProgressService.saveSimulationSession(sessionData);
+      
+      if (result.success) {
+        console.log('[FullExam] Exam results saved to database:', sessionData);
+        
+        // Notify activity history to refresh
+        window.dispatchEvent(new Event('activity_history_updated'));
+        
+        toast({
+          title: "המבחן הושלם ונשמר!",
+          description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) נשמר במסד הנתונים`,
+          variant: "default"
+        });
+      } else {
+        console.error('[FullExam] Failed to save exam results:', result.error);
+        toast({
+          title: "המבחן הושלם!",
+          description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) - שגיאה בשמירה`,
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('[FullExam] Error saving exam results:', error);
       toast({
         title: "המבחן הושלם!",
         description: `הציון שלך: ${score}% (${correctAnswers}/${examState.questions.length}) - שגיאה בשמירה`,

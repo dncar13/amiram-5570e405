@@ -45,7 +45,7 @@ function setCachedData<T>(key: string, data: T): void {
  */
 function transformQuestion(dbQuestion: any): Question {
   return {
-    id: parseInt(dbQuestion.id), // Convert string to number for app compatibility
+    id: dbQuestion.id, // Keep as string (UUID) to match database format
     text: dbQuestion.question_text,
     options: Array.isArray(dbQuestion.answer_options) 
       ? dbQuestion.answer_options 

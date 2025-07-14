@@ -45,6 +45,7 @@ import {
 import { useActivityHistory } from '@/hooks/useActivityHistory';
 import { ProgressService } from '@/services/progressService';
 import { supabase } from '@/integrations/supabase/client';
+import ProgressTest from '@/components/test/ProgressTest';
 
 const ProgressStats: React.FC = () => {
   const navigate = useNavigate();
@@ -64,9 +65,28 @@ const ProgressStats: React.FC = () => {
         return;
       }
       
+      console.log('📊 Loading complete real stats from Supabase...');
+      
+      // Load basic stats
       const stats = await ProgressService.getUserProgressStats(user.id);
-      console.log('📊 Real progress stats loaded:', stats);
+      console.log('✅ Basic stats loaded:', stats);
+      console.log('📊 [ProgressStats] User ID:', user.id);
+      console.log('📊 [ProgressStats] Stats details:', JSON.stringify(stats, null, 2));
       setRealStats(stats);
+      
+      // Load chart data
+      const [weeklyData, topicData, difficultyData] = await Promise.all([
+        ProgressService.getWeeklyProgressData(user.id),
+        ProgressService.getTopicPerformanceData(user.id),
+        ProgressService.getDifficultyBreakdownData(user.id)
+      ]);
+      
+      console.log('✅ Chart data loaded:', { weeklyData, topicData, difficultyData });
+      
+      setWeeklyProgress(weeklyData);
+      setTopicPerformance(topicData);
+      setDifficultyBreakdown(difficultyData);
+      
     } catch (error) {
       console.error('❌ Error loading real stats:', error);
     } finally {
@@ -74,26 +94,10 @@ const ProgressStats: React.FC = () => {
     }
   };
 
-  // Use real data when available, fallback to mock for visualization
-  const weeklyProgress = [
-    { week: 'שבוע 1', correct: 65, wrong: 35, total: 100 },
-    { week: 'שבוע 2', correct: 72, wrong: 28, total: 100 },
-    { week: 'שבוע 3', correct: 78, wrong: 22, total: 100 },
-    { week: 'שבוע 4', correct: 85, wrong: 15, total: 100 },
-  ];
-
-  const topicPerformance = [
-    { topic: 'השלמת משפטים', score: 85, questions: 45 },
-    { topic: 'הבנת הנקרא', score: 78, questions: 32 },
-    { topic: 'אוצר מילים', score: 92, questions: 28 },
-    { topic: 'ניסוח מחדש', score: 73, questions: 21 },
-  ];
-
-  const difficultyBreakdown = [
-    { name: 'קל', value: 35, color: '#10B981' },
-    { name: 'בינוני', value: 45, color: '#F59E0B' },
-    { name: 'קשה', value: 20, color: '#EF4444' },
-  ];
+  // Real chart data states
+  const [weeklyProgress, setWeeklyProgress] = useState<Array<{ week: string; correct: number; wrong: number; total: number }>>([]);
+  const [topicPerformance, setTopicPerformance] = useState<Array<{ topic: string; score: number; questions: number }>>([]);
+  const [difficultyBreakdown, setDifficultyBreakdown] = useState<Array<{ name: string; value: number; color: string }>>([]);
 
   const chartConfig = {
     correct: {
@@ -148,6 +152,16 @@ const ProgressStats: React.FC = () => {
                 </div>
               </div>
             </div>
+          </motion.div>
+
+          {/* Debug Test Component */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-8"
+          >
+            <ProgressTest />
           </motion.div>
 
           {/* Key Metrics */}
@@ -217,30 +231,47 @@ const ProgressStats: React.FC = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ChartContainer config={chartConfig} className="h-[300px] w-full">
-                    <AreaChart data={weeklyProgress}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="week" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Area 
-                        type="monotone" 
-                        dataKey="correct" 
-                        stackId="1"
-                        stroke="#10B981" 
-                        fill="#10B981"
-                        fillOpacity={0.6}
-                      />
-                      <Area 
-                        type="monotone" 
-                        dataKey="wrong" 
-                        stackId="1"
-                        stroke="#EF4444" 
-                        fill="#EF4444"
-                        fillOpacity={0.6}
-                      />
-                    </AreaChart>
-                  </ChartContainer>
+                  {loading ? (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <Clock className="h-8 w-8 mx-auto mb-2 animate-spin" />
+                        <p className="text-gray-600">טוען נתונים מהמסד נתונים...</p>
+                      </div>
+                    </div>
+                  ) : weeklyProgress.length > 0 ? (
+                    <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                      <AreaChart data={weeklyProgress}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="week" />
+                        <YAxis />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Area 
+                          type="monotone" 
+                          dataKey="correct" 
+                          stackId="1"
+                          stroke="#10B981" 
+                          fill="#10B981"
+                          fillOpacity={0.6}
+                        />
+                        <Area 
+                          type="monotone" 
+                          dataKey="wrong" 
+                          stackId="1"
+                          stroke="#EF4444" 
+                          fill="#EF4444"
+                          fillOpacity={0.6}
+                        />
+                      </AreaChart>
+                    </ChartContainer>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <BookOpen className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                        <p className="text-gray-600">אין נתונים זמינים</p>
+                        <p className="text-sm text-gray-500">ענה על שאלות כדי לראות התקדמות</p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -262,15 +293,32 @@ const ProgressStats: React.FC = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ChartContainer config={chartConfig} className="h-[300px] w-full">
-                    <BarChart data={topicPerformance}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="topic" />
-                      <YAxis />
-                      <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar dataKey="score" fill="#3B82F6" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ChartContainer>
+                  {loading ? (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <Clock className="h-8 w-8 mx-auto mb-2 animate-spin" />
+                        <p className="text-gray-600">טוען נתונים מהמסד נתונים...</p>
+                      </div>
+                    </div>
+                  ) : topicPerformance.length > 0 ? (
+                    <ChartContainer config={chartConfig} className="h-[300px] w-full">
+                      <BarChart data={topicPerformance}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="topic" />
+                        <YAxis />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar dataKey="score" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ChartContainer>
+                  ) : (
+                    <div className="h-[300px] flex items-center justify-center">
+                      <div className="text-center">
+                        <Target className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                        <p className="text-gray-600">אין נתוני נושאים זמינים</p>
+                        <p className="text-sm text-gray-500">ענה על שאלות בנושאים שונים</p>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
@@ -294,27 +342,44 @@ const ProgressStats: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px] w-full">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <RechartsPieChart>
-                      <Pie
-                        data={difficultyBreakdown}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {difficultyBreakdown.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <ChartTooltip />
-                    </RechartsPieChart>
-                  </ResponsiveContainer>
-                </div>
+                {loading ? (
+                  <div className="h-[300px] flex items-center justify-center">
+                    <div className="text-center">
+                      <Clock className="h-8 w-8 mx-auto mb-2 animate-spin" />
+                      <p className="text-gray-600">טוען נתונים מהמסד נתונים...</p>
+                    </div>
+                  </div>
+                ) : difficultyBreakdown.length > 0 ? (
+                  <div className="h-[300px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RechartsPieChart>
+                        <Pie
+                          data={difficultyBreakdown}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                          outerRadius={80}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {difficultyBreakdown.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.color} />
+                          ))}
+                        </Pie>
+                        <ChartTooltip />
+                      </RechartsPieChart>
+                    </ResponsiveContainer>
+                  </div>
+                ) : (
+                  <div className="h-[300px] flex items-center justify-center">
+                    <div className="text-center">
+                      <PieChart className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                      <p className="text-gray-600">אין נתוני קושי זמינים</p>
+                      <p className="text-sm text-gray-500">ענה על שאלות ברמות קושי שונות</p>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
 

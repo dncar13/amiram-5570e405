@@ -10,7 +10,7 @@ import { getQuestions } from "@/services/questions/storage";
 
 const HistoryTab = () => {
   const { currentUser } = useAuth();
-  const { history, isLoading, refreshHistory } = useActivityHistory();
+  const { history, isLoading, error, refreshHistory } = useActivityHistory();
   
   // Refresh data when component mounts
   useEffect(() => {
@@ -186,7 +186,14 @@ const HistoryTab = () => {
 
         {isLoading ? (
           <div className="text-center py-12">
-            <p>טוען היסטוריה...</p>
+            <Clock className="h-8 w-8 mx-auto mb-2 animate-spin" />
+            <p>טוען היסטוריה מהמסד נתונים...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <X className="h-8 w-8 mx-auto mb-2 text-red-500" />
+            <p className="text-red-600">שגיאה בטעינת ההיסטוריה</p>
+            <p className="text-sm text-gray-500 mt-2">{error}</p>
           </div>
         ) : history.length === 0 ? (
           <div className="text-center py-12">

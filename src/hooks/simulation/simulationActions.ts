@@ -66,7 +66,7 @@ export const createSimulationActions = (
             
             const progressData = {
               user_id: user.id,
-              question_id: String(currentQuestion.id),
+              question_id: currentQuestion.id, // Already a string (UUID), no need to convert
               answered_correctly: isCorrect,
               answered_at: new Date().toISOString(),
               time_spent: Math.round((Date.now() - (prevState.questionStartTime || Date.now())) / 1000)
@@ -82,14 +82,17 @@ export const createSimulationActions = (
                 const { data } = await supabase
                   .from('user_progress')
                   .select('*')
-                  .eq('question_id', String(currentQuestion.id))
+                  .eq('question_id', currentQuestion.id) // Already a string (UUID)
                   .eq('user_id', user.id)
                   .single();
                 
-              console.log('🔍 Verification - Record in DB:', !!data);
+                console.log('🔍 Verification - Record in DB:', !!data);
                 if (data) {
                   console.log('📊 Database record:', data);
                 }
+                
+                // Notify activity history to refresh
+                window.dispatchEvent(new Event('activity_history_updated'));
               } else {
                 console.error('❌ [handleSubmitAnswer] Failed to save progress:', result.error);
               }
