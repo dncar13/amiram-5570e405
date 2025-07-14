@@ -207,11 +207,15 @@ export class SetProgressService {
     setDifficulty: string
   ): Promise<Record<number, SetProgressSummary>> {
     try {
+      console.log('🔍 Fetching set progress summary for:', { userId, setType, setDifficulty });
+      
       const { data, error } = await supabase
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
+        .like('metadata', `%"set_type":"${setType}"%`)
+        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`)
         .order('updated_at', { ascending: false });
       
       if (error) {
@@ -219,11 +223,19 @@ export class SetProgressService {
         return {};
       }
       
+      console.log('📊 Found sessions:', data?.length || 0);
+      
       const summary: Record<number, SetProgressSummary> = {};
       
       data?.forEach(session => {
         const metadata = session.metadata as any;
         const setId = metadata?.set_id;
+        
+        // Skip if set_id doesn't exist or doesn't match criteria
+        if (!setId || metadata?.set_type !== setType || metadata?.set_difficulty !== setDifficulty) {
+          return;
+        }
+        
         const scorePercentage = session.questions_answered > 0 
           ? Math.round((session.correct_answers / session.questions_answered) * 100)
           : 0;
@@ -242,8 +254,11 @@ export class SetProgressService {
           last_activity: session.updated_at,
           can_resume: !session.is_completed && session.questions_answered > 0
         };
+        
+        console.log(`✅ Added progress for set ${setId}:`, summary[setId]);
       });
       
+      console.log('📈 Final summary:', summary);
       return summary;
     } catch (error) {
       console.error('❌ Exception in getSetProgressSummary:', error);
