@@ -415,9 +415,9 @@ const SimulationHistory = () => {
         })) || [];
         
         if (convertedSessions.length > 0) {
-          setSimulations(convertedSessions);
-          setWeeklyStats(calculateWeeklyStats(convertedSessions));
-          setTopicPerformance(calculateTopicPerformance(convertedSessions));
+          setSimulations(convertedSessions as SimulationResult[]);
+          setWeeklyStats(calculateWeeklyStats(convertedSessions as SimulationResult[]));
+          setTopicPerformance(calculateTopicPerformance(convertedSessions as SimulationResult[]));
         } else {
           // If no real sessions, show mock data
           setSimulations(mockSimulations);

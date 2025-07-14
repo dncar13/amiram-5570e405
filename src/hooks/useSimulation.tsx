@@ -15,6 +15,12 @@ import {
   loadSimulationProgress 
 } from "./simulation/progressUtils";
 import { createSimulationActions } from "./simulation/simulationActions";
+import { 
+  saveSimulationSession, 
+  loadActiveSimulationSession, 
+  completeSimulationSession 
+} from "@/services/simulationSessionService";
+import { supabase } from "@/integrations/supabase/client";
 
 export const useSimulation = (
   simulationId: string, 
@@ -22,6 +28,7 @@ export const useSimulation = (
   storyQuestions?: Question[]
 ) => {
   const [state, setState] = useState<SimulationState>(initialSimulationState);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const progressLoadedRef = useRef(false);
   const questionContainerRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -71,14 +78,53 @@ export const useSimulation = (
 
   const { startTimer, stopTimer, resetTimer, initializeTimer, clearTimer } = useTimer(setState);
 
-  // Auto-save progress for training mode only (not for full exam)
+  // Auto-save live simulation session
   useEffect(() => {
-    if (state.progressLoaded && !examMode && !isFullExam && state.answeredQuestionsCount > 0) {
-      // console.log("Auto-saving training progress:", state.answeredQuestionsCount);
-      saveSimulationProgress(simulationId, state, setNumber, type, difficulty);
+    if (state.progressLoaded && state.answeredQuestionsCount > 0) {
+      const saveLiveSession = async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) return;
+
+          const answers = Object.entries(state.userAnswers).map(([index, answer]) => ({
+            questionIndex: parseInt(index),
+            selectedAnswer: answer,
+            isCorrect: answer === state.questions[parseInt(index)]?.correctAnswer,
+            timeSpent: 60 // Default time spent per question
+          }));
+
+          const sessionData = {
+            id: activeSessionId || undefined,
+            user_id: user.id,
+            current_question_index: state.currentQuestionIndex,
+            answers,
+            total_questions: state.totalQuestions,
+            progress_percentage: state.progressPercentage,
+            is_completed: state.simulationComplete,
+            session_type: examMode ? 'exam' : 'practice',
+            correct_answers: state.correctQuestionsCount,
+            questions_answered: state.answeredQuestionsCount,
+            time_spent: Math.round((Date.now() - (state.sessionStartTime || Date.now())) / 1000),
+            metadata: {
+              exam_mode: examMode,
+              show_answers_immediately: showAnswersImmediately
+            }
+          };
+
+          const result = await saveSimulationSession(sessionData);
+          if (result.success && result.data && !activeSessionId) {
+            setActiveSessionId(result.data.id);
+          }
+        } catch (error) {
+          console.error('Failed to save live session:', error);
+        }
+      };
+
+      // Save every 10 seconds or when answer is submitted
+      const timeoutId = setTimeout(saveLiveSession, 1000);
+      return () => clearTimeout(timeoutId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.answeredQuestionsCount, state.currentQuestionIndex, state.progressLoaded, simulationId, examMode, setNumber, type, difficulty, isFullExam]);
+  }, [state.answeredQuestionsCount, state.currentQuestionIndex, state.progressLoaded, state.simulationComplete, examMode, showAnswersImmediately, activeSessionId]);
 
   // Create simulation actions with correct parameters
   const actions = createSimulationActions(
@@ -250,35 +296,93 @@ export const useSimulation = (
     initializeQuestions();
   }, [initializeQuestions]);
 
-  // Load saved progress (only for training mode, not for full exam)
+  // Load saved progress or active session
   useEffect(() => {
     if (!progressLoadedRef.current) {
-      // Only load progress for training mode and not for full exam
-      if (!examMode && !isFullExam) {
-        const savedProgress = loadSimulationProgress(simulationId);
-        
-        if (savedProgress) {
-          // console.log("Loading saved progress for simulation:", simulationId);
-          setState(prevState => ({
-            ...prevState,
-            currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
-            userAnswers: savedProgress.userAnswers || {},
-            questionFlags: savedProgress.questionFlags || {},
-            remainingTime: savedProgress.remainingTime || (isFullExam ? 3600 : 1800),
-            isTimerActive: savedProgress.isTimerActive !== undefined ? savedProgress.isTimerActive : false,
-            answeredQuestionsCount: savedProgress.answeredQuestionsCount || 0,
-            correctQuestionsCount: savedProgress.correctQuestionsCount || 0,
-            progressPercentage: savedProgress.progressPercentage || 0,
-            currentScorePercentage: savedProgress.currentScorePercentage || 0,
-            progressLoaded: true,
-            examMode,
-            showAnswersImmediately
-          }));
+      const loadProgress = async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            // Try to load active session first
+            const activeSessionResult = await loadActiveSimulationSession(user.id);
+            if (activeSessionResult.success && activeSessionResult.data) {
+              const session = activeSessionResult.data;
+              console.log('🔄 Restoring active session:', session.id);
+              
+              // Restore simulation state from session
+              const userAnswers: Record<number, number> = {};
+              const questionFlags: Record<number, boolean> = {};
+              
+              if (Array.isArray(session.answers)) {
+                session.answers.forEach((answer: any) => {
+                  userAnswers[answer.questionIndex] = answer.selectedAnswer;
+                });
+              }
+              
+              setState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: session.current_question_index || 0,
+                userAnswers,
+                questionFlags,
+                answeredQuestionsCount: session.questions_answered || 0,
+                correctQuestionsCount: session.correct_answers || 0,
+                progressPercentage: session.progress_percentage || 0,
+                currentScorePercentage: session.questions_answered > 0 
+                  ? (session.correct_answers / session.questions_answered) * 100 
+                  : 0,
+                progressLoaded: true,
+                examMode,
+                showAnswersImmediately
+              }));
+              
+              setActiveSessionId(session.id);
+              progressLoadedRef.current = true;
+              return;
+            }
+          }
+          
+          // Fallback to localStorage for training mode
+          if (!examMode && !isFullExam) {
+            const savedProgress = loadSimulationProgress(simulationId);
+            if (savedProgress) {
+              console.log('📁 Loading localStorage progress for simulation:', simulationId);
+              setState(prevState => ({
+                ...prevState,
+                currentQuestionIndex: savedProgress.currentQuestionIndex || 0,
+                userAnswers: savedProgress.userAnswers || {},
+                questionFlags: savedProgress.questionFlags || {},
+                remainingTime: savedProgress.remainingTime || (isFullExam ? 3600 : 1800),
+                isTimerActive: savedProgress.isTimerActive !== undefined ? savedProgress.isTimerActive : false,
+                answeredQuestionsCount: savedProgress.answeredQuestionsCount || 0,
+                correctQuestionsCount: savedProgress.correctQuestionsCount || 0,
+                progressPercentage: savedProgress.progressPercentage || 0,
+                currentScorePercentage: savedProgress.currentScorePercentage || 0,
+                progressLoaded: true,
+                examMode,
+                showAnswersImmediately
+              }));
+            } else {
+              setState(prevState => ({ 
+                ...prevState, 
+                remainingTime: isFullExam ? 3600 : 1800,
+                progressLoaded: true, 
+                examMode,
+                showAnswersImmediately
+              }));
+            }
+          } else {
+            setState(prevState => ({ 
+              ...prevState, 
+              remainingTime: isFullExam ? 3600 : 1800,
+              progressLoaded: true, 
+              examMode,
+              showAnswersImmediately
+            }));
+          }
           
           progressLoadedRef.current = true;
-          // console.log(`Simulation progress loaded for ${simulationId}`);
-        } else {
-          // console.log("No saved progress found, using initial state");
+        } catch (error) {
+          console.error('Error loading progress:', error);
           setState(prevState => ({ 
             ...prevState, 
             remainingTime: isFullExam ? 3600 : 1800,
@@ -288,18 +392,9 @@ export const useSimulation = (
           }));
           progressLoadedRef.current = true;
         }
-      } else {
-        // For exam mode or full exam, don't load progress
-        // console.log("Exam mode or full exam - not loading saved progress");
-        setState(prevState => ({ 
-          ...prevState, 
-          remainingTime: isFullExam ? 3600 : 1800,
-          progressLoaded: true, 
-          examMode,
-          showAnswersImmediately
-        }));
-        progressLoadedRef.current = true;
-      }
+      };
+      
+      loadProgress();
     }
   }, [simulationId, examMode, showAnswersImmediately, isFullExam]);
 

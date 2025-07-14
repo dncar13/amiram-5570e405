@@ -281,14 +281,19 @@ export type Database = {
       }
       simulation_sessions: {
         Row: {
+          answers: Json | null
           completed_at: string
           correct_answers: number
           created_at: string
+          current_question_index: number | null
           difficulty: string | null
           id: string
+          is_completed: boolean | null
           metadata: Json | null
+          progress_percentage: number | null
           questions_answered: number
           session_type: string
+          status: string | null
           time_spent: number
           topic_id: number | null
           total_questions: number
@@ -296,14 +301,19 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          answers?: Json | null
           completed_at?: string
           correct_answers?: number
           created_at?: string
+          current_question_index?: number | null
           difficulty?: string | null
           id?: string
+          is_completed?: boolean | null
           metadata?: Json | null
+          progress_percentage?: number | null
           questions_answered?: number
           session_type: string
+          status?: string | null
           time_spent?: number
           topic_id?: number | null
           total_questions?: number
@@ -311,14 +321,19 @@ export type Database = {
           user_id: string
         }
         Update: {
+          answers?: Json | null
           completed_at?: string
           correct_answers?: number
           created_at?: string
+          current_question_index?: number | null
           difficulty?: string | null
           id?: string
+          is_completed?: boolean | null
           metadata?: Json | null
+          progress_percentage?: number | null
           questions_answered?: number
           session_type?: string
+          status?: string | null
           time_spent?: number
           topic_id?: number | null
           total_questions?: number

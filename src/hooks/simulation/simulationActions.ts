@@ -82,11 +82,11 @@ export const createSimulationActions = (
                 const { data } = await supabase
                   .from('user_progress')
                   .select('*')
-                  .eq('question_id', currentQuestion.id)
+                  .eq('question_id', String(currentQuestion.id))
                   .eq('user_id', user.id)
                   .single();
                 
-                console.log('🔍 Verification - Record in DB:', !!data);
+              console.log('🔍 Verification - Record in DB:', !!data);
                 if (data) {
                   console.log('📊 Database record:', data);
                 }
@@ -181,38 +181,72 @@ export const createSimulationActions = (
         score: prevState.correctQuestionsCount
       };
 
-      // Save simulation session to database (asynchronously)
+      // Complete the live simulation session
       (async () => {
         try {
           const { data: { user } } = await supabase.auth.getUser();
           if (user) {
             const totalTimeSpent = Math.round((Date.now() - (prevState.sessionStartTime || Date.now())) / 1000);
             
-            const sessionData = {
-              user_id: user.id,
-              session_type: 'simulation' as const,
-              questions_answered: prevState.answeredQuestionsCount,
-              correct_answers: prevState.correctQuestionsCount,
-              total_questions: prevState.totalQuestions,
-              time_spent: totalTimeSpent,
-              completed_at: new Date().toISOString(),
-              metadata: {
-                exam_mode: prevState.examMode,
-                show_answers_immediately: prevState.showAnswersImmediately,
-                flagged_questions: Object.keys(prevState.questionFlags).filter(key => prevState.questionFlags[parseInt(key)]).length,
-                completion_percentage: (prevState.answeredQuestionsCount / prevState.totalQuestions) * 100
-              }
-            };
+            // Import the live session service
+            const { completeSimulationSession } = await import('@/services/simulationSessionService');
             
-            const result = await ProgressService.saveSimulationSession(sessionData);
-            if (result.success) {
-              console.log('✅ Simulation session saved to database');
+            // Complete the active session if it exists
+            const activeSessionResult = await import('@/services/simulationSessionService').then(module => 
+              module.loadActiveSimulationSession(user.id)
+            );
+            
+            if (activeSessionResult.success && activeSessionResult.data) {
+              const result = await completeSimulationSession(activeSessionResult.data.id, {
+                correct_answers: prevState.correctQuestionsCount,
+                questions_answered: prevState.answeredQuestionsCount,
+                time_spent: totalTimeSpent,
+                progress_percentage: 100
+              });
+              
+              if (result.success) {
+                console.log('✅ Live simulation session completed');
+              } else {
+                console.error('❌ Failed to complete live session:', result.error);
+              }
             } else {
-              console.error('❌ Failed to save simulation session:', result.error);
+              // Fallback: save as new completed session
+              const { saveSimulationSession } = await import('@/services/simulationSessionService');
+              
+              const sessionData = {
+                user_id: user.id,
+                current_question_index: prevState.currentQuestionIndex,
+                answers: Object.entries(prevState.userAnswers).map(([index, answer]) => ({
+                  questionIndex: parseInt(index),
+                  selectedAnswer: answer,
+                  isCorrect: answer === prevState.questions[parseInt(index)]?.correctAnswer,
+                  timeSpent: 60
+                })),
+                total_questions: prevState.totalQuestions,
+                progress_percentage: 100,
+                is_completed: true,
+                session_type: prevState.examMode ? 'exam' : 'practice',
+                correct_answers: prevState.correctQuestionsCount,
+                questions_answered: prevState.answeredQuestionsCount,
+                time_spent: totalTimeSpent,
+                metadata: {
+                  exam_mode: prevState.examMode,
+                  show_answers_immediately: prevState.showAnswersImmediately,
+                  flagged_questions: Object.keys(prevState.questionFlags).filter(key => prevState.questionFlags[parseInt(key)]).length,
+                  completion_percentage: 100
+                }
+              };
+              
+              const result = await saveSimulationSession(sessionData);
+              if (result.success) {
+                console.log('✅ Simulation session saved as completed');
+              } else {
+                console.error('❌ Failed to save completed session:', result.error);
+              }
             }
           }
         } catch (error) {
-          console.error('❌ Error saving simulation session:', error);
+          console.error('❌ Error completing simulation session:', error);
         }
       })();
 
