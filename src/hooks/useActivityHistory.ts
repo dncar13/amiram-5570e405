@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { ProgressService } from "@/services/progressService";
 
 export interface ActivityRecord {
   date: string;
@@ -60,9 +61,37 @@ export const useActivityHistory = () => {
   // Get user-specific storage key
   const activityKey = getUserActivityKey(currentUser?.email || null);
 
-  const loadHistory = useCallback(() => {
+  const loadHistory = useCallback(async () => {
     setIsLoading(true);
     try {
+      // First, try to load from database if user is authenticated
+      if (currentUser) {
+        const progressStats = await ProgressService.getUserProgressStats(currentUser.id);
+        if (progressStats && progressStats.recent_activity && progressStats.recent_activity.length > 0) {
+          // Convert database progress to ActivityRecord format
+          const databaseHistory: ActivityRecord[] = progressStats.recent_activity.map(progress => ({
+            date: new Date(progress.answered_at).toLocaleDateString('he-IL', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            topic: 'שאלה', // Default topic
+            questionId: progress.question_id,
+            status: progress.answered_correctly ? 'correct' : 'wrong',
+            time: progress.time_spent?.toString() || '0',
+            isCorrect: progress.answered_correctly,
+            isCompleted: true
+          }));
+          
+          setHistory(databaseHistory);
+          setIsLoading(false);
+          return;
+        }
+      }
+      
+      // Fallback to localStorage
       const storedHistory = localStorage.getItem(activityKey);
       if (storedHistory) {
         const parsedHistory = JSON.parse(storedHistory) as ActivityRecord[];
@@ -80,7 +109,7 @@ export const useActivityHistory = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [activityKey]);
+  }, [activityKey, currentUser]);
 
   useEffect(() => {
     loadHistory();

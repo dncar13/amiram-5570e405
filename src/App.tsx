@@ -38,6 +38,7 @@ import PracticeSets from "./pages/PracticeSets";
 import TypeSpecificSets from "./pages/TypeSpecificSets";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
+import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -158,6 +159,11 @@ const AnimatedRoutes = () => {
           <Route path="/progress-stats" element={
             <ProtectedRoute requireAuth={true}>
               <ProgressStats />
+            </ProtectedRoute>
+          } />
+          <Route path="/test/progress-tracking" element={
+            <ProtectedRoute requireAuth={true}>
+              <ProgressTrackingTest />
             </ProtectedRoute>
           } />
           <Route path="/simulation/type/:type" element={<SimulationByType />} />

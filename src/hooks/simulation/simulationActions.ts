@@ -5,6 +5,8 @@ import {
   saveSetProgress, 
   saveQuickPracticeProgress 
 } from './progressUtils';
+import { ProgressService } from '@/services/progressService';
+import { supabase } from '@/integrations/supabase/client';
 
 export const createSimulationActions = (
   state: SimulationState,
@@ -21,7 +23,7 @@ export const createSimulationActions = (
     }));
   };
 
-  const handleSubmitAnswer = () => {
+  const handleSubmitAnswer = async () => {
     setState(prevState => {
       if (prevState.selectedAnswerIndex === null || prevState.isAnswerSubmitted) {
         return prevState;
@@ -56,6 +58,31 @@ export const createSimulationActions = (
         ? (newState.correctQuestionsCount / newState.answeredQuestionsCount) * 100 
         : 0;
 
+      // Save progress to database (asynchronously)
+      (async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user && currentQuestion.id) {
+            const progressData = {
+              user_id: user.id,
+              question_id: currentQuestion.id,
+              answered_correctly: isCorrect,
+              answered_at: new Date().toISOString(),
+              time_spent: Math.round((Date.now() - (prevState.questionStartTime || Date.now())) / 1000)
+            };
+            
+            const result = await ProgressService.saveUserProgress(progressData);
+            if (result.success) {
+              console.log('✅ Progress saved to database');
+            } else {
+              console.error('❌ Failed to save progress:', result.error);
+            }
+          }
+        } catch (error) {
+          console.error('❌ Error saving progress to database:', error);
+        }
+      })();
+
       return newState;
     });
   };
@@ -80,7 +107,8 @@ export const createSimulationActions = (
         currentQuestion: nextQuestion,
         selectedAnswerIndex: hasAnswer ? prevState.userAnswers[nextIndex] : null,
         isAnswerSubmitted: hasAnswer,
-        showExplanation: false
+        showExplanation: false,
+        questionStartTime: Date.now() // Reset question start time for new question
       };
     });
   };
@@ -99,7 +127,8 @@ export const createSimulationActions = (
         currentQuestion: prevQuestion,
         selectedAnswerIndex: hasAnswer ? prevState.userAnswers[prevIndex] : null,
         isAnswerSubmitted: hasAnswer,
-        showExplanation: false
+        showExplanation: false,
+        questionStartTime: Date.now() // Reset question start time for navigation
       };
     });
   };
@@ -121,12 +150,51 @@ export const createSimulationActions = (
     }));
   };
 
-  const handleCompleteSimulation = () => {
-    setState(prevState => ({
-      ...prevState,
-      simulationComplete: true,
-      score: prevState.correctQuestionsCount
-    }));
+  const handleCompleteSimulation = async () => {
+    setState(prevState => {
+      const newState = {
+        ...prevState,
+        simulationComplete: true,
+        score: prevState.correctQuestionsCount
+      };
+
+      // Save simulation session to database (asynchronously)
+      (async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const totalTimeSpent = Math.round((Date.now() - (prevState.sessionStartTime || Date.now())) / 1000);
+            
+            const sessionData = {
+              user_id: user.id,
+              session_type: 'simulation' as const,
+              questions_answered: prevState.answeredQuestionsCount,
+              correct_answers: prevState.correctQuestionsCount,
+              total_questions: prevState.totalQuestions,
+              time_spent: totalTimeSpent,
+              completed_at: new Date().toISOString(),
+              metadata: {
+                exam_mode: prevState.examMode,
+                show_answers_immediately: prevState.showAnswersImmediately,
+                flagged_questions: Object.keys(prevState.questionFlags).filter(key => prevState.questionFlags[parseInt(key)]).length,
+                completion_percentage: (prevState.answeredQuestionsCount / prevState.totalQuestions) * 100
+              }
+            };
+            
+            const result = await ProgressService.saveSimulationSession(sessionData);
+            if (result.success) {
+              console.log('✅ Simulation session saved to database');
+            } else {
+              console.error('❌ Failed to save simulation session:', result.error);
+            }
+          }
+        } catch (error) {
+          console.error('❌ Error saving simulation session:', error);
+        }
+      })();
+
+      return newState;
+    });
   };
 
   const handleStartTimer = () => {

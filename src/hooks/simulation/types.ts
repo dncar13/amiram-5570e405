@@ -22,6 +22,8 @@ export interface SimulationState {
   correctQuestionsCount: number;
   progressPercentage: number;
   currentScorePercentage: number;
+  questionStartTime?: number;
+  sessionStartTime?: number;
 }
 
 export interface SimulationActions {
@@ -58,4 +60,6 @@ export const initialSimulationState: SimulationState = {
   correctQuestionsCount: 0,
   progressPercentage: 0,
   currentScorePercentage: 0,
+  questionStartTime: Date.now(),
+  sessionStartTime: Date.now(),
 };
