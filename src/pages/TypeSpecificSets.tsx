@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSetProgressSummary } from "@/hooks/useSetProgress";
 import { SetProgressCard } from "@/components/ui/SetProgressCard";
 import { SetProgressService } from "@/services/setProgressService";
+import { useAuth } from "@/context/AuthContext";
 
 interface QuestionSet {
   id: number;
@@ -28,6 +29,7 @@ const TypeSpecificSets = () => {
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const isMobile = useIsMobile();
+  const { currentUser } = useAuth();
   
   // Load set progress summary
   const { 
@@ -124,11 +126,11 @@ const TypeSpecificSets = () => {
   };
   
   const handleSetRestart = async (set: QuestionSet) => {
-    if (!type || !difficulty) return;
+    if (!type || !difficulty || !currentUser) return;
     
     try {
       await SetProgressService.resetSetProgress(
-        'current_user_id', // This will be replaced with actual user ID in the service
+        currentUser.id,
         set.id,
         type,
         difficulty

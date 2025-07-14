@@ -81,9 +81,9 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .eq('metadata->set_id', setData.set_id)
-        .eq('metadata->set_type', setData.set_type)
-        .eq('metadata->set_difficulty', setData.set_difficulty)
+        .like('metadata', `%"set_id":${setData.set_id}%`)
+        .like('metadata', `%"set_type":"${setData.set_type}"%`)
+        .like('metadata', `%"set_difficulty":"${setData.set_difficulty}"%`)
         .maybeSingle();
       
       const sessionData = {
@@ -159,9 +159,9 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .eq('metadata->set_id', setId)
-        .eq('metadata->set_type', setType)
-        .eq('metadata->set_difficulty', setDifficulty)
+        .like('metadata', `%"set_id":${setId}%`)
+        .like('metadata', `%"set_type":"${setType}"%`)
+        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`)
         .maybeSingle();
       
       if (error) {
@@ -173,12 +173,13 @@ export class SetProgressService {
         return null;
       }
       
+      const metadata = data.metadata as any;
       return {
         id: data.id,
         user_id: data.user_id,
-        set_id: data.metadata.set_id,
-        set_type: data.metadata.set_type,
-        set_difficulty: data.metadata.set_difficulty,
+        set_id: metadata?.set_id,
+        set_type: metadata?.set_type,
+        set_difficulty: metadata?.set_difficulty,
         current_question_index: data.current_question_index || 0,
         questions_answered: data.questions_answered,
         correct_answers: data.correct_answers,
@@ -186,7 +187,7 @@ export class SetProgressService {
         progress_percentage: data.progress_percentage || 0,
         is_completed: data.is_completed || false,
         time_spent: data.time_spent,
-        metadata: data.metadata,
+        metadata: metadata,
         created_at: data.created_at,
         updated_at: data.updated_at,
         last_activity: data.updated_at
@@ -211,8 +212,6 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .eq('metadata->set_type', setType)
-        .eq('metadata->set_difficulty', setDifficulty)
         .order('updated_at', { ascending: false });
       
       if (error) {
@@ -223,15 +222,16 @@ export class SetProgressService {
       const summary: Record<number, SetProgressSummary> = {};
       
       data?.forEach(session => {
-        const setId = session.metadata.set_id;
+        const metadata = session.metadata as any;
+        const setId = metadata?.set_id;
         const scorePercentage = session.questions_answered > 0 
           ? Math.round((session.correct_answers / session.questions_answered) * 100)
           : 0;
         
         summary[setId] = {
           set_id: setId,
-          set_type: session.metadata.set_type,
-          set_difficulty: session.metadata.set_difficulty,
+          set_type: metadata?.set_type,
+          set_difficulty: metadata?.set_difficulty,
           status: session.is_completed ? 'completed' : 
                  session.questions_answered > 0 ? 'in_progress' : 'not_started',
           progress_percentage: session.progress_percentage || 0,
@@ -279,9 +279,9 @@ export class SetProgressService {
         })
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .eq('metadata->set_id', setId)
-        .eq('metadata->set_type', setType)
-        .eq('metadata->set_difficulty', setDifficulty);
+        .like('metadata', `%"set_id":${setId}%`)
+        .like('metadata', `%"set_type":"${setType}"%`)
+        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`);
       
       if (error) {
         console.error('❌ Error completing set:', error);
@@ -311,9 +311,9 @@ export class SetProgressService {
         .delete()
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .eq('metadata->set_id', setId)
-        .eq('metadata->set_type', setType)
-        .eq('metadata->set_difficulty', setDifficulty);
+        .like('metadata', `%"set_id":${setId}%`)
+        .like('metadata', `%"set_type":"${setType}"%`)
+        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`);
       
       if (error) {
         console.error('❌ Error resetting set progress:', error);
