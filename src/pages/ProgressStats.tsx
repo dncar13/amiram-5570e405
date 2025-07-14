@@ -79,24 +79,33 @@ const ProgressStats: React.FC = () => {
       console.log('✅ Chart data loaded:', { weeklyData });
       setWeeklyProgress(weeklyData);
       
-      // Create topic performance data from stats
+      // Create topic performance data from stats - filter out vocabulary and low-data types
       if (stats && stats.questions_by_type) {
-        const topicData = Object.entries(stats.questions_by_type).map(([type, data]: [string, any]) => ({
-          topic: type,
-          score: Math.round(data.accuracy),
-          questions: data.total
-        }));
+        const topicData = Object.entries(stats.questions_by_type)
+          .filter(([type, data]: [string, any]) => {
+            // Filter out vocabulary and types with too few questions
+            return type !== 'vocabulary' && data.total >= 3;
+          })
+          .map(([type, data]: [string, any]) => ({
+            topic: type === 'sentence-completion' ? 'השלמת משפטים' : 
+                   type === 'reading-comprehension' ? 'הבנת הנקרא' :
+                   type === 'restatement' ? 'ניסוח מחדש' : type,
+            score: Math.round(data.accuracy),
+            questions: data.total
+          }));
         setTopicPerformance(topicData);
       }
       
-      // Create difficulty breakdown data from stats
+      // Create difficulty breakdown data from stats - filter out vocabulary
       if (stats && stats.questions_by_difficulty) {
         const colors = { easy: '#10B981', medium: '#F59E0B', hard: '#EF4444' };
-        const difficultyData = Object.entries(stats.questions_by_difficulty).map(([difficulty, data]: [string, any]) => ({
-          name: difficulty === 'easy' ? 'קל' : difficulty === 'medium' ? 'בינוני' : 'קשה',
-          value: data.total,
-          color: colors[difficulty as keyof typeof colors] || '#6B7280'
-        }));
+        const difficultyData = Object.entries(stats.questions_by_difficulty)
+          .filter(([difficulty, data]: [string, any]) => data.total >= 2)
+          .map(([difficulty, data]: [string, any]) => ({
+            name: difficulty === 'easy' ? 'קל' : difficulty === 'medium' ? 'בינוני' : 'קשה',
+            value: data.total,
+            color: colors[difficulty as keyof typeof colors] || '#6B7280'
+          }));
         setDifficultyBreakdown(difficultyData);
       }
       
