@@ -6,10 +6,15 @@ import { refreshQuestionsFromStorage } from '@/services/questionsService';
 import { supabase } from '@/integrations/supabase/client';
 
 export interface SavedQuestion {
-  id: number;
+  id: string | number; // Support both types during migration
   question: Question;
   savedDate: string;
 }
+
+// Utility to ensure ID is a number for legacy functions
+const ensureNumberId = (id: string | number): number => {
+  return typeof id === 'string' ? parseInt(id, 10) : id;
+};
 
 export const useSavedQuestions = () => {
   const [savedQuestions, setSavedQuestions] = useState<SavedQuestion[]>([]);
@@ -107,7 +112,7 @@ export const useSavedQuestions = () => {
     }
 
     // בדיקה אם השאלה כבר שמורה
-    if (isQuestionSaved(question.id)) {
+    if (isQuestionSaved(ensureNumberId(question.id))) {
       console.log("⚠️ Question already saved");
       return false;
     }
@@ -144,7 +149,7 @@ export const useSavedQuestions = () => {
     }
   };
 
-  const removeQuestionById = async (questionId: number) => {
+  const removeQuestionById = async (questionId: string | number) => {
     if (!currentUser || !isInitialized) {
       console.error("❌ Cannot remove - user not ready or not initialized");
       return false;
@@ -165,7 +170,7 @@ export const useSavedQuestions = () => {
       }
       
       // עדכון מצב מיד למשוב מהיר
-      setSavedQuestions(prev => prev.filter(sq => sq.question.id !== questionId));
+      setSavedQuestions(prev => prev.filter(sq => ensureNumberId(sq.question.id) !== ensureNumberId(questionId)));
       console.log(`✅ Question #${questionId} removed successfully from Supabase`);
       
       return true;
@@ -175,9 +180,10 @@ export const useSavedQuestions = () => {
     }
   };
 
-  const isQuestionSaved = (questionId: number) => {
+  const isQuestionSaved = (questionId: string | number) => {
     if (!isInitialized) return false;
-    return savedQuestions.some(sq => sq.question.id === questionId);
+    const numId = ensureNumberId(questionId);
+    return savedQuestions.some(sq => ensureNumberId(sq.question.id) === numId);
   };
 
   return {

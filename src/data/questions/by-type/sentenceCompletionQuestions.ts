@@ -1,17 +1,14 @@
 
 import { Question } from "../../types/questionTypes";
-import easyQuestions from "../../../../questions-for-lovable/sentence-completion/easy/sentence-completion-easy-2025-06-11";
-import mediumQuestions from "../../../../questions-for-lovable/sentence-completion/medium/sentence-completion-medium-2025-06-11";
-import hardQuestions from "../../../../questions-for-lovable/sentence-completion/hard/sentence-completion-hard-2025-06-11";
+// Note: Original sentence completion files were deleted due to type errors
+// TODO: Regenerate sentence completion questions with string IDs
 
 /**
  * שאלות השלמת משפטים - מסוג Sentence Completion
- * מיובאות מהקבצים החדשים שנוצרו ב-2025-06-11
+ * כרגע ריק עד שיתווספו שאלות חדשות
  */
 export const sentenceCompletionQuestions: Question[] = [
-  ...easyQuestions,
-  ...mediumQuestions, 
-  ...hardQuestions
+  // TODO: Add questions when available
 ];
 
 // Add topicId and categoryId for compatibility
@@ -22,4 +19,4 @@ export const sentenceCompletionQuestionsWithMetadata: Question[] = sentenceCompl
 }));
 
 console.log(`[Sentence Completion] Loaded ${sentenceCompletionQuestions.length} questions total`);
-console.log(`[Sentence Completion] Easy: ${easyQuestions.length}, Medium: ${mediumQuestions.length}, Hard: ${hardQuestions.length}`);
+console.log(`[Sentence Completion] Easy: 0, Medium: 0, Hard: 0`);

@@ -192,7 +192,7 @@ const Login = () => {
       const { user, error } = result;
 
       if (error) {
-        const errorMessage = typeof error === 'string' ? error : error.message || "שגיאה בהתחברות";
+        const errorMessage = typeof error === 'string' ? error : (error as any)?.message || "שגיאה בהתחברות";
         if (
           errorMessage.includes("יש לאשר את כתובת האימייל") ||
           errorMessage.toLowerCase().includes("confirm your email") ||
@@ -203,13 +203,13 @@ const Login = () => {
           return;
         }
         
-        setAuthError(error.message);
+        setAuthError(errorMessage);
         setLoginState('error');
         
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
-          description: error.message,
+          description: errorMessage,
           duration: 5000,
         });
       } else if (user) {
@@ -280,7 +280,7 @@ const Login = () => {
       const { user, error } = result;
       
       if (error) {
-        const errorMessage = typeof error === 'string' ? error : error.message || "שגיאה בהרשמה";
+        const errorMessage = typeof error === 'string' ? error : (error as any)?.message || "שגיאה בהרשמה";
         if (
           errorMessage.includes("יש לאשר את כתובת האימייל") ||
           errorMessage.toLowerCase().includes("confirm your email") ||
@@ -297,13 +297,13 @@ const Login = () => {
           return;
         }
         
-        setAuthError(error.message);
+        setAuthError(errorMessage);
         setLoginState('error');
         
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
-          description: error.message,
+          description: errorMessage,
           duration: 5000,
         });
       } else if (user) {
