@@ -143,7 +143,7 @@ export class MigrationService {
               question_id: activity.questionId,
               answered_correctly: activity.status === 'correct',
               answered_at: answeredAt,
-              time_spent: activity.time || 0
+              time_spent: Number(activity.time) || 0
             };
             
             const result = await ProgressService.saveUserProgress(progressData);

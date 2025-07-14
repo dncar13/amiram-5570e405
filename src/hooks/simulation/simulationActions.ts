@@ -63,9 +63,11 @@ export const createSimulationActions = (
         try {
           const { data: { user } } = await supabase.auth.getUser();
           if (user && currentQuestion.id) {
+            console.log('🎯 Attempting to save progress for user:', user.id, 'question:', currentQuestion.id);
+            
             const progressData = {
               user_id: user.id,
-              question_id: currentQuestion.id,
+              question_id: String(currentQuestion.id),
               answered_correctly: isCorrect,
               answered_at: new Date().toISOString(),
               time_spent: Math.round((Date.now() - (prevState.questionStartTime || Date.now())) / 1000)
@@ -73,10 +75,13 @@ export const createSimulationActions = (
             
             const result = await ProgressService.saveUserProgress(progressData);
             if (result.success) {
-              console.log('✅ Progress saved to database');
+              console.log('✅ Progress saved to database successfully');
             } else {
               console.error('❌ Failed to save progress:', result.error);
             }
+          } else {
+            if (!user) console.error('❌ No authenticated user found');
+            if (!currentQuestion.id) console.error('❌ No question ID found');
           }
         } catch (error) {
           console.error('❌ Error saving progress to database:', error);

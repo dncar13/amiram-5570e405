@@ -279,6 +279,54 @@ export type Database = {
           },
         ]
       }
+      simulation_sessions: {
+        Row: {
+          completed_at: string
+          correct_answers: number
+          created_at: string
+          difficulty: string | null
+          id: string
+          metadata: Json | null
+          questions_answered: number
+          session_type: string
+          time_spent: number
+          topic_id: number | null
+          total_questions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          correct_answers?: number
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          metadata?: Json | null
+          questions_answered?: number
+          session_type: string
+          time_spent?: number
+          topic_id?: number | null
+          total_questions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          correct_answers?: number
+          created_at?: string
+          difficulty?: string | null
+          id?: string
+          metadata?: Json | null
+          questions_answered?: number
+          session_type?: string
+          time_spent?: number
+          topic_id?: number | null
+          total_questions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           created_at: string

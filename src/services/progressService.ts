@@ -253,7 +253,7 @@ export class ProgressService {
         return [];
       }
       
-      return data || [];
+       return (data || []) as SimulationSession[];
     } catch (error) {
       console.error('❌ Exception in getUserSimulationHistory:', error);
       return [];
