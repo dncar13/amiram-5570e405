@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/integrations/supabase/client'
 import { Database } from '@/integrations/supabase/types'
 
 // Import the app's Question type
@@ -18,12 +18,6 @@ export interface QuestionsResponse {
   total: number
   hasMore: boolean
 }
-
-// Initialize Supabase client
-const supabase = createClient<Database>(
-  import.meta.env.VITE_SUPABASE_URL!,
-  import.meta.env.VITE_SUPABASE_ANON_KEY!
-)
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
