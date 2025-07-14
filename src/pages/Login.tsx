@@ -10,10 +10,10 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { signInWithGoogle, loginWithEmailAndPassword, registerWithEmailAndPassword } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
+import { signIn, signUp } from "@/utils/auth-utils";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
-import { resendConfirmationEmail } from "@/lib/supabase";
 import { getMobileOptimizedConfig, debounce } from "@/utils/mobile-performance";
 
 // Enhanced login state management
@@ -121,7 +121,18 @@ const Login = () => {
         duration: 3000,
       });
       
-      const { user, error } = await signInWithGoogle();
+      // Google OAuth using Supabase directly
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/`,
+          queryParams: {
+            prompt: 'select_account',
+            access_type: 'offline',
+          },
+          scopes: 'openid email profile'
+        }
+      });
       
       if (error) {
         console.error("❌ Google login error:", error);
@@ -177,7 +188,8 @@ const Login = () => {
         duration: 2000,
       });
       
-      const { user, error } = await loginWithEmailAndPassword(formData.email, formData.password);
+      const result = await signIn(formData.email, formData.password);
+      const { user, error } = result;
 
       if (error) {
         if (
@@ -263,7 +275,8 @@ const Login = () => {
         duration: 3000,
       });
       
-      const { user, error } = await registerWithEmailAndPassword(formData.email, formData.password);
+      const result = await signUp(formData.email, formData.password);
+      const { user, error } = result;
       
       if (error) {
         if (
@@ -364,7 +377,15 @@ const Login = () => {
         duration: 2000,
       });
       
-      const { success, error } = await resendConfirmationEmail(awaitingConfirmation);
+      // Resend confirmation using Supabase directly
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: awaitingConfirmation,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`
+        },
+      });
+      const success = !error;
       
       if (success) {
         toast({
