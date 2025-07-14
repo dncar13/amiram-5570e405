@@ -9,16 +9,20 @@ const DebugStoriesSection = () => {
 
   useEffect(() => {
     console.log('[DEBUG] DebugStoriesSection mounting');
-    try {
-      const availableStories = getAvailableStories();
-      console.log('[DEBUG] Stories loaded:', availableStories);
-      setStories(availableStories);
-    } catch (err) {
-      console.error('[DEBUG] Error loading stories:', err);
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
+    const loadStories = async () => {
+      try {
+        const availableStories = await getAvailableStories();
+        console.log('[DEBUG] Stories loaded:', availableStories);
+        setStories(availableStories);
+      } catch (err) {
+        console.error('[DEBUG] Error loading stories:', err);
+        setError(err instanceof Error ? err.message : 'Unknown error');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadStories();
   }, []);
 
   if (loading) {

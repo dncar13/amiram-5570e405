@@ -86,6 +86,7 @@ const Simulation = () => {
           getQuestionsByStory(storyId),
           getStoryById(storyId)
         ]);
+        
         setStoryQuestions(questionsData);
         setStory(storyData);
       } catch (error) {

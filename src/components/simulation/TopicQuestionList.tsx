@@ -4,10 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 // Updated import path to use the questions version
-import { Question } from "@/data/questionsData";
+import { Question } from "@/data/types/questionTypes";
 import { Topic } from "@/data/types/topicTypes";
 import { FileText, Star, RefreshCw, ExternalLink } from "lucide-react";
-import { refreshQuestionsFromStorage } from "@/services/questions";
+import { getQuestionsByTopic } from "@/services/questionsService";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/context/AuthContext";
 
@@ -21,47 +21,23 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
   const [questions, setQuestions] = useState<Question[]>([]);
   const { hasAccessToTopic } = useAuth();
   
-  // Load questions with multiple refresh attempts to ensure we get the latest data
-  const loadQuestions = useCallback(() => {
-    // Clear any cached data first
-    localStorage.removeItem(`questions_cache_${topicId}`);
-    
-    // First attempt
-    let allQuestions = refreshQuestionsFromStorage();
-    
-    // Filter questions for this specific topic
-    let filteredQuestions = allQuestions.filter(q => q.topicId === topicId);
-    
-    // Set initial questions
-    setQuestions(filteredQuestions);
-    
-    // Second attempt after a short delay
-    setTimeout(() => {
-      allQuestions = refreshQuestionsFromStorage();
-      filteredQuestions = allQuestions.filter(q => q.topicId === topicId);
-      setQuestions(filteredQuestions);
-      console.log(`Loaded ${filteredQuestions.length} questions for topic ${topicId} (second attempt)`, filteredQuestions);
-    }, 500);
-    
-    console.log(`Loaded ${filteredQuestions.length} questions for topic ${topicId} (initial attempt)`, filteredQuestions);
+  // Load questions asynchronously from database
+  const loadQuestions = useCallback(async () => {
+    try {
+      console.log(`Loading questions for topic ${topicId}...`);
+      const questionsForTopic = await getQuestionsByTopic(topicId);
+      setQuestions(questionsForTopic);
+      console.log(`Loaded ${questionsForTopic.length} questions for topic ${topicId}`, questionsForTopic);
+    } catch (error) {
+      console.error(`Error loading questions for topic ${topicId}:`, error);
+      setQuestions([]);
+    }
   }, [topicId]);
   
   // Load questions on component mount and topicId change
   useEffect(() => {
     loadQuestions();
-    
-    // Set up an interval to refresh questions regularly
-    const refreshInterval = setInterval(() => {
-      const freshQuestions = refreshQuestionsFromStorage().filter(q => q.topicId === topicId);
-      if (freshQuestions.length !== questions.length) {
-        setQuestions(freshQuestions);
-        console.log(`Updated questions count: ${freshQuestions.length}`);
-      }
-    }, 2000);
-    
-    // Clean up the interval on component unmount
-    return () => clearInterval(refreshInterval);
-  }, [topicId, loadQuestions, questions.length]);
+  }, [topicId, loadQuestions]);
     const startSimulation = () => {
     // Check if user has access to this topic
     if (!hasAccessToTopic(topicId)) {
@@ -73,9 +49,7 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
       return;
     }
     
-    // Force refresh questions directly from source data
-    const latestQuestions = refreshQuestionsFromStorage();
-    console.log(`Starting simulation with ${latestQuestions.filter(q => q.topicId === topicId).length} questions`);
+    console.log(`Starting simulation with ${questions.length} questions for topic ${topicId}`);
     
     // Clear any cached progress for this topic
     localStorage.removeItem(`simulation_progress_${topicId}`);
@@ -85,8 +59,8 @@ const TopicQuestionList: React.FC<TopicQuestionListProps> = ({ topicId, topic })
     navigate(`/simulation/${topicId}?refresh=${timestamp}`);
   };
   
-  const handleRefresh = () => {
-    loadQuestions();
+  const handleRefresh = async () => {
+    await loadQuestions();
     toast({
       title: "רשימת השאלות עודכנה",
       description: `נטענו ${questions.length} שאלות בנושא זה`,

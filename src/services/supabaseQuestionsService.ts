@@ -171,19 +171,75 @@ export async function getVocabularyQuestions(difficulty?: string): Promise<Quest
 export async function getReadingQuestions(difficulty?: string): Promise<Question[]> {
   console.log('📖 Fetching reading comprehension questions...', { difficulty })
   
-  const filters: QuestionsFilters = { 
-    type: 'reading-comprehension',
-    limit: 100 // Reading questions might need larger limit
+  try {
+    // Use direct query with passages join for reading comprehension
+    let query = supabase
+      .from('questions')
+      .select(`
+        *,
+        passages:passage_id (
+          id,
+          title,
+          content
+        )
+      `)
+      .eq('type', 'reading-comprehension')
+    
+    if (difficulty) {
+      query = query.eq('difficulty', difficulty)
+    }
+    
+    // Execute query
+    const { data: questions, error } = await query.limit(100)
+    
+    if (error) {
+      console.error('❌ Error fetching reading questions:', error)
+      // Fallback to simple query if join fails
+      console.log('🔄 Falling back to simple query...')
+      const fallbackFilters: QuestionsFilters = { 
+        type: 'reading-comprehension',
+        limit: 100
+      }
+      if (difficulty) {
+        fallbackFilters.difficulty = difficulty
+      }
+      const response = await getQuestionsFromDB(fallbackFilters)
+      return response.questions
+    }
+    
+    if (!questions) {
+      return []
+    }
+    
+    // Transform questions with passage data from join
+    const transformedQuestions = questions.map(q => {
+      const transformed = transformQuestion(q)
+      
+      // Override passage data with joined data if available
+      if (q.passages) {
+        transformed.passageText = q.passages.content
+        transformed.passageTitle = q.passages.title
+      }
+      
+      return transformed
+    })
+    
+    console.log(`✅ Fetched ${transformedQuestions.length} reading questions with passage data`)
+    return transformedQuestions
+    
+  } catch (error) {
+    console.error('❌ Error in getReadingQuestions:', error)
+    // Final fallback to basic question fetch
+    const filters: QuestionsFilters = { 
+      type: 'reading-comprehension',
+      limit: 100
+    }
+    if (difficulty) {
+      filters.difficulty = difficulty
+    }
+    const response = await getQuestionsFromDB(filters)
+    return response.questions
   }
-  
-  if (difficulty) {
-    filters.difficulty = difficulty
-  }
-  
-  const response = await getQuestionsFromDB(filters)
-  
-  // Return all reading questions (passage text will be in passage_content field)
-  return response.questions
 }
 
 /**

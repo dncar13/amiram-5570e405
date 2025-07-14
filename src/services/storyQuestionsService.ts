@@ -1,6 +1,7 @@
 
 import { Question } from '@/data/types/questionTypes';
 import { getAllQuestions, getReadingComprehensionQuestions } from '@/services/questionsService';
+import { getReadingQuestions } from '@/services/supabaseQuestionsService';
 import { GeneralSubject, identifyQuestionSubject } from '@/services/subjectClassificationService';
 
 export interface Story {
@@ -16,8 +17,8 @@ export interface Story {
 export const getAvailableStories = async (): Promise<Story[]> => {
   console.log('[DEBUG] getAvailableStories called');
   
-  // Use getReadingComprehensionQuestions instead of getAllQuestions to ensure we get all RC questions
-  const allReadingQuestions = await getReadingComprehensionQuestions();
+  // Use getReadingQuestions to ensure we get questions with passages joined
+  const allReadingQuestions = await getReadingQuestions();
   console.log('[DEBUG] Total reading questions loaded:', allReadingQuestions.length);
   
   // פילטור שאלות שיש להן גם passageText וגם passageTitle
@@ -99,14 +100,15 @@ export const getAvailableStories = async (): Promise<Story[]> => {
 
 // Get questions for a specific story
 export const getQuestionsByStory = async (storyId: string): Promise<Question[]> => {
-  const allQuestions = await getAllQuestions();
+  // FIX: Use getReadingQuestions() instead of getAllQuestions() to get proper passage data
+  const readingQuestions = await getReadingQuestions();
   
   // Decode the URL-encoded story ID back to the original title
   const decodedTitle = decodeURIComponent(storyId);
   
   console.log('Searching for story with title:', decodedTitle);
   
-  const questions = allQuestions.filter(q => {
+  const questions = readingQuestions.filter(q => {
     const hasMatchingTitle = q.passageTitle === decodedTitle;
     const hasPassageText = !!q.passageText;
     
