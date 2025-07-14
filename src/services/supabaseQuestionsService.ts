@@ -260,11 +260,12 @@ export async function getQuestionTypes(): Promise<string[]> {
     const { data, error } = await supabase
       .from('questions')
       .select('type')
-      .group('type')
-
+    
     if (error) throw error
 
-    return data?.map(item => item.type) || []
+    // Extract unique types manually
+    const uniqueTypes = [...new Set(data?.map(item => item.type) || [])]
+    return uniqueTypes
   } catch (error) {
     console.error('❌ Error fetching question types:', error)
     return ['vocabulary', 'restatement', 'sentence-completion', 'reading-comprehension']

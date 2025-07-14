@@ -96,7 +96,7 @@ export const getQuestionsBySubtopic = async (subtopicId: number): Promise<Questi
   try {
     // Note: This might need to be implemented in the DB service if subtopic filtering is needed
     const allQuestions = await getAllQuestions();
-    const filtered = allQuestions.filter(q => q.metadata?.subtopicId === subtopicId);
+    const filtered = allQuestions.filter(q => q.subtopicId === subtopicId);
     console.log(`[getQuestionsBySubtopic] Found ${filtered.length} questions for subtopic ${subtopicId}`);
     return filtered;
   } catch (error) {

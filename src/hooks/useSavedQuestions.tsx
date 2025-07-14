@@ -34,7 +34,7 @@ export const useSavedQuestions = () => {
     setIsLoading(true);
     try {
       // קבלת כל השאלות מהזיכרון
-      const allQuestions = refreshQuestionsFromStorage();
+      const allQuestions = await refreshQuestionsFromStorage();
       console.log("Total questions in storage:", allQuestions.length);
 
       // קבלת מזהי השאלות השמורות מהזיכרון המקומי

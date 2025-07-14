@@ -31,8 +31,8 @@ const TopicQuestionsList = ({
     
     if (autoRefresh) {
       // Initial refresh
-      const refreshQuestions = () => {
-        const allQuestions = refreshQuestionsFromStorage();
+      const refreshQuestions = async () => {
+        const allQuestions = await refreshQuestionsFromStorage();
         console.log(`TopicQuestionsList: Refreshed questions, found ${allQuestions.length} total questions`);
         
         // Filter by topic ID if specified
