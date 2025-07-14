@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Question } from '@/data/questionsData';
 import { useAuth } from '@/context/AuthContext';
 import { refreshQuestionsFromStorage } from '@/services/questionsService';
+import { supabase } from '@/integrations/supabase/client';
 
 export interface SavedQuestion {
   id: number;
@@ -19,12 +20,12 @@ export const useSavedQuestions = () => {
   // שימוש במפתח קבוע לשאלות השמורות של המשתמש - על בסיס האימייל
   const userSavedKey = currentUser ? `saved_questions_${currentUser.email}` : null;
   
-  // פונקציה לאתחול השאלות השמורות
+  // פונקציה לאתחול השאלות השמורות מ-Supabase
   const initializeSavedQuestions = useCallback(async () => {
-    console.log("Initializing saved questions...", { userSavedKey, currentUser: !!currentUser });
+    console.log("🔄 Initializing saved questions from Supabase...", { currentUser: !!currentUser });
     
-    if (!userSavedKey || !currentUser) {
-      console.log("No user or userSavedKey, setting empty array");
+    if (!currentUser) {
+      console.log("❌ No user, setting empty array");
       setSavedQuestions([]);
       setIsInitialized(true);
       setIsLoading(false);
@@ -35,49 +36,52 @@ export const useSavedQuestions = () => {
     try {
       // קבלת כל השאלות מהזיכרון
       const allQuestions = await refreshQuestionsFromStorage();
-      console.log("Total questions in storage:", allQuestions.length);
+      console.log("📊 Total questions in storage:", allQuestions.length);
 
-      // קבלת מזהי השאלות השמורות מהזיכרון המקומי
-      const savedData = localStorage.getItem(userSavedKey);
-      let userSavedIds: number[] = [];
-      
-      if (savedData) {
-        try {
-          userSavedIds = JSON.parse(savedData);
-          console.log("Local saved IDs:", userSavedIds);
-        } catch (parseError) {
-          console.error("Error parsing saved questions data:", parseError);
-          localStorage.removeItem(userSavedKey); // מחק נתונים פגומים
-        }
+      // קבלת השאלות השמורות מ-Supabase
+      const { data: savedData, error } = await supabase
+        .from('saved_questions')
+        .select(`
+          question_id,
+          saved_at
+        `)
+        .eq('user_id', currentUser.id);
+
+      if (error) {
+        console.error("❌ Error loading saved questions:", error);
+        setSavedQuestions([]);
+        return;
       }
-      
-      // סינון השאלות שתואמות למזהים השמורים
-      const userQuestions = userSavedIds
-        .map((savedId: number) => {
-          const question = allQuestions.find((q: Question) => q.id === savedId);
+
+      console.log("✅ Saved questions from Supabase:", savedData?.length || 0);
+
+      // המרה לפורמט הנדרש
+      const userQuestions = (savedData || [])
+        .map((saved) => {
+          const question = allQuestions.find((q: Question) => q.id.toString() === saved.question_id);
           if (!question) {
-            console.warn("Question not found for saved ID:", savedId);
+            console.warn("⚠️ Question not found for saved ID:", saved.question_id);
             return null;
           }
           
           return {
-            id: savedId,
+            id: question.id,
             question: question,
-            savedDate: new Date().toISOString()
+            savedDate: saved.saved_at
           };
         })
         .filter(Boolean); // הסרת ערכי null
       
-      console.log("Final saved questions:", userQuestions.length);
+      console.log("✅ Final saved questions:", userQuestions.length);
       setSavedQuestions(userQuestions);
     } catch (error) {
-      console.error("Error initializing saved questions:", error);
+      console.error("❌ Error initializing saved questions:", error);
       setSavedQuestions([]);
     } finally {
       setIsLoading(false);
       setIsInitialized(true);
     }
-  }, [userSavedKey, currentUser]);
+  }, [currentUser]);
 
   // אתחול אוטומטי בטעינה ובעת שינוי משתמש
   useEffect(() => {
@@ -96,33 +100,32 @@ export const useSavedQuestions = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, [initializeSavedQuestions, userSavedKey]);
 
-  const saveQuestion = (question: Question) => {
-    if (!currentUser || !userSavedKey || !isInitialized) {
-      console.error("Cannot save - user not ready or not initialized");
+  const saveQuestion = async (question: Question) => {
+    if (!currentUser || !isInitialized) {
+      console.error("❌ Cannot save - user not ready or not initialized");
+      return false;
+    }
+
+    // בדיקה אם השאלה כבר שמורה
+    if (isQuestionSaved(question.id)) {
+      console.log("⚠️ Question already saved");
       return false;
     }
 
     try {
-      const savedData = localStorage.getItem(userSavedKey);
-      let userSavedIds: number[] = [];
+      console.log("💾 Saving question to Supabase:", question.id);
       
-      if (savedData) {
-        try {
-          userSavedIds = JSON.parse(savedData);
-        } catch (parseError) {
-          console.error("Error parsing existing saved data:", parseError);
-          userSavedIds = [];
-        }
-      }
-      
-      if (userSavedIds.includes(question.id)) {
-        console.log("Question already saved");
+      const { error } = await supabase
+        .from('saved_questions')
+        .insert({
+          user_id: currentUser.id,
+          question_id: question.id.toString()
+        });
+
+      if (error) {
+        console.error("❌ Error saving to Supabase:", error);
         return false;
       }
-
-      // הוספה לזיכרון המקומי מיד
-      userSavedIds.push(question.id);
-      localStorage.setItem(userSavedKey, JSON.stringify(userSavedIds));
 
       const newSavedQuestion: SavedQuestion = {
         id: question.id,
@@ -132,80 +135,49 @@ export const useSavedQuestions = () => {
 
       // עדכון מצב מיד למשוב מהיר
       setSavedQuestions(prev => [...prev, newSavedQuestion]);
-      console.log(`Question #${question.id} saved successfully`);
-      
-      // הפצת אירוע לסנכרון בין טאבים
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: userSavedKey,
-        newValue: JSON.stringify(userSavedIds),
-        storageArea: localStorage
-      }));
+      console.log(`✅ Question #${question.id} saved successfully to Supabase`);
       
       return true;
     } catch (error) {
-      console.error("Error saving question:", error);
+      console.error("❌ Error saving question:", error);
       return false;
     }
   };
 
-  const removeQuestionById = (questionId: number) => {
-    if (!currentUser || !userSavedKey || !isInitialized) {
-      console.error("Cannot remove - user not ready or not initialized");
+  const removeQuestionById = async (questionId: number) => {
+    if (!currentUser || !isInitialized) {
+      console.error("❌ Cannot remove - user not ready or not initialized");
       return false;
     }
 
     try {
-      const savedData = localStorage.getItem(userSavedKey);
-      let userSavedIds: number[] = [];
+      console.log("🗑️ Removing question from Supabase:", questionId);
       
-      if (savedData) {
-        try {
-          userSavedIds = JSON.parse(savedData);
-        } catch (parseError) {
-          console.error("Error parsing existing saved data:", parseError);
-          return false;
-        }
-      }
-      
-      const updatedIds = userSavedIds.filter((id: number) => id !== questionId);
-      
-      if (updatedIds.length === userSavedIds.length) {
-        console.log("Question not found in saved list");
+      const { error } = await supabase
+        .from('saved_questions')
+        .delete()
+        .eq('user_id', currentUser.id)
+        .eq('question_id', questionId.toString());
+
+      if (error) {
+        console.error("❌ Error removing from Supabase:", error);
         return false;
       }
-
-      // עדכון הזיכרון המקומי מיד
-      localStorage.setItem(userSavedKey, JSON.stringify(updatedIds));
       
       // עדכון מצב מיד למשוב מהיר
       setSavedQuestions(prev => prev.filter(sq => sq.question.id !== questionId));
-      console.log(`Question #${questionId} removed successfully`);
-      
-      // הפצת אירוע לסנכרון בין טאבים
-      window.dispatchEvent(new StorageEvent('storage', {
-        key: userSavedKey,
-        newValue: JSON.stringify(updatedIds),
-        storageArea: localStorage
-      }));
+      console.log(`✅ Question #${questionId} removed successfully from Supabase`);
       
       return true;
     } catch (error) {
-      console.error("Error removing question:", error);
+      console.error("❌ Error removing question:", error);
       return false;
     }
   };
 
   const isQuestionSaved = (questionId: number) => {
-    if (!userSavedKey || !isInitialized) return false;
-    try {
-      const savedData = localStorage.getItem(userSavedKey);
-      if (!savedData) return false;
-      
-      const userSavedIds = JSON.parse(savedData);
-      return userSavedIds.includes(questionId);
-    } catch {
-      return false;
-    }
+    if (!isInitialized) return false;
+    return savedQuestions.some(sq => sq.question.id === questionId);
   };
 
   return {

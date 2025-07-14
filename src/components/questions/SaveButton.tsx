@@ -24,7 +24,7 @@ export const SaveButton = ({
   
   const isSaved = isQuestionSaved(question.id);
 
-  const handleSaveClick = (e: React.MouseEvent) => {
+  const handleSaveClick = async (e: React.MouseEvent) => {
     e.stopPropagation();
     
     if (!isPremium) {
@@ -53,7 +53,8 @@ export const SaveButton = ({
 
     try {
       if (isSaved) {
-        if (removeQuestionById(question.id)) {
+        const success = await removeQuestionById(question.id);
+        if (success) {
           toast({
             title: "הוסרה בהצלחה",
             description: "השאלה הוסרה מהשאלות השמורות",
@@ -68,7 +69,8 @@ export const SaveButton = ({
           });
         }
       } else {
-        if (saveQuestion(question)) {
+        const success = await saveQuestion(question);
+        if (success) {
           toast({
             title: "נשמרה בהצלחה",
             description: "השאלה נשמרה ברשימת המועדפים",
