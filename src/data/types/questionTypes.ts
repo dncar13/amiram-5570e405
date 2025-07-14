@@ -3,7 +3,7 @@ import { LucideIcon } from 'lucide-react';
 
 // Define Question type for the application - updated to match new structure
 export interface Question {
-  id: any; // Temporarily allow any type to resolve build errors
+  id: string | number; // Support both string and number IDs
   type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive' | 'vocabulary' | 'grammar' | 'writing' | 'listening';
   text: string; // Main question text field
   options: string[];
