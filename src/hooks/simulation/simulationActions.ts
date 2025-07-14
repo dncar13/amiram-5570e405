@@ -67,7 +67,7 @@ export const createSimulationActions = (
             
             const progressData = {
               user_id: user.id,
-              question_id: currentQuestion.id, // Already a string (UUID), no need to convert
+              question_id: typeof currentQuestion.id === 'string' ? currentQuestion.id : currentQuestion.id.toString(),
               answered_correctly: isCorrect,
               answered_at: new Date().toISOString(),
               time_spent: Math.round((Date.now() - (prevState.questionStartTime || Date.now())) / 1000)
@@ -83,7 +83,7 @@ export const createSimulationActions = (
                 const { data } = await supabase
                   .from('user_progress')
                   .select('*')
-                  .eq('question_id', currentQuestion.id) // Already a string (UUID)
+                  .eq('question_id', typeof currentQuestion.id === 'string' ? currentQuestion.id : currentQuestion.id.toString())
                   .eq('user_id', user.id)
                   .single();
                 

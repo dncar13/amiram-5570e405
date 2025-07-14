@@ -14,9 +14,13 @@ export const getAllQuestions = (): Question[] => {
 /**
  * Get question by ID
  */
-export const getQuestionById = (id: number): Question | undefined => {
+export const getQuestionById = (id: string | number): Question | undefined => {
   const allQuestions = getQuestions();
-  return allQuestions.find(q => q.id === id);
+  const numericId = typeof id === 'string' ? parseInt(id) : id;
+  return allQuestions.find(q => {
+    const questionId = typeof q.id === 'string' ? parseInt(q.id) : q.id;
+    return questionId === numericId;
+  });
 };
 
 /**
@@ -53,7 +57,7 @@ export const addQuestion = (newQuestion: Omit<Question, "id">): boolean => {
   try {
     const currentQuestions = getQuestions();
     
-    const maxId = Math.max(...currentQuestions.map(q => q.id), 0);
+    const maxId = Math.max(...currentQuestions.map(q => typeof q.id === 'string' ? parseInt(q.id) : q.id), 0);
     const questionWithId: Question = {
       ...newQuestion,
       id: maxId + 1
@@ -78,12 +82,16 @@ export const addQuestion = (newQuestion: Omit<Question, "id">): boolean => {
 /**
  * Delete question by ID
  */
-export const deleteQuestion = (id: number): boolean => {
+export const deleteQuestion = (id: string | number): boolean => {
   try {
     const currentQuestions = getQuestions();
+    const numericId = typeof id === 'string' ? parseInt(id) : id;
     
     const initialLength = currentQuestions.length;
-    const filteredQuestions = currentQuestions.filter(q => q.id !== id);
+    const filteredQuestions = currentQuestions.filter(q => {
+      const questionId = typeof q.id === 'string' ? parseInt(q.id) : q.id;
+      return questionId !== numericId;
+    });
     
     if (filteredQuestions.length === initialLength) {
       toast.error("השאלה לא נמצאה");

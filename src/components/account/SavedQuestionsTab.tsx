@@ -19,15 +19,17 @@ const SavedQuestionsTab = () => {
     }
   }, [isInitialized, initializeSavedQuestions]);
 
-  const handleRemove = (questionId: number) => {
-    if (removeQuestionById(questionId)) {
+  const handleRemove = (questionId: string | number) => {
+    const id = typeof questionId === 'string' ? parseInt(questionId) : questionId;
+    if (removeQuestionById(id)) {
       toast.success("השאלה הוסרה בהצלחה");
     }
   };
 
-  const handleViewQuestion = (questionId?: number) => {
+  const handleViewQuestion = (questionId?: string | number) => {
     if (questionId) {
-      navigate(`/saved-questions?questionId=${questionId}`);
+      const id = typeof questionId === 'string' ? parseInt(questionId) : questionId;
+      navigate(`/saved-questions?questionId=${id}`);
     }
   };
 

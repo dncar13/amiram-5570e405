@@ -74,7 +74,10 @@ export const getQuestionsBySet = (setId: number): Question[] => {
   
   // החזר שאלות שה-ID שלהן נמצא בטווח המתאים
   return allQuestions.filter(
-    question => question.id >= startId && question.id <= endId
+    question => {
+      const id = typeof question.id === 'string' ? parseInt(question.id) : question.id;
+      return id >= startId && id <= endId;
+    }
   );
 };
 

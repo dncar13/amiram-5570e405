@@ -24,6 +24,9 @@ export interface SimulationState {
   currentScorePercentage: number;
   questionStartTime?: number;
   sessionStartTime?: number;
+  type?: string;
+  difficulty?: string;
+  startTime?: number;
 }
 
 export interface SimulationActions {
@@ -62,4 +65,7 @@ export const initialSimulationState: SimulationState = {
   currentScorePercentage: 0,
   questionStartTime: Date.now(),
   sessionStartTime: Date.now(),
+  type: undefined,
+  difficulty: undefined,
+  startTime: Date.now(),
 };
