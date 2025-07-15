@@ -82,10 +82,26 @@ export class SetProgressService {
         timestamp: new Date().toISOString()
       });
 
-      // Validate required fields
+      // ✅ Enhanced validation with type checking
       if (!userId || !setData.set_id || !setData.set_type || !setData.set_difficulty) {
-        console.error('❌ Missing required parameters');
+        console.error('❌ Missing required parameters', {
+          userId: !!userId,
+          setId: !!setData.set_id,
+          setType: !!setData.set_type,
+          setDifficulty: !!setData.set_difficulty
+        });
         return { success: false, error: 'Missing required parameters' };
+      }
+
+      // ✅ Validate numeric fields
+      if (typeof setData.set_id !== 'number' || isNaN(setData.set_id)) {
+        console.error('❌ Invalid set_id type:', typeof setData.set_id, setData.set_id);
+        return { success: false, error: 'Invalid set_id: must be a number' };
+      }
+
+      if (typeof progressData.questions_answered !== 'number' || progressData.questions_answered < 0) {
+        console.error('❌ Invalid questions_answered:', progressData.questions_answered);
+        return { success: false, error: 'Invalid questions_answered: must be a non-negative number' };
       }
 
       // Check authentication
@@ -124,7 +140,7 @@ export class SetProgressService {
         updated_at: new Date().toISOString(),
         metadata: {
           is_set_based: 'true',
-          set_id: setData.set_id.toString(),
+          set_id: setData.set_id.toString(), // Store as string but we'll parse back to number
           set_type: setData.set_type,
           set_difficulty: setData.set_difficulty,
           set_title: setData.set_title,
@@ -136,6 +152,16 @@ export class SetProgressService {
           session_subtype: 'set_practice'
         }
       };
+
+      console.log('💾 Session data to save:', {
+        setId: setData.set_id,
+        questions_answered: progressData.questions_answered,
+        correct_answers: progressData.correct_answers,
+        current_question_index: progressData.current_question_index,
+        progress_percentage: Math.round(progress_percentage),
+        is_completed: progressData.is_completed || false,
+        metadata: sessionData.metadata
+      });
       
       if (existingProgress) {
         // Update existing progress
@@ -278,46 +304,102 @@ export class SetProgressService {
       
       data?.forEach(session => {
         const metadata = session.metadata as unknown as SetMetadata;
-        const setId = metadata?.set_id;
+        
+        // ✅ Fix: Convert set_id from string to number for consistent comparison
+        const setIdString = metadata?.set_id?.toString();
+        const setId = setIdString ? parseInt(setIdString) : null;
+        
+        // ✅ Fix: Add null safety for numeric fields
+        const questions_answered = session.questions_answered || 0;
+        const correct_answers = session.correct_answers || 0;
+        const current_question_index = session.current_question_index || 0;
+        const progress_percentage = session.progress_percentage || 0;
+        const time_spent = session.time_spent || 0;
+        const is_completed = session.is_completed || false;
         
         console.log('🔍 Processing session:', {
           id: session.id,
           setId: setId,
+          setIdString: setIdString,
           setType: metadata?.set_type,
           setDifficulty: metadata?.set_difficulty,
           status: session.status,
-          questions_answered: session.questions_answered,
-          is_completed: session.is_completed
+          questions_answered: questions_answered,
+          is_completed: is_completed,
+          rawMetadata: metadata
         });
         
-        // Skip if set_id doesn't exist or doesn't match criteria
-        if (!setId || metadata?.set_type !== setType || metadata?.set_difficulty !== setDifficulty) {
-          console.log('⚠️ Skipping session due to missing/mismatched criteria');
+        // Skip if set_id doesn't exist, is invalid, or doesn't match criteria
+        if (!setId || isNaN(setId) || metadata?.set_type !== setType || metadata?.set_difficulty !== setDifficulty) {
+          console.log('⚠️ Skipping session due to missing/mismatched criteria', {
+            setId: setId,
+            isNaN: isNaN(setId || 0),
+            typeMatch: metadata?.set_type === setType,
+            difficultyMatch: metadata?.set_difficulty === setDifficulty
+          });
           return;
         }
         
-        const scorePercentage = session.questions_answered > 0 
-          ? Math.round((session.correct_answers / session.questions_answered) * 100)
+        const scorePercentage = questions_answered > 0 
+          ? Math.round((correct_answers / questions_answered) * 100)
           : 0;
         
-        // Only keep the most recent session for each set
-        if (!summary[setId] || session.updated_at > summary[setId].last_activity!) {
+        // ✅ Fix: Determine status more robustly
+        let status: 'not_started' | 'in_progress' | 'completed' = 'not_started';
+        
+        if (is_completed) {
+          status = 'completed';
+        } else if (questions_answered > 0 || current_question_index > 0 || progress_percentage > 0) {
+          status = 'in_progress';
+        }
+        
+        console.log('📊 Status determination:', {
+          setId,
+          is_completed,
+          questions_answered,
+          current_question_index,
+          progress_percentage,
+          finalStatus: status
+        });
+        
+        // ✅ Fix: Prioritize sessions with actual progress over just "most recent"
+        const existingProgress = summary[setId];
+        let shouldUpdate = false;
+        
+        if (!existingProgress) {
+          shouldUpdate = true;
+        } else {
+          // Prioritize completed > in_progress > not_started
+          const statusPriority = { 'completed': 3, 'in_progress': 2, 'not_started': 1 };
+          const currentPriority = statusPriority[status];
+          const existingPriority = statusPriority[existingProgress.status];
+          
+          if (currentPriority > existingPriority) {
+            shouldUpdate = true;
+          } else if (currentPriority === existingPriority) {
+            // If same priority, take the more recent one
+            shouldUpdate = session.updated_at > existingProgress.last_activity!;
+          }
+        }
+        
+        if (shouldUpdate) {
           summary[setId] = {
             set_id: setId,
             set_type: metadata?.set_type,
             set_difficulty: metadata?.set_difficulty,
-            status: session.is_completed ? 'completed' : 
-                   session.questions_answered > 0 ? 'in_progress' : 'not_started',
-            progress_percentage: session.progress_percentage || 0,
-            current_question: session.current_question_index || 0,
-            total_questions: session.total_questions,
+            status: status,
+            progress_percentage: progress_percentage,
+            current_question: current_question_index,
+            total_questions: session.total_questions || 10,
             score_percentage: scorePercentage,
-            time_spent: session.time_spent,
+            time_spent: time_spent,
             last_activity: session.updated_at,
-            can_resume: !session.is_completed && session.questions_answered > 0
+            can_resume: !is_completed && (questions_answered > 0 || current_question_index > 0)
           };
           
-          console.log(`✅ Added progress for set ${setId}:`, summary[setId]);
+          console.log(`✅ Added/Updated progress for set ${setId}:`, summary[setId]);
+        } else {
+          console.log(`⏭️ Skipped session for set ${setId} (existing progress is better)`);
         }
       });
       

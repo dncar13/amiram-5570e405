@@ -78,6 +78,31 @@ const TypeSpecificSets = () => {
     loadQuestions();
   }, [type, difficulty]);
 
+  // ✅ Add effect to refresh progress when component becomes visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden && currentUser) {
+        console.log('🔄 [TypeSpecificSets] Refreshing progress summary on visibility change');
+        refreshSummary();
+      }
+    };
+
+    const handleFocus = () => {
+      if (currentUser) {
+        console.log('🔄 [TypeSpecificSets] Refreshing progress summary on focus');
+        refreshSummary();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [currentUser, refreshSummary]);
+
   const getDifficultyInHebrew = (diff: string) => {
     switch (diff) {
       case 'easy': return 'קל';
