@@ -81,9 +81,9 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .like('metadata', `%"set_id":${setData.set_id}%`)
-        .like('metadata', `%"set_type":"${setData.set_type}"%`)
-        .like('metadata', `%"set_difficulty":"${setData.set_difficulty}"%`)
+        .filter('metadata->>set_id', 'eq', setData.set_id.toString())
+        .filter('metadata->>set_type', 'eq', setData.set_type)
+        .filter('metadata->>set_difficulty', 'eq', setData.set_difficulty)
         .maybeSingle();
       
       const sessionData = {
@@ -159,9 +159,9 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .like('metadata', `%"set_id":${setId}%`)
-        .like('metadata', `%"set_type":"${setType}"%`)
-        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`)
+        .filter('metadata->>set_id', 'eq', setId.toString())
+        .filter('metadata->>set_type', 'eq', setType)
+        .filter('metadata->>set_difficulty', 'eq', setDifficulty)
         .maybeSingle();
       
       if (error) {
@@ -214,8 +214,8 @@ export class SetProgressService {
         .select('*')
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .like('metadata', `%"set_type":"${setType}"%`)
-        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`)
+        .filter('metadata->>set_type', 'eq', setType)
+        .filter('metadata->>set_difficulty', 'eq', setDifficulty)
         .order('updated_at', { ascending: false });
       
       if (error) {
@@ -294,9 +294,9 @@ export class SetProgressService {
         })
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .like('metadata', `%"set_id":${setId}%`)
-        .like('metadata', `%"set_type":"${setType}"%`)
-        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`);
+        .filter('metadata->>set_id', 'eq', setId.toString())
+        .filter('metadata->>set_type', 'eq', setType)
+        .filter('metadata->>set_difficulty', 'eq', setDifficulty);
       
       if (error) {
         console.error('❌ Error completing set:', error);
@@ -326,9 +326,9 @@ export class SetProgressService {
         .delete()
         .eq('user_id', userId)
         .eq('session_type', 'set_practice')
-        .like('metadata', `%"set_id":${setId}%`)
-        .like('metadata', `%"set_type":"${setType}"%`)
-        .like('metadata', `%"set_difficulty":"${setDifficulty}"%`);
+        .filter('metadata->>set_id', 'eq', setId.toString())
+        .filter('metadata->>set_type', 'eq', setType)
+        .filter('metadata->>set_difficulty', 'eq', setDifficulty);
       
       if (error) {
         console.error('❌ Error resetting set progress:', error);
