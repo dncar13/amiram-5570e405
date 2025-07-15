@@ -82,7 +82,9 @@ export const signUp = async (email: string, password: string): Promise<AuthRespo
       };
     }
     
-    const redirectUrl = `${window.location.origin}/`;
+    // Use localhost for development, production URL for production
+    const isDevelopment = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    const redirectUrl = isDevelopment ? `http://localhost:8080/` : `${window.location.origin}/`;
     
     const { data, error } = await supabase.auth.signUp({
       email,

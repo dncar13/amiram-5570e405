@@ -80,7 +80,8 @@ export class SetProgressService {
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice')
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_id', 'eq', setData.set_id.toString())
         .filter('metadata->>set_type', 'eq', setData.set_type)
         .filter('metadata->>set_difficulty', 'eq', setData.set_difficulty)
@@ -88,7 +89,7 @@ export class SetProgressService {
       
       const sessionData = {
         user_id: userId,
-        session_type: 'set_practice',
+        session_type: 'practice',
         topic_id: null,
         difficulty: setData.set_difficulty,
         questions_answered: progressData.questions_answered,
@@ -102,7 +103,9 @@ export class SetProgressService {
         metadata: {
           ...setData,
           last_question_index: progressData.current_question_index,
-          paused_at: new Date().toISOString()
+          paused_at: new Date().toISOString(),
+          is_set_based: true, // Flag to distinguish from regular practice
+          session_subtype: 'set_practice' // Additional identifier
         }
       };
       
@@ -158,7 +161,8 @@ export class SetProgressService {
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice')
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_id', 'eq', setId.toString())
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty)
@@ -173,7 +177,7 @@ export class SetProgressService {
         return null;
       }
       
-      const metadata = data.metadata as any;
+      const metadata = data.metadata as SetMetadata;
       return {
         id: data.id,
         user_id: data.user_id,
@@ -213,7 +217,8 @@ export class SetProgressService {
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice')
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty)
         .order('updated_at', { ascending: false });
@@ -228,7 +233,7 @@ export class SetProgressService {
       const summary: Record<number, SetProgressSummary> = {};
       
       data?.forEach(session => {
-        const metadata = session.metadata as any;
+        const metadata = session.metadata as SetMetadata;
         const setId = metadata?.set_id;
         
         // Skip if set_id doesn't exist or doesn't match criteria
@@ -293,7 +298,8 @@ export class SetProgressService {
           updated_at: new Date().toISOString()
         })
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice')
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_id', 'eq', setId.toString())
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty);
@@ -325,7 +331,8 @@ export class SetProgressService {
         .from('simulation_sessions')
         .delete()
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice')
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_id', 'eq', setId.toString())
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty);
@@ -358,7 +365,8 @@ export class SetProgressService {
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
-        .eq('session_type', 'set_practice');
+        .eq('session_type', 'practice')
+        .filter('metadata->>is_set_based', 'eq', 'true');
       
       if (error) {
         console.error('❌ Error fetching user set stats:', error);

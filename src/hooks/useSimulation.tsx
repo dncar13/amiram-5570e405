@@ -162,7 +162,9 @@ export const useSimulation = (
         remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
         examMode,
-        showAnswersImmediately
+        showAnswersImmediately,
+        type: effectiveType,
+        difficulty: difficulty
       });
       
       if (examMode) {
@@ -209,7 +211,9 @@ export const useSimulation = (
         remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
         examMode,
-        showAnswersImmediately
+        showAnswersImmediately,
+        type: effectiveType,
+        difficulty: difficulty
       }));
       
       toast({
@@ -266,7 +270,9 @@ export const useSimulation = (
           remainingTime: isFullExam ? 3600 : 1800,
           progressLoaded: true,
           examMode,
-          showAnswersImmediately
+          showAnswersImmediately,
+          type: effectiveType,
+          difficulty: difficulty
         }));
       } else {
         // console.error("No questions found for simulation", { type, difficulty, effectiveType, simulationId, storyQuestions: !!storyQuestions, isFullExam });
@@ -275,7 +281,9 @@ export const useSimulation = (
           remainingTime: isFullExam ? 3600 : 1800,
           progressLoaded: true,
           examMode,
-          showAnswersImmediately
+          showAnswersImmediately,
+          type: effectiveType,
+          difficulty: difficulty
         }));
       }
     } catch (error) {
@@ -285,7 +293,9 @@ export const useSimulation = (
         remainingTime: isFullExam ? 3600 : 1800,
         progressLoaded: true,
         examMode,
-        showAnswersImmediately
+        showAnswersImmediately,
+        type: effectiveType,
+        difficulty: difficulty
       }));
     }
   }, [simulationId, isQuestionSet, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, type, typeFromQuery]);
@@ -332,7 +342,9 @@ export const useSimulation = (
                   : 0,
                 progressLoaded: true,
                 examMode,
-                showAnswersImmediately
+                showAnswersImmediately,
+                type: effectiveType,
+                difficulty: difficulty
               }));
               
               setActiveSessionId(session.id);
@@ -359,7 +371,9 @@ export const useSimulation = (
                 currentScorePercentage: savedProgress.currentScorePercentage || 0,
                 progressLoaded: true,
                 examMode,
-                showAnswersImmediately
+                showAnswersImmediately,
+                type: effectiveType,
+                difficulty: difficulty
               }));
             } else {
               setState(prevState => ({ 
@@ -367,7 +381,9 @@ export const useSimulation = (
                 remainingTime: isFullExam ? 3600 : 1800,
                 progressLoaded: true, 
                 examMode,
-                showAnswersImmediately
+                showAnswersImmediately,
+                type: effectiveType,
+                difficulty: difficulty
               }));
             }
           } else {
@@ -376,7 +392,9 @@ export const useSimulation = (
               remainingTime: isFullExam ? 3600 : 1800,
               progressLoaded: true, 
               examMode,
-              showAnswersImmediately
+              showAnswersImmediately,
+              type: effectiveType,
+              difficulty: difficulty
             }));
           }
           
@@ -388,7 +406,9 @@ export const useSimulation = (
             remainingTime: isFullExam ? 3600 : 1800,
             progressLoaded: true, 
             examMode,
-            showAnswersImmediately
+            showAnswersImmediately,
+            type: effectiveType,
+            difficulty: difficulty
           }));
           progressLoadedRef.current = true;
         }

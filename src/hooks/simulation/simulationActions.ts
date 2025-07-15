@@ -102,6 +102,7 @@ export const createSimulationActions = (
                 
                 console.log('🔍 Checking set parameters:', { setId, setStart, type: prevState.type, difficulty: prevState.difficulty });
                 console.log('🔍 Current state:', { currentQuestionIndex: newState.currentQuestionIndex, answeredCount: newState.answeredQuestionsCount, correctCount: newState.correctQuestionsCount });
+                console.log('🔍 URL and question state:', { url: window.location.href, questionId: currentQuestion.id, totalQuestions: prevState.questions.length });
                 
                 if (setId && setStart && prevState.type && prevState.difficulty) {
                   const setIdNum = parseInt(setId);
@@ -110,6 +111,14 @@ export const createSimulationActions = (
                   // Calculate the actual question position within the set (0-9)
                   const questionInSet = newState.currentQuestionIndex - startIndex;
                   console.log('📍 Question position in set:', questionInSet);
+                  
+                  // Calculate set-specific progress (only questions within this set)
+                  const setQuestionIndices = Array.from({ length: 10 }, (_, i) => startIndex + i);
+                  const setAnsweredCount = setQuestionIndices.filter(index => index in newState.userAnswers).length;
+                  const setCorrectCount = setQuestionIndices.filter(index => {
+                    const answer = newState.userAnswers[index];
+                    return answer !== undefined && answer === prevState.questions[index]?.correctAnswer;
+                  }).length;
                   
                   const setMetadata: SetMetadata = {
                     set_id: setIdNum,
@@ -125,12 +134,19 @@ export const createSimulationActions = (
                   
                   const setProgressData = {
                     current_question_index: questionInSet, // Position within the set (0-9)
-                    questions_answered: newState.answeredQuestionsCount,
-                    correct_answers: newState.correctQuestionsCount,
+                    questions_answered: setAnsweredCount, // Only count questions within this set
+                    correct_answers: setCorrectCount, // Only count correct answers within this set
                     time_spent: Math.round((Date.now() - (prevState.startTime || Date.now())) / 1000),
-                    is_completed: questionInSet >= 9 // Complete when reaching question 10 (index 9)
+                    is_completed: setAnsweredCount >= 10 // Complete when all 10 questions are answered
                   };
                   
+                  console.log('📊 Set progress calculation:', { 
+                    setQuestionIndices, 
+                    setAnsweredCount, 
+                    setCorrectCount, 
+                    userAnswers: newState.userAnswers,
+                    currentQuestions: prevState.questions.slice(startIndex, startIndex + 10).map(q => ({ id: q.id, correctAnswer: q.correctAnswer }))
+                  });
                   console.log('💾 Saving set progress:', setMetadata, setProgressData);
                   
                   SetProgressService.saveSetProgress(user.id, setMetadata, setProgressData).then(setResult => {
