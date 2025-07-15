@@ -101,29 +101,37 @@ export const createSimulationActions = (
                 const setStart = urlParams.get('start');
                 
                 console.log('🔍 Checking set parameters:', { setId, setStart, type: prevState.type, difficulty: prevState.difficulty });
+                console.log('🔍 Current state:', { currentQuestionIndex: newState.currentQuestionIndex, answeredCount: newState.answeredQuestionsCount, correctCount: newState.correctQuestionsCount });
                 
                 if (setId && setStart && prevState.type && prevState.difficulty) {
                   const setIdNum = parseInt(setId);
                   const startIndex = parseInt(setStart);
+                  
+                  // Calculate the actual question position within the set (0-9)
+                  const questionInSet = newState.currentQuestionIndex - startIndex;
+                  console.log('📍 Question position in set:', questionInSet);
+                  
                   const setMetadata: SetMetadata = {
                     set_id: setIdNum,
                     set_type: prevState.type,
                     set_difficulty: prevState.difficulty,
                     start_index: startIndex,
                     end_index: startIndex + 9,
-                    questions_in_set: 10, // Each set contains 10 questions
+                    questions_in_set: 10,
                     set_title: `סט ${setId}`,
-                    last_question_index: newState.currentQuestionIndex,
+                    last_question_index: questionInSet, // Position within the set, not global
                     paused_at: new Date().toISOString()
                   };
                   
                   const setProgressData = {
-                    current_question_index: newState.currentQuestionIndex,
+                    current_question_index: questionInSet, // Position within the set (0-9)
                     questions_answered: newState.answeredQuestionsCount,
                     correct_answers: newState.correctQuestionsCount,
                     time_spent: Math.round((Date.now() - (prevState.startTime || Date.now())) / 1000),
-                    is_completed: newState.simulationComplete
+                    is_completed: questionInSet >= 9 // Complete when reaching question 10 (index 9)
                   };
+                  
+                  console.log('💾 Saving set progress:', setMetadata, setProgressData);
                   
                   SetProgressService.saveSetProgress(user.id, setMetadata, setProgressData).then(setResult => {
                     if (setResult.success) {
