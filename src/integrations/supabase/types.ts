@@ -436,11 +436,97 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      set_progress_debug: {
+        Row: {
+          correct_answers: number | null
+          created_at: string | null
+          current_question_index: number | null
+          difficulty: string | null
+          full_metadata: Json | null
+          id: string | null
+          is_set_based: string | null
+          questions_answered: number | null
+          questions_in_set: string | null
+          session_type: string | null
+          set_difficulty: string | null
+          set_id: string | null
+          set_number: string | null
+          set_type: string | null
+          status: string | null
+          total_questions: number | null
+          update_status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          correct_answers?: number | null
+          created_at?: string | null
+          current_question_index?: number | null
+          difficulty?: string | null
+          full_metadata?: Json | null
+          id?: string | null
+          is_set_based?: never
+          questions_answered?: number | null
+          questions_in_set?: never
+          session_type?: string | null
+          set_difficulty?: never
+          set_id?: never
+          set_number?: never
+          set_type?: never
+          status?: string | null
+          total_questions?: number | null
+          update_status?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          correct_answers?: number | null
+          created_at?: string | null
+          current_question_index?: number | null
+          difficulty?: string | null
+          full_metadata?: Json | null
+          id?: string | null
+          is_set_based?: never
+          questions_answered?: number | null
+          questions_in_set?: never
+          session_type?: string | null
+          set_difficulty?: never
+          set_id?: never
+          set_number?: never
+          set_type?: never
+          status?: string | null
+          total_questions?: number | null
+          update_status?: never
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      clean_duplicate_set_sessions: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          deleted_count: number
+        }[]
+      }
+      get_user_set_progress_summary: {
+        Args: { p_user_id: string }
+        Returns: {
+          set_type: string
+          set_difficulty: string
+          total_sets: number
+          completed_sets: number
+          in_progress_sets: number
+          average_score: number
+        }[]
+      }
       has_active_premium: {
         Args: { user_id: string }
+        Returns: boolean
+      }
+      validate_set_metadata: {
+        Args: { metadata: Json }
         Returns: boolean
       }
     }
