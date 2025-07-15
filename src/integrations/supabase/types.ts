@@ -282,7 +282,7 @@ export type Database = {
       simulation_sessions: {
         Row: {
           answers: Json | null
-          completed_at: string
+          completed_at: string | null
           correct_answers: number
           created_at: string
           current_question_index: number | null
@@ -302,7 +302,7 @@ export type Database = {
         }
         Insert: {
           answers?: Json | null
-          completed_at?: string
+          completed_at?: string | null
           correct_answers?: number
           created_at?: string
           current_question_index?: number | null
@@ -322,7 +322,7 @@ export type Database = {
         }
         Update: {
           answers?: Json | null
-          completed_at?: string
+          completed_at?: string | null
           correct_answers?: number
           created_at?: string
           current_question_index?: number | null

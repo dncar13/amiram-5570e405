@@ -28,27 +28,36 @@ export async function saveSimulationSession(sessionData: LiveSimulationSession) 
     console.log('🔄 [saveSimulationSession] Saving session data:', sessionData);
     
     const now = new Date().toISOString();
+    // Create data object without undefined id for new sessions
+    const dataToSave: any = {
+      user_id: sessionData.user_id,
+      current_question_index: sessionData.current_question_index,
+      answers: sessionData.answers,
+      total_questions: sessionData.total_questions,
+      progress_percentage: sessionData.progress_percentage,
+      updated_at: now,
+      is_completed: sessionData.is_completed ?? false,
+      status: sessionData.is_completed ? "completed" : "draft",
+      session_type: sessionData.session_type || 'simulation',
+      metadata: sessionData.metadata ?? {},
+      correct_answers: sessionData.correct_answers ?? 0,
+      questions_answered: sessionData.questions_answered ?? 0,
+      time_spent: sessionData.time_spent ?? 0,
+    };
+
+    // Only include id if it exists (for updates)
+    if (sessionData.id) {
+      dataToSave.id = sessionData.id;
+    }
+
+    // Only include completed_at if session is completed
+    if (sessionData.is_completed) {
+      dataToSave.completed_at = now;
+    }
+
     const { data, error } = await supabase
       .from("simulation_sessions")
-      .upsert([
-        {
-          id: sessionData.id,
-          user_id: sessionData.user_id,
-          current_question_index: sessionData.current_question_index,
-          answers: sessionData.answers,
-          total_questions: sessionData.total_questions,
-          progress_percentage: sessionData.progress_percentage,
-          updated_at: now,
-          is_completed: sessionData.is_completed ?? false,
-          status: sessionData.is_completed ? "completed" : "draft",
-          session_type: sessionData.session_type || 'simulation',
-          metadata: sessionData.metadata ?? {},
-          correct_answers: sessionData.correct_answers ?? 0,
-          questions_answered: sessionData.questions_answered ?? 0,
-          time_spent: sessionData.time_spent ?? 0,
-          ...(sessionData.is_completed && { completed_at: now }),
-        }
-      ], { 
+      .upsert([dataToSave], { 
         onConflict: 'id',
         ignoreDuplicates: false 
       })
