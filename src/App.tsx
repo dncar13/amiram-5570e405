@@ -40,6 +40,7 @@ import TypeSpecificSets from "./pages/TypeSpecificSets";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
+import SetProgressDebug from "./components/SetProgressDebug";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -172,6 +173,15 @@ const AnimatedRoutes = () => {
               <ProgressTrackingTest />
             </ProtectedRoute>
           } />
+          
+          {/* Debug route - only in development */}
+          {process.env.NODE_ENV === 'development' && (
+            <Route path="/debug/set-progress" element={
+              <ProtectedRoute requireAuth={true}>
+                <SetProgressDebug />
+              </ProtectedRoute>
+            } />
+          )}
           <Route path="/simulation/type/:type" element={<SimulationByType />} />
           <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
           

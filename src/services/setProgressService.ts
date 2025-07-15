@@ -1,5 +1,5 @@
 /**
- * Set Progress Service - Handles progress tracking for question sets
+ * Enhanced Set Progress Service - Handles progress tracking for question sets
  * Built on top of existing ProgressService and simulation_sessions
  */
 
@@ -71,7 +71,29 @@ export class SetProgressService {
     }
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      console.log('💾 Saving set progress:', { userId, setData, progressData });
+      console.log('💾 [SetProgressService] Saving set progress:', {
+        userId,
+        setId: setData.set_id,
+        setType: setData.set_type,
+        setDifficulty: setData.set_difficulty,
+        questions_answered: progressData.questions_answered,
+        correct_answers: progressData.correct_answers,
+        is_completed: progressData.is_completed,
+        timestamp: new Date().toISOString()
+      });
+
+      // Validate required fields
+      if (!userId || !setData.set_id || !setData.set_type || !setData.set_difficulty) {
+        console.error('❌ Missing required parameters');
+        return { success: false, error: 'Missing required parameters' };
+      }
+
+      // Check authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.id !== userId) {
+        console.error('❌ User not authenticated or mismatch');
+        return { success: false, error: 'Authentication failed' };
+      }
       
       const progress_percentage = (progressData.questions_answered / setData.questions_in_set) * 100;
       
@@ -89,7 +111,7 @@ export class SetProgressService {
       
       const sessionData = {
         user_id: userId,
-        session_type: 'practice',
+        session_type: 'practice' as const,
         topic_id: null,
         difficulty: setData.set_difficulty,
         questions_answered: progressData.questions_answered,
@@ -101,16 +123,24 @@ export class SetProgressService {
         time_spent: progressData.time_spent,
         updated_at: new Date().toISOString(),
         metadata: {
-          ...setData,
-          last_question_index: progressData.current_question_index,
+          is_set_based: 'true',
+          set_id: setData.set_id.toString(),
+          set_type: setData.set_type,
+          set_difficulty: setData.set_difficulty,
+          set_title: setData.set_title,
+          start_index: setData.start_index.toString(),
+          end_index: setData.end_index.toString(),
+          questions_in_set: setData.questions_in_set.toString(),
+          last_question_index: progressData.current_question_index.toString(),
           paused_at: new Date().toISOString(),
-          is_set_based: true, // Flag to distinguish from regular practice
-          session_subtype: 'set_practice' // Additional identifier
+          session_subtype: 'set_practice'
         }
       };
       
       if (existingProgress) {
         // Update existing progress
+        console.log('📝 Updating existing session:', existingProgress.id);
+        
         const { error } = await supabase
           .from('simulation_sessions')
           .update(sessionData)
@@ -124,6 +154,8 @@ export class SetProgressService {
         console.log('✅ Set progress updated successfully');
       } else {
         // Create new progress entry
+        console.log('➕ Creating new session');
+        
         const { error } = await supabase
           .from('simulation_sessions')
           .insert({
@@ -211,7 +243,19 @@ export class SetProgressService {
     setDifficulty: string
   ): Promise<Record<number, SetProgressSummary>> {
     try {
-      console.log('🔍 Fetching set progress summary for:', { userId, setType, setDifficulty });
+      console.log('🔍 [SetProgressService] Fetching set progress summary for:', { 
+        userId, 
+        setType, 
+        setDifficulty,
+        timestamp: new Date().toISOString()
+      });
+
+      // Check authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.id !== userId) {
+        console.error('❌ User not authenticated or mismatch');
+        return {};
+      }
       
       const { data, error } = await supabase
         .from('simulation_sessions')
@@ -236,8 +280,19 @@ export class SetProgressService {
         const metadata = session.metadata as SetMetadata;
         const setId = metadata?.set_id;
         
+        console.log('🔍 Processing session:', {
+          id: session.id,
+          setId: setId,
+          setType: metadata?.set_type,
+          setDifficulty: metadata?.set_difficulty,
+          status: session.status,
+          questions_answered: session.questions_answered,
+          is_completed: session.is_completed
+        });
+        
         // Skip if set_id doesn't exist or doesn't match criteria
         if (!setId || metadata?.set_type !== setType || metadata?.set_difficulty !== setDifficulty) {
+          console.log('⚠️ Skipping session due to missing/mismatched criteria');
           return;
         }
         
@@ -245,22 +300,25 @@ export class SetProgressService {
           ? Math.round((session.correct_answers / session.questions_answered) * 100)
           : 0;
         
-        summary[setId] = {
-          set_id: setId,
-          set_type: metadata?.set_type,
-          set_difficulty: metadata?.set_difficulty,
-          status: session.is_completed ? 'completed' : 
-                 session.questions_answered > 0 ? 'in_progress' : 'not_started',
-          progress_percentage: session.progress_percentage || 0,
-          current_question: session.current_question_index || 0,
-          total_questions: session.total_questions,
-          score_percentage: scorePercentage,
-          time_spent: session.time_spent,
-          last_activity: session.updated_at,
-          can_resume: !session.is_completed && session.questions_answered > 0
-        };
-        
-        console.log(`✅ Added progress for set ${setId}:`, summary[setId]);
+        // Only keep the most recent session for each set
+        if (!summary[setId] || session.updated_at > summary[setId].last_activity!) {
+          summary[setId] = {
+            set_id: setId,
+            set_type: metadata?.set_type,
+            set_difficulty: metadata?.set_difficulty,
+            status: session.is_completed ? 'completed' : 
+                   session.questions_answered > 0 ? 'in_progress' : 'not_started',
+            progress_percentage: session.progress_percentage || 0,
+            current_question: session.current_question_index || 0,
+            total_questions: session.total_questions,
+            score_percentage: scorePercentage,
+            time_spent: session.time_spent,
+            last_activity: session.updated_at,
+            can_resume: !session.is_completed && session.questions_answered > 0
+          };
+          
+          console.log(`✅ Added progress for set ${setId}:`, summary[setId]);
+        }
       });
       
       console.log('📈 Final summary:', summary);
