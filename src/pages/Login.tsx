@@ -196,7 +196,7 @@ const Login = () => {
       const { user, error } = result;
 
       if (error) {
-        const errorMessage = typeof error === 'string' ? error : (error as any)?.message || "שגיאה בהתחברות";
+        const errorMessage = typeof error === 'string' ? error : (error as Error)?.message || "שגיאה בהתחברות";
         if (
           errorMessage.includes("יש לאשר את כתובת האימייל") ||
           errorMessage.toLowerCase().includes("confirm your email") ||
@@ -284,7 +284,7 @@ const Login = () => {
       const { user, error } = result;
       
       if (error) {
-        const errorMessage = typeof error === 'string' ? error : (error as any)?.message || "שגיאה בהרשמה";
+        const errorMessage = typeof error === 'string' ? error : (error as Error)?.message || "שגיאה בהרשמה";
         if (
           errorMessage.includes("יש לאשר את כתובת האימייל") ||
           errorMessage.toLowerCase().includes("confirm your email") ||
@@ -339,13 +339,17 @@ const Login = () => {
   const mobileConfig = getMobileOptimizedConfig();
   
   const debouncedInputValidation = useCallback(
-    debounce((fieldName: string, value: string) => {
-      // Clear errors when user starts typing (mobile-optimized)
-      if (authError || loginState === 'error') {
-        setAuthError(null);
-        setLoginState('idle');
-      }
-    }, mobileConfig.inputDebounce),
+    (fieldName: string, value: string) => {
+      const debouncedFn = debounce(() => {
+        // Clear errors when user starts typing (mobile-optimized)
+        if (authError || loginState === 'error') {
+          setAuthError(null);
+          setLoginState('idle');
+        }
+      }, mobileConfig.inputDebounce);
+      
+      debouncedFn();
+    },
     [authError, loginState, mobileConfig.inputDebounce]
   );
   
