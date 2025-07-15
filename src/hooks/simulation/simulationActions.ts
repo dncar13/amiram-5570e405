@@ -96,15 +96,17 @@ export const createSimulationActions = (
                 window.dispatchEvent(new Event('activity_history_updated'));
                 
                 // Check if this is a set-based simulation and save set progress
-                const urlPath = window.location.pathname;
-                const setPathMatch = urlPath.match(/\/simulation\/type\/([^\/]+)\/([^\/]+)\/sets/);
+                const urlParams = new URLSearchParams(window.location.search);
+                const setId = urlParams.get('set');
+                const setStart = urlParams.get('start');
                 
-                if (setPathMatch && prevState.type && prevState.difficulty) {
-                  const [, typeFromUrl, difficultyFromUrl] = setPathMatch;
-                  const setId = Math.floor(prevState.currentQuestionIndex / 10) + 1; // Calculate set ID based on question index
-                  const startIndex = (setId - 1) * 10;
+                console.log('🔍 Checking set parameters:', { setId, setStart, type: prevState.type, difficulty: prevState.difficulty });
+                
+                if (setId && setStart && prevState.type && prevState.difficulty) {
+                  const setIdNum = parseInt(setId);
+                  const startIndex = parseInt(setStart);
                   const setMetadata: SetMetadata = {
-                    set_id: setId,
+                    set_id: setIdNum,
                     set_type: prevState.type,
                     set_difficulty: prevState.difficulty,
                     start_index: startIndex,
