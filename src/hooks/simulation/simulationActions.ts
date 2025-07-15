@@ -95,69 +95,117 @@ export const createSimulationActions = (
                 // Notify activity history to refresh
                 window.dispatchEvent(new Event('activity_history_updated'));
                 
-                // Check if this is a set-based simulation and save set progress
+                // ✅ Enhanced Set-Based Progress Tracking
                 const urlParams = new URLSearchParams(window.location.search);
                 const setId = urlParams.get('set');
                 const setStart = urlParams.get('start');
                 
-                console.log('🔍 Checking set parameters:', { setId, setStart, type: prevState.type, difficulty: prevState.difficulty });
-                console.log('🔍 Current state:', { currentQuestionIndex: newState.currentQuestionIndex, answeredCount: newState.answeredQuestionsCount, correctCount: newState.correctQuestionsCount });
-                console.log('🔍 URL and question state:', { url: window.location.href, questionId: currentQuestion.id, totalQuestions: prevState.questions.length });
+                console.log('🔍 [Set Progress] Checking parameters:', { 
+                  setId, 
+                  setStart, 
+                  type: prevState.type, 
+                  difficulty: prevState.difficulty,
+                  currentIndex: newState.currentQuestionIndex,
+                  answeredCount: newState.answeredQuestionsCount
+                });
                 
                 if (setId && setStart && prevState.type && prevState.difficulty) {
-                  const setIdNum = parseInt(setId);
-                  const startIndex = parseInt(setStart);
-                  
-                  // Calculate the actual question position within the set (0-9)
-                  const questionInSet = newState.currentQuestionIndex - startIndex;
-                  console.log('📍 Question position in set:', questionInSet);
-                  
-                  // Calculate set-specific progress (only questions within this set)
-                  const setQuestionIndices = Array.from({ length: 10 }, (_, i) => startIndex + i);
-                  const setAnsweredCount = setQuestionIndices.filter(index => index in newState.userAnswers).length;
-                  const setCorrectCount = setQuestionIndices.filter(index => {
-                    const answer = newState.userAnswers[index];
-                    return answer !== undefined && answer === prevState.questions[index]?.correctAnswer;
-                  }).length;
-                  
-                  const setMetadata: SetMetadata = {
-                    set_id: setIdNum,
-                    set_type: prevState.type,
-                    set_difficulty: prevState.difficulty,
-                    start_index: startIndex,
-                    end_index: startIndex + 9,
-                    questions_in_set: 10,
-                    set_title: `סט ${setId}`,
-                    last_question_index: questionInSet, // Position within the set, not global
-                    paused_at: new Date().toISOString()
-                  };
-                  
-                  const setProgressData = {
-                    current_question_index: questionInSet, // Position within the set (0-9)
-                    questions_answered: setAnsweredCount, // Only count questions within this set
-                    correct_answers: setCorrectCount, // Only count correct answers within this set
-                    time_spent: Math.round((Date.now() - (prevState.startTime || Date.now())) / 1000),
-                    is_completed: setAnsweredCount >= 10 // Complete when all 10 questions are answered
-                  };
-                  
-                  console.log('📊 Set progress calculation:', { 
-                    setQuestionIndices, 
-                    setAnsweredCount, 
-                    setCorrectCount, 
-                    userAnswers: newState.userAnswers,
-                    currentQuestions: prevState.questions.slice(startIndex, startIndex + 10).map(q => ({ id: q.id, correctAnswer: q.correctAnswer }))
-                  });
-                  console.log('💾 Saving set progress:', setMetadata, setProgressData);
-                  
-                  SetProgressService.saveSetProgress(user.id, setMetadata, setProgressData).then(setResult => {
-                    if (setResult.success) {
-                      console.log('✅ [handleSubmitAnswer] Set progress saved successfully');
-                    } else {
-                      console.error('❌ [handleSubmitAnswer] Failed to save set progress:', setResult.error);
+                  try {
+                    const setIdNum = parseInt(setId);
+                    const startIndex = parseInt(setStart);
+                    
+                    // ✅ Validate set boundaries
+                    if (isNaN(setIdNum) || isNaN(startIndex) || startIndex < 0) {
+                      console.error('❌ [Set Progress] Invalid set parameters:', { setId, setStart });
+                      return;
                     }
-                  }).catch(setError => {
-                    console.error('❌ [handleSubmitAnswer] Error saving set progress:', setError);
-                  });
+                    
+                    // ✅ Calculate question position within set (0-9)
+                    const questionInSet = newState.currentQuestionIndex - startIndex;
+                    
+                    // ✅ Validate question is within set bounds
+                    if (questionInSet < 0 || questionInSet >= 10) {
+                      console.log('ℹ️ [Set Progress] Question outside set bounds, skipping:', questionInSet);
+                      return;
+                    }
+                    
+                    // ✅ Calculate set-specific progress accurately
+                    const setQuestionIndices = Array.from({ length: 10 }, (_, i) => startIndex + i);
+                    const setAnsweredCount = setQuestionIndices.filter(index => 
+                      index < prevState.questions.length && index in newState.userAnswers
+                    ).length;
+                    
+                    const setCorrectCount = setQuestionIndices.filter(index => {
+                      if (index >= prevState.questions.length || !(index in newState.userAnswers)) {
+                        return false;
+                      }
+                      const answer = newState.userAnswers[index];
+                      const question = prevState.questions[index];
+                      return answer !== undefined && question && answer === question.correctAnswer;
+                    }).length;
+                    
+                    // ✅ Enhanced metadata with validation
+                    const setMetadata: SetMetadata = {
+                      set_id: setIdNum,
+                      set_type: prevState.type,
+                      set_difficulty: prevState.difficulty,
+                      start_index: startIndex,
+                      end_index: startIndex + 9,
+                      questions_in_set: 10,
+                      set_title: `${prevState.type} - ${prevState.difficulty} - סט ${setId}`,
+                      last_question_index: questionInSet,
+                      paused_at: new Date().toISOString()
+                    };
+                    
+                    // ✅ Progress data with proper completion check
+                    const setProgressData = {
+                      current_question_index: questionInSet,
+                      questions_answered: setAnsweredCount,
+                      correct_answers: setCorrectCount,
+                      time_spent: Math.round((Date.now() - (prevState.startTime || Date.now())) / 1000),
+                      is_completed: setAnsweredCount >= 10
+                    };
+                    
+                    console.log('📊 [Set Progress] Calculated data:', {
+                      setMetadata,
+                      setProgressData,
+                      validation: {
+                        questionInSet,
+                        setQuestionIndices,
+                        userAnswersInSet: setQuestionIndices.map(i => newState.userAnswers[i]),
+                        questionsInSet: setQuestionIndices.map(i => ({
+                          index: i,
+                          exists: i < prevState.questions.length,
+                          correctAnswer: prevState.questions[i]?.correctAnswer
+                        }))
+                      }
+                    });
+                    
+                    // ✅ Save with enhanced error handling
+                    SetProgressService.saveSetProgress(user.id, setMetadata, setProgressData)
+                      .then(setResult => {
+                        if (setResult.success) {
+                          console.log('✅ [Set Progress] Successfully saved');
+                          // ✅ Trigger UI update for set completion
+                          if (setProgressData.is_completed) {
+                            console.log('🎉 [Set Progress] Set completed!');
+                            window.dispatchEvent(new CustomEvent('set_completed', {
+                              detail: { setId: setIdNum, score: setCorrectCount }
+                            }));
+                          }
+                        } else {
+                          console.error('❌ [Set Progress] Save failed:', setResult.error);
+                        }
+                      })
+                      .catch(setError => {
+                        console.error('❌ [Set Progress] Exception during save:', setError);
+                      });
+                      
+                  } catch (error) {
+                    console.error('❌ [Set Progress] Unexpected error:', error);
+                  }
+                } else {
+                  console.log('ℹ️ [Set Progress] Not a set-based simulation, skipping set progress tracking');
                 }
               } else {
                 console.error('❌ [handleSubmitAnswer] Failed to save progress:', result.error);
@@ -250,72 +298,146 @@ export const createSimulationActions = (
         score: prevState.correctQuestionsCount
       };
 
-      // Complete the live simulation session
+      // ✅ Enhanced simulation completion handling
       (async () => {
         try {
           const { data: { user } } = await supabase.auth.getUser();
-          if (user) {
-            const totalTimeSpent = Math.round((Date.now() - (prevState.sessionStartTime || Date.now())) / 1000);
+          if (!user) {
+            console.error('❌ [Complete Simulation] No authenticated user');
+            return;
+          }
+
+          const totalTimeSpent = Math.round((Date.now() - (prevState.sessionStartTime || Date.now())) / 1000);
+          
+          // ✅ Handle set-based completion
+          const urlParams = new URLSearchParams(window.location.search);
+          const setId = urlParams.get('set');
+          const setStart = urlParams.get('start');
+          
+          if (setId && setStart && prevState.type && prevState.difficulty) {
+            console.log('🎯 [Complete Simulation] Completing set-based simulation');
             
-            // Import the live session service
-            const { completeSimulationSession } = await import('@/services/simulationSessionService');
-            
-            // Complete the active session if it exists
-            const activeSessionResult = await import('@/services/simulationSessionService').then(module => 
-              module.loadActiveSimulationSession(user.id)
-            );
-            
-            if (activeSessionResult.success && activeSessionResult.data) {
-              const result = await completeSimulationSession(activeSessionResult.data.id, {
-                correct_answers: prevState.correctQuestionsCount,
-                questions_answered: prevState.answeredQuestionsCount,
-                time_spent: totalTimeSpent,
-                progress_percentage: 100
-              });
+            try {
+              const setIdNum = parseInt(setId);
+              const startIndex = parseInt(setStart);
               
-              if (result.success) {
-                console.log('✅ Live simulation session completed');
-              } else {
-                console.error('❌ Failed to complete live session:', result.error);
-              }
-            } else {
-              // Fallback: save as new completed session
-              const { saveSimulationSession } = await import('@/services/simulationSessionService');
+              // Final set progress calculation
+              const setQuestionIndices = Array.from({ length: 10 }, (_, i) => startIndex + i);
+              const setAnsweredCount = setQuestionIndices.filter(index => 
+                index < prevState.questions.length && index in prevState.userAnswers
+              ).length;
               
-              const sessionData = {
-                user_id: user.id,
-                current_question_index: prevState.currentQuestionIndex,
-                answers: Object.entries(prevState.userAnswers).map(([index, answer]) => ({
-                  questionIndex: parseInt(index),
-                  selectedAnswer: answer,
-                  isCorrect: answer === prevState.questions[parseInt(index)]?.correctAnswer,
-                  timeSpent: 60
-                })),
-                total_questions: prevState.totalQuestions,
-                progress_percentage: 100,
-                is_completed: true,
-                session_type: prevState.examMode ? 'exam' : 'practice',
-                correct_answers: prevState.correctQuestionsCount,
-                questions_answered: prevState.answeredQuestionsCount,
-                time_spent: totalTimeSpent,
-                metadata: {
-                  exam_mode: prevState.examMode,
-                  show_answers_immediately: prevState.showAnswersImmediately,
-                  flagged_questions: Object.keys(prevState.questionFlags).filter(key => prevState.questionFlags[parseInt(key)]).length,
-                  completion_percentage: 100
+              const setCorrectCount = setQuestionIndices.filter(index => {
+                if (index >= prevState.questions.length || !(index in prevState.userAnswers)) {
+                  return false;
                 }
+                const answer = prevState.userAnswers[index];
+                const question = prevState.questions[index];
+                return answer !== undefined && question && answer === question.correctAnswer;
+              }).length;
+              
+              const setMetadata = {
+                set_id: setIdNum,
+                set_type: prevState.type,
+                set_difficulty: prevState.difficulty,
+                start_index: startIndex,
+                end_index: startIndex + 9,
+                questions_in_set: 10,
+                set_title: `${prevState.type} - ${prevState.difficulty} - סט ${setId}`,
+                last_question_index: 9, // Set is complete
+                paused_at: new Date().toISOString()
               };
               
-              const result = await saveSimulationSession(sessionData);
-              if (result.success) {
-                console.log('✅ Simulation session saved as completed');
+              const finalSetProgressData = {
+                current_question_index: 9, // Completed
+                questions_answered: setAnsweredCount,
+                correct_answers: setCorrectCount,
+                time_spent: totalTimeSpent,
+                is_completed: true
+              };
+              
+              console.log('🏁 [Complete Simulation] Final set progress:', { setMetadata, finalSetProgressData });
+              
+              const { SetProgressService } = await import('@/services/setProgressService');
+              const setResult = await SetProgressService.saveSetProgress(user.id, setMetadata, finalSetProgressData);
+              
+              if (setResult.success) {
+                console.log('✅ [Complete Simulation] Set progress finalized');
+                window.dispatchEvent(new CustomEvent('set_completed', {
+                  detail: { setId: setIdNum, score: setCorrectCount, totalQuestions: 10 }
+                }));
               } else {
-                console.error('❌ Failed to save completed session:', result.error);
+                console.error('❌ [Complete Simulation] Failed to finalize set progress:', setResult.error);
               }
+              
+            } catch (setError) {
+              console.error('❌ [Complete Simulation] Error handling set completion:', setError);
             }
           }
+          
+          // ✅ Handle general simulation session completion
+          const { completeSimulationSession, loadActiveSimulationSession, saveSimulationSession } = await import('@/services/simulationSessionService');
+          
+          const activeSessionResult = await loadActiveSimulationSession(user.id);
+          
+          if (activeSessionResult.success && activeSessionResult.data) {
+            // Complete existing session
+            const result = await completeSimulationSession(activeSessionResult.data.id, {
+              correct_answers: prevState.correctQuestionsCount,
+              questions_answered: prevState.answeredQuestionsCount,
+              time_spent: totalTimeSpent,
+              progress_percentage: 100
+            });
+            
+            if (result.success) {
+              console.log('✅ [Complete Simulation] Live session completed');
+            } else {
+              console.error('❌ [Complete Simulation] Failed to complete live session:', result.error);
+            }
+          } else {
+            // Create new completed session
+            const sessionData = {
+              user_id: user.id,
+              current_question_index: prevState.currentQuestionIndex,
+              answers: Object.entries(prevState.userAnswers).map(([index, answer]) => ({
+                questionIndex: parseInt(index),
+                selectedAnswer: answer,
+                isCorrect: answer === prevState.questions[parseInt(index)]?.correctAnswer,
+                timeSpent: Math.max(totalTimeSpent / prevState.answeredQuestionsCount, 1)
+              })),
+              total_questions: prevState.totalQuestions,
+              progress_percentage: 100,
+              is_completed: true,
+              session_type: setId ? 'set' : (prevState.examMode ? 'exam' : 'practice'),
+              correct_answers: prevState.correctQuestionsCount,
+              questions_answered: prevState.answeredQuestionsCount,
+              time_spent: totalTimeSpent,
+              metadata: {
+                exam_mode: prevState.examMode,
+                show_answers_immediately: prevState.showAnswersImmediately,
+                flagged_questions: Object.keys(prevState.questionFlags).filter(key => prevState.questionFlags[parseInt(key)]).length,
+                completion_percentage: 100,
+                ...(setId && {
+                  is_set_based: true,
+                  set_id: setId,
+                  set_type: prevState.type,
+                  set_difficulty: prevState.difficulty,
+                  set_number: setId,
+                  questions_in_set: 10
+                })
+              }
+            };
+            
+            const result = await saveSimulationSession(sessionData);
+            if (result.success) {
+              console.log('✅ [Complete Simulation] New session saved as completed');
+            } else {
+              console.error('❌ [Complete Simulation] Failed to save completed session:', result.error);
+            }
+          }
+          
         } catch (error) {
-          console.error('❌ Error completing simulation session:', error);
+          console.error('❌ [Complete Simulation] Unexpected error:', error);
         }
       })();
 

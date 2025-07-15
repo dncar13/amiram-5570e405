@@ -399,6 +399,78 @@ export type Database = {
         }
         Relationships: []
       }
+      user_preferences: {
+        Row: {
+          achievement_notifications: boolean | null
+          adaptive_difficulty: boolean | null
+          allow_analytics: boolean | null
+          auto_advance_time: number | null
+          created_at: string | null
+          daily_reminder_enabled: boolean | null
+          daily_reminder_time: string | null
+          delivery_strategy: string | null
+          enable_smart_delivery: boolean | null
+          enable_sound: boolean | null
+          font_size: string | null
+          id: string
+          preferred_difficulty: string | null
+          questions_per_session: number | null
+          reduce_animations: boolean | null
+          share_anonymous_data: boolean | null
+          show_explanations: boolean | null
+          theme: string | null
+          updated_at: string | null
+          user_id: string
+          weekly_progress_email: boolean | null
+        }
+        Insert: {
+          achievement_notifications?: boolean | null
+          adaptive_difficulty?: boolean | null
+          allow_analytics?: boolean | null
+          auto_advance_time?: number | null
+          created_at?: string | null
+          daily_reminder_enabled?: boolean | null
+          daily_reminder_time?: string | null
+          delivery_strategy?: string | null
+          enable_smart_delivery?: boolean | null
+          enable_sound?: boolean | null
+          font_size?: string | null
+          id?: string
+          preferred_difficulty?: string | null
+          questions_per_session?: number | null
+          reduce_animations?: boolean | null
+          share_anonymous_data?: boolean | null
+          show_explanations?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id: string
+          weekly_progress_email?: boolean | null
+        }
+        Update: {
+          achievement_notifications?: boolean | null
+          adaptive_difficulty?: boolean | null
+          allow_analytics?: boolean | null
+          auto_advance_time?: number | null
+          created_at?: string | null
+          daily_reminder_enabled?: boolean | null
+          daily_reminder_time?: string | null
+          delivery_strategy?: string | null
+          enable_smart_delivery?: boolean | null
+          enable_sound?: boolean | null
+          font_size?: string | null
+          id?: string
+          preferred_difficulty?: string | null
+          questions_per_session?: number | null
+          reduce_animations?: boolean | null
+          share_anonymous_data?: boolean | null
+          show_explanations?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id?: string
+          weekly_progress_email?: boolean | null
+        }
+        Relationships: []
+      }
       user_progress: {
         Row: {
           answered_at: string
@@ -433,6 +505,111 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_progress_summary: {
+        Row: {
+          average_accuracy: number | null
+          average_time_per_question: number | null
+          created_at: string | null
+          current_streak_days: number | null
+          difficulty: string
+          id: string
+          last_practice_date: string | null
+          longest_streak_days: number | null
+          questions_correct: number
+          questions_flagged: number
+          questions_incorrect: number
+          questions_seen: number
+          total_practice_time: number | null
+          total_questions_available: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          average_accuracy?: number | null
+          average_time_per_question?: number | null
+          created_at?: string | null
+          current_streak_days?: number | null
+          difficulty: string
+          id?: string
+          last_practice_date?: string | null
+          longest_streak_days?: number | null
+          questions_correct?: number
+          questions_flagged?: number
+          questions_incorrect?: number
+          questions_seen?: number
+          total_practice_time?: number | null
+          total_questions_available?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          average_accuracy?: number | null
+          average_time_per_question?: number | null
+          created_at?: string | null
+          current_streak_days?: number | null
+          difficulty?: string
+          id?: string
+          last_practice_date?: string | null
+          longest_streak_days?: number | null
+          questions_correct?: number
+          questions_flagged?: number
+          questions_incorrect?: number
+          questions_seen?: number
+          total_practice_time?: number | null
+          total_questions_available?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_question_history: {
+        Row: {
+          answer_selected: number | null
+          created_at: string | null
+          difficulty: string
+          flagged: boolean | null
+          id: string
+          is_correct: boolean
+          last_seen_at: string | null
+          notes: string | null
+          question_id: number
+          simulation_session_id: string | null
+          simulation_type: string | null
+          time_spent_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          answer_selected?: number | null
+          created_at?: string | null
+          difficulty: string
+          flagged?: boolean | null
+          id?: string
+          is_correct: boolean
+          last_seen_at?: string | null
+          notes?: string | null
+          question_id: number
+          simulation_session_id?: string | null
+          simulation_type?: string | null
+          time_spent_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          answer_selected?: number | null
+          created_at?: string | null
+          difficulty?: string
+          flagged?: boolean | null
+          id?: string
+          is_correct?: boolean
+          last_seen_at?: string | null
+          notes?: string | null
+          question_id?: number
+          simulation_session_id?: string | null
+          simulation_type?: string | null
+          time_spent_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

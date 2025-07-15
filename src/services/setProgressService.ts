@@ -209,7 +209,7 @@ export class SetProgressService {
         return null;
       }
       
-      const metadata = data.metadata as SetMetadata;
+      const metadata = data.metadata as unknown as SetMetadata;
       return {
         id: data.id,
         user_id: data.user_id,
@@ -277,7 +277,7 @@ export class SetProgressService {
       const summary: Record<number, SetProgressSummary> = {};
       
       data?.forEach(session => {
-        const metadata = session.metadata as SetMetadata;
+        const metadata = session.metadata as unknown as SetMetadata;
         const setId = metadata?.set_id;
         
         console.log('🔍 Processing session:', {

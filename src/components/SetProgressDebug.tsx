@@ -92,7 +92,10 @@ export default function SetProgressDebug() {
       if (error1) {
         console.error('Sessions error:', error1);
       } else {
-        setSessions(sessionsData || []);
+        setSessions((sessionsData || []).map(session => ({
+          ...session,
+          score: session.correct_answers || 0 // Map correct_answers to score
+        })));
       }
 
       // 2. Load debug view
@@ -104,7 +107,12 @@ export default function SetProgressDebug() {
       if (error2) {
         console.error('Debug view error:', error2);
       } else {
-        setDebugView(debugData || []);
+        setDebugView((debugData || []).map(item => ({
+          ...item,
+          user_email: item.user_id, // Fallback if email is not available
+          score: item.correct_answers || 0,
+          answered_questions: item.questions_answered || 0
+        })));
       }
 
       // 3. Load summary
