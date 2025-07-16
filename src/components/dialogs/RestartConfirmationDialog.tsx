@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,8 +8,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { RefreshCw, Loader2 } from "lucide-react";
+} from '@/components/ui/alert-dialog';
+import { RefreshCw, Loader2 } from 'lucide-react';
 
 interface RestartConfirmationDialogProps {
   isOpen: boolean;
@@ -44,13 +44,13 @@ const RestartConfirmationDialog = ({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="max-w-md text-right">
+      <AlertDialogContent className="max-w-md text-right bg-gradient-to-br from-slate-800/95 to-slate-900/95 backdrop-blur-sm border border-white/10 text-white">
         <AlertDialogHeader className="text-right">
           <AlertDialogTitle className="text-xl flex items-center gap-2 justify-end">
             <RefreshCw className="h-5 w-5 text-electric-orange" />
             התחל מחדש
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-lg text-right">
+          <AlertDialogDescription className="text-lg text-right text-gray-300">
             {setName ? (
               <>האם אתה בטוח שברצונך להתחיל מחדש את "{setName}"?</>
             ) : (
@@ -74,14 +74,14 @@ const RestartConfirmationDialog = ({
         </div>
         <AlertDialogFooter className="flex-row-reverse sm:justify-start">
           <AlertDialogCancel 
-            className="bg-muted hover:bg-muted/80"
+            className="bg-slate-600 hover:bg-slate-700 text-white"
             disabled={isLoading}
           >
             ביטול
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
-            className="bg-red-500 hover:bg-red-600 text-white"
+            className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white"
             disabled={isLoading}
           >
             {isLoading ? (
