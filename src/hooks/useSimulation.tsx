@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Question } from "@/data/types/questionTypes";
 import { useToast } from "@/hooks/use-toast";
@@ -20,6 +19,7 @@ import {
   loadActiveSimulationSession, 
   completeSimulationSession 
 } from "@/services/simulationSessionService";
+import { RestartService } from "@/services/restartService";
 import { supabase } from "@/integrations/supabase/client";
 
 export const useSimulation = (
@@ -135,12 +135,34 @@ export const useSimulation = (
   );
 
   const handleRestartSimulation = useCallback(async () => {
-    // console.log("Restarting simulation - clearing state and reinitializing");
+    console.log("🔄 [useSimulation] Starting comprehensive restart");
     
     clearTimer();
     
-    // Get fresh questions for restart
     try {
+      // Get current user for database operations
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (user) {
+        // Use RestartService for complete restart
+        const restartResult = await RestartService.restartSimulation({
+          userId: user.id,
+          simulationId: simulationId,
+          clearLocalStorage: true
+        });
+        
+        if (!restartResult.success) {
+          console.error('❌ RestartService failed:', restartResult.error);
+          toast({
+            title: "שגיאה באיפוס",
+            description: restartResult.error || "אירעה שגיאה בזמן איפוס הסימולציה",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+      
+      // Get fresh questions for restart
       const questionsToUse = await loadQuestions({
         storyQuestions,
         effectiveType,
@@ -151,8 +173,9 @@ export const useSimulation = (
         isFullExam
       });
       
-      // console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
+      console.log(`✅ [useSimulation] Restart successful - loaded ${questionsToUse.length} questions`);
       
+      // Reset to initial state with fresh questions
       setState({
         ...initialSimulationState,
         questions: questionsToUse,
@@ -164,21 +187,29 @@ export const useSimulation = (
         examMode,
         showAnswersImmediately,
         type: effectiveType,
-        difficulty: difficulty
+        difficulty: difficulty,
+        sessionStartTime: Date.now()
       });
       
       if (examMode) {
         initializeTimer();
       }
+      
+      toast({
+        title: "הסימולציה אופסה",
+        description: "הסימולציה מתחילה מחדש",
+        variant: "default",
+      });
+      
     } catch (error) {
-      console.error("Error restarting simulation:", error);
+      console.error("❌ [useSimulation] Exception during restart:", error);
       toast({
         title: "שגיאה",
         description: "שגיאה בטעינת השאלות. נסה שוב.",
         variant: "destructive",
       });
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, toast]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, toast, simulationId]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode and not for full exam
@@ -189,10 +220,28 @@ export const useSimulation = (
 
   const resetProgress = useCallback(async () => {
     try {
-      localStorage.removeItem(`simulation_progress_${simulationId}`);
-      // console.log(`Simulation progress reset for ${simulationId}`);
+      const { data: { user } } = await supabase.auth.getUser();
       
-      // Get the current questions again to avoid undefined state
+      if (user) {
+        // Use RestartService for comprehensive reset
+        const resetResult = await RestartService.restartSimulation({
+          userId: user.id,
+          simulationId: simulationId,
+          clearLocalStorage: true
+        });
+        
+        if (!resetResult.success) {
+          console.error('❌ Reset failed:', resetResult.error);
+          toast({
+            title: "שגיאה באיפוס",
+            description: resetResult.error || "אירעה שגיאה בזמן איפוס ההתקדמות",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+      
+      // Get fresh questions
       const questionsToUse = await loadQuestions({
         storyQuestions,
         effectiveType,
@@ -213,7 +262,8 @@ export const useSimulation = (
         examMode,
         showAnswersImmediately,
         type: effectiveType,
-        difficulty: difficulty
+        difficulty: difficulty,
+        sessionStartTime: Date.now()
       }));
       
       toast({
@@ -222,7 +272,7 @@ export const useSimulation = (
         variant: "default",
       });
     } catch (error) {
-      console.error("Error resetting simulation progress:", error);
+      console.error("❌ [useSimulation] Exception in resetProgress:", error);
       toast({
         title: "שגיאה",
         description: "שגיאה באיפוס הסימולציה. נסה שוב.",

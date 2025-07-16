@@ -12,7 +12,9 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSetProgressSummary } from "@/hooks/useSetProgress";
 import { SetProgressCard } from "@/components/ui/SetProgressCard";
 import { SetProgressService } from "@/services/setProgressService";
+import { RestartService } from "@/services/restartService";
 import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuestionSet {
   id: number;
@@ -30,6 +32,7 @@ const TypeSpecificSets = () => {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const isMobile = useIsMobile();
   const { currentUser } = useAuth();
+  const { toast } = useToast();
   
   // Load set progress summary
   const { 
@@ -151,24 +154,67 @@ const TypeSpecificSets = () => {
   };
   
   const handleSetRestart = async (set: QuestionSet) => {
-    if (!type || !difficulty || !currentUser) return;
+    if (!type || !difficulty || !currentUser) {
+      toast({
+        title: "שגיאה",
+        description: "חסרים נתונים נדרשים לאיפוס הסט",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log('🔄 [TypeSpecificSets] Starting set restart:', {
+      setId: set.id,
+      setType: type,
+      setDifficulty: difficulty,
+      userId: currentUser.id
+    });
     
     try {
-      await SetProgressService.resetSetProgress(
-        currentUser.id,
-        set.id,
-        type,
-        difficulty
-      );
+      // Use the new RestartService for complete restart
+      const restartResult = await RestartService.restartSet({
+        userId: currentUser.id,
+        setId: set.id,
+        setType: type,
+        setDifficulty: difficulty,
+        simulationId: `${type}_${difficulty}_set_${set.id}`,
+        clearLocalStorage: true
+      });
       
-      // Refresh progress summary
+      if (!restartResult.success) {
+        console.error('❌ Restart failed:', restartResult.error);
+        toast({
+          title: "שגיאה באיפוס",
+          description: restartResult.error || "אירעה שגיאה בזמן איפוס הסט",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Refresh progress summary to reflect changes
       await refreshSummary();
       
-      // Start fresh simulation
-      navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
+      // Show success message
+      toast({
+        title: "הסט אופס בהצלחה",
+        description: "ניתן להתחיל את הסט מחדש",
+        variant: "default",
+      });
+      
+      // Small delay to ensure UI updates, then navigate to fresh start
+      setTimeout(() => {
+        navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}&fresh=true`);
+      }, 500);
+      
     } catch (error) {
-      console.error('Error resetting set progress:', error);
-      // Fallback to normal start
+      console.error('❌ Exception in handleSetRestart:', error);
+      toast({
+        title: "שגיאה באיפוס",
+        description: "אירעה שגיאה לא צפויה בזמן איפוס הסט",
+        variant: "destructive",
+      });
+      
+      // Fallback to normal start if restart fails
       handleSetStart(set);
     }
   };

@@ -458,7 +458,7 @@ export class SetProgressService {
   }
   
   /**
-   * Reset set progress (start over)
+   * Reset set progress (start over) - Enhanced version
    */
   static async resetSetProgress(
     userId: string,
@@ -467,6 +467,22 @@ export class SetProgressService {
     setDifficulty: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
+      console.log('🔄 [SetProgressService] Resetting set progress:', {
+        userId,
+        setId,
+        setType,
+        setDifficulty,
+        timestamp: new Date().toISOString()
+      });
+
+      // Check authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.id !== userId) {
+        console.error('❌ User not authenticated or mismatch');
+        return { success: false, error: 'Authentication failed' };
+      }
+      
+      // Delete all sessions for this specific set (including completed ones)
       const { error } = await supabase
         .from('simulation_sessions')
         .delete()
@@ -482,7 +498,7 @@ export class SetProgressService {
         return { success: false, error: error.message };
       }
       
-      console.log('✅ Set progress reset successfully');
+      console.log('✅ Set progress reset successfully - all sessions deleted');
       return { success: true };
     } catch (error) {
       console.error('❌ Exception in resetSetProgress:', error);

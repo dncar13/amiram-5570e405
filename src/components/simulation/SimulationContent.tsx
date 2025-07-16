@@ -1,8 +1,9 @@
-
+import React, { useState } from 'react';
 import { Question } from "@/data/types/questionTypes";
 import QuestionCard from "./QuestionCard";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";
+import { RestartConfirmationDialog } from "@/components/dialogs/RestartConfirmationDialog";
 
 interface SimulationContentProps {
   simulationComplete: boolean;
@@ -75,6 +76,7 @@ const SimulationContent = ({
   onResetProgress,
   onFinishSimulation
 }: SimulationContentProps) => {
+  const [showRestartDialog, setShowRestartDialog] = useState(false);
 
   // console.log('[SimulationContent] Rendering with:', {
   //   totalQuestions,
@@ -89,20 +91,38 @@ const SimulationContent = ({
   const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
   const questionFlagsArray: boolean[] = Array.from({ length: totalQuestions }, (_, i) => questionFlags[i] ?? false);
 
+  const handleRestartClick = () => {
+    setShowRestartDialog(true);
+  };
+
+  const handleConfirmRestart = () => {
+    onRestart();
+  };
+
   if (simulationComplete) {
     return (
-      <SimulationResults
-        score={score}
-        questionsData={questionsData}
-        userAnswers={userAnswersArray}
-        questionFlags={questionFlagsArray}
-        answeredQuestionsCount={answeredQuestionsCount}
-        correctQuestionsCount={correctQuestionsCount}
-        onRestart={onRestart}
-        onBackToTopics={onBackToTopics}
-        onNavigateToQuestion={onNavigateToQuestion}
-        isQuestionSet={isQuestionSet}
-      />
+      <>
+        <SimulationResults
+          score={score}
+          questionsData={questionsData}
+          userAnswers={userAnswersArray}
+          questionFlags={questionFlagsArray}
+          answeredQuestionsCount={answeredQuestionsCount}
+          correctQuestionsCount={correctQuestionsCount}
+          onRestart={handleRestartClick}
+          onBackToTopics={onBackToTopics}
+          onNavigateToQuestion={onNavigateToQuestion}
+          isQuestionSet={isQuestionSet}
+        />
+        
+        <RestartConfirmationDialog
+          open={showRestartDialog}
+          onOpenChange={setShowRestartDialog}
+          onConfirm={handleConfirmRestart}
+          title="התחל את הסימולציה מחדש?"
+          description="פעולה זו תמחק את כל התוצאות וההתקדמות הנוכחית ותתחיל את הסימולציה מההתחלה. פעולה זו לא ניתנת לביטול."
+        />
+      </>
     );
   }
 
@@ -126,50 +146,60 @@ const SimulationContent = ({
   // console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
 
   return (
-    <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">
-      {/* Navigation Panel */}
-      <div className="mb-4 sm:mb-8">
-        <NavigationPanel
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          userAnswers={userAnswersArray}
-          questionsData={questionsData}
-          questionFlags={questionFlagsArray}
-          progressPercentage={progressPercentage}
-          currentScorePercentage={currentScorePercentage}
-          onNavigateToQuestion={onNavigateToQuestion}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-          onResetProgress={onResetProgress}
-          simulationType={isQuestionSet ? "question-set" : "topic"}
-          setNumber={setNumber}
-        />
-      </div>
+    <>
+      <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">
+        {/* Navigation Panel */}
+        <div className="mb-4 sm:mb-8">
+          <NavigationPanel
+            currentQuestionIndex={currentQuestionIndex}
+            totalQuestions={totalQuestions}
+            userAnswers={userAnswersArray}
+            questionsData={questionsData}
+            questionFlags={questionFlagsArray}
+            progressPercentage={progressPercentage}
+            currentScorePercentage={currentScorePercentage}
+            onNavigateToQuestion={onNavigateToQuestion}
+            onToggleQuestionFlag={onToggleQuestionFlag}
+            onResetProgress={handleRestartClick}
+            simulationType={isQuestionSet ? "question-set" : "topic"}
+            setNumber={setNumber}
+          />
+        </div>
 
-      {/* Unified Question Display */}
-      <div ref={questionContainerRef} className="max-w-none">
-        <QuestionCard
-          currentQuestion={currentQuestion}
-          currentQuestionIndex={currentQuestionIndex}
-          totalQuestions={totalQuestions}
-          selectedAnswerIndex={selectedAnswerIndex}
-          isAnswerSubmitted={isAnswerSubmitted}
-          showExplanation={showExplanation}
-          isFlagged={questionFlags[currentQuestionIndex] || false}
-          examMode={examMode}
-          showAnswersImmediately={showAnswersImmediately}
-          answeredQuestionsCount={answeredQuestionsCount}
-          correctQuestionsCount={correctQuestionsCount}
-          progressPercentage={progressPercentage}
-          onAnswerSelect={onAnswerSelect}
-          onSubmitAnswer={onSubmitAnswer}
-          onNextQuestion={onNextQuestion}
-          onPreviousQuestion={onPreviousQuestion}
-          onToggleExplanation={onToggleExplanation}
-          onToggleQuestionFlag={onToggleQuestionFlag}
-          onFinishSimulation={onFinishSimulation}
-        />
+        {/* Unified Question Display */}
+        <div ref={questionContainerRef} className="max-w-none">
+          <QuestionCard
+            currentQuestion={currentQuestion}
+            currentQuestionIndex={currentQuestionIndex}
+            totalQuestions={totalQuestions}
+            selectedAnswerIndex={selectedAnswerIndex}
+            isAnswerSubmitted={isAnswerSubmitted}
+            showExplanation={showExplanation}
+            isFlagged={questionFlags[currentQuestionIndex] || false}
+            examMode={examMode}
+            showAnswersImmediately={showAnswersImmediately}
+            answeredQuestionsCount={answeredQuestionsCount}
+            correctQuestionsCount={correctQuestionsCount}
+            progressPercentage={progressPercentage}
+            onAnswerSelect={onAnswerSelect}
+            onSubmitAnswer={onSubmitAnswer}
+            onNextQuestion={onNextQuestion}
+            onPreviousQuestion={onPreviousQuestion}
+            onToggleExplanation={onToggleExplanation}
+            onToggleQuestionFlag={onToggleQuestionFlag}
+            onFinishSimulation={onFinishSimulation}
+          />
+        </div>
       </div>
-    </div>
+      
+      <RestartConfirmationDialog
+        open={showRestartDialog}
+        onOpenChange={setShowRestartDialog}
+        onConfirm={handleConfirmRestart}
+        title="התחל את הסימולציה מחדש?"
+        description="פעולה זו תמחק את כל ההתקדמות הנוכחית ותתחיל את הסימולציה מההתחלה. פעולה זו לא ניתנת לביטול."
+      />
+    </>
   );
 };
 

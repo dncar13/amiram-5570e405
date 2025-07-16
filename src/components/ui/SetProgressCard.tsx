@@ -1,9 +1,5 @@
-/**
- * Set Progress Card Component
- * Displays progress information for a question set
- */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -15,9 +11,11 @@ import {
   RotateCcw,
   Trophy,
   Target,
-  ArrowRight
+  ArrowRight,
+  AlertTriangle
 } from 'lucide-react';
 import { SetProgressSummary } from '@/services/setProgressService';
+import { RestartConfirmationDialog } from '@/components/dialogs/RestartConfirmationDialog';
 
 interface SetProgressCardProps {
   setId: number;
@@ -46,6 +44,9 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
   difficultyColor = 'from-blue-500 to-purple-600',
   className = ''
 }) => {
+  const [showRestartDialog, setShowRestartDialog] = useState(false);
+  const [isRestarting, setIsRestarting] = useState(false);
+
   const getStatusIcon = () => {
     switch (progress?.status) {
       case 'completed':
@@ -79,11 +80,24 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
     }
   };
 
+  const handleRestartClick = () => {
+    setShowRestartDialog(true);
+  };
+
+  const handleConfirmRestart = async () => {
+    setIsRestarting(true);
+    try {
+      await onRestart();
+    } finally {
+      setIsRestarting(false);
+    }
+  };
+
   const getActionButton = () => {
-    if (isLoading) {
+    if (isLoading || isRestarting) {
       return (
-        <Button disabled className="w-full">
-          טוען...
+        <Button disabled className="w-full bg-slate-600 text-white">
+          {isRestarting ? 'מתחיל מחדש...' : 'טוען...'}
         </Button>
       );
     }
@@ -93,16 +107,16 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
         return (
           <div className="flex space-x-2">
             <Button
-              onClick={onRestart}
+              onClick={handleRestartClick}
               variant="outline"
-              className="flex-1"
+              className="flex-1 border-orange-500/50 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-200"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               התחל מחדש
             </Button>
             <Button
               onClick={onStart}
-              className={`flex-1 bg-gradient-to-r ${difficultyColor} text-white`}
+              className={`flex-1 bg-gradient-to-r ${difficultyColor} text-white hover:opacity-90 transition-all duration-200`}
             >
               <Trophy className="w-4 h-4 mr-2" />
               צפה בתוצאות
@@ -114,16 +128,16 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
         return (
           <div className="flex space-x-2">
             <Button
-              onClick={onRestart}
+              onClick={handleRestartClick}
               variant="outline"
-              className="flex-1"
+              className="flex-1 border-orange-500/50 text-orange-400 hover:bg-orange-500/10 hover:border-orange-500 transition-all duration-200"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               התחל מחדש
             </Button>
             <Button
               onClick={onContinue}
-              className={`flex-1 bg-gradient-to-r ${difficultyColor} text-white`}
+              className={`flex-1 bg-gradient-to-r ${difficultyColor} text-white hover:opacity-90 transition-all duration-200`}
             >
               <PlayCircle className="w-4 h-4 mr-2" />
               המשך
@@ -135,7 +149,7 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
         return (
           <Button
             onClick={onStart}
-            className={`w-full bg-gradient-to-r ${difficultyColor} text-white`}
+            className={`w-full bg-gradient-to-r ${difficultyColor} text-white hover:opacity-90 transition-all duration-200`}
           >
             <ArrowRight className="w-4 h-4 mr-2" />
             התחל סט
@@ -150,99 +164,110 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
   const timeSpent = progress?.time_spent || 0;
 
   return (
-    <Card className={`bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 text-white ${className}`}>
-      <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg font-bold text-white">
-            {setTitle}
-          </CardTitle>
-          <div className="flex items-center space-x-2">
-            {getStatusIcon()}
-            <Badge className={`${getStatusColor()} backdrop-blur-sm rounded-full px-3 py-1 text-xs font-medium`}>
-              {getStatusText()}
-            </Badge>
-          </div>
-        </div>
-        
-        {progress?.status === 'in_progress' && (
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>התקדמות</span>
-              <span className="font-medium">{Math.round(progressPercentage)}%</span>
-            </div>
-            <Progress value={progressPercentage} className="h-2" />
-            <div className="text-xs text-gray-400">
-              שאלה {currentQuestion + 1} מתוך {questionsCount}
+    <>
+      <Card className={`bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300 text-white ${className}`}>
+        <CardHeader className="space-y-3">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-lg font-bold text-white">
+              {setTitle}
+            </CardTitle>
+            <div className="flex items-center space-x-2">
+              {getStatusIcon()}
+              <Badge className={`${getStatusColor()} backdrop-blur-sm rounded-full px-3 py-1 text-xs font-medium`}>
+                {getStatusText()}
+              </Badge>
             </div>
           </div>
-        )}
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <p className="text-sm text-gray-300 leading-relaxed">
-          {setDescription}
-        </p>
-        
-        <div className="grid grid-cols-2 gap-2">
-          <div className="bg-white/5 rounded-lg p-3">
-            <div className="text-xs text-gray-400">שאלות</div>
-            <div className="text-sm font-semibold">{questionsCount}</div>
-          </div>
-          
-          <div className="bg-white/5 rounded-lg p-3">
-            <div className="text-xs text-gray-400">זמן משוער</div>
-            <div className="text-sm font-semibold">~{Math.ceil(questionsCount * 1.5)} דקות</div>
-          </div>
-          
-          {progress?.status === 'completed' && (
-            <>
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-xs text-gray-400">ציון</div>
-                <div className={`text-sm font-semibold ${scorePercentage >= 70 ? 'text-green-400' : scorePercentage >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
-                  {scorePercentage}%
-                </div>
-              </div>
-              
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-xs text-gray-400">זמן בפועל</div>
-                <div className="text-sm font-semibold">
-                  {Math.round(timeSpent / 60)} דקות
-                </div>
-              </div>
-            </>
-          )}
           
           {progress?.status === 'in_progress' && (
-            <>
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-xs text-gray-400">ציון נוכחי</div>
-                <div className={`text-sm font-semibold ${scorePercentage >= 70 ? 'text-green-400' : scorePercentage >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
-                  {scorePercentage}%
-                </div>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>התקדמות</span>
+                <span className="font-medium">{Math.round(progressPercentage)}%</span>
               </div>
-              
-              <div className="bg-white/5 rounded-lg p-3">
-                <div className="text-xs text-gray-400">זמן עד כה</div>
-                <div className="text-sm font-semibold">
-                  {Math.round(timeSpent / 60)} דקות
-                </div>
+              <Progress value={progressPercentage} className="h-2" />
+              <div className="text-xs text-gray-400">
+                שאלה {currentQuestion + 1} מתוך {questionsCount}
               </div>
-            </>
+            </div>
           )}
-        </div>
+        </CardHeader>
         
-        {progress?.last_activity && (
-          <div className="text-xs text-gray-500 flex items-center">
-            <Clock className="w-3 h-3 mr-1" />
-            פעילות אחרונה: {new Date(progress.last_activity).toLocaleDateString('he-IL')}
+        <CardContent className="space-y-4">
+          <p className="text-sm text-gray-300 leading-relaxed">
+            {setDescription}
+          </p>
+          
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-white/5 rounded-lg p-3">
+              <div className="text-xs text-gray-400">שאלות</div>
+              <div className="text-sm font-semibold">{questionsCount}</div>
+            </div>
+            
+            <div className="bg-white/5 rounded-lg p-3">
+              <div className="text-xs text-gray-400">זמן משוער</div>
+              <div className="text-sm font-semibold">~{Math.ceil(questionsCount * 1.5)} דקות</div>
+            </div>
+            
+            {progress?.status === 'completed' && (
+              <>
+                <div className="bg-white/5 rounded-lg p-3">
+                  <div className="text-xs text-gray-400">ציון</div>
+                  <div className={`text-sm font-semibold ${scorePercentage >= 70 ? 'text-green-400' : scorePercentage >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
+                    {scorePercentage}%
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-lg p-3">
+                  <div className="text-xs text-gray-400">זמן בפועל</div>
+                  <div className="text-sm font-semibold">
+                    {Math.round(timeSpent / 60)} דקות
+                  </div>
+                </div>
+              </>
+            )}
+            
+            {progress?.status === 'in_progress' && (
+              <>
+                <div className="bg-white/5 rounded-lg p-3">
+                  <div className="text-xs text-gray-400">ציון נוכחי</div>
+                  <div className={`text-sm font-semibold ${scorePercentage >= 70 ? 'text-green-400' : scorePercentage >= 60 ? 'text-yellow-400' : 'text-red-400'}`}>
+                    {scorePercentage}%
+                  </div>
+                </div>
+                
+                <div className="bg-white/5 rounded-lg p-3">
+                  <div className="text-xs text-gray-400">זמן עד כה</div>
+                  <div className="text-sm font-semibold">
+                    {Math.round(timeSpent / 60)} דקות
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        )}
-        
-        <div className="pt-2">
-          {getActionButton()}
-        </div>
-      </CardContent>
-    </Card>
+          
+          {progress?.last_activity && (
+            <div className="text-xs text-gray-500 flex items-center">
+              <Clock className="w-3 h-3 mr-1" />
+              פעילות אחרונה: {new Date(progress.last_activity).toLocaleDateString('he-IL')}
+            </div>
+          )}
+          
+          <div className="pt-2">
+            {getActionButton()}
+          </div>
+        </CardContent>
+      </Card>
+
+      <RestartConfirmationDialog
+        open={showRestartDialog}
+        onOpenChange={setShowRestartDialog}
+        onConfirm={handleConfirmRestart}
+        isLoading={isRestarting}
+        title={`התחל מחדש את ${setTitle}?`}
+        description={`פעולה זו תמחק את כל ההתקדמות הנוכחית בסט זה ותתחיל אותו מההתחלה. פעולה זו לא ניתנת לביטול.`}
+      />
+    </>
   );
 };
 
