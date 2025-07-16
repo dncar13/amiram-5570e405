@@ -3,7 +3,7 @@ import { Question } from "@/data/types/questionTypes";
 import QuestionCard from "./QuestionCard";
 import SimulationResults from "./SimulationResults";
 import NavigationPanel from "./NavigationPanel";
-import { RestartConfirmationDialog } from "@/components/dialogs/RestartConfirmationDialog";
+import RestartConfirmationDialog from "@/components/dialogs/RestartConfirmationDialog";
 
 interface SimulationContentProps {
   simulationComplete: boolean;
@@ -95,7 +95,7 @@ const SimulationContent = ({
     setShowRestartDialog(true);
   };
 
-  const handleConfirmRestart = () => {
+  const handleConfirmRestart = async () => {
     onRestart();
   };
 
@@ -116,11 +116,10 @@ const SimulationContent = ({
         />
         
         <RestartConfirmationDialog
-          open={showRestartDialog}
-          onOpenChange={setShowRestartDialog}
+          isOpen={showRestartDialog}
+          onClose={() => setShowRestartDialog(false)}
           onConfirm={handleConfirmRestart}
-          title="התחל את הסימולציה מחדש?"
-          description="פעולה זו תמחק את כל התוצאות וההתקדמות הנוכחית ותתחיל את הסימולציה מההתחלה. פעולה זו לא ניתנת לביטול."
+          setName="הסימולציה"
         />
       </>
     );
@@ -193,11 +192,10 @@ const SimulationContent = ({
       </div>
       
       <RestartConfirmationDialog
-        open={showRestartDialog}
-        onOpenChange={setShowRestartDialog}
+        isOpen={showRestartDialog}
+        onClose={() => setShowRestartDialog(false)}
         onConfirm={handleConfirmRestart}
-        title="התחל את הסימולציה מחדש?"
-        description="פעולה זו תמחק את כל ההתקדמות הנוכחית ותתחיל את הסימולציה מההתחלה. פעולה זו לא ניתנת לביטול."
+        setName="הסימולציה"
       />
     </>
   );
