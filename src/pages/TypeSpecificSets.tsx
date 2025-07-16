@@ -153,23 +153,52 @@ const TypeSpecificSets = () => {
   const handleSetRestart = async (set: QuestionSet) => {
     if (!type || !difficulty || !currentUser) return;
     
+    console.log('🔄 [TypeSpecificSets] Starting set restart for:', {
+      setId: set.id,
+      type,
+      difficulty,
+      userId: currentUser.id,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Log localStorage state before clearing
+    const beforeClear = Object.keys(localStorage).filter(key => 
+      key.includes('progress') || key.includes('simulation') || key.includes('set_')
+    );
+    console.log('📦 [TypeSpecificSets] LocalStorage before clear:', beforeClear);
+    
     try {
-      await SetProgressService.resetSetProgress(
+      const result = await SetProgressService.resetSetProgress(
         currentUser.id,
         set.id,
         type,
         difficulty
       );
       
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to reset set progress');
+      }
+      
+      // Log localStorage state after clearing
+      const afterClear = Object.keys(localStorage).filter(key => 
+        key.includes('progress') || key.includes('simulation') || key.includes('set_')
+      );
+      console.log('📦 [TypeSpecificSets] LocalStorage after clear:', afterClear);
+      
       // Refresh progress summary
       await refreshSummary();
       
-      // Start fresh simulation
-      navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
+      console.log('✅ [TypeSpecificSets] Set restart completed successfully');
+      
+      // Start fresh simulation with reset parameter to ensure clean start
+      const navigationUrl = `/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}&reset=true`;
+      console.log('🚀 [TypeSpecificSets] Navigating to:', navigationUrl);
+      
+      navigate(navigationUrl);
     } catch (error) {
-      console.error('Error resetting set progress:', error);
-      // Fallback to normal start
-      handleSetStart(set);
+      console.error('❌ [TypeSpecificSets] Error resetting set progress:', error);
+      // Re-throw the error to be handled by the confirmation dialog
+      throw error;
     }
   };
 
@@ -291,6 +320,8 @@ const TypeSpecificSets = () => {
                     isLoading={progressLoading}
                     difficultyColor={getDifficultyColor(difficulty)}
                     className="h-full"
+                    questionType={getTypeInHebrew(type)}
+                    difficulty={getDifficultyInHebrew(difficulty)}
                   />
                 </motion.div>
               ))}

@@ -130,12 +130,15 @@ const Simulation = () => {
     if (!initialLoadAttempted.current) {
       const hasResetParam = checkForResetRequest();
       
+      console.log('🔍 [Simulation] Checking for reset parameter:', hasResetParam);
+      
       if (hasResetParam) {
-        // console.log("Reset parameter detected - simulation will reset");
+        console.log('🔄 [Simulation] Reset parameter detected - will trigger reset when simulation is ready');
         shouldShowResetToast.current = true;
         
         // Remove the reset parameter from URL to prevent reload issues
         removeResetParameterFromUrl();
+        console.log('🧹 [Simulation] Reset parameter removed from URL');
       }
     }
     
@@ -337,35 +340,44 @@ const Simulation = () => {
       !effectiveIsLoading && 
       questionsToUse.length > 0
     ) {
-      // Force save on initial load after a short delay
-      const initialSaveTimeout = setTimeout(() => {
-        // console.log("Forcing initial save to ensure persistence");
-        simulation.saveProgress();
+      // Handle reset parameter when simulation is ready
+      if (shouldShowResetToast.current) {
+        console.log('🔄 [Simulation] Reset parameter detected - triggering simulation reset');
         
-        // If this is a reset, show toast to confirm
-        if (shouldShowResetToast.current) {
-          toast({
-            title: "איפוס סימולציה",
-            description: "הנתונים אופסו והסימולציה מתחילה מחדש",
-            variant: "default",
-          });
-          shouldShowResetToast.current = false;
-        }
-        // Show auto-save toast if we haven't shown it already
-        else if (!hasShownToast.current) {
-          toast({
-            title: "התקדמות הסימולציה נשמרת",
-            description: "התקדמותך תישמר באופן אוטומטי גם בעת רענון הדף",
-            variant: "default",
-          });
-          hasShownToast.current = true;
+        // Trigger the actual reset
+        simulation.resetProgress();
+        
+        // Show reset confirmation toast
+        toast({
+          title: "איפוס סימולציה",
+          description: "הנתונים אופסו והסימולציה מתחילה מחדש",
+          variant: "default",
+        });
+        
+        shouldShowResetToast.current = false;
+        console.log('✅ [Simulation] Reset completed successfully');
+      } else {
+        // Force save on initial load after a short delay (only if not resetting)
+        const initialSaveTimeout = setTimeout(() => {
+          console.log('💾 [Simulation] Forcing initial save to ensure persistence');
+          simulation.saveProgress();
           
-          // Store flag in session storage to remember we've shown the toast to this user
-          sessionStorage.setItem('simulation_toast_shown', 'true');
-        }
-      }, 2000);
-      
-      return () => clearTimeout(initialSaveTimeout);
+          // Show auto-save toast if we haven't shown it already
+          if (!hasShownToast.current) {
+            toast({
+              title: "התקדמות הסימולציה נשמרת",
+              description: "התקדמותך תישמר באופן אוטומטי גם בעת רענון הדף",
+              variant: "default",
+            });
+            hasShownToast.current = true;
+            
+            // Store flag in session storage to remember we've shown the toast to this user
+            sessionStorage.setItem('simulation_toast_shown', 'true');
+          }
+        }, 2000);
+        
+        return () => clearTimeout(initialSaveTimeout);
+      }
     }
   }, [simulation, simulation.progressLoaded, effectiveIsLoading, questionsToUse.length]);
   

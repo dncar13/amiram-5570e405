@@ -3,7 +3,7 @@
  * Displays progress information for a question set
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -18,6 +18,8 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { SetProgressSummary } from '@/services/setProgressService';
+import RestartConfirmationDialog from '@/components/dialogs/RestartConfirmationDialog';
+import { useToast } from '@/hooks/use-toast';
 
 interface SetProgressCardProps {
   setId: number;
@@ -27,10 +29,12 @@ interface SetProgressCardProps {
   progress?: SetProgressSummary;
   onStart: () => void;
   onContinue: () => void;
-  onRestart: () => void;
+  onRestart: () => Promise<void>;
   isLoading?: boolean;
   difficultyColor?: string;
   className?: string;
+  questionType?: string;
+  difficulty?: string;
 }
 
 export const SetProgressCard: React.FC<SetProgressCardProps> = ({
@@ -44,8 +48,12 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
   onRestart,
   isLoading = false,
   difficultyColor = 'from-blue-500 to-purple-600',
-  className = ''
+  className = '',
+  questionType,
+  difficulty
 }) => {
+  const [showRestartDialog, setShowRestartDialog] = useState(false);
+  const { toast } = useToast();
   const getStatusIcon = () => {
     switch (progress?.status) {
       case 'completed':
@@ -79,6 +87,27 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
     }
   };
 
+  const handleRestartClick = () => {
+    setShowRestartDialog(true);
+  };
+
+  const handleRestartConfirm = async () => {
+    try {
+      await onRestart();
+      toast({
+        title: "הסט אופס בהצלחה",
+        description: "ההתקדמות נמחקה ותוכל להתחיל מחדש",
+        variant: "success",
+      });
+    } catch (error) {
+      toast({
+        title: "שגיאה באיפוס הסט",
+        description: "אירעה שגיאה בעת איפוס הסט. נסה שוב.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getActionButton = () => {
     if (isLoading) {
       return (
@@ -93,9 +122,9 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
         return (
           <div className="flex space-x-2">
             <Button
-              onClick={onRestart}
+              onClick={handleRestartClick}
               variant="outline"
-              className="flex-1"
+              className="flex-1 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               התחל מחדש
@@ -114,9 +143,9 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
         return (
           <div className="flex space-x-2">
             <Button
-              onClick={onRestart}
+              onClick={handleRestartClick}
               variant="outline"
-              className="flex-1"
+              className="flex-1 border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50"
             >
               <RotateCcw className="w-4 h-4 mr-2" />
               התחל מחדש
@@ -242,6 +271,15 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
           {getActionButton()}
         </div>
       </CardContent>
+      
+      <RestartConfirmationDialog
+        isOpen={showRestartDialog}
+        onClose={() => setShowRestartDialog(false)}
+        onConfirm={handleRestartConfirm}
+        setName={setTitle}
+        questionType={questionType}
+        difficulty={difficulty}
+      />
     </Card>
   );
 };

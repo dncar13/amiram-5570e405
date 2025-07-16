@@ -458,7 +458,7 @@ export class SetProgressService {
   }
   
   /**
-   * Reset set progress (start over)
+   * Reset set progress (start over) - Enhanced with comprehensive cleanup
    */
   static async resetSetProgress(
     userId: string,
@@ -467,7 +467,23 @@ export class SetProgressService {
     setDifficulty: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await supabase
+      console.log('🔄 [SetProgressService] Starting comprehensive reset for:', {
+        userId,
+        setId,
+        setType,
+        setDifficulty,
+        timestamp: new Date().toISOString()
+      });
+
+      // Check authentication
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user || user.id !== userId) {
+        console.error('❌ User not authenticated or mismatch');
+        return { success: false, error: 'Authentication failed' };
+      }
+
+      // 1. Clear database session records
+      const { error: dbError } = await supabase
         .from('simulation_sessions')
         .delete()
         .eq('user_id', userId)
@@ -477,12 +493,61 @@ export class SetProgressService {
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty);
       
-      if (error) {
-        console.error('❌ Error resetting set progress:', error);
-        return { success: false, error: error.message };
+      if (dbError) {
+        console.error('❌ Error clearing database session:', dbError);
+        return { success: false, error: dbError.message };
       }
-      
-      console.log('✅ Set progress reset successfully');
+
+      // 2. Clear related localStorage keys
+      const localStorageKeys = [
+        `set_progress_${setType}_${setDifficulty}_${setId}`,
+        `simulation_progress_${setId}`,
+        `topic_${setId}_progress`,
+        `questionset_${setId}_progress`,
+        `quick_practice_progress_${setType}`,
+        'simulation_progress' // Global fallback
+      ];
+
+      localStorageKeys.forEach(key => {
+        try {
+          localStorage.removeItem(key);
+          console.log(`🧹 Cleared localStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear localStorage key ${key}:`, error);
+        }
+      });
+
+      // 3. Clear related sessionStorage keys
+      const sessionStorageKeys = [
+        'current_simulation_settings',
+        'continue_simulation',
+        'reset_simulation_progress',
+        'is_difficulty_based',
+        'current_difficulty_level',
+        'current_difficulty_type'
+      ];
+
+      sessionStorageKeys.forEach(key => {
+        try {
+          sessionStorage.removeItem(key);
+          console.log(`🧹 Cleared sessionStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear sessionStorage key ${key}:`, error);
+        }
+      });
+
+      // 4. Clear any cached progress data from regular ProgressService
+      try {
+        const ProgressService = await import('./progressService');
+        if (ProgressService && ProgressService.clearProgress) {
+          await ProgressService.clearProgress(userId, setId.toString());
+          console.log('🧹 Cleared ProgressService cache');
+        }
+      } catch (error) {
+        console.warn('⚠️ Failed to clear ProgressService cache:', error);
+      }
+
+      console.log('✅ Set progress reset successfully with comprehensive cleanup');
       return { success: true };
     } catch (error) {
       console.error('❌ Exception in resetSetProgress:', error);

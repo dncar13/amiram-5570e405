@@ -135,12 +135,50 @@ export const useSimulation = (
   );
 
   const handleRestartSimulation = useCallback(async () => {
-    // console.log("Restarting simulation - clearing state and reinitializing");
+    console.log('🔄 [useSimulation] Starting comprehensive simulation restart');
     
     clearTimer();
     
-    // Get fresh questions for restart
+    // Comprehensive cleanup for restart
     try {
+      // 1. Clear localStorage progress
+      const progressKeys = [
+        `simulation_progress_${simulationId}`,
+        `set_progress_${type}_${difficulty}_${setNumber}`,
+        `topic_${simulationId}_progress`,
+        `quick_practice_progress_${type}`,
+        'simulation_progress' // Global fallback
+      ];
+      
+      progressKeys.forEach(key => {
+        try {
+          localStorage.removeItem(key);
+          console.log(`🧹 Cleared localStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear localStorage key ${key}:`, error);
+        }
+      });
+      
+      // 2. Clear sessionStorage
+      const sessionKeys = [
+        'current_simulation_settings',
+        'continue_simulation',
+        'reset_simulation_progress',
+        'is_difficulty_based',
+        'current_difficulty_level',
+        'current_difficulty_type'
+      ];
+      
+      sessionKeys.forEach(key => {
+        try {
+          sessionStorage.removeItem(key);
+          console.log(`🧹 Cleared sessionStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear sessionStorage key ${key}:`, error);
+        }
+      });
+      
+      // 3. Get fresh questions for restart
       const questionsToUse = await loadQuestions({
         storyQuestions,
         effectiveType,
@@ -151,8 +189,9 @@ export const useSimulation = (
         isFullExam
       });
       
-      // console.log(`Restart: Setting ${questionsToUse.length} questions for simulation`);
+      console.log(`🔄 Restart: Setting ${questionsToUse.length} questions for simulation`);
       
+      // 4. Reset state completely
       setState({
         ...initialSimulationState,
         questions: questionsToUse,
@@ -164,21 +203,27 @@ export const useSimulation = (
         examMode,
         showAnswersImmediately,
         type: effectiveType,
-        difficulty: difficulty
+        difficulty: difficulty,
+        startTime: Date.now(),
+        sessionStartTime: Date.now(),
+        questionStartTime: Date.now()
       });
       
+      // 5. Initialize timer if needed
       if (examMode) {
         initializeTimer();
       }
+      
+      console.log('✅ [useSimulation] Simulation restart completed successfully');
     } catch (error) {
-      console.error("Error restarting simulation:", error);
+      console.error('❌ [useSimulation] Error restarting simulation:', error);
       toast({
         title: "שגיאה",
         description: "שגיאה בטעינת השאלות. נסה שוב.",
         variant: "destructive",
       });
     }
-  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, toast]);
+  }, [initializeTimer, clearTimer, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, toast, simulationId, type]);
 
   const saveProgress = useCallback(() => {
     // Only save progress in training mode and not for full exam
@@ -188,11 +233,48 @@ export const useSimulation = (
   }, [simulationId, state, setNumber, type, difficulty, examMode, isFullExam]);
 
   const resetProgress = useCallback(async () => {
+    console.log('🔄 [useSimulation] Starting comprehensive progress reset');
+    
     try {
-      localStorage.removeItem(`simulation_progress_${simulationId}`);
-      // console.log(`Simulation progress reset for ${simulationId}`);
+      // 1. Clear comprehensive localStorage progress
+      const progressKeys = [
+        `simulation_progress_${simulationId}`,
+        `set_progress_${type}_${difficulty}_${setNumber}`,
+        `topic_${simulationId}_progress`,
+        `questionset_${simulationId}_progress`,
+        `quick_practice_progress_${type}`,
+        'simulation_progress' // Global fallback
+      ];
       
-      // Get the current questions again to avoid undefined state
+      progressKeys.forEach(key => {
+        try {
+          localStorage.removeItem(key);
+          console.log(`🧹 Cleared localStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear localStorage key ${key}:`, error);
+        }
+      });
+      
+      // 2. Clear sessionStorage
+      const sessionKeys = [
+        'current_simulation_settings',
+        'continue_simulation',
+        'reset_simulation_progress',
+        'is_difficulty_based',
+        'current_difficulty_level',
+        'current_difficulty_type'
+      ];
+      
+      sessionKeys.forEach(key => {
+        try {
+          sessionStorage.removeItem(key);
+          console.log(`🧹 Cleared sessionStorage key: ${key}`);
+        } catch (error) {
+          console.warn(`⚠️ Failed to clear sessionStorage key ${key}:`, error);
+        }
+      });
+      
+      // 3. Get fresh questions to avoid undefined state
       const questionsToUse = await loadQuestions({
         storyQuestions,
         effectiveType,
@@ -203,6 +285,9 @@ export const useSimulation = (
         isFullExam
       });
       
+      console.log(`🔄 Reset: Setting ${questionsToUse.length} questions for simulation`);
+      
+      // 4. Reset state completely with fresh timestamps
       setState(prevState => ({
         ...initialSimulationState,
         questions: questionsToUse,
@@ -213,8 +298,13 @@ export const useSimulation = (
         examMode,
         showAnswersImmediately,
         type: effectiveType,
-        difficulty: difficulty
+        difficulty: difficulty,
+        startTime: Date.now(),
+        sessionStartTime: Date.now(),
+        questionStartTime: Date.now()
       }));
+      
+      console.log('✅ [useSimulation] Progress reset completed successfully');
       
       toast({
         title: "איפוס סימולציה",
@@ -222,14 +312,14 @@ export const useSimulation = (
         variant: "default",
       });
     } catch (error) {
-      console.error("Error resetting simulation progress:", error);
+      console.error('❌ [useSimulation] Error resetting simulation progress:', error);
       toast({
         title: "שגיאה",
         description: "שגיאה באיפוס הסימולציה. נסה שוב.",
         variant: "destructive",
       });
     }
-  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam]);
+  }, [simulationId, toast, storyQuestions, effectiveType, difficulty, questionLimit, setNumber, startIndex, examMode, showAnswersImmediately, isFullExam, type]);
 
   // Initialize questions based on simulation type
   const initializeQuestions = useCallback(async () => {
