@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
@@ -16,7 +16,9 @@ import {
   XCircle,
   BarChart3,
   PieChart,
-  Activity
+  Activity,
+  PenTool,
+  RefreshCw
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -43,20 +45,67 @@ import {
   AreaChart
 } from 'recharts';
 import { useActivityHistory } from '@/hooks/useActivityHistory';
-import { ProgressService } from '@/services/progressService';
+import { ProgressService, UserProgressStats } from '@/services/progressService';
 import { supabase } from '@/integrations/supabase/client';
 
 const ProgressStats: React.FC = () => {
   const navigate = useNavigate();
   const { history, isLoading } = useActivityHistory();
-  const [realStats, setRealStats] = useState<any>(null);
+  const [realStats, setRealStats] = useState<UserProgressStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [weakestTopic, setWeakestTopic] = useState<{ type: string; displayName: string; accuracy: number } | null>(null);
+  const [weeklyQuestionsCount, setWeeklyQuestionsCount] = useState(0);
+  const [studyStreak, setStudyStreak] = useState(0);
+  const [dailyActivity, setDailyActivity] = useState<Record<string, { correct: number; total: number; accuracy: number }>>({});
 
-  useEffect(() => {
-    loadRealStats();
+  // Get topic-specific icon
+  const getTopicIcon = (topicType: string) => {
+    const topicIcons = {
+      'sentence-completion': <PenTool className="w-6 h-6 text-white" />,
+      'reading-comprehension': <BookOpen className="w-6 h-6 text-white" />,
+      'restatement': <RefreshCw className="w-6 h-6 text-white" />
+    };
+    return topicIcons[topicType as keyof typeof topicIcons] || <Target className="w-6 h-6 text-white" />;
+  };
+
+  // Get the correct navigation route for each topic
+  const getTopicRoute = (topicType: string) => {
+    const topicRoutes = {
+      'sentence-completion': '/simulation/type/sentence-completion',
+      'reading-comprehension': '/reading-comprehension',
+      'restatement': '/simulation/type/restatement'
+    };
+    return topicRoutes[topicType as keyof typeof topicRoutes] || `/simulation/type/${topicType}`;
+  };
+
+  // Calculate study streak from daily activity data
+  const calculateStudyStreak = useCallback((dailyStats: Record<string, { correct: number; total: number; accuracy: number }>) => {
+    const sortedDays = Object.keys(dailyStats).sort((a, b) => 
+      new Date(b).getTime() - new Date(a).getTime()
+    );
+    
+    let streak = 0;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    for (let i = 0; i < sortedDays.length; i++) {
+      const dayDate = new Date(sortedDays[i]);
+      dayDate.setHours(0, 0, 0, 0);
+      
+      const expectedDate = new Date(today);
+      expectedDate.setDate(today.getDate() - i);
+      
+      if (dayDate.getTime() === expectedDate.getTime()) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    
+    return streak;
   }, []);
 
-  const loadRealStats = async () => {
+  const loadRealStats = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
@@ -78,14 +127,29 @@ const ProgressStats: React.FC = () => {
       console.log('✅ Chart data loaded:', { weeklyData });
       setWeeklyProgress(weeklyData);
       
+      // Load daily activity data for goals and achievements
+      const dailyStats = await ProgressService.getUserDailyActivity(user.id, 30);
+      console.log('✅ Daily activity loaded:', dailyStats);
+      setDailyActivity(dailyStats);
+      
+      // Calculate weekly questions count (past 7 days)
+      const weeklyCount = Object.values(dailyStats)
+        .slice(0, 7)
+        .reduce((total, day) => total + day.total, 0);
+      setWeeklyQuestionsCount(weeklyCount);
+      
+      // Calculate study streak
+      const streak = calculateStudyStreak(dailyStats);
+      setStudyStreak(streak);
+      
       // Create topic performance data from stats - filter out vocabulary and low-data types
       if (stats && stats.questions_by_type) {
         const topicData = Object.entries(stats.questions_by_type)
-          .filter(([type, data]: [string, any]) => {
+          .filter(([type, data]: [string, { correct: number; total: number; accuracy: number }]) => {
             // Filter out vocabulary and types with too few questions
-            return type !== 'vocabulary' && data.total >= 3;
+            return type !== 'vocabulary' && data.total >= 2;
           })
-          .map(([type, data]: [string, any]) => ({
+          .map(([type, data]: [string, { correct: number; total: number; accuracy: number }]) => ({
             topic: type === 'sentence-completion' ? 'השלמת משפטים' : 
                    type === 'reading-comprehension' ? 'הבנת הנקרא' :
                    type === 'restatement' ? 'ניסוח מחדש' : type,
@@ -93,14 +157,39 @@ const ProgressStats: React.FC = () => {
             questions: data.total
           }));
         setTopicPerformance(topicData);
+        
+        // Find the weakest topic for recommendation
+        if (topicData.length > 0) {
+          // Sort topics by score (ascending) and then by question count (descending) for tie-breaking
+          const sortedTopics = topicData.sort((a, b) => {
+            if (a.score === b.score) {
+              return b.questions - a.questions; // If same score, prefer topic with more questions
+            }
+            return a.score - b.score; // Lower score first
+          });
+          
+          const weakest = sortedTopics[0];
+          
+          const typeMapping: Record<string, string> = {
+            'השלמת משפטים': 'sentence-completion',
+            'הבנת הנקרא': 'reading-comprehension',
+            'ניסוח מחדש': 'restatement'
+          };
+          
+          setWeakestTopic({
+            type: typeMapping[weakest.topic] || weakest.topic,
+            displayName: weakest.topic,
+            accuracy: weakest.score
+          });
+        }
       }
       
       // Create difficulty breakdown data from stats - filter out vocabulary
       if (stats && stats.questions_by_difficulty) {
         const colors = { easy: '#10B981', medium: '#F59E0B', hard: '#EF4444' };
         const difficultyData = Object.entries(stats.questions_by_difficulty)
-          .filter(([difficulty, data]: [string, any]) => data.total >= 2)
-          .map(([difficulty, data]: [string, any]) => ({
+          .filter(([difficulty, data]: [string, { correct: number; total: number; accuracy: number }]) => data.total >= 2)
+          .map(([difficulty, data]: [string, { correct: number; total: number; accuracy: number }]) => ({
             name: difficulty === 'easy' ? 'קל' : difficulty === 'medium' ? 'בינוני' : 'קשה',
             value: data.total,
             color: colors[difficulty as keyof typeof colors] || '#6B7280'
@@ -113,7 +202,11 @@ const ProgressStats: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [calculateStudyStreak]);
+
+  useEffect(() => {
+    loadRealStats();
+  }, [loadRealStats]);
 
   // Real chart data states
   const [weeklyProgress, setWeeklyProgress] = useState<Array<{ week: string; correct: number; wrong: number; total: number }>>([]);
@@ -222,6 +315,46 @@ const ProgressStats: React.FC = () => {
               </CardContent>
             </Card>
           </motion.div>
+
+          {/* Next Topic to Improve Recommendation */}
+          {weakestTopic && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 }}
+              className="mb-8"
+            >
+              <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="bg-amber-500 rounded-full p-3">
+                        {getTopicIcon(weakestTopic.type)}
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-amber-800 mb-1">
+                          הנושא הבא לשיפור
+                        </h3>
+                        <p className="text-amber-700 mb-2">
+                          {weakestTopic.displayName} - {weakestTopic.accuracy}% דיוק
+                        </p>
+                        <p className="text-amber-600 text-sm">
+                          התמקדות בנושא זה תשפר את הביצועים הכלליים שלך
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => navigate(getTopicRoute(weakestTopic.type))}
+                      className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
+                    >
+                      <BookOpen className="w-5 h-5" />
+                      <span>התרגל בנושא זה</span>
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
@@ -405,29 +538,40 @@ const ProgressStats: React.FC = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>יעד שבועי: 100 שאלות</span>
-                    <span className="font-medium">78/100</span>
+                {loading ? (
+                  <div className="h-[200px] flex items-center justify-center">
+                    <div className="text-center">
+                      <Clock className="h-8 w-8 mx-auto mb-2 animate-spin" />
+                      <p className="text-gray-600">טוען נתוני מטרות...</p>
+                    </div>
                   </div>
-                  <Progress value={78} className="h-2" />
-                </div>
-                
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>יעד דיוק: 85%</span>
-                    <span className="font-medium">{averageScore}/85%</span>
-                  </div>
-                  <Progress value={Math.min((averageScore / 85) * 100, 100)} className="h-2" />
-                </div>
-                
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>ימי לימוד רצופים</span>
-                    <span className="font-medium">12 ימים</span>
-                  </div>
-                  <Progress value={80} className="h-2" />
-                </div>
+                ) : (
+                  <>
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span>יעד שבועי: 100 שאלות</span>
+                        <span className="font-medium">{weeklyQuestionsCount}/100</span>
+                      </div>
+                      <Progress value={Math.min((weeklyQuestionsCount / 100) * 100, 100)} className="h-2" />
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span>יעד דיוק: 85%</span>
+                        <span className="font-medium">{averageScore}/85%</span>
+                      </div>
+                      <Progress value={Math.min((averageScore / 85) * 100, 100)} className="h-2" />
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span>ימי לימוד רצופים</span>
+                        <span className="font-medium">{studyStreak} ימים</span>
+                      </div>
+                      <Progress value={Math.min((studyStreak / 15) * 100, 100)} className="h-2" />
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           </motion.div>
