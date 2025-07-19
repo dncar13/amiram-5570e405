@@ -162,19 +162,24 @@ export type Database = {
       }
       questions: {
         Row: {
+          ai_generated: boolean | null
           answer_options: Json
+          batch_id: string | null
           correct_answer: string
           created_at: string
           difficulty: string
           explanation: string | null
+          generation_model: string | null
           id: string
           image_url: string | null
+          is_premium: boolean | null
           line_numbers: boolean | null
           original_id: number | null
           passage_content: string | null
           passage_id: string | null
           passage_line_range: Json | null
           passage_title: string | null
+          quality_score: number | null
           question_subtype: string | null
           question_text: string
           set_id: string | null
@@ -186,19 +191,24 @@ export type Database = {
           version: number | null
         }
         Insert: {
+          ai_generated?: boolean | null
           answer_options: Json
+          batch_id?: string | null
           correct_answer: string
           created_at?: string
           difficulty: string
           explanation?: string | null
+          generation_model?: string | null
           id?: string
           image_url?: string | null
+          is_premium?: boolean | null
           line_numbers?: boolean | null
           original_id?: number | null
           passage_content?: string | null
           passage_id?: string | null
           passage_line_range?: Json | null
           passage_title?: string | null
+          quality_score?: number | null
           question_subtype?: string | null
           question_text: string
           set_id?: string | null
@@ -210,19 +220,24 @@ export type Database = {
           version?: number | null
         }
         Update: {
+          ai_generated?: boolean | null
           answer_options?: Json
+          batch_id?: string | null
           correct_answer?: string
           created_at?: string
           difficulty?: string
           explanation?: string | null
+          generation_model?: string | null
           id?: string
           image_url?: string | null
+          is_premium?: boolean | null
           line_numbers?: boolean | null
           original_id?: number | null
           passage_content?: string | null
           passage_id?: string | null
           passage_line_range?: Json | null
           passage_title?: string | null
+          quality_score?: number | null
           question_subtype?: string | null
           question_text?: string
           set_id?: string | null
