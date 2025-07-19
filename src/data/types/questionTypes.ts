@@ -11,6 +11,13 @@ export interface Question {
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
   
+  // Premium fields
+  is_premium?: boolean;
+  ai_generated?: boolean;
+  generation_model?: string;
+  batch_id?: string;
+  quality_score?: number;
+  
   // Optional fields for different question types
   topicId?: number;
   categoryId?: number;

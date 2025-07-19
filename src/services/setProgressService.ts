@@ -538,11 +538,9 @@ export class SetProgressService {
 
       // 4. Clear any cached progress data from regular ProgressService
       try {
-        const ProgressService = await import('./progressService');
-        if (ProgressService && ProgressService.clearProgress) {
-          await ProgressService.clearProgress(userId, setId.toString());
-          console.log('🧹 Cleared ProgressService cache');
-        }
+        console.log('🧹 Clearing any cached progress data');
+        // Since clearProgress method doesn't exist, we'll skip this step
+        console.log('ℹ️ Skipping ProgressService cache clear (method not available)');
       } catch (error) {
         console.warn('⚠️ Failed to clear ProgressService cache:', error);
       }

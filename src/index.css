@@ -298,6 +298,17 @@
     text-align: right !important;
   }
 
+  /* Mixed language explanation support (Hebrew + English) */
+  .explanation-container {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+
+  .explanation-container * {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+
   h1,
   h2,
   h3,

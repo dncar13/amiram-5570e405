@@ -195,6 +195,15 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
                 {getDifficultyLabel(activeQuestion.difficulty)}
               </Badge>
 
+              {activeQuestion.is_premium && (
+                <Badge 
+                  variant="outline" 
+                  className="px-2 py-1 text-xs font-medium border bg-gradient-to-r from-orange-100 to-yellow-100 text-orange-800 border-orange-200"
+                >
+                  ⭐ פרימיום
+                </Badge>
+              )}
+
               {activeQuestion.metadata?.estimatedTime && (
                 <Badge variant="outline" className="flex items-center gap-1 px-2 py-1 text-xs">
                   <Clock className="h-3 w-3" />
@@ -418,9 +427,9 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
         {canShowAnswer && showExplanation && activeQuestion.explanation && (
           <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
             <h4 className="font-semibold text-blue-900 mb-2">הסבר:</h4>
-            <p className="text-blue-800 text-sm leading-relaxed">
+            <div className="explanation-container text-blue-800 text-sm leading-relaxed">
               {activeQuestion.explanation}
-            </p>
+            </div>
           </div>
         )}
 
