@@ -65,8 +65,8 @@ function transformQuestion(dbQuestion: any): Question {
 /**
  * Fetch questions from Supabase with optional filters
  */
-export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promise<QuestionsResponse> {
-  const cacheKey = getCacheKey(filters)
+export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = false): Promise<QuestionsResponse> {
+  const cacheKey = getCacheKey(filters) + (userIsPremium ? '_premium' : '_free')
   const cached = getCachedData<QuestionsResponse>(cacheKey)
   
   if (cached) {
@@ -75,12 +75,17 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promis
   }
 
   try {
-    console.log('🔍 Fetching questions from database...', filters)
+    console.log('🔍 Fetching questions from database...', filters, 'Premium:', userIsPremium)
 
     // Build query - simplified to avoid foreign key issues
     let query = supabase
       .from('questions')
       .select('*')
+
+    // Apply premium filtering - free users only see non-premium questions
+    if (!userIsPremium) {
+      query = query.or('is_premium.is.null,is_premium.eq.false')
+    }
 
     // Apply filters
     if (filters.type) {
@@ -129,7 +134,7 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promis
     // Cache the result
     setCachedData(cacheKey, result)
 
-    console.log(`✅ Fetched ${questions.length} questions from database`)
+    console.log(`✅ Fetched ${questions.length} questions from database (Premium: ${userIsPremium})`)
     return result
 
   } catch (error) {
@@ -141,28 +146,28 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}): Promis
 /**
  * Get questions by type (for backward compatibility)
  */
-export async function getQuestionsByType(type: string, difficulty?: string): Promise<Question[]> {
+export async function getQuestionsByType(type: string, difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   const filters: QuestionsFilters = { type }
   if (difficulty) {
     filters.difficulty = difficulty
   }
   
-  const response = await getQuestionsFromDB(filters)
+  const response = await getQuestionsFromDB(filters, userIsPremium)
   return response.questions
 }
 
 /**
  * Get vocabulary questions specifically
  */
-export async function getVocabularyQuestions(difficulty?: string): Promise<Question[]> {
-  console.log('📚 Fetching vocabulary questions...', { difficulty })
-  return getQuestionsByType('vocabulary', difficulty)
+export async function getVocabularyQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+  console.log('📚 Fetching vocabulary questions...', { difficulty, premium: userIsPremium })
+  return getQuestionsByType('vocabulary', difficulty, userIsPremium)
 }
 
 /**
  * Get reading comprehension questions with passages
  */
-export async function getReadingQuestions(difficulty?: string): Promise<Question[]> {
+export async function getReadingQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('📖 Fetching reading comprehension questions...', { difficulty })
   
   try {
@@ -197,7 +202,7 @@ export async function getReadingQuestions(difficulty?: string): Promise<Question
       if (difficulty) {
         fallbackFilters.difficulty = difficulty
       }
-      const response = await getQuestionsFromDB(fallbackFilters)
+      const response = await getQuestionsFromDB(fallbackFilters, userIsPremium)
       return response.questions
     }
     
@@ -231,7 +236,7 @@ export async function getReadingQuestions(difficulty?: string): Promise<Question
     if (difficulty) {
       filters.difficulty = difficulty
     }
-    const response = await getQuestionsFromDB(filters)
+    const response = await getQuestionsFromDB(filters, userIsPremium)
     return response.questions
   }
 }
@@ -239,17 +244,17 @@ export async function getReadingQuestions(difficulty?: string): Promise<Question
 /**
  * Get restatement questions
  */
-export async function getRestatementQuestions(difficulty?: string): Promise<Question[]> {
-  console.log('🔄 Fetching restatement questions...', { difficulty })
-  return getQuestionsByType('restatement', difficulty)
+export async function getRestatementQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+  console.log('🔄 Fetching restatement questions...', { difficulty, premium: userIsPremium })
+  return getQuestionsByType('restatement', difficulty, userIsPremium)
 }
 
 /**
  * Get sentence completion questions
  */
-export async function getSentenceCompletionQuestions(difficulty?: string): Promise<Question[]> {
-  console.log('📝 Fetching sentence completion questions...', { difficulty })
-  return getQuestionsByType('sentence-completion', difficulty)
+export async function getSentenceCompletionQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+  console.log('📝 Fetching sentence completion questions...', { difficulty, premium: userIsPremium })
+  return getQuestionsByType('sentence-completion', difficulty, userIsPremium)
 }
 
 /**
@@ -275,18 +280,18 @@ export async function getQuestionTypes(): Promise<string[]> {
 /**
  * Get questions for simulation (mixed types)
  */
-export async function getSimulationQuestions(count: number = 50): Promise<Question[]> {
-  console.log('🎯 Fetching simulation questions...', { count })
+export async function getSimulationQuestions(count: number = 50, userIsPremium: boolean = false): Promise<Question[]> {
+  console.log('🎯 Fetching simulation questions...', { count, premium: userIsPremium })
   
   try {
     // Get a balanced mix of question types
     const typeCounts = Math.floor(count / 4)
     const remainder = count % 4
     
-    const vocabularyPromise = getVocabularyQuestions().then(q => q.slice(0, typeCounts))
-    const restatementPromise = getRestatementQuestions().then(q => q.slice(0, typeCounts))
-    const sentencePromise = getSentenceCompletionQuestions().then(q => q.slice(0, typeCounts))
-    const readingPromise = getReadingQuestions().then(q => q.slice(0, typeCounts + remainder))
+    const vocabularyPromise = getVocabularyQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
+    const restatementPromise = getRestatementQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
+    const sentencePromise = getSentenceCompletionQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
+    const readingPromise = getReadingQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts + remainder))
     
     const [vocab, restate, sentence, reading] = await Promise.all([
       vocabularyPromise,
