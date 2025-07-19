@@ -20,7 +20,8 @@ import {
   AlertCircle, 
   ArrowUpDown, 
   RotateCcw,
-  RefreshCw 
+  RefreshCw,
+  Upload
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import QuestionEditor from "./QuestionEditor";
@@ -47,7 +48,8 @@ import {
   deleteQuestion,
   saveChanges,
   resetChanges,
-  refreshQuestionsFromStorage
+  refreshQuestionsFromStorage,
+  uploadTestQuestions
 } from "@/services/questions";
 import { toast } from "sonner";
 
@@ -62,11 +64,14 @@ const QuestionsManager: React.FC = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [questionToDelete, setQuestionToDelete] = useState<Question | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-  const loadQuestions = useCallback((forceRefresh = false) => {
+  const loadQuestions = useCallback(async (forceRefresh = false) => {
     try {
-      const allQuestions = forceRefresh ? refreshQuestionsFromStorage() : getAllQuestions();
+      console.log("Loading questions in QuestionsManager...");
+      const allQuestions = forceRefresh ? await refreshQuestionsFromStorage() : await getAllQuestions();
       console.log("Loaded questions in QuestionsManager:", allQuestions.length);
+      console.log("Question types found:", [...new Set(allQuestions.map(q => q.type))]);
       setQuestions(allQuestions);
       
       if (forceRefresh) {
@@ -170,6 +175,24 @@ const QuestionsManager: React.FC = () => {
     setIsEditing(true);
   };
 
+  const handleUploadPremiumQuestions = async () => {
+    setIsUploading(true);
+    try {
+      const result = await uploadTestQuestions();
+      if (result.success) {
+        toast.success(`הועלו בהצלחה ${result.count} שאלות פרמיום`);
+        loadQuestions(true); // Refresh the questions list
+      } else {
+        toast.error(`שגיאה בהעלאת השאלות: ${result.error || 'שגיאה לא ידועה'}`);
+      }
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('שגיאה בהעלאת השאלות');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4 space-y-6">
       <div className="bg-white rounded-lg shadow-sm p-4">
@@ -198,6 +221,15 @@ const QuestionsManager: React.FC = () => {
                 שמור הכל
               </Button>
             )}
+            
+            <Button 
+              onClick={handleUploadPremiumQuestions}
+              disabled={isUploading}
+              variant="outline"
+            >
+              <Upload className="h-4 w-4 ml-1" />
+              {isUploading ? "מעלה..." : "העלה שאלות פרמיום"}
+            </Button>
             
             <Button onClick={handleCreateNewQuestion}>
               <PlusCircle className="h-4 w-4 ml-1" />
@@ -240,6 +272,8 @@ const QuestionsManager: React.FC = () => {
               <TableRow>
                 <TableHead className="w-12">מס'</TableHead>
                 <TableHead>שאלה</TableHead>
+                <TableHead className="w-32">סוג שאלה</TableHead>
+                <TableHead className="w-20">רמה</TableHead>
                 <TableHead>נושא</TableHead>
                 <TableHead className="w-28">מס' אפשרויות</TableHead>
                 <TableHead className="text-right w-24">פעולות</TableHead>
@@ -254,6 +288,28 @@ const QuestionsManager: React.FC = () => {
                       <div className="max-w-md truncate" title={question.text}>
                         {question.text}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
+                        {question.type === 'reading-comprehension' ? 'הבנת הנקרא' :
+                         question.type === 'sentence-completion' ? 'השלמת משפטים' :
+                         question.type === 'restatement' ? 'ניסוח מחדש' :
+                         question.type === 'vocabulary' ? 'אוצר מילים' :
+                         question.type || 'לא מוגדר'}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        question.difficulty === 'easy' ? 'bg-green-100 text-green-800' :
+                        question.difficulty === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                        question.difficulty === 'hard' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {question.difficulty === 'easy' ? 'קל' :
+                         question.difficulty === 'medium' ? 'בינוני' :
+                         question.difficulty === 'hard' ? 'קשה' :
+                         question.difficulty || 'לא מוגדר'}
+                      </span>
                     </TableCell>
                     <TableCell>
                       {topicsData.find(t => t.id === question.topicId)?.title || "לא מוגדר"}
@@ -288,7 +344,7 @@ const QuestionsManager: React.FC = () => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-gray-500">
+                  <TableCell colSpan={7} className="text-center py-8 text-gray-500">
                     לא נמצאו שאלות התואמות את החיפוש
                   </TableCell>
                 </TableRow>
