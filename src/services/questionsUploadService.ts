@@ -120,7 +120,7 @@ export class QuestionsUploadService {
     try {
       const { data, error } = await supabase
         .from('questions')
-        .select('batch_id, created_at, is_premium, ai_generated, metadata')
+        .select('batch_id, created_at, is_premium, ai_generated')
         .not('batch_id', 'is', null)
         .order('created_at', { ascending: false })
         .limit(limit * 5); // Get more to account for grouping
@@ -136,15 +136,12 @@ export class QuestionsUploadService {
         if (existing) {
           existing.count++;
           if (question.is_premium) existing.premium_count++;
-          if (question.metadata?.is_set_based) existing.set_based_count++;
         } else {
           acc.push({
             batch_id: question.batch_id,
             created_at: question.created_at,
             count: 1,
-            premium_count: question.is_premium ? 1 : 0,
-            set_based_count: question.metadata?.is_set_based ? 1 : 0,
-            set_type: question.metadata?.set_type || null
+            premium_count: question.is_premium ? 1 : 0
           });
         }
         return acc;
@@ -161,7 +158,7 @@ export class QuestionsUploadService {
     try {
       const { data, error } = await supabase
         .from('questions')
-        .select('is_premium, difficulty, type, metadata')
+        .select('is_premium, difficulty, type')
         .eq('is_premium', true);
 
       if (error) {
@@ -179,8 +176,7 @@ export class QuestionsUploadService {
         byType: data.reduce((acc: any, q) => {
           acc[q.type] = (acc[q.type] || 0) + 1;
           return acc;
-        }, {}),
-        setBased: data.filter(q => q.metadata?.is_set_based).length
+        }, {})
       };
 
       return stats;

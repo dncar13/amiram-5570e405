@@ -174,6 +174,7 @@ export type Database = {
           image_url: string | null
           is_premium: boolean | null
           line_numbers: boolean | null
+          metadata: Json | null
           original_id: number | null
           passage_content: string | null
           passage_id: string | null
@@ -203,6 +204,7 @@ export type Database = {
           image_url?: string | null
           is_premium?: boolean | null
           line_numbers?: boolean | null
+          metadata?: Json | null
           original_id?: number | null
           passage_content?: string | null
           passage_id?: string | null
@@ -232,6 +234,7 @@ export type Database = {
           image_url?: string | null
           is_premium?: boolean | null
           line_numbers?: boolean | null
+          metadata?: Json | null
           original_id?: number | null
           passage_content?: string | null
           passage_id?: string | null
