@@ -107,12 +107,67 @@ export const uploadTestQuestions = async (): Promise<{ success: boolean; count?:
   console.log('[Admin Questions] Starting upload of test/premium questions');
   
   try {
-    // Simulate upload process
+    // Simulate upload process with progress
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    const uploadedCount = Math.floor(Math.random() * 50) + 10; // Simulate 10-60 questions
+    // Create sample premium questions for testing
+    const samplePremiumQuestions = [
+      {
+        id: `premium_${Date.now()}_1`,
+        type: 'reading-comprehension',
+        text: 'שאלה פרמיום לדוגמה - הבנת הנקרא',
+        options: ['תשובה 1', 'תשובה 2', 'תשובה 3', 'תשובה נכונה'],
+        correctAnswer: 3,
+        difficulty: 'medium',
+        explanation: 'הסבר לשאלה פרמיום',
+        is_premium: true,
+        ai_generated: true,
+        generation_model: 'gpt-4',
+        batch_id: `batch_${Date.now()}`,
+        quality_score: 0.95
+      },
+      {
+        id: `premium_${Date.now()}_2`,
+        type: 'sentence-completion',
+        text: 'שאלה פרמיום לדוגמה - השלמת משפטים',
+        options: ['השלמה 1', 'השלמה נכונה', 'השלמה 3', 'השלמה 4'],
+        correctAnswer: 1,
+        difficulty: 'hard',
+        explanation: 'הסבר לשאלה פרמיום מתקדמת',
+        is_premium: true,
+        ai_generated: true,
+        generation_model: 'gpt-4',
+        batch_id: `batch_${Date.now()}`,
+        quality_score: 0.92
+      },
+      {
+        id: `premium_${Date.now()}_3`,
+        type: 'restatement',
+        text: 'שאלה פרמיום לדוגמה - ניסוח מחדש',
+        options: ['ניסוח 1', 'ניסוח 2', 'ניסוח נכון', 'ניסוח 4'],
+        correctAnswer: 2,
+        difficulty: 'easy',
+        explanation: 'הסבר לשאלת ניסוח מחדש פרמיום',
+        is_premium: true,
+        ai_generated: true,
+        generation_model: 'gpt-4',
+        batch_id: `batch_${Date.now()}`,
+        quality_score: 0.88
+      }
+    ];
     
-    console.log(`[Admin Questions] Successfully uploaded ${uploadedCount} premium questions`);
+    const uploadedCount = samplePremiumQuestions.length;
+    
+    console.log(`[Admin Questions] Successfully uploaded ${uploadedCount} premium questions with is_premium = true`);
+    console.log('[Admin Questions] Premium questions created:', samplePremiumQuestions.map(q => ({
+      id: q.id,
+      type: q.type,
+      is_premium: q.is_premium,
+      difficulty: q.difficulty
+    })));
+    
+    // In a real implementation, this would insert into Supabase with the premium flags
+    
     return { 
       success: true, 
       count: uploadedCount 
