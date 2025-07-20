@@ -100,13 +100,13 @@ export class PremiumSetService {
   }
 
   /**
-   * Get premium set questions with access control (dynamic set support)
+   * Get premium set questions with access control (unified set support)
    */
   static async getPremiumSetQuestions(setId: string): Promise<{ 
     questions: Question[]; 
     accessCheck: PremiumAccessCheck 
   }> {
-    console.log(`👑 [PremiumSetService] Getting questions for premium set: ${setId}`);
+    console.log(`👑 [PremiumSetService] Getting questions for unified premium set: ${setId}`);
 
     // First check access
     const accessCheck = await this.checkPremiumAccess();
@@ -117,12 +117,16 @@ export class PremiumSetService {
     }
 
     try {
-      // Get premium questions from database by set_id
+      // Get premium questions by pattern matching - load all questions that start with the setId
+      // For setId "restatement_set1_premium", this will load:
+      // - restatement_set1_premium_easy
+      // - restatement_set1_premium_medium  
+      // - restatement_set1_premium_hard
       const { data: questionsData, error } = await supabase
         .from('questions')
         .select('*')
         .eq('is_premium', true)
-        .filter('metadata->set_id', 'eq', setId)
+        .or(`metadata->set_id.eq.${setId},metadata->set_id.like.${setId}_%`)
         .order('metadata->set_order', { ascending: true });
         
       if (error) {
@@ -138,8 +142,21 @@ export class PremiumSetService {
         };
       }
       
-      if (!questionsData || questionsData.length === 0) {
-        console.log(`⚠️ No questions found for premium set: ${setId}`);
+      // Filter questions to only include those that match our pattern
+      const filteredQuestions = questionsData?.filter(q => {
+        const metadata = q.metadata as any;
+        const questionSetId = metadata?.set_id;
+        
+        if (!questionSetId) return false;
+        
+        // Match exact setId or setId with difficulty suffix
+        return questionSetId === setId || questionSetId.startsWith(setId + '_');
+      }) || [];
+      
+      console.log(`🔍 Found ${questionsData?.length || 0} total questions, ${filteredQuestions.length} matching pattern for set: ${setId}`);
+      
+      if (filteredQuestions.length === 0) {
+        console.log(`⚠️ No questions found matching pattern for premium set: ${setId}`);
         return {
           questions: [],
           accessCheck: {
@@ -151,8 +168,8 @@ export class PremiumSetService {
         };
       }
       
-      // Transform database questions to app format
-      const questions = questionsData.map(q => ({
+      // Transform filtered database questions to app format
+      const questions = filteredQuestions.map(q => ({
         id: q.id,
         text: q.question_text,
         options: Array.isArray(q.answer_options) 
@@ -251,7 +268,7 @@ export class PremiumSetService {
         return [];
       }
       
-      // Group questions by set_id to create set summaries
+      // Group questions by unified set pattern (e.g., restatement_set1_premium_* becomes restatement_set1_premium)
       const setsMap = new Map<string, {
         setId: string;
         title: string;
@@ -263,18 +280,38 @@ export class PremiumSetService {
       
       questions.forEach(question => {
         const metadata = question.metadata as any;
-        const setId = metadata?.set_id;
+        const originalSetId = metadata?.set_id;
         
-        if (!setId) return;
+        if (!originalSetId) return;
         
-        if (!setsMap.has(setId)) {
-          // Create title from set metadata or generate from setId
-          const setNumber = metadata?.set_number || setId.match(/\d+/)?.[0] || '1';
-          const title = metadata?.set_title || `Set ${setNumber} – Premium`;
-          const description = metadata?.set_description || `שאלות פרימיום מתקדמות - סט ${setNumber}`;
+        // Create unified set ID by removing difficulty suffix
+        // restatement_set1_premium_easy -> restatement_set1_premium
+        // sentence_completion_set1_premium_medium -> sentence_completion_set1_premium
+        const unifiedSetId = originalSetId.replace(/_(?:easy|medium|hard)$/, '');
+        
+        if (!setsMap.has(unifiedSetId)) {
+          // Extract type and set number for better naming
+          const typeMatch = unifiedSetId.match(/^([^_]+)/);
+          const setNumberMatch = unifiedSetId.match(/set(\d+)/);
           
-          setsMap.set(setId, {
-            setId,
+          const questionType = typeMatch ? typeMatch[1] : 'unknown';
+          const setNumber = setNumberMatch ? setNumberMatch[1] : '1';
+          
+          // Create readable titles
+          const typeInHebrew = {
+            'restatement': 'ניסוח מחדש',
+            'sentence_completion': 'השלמת משפטים', 
+            'vocabulary': 'אוצר מילים',
+            'reading_comprehension': 'הבנת הנקרא'
+          }[questionType] || questionType;
+          
+          const title = metadata?.set_title || `Set ${setNumber} Premium - ${typeInHebrew}`;
+          const description = metadata?.set_description || `שאלות פרימיום מתקדמות - ${typeInHebrew} סט ${setNumber}`;
+          
+          console.log(`🔗 Creating unified set: ${originalSetId} -> ${unifiedSetId}`, { title });
+          
+          setsMap.set(unifiedSetId, {
+            setId: unifiedSetId,
             title,
             description,
             questions: [],
@@ -283,7 +320,7 @@ export class PremiumSetService {
           });
         }
         
-        const setData = setsMap.get(setId)!;
+        const setData = setsMap.get(unifiedSetId)!;
         setData.questions.push(question);
         setData.types.add(question.type);
         setData.difficulties.add(question.difficulty);
@@ -305,8 +342,14 @@ export class PremiumSetService {
         };
       });
       
-      console.log(`✅ Found ${premiumSets.length} premium sets with real data:`, 
-        premiumSets.map(set => ({ id: set.id, count: set.questionCount })));
+      console.log(`✅ Found ${premiumSets.length} unified premium sets:`, 
+        premiumSets.map(set => ({ 
+          id: set.id, 
+          title: set.title, 
+          count: set.questionCount,
+          difficulties: set.difficulty,
+          type: set.type
+        })));
       
       return premiumSets;
       
@@ -324,20 +367,33 @@ export class PremiumSetService {
   }
 
   /**
-   * Get detailed information about a specific premium set
+   * Get detailed information about a specific premium set (unified set support)
    */
   static async getPremiumSetDetails(setId: string): Promise<PremiumSet | null> {
-    console.log(`🔍 [PremiumSetService] Getting details for set: ${setId}`);
+    console.log(`🔍 [PremiumSetService] Getting details for unified set: ${setId}`);
     
     try {
-      const { data: questions, error } = await supabase
+      // Get questions by pattern matching like in getPremiumSetQuestions
+      const { data: questionsData, error } = await supabase
         .from('questions')
         .select('metadata, type, difficulty, is_premium')
         .eq('is_premium', true)
-        .filter('metadata->set_id', 'eq', setId);
+        .or(`metadata->set_id.eq.${setId},metadata->set_id.like.${setId}_%`);
       
-      if (error || !questions || questions.length === 0) {
-        console.log(`❌ Set not found or error: ${setId}`, error);
+      if (error) {
+        console.log(`❌ Error fetching set details: ${setId}`, error);
+        return null;
+      }
+      
+      // Filter questions to match our unified set pattern
+      const questions = questionsData?.filter(q => {
+        const metadata = q.metadata as any;
+        const questionSetId = metadata?.set_id;
+        return questionSetId === setId || questionSetId?.startsWith(setId + '_');
+      }) || [];
+      
+      if (questions.length === 0) {
+        console.log(`❌ No questions found for unified set: ${setId}`);
         return null;
       }
       
@@ -345,9 +401,25 @@ export class PremiumSetService {
       const types = new Set(questions.map(q => q.type));
       const difficulties = new Set(questions.map(q => q.difficulty));
       
-      const setNumber = metadata?.set_number || setId.match(/\d+/)?.[0] || '1';
-      const title = metadata?.set_title || `Set ${setNumber} – Premium`;
-      const description = metadata?.set_description || `שאלות פרימיום מתקדמות - סט ${setNumber}`;
+      // Extract type and set number for better naming
+      const typeMatch = setId.match(/^([^_]+)/);
+      const setNumberMatch = setId.match(/set(\d+)/);
+      
+      const questionType = typeMatch ? typeMatch[1] : 'unknown';
+      const setNumber = setNumberMatch ? setNumberMatch[1] : '1';
+      
+      // Create readable titles
+      const typeInHebrew = {
+        'restatement': 'ניסוח מחדש',
+        'sentence_completion': 'השלמת משפטים', 
+        'vocabulary': 'אוצר מילים',
+        'reading_comprehension': 'הבנת הנקרא'
+      }[questionType] || questionType;
+      
+      const title = metadata?.set_title || `Set ${setNumber} Premium - ${typeInHebrew}`;
+      const description = metadata?.set_description || `שאלות פרימיום מתקדמות - ${typeInHebrew} סט ${setNumber}`;
+      
+      console.log(`✅ Found unified set details: ${setId} with ${questions.length} questions`, { title });
       
       return {
         id: setId,
