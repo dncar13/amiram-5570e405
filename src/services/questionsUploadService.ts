@@ -88,7 +88,20 @@ export class QuestionsUploadService {
     
     // Generate proper UUID and store custom ID in metadata
     const customId = question.id; // Store the original custom ID
-    const generatedId = crypto.randomUUID(); // Generate proper UUID
+    // Generate UUID compatible with all environments
+    const generatedId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+    
+    console.log('🔄 Transforming question:', {
+      originalId: customId,
+      generatedId,
+      isPremium,
+      isSet1,
+      questionText: question.text.substring(0, 50) + '...'
+    });
     
     // Create metadata object with set information
     const metadata = {
