@@ -1,40 +1,36 @@
 
 /**
- * Utility functions for checking topic access permissions
+ * Unified premium system - All content is now premium by default
  */
 
-// כל הנושאים זמינים לכולם (נושאים חינמיים)
-const FREE_TOPIC_IDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // כל הנושאים פתוחים
-
 /**
- * בודק אם נושא מסוים זמין בחינם (לכל המשתמשים)
+ * בודק אם נושא מסוים זמין (כל הנושאים זמינים כפרימיום)
  * @param topicId מזהה הנושא לבדיקה
- * @returns boolean האם הנושא חינמי
+ * @returns boolean תמיד true - הכל זמין
  */
 export const isFreeTopic = (topicId: number): boolean => {
-  return true; // כל הנושאים חינמיים עכשיו
+  return true; // כל הנושאים זמינים
 };
 
 /**
- * בודק אם למשתמש יש גישה לנושא מסוים בהתבסס על סטטוס הפרימיום שלו
+ * בודק אם למשתמש יש גישה לנושא מסוים (כל הנושאים זמינים)
  * @param topicId מזהה הנושא לבדיקה
- * @param isPremium האם המשתמש הוא משתמש פרימיום
- * @param isAdmin האם המשתמש הוא מנהל
- * @returns boolean האם למשתמש יש גישה
+ * @param isPremium לא רלוונטי - הכל פרימיום
+ * @param isAdmin לא רלוונטי - הכל פרימיום
+ * @returns boolean תמיד true - כל הנושאים זמינים
  */
 export const checkTopicAccess = (topicId: number, isPremium: boolean, isAdmin: boolean): boolean => {
-  // כל הנושאים זמינים לכולם
-  return true;
+  return true; // כל הנושאים זמינים לכולם
 };
 
 /**
- * מחזיר רשימה של מזהי נושאים שזמינים למשתמשים רגילים (לא פרימיום)
- * @returns number[] רשימת מזהי נושאים חינמיים
+ * מחזיר רשימה של כל מזהי הנושאים (הכל זמין)
+ * @returns number[] רשימת כל מזהי הנושאים
  */
 export const getFreeTopicIds = (): number[] => {
-  return [...FREE_TOPIC_IDS];
+  return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // כל הנושאים זמינים
 };
 
-// Flag to enable showing all questions in simulations regardless of topic ID
-export const ALL_QUESTIONS_AVAILABLE = true; // הפעלתי גישה לכל השאלות
+// All questions and content are available - unified premium system
+export const ALL_QUESTIONS_AVAILABLE = true;
 

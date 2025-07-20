@@ -31,7 +31,7 @@ export const getQuestionsByDifficultyAndType = async (difficulty: string, type: 
   console.log(`[getQuestionsByDifficultyAndType] Looking for ${difficulty} ${type} questions`);
   
   try {
-    const response = await getQuestionsFromDB({ difficulty, type, limit: 500 });
+    const response = await getQuestionsFromDB({ difficulty, type, limit: 500 }, true);
     console.log(`[getQuestionsByDifficultyAndType] Found ${response.questions.length} questions for ${difficulty} ${type}`);
     return response.questions;
   } catch (error) {
@@ -44,7 +44,7 @@ export const getQuestionsByType = async (type: string): Promise<Question[]> => {
   console.log(`[getQuestionsByType] Looking for ${type} questions`);
   
   try {
-    const questions = await dbGetQuestionsByType(type);
+    const questions = await dbGetQuestionsByType(type, undefined, true);
     console.log(`[getQuestionsByType] Found ${questions.length} questions for type ${type}`);
     return questions;
   } catch (error) {
@@ -57,7 +57,7 @@ export const getQuestionsByDifficulty = async (difficulty: string): Promise<Ques
   console.log(`[getQuestionsByDifficulty] Looking for ${difficulty} questions`);
   
   try {
-    const response = await getQuestionsFromDB({ difficulty, limit: 500 });
+    const response = await getQuestionsFromDB({ difficulty, limit: 500 }, true);
     console.log(`[getQuestionsByDifficulty] Found ${response.questions.length} questions for difficulty ${difficulty}`);
     return response.questions;
   } catch (error) {
@@ -70,7 +70,7 @@ export const getQuestionsByTopic = async (topicId: number): Promise<Question[]> 
   console.log(`[getQuestionsByTopic] Looking for questions with topicId ${topicId}`);
   
   try {
-    const response = await getQuestionsFromDB({ topicId, limit: 500 });
+    const response = await getQuestionsFromDB({ topicId, limit: 500 }, true);
     console.log(`[getQuestionsByTopic] Found ${response.questions.length} questions for topic ${topicId}`);
     return response.questions;
   } catch (error) {
@@ -83,7 +83,7 @@ export const getQuestionsBySet = async (setId: string): Promise<Question[]> => {
   console.log(`[getQuestionsBySet] Looking for questions in set ${setId}`);
   
   try {
-    const response = await getQuestionsFromDB({ setId, limit: 500 });
+    const response = await getQuestionsFromDB({ setId, limit: 500 }, true);
     console.log(`[getQuestionsBySet] Found ${response.questions.length} questions for set ${setId}`);
     return response.questions;
   } catch (error) {
@@ -111,7 +111,7 @@ export const getMixedDifficultyQuestions = async (difficultyLevel: 'easy' | 'med
   console.log(`[getMixedDifficultyQuestions] Looking for ${difficultyLevel} mixed questions`);
   
   try {
-    const response = await getQuestionsFromDB({ difficulty: difficultyLevel, limit: 500 });
+    const response = await getQuestionsFromDB({ difficulty: difficultyLevel, limit: 500 }, true);
     console.log(`[getMixedDifficultyQuestions] Found ${response.questions.length} questions for ${difficultyLevel} difficulty`);
     return response.questions;
   } catch (error) {
@@ -209,7 +209,7 @@ export const getQuestionsForSimulation = async (count: number = 50): Promise<Que
   console.log(`[getQuestionsForSimulation] Fetching ${count} questions for simulation`);
   
   try {
-    const questions = await getSimulationQuestions(count);
+    const questions = await getSimulationQuestions(count, true);
     console.log(`[getQuestionsForSimulation] Found ${questions.length} simulation questions`);
     return questions;
   } catch (error) {
