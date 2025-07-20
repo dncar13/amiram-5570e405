@@ -4,6 +4,7 @@
  */
 
 import { Question } from "@/data/types/questionTypes";
+import { supabase } from "@/integrations/supabase/client";
 
 // Re-export main query functions
 export { 
@@ -104,79 +105,48 @@ export const refreshQuestionsFromStorage = async (): Promise<Question[]> => {
  * Upload test/premium questions to the database
  */
 export const uploadTestQuestions = async (): Promise<{ success: boolean; count?: number; error?: string }> => {
-  console.log('[Admin Questions] Starting upload of test/premium questions');
+  console.log('[Admin Questions] Starting test/premium question upload...');
   
   try {
-    // Simulate upload process with progress
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    // בדיקה אם השאלות כבר קיימות
+    const { data: existingQuestions, error: checkError } = await supabase
+      .from('questions')
+      .select('metadata')
+      .eq('is_premium', true)
+      .not('metadata->custom_id', 'is', null);
     
-    // Create sample premium questions for testing
-    const samplePremiumQuestions = [
-      {
-        id: `premium_${Date.now()}_1`,
-        type: 'reading-comprehension',
-        text: 'שאלה פרמיום לדוגמה - הבנת הנקרא',
-        options: ['תשובה 1', 'תשובה 2', 'תשובה 3', 'תשובה נכונה'],
-        correctAnswer: 3,
-        difficulty: 'medium',
-        explanation: 'הסבר לשאלה פרמיום',
-        is_premium: true,
-        ai_generated: true,
-        generation_model: 'gpt-4',
-        batch_id: `batch_${Date.now()}`,
-        quality_score: 0.95
-      },
-      {
-        id: `premium_${Date.now()}_2`,
-        type: 'sentence-completion',
-        text: 'שאלה פרמיום לדוגמה - השלמת משפטים',
-        options: ['השלמה 1', 'השלמה נכונה', 'השלמה 3', 'השלמה 4'],
-        correctAnswer: 1,
-        difficulty: 'hard',
-        explanation: 'הסבר לשאלה פרמיום מתקדמת',
-        is_premium: true,
-        ai_generated: true,
-        generation_model: 'gpt-4',
-        batch_id: `batch_${Date.now()}`,
-        quality_score: 0.92
-      },
-      {
-        id: `premium_${Date.now()}_3`,
-        type: 'restatement',
-        text: 'שאלה פרמיום לדוגמה - ניסוח מחדש',
-        options: ['ניסוח 1', 'ניסוח 2', 'ניסוח נכון', 'ניסוח 4'],
-        correctAnswer: 2,
-        difficulty: 'easy',
-        explanation: 'הסבר לשאלת ניסוח מחדש פרמיום',
-        is_premium: true,
-        ai_generated: true,
-        generation_model: 'gpt-4',
-        batch_id: `batch_${Date.now()}`,
-        quality_score: 0.88
+    if (checkError) {
+      console.error('❌ Error checking existing questions:', checkError);
+      return { success: false, error: checkError.message };
+    }
+    
+    // Check for existing custom IDs starting with set1_prem
+    const existingCustomIds = existingQuestions?.map(q => {
+      if (q.metadata && typeof q.metadata === 'object' && 'custom_id' in q.metadata) {
+        return q.metadata.custom_id as string;
       }
-    ];
+      return null;
+    }).filter(Boolean) || [];
     
-    const uploadedCount = samplePremiumQuestions.length;
+    const hasSet1Questions = existingCustomIds.some(id => id?.includes('set1_prem'));
     
-    console.log(`[Admin Questions] Successfully uploaded ${uploadedCount} premium questions with is_premium = true`);
-    console.log('[Admin Questions] Premium questions created:', samplePremiumQuestions.map(q => ({
-      id: q.id,
-      type: q.type,
-      is_premium: q.is_premium,
-      difficulty: q.difficulty
-    })));
+    if (hasSet1Questions) {
+      console.log('⚠️ שאלות פרימיום Set 1 כבר קיימות במערכת');
+      return {
+        success: false,
+        error: 'שאלות פרימיום Set 1 כבר קיימות במערכת. השתמש ב"רענן שאלות" לראות אותן.'
+      };
+    }
     
-    // In a real implementation, this would insert into Supabase with the premium flags
-    
-    return { 
-      success: true, 
-      count: uploadedCount 
+    return {
+      success: false,
+      error: 'פונקציית ההעלאה הושבתה זמנית. השתמש ב"רענן שאלות" לראות את השאלות הפרימיום הקיימות.'
     };
   } catch (error) {
-    console.error('[Admin Questions] Error uploading questions:', error);
+    console.error('[Admin Questions] ❌ Error during premium question upload:', error);
     return { 
       success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error occurred'
+      error: error instanceof Error ? error.message : 'Unexpected error during upload'
     };
   }
 };
