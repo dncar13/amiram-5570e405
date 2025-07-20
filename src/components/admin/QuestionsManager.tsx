@@ -94,6 +94,7 @@ const QuestionsManager: React.FC = () => {
       const premiumCount = allQuestions.filter(q => q.is_premium === true).length;
       const freeCount = allQuestions.filter(q => !q.is_premium).length;
       console.log(`Premium questions: ${premiumCount}, Free questions: ${freeCount}`);
+      console.log('Premium question IDs:', allQuestions.filter(q => q.is_premium === true).map(q => q.id));
       
       // Count by type
       const byType = allQuestions.reduce((acc, q) => {
