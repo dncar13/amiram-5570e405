@@ -86,8 +86,13 @@ export class QuestionsUploadService {
     const isPremium = question.tags?.includes('premium') || false;
     const isSet1 = question.tags?.includes('set1') || false;
     
+    // Generate proper UUID and store custom ID in metadata
+    const customId = question.id; // Store the original custom ID
+    const generatedId = crypto.randomUUID(); // Generate proper UUID
+    
     // Create metadata object with set information
     const metadata = {
+      custom_id: customId, // Store original custom ID here
       tags: question.tags || [],
       is_set_based: !!question.setId,
       set_id: question.setId || null,
@@ -98,7 +103,7 @@ export class QuestionsUploadService {
     };
     
     return {
-      id: question.id,
+      id: generatedId, // Use proper UUID
       type: question.type,
       question_text: question.text,
       answer_options: question.options,
