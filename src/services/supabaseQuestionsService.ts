@@ -57,6 +57,12 @@ function transformQuestion(dbQuestion: any): Question {
     passageText: dbQuestion.passage_content,
     passageTitle: dbQuestion.passage_title,
     topicId: dbQuestion.topic_id,
+    // Premium fields from database
+    is_premium: dbQuestion.is_premium || false,
+    ai_generated: dbQuestion.ai_generated || false,
+    generation_model: dbQuestion.generation_model || undefined,
+    batch_id: dbQuestion.batch_id || undefined,
+    quality_score: dbQuestion.quality_score || undefined,
     tags: [], // We can extract from metadata if needed
     metadata: dbQuestion.metadata || {}
   }
@@ -149,6 +155,87 @@ export async function getAvailablePremiumSets(userIsPremium: boolean = false): P
   } catch (error) {
     console.error('❌ Error in getAvailablePremiumSets:', error);
     return [];
+  }
+}
+
+/**
+ * Fetch ALL questions for admin panel (bypasses premium filtering)
+ */
+export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): Promise<QuestionsResponse> {
+  const cacheKey = getCacheKey(filters) + '_admin_all'
+  const cached = getCachedData<QuestionsResponse>(cacheKey)
+  
+  if (cached) {
+    console.log('📦 Returning cached admin questions')
+    return cached
+  }
+
+  try {
+    console.log('🔍 [ADMIN] Fetching ALL questions from database (including premium)...', filters)
+
+    // Build query - NO premium filtering for admin
+    let query = supabase
+      .from('questions')
+      .select('*')
+
+    // Apply filters
+    if (filters.type) {
+      query = query.eq('type', filters.type)
+    }
+    
+    if (filters.difficulty) {
+      query = query.eq('difficulty', filters.difficulty)
+    }
+    
+    if (filters.topicId) {
+      query = query.eq('topic_id', filters.topicId)
+    }
+    
+    if (filters.setId) {
+      // Handle both regular setId and premium set filtering
+      if (filters.setId.includes('premium')) {
+        query = query.filter('metadata->set_id', 'eq', filters.setId)
+      } else {
+        query = query.eq('set_id', filters.setId)
+      }
+    }
+
+    // Apply pagination
+    const limit = filters.limit || 1000
+    const offset = filters.offset || 0
+    
+    query = query
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
+    const { data: questions, error, count } = await query
+
+    if (error) {
+      console.error('❌ [ADMIN] Error fetching questions:', error)
+      throw new Error(`Database error: ${error.message}`)
+    }
+
+    console.log(`✅ [ADMIN] Fetched ${questions?.length || 0} questions from database`)
+    console.log(`🔍 [ADMIN] Premium questions found:`, questions?.filter(q => q.is_premium).length || 0)
+
+    const transformedQuestions = questions?.map(transformQuestion) || []
+    
+    const result: QuestionsResponse = {
+      questions: transformedQuestions,
+      total: count || transformedQuestions.length,
+      hasMore: (count || 0) > offset + transformedQuestions.length
+    }
+
+    setCachedData(cacheKey, result)
+    return result
+
+  } catch (error) {
+    console.error('❌ [ADMIN] Error in getQuestionsFromDBAdmin:', error)
+    return {
+      questions: [],
+      total: 0,
+      hasMore: false
+    }
   }
 }
 

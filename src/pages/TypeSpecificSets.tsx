@@ -13,6 +13,9 @@ import { useSetProgressSummary } from "@/hooks/useSetProgress";
 import { SetProgressCard } from "@/components/ui/SetProgressCard";
 import { SetProgressService } from "@/services/setProgressService";
 import { useAuth } from "@/context/AuthContext";
+import { PremiumSetService, PremiumSet } from "@/services/premiumSetService";
+import PremiumSetCard from "@/components/ui/PremiumSetCard";
+import PremiumUpgradeModal from "@/components/ui/PremiumUpgradeModal";
 
 interface QuestionSet {
   id: number;
@@ -27,7 +30,9 @@ const TypeSpecificSets = () => {
   const navigate = useNavigate();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
+  const [premiumSets, setPremiumSets] = useState<PremiumSet[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const isMobile = useIsMobile();
   const { currentUser } = useAuth();
   
@@ -75,7 +80,24 @@ const TypeSpecificSets = () => {
       }
     };
 
+    const loadPremiumSets = async () => {
+      try {
+        // Only show premium sets for restatement type (where our premium content exists)
+        if (type === 'restatement') {
+          const availablePremiumSets = await PremiumSetService.getAvailablePremiumSets();
+          setPremiumSets(availablePremiumSets);
+          console.log('🔍 Loaded premium sets:', availablePremiumSets.length);
+        } else {
+          setPremiumSets([]);
+        }
+      } catch (error) {
+        console.error('Error loading premium sets:', error);
+        setPremiumSets([]);
+      }
+    };
+
     loadQuestions();
+    loadPremiumSets();
   }, [type, difficulty]);
 
   // ✅ Add effect to refresh progress when component becomes visible
@@ -206,6 +228,15 @@ const TypeSpecificSets = () => {
     navigate(`/simulation/type/${type}/${difficulty}`);
   };
 
+  const handlePremiumSetAccess = (setId: string) => {
+    console.log('🔐 Accessing premium set:', setId);
+    navigate(`/premium-set/${setId}`);
+  };
+
+  const handleUpgradeClick = () => {
+    setShowUpgradeModal(true);
+  };
+
   if (!type || !difficulty) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-3 sm:p-4">
@@ -294,42 +325,96 @@ const TypeSpecificSets = () => {
               </div>
             </motion.div>
           ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"
-            >
-              {questionSets.map((set, index) => (
+            <div className="space-y-8">
+              {/* Premium Sets Section */}
+              {premiumSets.length > 0 && (
                 <motion.div
-                  key={set.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="group"
+                  transition={{ delay: 0.1 }}
                 >
-                  <SetProgressCard
-                    setId={set.id}
-                    setTitle={set.title}
-                    setDescription={set.description}
-                    questionsCount={set.questionsCount}
-                    progress={progressSummary[set.id]}
-                    onStart={() => handleSetStart(set)}
-                    onContinue={() => handleSetContinue(set)}
-                    onRestart={() => handleSetRestart(set)}
-                    isLoading={progressLoading}
-                    difficultyColor={getDifficultyColor(difficulty)}
-                    className="h-full"
-                    questionType={getTypeInHebrew(type)}
-                    difficulty={getDifficultyInHebrew(difficulty)}
-                  />
+                  <div className="mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
+                      🏆 סטי פרימיום מתקדמים
+                    </h2>
+                    <p className="text-yellow-200 text-sm sm:text-base opacity-90">
+                      תוכן פרימיום עם שאלות ייחודיות והסברים מפורטים
+                    </p>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    {premiumSets.map((premiumSet, index) => (
+                      <motion.div
+                        key={premiumSet.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 + index * 0.1 }}
+                      >
+                        <PremiumSetCard
+                          premiumSet={premiumSet}
+                          onAccessAttempt={handlePremiumSetAccess}
+                          onUpgradeClick={handleUpgradeClick}
+                        />
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
-              ))}
-            </motion.div>
+              )}
+
+              {/* Regular Sets Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: premiumSets.length > 0 ? 0.4 : 0.2 }}
+              >
+                <div className="mb-6">
+                  <h2 className="text-xl sm:text-2xl font-bold text-cyan-400 mb-2">
+                    📚 סטי תרגול רגילים
+                  </h2>
+                  <p className="text-cyan-200 text-sm sm:text-base opacity-90">
+                    סטים בסיסיים לתרגול מובנה
+                  </p>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+                  {questionSets.map((set, index) => (
+                    <motion.div
+                      key={set.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: (premiumSets.length > 0 ? 0.5 : 0.3) + index * 0.1 }}
+                      className="group"
+                    >
+                      <SetProgressCard
+                        setId={set.id}
+                        setTitle={set.title}
+                        setDescription={set.description}
+                        questionsCount={set.questionsCount}
+                        progress={progressSummary[set.id]}
+                        onStart={() => handleSetStart(set)}
+                        onContinue={() => handleSetContinue(set)}
+                        onRestart={() => handleSetRestart(set)}
+                        isLoading={progressLoading}
+                        difficultyColor={getDifficultyColor(difficulty)}
+                        className="h-full"
+                        questionType={getTypeInHebrew(type)}
+                        difficulty={getDifficultyInHebrew(difficulty)}
+                      />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           )}
         </div>
       </div>
       <Footer />
+      
+      <PremiumUpgradeModal
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        setTitle="Set 1 – Premium"
+      />
     </>
   );
 };

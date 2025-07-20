@@ -13,11 +13,9 @@ import {
   Book, 
   BarChart, 
   Shield, 
-  Lock,
-  Upload
+  Lock
 } from "lucide-react";
 import QuestionsManager from "@/components/admin/QuestionsManager";
-import QuestionUploadPanel from "@/components/admin/QuestionUploadPanel";
 
 const AdminPanel = () => {
   const { currentUser, isAdmin, isLoading } = useAuth();
@@ -89,11 +87,7 @@ const AdminPanel = () => {
             <TabsList className="w-full mb-6 bg-white/80 p-1 border-b overflow-x-auto flex flex-nowrap">
               <TabsTrigger value="questions" className="flex items-center gap-1">
                 <FileText className="h-4 w-4" />
-                שאלות
-              </TabsTrigger>
-              <TabsTrigger value="upload" className="flex items-center gap-1">
-                <Upload className="h-4 w-4" />
-                העלאה
+                ניהול שאלות
               </TabsTrigger>
               <TabsTrigger value="topics" className="flex items-center gap-1">
                 <Book className="h-4 w-4" />
@@ -115,10 +109,6 @@ const AdminPanel = () => {
             
             <TabsContent value="questions">
               <QuestionsManager />
-            </TabsContent>
-            
-            <TabsContent value="upload">
-              <QuestionUploadPanel />
             </TabsContent>
             
             <TabsContent value="topics">

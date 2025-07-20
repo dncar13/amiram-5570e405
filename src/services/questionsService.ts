@@ -1,6 +1,7 @@
 import { Question } from "@/data/types/questionTypes";
 import { 
-  getQuestionsFromDB, 
+  getQuestionsFromDB,
+  getQuestionsFromDBAdmin, 
   getQuestionsByType as dbGetQuestionsByType,
   getVocabularyQuestions as dbGetVocabularyQuestions,
   getReadingQuestions as dbGetReadingQuestions,
@@ -13,10 +14,11 @@ import {
 console.log(`[questionsService] Service loaded. Using Supabase backend.`);
 
 export const getAllQuestions = async (): Promise<Question[]> => {
-  console.log(`[getAllQuestions] Fetching all questions from database`);
+  console.log(`[getAllQuestions] Fetching all questions from database (admin mode)`);
   try {
-    const response = await getQuestionsFromDB({ limit: 1000 }); // Get large batch
-    console.log(`[getAllQuestions] Returning ${response.questions.length} total questions`);
+    const response = await getQuestionsFromDBAdmin({ limit: 1000 }); // Use admin function to get ALL questions
+    console.log(`[getAllQuestions] Returning ${response.questions.length} total questions (including premium)`);
+    console.log(`[getAllQuestions] Premium questions:`, response.questions.filter(q => q.is_premium).length);
     console.log(`[getAllQuestions] Sample questions:`, response.questions.slice(0, 2));
     return response.questions;
   } catch (error) {

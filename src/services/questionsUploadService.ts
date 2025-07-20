@@ -41,8 +41,55 @@ export class QuestionsUploadService {
 
       console.log(`📤 Starting upload of ${batch.questions.length} questions with batch ID: ${batchId}`);
 
+      // First, check for existing questions with the same custom IDs
+      const customIds = batch.questions.map(q => q.id);
+      const { data: existingQuestions, error: checkError } = await supabase
+        .from('questions')
+        .select('metadata')
+        .not('metadata->custom_id', 'is', null);
+
+      if (checkError) {
+        console.error('❌ Error checking existing questions:', checkError);
+        return {
+          success: false,
+          uploadedCount: 0,
+          errors: [`Failed to check for existing questions: ${checkError.message}`]
+        };
+      }
+
+      // Extract existing custom IDs
+      const existingCustomIds = new Set();
+      existingQuestions?.forEach(q => {
+        if (q.metadata && typeof q.metadata === 'object' && 'custom_id' in q.metadata) {
+          existingCustomIds.add(q.metadata.custom_id);
+        }
+      });
+
+      console.log(`🔍 Found ${existingCustomIds.size} existing questions with custom IDs`);
+
+      // Filter out questions that already exist
+      const questionsToUpload = batch.questions.filter(q => {
+        const exists = existingCustomIds.has(q.id);
+        if (exists) {
+          errors.push(`Question ${q.id}: already exists in database`);
+          console.log(`⚠️ Skipping existing question: ${q.id}`);
+        }
+        return !exists;
+      });
+
+      if (questionsToUpload.length === 0) {
+        return {
+          success: false,
+          uploadedCount: 0,
+          errors: ['All questions in this batch already exist in the database'],
+          batchId
+        };
+      }
+
+      console.log(`📤 Uploading ${questionsToUpload.length} new questions (${errors.length} duplicates skipped)`);
+
       // Process questions one by one to handle any individual errors
-      for (const [index, question] of batch.questions.entries()) {
+      for (const [index, question] of questionsToUpload.entries()) {
         try {
           const transformedQuestion = this.transformQuestionForDB(question, batchId);
           
@@ -63,10 +110,10 @@ export class QuestionsUploadService {
         }
       }
 
-      console.log(`📊 Upload complete. Success: ${uploadedCount}/${batch.questions.length}, Errors: ${errors.length}`);
+      console.log(`📊 Upload complete. Success: ${uploadedCount}/${questionsToUpload.length}, Errors: ${errors.length}`);
 
       return {
-        success: errors.length === 0,
+        success: uploadedCount > 0, // Success if at least one question was uploaded
         uploadedCount,
         errors,
         batchId
