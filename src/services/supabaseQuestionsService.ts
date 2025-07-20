@@ -120,14 +120,15 @@ export async function getAvailablePremiumSets(userIsPremium: boolean = false): P
 
     // Group questions by set_id to create set summaries
     const setsMap = questions?.reduce((acc: any, question) => {
-      const setId = question.metadata?.set_id;
+      const metadata = question.metadata as any;
+      const setId = metadata?.set_id;
       if (!setId) return acc;
 
       if (!acc[setId]) {
         acc[setId] = {
           set_id: setId,
-          set_number: question.metadata?.set_number || 1,
-          set_type: question.metadata?.set_type || question.type,
+          set_number: metadata?.set_number || 1,
+          set_type: metadata?.set_type || question.type,
           difficulty: question.difficulty,
           questions: []
         };
@@ -445,7 +446,4 @@ export async function preloadCommonQuestions(): Promise<void> {
   }
 }
 
-export {
-  getQuestionsByPremiumSet,
-  getAvailablePremiumSets
-};
+// Note: getQuestionsByPremiumSet and getAvailablePremiumSets are already exported above
