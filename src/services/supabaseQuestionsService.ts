@@ -23,8 +23,8 @@ export interface QuestionsResponse {
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 const cache = new Map<string, { data: any; timestamp: number }>()
 
-function getCacheKey(filters: QuestionsFilters, userIsPremium: boolean): string {
-  return JSON.stringify({ ...filters, userIsPremium })
+function getCacheKey(filters: QuestionsFilters): string {
+  return JSON.stringify(filters)
 }
 
 function getCachedData<T>(key: string): T | null {
@@ -45,228 +45,32 @@ function setCachedData<T>(key: string, data: T): void {
  */
 function transformQuestion(dbQuestion: any): Question {
   return {
-    id: dbQuestion.id,
+    id: dbQuestion.id, // Keep as string (UUID) to match database format
     text: dbQuestion.question_text,
     options: Array.isArray(dbQuestion.answer_options) 
       ? dbQuestion.answer_options 
       : JSON.parse(dbQuestion.answer_options || '[]'),
-    correctAnswer: parseInt(dbQuestion.correct_answer),
+    correctAnswer: parseInt(dbQuestion.correct_answer), // Convert string back to number
     explanation: dbQuestion.explanation || '',
     difficulty: dbQuestion.difficulty as 'easy' | 'medium' | 'hard',
     type: dbQuestion.type as 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'vocabulary',
     passageText: dbQuestion.passage_content,
     passageTitle: dbQuestion.passage_title,
     topicId: dbQuestion.topic_id,
+    // Premium fields from database
     is_premium: dbQuestion.is_premium || false,
     ai_generated: dbQuestion.ai_generated || false,
     generation_model: dbQuestion.generation_model || undefined,
     batch_id: dbQuestion.batch_id || undefined,
     quality_score: dbQuestion.quality_score || undefined,
-    tags: [],
+    tags: [], // We can extract from metadata if needed
     metadata: dbQuestion.metadata || {}
   }
 }
 
 /**
- * Enhanced main function - fetches questions with premium filtering
+ * Get questions by premium set
  */
-export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = false): Promise<QuestionsResponse> {
-  const cacheKey = getCacheKey(filters, userIsPremium)
-  const cached = getCachedData<QuestionsResponse>(cacheKey)
-  
-  if (cached) {
-    console.log('📦 Returning cached questions', { premium: userIsPremium })
-    return cached
-  }
-
-  try {
-    console.log('🔍 Fetching questions from database...', { filters, premium: userIsPremium })
-
-    // Build query
-    let query = supabase
-      .from('questions')
-      .select('*')
-
-    // Apply premium filtering - free users only see non-premium questions
-    if (!userIsPremium) {
-      query = query.or('is_premium.is.null,is_premium.eq.false')
-      console.log('🔒 Filtering out premium questions for free user')
-    } else {
-      console.log('👑 Premium user - showing all questions including premium')
-    }
-
-    // Apply other filters
-    if (filters.type) {
-      query = query.eq('type', filters.type)
-    }
-    
-    if (filters.difficulty) {
-      query = query.eq('difficulty', filters.difficulty)
-    }
-    
-    if (filters.topicId) {
-      query = query.eq('topic_id', filters.topicId)
-    }
-    
-    if (filters.setId) {
-      if (filters.setId.includes('premium')) {
-        query = query.filter('metadata->set_id', 'eq', filters.setId)
-      } else {
-        query = query.eq('set_id', filters.setId)
-      }
-    }
-
-    // Apply pagination
-    const limit = filters.limit || 50
-    const offset = filters.offset || 0
-    
-    query = query.range(offset, offset + limit - 1)
-
-    // Execute query
-    const { data: questions, error, count } = await query
-
-    if (error) {
-      console.error('❌ Error fetching questions:', error)
-      throw new Error(`Failed to fetch questions: ${error.message}`)
-    }
-
-    if (!questions) {
-      return { questions: [], total: 0, hasMore: false }
-    }
-
-    // Transform questions
-    const transformedQuestions = questions.map(q => transformQuestion(q))
-
-    const result: QuestionsResponse = {
-      questions: transformedQuestions,
-      total: count || questions.length,
-      hasMore: questions.length === limit
-    }
-
-    // Cache the result
-    setCachedData(cacheKey, result)
-
-    console.log(`✅ Fetched ${questions.length} questions (Premium: ${userIsPremium})`)
-    return result
-
-  } catch (error) {
-    console.error('❌ Error in getQuestionsFromDB:', error)
-    throw error
-  }
-}
-
-/**
- * Get questions by type with premium filtering
- */
-export async function getQuestionsByType(type: string, difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
-  const filters: QuestionsFilters = { type }
-  if (difficulty) {
-    filters.difficulty = difficulty
-  }
-  
-  const response = await getQuestionsFromDB(filters, userIsPremium)
-  return response.questions
-}
-
-/**
- * Enhanced specialty functions with premium filtering
- */
-export async function getVocabularyQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
-  console.log('📚 Fetching vocabulary questions...', { difficulty, premium: userIsPremium })
-  return getQuestionsByType('vocabulary', difficulty, userIsPremium)
-}
-
-export async function getReadingQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
-  console.log('📖 Fetching reading comprehension questions...', { difficulty, premium: userIsPremium })
-  return getQuestionsByType('reading-comprehension', difficulty, userIsPremium)
-}
-
-export async function getRestatementQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
-  console.log('🔄 Fetching restatement questions...', { difficulty, premium: userIsPremium })
-  return getQuestionsByType('restatement', difficulty, userIsPremium)
-}
-
-export async function getSentenceCompletionQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
-  console.log('📝 Fetching sentence completion questions...', { difficulty, premium: userIsPremium })
-  return getQuestionsByType('sentence-completion', difficulty, userIsPremium)
-}
-
-/**
- * Get simulation questions (mixed types) with premium filtering
- */
-export async function getSimulationQuestions(count: number = 50, userIsPremium: boolean = false): Promise<Question[]> {
-  console.log('🎯 Fetching simulation questions...', { count, premium: userIsPremium })
-  
-  try {
-    // Get a balanced mix of question types
-    const typeCounts = Math.floor(count / 4)
-    const remainder = count % 4
-    
-    const vocabularyPromise = getVocabularyQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
-    const restatementPromise = getRestatementQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
-    const sentencePromise = getSentenceCompletionQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts))
-    const readingPromise = getReadingQuestions(undefined, userIsPremium).then(q => q.slice(0, typeCounts + remainder))
-    
-    const [vocab, restate, sentence, reading] = await Promise.all([
-      vocabularyPromise,
-      restatementPromise, 
-      sentencePromise,
-      readingPromise
-    ])
-    
-    // Combine and shuffle
-    const allQuestions = [...vocab, ...restate, ...sentence, ...reading]
-    return shuffleArray(allQuestions).slice(0, count)
-    
-  } catch (error) {
-    console.error('❌ Error fetching simulation questions:', error)
-    throw error
-  }
-}
-
-/**
- * Utility function to shuffle array
- */
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
-
-/**
- * Clear cache (useful for testing or force refresh)
- */
-export function clearQuestionsCache(): void {
-  cache.clear()
-  console.log('🧹 Questions cache cleared')
-}
-
-/**
- * Check if user has premium access
- */
-export async function checkUserPremiumStatus(): Promise<boolean> {
-  try {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return false
-
-    const { data: subscription } = await supabase
-      .from('subscriptions')
-      .select('status, end_date')
-      .eq('user_id', user.id)
-      .eq('status', 'active')
-      .gt('end_date', new Date().toISOString())
-      .single()
-
-    return !!subscription
-  } catch (error) {
-    console.error('Error checking premium status:', error)
-    return false
-  }
-}
-
 export async function getQuestionsByPremiumSet(setId: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('👑 Fetching premium set questions...', { setId, premium: userIsPremium });
   
@@ -358,7 +162,7 @@ export async function getAvailablePremiumSets(userIsPremium: boolean = false): P
  * Fetch ALL questions for admin panel (bypasses premium filtering)
  */
 export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): Promise<QuestionsResponse> {
-  const cacheKey = getCacheKey(filters, true) + '_admin_all'
+  const cacheKey = getCacheKey(filters) + '_admin_all'
   const cached = getCachedData<QuestionsResponse>(cacheKey)
   
   if (cached) {
@@ -436,9 +240,95 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
 }
 
 /**
+ * Fetch questions from Supabase with optional filters
+ */
+export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = false): Promise<QuestionsResponse> {
+  const cacheKey = getCacheKey(filters) + (userIsPremium ? '_premium' : '_free')
+  const cached = getCachedData<QuestionsResponse>(cacheKey)
+  
+  if (cached) {
+    console.log('📦 Returning cached questions')
+    return cached
+  }
+
+  try {
+    console.log('🔍 Fetching questions from database...', filters, 'Premium:', userIsPremium)
+
+    // Build query
+    let query = supabase
+      .from('questions')
+      .select('*')
+
+    // Apply premium filtering - free users only see non-premium questions
+    if (!userIsPremium) {
+      query = query.or('is_premium.is.null,is_premium.eq.false')
+    }
+
+    // Apply filters
+    if (filters.type) {
+      query = query.eq('type', filters.type)
+    }
+    
+    if (filters.difficulty) {
+      query = query.eq('difficulty', filters.difficulty)
+    }
+    
+    if (filters.topicId) {
+      query = query.eq('topic_id', filters.topicId)
+    }
+    
+    if (filters.setId) {
+      // Handle both regular setId and premium set filtering
+      if (filters.setId.includes('premium')) {
+        query = query.filter('metadata->set_id', 'eq', filters.setId)
+      } else {
+        query = query.eq('set_id', filters.setId)
+      }
+    }
+
+    // Apply pagination
+    const limit = filters.limit || 50
+    const offset = filters.offset || 0
+    
+    query = query.range(offset, offset + limit - 1)
+
+    // Execute query
+    const { data: questions, error, count } = await query
+
+    if (error) {
+      console.error('❌ Error fetching questions:', error)
+      throw new Error(`Failed to fetch questions: ${error.message}`)
+    }
+
+    if (!questions) {
+      return { questions: [], total: 0, hasMore: false }
+    }
+
+    // Transform questions
+    const transformedQuestions = questions.map(q => transformQuestion(q))
+
+    const result: QuestionsResponse = {
+      questions: transformedQuestions,
+      total: count || questions.length,
+      hasMore: questions.length === limit
+    }
+
+    // Cache the result
+    setCachedData(cacheKey, result)
+
+    console.log(`✅ Fetched ${questions.length} questions from database (Premium: ${userIsPremium})`)
+    return result
+
+  } catch (error) {
+    console.error('❌ Error in getQuestionsFromDB:', error)
+    throw error
+  }
+}
+
+/**
  * Get questions by type (for backward compatibility)
  */
-export async function getQuestionsByTypeOld(type: string, difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getQuestionsByType(type: string, difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   const filters: QuestionsFilters = { type }
   if (difficulty) {
     filters.difficulty = difficulty
@@ -451,7 +341,7 @@ export async function getQuestionsByTypeOld(type: string, difficulty?: string, u
 /**
  * Get vocabulary questions specifically
  */
-export async function getVocabularyQuestionsOld(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getVocabularyQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('📚 Fetching vocabulary questions...', { difficulty, premium: userIsPremium })
   return getQuestionsByType('vocabulary', difficulty, userIsPremium)
 }
@@ -459,7 +349,7 @@ export async function getVocabularyQuestionsOld(difficulty?: string, userIsPremi
 /**
  * Get reading comprehension questions with passages
  */
-export async function getReadingQuestionsOld(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getReadingQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('📖 Fetching reading comprehension questions...', { difficulty })
   
   try {
@@ -536,7 +426,7 @@ export async function getReadingQuestionsOld(difficulty?: string, userIsPremium:
 /**
  * Get restatement questions
  */
-export async function getRestatementQuestionsOld(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getRestatementQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('🔄 Fetching restatement questions...', { difficulty, premium: userIsPremium })
   return getQuestionsByType('restatement', difficulty, userIsPremium)
 }
@@ -544,7 +434,7 @@ export async function getRestatementQuestionsOld(difficulty?: string, userIsPrem
 /**
  * Get sentence completion questions
  */
-export async function getSentenceCompletionQuestionsOld(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getSentenceCompletionQuestions(difficulty?: string, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('📝 Fetching sentence completion questions...', { difficulty, premium: userIsPremium })
   return getQuestionsByType('sentence-completion', difficulty, userIsPremium)
 }
@@ -572,7 +462,7 @@ export async function getQuestionTypes(): Promise<string[]> {
 /**
  * Get questions for simulation (mixed types)
  */
-export async function getSimulationQuestionsOld(count: number = 50, userIsPremium: boolean = false): Promise<Question[]> {
+export async function getSimulationQuestions(count: number = 50, userIsPremium: boolean = false): Promise<Question[]> {
   console.log('🎯 Fetching simulation questions...', { count, premium: userIsPremium })
   
   try {
@@ -605,7 +495,7 @@ export async function getSimulationQuestionsOld(count: number = 50, userIsPremiu
 /**
  * Utility function to shuffle array
  */
-function shuffleArrayOld<T>(array: T[]): T[] {
+function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array]
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -617,7 +507,7 @@ function shuffleArrayOld<T>(array: T[]): T[] {
 /**
  * Clear cache (useful for testing or force refresh)
  */
-export function clearQuestionsCacheOld(): void {
+export function clearQuestionsCache(): void {
   cache.clear()
   console.log('🧹 Questions cache cleared')
 }
