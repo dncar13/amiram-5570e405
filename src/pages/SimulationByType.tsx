@@ -12,10 +12,13 @@ import {
   Brain,
   Cpu,
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Crown,
+  Unlock
 } from 'lucide-react';
 import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/services/questionsService';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/context/AuthContext';
 
 interface QuestionTypeData {
   type: string;
@@ -34,6 +37,7 @@ const SimulationByType: React.FC = () => {
   const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+  const { isPremium, currentUser } = useAuth();
   
   // State for question counts
   const [sentenceCompletionCount, setSentenceCompletionCount] = useState(0);
@@ -287,7 +291,7 @@ const SimulationByType: React.FC = () => {
             <div className="space-y-3 sm:space-y-4 lg:space-y-6">
               <motion.button
                 onClick={() => handleStartPractice()}
-                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base lg:text-lg hover:shadow-2xl transition-all duration-300 ${isMobile ? '' : 'transform hover:scale-[1.02]'} border border-white/20 touch-manipulation focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group`}
+                className={`w-full bg-gradient-to-r ${currentType.gradient} text-white py-3 sm:py-4 lg:py-5 px-4 sm:px-6 lg:px-8 rounded-xl sm:rounded-2xl font-bold text-sm sm:text-base lg:text-lg hover:shadow-2xl transition-all duration-300 ${isMobile ? '' : 'transform hover:scale-[1.02]'} border border-white/20 touch-manipulation focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative`}
                 aria-label={`התחל תרגול מהיר - 10 שאלות ${currentType.title}`}
                 tabIndex={0}
                 whileHover={isMobile ? {} : { scale: 1.02 }}
@@ -303,60 +307,204 @@ const SimulationByType: React.FC = () => {
                   <span>התחל תרגול (10 שאלות)</span>
                   <Cpu className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 group-hover:animate-pulse" />
                 </div>
+                {/* Badge for free access */}
+                <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-bold shadow-lg">
+                  חינם
+                </div>
               </motion.button>
               
               <div className="text-center">
-                <p className="text-gray-400 mb-3 sm:mb-4 font-semibold text-xs sm:text-sm lg:text-base">או בחר רמת קושי ספציפית:</p>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
-                  <motion.button
-                    onClick={() => handleStartPractice('easy')}
-                    className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-green-500/20 to-green-600/20 text-green-400 rounded-lg sm:rounded-xl font-bold hover:from-green-500/30 hover:to-green-600/30 transition-all duration-300 border border-green-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group"
-                    aria-label="התחל תרגול קל"
-                    tabIndex={0}
-                    whileHover={isMobile ? {} : { scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleStartPractice('easy');
-                      }
-                    }}
-                  >
-                    קל
-                  </motion.button>
-                  <motion.button
-                    onClick={() => handleStartPractice('medium')}
-                    className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-yellow-500/20 to-orange-600/20 text-yellow-400 rounded-lg sm:rounded-xl font-bold hover:from-yellow-500/30 hover:to-orange-600/30 transition-all duration-300 border border-yellow-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group"
-                    aria-label="התחל תרגול בינוני"
-                    tabIndex={0}
-                    whileHover={isMobile ? {} : { scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleStartPractice('medium');
-                      }
-                    }}
-                  >
-                    בינוני
-                  </motion.button>
-                  <motion.button
-                    onClick={() => handleStartPractice('hard')}
-                    className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-red-500/20 to-red-600/20 text-red-400 rounded-lg sm:rounded-xl font-bold hover:from-red-500/30 hover:to-red-600/30 transition-all duration-300 border border-red-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group"
-                    aria-label="התחל תרגול קשה"
-                    tabIndex={0}
-                    whileHover={isMobile ? {} : { scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        handleStartPractice('hard');
-                      }
-                    }}
-                  >
-                    קשה
-                  </motion.button>
+                <div className="border-t border-gray-600 my-6 relative">
+                  <span className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-800 px-3 text-gray-400 text-sm">
+                    או
+                  </span>
                 </div>
+                
+                {isPremium ? (
+                  // Premium user - show unlocked difficulty buttons with special effects
+                  <>
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <motion.div
+                        animate={{ 
+                          rotate: [0, 360],
+                          scale: [1, 1.1, 1]
+                        }}
+                        transition={{ 
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Crown className="w-5 h-5 text-yellow-400" />
+                      </motion.div>
+                      <p className="text-yellow-400 font-semibold text-sm lg:text-base">
+                        בחירת רמת קושי - גישה פרימיום 💎
+                      </p>
+                      <motion.div
+                        animate={{ 
+                          opacity: [0.5, 1, 0.5]
+                        }}
+                        transition={{ 
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Sparkles className="w-4 h-4 text-yellow-400" />
+                      </motion.div>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                      <motion.button
+                        onClick={() => handleStartPractice('easy')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-green-500/30 to-green-600/30 text-green-300 rounded-lg sm:rounded-xl font-bold hover:from-green-500/40 hover:to-green-600/40 transition-all duration-300 border border-green-500/40 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-green-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative overflow-hidden"
+                        aria-label="התחל תרגול קל"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { 
+                          scale: 1.05,
+                          boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('easy');
+                          }
+                        }}
+                      >
+                        {/* Premium glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-green-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="relative flex items-center justify-center space-x-1">
+                          <Unlock className="w-4 h-4" />
+                          <span>קל</span>
+                        </div>
+                      </motion.button>
+                      <motion.button
+                        onClick={() => handleStartPractice('medium')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-yellow-500/30 to-orange-600/30 text-yellow-300 rounded-lg sm:rounded-xl font-bold hover:from-yellow-500/40 hover:to-orange-600/40 transition-all duration-300 border border-yellow-500/40 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-yellow-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative overflow-hidden"
+                        aria-label="התחל תרגול בינוני"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { 
+                          scale: 1.05,
+                          boxShadow: "0 0 20px rgba(251, 191, 36, 0.3)"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('medium');
+                          }
+                        }}
+                      >
+                        {/* Premium glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 to-orange-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="relative flex items-center justify-center space-x-1">
+                          <Unlock className="w-4 h-4" />
+                          <span>בינוני</span>
+                        </div>
+                      </motion.button>
+                      <motion.button
+                        onClick={() => handleStartPractice('hard')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-red-500/30 to-red-600/30 text-red-300 rounded-lg sm:rounded-xl font-bold hover:from-red-500/40 hover:to-red-600/40 transition-all duration-300 border border-red-500/40 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative overflow-hidden"
+                        aria-label="התחל תרגול קשה"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { 
+                          scale: 1.05,
+                          boxShadow: "0 0 20px rgba(239, 68, 68, 0.3)"
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('hard');
+                          }
+                        }}
+                      >
+                        {/* Premium glow effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-400/20 to-red-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="relative flex items-center justify-center space-x-1">
+                          <Unlock className="w-4 h-4" />
+                          <span>קשה</span>
+                        </div>
+                      </motion.button>
+                    </div>
+                    <motion.div 
+                      className="mt-3 flex items-center justify-center gap-2"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      <Crown className="w-4 h-4 text-yellow-400" />
+                      <p className="text-yellow-400 text-xs">
+                        ✨ גישה מלאה - אתה משתמש פרימיום
+                      </p>
+                    </motion.div>
+                  </>
+                ) : (
+                  // Free user - show locked difficulty buttons
+                  <>
+                    <p className="text-gray-400 mb-3 sm:mb-4 font-semibold text-xs sm:text-sm lg:text-base">בחירת רמת קושי - למנויי פרימיום בלבד</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
+                      <motion.button
+                        onClick={() => handleStartPractice('easy')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-gray-500/20 to-gray-600/20 text-gray-400 rounded-lg sm:rounded-xl font-bold hover:from-gray-500/30 hover:to-gray-600/30 transition-all duration-300 border border-gray-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative"
+                        aria-label="התחל תרגול קל - דורש מנוי פרימיום"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('easy');
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-center space-x-1">
+                          <span>🔒</span>
+                          <span>קל</span>
+                        </div>
+                      </motion.button>
+                      <motion.button
+                        onClick={() => handleStartPractice('medium')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-gray-500/20 to-gray-600/20 text-gray-400 rounded-lg sm:rounded-xl font-bold hover:from-gray-500/30 hover:to-gray-600/30 transition-all duration-300 border border-gray-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative"
+                        aria-label="התחל תרגול בינוני - דורש מנוי פרימיום"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('medium');
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-center space-x-1">
+                          <span>🔒</span>
+                          <span>בינוני</span>
+                        </div>
+                      </motion.button>
+                      <motion.button
+                        onClick={() => handleStartPractice('hard')}
+                        className="py-2 sm:py-3 lg:py-4 px-3 sm:px-4 bg-gradient-to-br from-gray-500/20 to-gray-600/20 text-gray-400 rounded-lg sm:rounded-xl font-bold hover:from-gray-500/30 hover:to-gray-600/30 transition-all duration-300 border border-gray-500/30 backdrop-blur-sm text-xs sm:text-sm lg:text-base touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-400/50 focus:ring-offset-2 focus:ring-offset-transparent min-h-[44px] group relative"
+                        aria-label="התחל תרגול קשה - דורש מנוי פרימיום"
+                        tabIndex={0}
+                        whileHover={isMobile ? {} : { scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleStartPractice('hard');
+                          }
+                        }}
+                      >
+                        <div className="flex items-center justify-center space-x-1">
+                          <span>🔒</span>
+                          <span>קשה</span>
+                        </div>
+                      </motion.button>
+                    </div>
+                    <p className="text-gray-500 text-xs mt-3">💎 נדרש מנוי פרימיום לגישה לרמות קושי ספציפיות</p>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
