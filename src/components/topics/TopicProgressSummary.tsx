@@ -13,8 +13,11 @@ const TopicProgressSummary = () => {
   
   useEffect(() => {
     // Get all questions to count the comprehensive ones
-    const allQuestions = refreshQuestionsFromStorage();
-    setQuestionCount(allQuestions.length);
+    const loadQuestions = async () => {
+      const allQuestions = await refreshQuestionsFromStorage();
+      setQuestionCount(allQuestions.length);
+    };
+    loadQuestions();
   }, []);
 
   return (

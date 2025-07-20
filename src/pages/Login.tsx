@@ -122,9 +122,12 @@ const Login = () => {
       });
       
       // Google OAuth using Supabase directly
-      // Use localhost for development, production URL for production
-      const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const redirectUrl = isDevelopment ? `http://localhost:8080/` : `${window.location.origin}/`;
+      // Force localhost for development environment
+      const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.port === '8080';
+      const redirectUrl = isDevelopment ? `http://localhost:8080/login` : `${window.location.origin}/login`;
+      
+      console.log("🔍 Development mode:", isDevelopment);
+      console.log("🔗 Redirect URL:", redirectUrl);
       
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
