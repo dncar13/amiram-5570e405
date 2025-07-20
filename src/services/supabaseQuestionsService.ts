@@ -63,6 +63,95 @@ function transformQuestion(dbQuestion: any): Question {
 }
 
 /**
+ * Get questions by premium set
+ */
+export async function getQuestionsByPremiumSet(setId: string, userIsPremium: boolean = false): Promise<Question[]> {
+  console.log('👑 Fetching premium set questions...', { setId, premium: userIsPremium });
+  
+  if (!userIsPremium) {
+    console.log('⛔ User is not premium - denying access to premium set');
+    return [];
+  }
+
+  try {
+    const { data: questions, error } = await supabase
+      .from('questions')
+      .select('*')
+      .eq('is_premium', true)
+      .filter('metadata->set_id', 'eq', setId)
+      .order('metadata->set_order', { ascending: true });
+
+    if (error) {
+      console.error('❌ Error fetching premium set questions:', error);
+      return [];
+    }
+
+    const transformedQuestions = questions?.map(q => transformQuestion(q)) || [];
+    console.log(`✅ Fetched ${transformedQuestions.length} questions from premium set ${setId}`);
+    
+    return transformedQuestions;
+  } catch (error) {
+    console.error('❌ Error in getQuestionsByPremiumSet:', error);
+    return [];
+  }
+}
+
+/**
+ * Get all available premium sets
+ */
+export async function getAvailablePremiumSets(userIsPremium: boolean = false): Promise<any[]> {
+  console.log('📋 Fetching available premium sets...', { premium: userIsPremium });
+  
+  if (!userIsPremium) {
+    return [];
+  }
+
+  try {
+    const { data: questions, error } = await supabase
+      .from('questions')
+      .select('metadata, type, difficulty, is_premium')
+      .eq('is_premium', true)
+      .not('metadata->set_id', 'is', null);
+
+    if (error) {
+      console.error('❌ Error fetching premium sets:', error);
+      return [];
+    }
+
+    // Group questions by set_id to create set summaries
+    const setsMap = questions?.reduce((acc: any, question) => {
+      const setId = question.metadata?.set_id;
+      if (!setId) return acc;
+
+      if (!acc[setId]) {
+        acc[setId] = {
+          set_id: setId,
+          set_number: question.metadata?.set_number || 1,
+          set_type: question.metadata?.set_type || question.type,
+          difficulty: question.difficulty,
+          questions: []
+        };
+      }
+      
+      acc[setId].questions.push(question);
+      return acc;
+    }, {}) || {};
+
+    const sets = Object.values(setsMap).map((set: any) => ({
+      ...set,
+      question_count: set.questions.length,
+      questions: undefined // Remove questions array from response
+    }));
+
+    console.log(`✅ Found ${sets.length} premium sets`);
+    return sets;
+  } catch (error) {
+    console.error('❌ Error in getAvailablePremiumSets:', error);
+    return [];
+  }
+}
+
+/**
  * Fetch questions from Supabase with optional filters
  */
 export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = false): Promise<QuestionsResponse> {
@@ -77,7 +166,7 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsP
   try {
     console.log('🔍 Fetching questions from database...', filters, 'Premium:', userIsPremium)
 
-    // Build query - simplified to avoid foreign key issues
+    // Build query
     let query = supabase
       .from('questions')
       .select('*')
@@ -101,7 +190,12 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsP
     }
     
     if (filters.setId) {
-      query = query.eq('set_id', filters.setId)
+      // Handle both regular setId and premium set filtering
+      if (filters.setId.includes('premium')) {
+        query = query.filter('metadata->set_id', 'eq', filters.setId)
+      } else {
+        query = query.eq('set_id', filters.setId)
+      }
     }
 
     // Apply pagination
@@ -350,3 +444,8 @@ export async function preloadCommonQuestions(): Promise<void> {
     console.error('❌ Error preloading questions:', error)
   }
 }
+
+export {
+  getQuestionsByPremiumSet,
+  getAvailablePremiumSets
+};

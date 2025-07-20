@@ -1,15 +1,16 @@
 import { QuestionsUploadService, QuestionBatch, UploadResult } from "@/services/questionsUploadService";
 
-// Test question batch from user
-export const testQuestionBatch: QuestionBatch = {
+// Premium Set 1 Questions - organized by type and difficulty
+export const premiumSet1Questions: QuestionBatch = {
   "metadata": {
-    "description": "Test Sample - 6 Premium Questions",
-    "created": "2025-07-18",
-    "purpose": "Quality verification before full batch"
+    "description": "Set 1 Premium - 6 Premium Questions (Restatement + Sentence Completion)",
+    "created": "2025-01-20", 
+    "purpose": "First premium question set for each difficulty level"
   },
   "questions": [
+    // Restatement Questions - Set 1 Premium
     {
-      "id": "rst_prem_test_easy",
+      "id": "rst_set1_prem_easy_001",
       "type": "restatement",
       "text": "Original: 'She walks to school every morning.'",
       "options": [
@@ -24,11 +25,15 @@ export const testQuestionBatch: QuestionBatch = {
       "tags": [
         "grammar",
         "basic",
-        "premium"
-      ]
+        "premium",
+        "set1"
+      ],
+      "setId": "restatement_set1_premium_easy",
+      "setNumber": 1,
+      "setOrder": 1
     },
     {
-      "id": "rst_prem_test_medium",
+      "id": "rst_set1_prem_medium_001",
       "type": "restatement",
       "text": "Original: 'The company's innovative approach has revolutionized the industry, setting new standards that competitors struggle to match.'",
       "options": [
@@ -42,12 +47,16 @@ export const testQuestionBatch: QuestionBatch = {
       "difficulty": "medium",
       "tags": [
         "grammar",
-        "basic",
-        "premium"
-      ]
+        "intermediate",
+        "premium",
+        "set1"
+      ],
+      "setId": "restatement_set1_premium_medium",
+      "setNumber": 1,
+      "setOrder": 1
     },
     {
-      "id": "rst_prem_test_hard",
+      "id": "rst_set1_prem_hard_001",
       "type": "restatement",
       "text": "Original: 'The protagonist's inexorable descent into moral turpitude was precipitated by his unwavering adherence to a misguided ideological paradigm.'",
       "options": [
@@ -62,11 +71,16 @@ export const testQuestionBatch: QuestionBatch = {
       "tags": [
         "grammar",
         "advanced",
-        "premium"
-      ]
+        "premium",
+        "set1"
+      ],
+      "setId": "restatement_set1_premium_hard",
+      "setNumber": 1,
+      "setOrder": 1
     },
+    // Sentence Completion Questions - Set 1 Premium
     {
-      "id": "sc_prem_test_easy",
+      "id": "sc_set1_prem_easy_001",
       "type": "sentence-completion",
       "text": "She ______ to school by bus every morning.",
       "options": [
@@ -81,11 +95,15 @@ export const testQuestionBatch: QuestionBatch = {
       "tags": [
         "grammar",
         "basic",
-        "premium"
-      ]
+        "premium",
+        "set1"
+      ],
+      "setId": "sentence_completion_set1_premium_easy",
+      "setNumber": 1,
+      "setOrder": 1
     },
     {
-      "id": "sc_prem_test_medium",
+      "id": "sc_set1_prem_medium_001",
       "type": "sentence-completion",
       "text": "The research team has been ______ the data for months, but they still haven't reached any definitive conclusions.",
       "options": [
@@ -99,12 +117,16 @@ export const testQuestionBatch: QuestionBatch = {
       "difficulty": "medium",
       "tags": [
         "grammar",
-        "basic",
-        "premium"
-      ]
+        "intermediate",
+        "premium",
+        "set1"
+      ],
+      "setId": "sentence_completion_set1_premium_medium",
+      "setNumber": 1,
+      "setOrder": 1
     },
     {
-      "id": "sc_prem_test_hard",
+      "id": "sc_set1_prem_hard_001",
       "type": "sentence-completion",
       "text": "The archaeologist's meticulous documentation of the artifacts would have been ______ had the funding committee not recognized the expedition's potential to revolutionize our understanding of ancient civilizations.",
       "options": [
@@ -119,17 +141,21 @@ export const testQuestionBatch: QuestionBatch = {
       "tags": [
         "grammar",
         "advanced",
-        "premium"
-      ]
+        "premium",
+        "set1"
+      ],
+      "setId": "sentence_completion_set1_premium_hard",
+      "setNumber": 1,
+      "setOrder": 1
     }
   ]
 };
 
-export const uploadTestQuestions = async (): Promise<UploadResult> => {
-  console.log('🚀 Starting test question upload...');
+export const uploadPremiumSet1Questions = async (): Promise<UploadResult> => {
+  console.log('🚀 Starting Premium Set 1 question upload...');
   
   // Validate the batch first
-  const validation = await QuestionsUploadService.validateQuestionBatch(testQuestionBatch);
+  const validation = await QuestionsUploadService.validateQuestionBatch(premiumSet1Questions);
   if (!validation.valid) {
     console.error('❌ Validation failed:', validation.errors);
     return {
@@ -139,13 +165,13 @@ export const uploadTestQuestions = async (): Promise<UploadResult> => {
     };
   }
 
-  console.log('✅ Validation passed, proceeding with upload...');
+  console.log('✅ Validation passed, proceeding with Premium Set 1 upload...');
   
   // Upload the questions
-  const result = await QuestionsUploadService.uploadQuestionBatch(testQuestionBatch);
+  const result = await QuestionsUploadService.uploadQuestionBatch(premiumSet1Questions);
   
   if (result.success) {
-    console.log(`🎉 Successfully uploaded ${result.uploadedCount} questions!`);
+    console.log(`🎉 Successfully uploaded ${result.uploadedCount} Premium Set 1 questions!`);
     console.log(`📋 Batch ID: ${result.batchId}`);
   } else {
     console.error('❌ Upload failed:', result.errors);
@@ -153,5 +179,8 @@ export const uploadTestQuestions = async (): Promise<UploadResult> => {
   
   return result;
 };
+
+// Keep the old function for backward compatibility
+export const uploadTestQuestions = uploadPremiumSet1Questions;
 
 export { QuestionsUploadService };
