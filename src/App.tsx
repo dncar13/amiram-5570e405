@@ -11,6 +11,7 @@ import SimulationPage from "./pages/SimulationPage";
 import PremiumPage from "./pages/PremiumPage";
 import AdminPage from "./pages/AdminPage";
 import AuthPage from "./pages/AuthPage";
+import AccountPage from "./pages/AccountPage";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/topics" element={<TopicSelection />} />
           <Route path="/premium" element={<PremiumPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/account" element={<AccountPage />} />
           
           {/* Unified simulation routes - handles both free and premium */}
           <Route path="/simulation/:topicId" element={<Simulation />} />
