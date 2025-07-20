@@ -126,7 +126,7 @@ export class PremiumSetService {
         .from('questions')
         .select('*')
         .eq('is_premium', true)
-        .or(`metadata->set_id.eq.${setId},metadata->set_id.like.${setId}_%`)
+        .ilike('metadata->>set_id', `${setId}%`)
         .order('metadata->set_order', { ascending: true });
         
       if (error) {
@@ -174,8 +174,8 @@ export class PremiumSetService {
         text: q.question_text,
         options: Array.isArray(q.answer_options) 
           ? q.answer_options 
-          : JSON.parse(q.answer_options || '[]'),
-        correctAnswer: parseInt(q.correct_answer),
+          : JSON.parse(String(q.answer_options) || '[]'),
+        correctAnswer: Number(q.correct_answer) || 0,
         explanation: q.explanation || '',
         difficulty: q.difficulty as 'easy' | 'medium' | 'hard',
         type: q.type as 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'vocabulary',
@@ -188,7 +188,7 @@ export class PremiumSetService {
         batch_id: q.batch_id || undefined,
         quality_score: q.quality_score || undefined,
         tags: [],
-        metadata: q.metadata || {}
+        metadata: {} as any
       }));
       
       console.log(`✅ Retrieved ${questions.length} questions for premium set: ${setId}`);
@@ -373,12 +373,13 @@ export class PremiumSetService {
     console.log(`🔍 [PremiumSetService] Getting details for unified set: ${setId}`);
     
     try {
-      // Get questions by pattern matching like in getPremiumSetQuestions
-      const { data: questionsData, error } = await supabase
-        .from('questions')
-        .select('metadata, type, difficulty, is_premium')
-        .eq('is_premium', true)
-        .or(`metadata->set_id.eq.${setId},metadata->set_id.like.${setId}_%`);
+        // Get questions by pattern matching - use LIKE to find pattern matches
+        console.log(`🔍 Searching for questions with set_id pattern: ${setId}`);
+        const { data: questionsData, error } = await supabase
+          .from('questions')
+          .select('metadata, type, difficulty, is_premium')
+          .eq('is_premium', true)
+          .ilike('metadata->>set_id', `${setId}%`);
       
       if (error) {
         console.log(`❌ Error fetching set details: ${setId}`, error);
