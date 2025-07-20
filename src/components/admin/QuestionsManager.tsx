@@ -23,7 +23,10 @@ import {
   RefreshCw,
   Upload,
   Crown,
-  Star
+  Star,
+  BarChart3,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -55,6 +58,8 @@ import {
   uploadTestQuestions
 } from "@/services/questions";
 import { toast } from "sonner";
+import { uploadPremiumSet1Questions } from "@/utils/questionUploadUtils";
+import { QuestionsUploadService } from "@/services/questionsUploadService";
 
 const QuestionsManager: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -68,6 +73,8 @@ const QuestionsManager: React.FC = () => {
   const [questionToDelete, setQuestionToDelete] = useState<Question | null>(null);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadResult, setUploadResult] = useState<any>(null);
+  const [showUploadDialog, setShowUploadDialog] = useState(false);
 
   // New filter states
   const [selectedTypeFilter, setSelectedTypeFilter] = useState<string>("all");
@@ -238,17 +245,32 @@ const QuestionsManager: React.FC = () => {
 
   const handleUploadPremiumQuestions = async () => {
     setIsUploading(true);
+    setUploadResult(null);
+    
     try {
-      const result = await uploadTestQuestions();
+      console.log('🚀 Starting Premium Set 1 upload via unified system...');
+      
+      const result = await uploadPremiumSet1Questions();
+      setUploadResult(result);
+      
       if (result.success) {
-        toast.success(`הועלו בהצלחה ${result.count} שאלות פרמיום`);
+        toast.success(`הועלו בהצלחה ${result.uploadedCount} שאלות פרמיום Set 1!`);
         loadQuestions(true); // Refresh the questions list
+        console.log('🎉 Premium Set 1 upload completed successfully via unified system!');
       } else {
-        toast.error(`שגיאה בהעלאת השאלות: ${result.error || 'שגיאה לא ידועה'}`);
+        const errorMsg = result.errors ? result.errors.join(', ') : 'שגיאה לא ידועה';
+        toast.error(`שגיאה בהעלאת השאלות: ${errorMsg}`);
+        console.error('❌ Premium Set 1 upload failed:', result.errors);
       }
     } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('שגיאה בהעלאת השאלות');
+      console.error('❌ Upload process failed:', error);
+      const errorMsg = error instanceof Error ? error.message : 'שגיאה לא צפויה';
+      toast.error(`שגיאה בהעלאת השאלות: ${errorMsg}`);
+      setUploadResult({
+        success: false,
+        uploadedCount: 0,
+        errors: [errorMsg]
+      });
     } finally {
       setIsUploading(false);
     }
@@ -260,7 +282,7 @@ const QuestionsManager: React.FC = () => {
     setSelectedDifficultyFilter("all");
     setSelectedTopicFilter("all");
     setShowPremiumOnly(false);
-    toast.info("כל המסננים נוקו");
+    toast.info("🔄 כל המסננים נוקו - מציג את כל השאלות");
   };
 
   return (
@@ -298,12 +320,13 @@ const QuestionsManager: React.FC = () => {
             )}
             
             <Button 
-              onClick={handleUploadPremiumQuestions}
+              onClick={() => setShowUploadDialog(true)}
               disabled={isUploading}
               variant="outline"
+              className="bg-orange-50 border-orange-200 text-orange-700 hover:bg-orange-100"
             >
-              <Upload className="h-4 w-4 ml-1" />
-              {isUploading ? "מעלה..." : "העלה שאלות פרמיום"}
+              <Crown className="h-4 w-4 ml-1" />
+              העלאת Set 1 Premium
             </Button>
             
             <Button onClick={handleCreateNewQuestion}>
@@ -563,6 +586,100 @@ const QuestionsManager: React.FC = () => {
             </Button>
             <Button variant="destructive" onClick={handleDeleteQuestion}>
               מחק שאלה
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Upload Premium Set 1 Dialog */}
+      <Dialog open={showUploadDialog} onOpenChange={setShowUploadDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Crown className="h-6 w-6 text-orange-600" />
+              העלאת Set 1 Premium
+            </DialogTitle>
+            <DialogDescription>
+              העלאה של 6 שאלות פרימיום מובנות במבנה סט מאורגן
+            </DialogDescription>
+          </DialogHeader>
+          
+          {/* Premium Set Details */}
+          <div className="space-y-4">
+            <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
+              <h4 className="font-semibold text-orange-900 mb-2 flex items-center gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Set 1 Premium - פרטי השאלות:
+              </h4>
+              <ul className="text-sm text-orange-800 space-y-1">
+                <li>• 6 שאלות פרימיום במבנה סט מאורגן</li>
+                <li>• 3 שאלות Restatement (קל, בינוני, קשה)</li>
+                <li>• 3 שאלות Sentence Completion (קל, בינוני, קשה)</li>
+                <li>• הסברים מפורטים בעברית</li>
+                <li>• מבנה סט עם set_id, set_number, set_order</li>
+              </ul>
+            </div>
+
+            {/* Upload Results */}
+            {uploadResult && (
+              <div className="space-y-3">
+                {uploadResult.success ? (
+                  <div className="border border-green-200 bg-green-50 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      <span className="font-medium text-green-800">העלאה הושלמה בהצלחה!</span>
+                    </div>
+                    <p className="text-green-700">
+                      הועלו בהצלחה {uploadResult.uploadedCount} שאלות פרימיום!
+                    </p>
+                    {uploadResult.batchId && (
+                      <div className="mt-2 text-xs text-green-600">
+                        Batch ID: <code>{uploadResult.batchId}</code>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="border border-red-200 bg-red-50 p-4 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <XCircle className="h-4 w-4 text-red-600" />
+                      <span className="font-medium text-red-800">העלאה נכשלה</span>
+                    </div>
+                    <ul className="list-disc list-inside space-y-1 text-sm text-red-700">
+                      {uploadResult.errors?.map((error: string, index: number) => (
+                        <li key={index}>{error}</li>
+                      ))}
+                    </ul>
+                    {uploadResult.uploadedCount > 0 && (
+                      <div className="mt-2 text-sm font-medium text-red-600">
+                        הועלו בכל זאת: {uploadResult.uploadedCount} שאלות
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowUploadDialog(false)}>
+              ביטול
+            </Button>
+            <Button
+              onClick={handleUploadPremiumQuestions}
+              disabled={isUploading}
+              className="bg-orange-600 hover:bg-orange-700 text-white"
+            >
+              {isUploading ? (
+                <>
+                  <RefreshCw className="h-4 w-4 animate-spin ml-2" />
+                  מעלה Set 1 Premium...
+                </>
+              ) : (
+                <>
+                  <Crown className="h-4 w-4 ml-2" />
+                  העלה Set 1 Premium (6 שאלות)
+                </>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
