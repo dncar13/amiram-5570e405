@@ -35,6 +35,7 @@ const PremiumSetPractice: React.FC = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([]);
+  const [setDetails, setSetDetails] = useState<any>(null);
 
   useEffect(() => {
     const validateAccessAndLoadQuestions = async () => {
@@ -67,9 +68,9 @@ const PremiumSetPractice: React.FC = () => {
           return;
         }
 
-        // Access granted - load questions
-        console.log('✅ Premium access granted, loading questions...');
-        const result = await PremiumSetService.getPremiumSet1Questions();
+        // Access granted - load questions for the specific set
+        console.log(`✅ Premium access granted, loading questions for set: ${setId}`);
+        const result = await PremiumSetService.getPremiumSetQuestions(setId);
         
         if (result.questions.length === 0) {
           toast.error("לא נמצאו שאלות בסט פרימיום זה");
@@ -78,7 +79,12 @@ const PremiumSetPractice: React.FC = () => {
         }
 
         setQuestions(result.questions);
-        toast.success(`נטענו ${result.questions.length} שאלות פרימיום`);
+        
+        // Load set details for better UI
+        const details = await PremiumSetService.getPremiumSetDetails(setId);
+        setSetDetails(details);
+        
+        toast.success(`נטענו ${result.questions.length} שאלות פרימיום מ-${details?.title || setId}`);
         
       } catch (error) {
         console.error('❌ Error loading premium set:', error);
@@ -191,7 +197,7 @@ const PremiumSetPractice: React.FC = () => {
         <PremiumUpgradeModal
           isOpen={showUpgradeModal}
           onClose={() => setShowUpgradeModal(false)}
-          setTitle="Set 1 – Premium"
+          setTitle={setDetails?.title || "תוכן פרימיום"}
         />
       </div>
     );
@@ -221,7 +227,7 @@ const PremiumSetPractice: React.FC = () => {
             <div className="flex items-center gap-2">
               <Badge className="bg-orange-200 text-orange-800 border-orange-300">
                 <Crown className="w-3 h-3 mr-1" />
-                Set 1 Premium
+                {setDetails?.title || `Premium Set`}
               </Badge>
               <Badge variant="outline">
                 {currentQuestionIndex + 1} / {questions.length}

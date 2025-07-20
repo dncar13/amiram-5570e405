@@ -82,13 +82,17 @@ const TypeSpecificSets = () => {
 
     const loadPremiumSets = async () => {
       try {
-        // Only show premium sets for restatement type (where our premium content exists)
-        if (type === 'restatement') {
-          const availablePremiumSets = await PremiumSetService.getAvailablePremiumSets();
-          setPremiumSets(availablePremiumSets);
-          console.log('🔍 Loaded premium sets:', availablePremiumSets.length);
-        } else {
-          setPremiumSets([]);
+        // Load premium sets dynamically based on current type and difficulty
+        console.log(`🔍 [TypeSpecificSets] Loading premium sets for type: ${type}, difficulty: ${difficulty}`);
+        
+        const availablePremiumSets = await PremiumSetService.getPremiumSetsByTypeAndDifficulty(type, difficulty);
+        setPremiumSets(availablePremiumSets);
+        
+        console.log(`✅ Loaded ${availablePremiumSets.length} premium sets for ${type}/${difficulty}:`, 
+          availablePremiumSets.map(set => ({ id: set.id, count: set.questionCount, title: set.title })));
+          
+        if (availablePremiumSets.length === 0) {
+          console.log(`ℹ️ No premium sets found for ${type}/${difficulty} - this is normal if no premium content exists for this combination`);
         }
       } catch (error) {
         console.error('Error loading premium sets:', error);
@@ -413,7 +417,7 @@ const TypeSpecificSets = () => {
       <PremiumUpgradeModal
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
-        setTitle="Set 1 – Premium"
+        setTitle={premiumSets.length > 0 ? premiumSets[0].title : "תוכן פרימיום"}
       />
     </>
   );
