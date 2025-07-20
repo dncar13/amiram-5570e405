@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, ArrowLeft, Target, Zap, Gamepad2 } from "lucide-react";
+import { BookOpen, ArrowLeft, Target, Zap, Gamepad2, Lock, Crown } from "lucide-react";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,9 +11,7 @@ import { useSetProgressSummary } from "@/hooks/useSetProgress";
 import { SetProgressCard } from "@/components/ui/SetProgressCard";
 import { SetProgressService } from "@/services/setProgressService";
 import { useAuth } from "@/context/AuthContext";
-import { PremiumSetService, PremiumSet } from "@/services/premiumSetService";
-import PremiumSetCard from "@/components/ui/PremiumSetCard";
-import PremiumUpgradeModal from "@/components/ui/PremiumUpgradeModal";
+import { toast } from "sonner";
 
 interface QuestionSet {
   id: number;
@@ -24,17 +20,18 @@ interface QuestionSet {
   questionsCount: number;
   startIndex: number;
   endIndex: number;
+  isPremium: boolean;
 }
 
-const TypeSpecificSets = () => {
+const SimulationSets = () => {
   const navigate = useNavigate();
   const { type, difficulty } = useParams<{ type: string; difficulty: string }>();
   const [questionSets, setQuestionSets] = useState<QuestionSet[]>([]);
-  const [premiumSets, setPremiumSets] = useState<PremiumSet[]>([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [freeQuestions, setFreeQuestions] = useState(0);
+  const [premiumQuestions, setPremiumQuestions] = useState(0);
   const isMobile = useIsMobile();
-  const { currentUser } = useAuth();
+  const { currentUser, isPremium } = useAuth();
   
   // Load set progress summary
   const { 
@@ -48,9 +45,15 @@ const TypeSpecificSets = () => {
 
     const loadQuestions = async () => {
       try {
-        // Get questions for this type and difficulty
+        // Get ALL questions for this type and difficulty (both free and premium)
         const questions = await getQuestionsByDifficultyAndType(difficulty, type);
         setTotalQuestions(questions.length);
+
+        // Count free vs premium questions
+        const freeCount = questions.filter(q => !q.is_premium).length;
+        const premiumCount = questions.filter(q => q.is_premium).length;
+        setFreeQuestions(freeCount);
+        setPremiumQuestions(premiumCount);
 
         // Create sets of 10 questions each
         const questionsPerSet = 10;
@@ -62,17 +65,24 @@ const TypeSpecificSets = () => {
           const endIndex = Math.min(startIndex + questionsPerSet, questions.length);
           const actualCount = endIndex - startIndex;
           
+          // Determine if this set contains premium questions
+          const setQuestions = questions.slice(startIndex, endIndex);
+          const hasPremiumQuestions = setQuestions.some(q => q.is_premium);
+          
           sets.push({
             id: i + 1,
-            title: `סט ${i + 1}`,
+            title: hasPremiumQuestions ? `סט ${i + 1} פרימיום` : `סט ${i + 1}`,
             description: `שאלות ${startIndex + 1}-${endIndex} ברמת קושי ${getDifficultyInHebrew(difficulty)}`,
             questionsCount: actualCount,
             startIndex,
-            endIndex: endIndex - 1
+            endIndex: endIndex - 1,
+            isPremium: hasPremiumQuestions
           });
         }
         
         setQuestionSets(sets);
+        
+        console.log(`🔍 Loaded ${questions.length} questions: ${freeCount} free, ${premiumCount} premium`);
       } catch (error) {
         console.error('Error loading questions for sets:', error);
         setTotalQuestions(0);
@@ -80,42 +90,19 @@ const TypeSpecificSets = () => {
       }
     };
 
-    const loadPremiumSets = async () => {
-      try {
-        // Load premium sets dynamically based on current type and difficulty
-        console.log(`🔍 [TypeSpecificSets] Loading premium sets for type: ${type}, difficulty: ${difficulty}`);
-        
-        const availablePremiumSets = await PremiumSetService.getPremiumSetsByTypeAndDifficulty(type, difficulty);
-        setPremiumSets(availablePremiumSets);
-        
-        console.log(`✅ Loaded ${availablePremiumSets.length} premium sets for ${type}/${difficulty}:`, 
-          availablePremiumSets.map(set => ({ id: set.id, count: set.questionCount, title: set.title })));
-          
-        if (availablePremiumSets.length === 0) {
-          console.log(`ℹ️ No premium sets found for ${type}/${difficulty} - this is normal if no premium content exists for this combination`);
-        }
-      } catch (error) {
-        console.error('Error loading premium sets:', error);
-        setPremiumSets([]);
-      }
-    };
-
     loadQuestions();
-    loadPremiumSets();
   }, [type, difficulty]);
 
-  // ✅ Add effect to refresh progress when component becomes visible
+  // Refresh progress when component becomes visible
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && currentUser) {
-        console.log('🔄 [TypeSpecificSets] Refreshing progress summary on visibility change');
         refreshSummary();
       }
     };
 
     const handleFocus = () => {
       if (currentUser) {
-        console.log('🔄 [TypeSpecificSets] Refreshing progress summary on focus');
         refreshSummary();
       }
     };
@@ -166,32 +153,41 @@ const TypeSpecificSets = () => {
     }
   };
 
-  const handleSetStart = (set: QuestionSet) => {
+  const handleSetAccess = (set: QuestionSet) => {
+    // If set contains premium content and user is not premium, show upgrade message
+    if (set.isPremium && !isPremium) {
+      toast.error("תוכן זה זמין למנויי פרימיום בלבד", {
+        description: "שדרג לפרימיום כדי לגשת לכל השאלות",
+        action: {
+          label: "שדרג עכשיו",
+          onClick: () => navigate('/premium')
+        }
+      });
+      return;
+    }
+
     // Navigate to simulation with set parameters
     navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
   };
   
   const handleSetContinue = (set: QuestionSet) => {
-    // Navigate to simulation with continue flag
+    // Same premium check for continue
+    if (set.isPremium && !isPremium) {
+      toast.error("תוכן זה זמין למנויי פרימיום בלבד");
+      return;
+    }
+
     navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}&continue=true`);
   };
   
   const handleSetRestart = async (set: QuestionSet) => {
     if (!type || !difficulty || !currentUser) return;
     
-    console.log('🔄 [TypeSpecificSets] Starting set restart for:', {
-      setId: set.id,
-      type,
-      difficulty,
-      userId: currentUser.id,
-      timestamp: new Date().toISOString()
-    });
-    
-    // Log localStorage state before clearing
-    const beforeClear = Object.keys(localStorage).filter(key => 
-      key.includes('progress') || key.includes('simulation') || key.includes('set_')
-    );
-    console.log('📦 [TypeSpecificSets] LocalStorage before clear:', beforeClear);
+    // Premium check for restart
+    if (set.isPremium && !isPremium) {
+      toast.error("תוכן זה זמין למנויי פרימיום בלבד");
+      return;
+    }
     
     try {
       const result = await SetProgressService.resetSetProgress(
@@ -205,40 +201,18 @@ const TypeSpecificSets = () => {
         throw new Error(result.error || 'Failed to reset set progress');
       }
       
-      // Log localStorage state after clearing
-      const afterClear = Object.keys(localStorage).filter(key => 
-        key.includes('progress') || key.includes('simulation') || key.includes('set_')
-      );
-      console.log('📦 [TypeSpecificSets] LocalStorage after clear:', afterClear);
-      
-      // Refresh progress summary
       await refreshSummary();
       
-      console.log('✅ [TypeSpecificSets] Set restart completed successfully');
-      
-      // Start fresh simulation with reset parameter to ensure clean start
       const navigationUrl = `/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}&reset=true`;
-      console.log('🚀 [TypeSpecificSets] Navigating to:', navigationUrl);
-      
       navigate(navigationUrl);
     } catch (error) {
-      console.error('❌ [TypeSpecificSets] Error resetting set progress:', error);
-      // Re-throw the error to be handled by the confirmation dialog
+      console.error('Error resetting set progress:', error);
       throw error;
     }
   };
 
   const handleBackClick = () => {
     navigate(`/simulation/type/${type}/${difficulty}`);
-  };
-
-  const handlePremiumSetAccess = (setId: string) => {
-    console.log('🔐 Accessing premium set:', setId);
-    navigate(`/premium-set/${setId}`);
-  };
-
-  const handleUpgradeClick = () => {
-    setShowUpgradeModal(true);
   };
 
   if (!type || !difficulty) {
@@ -250,9 +224,7 @@ const TypeSpecificSets = () => {
             <h1 className="text-xl sm:text-2xl font-bold text-white mb-4">שגיאה בפרמטרים</h1>
             <Button 
               onClick={() => navigate('/simulations-entry')}
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-400/50 text-sm sm:text-base"
-              aria-label="חזרה לסימולציות"
-              tabIndex={0}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
             >
               חזרה לסימולציות
             </Button>
@@ -277,9 +249,7 @@ const TypeSpecificSets = () => {
           >
             <button
               onClick={handleBackClick}
-              className="flex items-center text-cyan-400 hover:text-cyan-300 mb-4 sm:mb-6 font-medium transition-colors duration-300 touch-manipulation focus:outline-none focus:ring-2 focus:ring-cyan-400/50 rounded-lg p-2 -m-2"
-              aria-label="חזרה לבחירת רמת קושי"
-              tabIndex={0}
+              className="flex items-center text-cyan-400 hover:text-cyan-300 mb-4 sm:mb-6 font-medium transition-colors duration-300"
             >
               <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
               חזרה
@@ -297,9 +267,14 @@ const TypeSpecificSets = () => {
                   <p className="text-white text-opacity-90 text-base sm:text-lg lg:text-xl">
                     רמת קושי: {getDifficultyInHebrew(difficulty)} | סה"כ {totalQuestions} שאלות
                   </p>
-                  <p className="text-white text-opacity-80 text-xs sm:text-sm mt-2 sm:mt-3 bg-white/10 rounded-lg px-2 sm:px-3 py-1 inline-block">
-                    🎯 כל סט מכיל 10 שאלות למיקוד מותאם
-                  </p>
+                  <div className="flex flex-wrap gap-2 mt-2 sm:mt-3">
+                    <span className="text-white text-opacity-80 text-xs sm:text-sm bg-green-500/20 rounded-lg px-2 sm:px-3 py-1">
+                      🆓 {freeQuestions} שאלות חינמיות
+                    </span>
+                    <span className="text-white text-opacity-80 text-xs sm:text-sm bg-yellow-500/20 rounded-lg px-2 sm:px-3 py-1">
+                      👑 {premiumQuestions} שאלות פרימיום
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -320,107 +295,67 @@ const TypeSpecificSets = () => {
                 </p>
                 <Button 
                   onClick={handleBackClick}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 touch-manipulation focus:outline-none focus:ring-2 focus:ring-blue-400/50 text-sm sm:text-base"
-                  aria-label="חזרה לבחירת אפשרויות"
-                  tabIndex={0}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
                 >
                   חזרה לבחירת אפשרויות
                 </Button>
               </div>
             </motion.div>
           ) : (
-            <div className="space-y-8">
-              {/* Premium Sets Section */}
-              {premiumSets.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+              {questionSets.map((set, index) => (
                 <motion.div
+                  key={set.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group relative"
                 >
-                  <div className="mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-yellow-400 mb-2 flex items-center gap-2">
-                      🏆 סטי פרימיום מתקדמים
-                    </h2>
-                    <p className="text-yellow-200 text-sm sm:text-base opacity-90">
-                      תוכן פרימיום עם שאלות ייחודיות והסברים מפורטים
-                    </p>
-                  </div>
+                  {/* Premium overlay for locked content */}
+                  {set.isPremium && !isPremium && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-xl backdrop-blur-sm z-10 flex items-center justify-center border border-yellow-500/30">
+                      <div className="text-center">
+                        <Crown className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
+                        <p className="text-yellow-200 font-semibold text-sm">תוכן פרימיום</p>
+                        <Button
+                          onClick={() => navigate('/premium')}
+                          size="sm"
+                          className="mt-2 bg-yellow-600 hover:bg-yellow-700 text-white"
+                        >
+                          שדרג עכשיו
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {premiumSets.map((premiumSet, index) => (
-                      <motion.div
-                        key={premiumSet.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 + index * 0.1 }}
-                      >
-                        <PremiumSetCard
-                          premiumSet={premiumSet}
-                          onAccessAttempt={handlePremiumSetAccess}
-                          onUpgradeClick={handleUpgradeClick}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
+                  <SetProgressCard
+                    setId={set.id}
+                    setTitle={set.title}
+                    setDescription={set.description}
+                    questionsCount={set.questionsCount}
+                    progress={progressSummary[set.id]}
+                    onStart={() => handleSetAccess(set)}
+                    onContinue={() => handleSetContinue(set)}
+                    onRestart={() => handleSetRestart(set)}
+                    isLoading={progressLoading}
+                    difficultyColor={getDifficultyColor(difficulty)}
+                    className={`h-full transition-all duration-300 ${
+                      set.isPremium && !isPremium 
+                        ? 'opacity-75 hover:opacity-90' 
+                        : 'hover:scale-105'
+                    }`}
+                    questionType={getTypeInHebrew(type)}
+                    difficulty={getDifficultyInHebrew(difficulty)}
+                  />
                 </motion.div>
-              )}
-
-              {/* Regular Sets Section */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: premiumSets.length > 0 ? 0.4 : 0.2 }}
-              >
-                <div className="mb-6">
-                  <h2 className="text-xl sm:text-2xl font-bold text-cyan-400 mb-2">
-                    📚 סטי תרגול רגילים
-                  </h2>
-                  <p className="text-cyan-200 text-sm sm:text-base opacity-90">
-                    סטים בסיסיים לתרגול מובנה
-                  </p>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-                  {questionSets.map((set, index) => (
-                    <motion.div
-                      key={set.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: (premiumSets.length > 0 ? 0.5 : 0.3) + index * 0.1 }}
-                      className="group"
-                    >
-                      <SetProgressCard
-                        setId={set.id}
-                        setTitle={set.title}
-                        setDescription={set.description}
-                        questionsCount={set.questionsCount}
-                        progress={progressSummary[set.id]}
-                        onStart={() => handleSetStart(set)}
-                        onContinue={() => handleSetContinue(set)}
-                        onRestart={() => handleSetRestart(set)}
-                        isLoading={progressLoading}
-                        difficultyColor={getDifficultyColor(difficulty)}
-                        className="h-full"
-                        questionType={getTypeInHebrew(type)}
-                        difficulty={getDifficultyInHebrew(difficulty)}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
+              ))}
             </div>
           )}
         </div>
       </div>
       <Footer />
-      
-      <PremiumUpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        setTitle={premiumSets.length > 0 ? premiumSets[0].title : "תוכן פרימיום"}
-      />
     </>
   );
 };
 
-export default TypeSpecificSets;
+export default SimulationSets;

@@ -229,21 +229,23 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
 }
 
 /**
- * Fetch questions from Supabase with optional filters (all questions available)
+ * Fetch questions from Supabase with UNIFIED PREMIUM SYSTEM
+ * - Free users: only see is_premium = false (20 questions)
+ * - Premium users: see ALL questions (676 premium + 20 free)
  */
-export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = true): Promise<QuestionsResponse> {
-  const cacheKey = getCacheKey(filters)
+export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsPremium: boolean = false): Promise<QuestionsResponse> {
+  const cacheKey = getCacheKey(filters) + (userIsPremium ? '_premium' : '_free')
   const cached = getCachedData<QuestionsResponse>(cacheKey)
   
   if (cached) {
-    console.log('📦 Returning cached questions')
+    console.log('📦 Returning cached questions for', userIsPremium ? 'PREMIUM' : 'FREE', 'user')
     return cached
   }
 
   try {
-    console.log('🔍 Fetching questions from database...', filters)
+    console.log('🔍 Fetching questions from database...', filters, 'Premium user:', userIsPremium)
 
-    // Build query - no premium filtering, all questions available
+    // Build query with unified premium system
     let query = supabase
       .from('questions')
       .select('*')
@@ -268,6 +270,15 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsP
       } else {
         query = query.eq('set_id', filters.setId)
       }
+    }
+
+    // UNIFIED PREMIUM FILTERING:
+    // Free users only see free questions, premium users see everything
+    if (!userIsPremium) {
+      query = query.eq('is_premium', false)
+      console.log('🆓 Filtering for FREE questions only')
+    } else {
+      console.log('👑 Loading ALL questions for PREMIUM user')
     }
 
     // Apply pagination
