@@ -96,6 +96,7 @@ export const resetChanges = (): boolean => {
  */
 export const refreshQuestionsFromStorage = async (): Promise<Question[]> => {
   console.log('[Admin Questions] Refreshing questions from storage');
+  const { getAllQuestions } = await import('./questionsService');
   return getAllQuestions();
 };
 
