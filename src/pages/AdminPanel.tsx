@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -14,9 +13,11 @@ import {
   Book, 
   BarChart, 
   Shield, 
-  Lock 
+  Lock,
+  Upload
 } from "lucide-react";
 import QuestionsManager from "@/components/admin/QuestionsManager";
+import QuestionUploadPanel from "@/components/admin/QuestionUploadPanel";
 
 const AdminPanel = () => {
   const { currentUser, isAdmin, isLoading } = useAuth();
@@ -90,6 +91,10 @@ const AdminPanel = () => {
                 <FileText className="h-4 w-4" />
                 שאלות
               </TabsTrigger>
+              <TabsTrigger value="upload" className="flex items-center gap-1">
+                <Upload className="h-4 w-4" />
+                העלאה
+              </TabsTrigger>
               <TabsTrigger value="topics" className="flex items-center gap-1">
                 <Book className="h-4 w-4" />
                 נושאים
@@ -110,6 +115,10 @@ const AdminPanel = () => {
             
             <TabsContent value="questions">
               <QuestionsManager />
+            </TabsContent>
+            
+            <TabsContent value="upload">
+              <QuestionUploadPanel />
             </TabsContent>
             
             <TabsContent value="topics">

@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { Question } from "@/data/types/questionTypes";
 
@@ -10,6 +11,9 @@ export interface QuestionUploadFormat {
   explanation: string;
   difficulty: 'easy' | 'medium' | 'hard';
   tags?: string[];
+  setId?: string;
+  setNumber?: number;
+  setOrder?: number;
 }
 
 export interface QuestionBatch {
@@ -80,6 +84,18 @@ export class QuestionsUploadService {
   private static transformQuestionForDB(question: QuestionUploadFormat, batchId: string) {
     // Determine if question is premium based on tags
     const isPremium = question.tags?.includes('premium') || false;
+    const isSet1 = question.tags?.includes('set1') || false;
+    
+    // Create metadata object with set information
+    const metadata = {
+      tags: question.tags || [],
+      is_set_based: !!question.setId,
+      set_id: question.setId || null,
+      set_number: question.setNumber || null,
+      set_order: question.setOrder || null,
+      set_type: question.type,
+      is_premium_set: isPremium && isSet1
+    };
     
     return {
       id: question.id,
@@ -91,11 +107,12 @@ export class QuestionsUploadService {
       difficulty: question.difficulty,
       is_premium: isPremium,
       ai_generated: true, // Assuming uploaded questions are AI generated
-      generation_model: 'batch_upload',
+      generation_model: 'premium_set_upload',
       batch_id: batchId,
-      quality_score: 85, // Default quality score for manual uploads
+      quality_score: 90, // Higher quality score for premium questions
       created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
+      metadata: metadata
     };
   }
 
@@ -103,10 +120,10 @@ export class QuestionsUploadService {
     try {
       const { data, error } = await supabase
         .from('questions')
-        .select('batch_id, created_at, is_premium, ai_generated')
+        .select('batch_id, created_at, is_premium, ai_generated, metadata')
         .not('batch_id', 'is', null)
         .order('created_at', { ascending: false })
-        .limit(limit);
+        .limit(limit * 5); // Get more to account for grouping
 
       if (error) {
         console.error('Error fetching upload history:', error);
@@ -119,21 +136,57 @@ export class QuestionsUploadService {
         if (existing) {
           existing.count++;
           if (question.is_premium) existing.premium_count++;
+          if (question.metadata?.is_set_based) existing.set_based_count++;
         } else {
           acc.push({
             batch_id: question.batch_id,
             created_at: question.created_at,
             count: 1,
-            premium_count: question.is_premium ? 1 : 0
+            premium_count: question.is_premium ? 1 : 0,
+            set_based_count: question.metadata?.is_set_based ? 1 : 0,
+            set_type: question.metadata?.set_type || null
           });
         }
         return acc;
       }, []);
 
-      return batches;
+      return batches.slice(0, limit);
     } catch (error) {
       console.error('Error in getUploadHistory:', error);
       return [];
+    }
+  }
+
+  static async getPremiumStats() {
+    try {
+      const { data, error } = await supabase
+        .from('questions')
+        .select('is_premium, difficulty, type, metadata')
+        .eq('is_premium', true);
+
+      if (error) {
+        console.error('Error fetching premium stats:', error);
+        return null;
+      }
+
+      const stats = {
+        total: data.length,
+        byDifficulty: {
+          easy: data.filter(q => q.difficulty === 'easy').length,
+          medium: data.filter(q => q.difficulty === 'medium').length,
+          hard: data.filter(q => q.difficulty === 'hard').length
+        },
+        byType: data.reduce((acc: any, q) => {
+          acc[q.type] = (acc[q.type] || 0) + 1;
+          return acc;
+        }, {}),
+        setBased: data.filter(q => q.metadata?.is_set_based).length
+      };
+
+      return stats;
+    } catch (error) {
+      console.error('Error in getPremiumStats:', error);
+      return null;
     }
   }
 
@@ -187,6 +240,11 @@ export class QuestionsUploadService {
 
       if (!['easy', 'medium', 'hard'].includes(question.difficulty)) {
         errors.push(`Question ${questionNum}: Difficulty must be 'easy', 'medium', or 'hard'`);
+      }
+
+      // Validate set information if provided
+      if (question.setId && (!question.setNumber || !question.setOrder)) {
+        errors.push(`Question ${questionNum}: Set ID provided but missing set number or order`);
       }
     });
 
