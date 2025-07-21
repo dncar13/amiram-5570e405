@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { couponValidationService } from "@/utils/couponValidationService";
 
 interface CouponValidationResult {
   valid: boolean;
@@ -25,18 +26,13 @@ export const useCoupon = () => {
     setIsValidating(true);
     
     try {
-      const { data, error } = await supabase.functions.invoke('validate-coupon', {
-        body: {
-          code: code.trim().toUpperCase(),
-          planType,
-          userId: currentUser?.id,
-          userEmail: currentUser?.email
-        }
-      });
-
-      if (error) throw error;
-
-      const result = data as CouponValidationResult;
+      // Use the fixed client-side validation service instead of the buggy edge function
+      const result = await couponValidationService.validateCoupon(
+        code.trim().toUpperCase(),
+        planType,
+        currentUser?.id,
+        currentUser?.email
+      );
       
       if (result.valid) {
         setAppliedCoupon(result);
@@ -70,20 +66,15 @@ export const useCoupon = () => {
     }
 
     try {
-      const { data, error } = await supabase.functions.invoke('use-coupon', {
-        body: {
-          couponId,
-          userId: currentUser.id,
-          planType,
-          originalAmount,
-          discountAmount,
-          finalAmount
-        }
-      });
-
-      if (error) throw error;
-
-      return data;
+      // Use the client-side coupon usage service
+      return await couponValidationService.useCoupon(
+        couponId,
+        currentUser.id,
+        planType,
+        originalAmount,
+        discountAmount,
+        finalAmount
+      );
     } catch (error) {
       console.error('Error using coupon:', error);
       return {

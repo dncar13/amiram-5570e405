@@ -171,6 +171,40 @@ const Premium = () => {
     setIsDialogOpen(true);
   };
 
+  const handleFreeOrder = async () => {
+    // Handle 100% discount coupon (free order)
+    if (appliedCoupon?.valid && appliedCoupon.coupon && appliedCoupon.finalAmount === 0) {
+      setIsProcessing(true);
+      
+      try {
+        const originalAmount = getOriginalAmount();
+        const discountAmount = appliedCoupon.discountAmount || 0;
+        
+        // Mark coupon as used
+        const result = await applyCouponForPayment(
+          appliedCoupon.coupon.id,
+          selectedPlan,
+          originalAmount,
+          discountAmount,
+          0
+        );
+        
+        if (result.success) {
+          // Complete the free order
+          localStorage.setItem("isPremiumUser", "true");
+          setIsDialogOpen(true);
+        } else {
+          console.error('Failed to apply free coupon:', result.error);
+          // Handle error - maybe show a toast
+        }
+      } catch (error) {
+        console.error('Error processing free order:', error);
+      } finally {
+        setIsProcessing(false);
+      }
+    }
+  };
+
   const handlePaymentCancel = () => {
     setIsProcessing(false);
   };
@@ -508,11 +542,46 @@ const Premium = () => {
                     </div>
                   </div>
 
-                  <CardcomPaymentForm
-                    amount={getAmount()}
-                    onSuccess={handlePaymentSuccess}
-                    onCancel={handlePaymentCancel}
-                  />
+                  {/* Conditional Payment Section */}
+                  {appliedCoupon?.valid && appliedCoupon.finalAmount === 0 ? (
+                    /* Free Order Button for 100% discount */
+                    <div className="space-y-4">
+                      <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl p-6 text-white text-center">
+                        <div className="mb-4">
+                          <Gift className="w-16 h-16 mx-auto mb-4 opacity-90" />
+                          <h3 className="text-2xl font-bold mb-2">🎉 גישה חינמית!</h3>
+                          <p className="text-green-100">
+                            הקופון שלכם מעניק גישה מלאה ללא תשלום
+                          </p>
+                        </div>
+                        <Button
+                          onClick={handleFreeOrder}
+                          disabled={isProcessing}
+                          size="lg"
+                          className="w-full bg-white text-green-600 hover:bg-green-50 font-bold text-lg py-4 rounded-xl shadow-lg"
+                        >
+                          {isProcessing ? (
+                            <div className="flex items-center justify-center gap-2">
+                              <div className="w-4 h-4 border-2 border-green-600 border-t-transparent rounded-full animate-spin" />
+                              מפעיל גישה...
+                            </div>
+                          ) : (
+                            <>
+                              <CheckCircle className="w-5 h-5 mr-2" />
+                              הפעל גישה חינמית
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    /* Regular Payment Form */
+                    <CardcomPaymentForm
+                      amount={getAmount()}
+                      onSuccess={handlePaymentSuccess}
+                      onCancel={handlePaymentCancel}
+                    />
+                  )}
                 </div>
 
                 {/* No Auto-renewal Notice */}
