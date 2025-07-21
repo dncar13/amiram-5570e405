@@ -9,6 +9,8 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
+import { adminCouponService } from "@/utils/adminCouponService";
 import { Plus, Edit, Trash2, Copy, Users, Calendar, Percent, DollarSign } from "lucide-react";
 import { format } from "date-fns";
 import { he } from "date-fns/locale";
@@ -50,6 +52,7 @@ export const CouponManagement = () => {
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const { currentUser } = useAuth();
 
   const [formData, setFormData] = useState({
     code: '',
@@ -133,24 +136,39 @@ export const CouponManagement = () => {
         assigned_user_email: formData.assigned_user_email || null
       };
 
+      console.log('Attempting to save coupon:', couponData);
+
       if (isCreateMode) {
-        const { error } = await supabase
-          .from('coupons')
-          .insert(couponData);
+        // Use the admin coupon service to bypass RLS issues
+        const result = await adminCouponService.createCoupon({
+          ...couponData,
+          created_by: currentUser?.id
+        });
+
+        if (!result.success) {
+          console.error('Coupon creation failed:', result.error);
+          throw new Error(result.error || 'שגיאה ביצירת קופון');
+        }
         
-        if (error) throw error;
+        console.log('Coupon created successfully:', result.coupon);
         
         toast({
           title: "הצלחה",
           description: "קופון נוצר בהצלחה"
         });
       } else if (selectedCoupon) {
-        const { error } = await supabase
-          .from('coupons')
-          .update(couponData)
-          .eq('id', selectedCoupon.id);
+        // Use the admin coupon service to ensure consistent permissions
+        const result = await adminCouponService.updateCoupon({
+          id: selectedCoupon.id,
+          ...couponData
+        });
+
+        if (!result.success) {
+          console.error('Coupon update failed:', result.error);
+          throw new Error(result.error || 'שגיאה בעדכון קופון');
+        }
         
-        if (error) throw error;
+        console.log('Coupon updated successfully:', result.coupon);
         
         toast({
           title: "הצלחה",
@@ -162,9 +180,10 @@ export const CouponManagement = () => {
       loadCoupons();
     } catch (error) {
       console.error('Error saving coupon:', error);
+      const errorMessage = error instanceof Error ? error.message : 'שגיאה לא ידועה';
       toast({
         title: "שגיאה",
-        description: "שגיאה בשמירת הקופון",
+        description: errorMessage,
         variant: "destructive"
       });
     }
@@ -204,12 +223,13 @@ export const CouponManagement = () => {
 
   const deleteCoupon = async (couponId: string) => {
     try {
-      const { error } = await supabase
-        .from('coupons')
-        .delete()
-        .eq('id', couponId);
-      
-      if (error) throw error;
+      // Use the admin coupon service to ensure consistent permissions
+      const result = await adminCouponService.deleteCoupon(couponId);
+
+      if (!result.success) {
+        console.error('Coupon deletion failed:', result.error);
+        throw new Error(result.error || 'שגיאה במחיקת קופון');
+      }
       
       toast({
         title: "הצלחה",
@@ -222,9 +242,10 @@ export const CouponManagement = () => {
       }
     } catch (error) {
       console.error('Error deleting coupon:', error);
+      const errorMessage = error instanceof Error ? error.message : 'שגיאה לא ידועה';
       toast({
         title: "שגיאה",
-        description: "שגיאה במחיקת הקופון",
+        description: errorMessage,
         variant: "destructive"
       });
     }

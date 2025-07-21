@@ -160,22 +160,49 @@ serve(async (req) => {
 
     // Calculate discount
     const planPrices = {
-      daily: 99,
-      weekly: 199,
-      monthly: 399,
-      quarterly: 999
+      daily: 20,
+      weekly: 69,
+      monthly: 99,
+      quarterly: 249
     };
 
     const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;
     let discountAmount = 0;
 
+    logStep("BEFORE calculation", { 
+      planType, 
+      originalAmount, 
+      discountType: coupon.discount_type,
+      discountValue: coupon.discount_value
+    });
+
     if (coupon.discount_type === "percent") {
       discountAmount = Math.round(originalAmount * (coupon.discount_value / 100));
+      logStep("PERCENT calculation", {
+        originalAmount,
+        discountValue: coupon.discount_value,
+        calculation: `${originalAmount} * (${coupon.discount_value} / 100)`,
+        result: originalAmount * (coupon.discount_value / 100),
+        rounded: discountAmount
+      });
     } else if (coupon.discount_type === "amount") {
       discountAmount = Math.min(coupon.discount_value, originalAmount);
+      logStep("AMOUNT calculation", {
+        discountValue: coupon.discount_value,
+        originalAmount,
+        result: discountAmount
+      });
     }
 
     const finalAmount = Math.max(0, originalAmount - discountAmount);
+
+    logStep("FINAL calculation", {
+      originalAmount,
+      discountAmount,
+      subtraction: `${originalAmount} - ${discountAmount}`,
+      beforeMax: originalAmount - discountAmount,
+      finalAmount
+    });
 
     logStep("Validation successful", { 
       originalAmount, 
