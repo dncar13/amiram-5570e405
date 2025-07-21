@@ -19,7 +19,7 @@ interface CouponValidationResult {
 export const useCoupon = () => {
   const [isValidating, setIsValidating] = useState(false);
   const [appliedCoupon, setAppliedCoupon] = useState<CouponValidationResult | null>(null);
-  const { user } = useAuth();
+  const { currentUser } = useAuth();
 
   const validateCoupon = async (code: string, planType: string): Promise<CouponValidationResult> => {
     setIsValidating(true);
@@ -29,8 +29,8 @@ export const useCoupon = () => {
         body: {
           code: code.trim().toUpperCase(),
           planType,
-          userId: user?.id,
-          userEmail: user?.email
+          userId: currentUser?.id,
+          userEmail: currentUser?.email
         }
       });
 
@@ -65,7 +65,7 @@ export const useCoupon = () => {
     discountAmount: number, 
     finalAmount: number
   ): Promise<{ success: boolean; error?: string }> => {
-    if (!user?.id) {
+    if (!currentUser?.id) {
       return { success: false, error: 'נדרשת התחברות לחשבון' };
     }
 
@@ -73,7 +73,7 @@ export const useCoupon = () => {
       const { data, error } = await supabase.functions.invoke('use-coupon', {
         body: {
           couponId,
-          userId: user.id,
+          userId: currentUser.id,
           planType,
           originalAmount,
           discountAmount,
