@@ -501,3 +501,5 @@ export const CouponManagement = () => {
     </div>
   );
 };
+
+export default CouponManagement;
