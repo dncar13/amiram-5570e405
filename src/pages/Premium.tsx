@@ -38,6 +38,7 @@ import {
 import CardcomPaymentForm from "@/components/payment/CardcomPaymentForm";
 import SuccessDialog from "@/components/premium/SuccessDialog";
 import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
+import { useCoupon } from "@/hooks/useCoupon";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -45,16 +46,12 @@ const Premium = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'daily' | 'weekly' | 'monthly' | 'quarterly'>('monthly');
   const [couponCode, setCouponCode] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{code: string, discount: number} | null>(null);
   const [couponError, setCouponError] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  
+  const { validateCoupon, useCoupon: applyCouponForPayment, clearCoupon, appliedCoupon, isValidating } = useCoupon();
 
-  const coupons = {
-    'SAVE20': { discount: 20, description: 'הנחה של 20%' },
-    'STUDENT15': { discount: 15, description: 'הנחה לסטודנטים 15%' },
-    'WELCOME10': { discount: 10, description: 'הנחה לחברים חדשים 10%' }
-  };
 
   const plans = [
     {
@@ -153,7 +150,22 @@ const Premium = () => {
     setIsVisible(true);
   }, []);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = async () => {
+    // If coupon was applied, mark it as used
+    if (appliedCoupon?.valid && appliedCoupon.coupon) {
+      const originalAmount = getOriginalAmount();
+      const discountAmount = appliedCoupon.discountAmount || 0;
+      const finalAmount = appliedCoupon.finalAmount || originalAmount;
+      
+      await applyCouponForPayment(
+        appliedCoupon.coupon.id,
+        selectedPlan,
+        originalAmount,
+        discountAmount,
+        finalAmount
+      );
+    }
+    
     localStorage.setItem("isPremiumUser", "true");
     setIsProcessing(false);
     setIsDialogOpen(true);
@@ -168,26 +180,34 @@ const Premium = () => {
     navigate("/simulations-entry");
   };
 
-  const applyCoupon = () => {
-    const coupon = coupons[couponCode.toUpperCase() as keyof typeof coupons];
-    if (coupon) {
-      setAppliedCoupon({ code: couponCode.toUpperCase(), discount: coupon.discount });
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) {
+      setCouponError('אנא הזן קוד קופון');
+      return;
+    }
+
+    const result = await validateCoupon(couponCode, selectedPlan);
+    
+    if (result.valid) {
       setCouponError('');
     } else {
-      setCouponError('קוד קופון לא תקין');
-      setAppliedCoupon(null);
+      setCouponError(result.error || 'קוד קופון לא תקין');
     }
   };
 
+  const removeCoupon = () => {
+    clearCoupon();
+    setCouponCode('');
+    setCouponError('');
+  };
+
   const getAmount = () => {
-    const plan = plans.find(p => p.id === selectedPlan);
-    let amount = plan?.price || 99;
-    
-    if (appliedCoupon) {
-      amount = amount * (1 - appliedCoupon.discount / 100);
+    if (appliedCoupon?.valid && appliedCoupon.finalAmount !== undefined) {
+      return appliedCoupon.finalAmount;
     }
     
-    return Math.round(amount);
+    const plan = plans.find(p => p.id === selectedPlan);
+    return plan?.price || 99;
   };
 
   const getOriginalAmount = () => {
@@ -401,7 +421,7 @@ const Premium = () => {
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-semibold">סה״כ לתשלום:</span>
                       <div className="text-right">
-                        {appliedCoupon && (
+                        {appliedCoupon?.valid && appliedCoupon.discountAmount && appliedCoupon.discountAmount > 0 && (
                           <div className="text-sm text-gray-500 line-through">
                             ₪{getOriginalAmount()}
                           </div>
@@ -412,12 +432,12 @@ const Premium = () => {
                       </div>
                     </div>
                     
-                    {appliedCoupon && (
+                    {appliedCoupon?.valid && appliedCoupon.coupon && (
                       <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-4">
                         <div className="flex items-center gap-2 text-green-700">
                           <CheckCircle className="w-4 h-4" />
                           <span className="text-sm">
-                            קוד קופון {appliedCoupon.code} הוחל - חסכתם ₪{getOriginalAmount() - getAmount()}
+                            קוד קופון {appliedCoupon.coupon.code} הוחל - חסכתם ₪{(appliedCoupon.discountAmount || 0)}
                           </span>
                         </div>
                       </div>
@@ -445,25 +465,45 @@ const Premium = () => {
                           value={couponCode}
                           onChange={(e) => setCouponCode(e.target.value)}
                           className="bg-white border-gray-300"
+                          disabled={isValidating}
                         />
                         <Button 
                           onClick={applyCoupon}
                           className="bg-purple-600 text-white hover:bg-purple-700"
+                          disabled={isValidating || !couponCode.trim()}
                         >
-                          החל
+                          {isValidating ? "בודק..." : "החל"}
                         </Button>
                       </div>
                       {couponError && (
                         <p className="text-red-600 text-sm">{couponError}</p>
                       )}
-                      {appliedCoupon && (
-                        <p className="text-green-600 text-sm flex items-center gap-1">
-                          <CheckCircle className="w-4 h-4" />
-                          קוד קופון הוחל בהצלחה! הנחה של {appliedCoupon.discount}%
-                        </p>
+                      {appliedCoupon?.valid && appliedCoupon.coupon && (
+                        <div className="flex items-center justify-between">
+                          <p className="text-green-600 text-sm flex items-center gap-1">
+                            <CheckCircle className="w-4 h-4" />
+                            קוד קופון {appliedCoupon.coupon.code} הוחל בהצלחה! 
+                            {appliedCoupon.coupon.discount_type === 'percent' 
+                              ? ` הנחה של ${appliedCoupon.coupon.discount_value}%`
+                              : ` הנחה של ${appliedCoupon.coupon.discount_value} ₪`
+                            }
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => {
+                              clearCoupon();
+                              setCouponCode('');
+                              setCouponError('');
+                            }}
+                            className="text-green-700 hover:text-green-800"
+                          >
+                            בטל
+                          </Button>
+                        </div>
                       )}
                       <div className="mt-3 text-xs text-gray-600">
-                        קודים זמינים: SAVE20, STUDENT15, WELCOME10
+                        קודים לדוגמה: WELCOME10, SAVE20, STUDENT25
                       </div>
                     </div>
                   </div>
