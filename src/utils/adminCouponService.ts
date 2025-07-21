@@ -1,16 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Create a separate admin client for coupon operations
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const serviceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !serviceRoleKey) {
-  console.error('Missing Supabase environment variables for admin operations');
-}
-
-const adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
-  auth: { persistSession: false }
-});
+import { supabase } from '@/integrations/supabase/client';
 
 interface CreateCouponData {
   code: string;
@@ -49,7 +37,7 @@ export const adminCouponService = {
       }
 
       // Check if coupon code already exists
-      const { data: existingCoupon } = await adminSupabase
+      const { data: existingCoupon } = await supabase
         .from('coupons')
         .select('id')
         .eq('code', couponData.code.toUpperCase())
@@ -66,7 +54,7 @@ export const adminCouponService = {
         used_count: 0
       };
 
-      const { data, error } = await adminSupabase
+      const { data, error } = await supabase
         .from('coupons')
         .insert(newCoupon)
         .select()
@@ -106,7 +94,7 @@ export const adminCouponService = {
       }
 
       // Check if coupon exists
-      const { data: existingCoupon, error: fetchError } = await adminSupabase
+      const { data: existingCoupon, error: fetchError } = await supabase
         .from('coupons')
         .select('*')
         .eq('id', couponData.id)
@@ -118,7 +106,7 @@ export const adminCouponService = {
 
       // Check if code is being changed and if the new code already exists
       if (couponData.code.toUpperCase() !== existingCoupon.code) {
-        const { data: duplicateCoupon } = await adminSupabase
+        const { data: duplicateCoupon } = await supabase
           .from('coupons')
           .select('id')
           .eq('code', couponData.code.toUpperCase())
@@ -137,7 +125,7 @@ export const adminCouponService = {
         code: couponData.code.toUpperCase()
       };
 
-      const { data, error } = await adminSupabase
+      const { data, error } = await supabase
         .from('coupons')
         .update(finalUpdateData)
         .eq('id', couponData.id)
@@ -168,7 +156,7 @@ export const adminCouponService = {
       }
 
       // Check if coupon exists
-      const { data: existingCoupon, error: fetchError } = await adminSupabase
+      const { data: existingCoupon, error: fetchError } = await supabase
         .from('coupons')
         .select('id, code, used_count')
         .eq('id', couponId)
@@ -179,7 +167,7 @@ export const adminCouponService = {
       }
 
       // Delete coupon
-      const { error } = await adminSupabase
+      const { error } = await supabase
         .from('coupons')
         .delete()
         .eq('id', couponId);
