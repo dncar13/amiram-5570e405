@@ -13,9 +13,11 @@ import {
   Book, 
   BarChart, 
   Shield, 
-  Lock
+  Lock,
+  Ticket
 } from "lucide-react";
 import QuestionsManager from "@/components/admin/QuestionsManager";
+import { CouponManagement } from "@/pages/CouponManagement";
 
 const AdminPanel = () => {
   const { currentUser, isAdmin, isLoading } = useAuth();
@@ -101,6 +103,10 @@ const AdminPanel = () => {
                 <BarChart className="h-4 w-4" />
                 סטטיסטיקות
               </TabsTrigger>
+              <TabsTrigger value="coupons" className="flex items-center gap-1">
+                <Ticket className="h-4 w-4" />
+                קופונים
+              </TabsTrigger>
               <TabsTrigger value="settings" className="flex items-center gap-1">
                 <Settings className="h-4 w-4" />
                 הגדרות
@@ -142,6 +148,10 @@ const AdminPanel = () => {
                   <Button variant="outline">התראה כשיהיה זמין</Button>
                 </div>
               </div>
+            </TabsContent>
+            
+            <TabsContent value="coupons">
+              <CouponManagement />
             </TabsContent>
             
             <TabsContent value="settings">
