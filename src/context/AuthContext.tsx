@@ -235,19 +235,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     switch (event) {
       case 'SIGNED_IN':
-        // Prevent duplicate SIGNED_IN events for the same session
-        if (authState.session?.user?.id === session?.user?.id && authState.initialized) {
-          // console.log('🔄 Duplicate SIGNED_IN event ignored for same user');
-          return;
-        }
-        
-        // console.log("🎉 User signed in successfully");
-        // console.log("🔍 Session details:", { 
-        //   user: session?.user?.email, 
-        //   provider: session?.user?.app_metadata?.provider,
-        //   confirmed: session?.user?.email_confirmed_at ? 'yes' : 'no'
-        // });
-        
         setAuthState(prev => ({
           ...prev,
           session, 
@@ -258,23 +245,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         
         if (session?.user) {
-          updateUserRelatedStates(session.user);
-          const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
-          const provider = session.user.app_metadata?.provider;
+          // Defer these to avoid hooks order issues
+          setTimeout(() => {
+            updateUserRelatedStates(session.user);
+            const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
+            const provider = session.user.app_metadata?.provider;
+            
+            if (provider === 'google') {
+              showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
+            } else {
+              showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+            }
+          }, 0);
           
-          // Show appropriate success message based on provider (only once)
-          if (provider === 'google') {
-            showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
-          } else {
-            showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
-          }
-          
-          sessionRetryCount.current = 0; // Reset retry count on successful login
+          sessionRetryCount.current = 0;
         }
         break;
 
       case 'SIGNED_OUT':
-        // console.log("👋 User signed out");
         setAuthState({ 
           session: null, 
           loading: false, 
@@ -287,31 +275,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         break;
 
       case 'TOKEN_REFRESHED':
-        // console.log("🔄 Token refreshed");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          updateUserRelatedStates(session.user);
+          setTimeout(() => updateUserRelatedStates(session.user), 0);
         }
         break;
 
       case 'USER_UPDATED':
-        // console.log("👤 User updated");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          updateUserRelatedStates(session.user);
+          setTimeout(() => updateUserRelatedStates(session.user), 0);
         }
         break;
 
       case 'PASSWORD_RECOVERY':
-        // console.log('🔑 Password recovery event');
         break;
         
       default:
-        // console.log('🔄 Unknown auth event:', event);
-        
-        // For unknown events, try session recovery if we don't have a session
         if (!session && !authState.session) {
-          // console.log("🔍 No session in unknown event, attempting recovery...");
           setTimeout(async () => {
             const recoveredSession = await attemptSessionRecovery();
             if (recoveredSession) {
@@ -322,13 +303,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 error: null,
                 initialized: true
               });
-              updateUserRelatedStates(recoveredSession.user);
+              setTimeout(() => updateUserRelatedStates(recoveredSession.user), 0);
             }
           }, 1000);
         }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authState.session, authState.initialized]); // Only depend on session and initialized state
+  }, []); // Remove all dependencies to prevent hook order changes
 
   useEffect(() => {
     let mounted = true;
