@@ -39,7 +39,6 @@ import CardcomPaymentForm from "@/components/payment/CardcomPaymentForm";
 import SuccessDialog from "@/components/premium/SuccessDialog";
 import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
 import { useCoupon } from "@/hooks/useCoupon";
-import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -52,7 +51,6 @@ const Premium = () => {
   const [isVisible, setIsVisible] = useState(false);
   
   const { validateCoupon, useCoupon: applyCouponForPayment, clearCoupon, appliedCoupon, isValidating } = useCoupon();
-  const { trackPremiumView, trackPremiumPurchase, trackBeginCheckout, trackCouponApplied, trackButtonClick, trackError, trackFormSubmit } = useAnalytics();
 
 
   const plans = [
@@ -150,10 +148,7 @@ const Premium = () => {
 
   useEffect(() => {
     setIsVisible(true);
-    
-    // Track premium page view
-    trackPremiumView(selectedPlan);
-  }, [selectedPlan, trackPremiumView]);
+  }, []);
 
   const handlePaymentSuccess = async () => {
     // If coupon was applied, mark it as used
@@ -170,16 +165,6 @@ const Premium = () => {
         finalAmount
       );
     }
-    
-    // Track successful premium purchase
-    trackPremiumPurchase({
-      plan_type: selectedPlan,
-      plan_price: getAmount(),
-      original_price: getOriginalAmount(),
-      discount_amount: appliedCoupon?.discountAmount,
-      coupon_code: appliedCoupon?.coupon?.code,
-      payment_status: 'completed'
-    });
     
     localStorage.setItem("isPremiumUser", "true");
     setIsProcessing(false);
@@ -205,33 +190,15 @@ const Premium = () => {
         );
         
         if (result.success) {
-          // Track free order completion
-          trackPremiumPurchase({
-            plan_type: selectedPlan,
-            plan_price: 0,
-            original_price: originalAmount,
-            discount_amount: discountAmount,
-            coupon_code: appliedCoupon.coupon.code,
-            payment_status: 'completed'
-          });
-          
           // Complete the free order
           localStorage.setItem("isPremiumUser", "true");
           setIsDialogOpen(true);
         } else {
           console.error('Failed to apply free coupon:', result.error);
-          trackError(new Error('Free coupon application failed'), 'Premium', {
-            coupon_code: appliedCoupon.coupon.code,
-            plan_type: selectedPlan,
-            error: result.error
-          });
+          // Handle error - maybe show a toast
         }
       } catch (error) {
         console.error('Error processing free order:', error);
-        trackError(error instanceof Error ? error : new Error('Free order processing failed'), 'Premium', {
-          coupon_code: appliedCoupon?.coupon?.code,
-          plan_type: selectedPlan
-        });
       } finally {
         setIsProcessing(false);
       }
@@ -240,13 +207,6 @@ const Premium = () => {
 
   const handlePaymentCancel = () => {
     setIsProcessing(false);
-    
-    // Track payment cancellation
-    trackError(new Error('Payment cancelled by user'), 'Premium', {
-      plan_type: selectedPlan,
-      amount: getAmount(),
-      action: 'payment_cancelled'
-    });
   };
 
   const handleSuccessfulPayment = () => {
@@ -264,16 +224,8 @@ const Premium = () => {
     
     if (result.valid) {
       setCouponError('');
-      
-      // Track successful coupon application
-      if (result.discountAmount) {
-        trackCouponApplied(couponCode, result.discountAmount, selectedPlan);
-      }
     } else {
       setCouponError(result.error || 'קוד קופון לא תקין');
-      
-      // Track failed coupon application
-      trackFormSubmit('coupon_form', false, result.error || 'Invalid coupon');
     }
   };
 
@@ -444,11 +396,7 @@ const Premium = () => {
                           className={`relative bg-white border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
                             isSelected ? 'border-purple-500 ring-4 ring-purple-100' : 'border-gray-200 hover:border-purple-300'
                           }`}
-                          onClick={() => {
-                            setSelectedPlan(plan.id as 'daily' | 'weekly' | 'monthly' | 'quarterly');
-                            // Track plan selection
-                            trackButtonClick(`select_plan_${plan.id}`, 'premium_pricing');
-                          }}
+                          onClick={() => setSelectedPlan(plan.id as 'daily' | 'weekly' | 'monthly' | 'quarterly')}
                           style={{
                             animationDelay: `${index * 0.1}s`,
                             animation: isVisible ? 'fadeInUp 0.6s ease-out forwards' : 'none'
@@ -554,10 +502,7 @@ const Premium = () => {
                           disabled={isValidating}
                         />
                         <Button 
-                          onClick={() => {
-                            applyCoupon();
-                            trackButtonClick('apply_coupon', 'premium_payment');
-                          }}
+                          onClick={applyCoupon}
                           className="bg-purple-600 text-white hover:bg-purple-700"
                           disabled={isValidating || !couponCode.trim()}
                         >
@@ -610,10 +555,7 @@ const Premium = () => {
                           </p>
                         </div>
                         <Button
-                          onClick={() => {
-                            handleFreeOrder();
-                            trackButtonClick('activate_free_order', 'premium_payment');
-                          }}
+                          onClick={handleFreeOrder}
                           disabled={isProcessing}
                           size="lg"
                           className="w-full bg-white text-green-600 hover:bg-green-50 font-bold text-lg py-4 rounded-xl shadow-lg"
@@ -717,10 +659,7 @@ const Premium = () => {
                 <div key={faq.id} className="bg-gray-50 rounded-xl overflow-hidden">
                   <button
                     className="w-full px-6 py-4 text-right flex items-center justify-between hover:bg-gray-100 transition-colors"
-                    onClick={() => {
-                      setExpandedFAQ(expandedFAQ === faq.id ? null : faq.id);
-                      trackButtonClick(`faq_${faq.id}`, 'premium_faq');
-                    }}
+                    onClick={() => setExpandedFAQ(expandedFAQ === faq.id ? null : faq.id)}
                   >
                     <span className="font-semibold text-gray-900">{faq.question}</span>
                     {expandedFAQ === faq.id ? (
@@ -755,10 +694,7 @@ const Premium = () => {
               <Button
                 size="lg"
                 className="bg-white text-purple-600 hover:bg-white/90 px-8 py-4"
-                onClick={() => {
-                  window.open('https://wa.me/972525602218', '_blank');
-                  trackButtonClick('whatsapp_support', 'premium_contact');
-                }}
+                onClick={() => window.open('https://wa.me/972525602218', '_blank')}
               >
                 <MessageSquare className="w-5 h-5 ml-2" />
                 ווטסאפ: 0525602218
@@ -768,10 +704,7 @@ const Premium = () => {
                 size="lg"
                 variant="outline"
                 className="border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4"
-                onClick={() => {
-                  window.open('mailto:support@amiram.net', '_blank');
-                  trackButtonClick('email_support', 'premium_contact');
-                }}
+                onClick={() => window.open('mailto:support@amiram.net', '_blank')}
               >
                 support@amiram.net
               </Button>

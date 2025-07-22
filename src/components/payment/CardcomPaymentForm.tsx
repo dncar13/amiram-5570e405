@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck } from "lucide-react";
 import { getIframeUrl } from "@/services/cardcomService";
-import { useAnalytics } from "@/hooks/useAnalytics";
 
 interface CardcomPaymentFormProps {
   amount: number;
@@ -17,19 +16,8 @@ const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormP
   const [useIframe, setUseIframe] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
-  const { trackBeginCheckout, trackPurchase, trackError: trackAnalyticsError, trackButtonClick } = useAnalytics();
-  
   // In a real implementation, terminal number would come from environment variables
   const terminalNumber = "TERMINAL_NUMBER"; // Replace with actual terminal number
-  
-  // Track payment form view on component mount
-  useEffect(() => {
-    trackBeginCheckout({
-      plan_type: 'monthly', // This should be passed as a prop in real implementation
-      plan_price: amount,
-      payment_status: 'initiated'
-    });
-  }, [amount, trackBeginCheckout]);
   
   useEffect(() => {
     // Set up message listener for iframe communication
@@ -41,40 +29,14 @@ const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormP
         const data = event.data;
         
         if (data.status === "success") {
-          // Track successful payment
-          trackPurchase({
-            currency: 'ILS',
-            value: amount,
-            transaction_id: data.transaction_id || `cardcom_${Date.now()}`,
-            payment_method: 'cardcom',
-            items: [{
-              item_id: 'premium_plan',
-              item_name: 'Premium Subscription',
-              category: 'subscription',
-              price: amount,
-              quantity: 1
-            }]
-          });
-          
           // Payment successful
           onSuccess();
         } else if (data.status === "cancel" || data.status === "failure") {
-          // Track payment failure/cancellation
-          trackAnalyticsError(new Error(`Payment ${data.status}`), 'CardcomPayment', {
-            amount,
-            status: data.status,
-            error_message: data.error_message || `Payment ${data.status}`
-          });
-          
           // Payment cancelled or failed
           onCancel();
         }
       } catch (err) {
         console.error("Error processing message from payment iframe", err);
-        trackAnalyticsError(err instanceof Error ? err : new Error('Payment iframe message error'), 'CardcomPayment', {
-          amount,
-          action: 'iframe_message_processing'
-        });
       }
     };
     
@@ -91,38 +53,14 @@ const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormP
   const handleIframeError = () => {
     setIsLoading(false);
     setError("אירעה שגיאה בטעינת טופס התשלום. אנא נסו שוב מאוחר יותר.");
-    
-    // Track iframe loading error
-    trackAnalyticsError(new Error('Payment iframe failed to load'), 'CardcomPayment', {
-      amount,
-      action: 'iframe_load_error'
-    });
   };
   
   // For demo purposes, simulate direct payment without iframe
   const handleDirectPayment = () => {
     setIsLoading(true);
     
-    // Track direct payment button click
-    trackButtonClick('direct_payment', 'cardcom_payment_form');
-    
     // Simulate payment processing
     setTimeout(() => {
-      // Track successful payment simulation
-      trackPurchase({
-        currency: 'ILS',
-        value: amount,
-        transaction_id: `demo_${Date.now()}`,
-        payment_method: 'demo',
-        items: [{
-          item_id: 'premium_plan',
-          item_name: 'Premium Subscription',
-          category: 'subscription',
-          price: amount,
-          quantity: 1
-        }]
-      });
-      
       setIsLoading(false);
       onSuccess();
     }, 1500);
@@ -149,10 +87,7 @@ const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormP
             <div className="text-red-500 p-4 text-center">
               {error}
               <Button 
-                onClick={() => {
-                  setError(null);
-                  trackButtonClick('retry_payment', 'cardcom_payment_form');
-                }} 
+                onClick={() => setError(null)} 
                 variant="outline" 
                 className="mt-2"
               >

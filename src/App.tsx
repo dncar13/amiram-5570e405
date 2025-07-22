@@ -41,8 +41,6 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
 import SetProgressDebug from "./components/SetProgressDebug";
-import CookieConsent from "./components/CookieConsent";
-import AnalyticsDashboard from "./components/dev/AnalyticsDashboard";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -234,8 +232,6 @@ const App = () => (
             <BrowserRouter>
               <ScrollToTop />
               <AnimatedRoutes />
-              <CookieConsent />
-              <AnalyticsDashboard />
             </BrowserRouter>
           </div>
         </SimulationSettingsProvider>
