@@ -42,12 +42,8 @@ export const AnalyticsDashboard: React.FC = () => {
     setDebugModeEnabled(debugMode);
   }, []);
 
+  // Calculate visibility after all hooks are called
   const shouldShowDashboard = import.meta.env.DEV || isDevEnvironment || isAdmin || debugModeEnabled;
-
-  // Hide dashboard completely for regular users in production
-  if (!shouldShowDashboard) {
-    return null;
-  }
 
   useEffect(() => {
     // Run initial tests
@@ -124,6 +120,11 @@ export const AnalyticsDashboard: React.FC = () => {
       </Badge>
     );
   };
+
+  // Hide dashboard for regular users in production
+  if (!shouldShowDashboard) {
+    return <div style={{ display: 'none' }} />;
+  }
 
   return (
     <div className="fixed bottom-4 right-4 w-96 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-[80vh] overflow-hidden">

@@ -43,6 +43,8 @@ import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
 import SetProgressDebug from "./components/SetProgressDebug";
 import CookieConsent from "./components/CookieConsent";
 import AnalyticsDashboard from "./components/dev/AnalyticsDashboard";
+import { useAuth } from "./context/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -89,6 +91,24 @@ const pageTransition: Transition = {
   duration: 0.4
 };
 
+// Conditional AnalyticsDashboard wrapper to prevent unnecessary hook execution
+const ConditionalAnalyticsDashboard = () => {
+  const { isAdmin } = useAuth();
+  const isDevEnvironment = import.meta.env.DEV || 
+    (typeof window !== 'undefined' && 
+     (window.location.hostname === 'localhost' || 
+      window.location.hostname.includes('lovableproject.com')));
+  const debugModeEnabled = typeof window !== 'undefined' && 
+    localStorage.getItem('amiram_analytics_debug') === 'true';
+
+  // Only render AnalyticsDashboard if user should have access
+  if (isDevEnvironment || isAdmin || debugModeEnabled) {
+    return <AnalyticsDashboard />;
+  }
+  
+  return null;
+};
+
 // Enhanced AnimatedRoutes component with better transitions
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -119,7 +139,11 @@ const AnimatedRoutes = () => {
           <Route path="/simulations-entry/list" element={<SimulationsEntry />} />
           <Route path="/categories" element={<Categories />} />
           
-          <Route path="/simulation/:topicId" element={<Simulation />} />
+          <Route path="/simulation/:topicId" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
           <Route path="/questions" element={<TopicQuestions />} />
           <Route path="/saved-questions" element={<SavedQuestionViewer />} />
           <Route path="/questions/category/:categoryId" element={<TopicQuestions />} />
@@ -135,35 +159,55 @@ const AnimatedRoutes = () => {
           } />
           <Route path="/admin" element={
             <ProtectedRoute requireAuth={true}>
-              <AdminPanel />
+              <ErrorBoundary>
+                <AdminPanel />
+              </ErrorBoundary>
             </ProtectedRoute>
           } />
           <Route path="/admin/users" element={
             <ProtectedRoute requireAuth={true}>
-              <AdminUsers />
+              <ErrorBoundary>
+                <AdminUsers />
+              </ErrorBoundary>
             </ProtectedRoute>
           } />
           <Route path="/admin/questions" element={
             <ProtectedRoute requireAuth={true}>
-              <AdminPanel />
+              <ErrorBoundary>
+                <AdminPanel />
+              </ErrorBoundary>
             </ProtectedRoute>
           } />
           <Route path="/admin/topics" element={
             <ProtectedRoute requireAuth={true}>
-              <AdminPanel />
+              <ErrorBoundary>
+                <AdminPanel />
+              </ErrorBoundary>
             </ProtectedRoute>
           } />
           <Route path="/questions-sets" element={<QuestionsSets />} />
           <Route path="/questions-set/:setId/intro" element={<QuestionsSetPreparation />} />
-          <Route path="/questions-set/:setId" element={<Simulation />} />
+          <Route path="/questions-set/:setId" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
           
           {/* New Reading Comprehension Routes */}
           <Route path="/reading-comprehension" element={<ReadingComprehensionTopics />} />
-          <Route path="/simulation/story/:storyId" element={<Simulation />} />
+          <Route path="/simulation/story/:storyId" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
           
           {/* Existing Simulations Entry Routes */}
           <Route path="/simulations-entry" element={<SimulationsEntry />} />
-          <Route path="/simulation/full" element={<FullSimulation />} />
+          <Route path="/simulation/full" element={
+            <ErrorBoundary>
+              <FullSimulation />
+            </ErrorBoundary>
+          } />
           <Route path="/simulation/by-type" element={<SimulationsEntry />} />
           <Route path="/simulation/by-difficulty" element={<SimulationsEntry />} />
           <Route path="/simulation-history" element={
@@ -190,22 +234,62 @@ const AnimatedRoutes = () => {
               </ProtectedRoute>
             } />
           )}
-          <Route path="/simulation/type/:type" element={<SimulationByType />} />
-          <Route path="/simulation/difficulty/:level" element={<SimulationByDifficulty />} />
+          <Route path="/simulation/type/:type" element={
+            <ErrorBoundary>
+              <SimulationByType />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/difficulty/:level" element={
+            <ErrorBoundary>
+              <SimulationByDifficulty />
+            </ErrorBoundary>
+          } />
           
           {/* Practice options and sets routes */}
           <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
           <Route path="/simulation/type/:type/:difficulty/sets" element={<SimulationSets />} />
           
           {/* Individual simulation routes */}
-          <Route path="/simulation/:type/:difficulty" element={<Simulation />} />
-          <Route path="/simulation/:type/timed" element={<Simulation />} />
-          <Route path="/simulation/:type/practice" element={<Simulation />} />
-          <Route path="/simulation/:type/adaptive" element={<Simulation />} />
-          <Route path="/simulation/difficulty/:level/:type" element={<Simulation />} />
-          <Route path="/simulation/difficulty/:level/timed" element={<Simulation />} />
-          <Route path="/simulation/difficulty/:level/adaptive" element={<Simulation />} />
-          <Route path="/simulation/full/start" element={<Simulation />} />
+          <Route path="/simulation/:type/:difficulty" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/:type/timed" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/:type/practice" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/:type/adaptive" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/difficulty/:level/:type" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/difficulty/:level/timed" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/difficulty/:level/adaptive" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
+          <Route path="/simulation/full/start" element={
+            <ErrorBoundary>
+              <Simulation />
+            </ErrorBoundary>
+          } />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -235,7 +319,7 @@ const App = () => (
               <ScrollToTop />
               <AnimatedRoutes />
               <CookieConsent />
-              <AnalyticsDashboard />
+              <ConditionalAnalyticsDashboard />
             </BrowserRouter>
           </div>
         </SimulationSettingsProvider>
