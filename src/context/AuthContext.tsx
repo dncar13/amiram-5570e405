@@ -139,7 +139,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {
+  const updateUserRelatedStates = async (user: SupabaseUser) => {
     // console.log("✅ Updating user states for:", user.email);
     
     const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
@@ -188,18 +188,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       };
       setUserData(newUserData);
     }
-  }, []);
+  };
   
-  const resetUserStates = useCallback(() => {
+  const resetUserStates = () => {
     setIsAdmin(false);
     setIsPremium(false);
     setUserData(null);
     localStorage.removeItem("isPremiumUser");
     sessionRetryCount.current = 0;
-  }, []);
+  };
 
   // Enhanced session recovery mechanism
-  const attemptSessionRecovery = useCallback(async () => {
+  const attemptSessionRecovery = async () => {
     if (sessionRetryCount.current >= maxRetries) {
       // console.log("🔄 Max session recovery attempts reached");
       return null;
@@ -227,10 +227,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Session recovery failed:", error);
       return null;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
-  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
+  const handleAuthChange = async (event: AuthChangeEvent, session: Session | null) => {
     // console.log('🔔 Auth event:', event, 'Session:', !!session);
 
     switch (event) {
@@ -308,7 +307,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }, 1000);
         }
     }
-  }, []); // Remove all dependencies to prevent hook order changes
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -483,7 +482,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []); // Empty deps - this should only run once on mount
 
-  const refreshSession = useCallback(async () => {
+  const refreshSession = async () => {
     try {
       // console.log("🔄 Manual session refresh initiated");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
@@ -524,9 +523,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-  }, []); // Remove dependencies that cause re-renders
+  };
 
-  const logout = useCallback(async () => {
+  const logout = async () => {
     try {
       // console.log("🚪 Initiating logout...");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'signing-out' }));
@@ -547,7 +546,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
-  }, []); // Remove dependencies that cause re-renders
+  };
 
   // Debug logging only when needed (removed continuous effect)
   if (isDevEnvironment && authState.loadingState === 'ready') {
