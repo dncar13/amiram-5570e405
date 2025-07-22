@@ -71,10 +71,10 @@ export const CouponManagement = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedCoupon?.id) {
+    if (selectedCoupon) {
       loadUsageData(selectedCoupon.id);
     }
-  }, [selectedCoupon?.id]); // More specific dependency
+  }, [selectedCoupon]);
 
   const loadCoupons = async () => {
     try {

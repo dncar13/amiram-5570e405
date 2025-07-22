@@ -139,7 +139,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const updateUserRelatedStates = async (user: SupabaseUser) => {
+  const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {
     // console.log("✅ Updating user states for:", user.email);
     
     const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
@@ -188,18 +188,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       };
       setUserData(newUserData);
     }
-  };
+  }, []);
   
-  const resetUserStates = () => {
+  const resetUserStates = useCallback(() => {
     setIsAdmin(false);
     setIsPremium(false);
     setUserData(null);
     localStorage.removeItem("isPremiumUser");
     sessionRetryCount.current = 0;
-  };
+  }, []);
 
   // Enhanced session recovery mechanism
-  const attemptSessionRecovery = async () => {
+  const attemptSessionRecovery = useCallback(async () => {
     if (sessionRetryCount.current >= maxRetries) {
       // console.log("🔄 Max session recovery attempts reached");
       return null;
@@ -227,13 +227,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Session recovery failed:", error);
       return null;
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleAuthChange = async (event: AuthChangeEvent, session: Session | null) => {
+  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
     // console.log('🔔 Auth event:', event, 'Session:', !!session);
 
     switch (event) {
       case 'SIGNED_IN':
+        // Prevent duplicate SIGNED_IN events for the same session
+        if (authState.session?.user?.id === session?.user?.id && authState.initialized) {
+          // console.log('🔄 Duplicate SIGNED_IN event ignored for same user');
+          return;
+        }
+        
+        // console.log("🎉 User signed in successfully");
+        // console.log("🔍 Session details:", { 
+        //   user: session?.user?.email, 
+        //   provider: session?.user?.app_metadata?.provider,
+        //   confirmed: session?.user?.email_confirmed_at ? 'yes' : 'no'
+        // });
+        
         setAuthState(prev => ({
           ...prev,
           session, 
@@ -244,24 +258,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         
         if (session?.user) {
-          // Defer these to avoid hooks order issues
-          setTimeout(() => {
-            updateUserRelatedStates(session.user);
-            const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
-            const provider = session.user.app_metadata?.provider;
-            
-            if (provider === 'google') {
-              showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
-            } else {
-              showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
-            }
-          }, 0);
+          updateUserRelatedStates(session.user);
+          const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
+          const provider = session.user.app_metadata?.provider;
           
-          sessionRetryCount.current = 0;
+          // Show appropriate success message based on provider (only once)
+          if (provider === 'google') {
+            showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
+          } else {
+            showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
+          }
+          
+          sessionRetryCount.current = 0; // Reset retry count on successful login
         }
         break;
 
       case 'SIGNED_OUT':
+        // console.log("👋 User signed out");
         setAuthState({ 
           session: null, 
           loading: false, 
@@ -274,24 +287,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         break;
 
       case 'TOKEN_REFRESHED':
+        // console.log("🔄 Token refreshed");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          setTimeout(() => updateUserRelatedStates(session.user), 0);
+          updateUserRelatedStates(session.user);
         }
         break;
 
       case 'USER_UPDATED':
+        // console.log("👤 User updated");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          setTimeout(() => updateUserRelatedStates(session.user), 0);
+          updateUserRelatedStates(session.user);
         }
         break;
 
       case 'PASSWORD_RECOVERY':
+        // console.log('🔑 Password recovery event');
         break;
         
       default:
+        // console.log('🔄 Unknown auth event:', event);
+        
+        // For unknown events, try session recovery if we don't have a session
         if (!session && !authState.session) {
+          // console.log("🔍 No session in unknown event, attempting recovery...");
           setTimeout(async () => {
             const recoveredSession = await attemptSessionRecovery();
             if (recoveredSession) {
@@ -302,12 +322,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 error: null,
                 initialized: true
               });
-              setTimeout(() => updateUserRelatedStates(recoveredSession.user), 0);
+              updateUserRelatedStates(recoveredSession.user);
             }
           }, 1000);
         }
     }
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState.session, authState.initialized]); // Only depend on session and initialized state
 
   useEffect(() => {
     let mounted = true;
@@ -482,7 +503,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []); // Empty deps - this should only run once on mount
 
-  const refreshSession = async () => {
+  const refreshSession = useCallback(async () => {
     try {
       // console.log("🔄 Manual session refresh initiated");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
@@ -523,9 +544,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-  };
+  }, []); // Remove dependencies that cause re-renders
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       // console.log("🚪 Initiating logout...");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'signing-out' }));
@@ -546,7 +567,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
-  };
+  }, []); // Remove dependencies that cause re-renders
 
   // Debug logging only when needed (removed continuous effect)
   if (isDevEnvironment && authState.loadingState === 'ready') {
