@@ -142,6 +142,7 @@ export const CouponManagement = () => {
         // Use the admin coupon service to bypass RLS issues
         const result = await adminCouponService.createCoupon({
           ...couponData,
+          discount_type: couponData.discount_type as 'percent' | 'amount',
           created_by: currentUser?.id
         });
 
@@ -160,7 +161,8 @@ export const CouponManagement = () => {
         // Use the admin coupon service to ensure consistent permissions
         const result = await adminCouponService.updateCoupon({
           id: selectedCoupon.id,
-          ...couponData
+          ...couponData,
+          discount_type: couponData.discount_type as 'percent' | 'amount'
         });
 
         if (!result.success) {
