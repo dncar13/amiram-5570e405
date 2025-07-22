@@ -22,10 +22,12 @@ import {
 import { Question } from "@/data/types/questionTypes";
 import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
 import { useAuth } from "@/context/AuthContext";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Simulation = () => {
   const navigate = useNavigate();
   const { currentUser, isPremium, isLoading: authLoading } = useAuth();
+  const { trackSimulationStart, trackSimulationProgress, trackSimulationComplete, trackError } = useAnalytics();
   const { topicId, setId, difficulty, type, storyId } = useParams<{ 
     topicId: string; 
     setId: string; 
@@ -93,6 +95,12 @@ const Simulation = () => {
         console.error('Error loading story data:', error);
         setStoryQuestions([]);
         setStory(undefined);
+        
+        // Track story loading error
+        trackError(error instanceof Error ? error : new Error('Story loading failed'), 'Simulation', {
+          story_id: storyId,
+          action: 'story_data_loading'
+        });
       } finally {
         setStoryLoading(false);
       }
@@ -236,6 +244,74 @@ const Simulation = () => {
   
   // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
+  
+  // Track simulation start when first loaded
+  useEffect(() => {
+    if (simulation && simulation.progressLoaded && questionsToUse.length > 0 && simulation.currentQuestionIndex === 0 && !simulation.simulationComplete) {
+      const simulationType = isFullExam ? 'full_exam' : 
+                           isStoryBased ? 'story_based' :
+                           isDifficultyBased ? `difficulty_${difficulty}_${type}` :
+                           isQuickPractice ? `quick_${effectiveType}` :
+                           isQuestionSet ? 'question_set' : 'topic_based';
+      
+      trackSimulationStart({
+        simulation_type: simulationType,
+        simulation_id: formattedSimulationId,
+        difficulty_level: difficulty || 'mixed',
+        question_count: questionsToUse.length,
+        time_limit: simulation.examMode ? 90 * 60 : undefined // 90 minutes for exam mode
+      });
+    }
+  }, [simulation?.progressLoaded, questionsToUse.length, formattedSimulationId]);
+  
+  // Track simulation progress at 25%, 50%, 75% completion
+  useEffect(() => {
+    if (simulation && simulation.progressLoaded && questionsToUse.length > 0) {
+      const progressPercentage = (simulation.currentQuestionIndex / questionsToUse.length) * 100;
+      const milestones = [25, 50, 75];
+      
+      milestones.forEach(milestone => {
+        if (progressPercentage >= milestone && progressPercentage < milestone + (100 / questionsToUse.length)) {
+          // Only track if we haven't tracked this milestone yet
+          const milestoneKey = `milestone_${milestone}_${formattedSimulationId}`;
+          if (!sessionStorage.getItem(milestoneKey)) {
+            trackSimulationProgress({
+              simulation_type: isFullExam ? 'full_exam' : isStoryBased ? 'story_based' : 'standard',
+              simulation_id: formattedSimulationId,
+              completion_rate: milestone,
+              current_score: simulation.currentScorePercentage,
+              time_spent: simulation.examMode ? ((90 * 60) - (simulation.remainingTime || 0)) : undefined
+            });
+            sessionStorage.setItem(milestoneKey, 'true');
+          }
+        }
+      });
+    }
+  }, [simulation?.currentQuestionIndex, questionsToUse.length, formattedSimulationId, simulation?.currentScorePercentage]);
+  
+  // Track simulation completion
+  useEffect(() => {
+    if (simulation && simulation.simulationComplete && questionsToUse.length > 0) {
+      const completionKey = `completed_${formattedSimulationId}`;
+      if (!sessionStorage.getItem(completionKey)) {
+        trackSimulationComplete({
+          simulation_type: isFullExam ? 'full_exam' : isStoryBased ? 'story_based' : 'standard',
+          simulation_id: formattedSimulationId,
+          score: simulation.currentScorePercentage,
+          time_spent: simulation.examMode ? ((90 * 60) - (simulation.remainingTime || 0)) : undefined,
+          questions_answered: simulation.answeredQuestionsCount,
+          questions_correct: simulation.correctQuestionsCount,
+          completion_rate: 100
+        });
+        sessionStorage.setItem(completionKey, 'true');
+        
+        // Clear milestone tracking for this simulation
+        [25, 50, 75].forEach(milestone => {
+          sessionStorage.removeItem(`milestone_${milestone}_${formattedSimulationId}`);
+        });
+      }
+    }
+  }, [simulation?.simulationComplete, formattedSimulationId, simulation?.currentScorePercentage]);
     
   // For full exam, use simulation questions; for story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
   const questionsToUse = (isFullExam || isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
