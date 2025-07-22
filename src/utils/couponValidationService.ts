@@ -1,11 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const serviceRoleKey = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-
-const adminSupabase = createClient(supabaseUrl, serviceRoleKey, {
-  auth: { persistSession: false }
-});
+import { supabase } from '@/integrations/supabase/client';
 
 interface CouponValidationResult {
   valid: boolean;
@@ -50,7 +43,7 @@ export const couponValidationService = {
       }
 
       // Get coupon details from database
-      const { data: coupon, error: couponError } = await adminSupabase
+      const { data: coupon, error: couponError } = await supabase
         .from('coupons')
         .select('*')
         .eq('code', code.toUpperCase())
@@ -97,7 +90,7 @@ export const couponValidationService = {
 
         // Check if personal coupon was already used by this user
         if (userId) {
-          const { data: existingUsage } = await adminSupabase
+          const { data: existingUsage } = await supabase
             .from('coupon_usage')
             .select('id')
             .eq('coupon_id', coupon.id)
@@ -195,7 +188,7 @@ export const couponValidationService = {
       }
 
       // Check if coupon still exists and is valid
-      const { data: coupon, error: couponError } = await adminSupabase
+      const { data: coupon, error: couponError } = await supabase
         .from('coupons')
         .select('*')
         .eq('id', couponId)
@@ -212,7 +205,7 @@ export const couponValidationService = {
       }
 
       // Check if user already used this coupon
-      const { data: existingUsage } = await adminSupabase
+      const { data: existingUsage } = await supabase
         .from('coupon_usage')
         .select('id')
         .eq('coupon_id', couponId)
@@ -224,7 +217,7 @@ export const couponValidationService = {
       }
 
       // Record coupon usage
-      const { error: usageError } = await adminSupabase
+      const { error: usageError } = await supabase
         .from('coupon_usage')
         .insert({
           coupon_id: couponId,
@@ -241,7 +234,7 @@ export const couponValidationService = {
       }
 
       // Update coupon used count
-      const { error: updateError } = await adminSupabase
+      const { error: updateError } = await supabase
         .from('coupons')
         .update({ used_count: coupon.used_count + 1 })
         .eq('id', couponId);
