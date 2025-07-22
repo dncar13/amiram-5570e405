@@ -245,10 +245,6 @@ const Simulation = () => {
   // Only pass the correct arguments to the hook
   const simulation = useSimulation(formattedSimulationId, isQuestionSet, isStoryBased ? storyQuestions : undefined);
   
-  // For full exam, use simulation questions; for story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
-  const questionsToUse = (isFullExam || isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
-  const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? storyLoading : isLoading);
-  
   // Track simulation start when first loaded
   useEffect(() => {
     if (simulation && simulation.progressLoaded && questionsToUse.length > 0 && simulation.currentQuestionIndex === 0 && !simulation.simulationComplete) {
@@ -317,7 +313,9 @@ const Simulation = () => {
     }
   }, [simulation?.simulationComplete, formattedSimulationId, simulation?.currentScorePercentage]);
     
-  // Remove duplicate variable declarations since they're now above
+  // For full exam, use simulation questions; for story-based simulations, questions are already in simulation.questions; for difficulty-based simulations, use simulation questions; for others, use topicQuestions
+  const questionsToUse = (isFullExam || isDifficultyBased || isQuickPractice) ? simulation.questions : (isStoryBased ? storyQuestions : topicQuestions);
+  const effectiveIsLoading = (isFullExam || isDifficultyBased || isQuickPractice) ? !simulation.progressLoaded : (isStoryBased ? storyLoading : isLoading);
   
   useEffect(() => {
     // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה
