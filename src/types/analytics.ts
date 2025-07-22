@@ -7,6 +7,47 @@ export interface BaseEvent {
   timestamp?: number;
   user_id?: string;
   session_id?: string;
+  // Common analytics properties
+  engagement_time_msec?: number;
+  page_title?: string;
+  page_location?: string;
+  plan_type?: string;
+  form_name?: string;
+  button_name?: string;
+  content_type?: string;
+  current_score?: number;
+  questions_answered?: number;
+  questions_correct?: number;
+  session_page_count?: number;
+  method?: string;
+  transaction_id?: string;
+  simulation_type?: string;
+  simulation_id?: string;
+  description?: string;
+  coupon_code?: string;
+  test_parameter?: any;
+  success?: boolean;
+  click_location?: string;
+  content_id?: string;
+  value?: number;
+  score?: number;
+  fatal?: boolean;
+  discount_amount?: number;
+  field_name?: string;
+  error_message?: string;
+  currency?: string;
+  difficulty_level?: string;
+  time_spent?: number;
+  error_type?: string;
+  action?: string;
+  question_count?: number;
+  time_limit?: number;
+  completion_rate?: number;
+  items?: any[];
+  component?: string;
+  coupon?: string;
+  page_url?: string;
+  payment_method?: string;
 }
 
 // Google Analytics Enhanced Ecommerce Events
