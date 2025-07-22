@@ -15,7 +15,6 @@ import { signIn, signUp } from "@/utils/auth-utils";
 import { useAuth } from "@/context/AuthContext";
 import { RTLWrapper } from "@/components/ui/rtl-wrapper";
 import { getMobileOptimizedConfig, debounce } from "@/utils/mobile-performance";
-import { useAnalytics } from "@/hooks/useAnalytics";
 
 // Enhanced login state management
 type LoginState = 'idle' | 'google-auth' | 'email-auth' | 'registering' | 'success' | 'error';
@@ -37,7 +36,6 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, isDevEnvironment, isLoading: authLoading, session } = useAuth();
-  const { trackLogin, trackSignup, trackFormStart, trackFormSubmit, trackButtonClick, trackError } = useAnalytics();
   
   const from = location.state?.from?.pathname || "/simulations-entry";
   const isLoading = loginState !== 'idle' || authLoading;
@@ -59,17 +57,6 @@ const Login = () => {
       }, 500);
     }
   }, [session, loginState, navigate, from]);
-  
-  // Track successful Google OAuth callback
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasOAuthCode = urlParams.get('code');
-    
-    if (hasOAuthCode && session?.user && !urlParams.get('error')) {
-      // This indicates a successful Google OAuth callback
-      trackLogin('google', true);
-    }
-  }, [session, trackLogin]);
   
   // Enhanced OAuth callback handling - Let Supabase handle it naturally
   useEffect(() => {
@@ -154,16 +141,10 @@ const Login = () => {
         }
       });
       
-      // Track Google OAuth initiation
-      trackButtonClick('google_oauth_login', 'login_form');
-      
       if (error) {
         console.error("❌ Google login error:", error);
         setAuthError(error.message || "שגיאה בהתחברות עם Google");
         setLoginState('error');
-        
-        // Track Google OAuth error
-        trackLogin('google', false, error.message);
         
         toast({
           variant: "destructive",
@@ -177,11 +158,6 @@ const Login = () => {
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       setLoginState('error');
-      
-      // Track Google OAuth exception
-      trackError(error instanceof Error ? error : new Error(errorMessage), 'GoogleLogin', {
-        action: 'google_oauth_initiation'
-      });
       
       toast({
         variant: "destructive",
@@ -197,9 +173,6 @@ const Login = () => {
     setLoginState('email-auth');
     setAuthError(null);
     setAwaitingConfirmation(null);
-    
-    // Track form submission start
-    trackFormStart('email_login');
 
     if (!formData.email || !formData.password) {
       setAuthError("אנא מלאו את כל השדות");
@@ -240,10 +213,6 @@ const Login = () => {
         setAuthError(errorMessage);
         setLoginState('error');
         
-        // Track failed email login
-        trackLogin('email', false, errorMessage);
-        trackFormSubmit('email_login', false, errorMessage);
-        
         toast({
           variant: "destructive",
           title: "שגיאה בהתחברות",
@@ -253,10 +222,6 @@ const Login = () => {
       } else if (user) {
         console.log("✅ Login successful:", user.email);
         setLoginState('success');
-        
-        // Track successful email login
-        trackLogin('email', true);
-        trackFormSubmit('email_login', true);
         
         toast({
           title: "התחברת בהצלחה! 🎉",
@@ -269,13 +234,6 @@ const Login = () => {
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהתחברות";
       setAuthError(errorMessage);
       setLoginState('error');
-      
-      // Track login exception
-      trackError(error instanceof Error ? error : new Error(errorMessage), 'EmailLogin', {
-        action: 'email_login_attempt',
-        email: formData.email
-      });
-      trackFormSubmit('email_login', false, errorMessage);
       
       toast({
         variant: "destructive",
@@ -291,9 +249,6 @@ const Login = () => {
     setLoginState('registering');
     setAuthError(null);
     setAwaitingConfirmation(null);
-    
-    // Track registration form submission
-    trackFormStart('email_signup');
     
     if (!formData.email || !formData.password || !formData.name) {
       setAuthError("אנא מלאו את כל השדות");
@@ -352,10 +307,6 @@ const Login = () => {
         setAuthError(errorMessage);
         setLoginState('error');
         
-        // Track failed registration
-        trackSignup('email', false, errorMessage);
-        trackFormSubmit('email_signup', false, errorMessage);
-        
         toast({
           variant: "destructive",
           title: "שגיאה בהרשמה",
@@ -365,10 +316,6 @@ const Login = () => {
       } else if (user) {
         console.log("✅ Registration successful:", user.email);
         setLoginState('success');
-        
-        // Track successful registration
-        trackSignup('email', true);
-        trackFormSubmit('email_signup', true);
         
         toast({
           title: "נרשמת בהצלחה! 🎉",
@@ -381,14 +328,6 @@ const Login = () => {
       const errorMessage = error instanceof Error ? error.message : "אירעה שגיאה בהרשמה";
       setAuthError(errorMessage);
       setLoginState('error');
-      
-      // Track registration exception
-      trackError(error instanceof Error ? error : new Error(errorMessage), 'EmailRegistration', {
-        action: 'email_signup_attempt',
-        email: formData.email,
-        name: formData.name
-      });
-      trackFormSubmit('email_signup', false, errorMessage);
       
       toast({
         variant: "destructive",

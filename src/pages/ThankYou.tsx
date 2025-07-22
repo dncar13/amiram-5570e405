@@ -5,30 +5,17 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ZapIcon } from "lucide-react";
-import { useAnalytics } from "@/hooks/useAnalytics";
 
 const ThankYou = () => {
   const navigate = useNavigate();
-  const { trackContentView, trackButtonClick, trackEvent } = useAnalytics();
   
   // Ensure the user is redirected here only after payment
   useEffect(() => {
     const isPremium = localStorage.getItem("isPremiumUser") === "true";
     if (!isPremium) {
       navigate("/premium");
-    } else {
-      // Track successful purchase conversion page view
-      trackContentView('conversion_page', 'thank_you');
-      
-      // Track purchase completion event
-      trackEvent({
-        event: 'purchase_complete',
-        page_type: 'thank_you',
-        conversion_type: 'premium_subscription',
-        timestamp: Date.now()
-      });
     }
-  }, [navigate, trackContentView, trackEvent]);
+  }, [navigate]);
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -83,10 +70,7 @@ const ThankYou = () => {
           <div className="flex justify-center gap-4">
             <Button 
               className="bg-electric-blue hover:bg-blue-600 py-6 px-8 text-lg" 
-              onClick={() => {
-                trackButtonClick('start_learning_now', 'thank_you_page');
-                navigate("/simulations-entry");
-              }}
+              onClick={() => navigate("/simulations-entry")}
             >
               התחל ללמוד עכשיו
             </Button>
