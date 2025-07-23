@@ -2,6 +2,7 @@
 // React hook providing easy access to analytics tracking functions
 
 import { useCallback, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import analyticsService from '@/services/analytics';
 import {
@@ -55,10 +56,55 @@ export interface UseAnalyticsReturn {
 
 export const useAnalytics = (): UseAnalyticsReturn => {
   const { currentUser } = useAuth();
+  const location = useLocation();
   const pageStartTime = useRef<number>(Date.now());
-  const hasTrackedPageView = useRef<boolean>(false);
+  const lastTrackedPath = useRef<string>('');
 
-  // Set user ID when auth context changes
+  // Declare functions FIRST, before any useEffect hooks that use them
+  const updatePageTitle = useCallback((pathname: string) => {
+    let title = 'Amiram Academy';
+    
+    if (pathname === '/') {
+      title = 'Amiram Academy - הכנה חכמה למבחן אמירם';
+    } else if (pathname.includes('/login')) {
+      title = 'התחברות - Amiram Academy';
+    } else if (pathname.includes('/premium')) {
+      title = 'מנוי פרמיום - Amiram Academy';
+    } else if (pathname.includes('/about')) {
+      title = 'אודות - Amiram Academy';
+    } else if (pathname.includes('/contact')) {
+      title = 'יצירת קשר - Amiram Academy';
+    } else if (pathname.includes('/simulation')) {
+      title = 'סימולציה - Amiram Academy';
+    } else if (pathname.includes('/topics')) {
+      title = 'נושאים - Amiram Academy';
+    } else if (pathname.includes('/reading-comprehension')) {
+      title = 'הבנת הנקרא - Amiram Academy';
+    } else if (pathname.includes('/thank-you')) {
+      title = 'תודה על הרכישה - Amiram Academy';
+    } else if (pathname.includes('/forgot-password')) {
+      title = 'שכחתי סיסמה - Amiram Academy';
+    } else if (pathname.includes('/account')) {
+      title = 'החשבון שלי - Amiram Academy';
+    } else if (pathname.includes('/admin')) {
+      title = 'ניהול - Amiram Academy';
+    }
+    
+    document.title = title;
+  }, []);
+
+  const getContentGroup = useCallback((): string => {
+    const path = window.location.pathname;
+    if (path.includes('/login') || path.includes('/forgot-password')) return 'Authentication';
+    if (path.includes('/premium') || path.includes('/thank-you')) return 'Premium';
+    if (path.includes('/simulation') || path.includes('/topics') || path.includes('/reading-comprehension')) return 'Simulation';
+    if (path.includes('/about') || path.includes('/contact')) return 'Information';
+    if (path.includes('/account') || path.includes('/admin')) return 'Account';
+    if (path === '/') return 'Homepage';
+    return 'Other';
+  }, []);
+
+  // Set user ID when auth context changes (after function declarations)
   useEffect(() => {
     if (currentUser?.id) {
       analyticsService.setUserId(currentUser.id);
@@ -70,22 +116,45 @@ export const useAnalytics = (): UseAnalyticsReturn => {
     }
   }, [currentUser]);
 
-  // Auto-track page views with engagement time
+  // Auto-track page views on route changes
   useEffect(() => {
-    if (!hasTrackedPageView.current) {
+    const currentPath = location.pathname + location.search;
+    
+    // Only track if this is a new route
+    if (lastTrackedPath.current !== currentPath) {
+      // Track engagement time for previous page (if exists)
+      if (lastTrackedPath.current && pageStartTime.current) {
+        const engagementTime = Date.now() - pageStartTime.current;
+        if (engagementTime > 5000) { // Only track if engaged for more than 5 seconds
+          analyticsService.trackEvent({
+            event: 'page_engagement',
+            engagement_time_msec: engagementTime,
+            page_title: document.title,
+            page_location: window.location.href
+          });
+        }
+      }
+      
+      // Update page title based on route
+      updatePageTitle(location.pathname);
+      
+      // Track new page view
       const pageData: EngagementEvent = {
         event: 'page_view',
         page_title: document.title,
         page_location: window.location.href,
-        content_group1: getContentGroup()
+        content_group1: getContentGroup(),
+        page_referrer: lastTrackedPath.current || document.referrer
       };
       
       analyticsService.trackPageView(pageData);
-      hasTrackedPageView.current = true;
+      lastTrackedPath.current = currentPath;
       pageStartTime.current = Date.now();
     }
+  }, [location.pathname, location.search, updatePageTitle, getContentGroup]);
 
-    // Track page engagement on unload
+  // Track page engagement on unload
+  useEffect(() => {
     const handleUnload = () => {
       const engagementTime = Date.now() - pageStartTime.current;
       if (engagementTime > 5000) { // Only track if engaged for more than 5 seconds
@@ -100,16 +169,6 @@ export const useAnalytics = (): UseAnalyticsReturn => {
 
     window.addEventListener('beforeunload', handleUnload);
     return () => window.removeEventListener('beforeunload', handleUnload);
-  }, []);
-
-  const getContentGroup = useCallback((): string => {
-    const path = window.location.pathname;
-    if (path.includes('/login')) return 'Authentication';
-    if (path.includes('/premium')) return 'Premium';
-    if (path.includes('/simulation')) return 'Simulation';
-    if (path.includes('/thank-you')) return 'Conversion';
-    if (path === '/') return 'Homepage';
-    return 'Other';
   }, []);
 
   const trackEvent = useCallback((event: any) => {
