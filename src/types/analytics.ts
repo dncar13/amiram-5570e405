@@ -1,12 +1,13 @@
 // Analytics Type Definitions for Amiram Academy
 // Comprehensive TypeScript interfaces for all tracking events
 
-// Base event structure
+// Base event structure - now flexible to allow custom properties
 export interface BaseEvent {
   event: string;
   timestamp?: number;
   user_id?: string;
   session_id?: string;
+  [key: string]: any; // Allow any additional custom properties
 }
 
 // Google Analytics Enhanced Ecommerce Events
@@ -18,23 +19,24 @@ export interface GAEvent extends BaseEvent {
   custom_parameters?: Record<string, any>;
 }
 
-// Authentication Events
+// Authentication Events - flexible for partial data
 export interface AuthEvent extends BaseEvent {
-  method: 'google' | 'email' | 'signup';
-  user_id: string;
+  method?: 'google' | 'email' | 'signup';
+  user_id?: string;
   email?: string;
-  success: boolean;
+  success?: boolean;
   error_message?: string;
 }
 
-// E-commerce Events
+// E-commerce Events - flexible for partial data
 export interface EcommerceEvent extends BaseEvent {
-  currency: string;
-  value: number;
+  currency?: string;
+  value?: number;
   items?: EcommerceItem[];
   transaction_id?: string;
   coupon?: string;
   payment_method?: string;
+  method?: string; // Added for login/logout methods
 }
 
 export interface EcommerceItem {
@@ -45,34 +47,39 @@ export interface EcommerceItem {
   quantity: number;
 }
 
-// Premium/Subscription Events
+// Premium/Subscription Events - flexible for partial data
 export interface PremiumEvent extends BaseEvent {
-  plan_type: 'daily' | 'weekly' | 'monthly' | 'quarterly';
-  plan_price: number;
+  plan_type?: 'daily' | 'weekly' | 'monthly' | 'quarterly';
+  plan_price?: number;
   original_price?: number;
   discount_amount?: number;
   coupon_code?: string;
-  payment_status: 'initiated' | 'completed' | 'failed';
+  payment_status?: 'initiated' | 'completed' | 'failed';
 }
 
-// Simulation Events
+// Simulation Events - flexible for additional properties
 export interface SimulationEvent extends BaseEvent {
-  simulation_type: string;
-  simulation_id: string;
+  simulation_type?: string;
+  simulation_id?: string;
   difficulty_level?: string;
   question_count?: number;
   time_limit?: number;
   score?: number;
   completion_rate?: number;
   time_spent?: number; // in seconds
+  current_score?: number;
+  questions_answered?: number;
+  [key: string]: any; // Allow additional simulation properties
 }
 
-// User Engagement Events
+// User Engagement Events - flexible for additional properties
 export interface EngagementEvent extends BaseEvent {
   engagement_time_msec?: number;
   page_title?: string;
   page_location?: string;
+  page_referrer?: string;
   content_group1?: string;
+  [key: string]: any; // Allow additional engagement properties
 }
 
 // Facebook Pixel Events
