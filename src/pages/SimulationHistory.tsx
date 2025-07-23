@@ -23,6 +23,15 @@ interface SimulationResult {
   difficulty: "easy" | "medium" | "hard";
   topics: string[];
   status: "completed" | "incomplete" | "in-progress";
+  progressPercentage?: number;
+  questionsAnswered?: number;
+  isSetBased?: boolean;
+  setId?: string;
+  setType?: string;
+  setDifficulty?: string;
+  startIndex?: string;
+  simulationId?: string;
+  lastActivity?: string;
 }
 
 interface WeeklyStats {
@@ -112,6 +121,42 @@ const SimulationHistory = () => {
     loadRealSessions();
   }, [currentUser]);
 
+  const handleContinueSimulation = (simulation: SimulationResult) => {
+    console.log('🔄 Continuing simulation:', simulation);
+    
+    if (simulation.isSetBased && simulation.setType && simulation.setDifficulty && simulation.setId) {
+      // Continue set-based simulation
+      const params = new URLSearchParams({
+        set: simulation.setId,
+        start: simulation.startIndex || '0'
+      });
+      navigate(`/simulation/${simulation.setType}/${simulation.setDifficulty}?${params.toString()}`);
+    } else if (simulation.simulationId) {
+      // Continue regular simulation
+      navigate(`/simulation/${simulation.simulationId}`);
+    } else {
+      console.warn('⚠️ Cannot continue simulation - missing parameters');
+    }
+  };
+
+  const handleRestartSimulation = (simulation: SimulationResult) => {
+    console.log('🔄 Restarting simulation:', simulation);
+    
+    // Add reset parameter to clear progress
+    if (simulation.isSetBased && simulation.setType && simulation.setDifficulty && simulation.setId) {
+      const params = new URLSearchParams({
+        set: simulation.setId,
+        start: simulation.startIndex || '0',
+        reset: '1'
+      });
+      navigate(`/simulation/${simulation.setType}/${simulation.setDifficulty}?${params.toString()}`);
+    } else if (simulation.simulationId) {
+      navigate(`/simulation/${simulation.simulationId}?reset=1`);
+    } else {
+      console.warn('⚠️ Cannot restart simulation - missing parameters');
+    }
+  };
+
   const loadRealSessions = async () => {
     try {
       if (!currentUser) {
@@ -138,20 +183,62 @@ const SimulationHistory = () => {
         console.log('✅ Real sessions loaded:', sessions);
         setRealSessions(sessions || []);
         
-        // Convert real sessions to simulation format
-        const convertedSessions = sessions?.map(session => ({
-          id: session.id,
-          title: `${session.session_type} - ${new Date(session.created_at).toLocaleDateString('he-IL')}`,
-          type: session.session_type,
-          date: new Date(session.created_at).toISOString().split('T')[0],
-          duration: Math.round(session.time_spent / 60), // Convert seconds to minutes
-          score: session.total_questions > 0 ? Math.round((session.correct_answers / session.total_questions) * 100) : 0,
-          totalQuestions: session.total_questions,
-          correctAnswers: session.correct_answers,
-          difficulty: "medium" as const, // Default difficulty
-          topics: session.topic_id ? [`נושא ${session.topic_id}`] : ['כללי'],
-          status: session.completed_at ? "completed" : "incomplete" as const,
-        })) || [];
+        // Convert real sessions to simulation format with enhanced status detection
+        const convertedSessions = sessions?.map(session => {
+          const metadata = session.metadata || {};
+          const progressPercentage = session.progress_percentage || 0;
+          const questionsAnswered = session.questions_answered || 0;
+          const isSetBased = metadata.is_set_based === 'true';
+          
+          // Enhanced status determination
+          let status: "completed" | "incomplete" | "in-progress" = "incomplete";
+          if (session.is_completed || session.completed_at) {
+            status = "completed";
+          } else if (questionsAnswered > 0 || progressPercentage > 0) {
+            status = "in-progress";
+          }
+          
+          // Enhanced title with set information
+          let title = `${session.session_type}`;
+          if (isSetBased && metadata.set_type && metadata.set_difficulty) {
+            title += ` - ${metadata.set_type} (${metadata.set_difficulty})`;
+            if (metadata.set_id) {
+              title += ` - סט ${metadata.set_id}`;
+            }
+          }
+          title += ` - ${new Date(session.created_at).toLocaleDateString('he-IL')}`;
+          
+          // Enhanced topics with set information
+          let topics = ['כללי'];
+          if (isSetBased) {
+            topics = [`${metadata.set_type || 'סט'} - ${metadata.set_difficulty || 'רגיל'}`];
+          } else if (session.topic_id) {
+            topics = [`נושא ${session.topic_id}`];
+          }
+          
+          return {
+            id: session.id,
+            title,
+            type: session.session_type,
+            date: new Date(session.created_at).toISOString().split('T')[0],
+            duration: Math.round(session.time_spent / 60),
+            score: session.total_questions > 0 ? Math.round((session.correct_answers / session.total_questions) * 100) : 0,
+            totalQuestions: session.total_questions,
+            correctAnswers: session.correct_answers,
+            difficulty: metadata.set_difficulty || metadata.difficulty || "medium" as const,
+            topics,
+            status,
+            progressPercentage,
+            questionsAnswered,
+            isSetBased,
+            setId: metadata.set_id,
+            setType: metadata.set_type,
+            setDifficulty: metadata.set_difficulty,
+            startIndex: metadata.start_index,
+            simulationId: metadata.simulation_id,
+            lastActivity: session.updated_at
+          };
+        }) || [];
         
         // Always use real data, even if empty
         setSimulations(convertedSessions as SimulationResult[]);
@@ -269,11 +356,29 @@ const SimulationHistory = () => {
                       <Clock className="h-4 w-4" />
                       <span>{simulation.duration} דקות</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Target className="h-4 w-4" />
-                      <span>{simulation.score}%</span>
-                    </div>
-                    <Progress value={simulation.score} />
+                    {simulation.status === "completed" ? (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <Target className="h-4 w-4" />
+                          <span>{simulation.score}% ציון</span>
+                        </div>
+                        <Progress value={simulation.score} />
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2">
+                          <Timer className="h-4 w-4" />
+                          <span>התקדמות: {simulation.questionsAnswered || 0}/{simulation.totalQuestions}</span>
+                        </div>
+                        <Progress value={simulation.progressPercentage || 0} />
+                        {simulation.questionsAnswered && simulation.questionsAnswered > 0 && (
+                          <div className="flex items-center gap-2">
+                            <Target className="h-4 w-4" />
+                            <span>ציון נוכחי: {simulation.score}%</span>
+                          </div>
+                        )}
+                      </>
+                    )}
                     <div className="flex items-center gap-2">
                       <BookOpen className="h-4 w-4" />
                       <span>{simulation.totalQuestions} שאלות</span>
@@ -289,20 +394,46 @@ const SimulationHistory = () => {
                     <div className="flex items-center gap-2">
                       {simulation.status === "completed" ? (
                         <CheckCircle className="h-4 w-4 text-green-500" />
-                      ) : simulation.status === "incomplete" ? (
-                        <XCircle className="h-4 w-4 text-red-500" />
+                      ) : simulation.status === "in-progress" ? (
+                        <AlertCircle className="h-4 w-4 text-blue-500" />
                       ) : (
-                        <AlertCircle className="h-4 w-4 text-yellow-500" />
+                        <XCircle className="h-4 w-4 text-gray-500" />
                       )}
-                      <span>{simulation.status}</span>
+                      <span>
+                        {simulation.status === "completed" ? "הושלם" : 
+                         simulation.status === "in-progress" ? "בתהליך" : "לא הושלם"}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <BarChart3 className="h-4 w-4" />
                       <span>{simulation.topics.join(", ")}</span>
                     </div>
-                    <Button variant="outline" className="w-full justify-start gap-2">
-                      לצפייה בתוצאות <ChevronRight className="h-4 w-4" />
-                    </Button>
+                    {simulation.lastActivity && (
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Clock className="h-3 w-3" />
+                        <span>עודכן: {new Date(simulation.lastActivity).toLocaleString('he-IL')}</span>
+                      </div>
+                    )}
+                    {simulation.status === "completed" ? (
+                      <Button variant="outline" className="w-full justify-start gap-2">
+                        לצפייה בתוצאות <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    ) : simulation.status === "in-progress" ? (
+                      <Button 
+                        className="w-full justify-start gap-2 bg-blue-600 hover:bg-blue-700"
+                        onClick={() => handleContinueSimulation(simulation)}
+                      >
+                        המשך סימולציה <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start gap-2"
+                        onClick={() => handleRestartSimulation(simulation)}
+                      >
+                        התחל מחדש <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    )}
                   </CardContent>
                 </Card>
               ))}

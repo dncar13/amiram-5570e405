@@ -219,11 +219,12 @@ export class SetProgressService {
         .from('simulation_sessions')
         .select('*')
         .eq('user_id', userId)
-        .eq('session_type', 'practice')
         .filter('metadata->>is_set_based', 'eq', 'true')
         .filter('metadata->>set_id', 'eq', setId.toString())
         .filter('metadata->>set_type', 'eq', setType)
         .filter('metadata->>set_difficulty', 'eq', setDifficulty)
+        .order('updated_at', { ascending: false })
+        .limit(1)
         .maybeSingle();
       
       if (error) {

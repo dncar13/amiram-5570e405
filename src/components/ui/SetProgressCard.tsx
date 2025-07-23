@@ -30,6 +30,7 @@ interface SetProgressCardProps {
   onStart: () => void;
   onContinue: () => void;
   onRestart: () => Promise<void>;
+  onViewResults?: () => void;
   isLoading?: boolean;
   difficultyColor?: string;
   className?: string;
@@ -46,6 +47,7 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
   onStart,
   onContinue,
   onRestart,
+  onViewResults,
   isLoading = false,
   difficultyColor = 'from-blue-500 to-purple-600',
   className = '',
@@ -130,7 +132,7 @@ export const SetProgressCard: React.FC<SetProgressCardProps> = ({
               התחל מחדש
             </Button>
             <Button
-              onClick={onStart}
+              onClick={onViewResults || onStart}
               className={`flex-1 bg-gradient-to-r ${difficultyColor} text-white`}
             >
               <Trophy className="w-4 h-4 mr-2" />

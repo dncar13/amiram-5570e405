@@ -79,16 +79,47 @@ export async function saveSimulationSession(sessionData: LiveSimulationSession) 
 
 /**
  * Load an active (incomplete) simulation session for a user
+ * Can filter by set parameters for set-based simulations
  */
-export async function loadActiveSimulationSession(user_id: string) {
+export async function loadActiveSimulationSession(
+  user_id: string, 
+  filters?: {
+    setNumber?: string;
+    setType?: string;
+    difficulty?: string;
+    isSetBased?: boolean;
+  }
+) {
   try {
-    console.log('🔍 [loadActiveSimulationSession] Loading for user:', user_id);
+    console.log('🔍 [loadActiveSimulationSession] Loading for user:', user_id, 'with filters:', filters);
     
-    const { data, error } = await supabase
+    let query = supabase
       .from("simulation_sessions")
       .select("*")
       .eq("user_id", user_id)
-      .eq("is_completed", false)
+      .eq("is_completed", false);
+
+    // Apply filters for set-based simulations
+    if (filters?.isSetBased) {
+      query = query.filter('metadata->>is_set_based', 'eq', 'true');
+      
+      if (filters.setNumber) {
+        query = query.filter('metadata->>set_id', 'eq', filters.setNumber);
+      }
+      
+      if (filters.setType) {
+        query = query.filter('metadata->>set_type', 'eq', filters.setType);
+      }
+      
+      if (filters.difficulty) {
+        query = query.filter('metadata->>set_difficulty', 'eq', filters.difficulty);
+      }
+    } else if (filters?.isSetBased === false) {
+      // Explicitly exclude set-based sessions
+      query = query.or('metadata->>is_set_based.is.null,metadata->>is_set_based.neq.true');
+    }
+
+    const { data, error } = await query
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -99,7 +130,7 @@ export async function loadActiveSimulationSession(user_id: string) {
     }
 
     if (data) {
-      console.log('✅ [loadActiveSimulationSession] Found active session:', data.id);
+      console.log('✅ [loadActiveSimulationSession] Found active session:', data.id, 'metadata:', data.metadata);
     } else {
       console.log('ℹ️ [loadActiveSimulationSession] No active session found');
     }

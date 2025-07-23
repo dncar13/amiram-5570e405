@@ -59,6 +59,18 @@ export const createSimulationActions = (
         ? (newState.correctQuestionsCount / newState.answeredQuestionsCount) * 100 
         : 0;
 
+      // Special handling for the first answer - trigger immediate save
+      if (newState.answeredQuestionsCount === 1) {
+        console.log('🎯 [simulationActions] First answer submitted - triggering immediate save');
+        // Dispatch a custom event to trigger immediate save in useSimulation
+        window.dispatchEvent(new CustomEvent('first_answer_submitted', {
+          detail: { 
+            questionIndex: prevState.currentQuestionIndex,
+            wasFirstAnswer: true 
+          }
+        }));
+      }
+
       // Save progress to database
       if (currentQuestion.id) {
         supabase.auth.getUser().then(({ data: { user } }) => {

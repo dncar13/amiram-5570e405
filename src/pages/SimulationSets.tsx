@@ -169,6 +169,17 @@ const SimulationSets = () => {
     // Navigate to simulation with set parameters
     navigate(`/simulation/${type}/${difficulty}?set=${set.id}&start=${set.startIndex}`);
   };
+
+  const handleViewResults = (set: QuestionSet) => {
+    // If set contains premium content and user is not premium, show upgrade message
+    if (set.isPremium && !isPremium) {
+      toast.error("תוכן זה זמין למנויי פרימיום בלבד");
+      return;
+    }
+
+    // Navigate to results page with set parameters
+    navigate(`/simulation/results/${type}/${difficulty}?set=${set.id}`);
+  };
   
   const handleSetContinue = (set: QuestionSet) => {
     // Same premium check for continue
@@ -337,6 +348,7 @@ const SimulationSets = () => {
                     onStart={() => handleSetAccess(set)}
                     onContinue={() => handleSetContinue(set)}
                     onRestart={() => handleSetRestart(set)}
+                    onViewResults={() => handleViewResults(set)}
                     isLoading={progressLoading}
                     difficultyColor={getDifficultyColor(difficulty)}
                     className={`h-full transition-all duration-300 ${
