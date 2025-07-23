@@ -43,6 +43,7 @@ import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
 import SetProgressDebug from "./components/SetProgressDebug";
 import CookieConsent from "./components/CookieConsent";
 import AnalyticsDashboard from "./components/dev/AnalyticsDashboard";
+import RouteTracker from "./components/RouteTracker";
 import { useAuth } from "./context/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -317,6 +318,7 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <ScrollToTop />
+              <RouteTracker />
               <AnimatedRoutes />
               <CookieConsent />
               <ConditionalAnalyticsDashboard />
