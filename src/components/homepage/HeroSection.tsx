@@ -47,7 +47,7 @@ const HeroSection: React.FC = () => {
   const { scrollY } = useScroll();
   
   // Animated counters
-  const studentsCount = useAnimatedCounter(15000, 2500, 500, '+');
+  const studentsCount = useAnimatedCounter(1500, 2500, 500, '+');
   const successRate = useAnimatedCounter(94, 2000, 700, '%');
   const questionsCount = useAnimatedCounter(1000, 2200, 900, '+');
   
@@ -339,9 +339,9 @@ const HeroSection: React.FC = () => {
                 letterSpacing: '-0.01em'
               }}
             >
-              פלטפורמה מתקדמת עם <span className="text-white font-medium">+1000 שאלות מעודכנות</span>, 
-              סימולציות מדויקות ומעקב ביצועים שוברי אתכם
-              <span className="text-blue-300"> לרמת הצלחה גבוהה.</span>
+              פלטפורמה מתקדמת עם <span className="text-white font-medium">למעלה מ-1000 שאלות עדכניות</span>, 
+              סימולציות אמיתיות ומעקב ביצועים אישי –
+              <span className="text-blue-300"> הדרך שלך להצלחה במבחן אמירנט.</span>
             </motion.p>
 
             {/* Key features with enhanced animations */}

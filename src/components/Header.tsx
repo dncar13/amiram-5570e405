@@ -120,12 +120,39 @@ const Header = React.memo(() => {
             >
               הבנת הנקרא
             </Link>
-            <Link 
-              to="/about" 
-              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
-            >
-              אודות
-            </Link>
+            
+            {/* About Dropdown Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
+                  className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+                >
+                  אודות
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-40 rtl"
+                align="end"
+              >
+                <DropdownMenuItem asChild>
+                  <Link 
+                    to="/about" 
+                    className="flex items-center px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
+                  >
+                    עלינו
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link 
+                    to="/premium" 
+                    className="flex items-center px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
+                  >
+                    מחירון
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </nav>
 
           {/* User Menu / Login */}
@@ -248,13 +275,25 @@ const Header = React.memo(() => {
               >
                 הבנת הנקרא
               </Link>
-              <Link 
-                to="/about" 
-                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                אודות
-              </Link>
+              
+              {/* Mobile About Submenu */}
+              <div className="px-4">
+                <div className="text-slate-400 font-medium py-2 text-sm">אודות:</div>
+                <Link 
+                  to="/about" 
+                  className="text-slate-300 hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  עלינו
+                </Link>
+                <Link 
+                  to="/premium" 
+                  className="text-slate-300 hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  מחירון
+                </Link>
+              </div>
               
               {/* Mobile User Menu */}
               <div className="border-t border-slate-700/50 pt-4 mt-4">
