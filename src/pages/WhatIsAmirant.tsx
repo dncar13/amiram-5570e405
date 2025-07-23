@@ -180,7 +180,7 @@ const FeaturesSection: React.FC = () => {
     },
     {
       title: 'מערכת מעקב התקדמות חכמה',
-      description: 'אלגוריתם מתקדם מנתח את הביצועים שלכם, מזהה נקודות חולשה ומתאים לכם תרגילים ממוקדים לשיפור מהיר ויעيל.'
+      description: 'אלגוריתם מתקדם מנתח את הביצועים שלכם, מזהה נקודות חולשה ומתאים לכם תרגילים ממוקדים לשיפור מהיר ויעיל.'
     },
     {
       title: 'הסברים מפורטים לכל שאלה',
@@ -302,12 +302,6 @@ const FinalCTASection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) =
             <span className="relative z-10 drop-shadow-lg">התחילו עכשיו!</span>
             <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </motion.button>
-        </AnimatedCard>
-        
-        <AnimatedCard delay={0.6}>
-          <p className="mt-6 text-gray-500 text-sm">
-            * ללא צורך בכרטיס אשראי | ביטול בכל רגע
-          </p>
         </AnimatedCard>
       </div>
     </section>
