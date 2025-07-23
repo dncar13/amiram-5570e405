@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Users, Trophy, BookOpen, Clock } from 'lucide-react';
 
 const targetCounts = {
-  students: 15000,
+  students: 1500,
   successRate: 94,
   questions: 1000,
   hours: 24
