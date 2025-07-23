@@ -33,17 +33,20 @@ export const AnalyticsDashboard: React.FC = () => {
   const [eventTests, setEventTests] = useState<Record<string, boolean>>({});
   const [debugModeEnabled, setDebugModeEnabled] = useState(false);
 
-  // Multi-layer visibility check:
-  // 1. Environment check - only in development OR
-  // 2. Admin user in any environment OR  
-  // 3. Debug mode manually enabled via localStorage
+  // PRODUCTION SAFETY: Only show in strict development environments
+  // Completely disabled in production to prevent any accidental exposure
   useEffect(() => {
     const debugMode = localStorage.getItem('amiram_analytics_debug') === 'true';
     setDebugModeEnabled(debugMode);
   }, []);
 
-  // Calculate visibility after all hooks are called
-  const shouldShowDashboard = import.meta.env.DEV || isDevEnvironment || isAdmin || debugModeEnabled;
+  // STRICT production safety check - only show in actual development environments
+  const isStrictDevelopment = import.meta.env.DEV && 
+    (window.location.hostname === 'localhost' || 
+     window.location.hostname === '127.0.0.1' ||
+     window.location.hostname.includes('lovableproject.com'));
+
+  const shouldShowDashboard = isStrictDevelopment && (isAdmin || debugModeEnabled);
 
   useEffect(() => {
     // Run initial tests
