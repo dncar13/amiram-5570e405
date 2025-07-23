@@ -132,21 +132,30 @@ const Header = React.memo(() => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-40 rtl"
+                className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-40"
                 align="end"
+                side="bottom"
               >
                 <DropdownMenuItem asChild>
                   <Link 
                     to="/about" 
-                    className="flex items-center px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
+                    className="flex items-center justify-end px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     עלינו
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link 
+                    to="/what-is-amirant" 
+                    className="flex items-center justify-end px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
+                  >
+                    מה זה אמירנט?
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link 
                     to="/premium" 
-                    className="flex items-center px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
+                    className="flex items-center justify-end px-3 py-2 text-slate-300 hover:text-blue-400 hover:bg-slate-700/50 rounded-lg transition-colors duration-200 cursor-pointer"
                   >
                     מחירון
                   </Link>
@@ -285,6 +294,13 @@ const Header = React.memo(() => {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   עלינו
+                </Link>
+                <Link 
+                  to="/what-is-amirant" 
+                  className="text-slate-300 hover:text-blue-400 font-medium py-2 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 block"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  מה זה אמירנט?
                 </Link>
                 <Link 
                   to="/premium" 
