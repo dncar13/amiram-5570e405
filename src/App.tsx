@@ -37,6 +37,7 @@ import ReadingComprehensionTopics from "./pages/ReadingComprehensionTopics";
 import PracticeOptions from "./pages/PracticeOptions";
 import PracticeSets from "./pages/PracticeSets";
 import SimulationSets from "./pages/SimulationSets";
+import SimulationResults from "./pages/SimulationResults";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
@@ -248,6 +249,11 @@ const AnimatedRoutes = () => {
           {/* Practice options and sets routes */}
           <Route path="/simulation/type/:type/:difficulty" element={<PracticeOptions />} />
           <Route path="/simulation/type/:type/:difficulty/sets" element={<SimulationSets />} />
+          <Route path="/simulation/results/:type/:difficulty" element={
+            <ProtectedRoute requireAuth={true}>
+              <SimulationResults />
+            </ProtectedRoute>
+          } />
           
           {/* Individual simulation routes */}
           <Route path="/simulation/:type/:difficulty" element={
