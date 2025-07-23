@@ -92,18 +92,17 @@ const pageTransition: Transition = {
   duration: 0.4
 };
 
-// Conditional AnalyticsDashboard wrapper to prevent unnecessary hook execution
+// PRODUCTION SAFETY: Analytics Dashboard completely disabled in production
 const ConditionalAnalyticsDashboard = () => {
-  const { isAdmin } = useAuth();
-  const isDevEnvironment = import.meta.env.DEV || 
+  // STRICT development environment check only
+  const isStrictDevelopment = import.meta.env.DEV && 
     (typeof window !== 'undefined' && 
      (window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' ||
       window.location.hostname.includes('lovableproject.com')));
-  const debugModeEnabled = typeof window !== 'undefined' && 
-    localStorage.getItem('amiram_analytics_debug') === 'true';
 
-  // Only render AnalyticsDashboard if user should have access
-  if (isDevEnvironment || isAdmin || debugModeEnabled) {
+  // Analytics dashboard ONLY in strict development environments
+  if (isStrictDevelopment) {
     return <AnalyticsDashboard />;
   }
   
