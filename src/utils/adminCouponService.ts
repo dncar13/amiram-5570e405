@@ -62,6 +62,21 @@ export const adminCouponService = {
 
       if (error) {
         console.error('Database error creating coupon:', error);
+        
+        // Enhanced error handling for RLS policy violations
+        if (error.message?.includes('row-level security policy') || error.code === '42501') {
+          throw new Error('אין לך הרשאות ליצור קופונים. רק מנהלי המערכת יכולים ליצור קופונים.');
+        }
+        
+        // Check for specific error types
+        if (error.message?.includes('duplicate key')) {
+          throw new Error('קוד קופון זה כבר קיים במערכת');
+        }
+        
+        if (error.message?.includes('violates check constraint')) {
+          throw new Error('הנתונים שהוזנו אינם תקינים');
+        }
+        
         throw new Error(`שגיאה ביצירת קופון: ${error.message}`);
       }
 
@@ -134,6 +149,21 @@ export const adminCouponService = {
 
       if (error) {
         console.error('Database error updating coupon:', error);
+        
+        // Enhanced error handling for RLS policy violations
+        if (error.message?.includes('row-level security policy') || error.code === '42501') {
+          throw new Error('אין לך הרשאות לעדכן קופונים. רק מנהלי המערכת יכולים לעדכן קופונים.');
+        }
+        
+        // Check for specific error types
+        if (error.message?.includes('duplicate key')) {
+          throw new Error('קוד קופון זה כבר קיים במערכת');
+        }
+        
+        if (error.message?.includes('violates check constraint')) {
+          throw new Error('הנתונים שהוזנו אינם תקינים');
+        }
+        
         throw new Error(`שגיאה בעדכון קופון: ${error.message}`);
       }
 
@@ -174,6 +204,12 @@ export const adminCouponService = {
 
       if (error) {
         console.error('Database error deleting coupon:', error);
+        
+        // Enhanced error handling for RLS policy violations
+        if (error.message?.includes('row-level security policy') || error.code === '42501') {
+          throw new Error('אין לך הרשאות למחוק קופונים. רק מנהלי המערכת יכולים למחוק קופונים.');
+        }
+        
         throw new Error(`שגיאה במחיקת קופון: ${error.message}`);
       }
 
