@@ -187,6 +187,8 @@ const Premium = () => {
   };
 
   const handleFreeOrder = async () => {
+    console.log('🎯 Free order started:', { appliedCoupon, selectedPlan });
+    
     // Handle 100% discount coupon (free order)
     if (appliedCoupon?.valid && appliedCoupon.coupon && appliedCoupon.finalAmount === 0) {
       setIsProcessing(true);
@@ -194,6 +196,8 @@ const Premium = () => {
       try {
         const originalAmount = getOriginalAmount();
         const discountAmount = appliedCoupon.discountAmount || 0;
+        
+        console.log('📊 Processing amounts:', { originalAmount, discountAmount, finalAmount: 0 });
         
         // Mark coupon as used
         const result = await applyCouponForPayment(
@@ -204,7 +208,11 @@ const Premium = () => {
           0
         );
         
+        console.log('✅ Coupon usage result:', result);
+        
         if (result.success) {
+          console.log('🎉 Free order successful - setting premium status');
+          
           // Track free order completion
           trackPremiumPurchase({
             plan_type: selectedPlan,
@@ -217,9 +225,11 @@ const Premium = () => {
           
           // Complete the free order
           localStorage.setItem("isPremiumUser", "true");
+          console.log('💾 Premium status saved to localStorage');
           setIsDialogOpen(true);
         } else {
-          console.error('Failed to apply free coupon:', result.error);
+          console.error('❌ Failed to apply free coupon:', result.error);
+          alert(`שגיאה בהפעלת הקופון: ${result.error || 'שגיאה לא ידועה'}`);
           trackError(new Error('Free coupon application failed'), 'Premium', {
             coupon_code: appliedCoupon.coupon.code,
             plan_type: selectedPlan,
@@ -227,7 +237,8 @@ const Premium = () => {
           });
         }
       } catch (error) {
-        console.error('Error processing free order:', error);
+        console.error('💥 Error processing free order:', error);
+        alert(`שגיאה בהפעלת הרישוי החינמי: ${error instanceof Error ? error.message : 'שגיאה לא ידועה'}`);
         trackError(error instanceof Error ? error : new Error('Free order processing failed'), 'Premium', {
           coupon_code: appliedCoupon?.coupon?.code,
           plan_type: selectedPlan
@@ -235,6 +246,13 @@ const Premium = () => {
       } finally {
         setIsProcessing(false);
       }
+    } else {
+      console.warn('⚠️ Free order conditions not met:', { 
+        valid: appliedCoupon?.valid, 
+        hasCoupon: !!appliedCoupon?.coupon, 
+        finalAmount: appliedCoupon?.finalAmount 
+      });
+      alert('שגיאה: תנאי הקופון החינמי לא מתקיימים');
     }
   };
 
