@@ -185,7 +185,7 @@ const SimulationHistory = () => {
         
         // Convert real sessions to simulation format with enhanced status detection
         const convertedSessions = sessions?.map(session => {
-          const metadata = session.metadata || {};
+          const metadata = (session.metadata as any) || {};
           const progressPercentage = session.progress_percentage || 0;
           const questionsAnswered = session.questions_answered || 0;
           const isSetBased = metadata.is_set_based === 'true';
