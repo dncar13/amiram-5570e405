@@ -228,7 +228,7 @@ export const CookieConsent: React.FC = React.memo(() => {
       opacity: 1,
       scale: 1,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 25,
         stiffness: 200,
         duration: 0.6
@@ -238,7 +238,7 @@ export const CookieConsent: React.FC = React.memo(() => {
       y: '75%',
       scale: 0.98,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         damping: 20,
         stiffness: 300
       }
@@ -249,7 +249,7 @@ export const CookieConsent: React.FC = React.memo(() => {
       scale: 0.95,
       transition: {
         duration: 0.4,
-        ease: 'easeInOut'
+        ease: [0.4, 0, 0.2, 1] as const
       }
     }
   };

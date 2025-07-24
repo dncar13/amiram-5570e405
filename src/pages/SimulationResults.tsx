@@ -93,7 +93,12 @@ const SimulationResults = () => {
       }
 
       if (sessions && sessions.length > 0) {
-        setSession(sessions[0]);
+        // Type cast to fix Json -> any[] incompatibility
+        const sessionData = {
+          ...sessions[0],
+          answers: Array.isArray(sessions[0].answers) ? sessions[0].answers : []
+        };
+        setSession(sessionData as any);
       } else {
         setError('לא נמצאו תוצאות עבור הסט הזה');
       }

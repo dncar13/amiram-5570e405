@@ -468,7 +468,7 @@ export const useSimulation = (
           // Primary save to database with retry logic
           const result = isOnline ? await saveWithRetry(sessionData) : { success: false, error: 'Offline' };
           if (result.success) {
-            if (result.data && !activeSessionId) {
+            if ('data' in result && result.data && !activeSessionId) {
               setActiveSessionId(result.data.id);
             }
             
