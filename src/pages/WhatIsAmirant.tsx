@@ -60,12 +60,12 @@ const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
         />
       </div>
       
-      <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center">
         <motion.h1 
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg"
+          className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 text-white text-shadow-lg leading-tight"
           style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}
         >
           אמירנט - השער שלכם להצלחה אקדמית!
@@ -75,7 +75,7 @@ const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl md:text-2xl mb-10 text-white"
+          className="text-lg sm:text-xl md:text-2xl mb-8 sm:mb-10 text-white px-4"
           style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.7)' }}
         >
           עברו את מבחן האמירנט בקלות וקבלו פטור מאנגלית
@@ -88,7 +88,7 @@ const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.95 }}
           onClick={onStartNow}
-          className="inline-block bg-gradient-to-r from-pink-600 to-red-600 text-white font-bold px-12 py-4 rounded-full text-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group border-2 border-white/20"
+          className="inline-block bg-gradient-to-r from-pink-600 to-red-600 text-white font-bold px-8 sm:px-12 py-3 sm:py-4 rounded-full text-lg sm:text-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group border-2 border-white/20"
         >
           <span className="relative z-10 drop-shadow-lg">התחילו להתכונן עכשיו!</span>
           <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -108,16 +108,16 @@ const StatsSection: React.FC = () => {
   ];
 
   return (
-    <section className="bg-white py-16 shadow-lg">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <section className="bg-white py-12 sm:py-16 shadow-lg">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {stats.map((stat, index) => (
             <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="text-center p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-200">
-                <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
+              <div className="text-center p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-200">
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
                   {stat.number}
                 </div>
-                <div className="text-gray-800 text-lg font-medium">
+                <div className="text-gray-800 text-base sm:text-lg font-medium">
                   {stat.label}
                 </div>
               </div>
@@ -550,22 +550,22 @@ const CollegeDifferencesSection: React.FC = () => {
 // Interactive Demo Section
 const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
   return (
-    <section className="bg-white py-20">
+    <section className="bg-white py-16 sm:py-20">
       <div className="max-w-4xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 text-gray-900 relative">
             נסו בעצמכם - סימולציות לדוגמה
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
           </h2>
         </AnimatedCard>
         
         <AnimatedCard delay={0.2}>
-          <p className="text-lg text-gray-700 text-center mb-12 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-700 text-center mb-8 sm:mb-12 max-w-3xl mx-auto px-4">
             בחרו את התשובה הנכונה וקבלו הסבר מקצועי מפורט
           </p>
         </AnimatedCard>
         
-        <div className="space-y-12">
+        <div className="space-y-8 sm:space-y-12">
           <QuestionCard
             questionId={1}
             questionType="השלמת משפטים"
@@ -646,13 +646,13 @@ const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartN
         </div>
         
         <AnimatedCard delay={0.6}>
-          <div className="mt-16 text-center bg-gradient-to-r from-green-500 to-teal-600 p-8 rounded-2xl text-white">
-            <p className="text-xl mb-6">התרשמתם? זו רק טעימה קטנה ממה שמחכה לכם במערכת המלאה!</p>
+          <div className="mt-12 sm:mt-16 text-center bg-gradient-to-r from-green-500 to-teal-600 p-6 sm:p-8 rounded-2xl text-white">
+            <p className="text-lg sm:text-xl mb-6">התרשמתם? זו רק טעימה קטנה ממה שמחכה לכם במערכת המלאה!</p>
             <motion.button
               whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
               onClick={onStartNow}
-              className="inline-block bg-white text-green-600 font-bold px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
+              className="inline-block bg-white text-green-600 font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-full text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
             >
               <span className="relative z-10">קבלו גישה לכל הסימולציות</span>
             </motion.button>
@@ -719,7 +719,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const getOptionClasses = (option: Option) => {
-    let classes = "rounded-2xl p-6 cursor-pointer transition-all duration-500 text-right flex items-center gap-4 text-lg hover:transform hover:-translate-y-1 hover:shadow-lg border-2";
+    let classes = "rounded-xl sm:rounded-2xl p-4 sm:p-6 cursor-pointer transition-all duration-500 text-right flex items-center gap-3 sm:gap-4 text-base sm:text-lg hover:transform hover:-translate-y-1 hover:shadow-lg border-2";
     
     if (isLongOptions) {
       classes += " col-span-full";
@@ -753,49 +753,49 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
   return (
     <AnimatedCard delay={questionId * 0.1}>
-      <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+      <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-xl sm:rounded-2xl shadow-lg border border-gray-200">
         {/* Question Header */}
-        <div className="flex justify-between items-center mb-6">
-          <span className="text-xl font-bold text-purple-600">{questionType}</span>
-          <span className="bg-gradient-to-r from-pink-500 to-red-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-2">
+          <span className="text-lg sm:text-xl font-bold text-purple-600">{questionType}</span>
+          <span className="bg-gradient-to-r from-pink-500 to-red-500 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium self-start sm:self-auto">
             {difficulty}
           </span>
         </div>
 
         {/* Reading Passage */}
         {readingPassage && (
-          <div className="bg-gray-50 p-6 rounded-xl mb-6 border-r-4 border-purple-500">
-            <h4 className="font-bold text-purple-600 mb-4">קטע קריאה:</h4>
-            <p className="text-gray-800 leading-relaxed text-left" dir="ltr">
+          <div className="bg-gray-50 p-4 sm:p-6 rounded-xl mb-6 border-r-4 border-purple-500">
+            <h4 className="font-bold text-purple-600 mb-4 text-sm sm:text-base">קטע קריאה:</h4>
+            <p className="text-gray-800 leading-relaxed text-left text-sm sm:text-base" dir="ltr">
               {readingPassage}
             </p>
           </div>
         )}
 
         {/* Question Text */}
-        <div className="mb-8">
-          <p className="text-xl text-gray-900 leading-relaxed mb-4">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-lg sm:text-xl text-gray-900 leading-relaxed mb-4">
             {questionText}
           </p>
           {questionSubtext && (
-            <p className="text-lg text-gray-700 font-medium">
+            <p className="text-base sm:text-lg text-gray-700 font-medium">
               {questionSubtext}
             </p>
           )}
         </div>
 
         {/* Options Grid */}
-        <div className={`grid gap-4 mb-6 ${isLongOptions ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'}`}>
+        <div className={`grid gap-3 sm:gap-4 mb-6 ${isLongOptions ? 'grid-cols-1' : 'grid-cols-1'}`}>
           {options.map((option) => (
             <button
               key={option.letter}
               onClick={() => handleOptionClick(option)}
               className={getOptionClasses(option)}
             >
-              <div className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg flex-shrink-0">
                 {option.letter}
               </div>
-              <span className="flex-1 text-right">{option.text}</span>
+              <span className="flex-1 text-right text-sm sm:text-base leading-relaxed">{option.text}</span>
             </button>
           ))}
         </div>
@@ -806,17 +806,17 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             initial={{ opacity: 0, maxHeight: 0 }}
             animate={{ opacity: 1, maxHeight: 1000 }}
             transition={{ duration: 0.5 }}
-            className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-xl border-r-4 border-purple-500"
+            className="bg-gradient-to-br from-blue-50 to-purple-50 p-4 sm:p-6 rounded-xl border-r-4 border-purple-500"
           >
-            <h4 className="text-xl font-bold text-purple-600 mb-4 flex items-center">
+            <h4 className="text-lg sm:text-xl font-bold text-purple-600 mb-4 flex items-center">
               💡 הסבר מפורט:
             </h4>
             
-            <p className="text-lg font-semibold text-gray-900 mb-4">
+            <p className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
               התשובה הנכונה: {explanation.correctAnswer}
             </p>
             
-            <p className="text-gray-800 leading-relaxed mb-4">
+            <p className="text-gray-800 leading-relaxed mb-4 text-sm sm:text-base">
               {explanation.mainExplanation}
             </p>
 
@@ -825,7 +825,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 {explanation.details.map((detail, index) => (
                   <li key={index} className="flex items-start">
                     <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
-                    <span className="text-gray-700 font-mono text-sm bg-white px-3 py-1 rounded">
+                    <span className="text-gray-700 font-mono text-xs sm:text-sm bg-white px-2 sm:px-3 py-1 rounded">
                       {detail}
                     </span>
                   </li>
@@ -834,21 +834,21 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
 
             {explanation.analysisTable && (
-              <div className="bg-white rounded-lg overflow-hidden shadow-sm mb-4">
-                <table className="w-full">
+              <div className="bg-white rounded-lg overflow-hidden shadow-sm mb-4 overflow-x-auto">
+                <table className="w-full min-w-full text-sm sm:text-base">
                   <thead className="bg-purple-600 text-white">
                     <tr>
-                      <th className="p-3 text-right font-bold">מרכיב</th>
-                      <th className="p-3 text-right font-bold">משפט מקורי</th>
-                      <th className="p-3 text-right font-bold">תשובה B</th>
+                      <th className="p-2 sm:p-3 text-right font-bold">מרכיב</th>
+                      <th className="p-2 sm:p-3 text-right font-bold">משפט מקורי</th>
+                      <th className="p-2 sm:p-3 text-right font-bold">תשובה B</th>
                     </tr>
                   </thead>
                   <tbody>
                     {explanation.analysisTable.map((row, index) => (
                       <tr key={index} className="border-b border-gray-200">
-                        <td className="p-3 font-medium text-gray-800">{row.component}</td>
-                        <td className="p-3 text-gray-700">{row.original}</td>
-                        <td className="p-3 text-gray-700">{row.answer}</td>
+                        <td className="p-2 sm:p-3 font-medium text-gray-800">{row.component}</td>
+                        <td className="p-2 sm:p-3 text-gray-700">{row.original}</td>
+                        <td className="p-2 sm:p-3 text-gray-700">{row.answer}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -857,19 +857,19 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
             )}
 
             {explanation.errorAnalysis && (
-              <div className="bg-red-50 p-4 rounded-lg mb-4 border border-red-200">
-                <p className="font-bold text-red-700 mb-3">❌ למה התשובות האחרות שגויות:</p>
+              <div className="bg-red-50 p-3 sm:p-4 rounded-lg mb-4 border border-red-200">
+                <p className="font-bold text-red-700 mb-3 text-sm sm:text-base">❌ למה התשובות האחרות שגויות:</p>
                 <ul className="space-y-2">
                   {explanation.errorAnalysis.map((error, index) => (
-                    <li key={index} className="text-red-800">• {error}</li>
+                    <li key={index} className="text-red-800 text-xs sm:text-sm">• {error}</li>
                   ))}
                 </ul>
               </div>
             )}
 
             {explanation.tip && (
-              <div className="bg-white p-4 rounded-lg border-r-3 border-pink-500">
-                <p className="text-gray-800">
+              <div className="bg-white p-3 sm:p-4 rounded-lg border-r-3 border-pink-500">
+                <p className="text-gray-800 text-sm sm:text-base">
                   <span className="font-bold text-pink-600">💎 טיפ חשוב: </span>
                   {explanation.tip}
                 </p>
