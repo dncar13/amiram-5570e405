@@ -95,16 +95,6 @@ const SimulationsEntry: React.FC = () => {
       mode: '🎯 מצב מבחן'
     },
     {
-      id: 'practice-by-type',
-      title: 'תרגול לפי סוג שאלה',
-      description: 'השלמת משפטים, ניסוח מחדש, הבנת הנקרא',
-      icon: <Target className="w-8 h-8" />,
-      gradient: 'from-emerald-600 via-green-500 to-teal-600',
-      path: '/simulation/by-type',
-      stats: 'גמיש',
-      mode: '📚 מצב תרגול'
-    },
-    {
       id: 'history',
       title: 'היסטוריה ושאלות שמורות',
       description: 'צפיה בתוצאות קודמות ושאלות שמרת',
@@ -254,7 +244,7 @@ const SimulationsEntry: React.FC = () => {
 
           {/* Main Options Grid */}
           <motion.div
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-16 md:mb-20"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 mb-16 md:mb-20 max-w-4xl mx-auto justify-items-center"
             onMouseMove={handleMouseMove}
           >
             {simulationOptions.map((option, index) => (
