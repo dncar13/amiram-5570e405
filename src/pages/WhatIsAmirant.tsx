@@ -153,9 +153,9 @@ const BenefitsSection: React.FC = () => {
     <section className="bg-gray-50 py-20">
       <div className="max-w-6xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
             למה מבחן אמירנט כל כך חשוב?
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
@@ -202,9 +202,9 @@ const FeaturesSection: React.FC = () => {
     <section className="bg-white py-20">
       <div className="max-w-6xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
             איך אנחנו מבטיחים את ההצלחה שלכם?
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
@@ -362,9 +362,9 @@ const WhatIsAmirantSection: React.FC = () => {
     <section className="bg-white py-20">
       <div className="max-w-4xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
             מה זה מבחן אמירנט?
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
@@ -487,9 +487,9 @@ const CollegeDifferencesSection: React.FC = () => {
     <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
       <div className="max-w-4xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
             האם יש הבדלים בין מכללות?
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
@@ -553,9 +553,9 @@ const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartN
     <section className="bg-white py-16 sm:py-20">
       <div className="max-w-4xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 text-gray-900 relative">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-8 sm:mb-12 text-gray-900 relative group">
             נסו בעצמכם - סימולציות לדוגמה
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
