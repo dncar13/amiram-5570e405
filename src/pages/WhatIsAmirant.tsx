@@ -719,7 +719,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   };
 
   const getOptionClasses = (option: Option) => {
-    let classes = "rounded-xl sm:rounded-2xl p-4 sm:p-6 cursor-pointer transition-all duration-500 text-right flex items-center gap-3 sm:gap-4 text-base sm:text-lg hover:transform hover:-translate-y-1 hover:shadow-lg border-2";
+    let classes = "rounded-xl sm:rounded-2xl p-4 sm:p-6 cursor-pointer transition-all duration-500 text-left flex items-center gap-3 sm:gap-4 text-base sm:text-lg hover:transform hover:-translate-y-1 hover:shadow-lg border-2";
     
     if (isLongOptions) {
       classes += " col-span-full";
@@ -774,7 +774,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
 
         {/* Question Text */}
         <div className="mb-6 sm:mb-8">
-          <p className="text-lg sm:text-xl text-gray-900 leading-relaxed mb-4">
+          <p className="text-lg sm:text-xl text-gray-900 leading-relaxed mb-4 text-left" dir="ltr">
             {questionText}
           </p>
           {questionSubtext && (
@@ -795,7 +795,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-base sm:text-lg flex-shrink-0">
                 {option.letter}
               </div>
-              <span className="flex-1 text-right text-sm sm:text-base leading-relaxed">{option.text}</span>
+              <span className="flex-1 text-left text-sm sm:text-base leading-relaxed" dir="ltr">{option.text}</span>
             </button>
           ))}
         </div>
