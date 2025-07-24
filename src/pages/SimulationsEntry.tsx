@@ -392,6 +392,164 @@ const SimulationsEntry: React.FC = () => {
             ))}
           </motion.div>
 
+          {/* Question Types Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="max-w-4xl mx-auto"
+          >
+            <div className="bg-gray-800/50 backdrop-blur-xl rounded-3xl shadow-xl border border-gray-700/50 p-4 sm:p-6 md:p-10">
+              <div className="flex items-center mb-6 md:mb-8">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center ml-3 md:ml-4 flex-shrink-0">
+                  <Target className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight"
+                      style={{ 
+                        fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
+                        fontWeight: '700'
+                      }}>
+                    תרגול לפי סוג שאלה
+                  </h2>
+                  <p className="text-gray-400 mt-1 text-sm md:text-base">מצב תרגול עם הסברים מיידיים</p>
+                </div>
+              </div>
+
+              <div className="space-y-3 md:space-y-4">
+                {questionTypes.map((type, index) => (
+                  <motion.div
+                    key={type.type}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: 0.5 + index * 0.1,
+                      ease: [0.25, 0.46, 0.45, 0.94]
+                    }}
+                    whileHover={{ x: isMobile ? 0 : 5 }}
+                    onClick={() => handleQuestionTypeClick(type.type)}
+                    className="group cursor-pointer touch-manipulation"
+                    role="button"
+                    aria-label={`${type.title} - ${type.description}`}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleQuestionTypeClick(type.type);
+                      }
+                    }}
+                  >
+                    <div className="flex items-center p-4 md:p-6 rounded-2xl bg-gray-700/30 hover:bg-gray-600/50 hover:shadow-lg border border-gray-600/30 hover:border-gray-500/50 transition-all duration-300">
+                      <motion.div 
+                        className={`${type.bgColor} ${type.color} p-3 md:p-4 rounded-xl ml-4 md:ml-6 flex-shrink-0`}
+                        whileHover={isMobile ? {} : { rotate: [0, -10, 10, 0] }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {type.icon}
+                      </motion.div>
+                      
+                      <div className="flex-1 min-w-0 pr-4">
+                        <h3 className="font-semibold text-white text-base md:text-lg mb-1 leading-tight">{type.title}</h3>
+                        <p className="text-gray-300 text-sm md:text-base leading-tight">{type.description}</p>
+                      </div>
+                      
+                      <motion.div
+                        className="text-gray-400 group-hover:text-gray-300 transition-colors flex-shrink-0"
+                        animate={{ x: 0 }}
+                        whileHover={{ x: isMobile ? 0 : 5 }}
+                      >
+                        <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
+                      </motion.div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Stats Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="mt-20"
+          >
+            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl shadow-2xl p-6 sm:p-8 md:p-10 overflow-hidden relative border border-gray-700/50">
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-500/20 to-red-600/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-full blur-3xl" />
+              
+              <div className="relative z-10">
+                <div className="flex items-center mb-6 md:mb-10">
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center ml-3 md:ml-4 flex-shrink-0">
+                    <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight"
+                        style={{ 
+                          fontFamily: 'Rubik, -apple-system, BlinkMacSystemFont, sans-serif',
+                          fontWeight: '700'
+                        }}>
+                      הבדלים בין מצבי התרגול
+                    </h2>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+                  <div className="bg-gradient-to-br from-green-500/10 to-teal-600/10 p-4 sm:p-5 md:p-6 rounded-2xl border border-green-500/20 backdrop-blur-sm">
+                    <h3 className="text-lg md:text-xl font-bold text-green-400 mb-3 md:mb-4 flex items-center">
+                      <span className="text-xl md:text-2xl ml-2 flex-shrink-0">📚</span>
+                      <span className="leading-tight">מצב תרגול</span>
+                    </h3>
+                    <ul className="space-y-2 text-gray-300 text-sm md:text-base">
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-2 flex-shrink-0">•</span>
+                        <span>הסברים מיידיים אחרי כל שאלה</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-2 flex-shrink-0">•</span>
+                        <span>אפשרות לחזור לשאלות קודמות</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-2 flex-shrink-0">•</span>
+                        <span>ללא הגבלת זמן</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-green-400 mr-2 flex-shrink-0">•</span>
+                        <span>מתאים ללמידה ושיפור</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 p-4 sm:p-5 md:p-6 rounded-2xl border border-blue-500/20 backdrop-blur-sm">
+                    <h3 className="text-lg md:text-xl font-bold text-blue-400 mb-3 md:mb-4 flex items-center">
+                      <span className="text-xl md:text-2xl ml-2 flex-shrink-0">🎯</span>
+                      <span className="leading-tight">מצב מבחן</span>
+                    </h3>
+                    <ul className="space-y-2 text-gray-300 text-sm md:text-base">
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-2 flex-shrink-0">•</span>
+                        <span>הסברים רק בסוף המבחן</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-2 flex-shrink-0">•</span>
+                        <span>אין אפשרות לחזור לשאלות</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-2 flex-shrink-0">•</span>
+                        <span>הגבלת זמן כמו במבחן האמיתי</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="text-blue-400 mr-2 flex-shrink-0">•</span>
+                        <span>מתאים לבדיקת מוכנות</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
       <Footer />
