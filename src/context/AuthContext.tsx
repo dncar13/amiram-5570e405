@@ -137,6 +137,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           new Date().setMonth(new Date().getMonth() + 1) : undefined
       }));
     }
+    
+    // Force context re-render to ensure all components update immediately
+    setTimeout(() => {
+      setIsPremium(status);
+    }, 0);
   };
 
   const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {

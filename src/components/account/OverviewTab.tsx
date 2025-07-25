@@ -83,15 +83,17 @@ const OverviewTab = () => {
               <p>{joinDate}</p>
             </div>
             <div className="flex justify-between items-center">
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => setShowCancelDialog(true)}
-                className="flex items-center gap-2"
-              >
-                <Shield className="h-4 w-4" />
-                ביטול מנוי פרימיום
-              </Button>
+              {isPremium && (
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => setShowCancelDialog(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Shield className="h-4 w-4" />
+                  ביטול מנוי פרימיום
+                </Button>
+              )}
               
               <div className="text-right">
                 <p className="text-sm font-medium text-muted-foreground">סוג חשבון</p>
