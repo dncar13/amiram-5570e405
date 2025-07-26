@@ -40,6 +40,8 @@ import SuccessDialog from "@/components/premium/SuccessDialog";
 import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
 import { useCoupon } from "@/hooks/useCoupon";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { SupabaseAuthService } from "@/services/supabaseAuth";
+import { useAuth } from "@/context/AuthContext";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -53,6 +55,7 @@ const Premium = () => {
   
   const { validateCoupon, useCoupon: applyCouponForPayment, clearCoupon, appliedCoupon, isValidating } = useCoupon();
   const { trackPremiumView, trackPremiumPurchase, trackBeginCheckout, trackCouponApplied, trackButtonClick, trackError, trackFormSubmit } = useAnalytics();
+  const { currentUser, updatePremiumStatus } = useAuth();
 
 
   const plans = [
@@ -156,38 +159,71 @@ const Premium = () => {
   }, [selectedPlan, trackPremiumView]);
 
   const handlePaymentSuccess = async () => {
-    // If coupon was applied, mark it as used
-    if (appliedCoupon?.valid && appliedCoupon.coupon) {
-      const originalAmount = getOriginalAmount();
-      const discountAmount = appliedCoupon.discountAmount || 0;
-      const finalAmount = appliedCoupon.finalAmount || originalAmount;
-      
-      await applyCouponForPayment(
-        appliedCoupon.coupon.id,
-        selectedPlan,
-        originalAmount,
-        discountAmount,
-        finalAmount
-      );
+    if (!currentUser?.id) {
+      console.error('❌ No user found for subscription creation');
+      alert('שגיאה: לא ניתן למצוא פרטי משתמש');
+      return;
     }
-    
-    // Track successful premium purchase
-    trackPremiumPurchase({
-      plan_type: selectedPlan,
-      plan_price: getAmount(),
-      original_price: getOriginalAmount(),
-      discount_amount: appliedCoupon?.discountAmount,
-      coupon_code: appliedCoupon?.coupon?.code,
-      payment_status: 'completed'
-    });
-    
-    localStorage.setItem("isPremiumUser", "true");
-    setIsProcessing(false);
-    setIsDialogOpen(true);
+
+    try {
+      // If coupon was applied, mark it as used
+      if (appliedCoupon?.valid && appliedCoupon.coupon) {
+        const originalAmount = getOriginalAmount();
+        const discountAmount = appliedCoupon.discountAmount || 0;
+        const finalAmount = appliedCoupon.finalAmount || originalAmount;
+        
+        await applyCouponForPayment(
+          appliedCoupon.coupon.id,
+          selectedPlan,
+          originalAmount,
+          discountAmount,
+          finalAmount
+        );
+      }
+      
+      // Create subscription in database
+      console.log('📝 Creating subscription in database...', { userId: currentUser.id, planType: selectedPlan });
+      const subscriptionResult = await SupabaseAuthService.createSubscription(currentUser.id, mapPlanType(selectedPlan));
+      
+      if (subscriptionResult.error) {
+        console.error('❌ Failed to create subscription:', subscriptionResult.error);
+        alert(`שגיאה ביצירת המנוי: ${subscriptionResult.error.message}`);
+        return;
+      }
+      
+      console.log('✅ Subscription created successfully:', subscriptionResult.subscription);
+      
+      // Track successful premium purchase
+      trackPremiumPurchase({
+        plan_type: selectedPlan,
+        plan_price: getAmount(),
+        original_price: getOriginalAmount(),
+        discount_amount: appliedCoupon?.discountAmount,
+        coupon_code: appliedCoupon?.coupon?.code,
+        payment_status: 'completed'
+      });
+      
+      // Update premium status in localStorage and context
+      localStorage.setItem("isPremiumUser", "true");
+      await updatePremiumStatus(true);
+      
+      console.log('🎉 Payment success completed - premium status updated');
+      setIsProcessing(false);
+      setIsDialogOpen(true);
+    } catch (error) {
+      console.error('💥 Error in handlePaymentSuccess:', error);
+      alert(`שגיאה בעיבוד התשלום: ${error instanceof Error ? error.message : 'שגיאה לא ידועה'}`);
+    }
   };
 
   const handleFreeOrder = async () => {
     console.log('🎯 Free order started:', { appliedCoupon, selectedPlan });
+    
+    if (!currentUser?.id) {
+      console.error('❌ No user found for free subscription creation');
+      alert('שגיאה: לא ניתן למצוא פרטי משתמש');
+      return;
+    }
     
     // Handle 100% discount coupon (free order)
     if (appliedCoupon?.valid && appliedCoupon.coupon && appliedCoupon.finalAmount === 0) {
@@ -211,7 +247,19 @@ const Premium = () => {
         console.log('✅ Coupon usage result:', result);
         
         if (result.success) {
-          console.log('🎉 Free order successful - setting premium status');
+          console.log('🎉 Free order successful - creating subscription in database');
+          
+          // Create subscription in database
+          console.log('📝 Creating free subscription in database...', { userId: currentUser.id, planType: selectedPlan });
+          const subscriptionResult = await SupabaseAuthService.createSubscription(currentUser.id, mapPlanType(selectedPlan));
+          
+          if (subscriptionResult.error) {
+            console.error('❌ Failed to create free subscription:', subscriptionResult.error);
+            alert(`שגיאה ביצירת המנוי החינמי: ${subscriptionResult.error.message}`);
+            return;
+          }
+          
+          console.log('✅ Free subscription created successfully:', subscriptionResult.subscription);
           
           // Track free order completion
           trackPremiumPurchase({
@@ -223,9 +271,11 @@ const Premium = () => {
             payment_status: 'completed'
           });
           
-          // Complete the free order
+          // Update premium status in localStorage and context
           localStorage.setItem("isPremiumUser", "true");
-          console.log('💾 Premium status saved to localStorage');
+          await updatePremiumStatus(true);
+          
+          console.log('🎉 Free order completed - premium status updated');
           setIsDialogOpen(true);
         } else {
           console.error('❌ Failed to apply free coupon:', result.error);
@@ -313,6 +363,17 @@ const Premium = () => {
   const getOriginalAmount = () => {
     const plan = plans.find(p => p.id === selectedPlan);
     return plan?.price || 99;
+  };
+
+  // Map frontend plan types to backend subscription types
+  const mapPlanType = (planType: 'daily' | 'weekly' | 'monthly' | 'quarterly'): 'day' | 'week' | 'month' | '3months' => {
+    const mapping = {
+      'daily': 'day' as const,
+      'weekly': 'week' as const,
+      'monthly': 'month' as const,
+      'quarterly': '3months' as const
+    };
+    return mapping[planType];
   };
 
   return (
