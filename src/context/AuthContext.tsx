@@ -185,25 +185,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         console.log("🚫 Canceling subscription in database...");
         const result = await SupabaseAuthService.cancelSubscription(authState.session.user.id);
-        if (result.error) {
-          console.error('❌ Error cancelling subscription in database:', result.error);
-          throw result.error;
-        }
-        console.log("✅ Subscription cancelled successfully in database:", result);
         
-        // For hardcoded premium users, force update the state
+        console.log("✅ Subscription cancellation result:", result);
+        
+        // For hardcoded premium users, force update the state regardless of database result
         const userEmail = authState.session.user.email || "";
         const isPremiumByEmail = PREMIUM_EMAILS.includes(userEmail);
         
-        if (isPremiumByEmail && result.updatedCount === 0) {
-          // This is a hardcoded premium user with no database subscription
-          // Force update states to non-premium
+        if (isPremiumByEmail) {
+          // This is a hardcoded premium user - force update states to non-premium
           setIsPremium(false);
           localStorage.removeItem("isPremiumUser");
           console.log("🔄 Hardcoded premium user status removed");
-        } else {
+        } else if (result.success) {
           // Regular database subscription cancellation
           await syncPremiumStatusFromDatabase(authState.session.user);
+        } else if (!result.success && result.error) {
+          // Only throw error if there's an actual error and it's not a hardcoded user
+          console.error('❌ Error cancelling subscription in database:', result.error);
+          throw result.error;
         }
         
         console.log("🔄 Premium cancellation completed - all states synchronized");
