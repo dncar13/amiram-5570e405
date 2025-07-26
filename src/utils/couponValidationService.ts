@@ -106,9 +106,9 @@ export const couponValidationService = {
       // Calculate discount with CORRECT synchronized prices
       const planPrices = {
         daily: 20,
-        weekly: 69,   // CORRECTED: Must match edge function and real prices
+        weekly: 50,   // FIXED: Must match UI pricing ₪50
         monthly: 99,
-        quarterly: 239  // CORRECTED: Must match edge function and real prices
+        quarterly: 239
       };
 
       const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;
