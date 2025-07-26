@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,22 +10,43 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { DollarSign } from "lucide-react";
+import { DollarSign, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface CancelPremiumDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm?: () => void;
+  onConfirm?: () => Promise<void>;
 }
 
 const CancelPremiumDialog = ({
   isOpen,
   onClose,
-  onConfirm = () => {},
+  onConfirm = async () => {},
 }: CancelPremiumDialogProps) => {
-  const handleConfirm = () => {
-    onConfirm();
-    onClose();
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handleConfirm = async () => {
+    setIsLoading(true);
+    try {
+      await onConfirm();
+      toast({
+        title: "ביטול פרימיום בוצע בהצלחה",
+        description: "הגישה הפרימיום שלך בוטלה",
+        variant: "default",
+      });
+      onClose();
+    } catch (error) {
+      console.error('Error cancelling premium:', error);
+      toast({
+        title: "שגיאה בביטול הפרימיום",
+        description: "אנא נסה שוב מאוחר יותר",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,14 +70,25 @@ const CancelPremiumDialog = ({
           </ul>
         </div>
         <AlertDialogFooter className="flex-row-reverse sm:justify-start">
-          <AlertDialogCancel className="bg-muted hover:bg-muted/80">
+          <AlertDialogCancel 
+            className="bg-muted hover:bg-muted/80"
+            disabled={isLoading}
+          >
             ביטול
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
-            className="bg-red-500 hover:bg-red-600 text-white"
+            disabled={isLoading}
+            className="bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
           >
-            אישור איפוס
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin ml-2" />
+                מבטל...
+              </>
+            ) : (
+              "אישור איפוס"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

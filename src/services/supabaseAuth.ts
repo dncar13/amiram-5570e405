@@ -217,6 +217,26 @@ export class SupabaseAuthService {
   }
 
   /**
+   * Cancel user's active subscription
+   */
+  static async cancelSubscription(userId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .update({ status: 'cancelled' })
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .select()
+        .single();
+
+      if (error) throw error;
+      return { subscription: data as UserSubscription, error: null };
+    } catch (error: any) {
+      return { subscription: null, error };
+    }
+  }
+
+  /**
    * Listen to auth state changes
    */
   static onAuthStateChange(callback: (session: Session | null, user: User | null) => void) {
