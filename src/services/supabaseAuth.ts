@@ -258,11 +258,14 @@ export class SupabaseAuthService {
       // Force clear localStorage immediately
       localStorage.removeItem("isPremiumUser");
       
+      // If no database subscription was found, treat as success for hardcoded premium users
+      const isSuccess = result?.success || result?.updated_count === 0;
+      
       return { 
-        success: result?.success || false, 
+        success: isSuccess, 
         error: null, 
         updatedCount: result?.updated_count || 0,
-        message: result?.message 
+        message: result?.message || "Premium status removed successfully"
       };
     } catch (error: unknown) {
       console.error('❌ Error canceling subscription:', error);
