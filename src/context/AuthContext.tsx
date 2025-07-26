@@ -102,91 +102,56 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return true;
   };
 
-  const updatePremiumStatus = async (status: boolean) => {
-    console.log("🔄 Updating premium status to:", status);
+  // CRITICAL: Single source of truth for premium status - database first
+  const syncPremiumStatusFromDatabase = useCallback(async (user: SupabaseUser) => {
+    console.log("🔄 Syncing premium status from database for:", user.email);
     
-    // If canceling premium (status = false), update database first
-    if (!status && authState.session?.user) {
-      try {
-        console.log("🚫 Canceling subscription in database...");
-        const result = await SupabaseAuthService.cancelSubscription(authState.session.user.id);
-        if (result.error) {
-          console.error('❌ Error cancelling subscription in database:', result.error);
-          throw result.error;
-        }
-        console.log("✅ Subscription cancelled successfully in database:", result);
-        
-        // Force clear localStorage immediately after successful DB update
-        localStorage.removeItem("isPremiumUser");
-        setIsPremium(false);
-        
-        // Force update user data to reflect cancellation
-        setUserData(prevData => ({
-          ...prevData,
-          premiumExpiration: undefined
-        }));
-        
-        console.log("🔄 Premium cancellation completed - all states updated");
-        return; // Don't continue with normal flow
-        
-      } catch (error) {
-        console.error('❌ Error canceling subscription in database:', error);
-        throw error; // Don't continue if database update fails
-      }
-    }
-    
-    // Normal premium activation flow
-    if (status) {
-      localStorage.setItem("isPremiumUser", "true");
-      setIsPremium(true);
-      
-      if (authState.session?.user) {
-        setUserData(prevData => ({
-          ...prevData,
-          premiumExpiration: new Date().setMonth(new Date().getMonth() + 1)
-        }));
-        
-        console.log("🔄 Refreshing user states from server...");
-        // Refresh user states from server to ensure consistency
-        await updateUserRelatedStates(authState.session.user);
-      }
-    }
-  };
-
-  const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {
-    console.log("✅ Updating user states for:", user.email);
-    
-    const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
-    setIsAdmin(isUserAdmin);
-    
-    // Check database for active premium subscription
     try {
-      console.log("🔍 Checking database for premium status...");
+      // Always check database first
       const hasDbPremium = await SupabaseAuthService.hasActivePremium(user.id);
       const subscription = await SupabaseAuthService.getUserSubscription(user.id);
       
-      console.log("📊 Premium status check results:", {
+      console.log("📊 Database premium status:", {
         hasDbPremium,
         subscription: subscription ? { 
           status: subscription.status, 
           end_date: subscription.end_date 
-        } : null,
-        userEmail: user.email,
-        isInPremiumEmails: PREMIUM_EMAILS.includes(user.email || "")
+        } : null
       });
       
-      // Database subscription status ALWAYS takes precedence over email list
-      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "") && subscription === null && !hasDbPremium;
-      const isPremiumUser = hasDbPremium;  // ONLY use database status
+      // Database is the ONLY source of truth for premium status
+      // Email list is ONLY used as fallback if no database record exists
+      let isPremiumUser = hasDbPremium;
       
-      console.log("🎯 Final premium determination:", {
-        isPremiumByEmail,
+      // Fallback to email list ONLY if no subscription record exists at all
+      if (!hasDbPremium && subscription === null) {
+        const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
+        isPremiumUser = isPremiumByEmail;
+        
+        console.log("🔄 Using email list fallback:", {
+          isPremiumByEmail,
+          reason: "No database subscription found"
+        });
+      }
+      
+      console.log("🎯 Final premium status determination:", {
         isPremiumUser,
-        reason: hasDbPremium ? "Database subscription" : isPremiumByEmail ? "Email list" : "No premium"
+        source: hasDbPremium ? "Database subscription" : 
+                (subscription === null && PREMIUM_EMAILS.includes(user.email || "")) ? "Email list fallback" : 
+                "No premium access"
       });
       
+      // Update all states synchronously
       setIsPremium(isPremiumUser);
       
+      // Update localStorage to match database truth
+      if (isPremiumUser) {
+        localStorage.setItem("isPremiumUser", "true");
+      } else {
+        localStorage.removeItem("isPremiumUser");
+      }
+      
+      // Update user data
       const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
       const newUserData = {
         firstName: displayName,
@@ -196,37 +161,81 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       };
       setUserData(newUserData);
       
-      // Update localStorage for backwards compatibility
-      if (isPremiumUser) {
-        localStorage.setItem("isPremiumUser", "true");
-      } else {
-        localStorage.removeItem("isPremiumUser");
-      }
+      return isPremiumUser;
+      
     } catch (error) {
-      console.error('❌ Error checking premium status:', error);
-      // Fallback to old logic if database check fails
-      const premiumStatusFromStorage = localStorage.getItem("isPremiumUser") === "true";
-      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "");
-      const isPremiumUser = premiumStatusFromStorage || isPremiumByEmail;
-      
-      console.log("🔄 Fallback premium determination:", {
-        premiumStatusFromStorage,
-        isPremiumByEmail,
-        isPremiumUser
-      });
-      
-      setIsPremium(isPremiumUser);
-      
-      const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
-      const newUserData = {
-        firstName: displayName,
-        lastName: '',
-        premiumExpiration: isPremiumUser ? 
-          new Date().setMonth(new Date().getMonth() + 1) : undefined
-      };
-      setUserData(newUserData);
+      console.error('❌ Error syncing premium status from database:', error);
+      // On error, clear premium status to be safe
+      setIsPremium(false);
+      localStorage.removeItem("isPremiumUser");
+      throw error;
     }
   }, []);
+
+  const updatePremiumStatus = async (status: boolean) => {
+    console.log("🔄 Updating premium status to:", status);
+    
+    if (!authState.session?.user) {
+      console.error("❌ No authenticated user for premium status update");
+      return;
+    }
+
+    // If canceling premium (status = false), update database first
+    if (!status) {
+      try {
+        console.log("🚫 Canceling subscription in database...");
+        const result = await SupabaseAuthService.cancelSubscription(authState.session.user.id);
+        if (result.error) {
+          console.error('❌ Error cancelling subscription in database:', result.error);
+          throw result.error;
+        }
+        console.log("✅ Subscription cancelled successfully in database:", result);
+        
+        // Immediately sync all states after successful cancellation
+        await syncPremiumStatusFromDatabase(authState.session.user);
+        
+        console.log("🔄 Premium cancellation completed - all states synchronized");
+        return;
+        
+      } catch (error) {
+        console.error('❌ Error canceling subscription in database:', error);
+        throw error;
+      }
+    }
+    
+    // For premium activation, always refresh from database to ensure accuracy
+    if (status) {
+      console.log("🔄 Premium activation - syncing from database...");
+      await syncPremiumStatusFromDatabase(authState.session.user);
+    }
+  };
+
+  const updateUserRelatedStates = useCallback(async (user: SupabaseUser) => {
+    console.log("✅ Updating user states for:", user.email);
+    
+    // Set admin status
+    const isUserAdmin = ADMIN_EMAILS.includes(user.email || "");
+    setIsAdmin(isUserAdmin);
+    
+    // Use the centralized premium status sync function
+    try {
+      await syncPremiumStatusFromDatabase(user);
+      console.log("✅ User states updated successfully");
+    } catch (error) {
+      console.error('❌ Error updating user states:', error);
+      // Safe fallback - clear premium status on error
+      setIsPremium(false);
+      localStorage.removeItem("isPremiumUser");
+      
+      // Still set basic user data
+      const displayName = user.user_metadata?.full_name || user.user_metadata?.name || extractUsernameFromEmail(user.email);
+      setUserData({
+        firstName: displayName,
+        lastName: '',
+        premiumExpiration: undefined
+      });
+    }
+  }, [syncPremiumStatusFromDatabase]);
   
   const resetUserStates = useCallback(() => {
     setIsAdmin(false);
