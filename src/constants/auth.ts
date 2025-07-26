@@ -1,7 +1,3 @@
-export const ADMIN_EMAILS = [
-  "dncar13@gmail.com",
-];
-
-export const PREMIUM_EMAILS = [
-  "dncar13@gmail.com",
-];
+// This file is deprecated - use src/config/appConfig.ts instead
+// Re-export for backward compatibility
+export { ADMIN_EMAILS, PREMIUM_EMAILS } from '@/config/appConfig';

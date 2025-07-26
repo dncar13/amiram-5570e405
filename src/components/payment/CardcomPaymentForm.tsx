@@ -25,7 +25,7 @@ const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormP
   // Track payment form view on component mount
   useEffect(() => {
     trackBeginCheckout({
-      plan_type: 'monthly', // This should be passed as a prop in real implementation
+      plan_type: 'monthly' as const, // This should be passed as a prop in real implementation
       plan_price: amount,
       payment_status: 'initiated'
     });
