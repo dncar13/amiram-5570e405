@@ -186,6 +186,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const hasDbPremium = await SupabaseAuthService.hasActivePremium(user.id);
       const subscription = await SupabaseAuthService.getUserSubscription(user.id);
       
+      // Database subscription status takes precedence over email list
       // Only use email list if no database subscription exists (backwards compatibility)
       const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "") && subscription === null;
       const isPremiumUser = hasDbPremium || isPremiumByEmail;
