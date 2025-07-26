@@ -1,9 +1,7 @@
-
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
-import { getMobileOptimizedConfig, debounce, TimeoutManager, handleMobileNetworkError } from "@/utils/mobile-performance";
 import { SupabaseAuthService, UserProfile, UserSubscription } from "@/services/supabaseAuth";
 import { ADMIN_EMAILS, PREMIUM_EMAILS } from "@/constants/auth";
 
@@ -69,33 +67,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isPremium, setIsPremium] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
   const { toast } = useToast();
-  const toastShownRef = useRef<Set<string>>(new Set());
   const sessionRetryCount = useRef(0);
-  const timeoutManager = useRef(new TimeoutManager());
-  
-  // Mobile-optimized configuration
-  const mobileConfig = getMobileOptimizedConfig();
-  const maxRetries = mobileConfig.maxRetries;
+  const processingSignIn = useRef(false); // Prevent duplicate SIGNED_IN handling
+  const toastShownRef = useRef<Set<string>>(new Set());
   
   const isDevEnvironment = window.location.hostname === 'localhost' || 
                            window.location.hostname.includes('lovableproject.com');
 
-  // Mobile-optimized toast management with debouncing
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const showAuthToast = useCallback(debounce((type: string, message: string, description?: string) => {
+  const showAuthToast = useCallback((type: string, message: string, description?: string) => {
     const toastKey = `${type}-${message}`;
     if (toastShownRef.current.has(toastKey)) return;
     
     toastShownRef.current.add(toastKey);
-    timeoutManager.current.setTimeout(() => toastShownRef.current.delete(toastKey), 5000);
+    setTimeout(() => toastShownRef.current.delete(toastKey), 5000);
     
     toast({
       title: message,
-      description: type === 'error' ? handleMobileNetworkError(new Error(description || message)) : description,
+      description,
       variant: type === 'error' ? 'destructive' : 'default',
-      duration: type === 'error' ? 6000 : 4000, // Longer duration for errors on mobile
+      duration: type === 'error' ? 6000 : 4000,
     });
-  }, mobileConfig.inputDebounce), [toast, mobileConfig.inputDebounce]);
+  }, [toast]);
 
   const extractUsernameFromEmail = (email?: string | null) => {
     if (!email) return "משתמש";
@@ -183,8 +175,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isInPremiumEmails: PREMIUM_EMAILS.includes(user.email || "")
       });
       
-      // FIXED: Database subscription status ALWAYS takes precedence over email list
-      // Email list is ONLY used if no subscription record exists at all
+      // Database subscription status ALWAYS takes precedence over email list
       const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "") && subscription === null && !hasDbPremium;
       const isPremiumUser = hasDbPremium;  // ONLY use database status
       
@@ -243,58 +234,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUserData(null);
     localStorage.removeItem("isPremiumUser");
     sessionRetryCount.current = 0;
+    processingSignIn.current = false;
   }, []);
 
-  // Enhanced session recovery mechanism
-  const attemptSessionRecovery = useCallback(async () => {
-    if (sessionRetryCount.current >= maxRetries) {
-      // console.log("🔄 Max session recovery attempts reached");
-      return null;
-    }
-
-    sessionRetryCount.current++;
-    // console.log(`🔄 Attempting session recovery (attempt ${sessionRetryCount.current}/${maxRetries})`);
-
-    try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      
-      if (error) {
-        console.error("❌ Session recovery error:", error);
-        return null;
-      }
-
-      if (session?.user) {
-        // console.log("✅ Session recovered successfully:", session.user.email);
-        return session;
-      }
-
-      // console.log("❌ No session found during recovery");
-      return null;
-    } catch (error) {
-      console.error("❌ Session recovery failed:", error);
-      return null;
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const handleAuthChange = useCallback(async (event: AuthChangeEvent, session: Session | null) => {
-    // console.log('🔔 Auth event:', event, 'Session:', !!session);
+  // CRITICAL: Handle auth state changes with deadlock prevention
+  const handleAuthChange = useCallback((event: AuthChangeEvent, session: Session | null) => {
+    console.log('🔔 Auth event:', event, 'Session exists:', !!session);
 
     switch (event) {
       case 'SIGNED_IN':
         // Prevent duplicate SIGNED_IN events for the same session
-        if (authState.session?.user?.id === session?.user?.id && authState.initialized) {
-          // console.log('🔄 Duplicate SIGNED_IN event ignored for same user');
+        if (processingSignIn.current || 
+            (authState.session?.user?.id === session?.user?.id && authState.initialized)) {
+          console.log('🔄 Duplicate SIGNED_IN event ignored');
           return;
         }
         
-        // console.log("🎉 User signed in successfully");
-        // console.log("🔍 Session details:", { 
-        //   user: session?.user?.email, 
-        //   provider: session?.user?.app_metadata?.provider,
-        //   confirmed: session?.user?.email_confirmed_at ? 'yes' : 'no'
-        // });
+        processingSignIn.current = true;
+        console.log("🎉 User signed in successfully");
         
+        // Only synchronous state updates here
         setAuthState(prev => ({
           ...prev,
           session, 
@@ -305,23 +264,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }));
         
         if (session?.user) {
-          updateUserRelatedStates(session.user);
           const name = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email;
           const provider = session.user.app_metadata?.provider;
           
-          // Show appropriate success message based on provider (only once)
+          // Show appropriate success message
           if (provider === 'google') {
             showAuthToast('success', 'התחברת בהצלחה עם Google! 🎉', `ברוך הבא ${name}`);
           } else {
             showAuthToast('success', 'התחברת בהצלחה! 🎉', `ברוך הבא ${name}`);
           }
           
-          sessionRetryCount.current = 0; // Reset retry count on successful login
+          sessionRetryCount.current = 0;
+          
+          // Defer Supabase calls with setTimeout to prevent deadlock
+          setTimeout(() => {
+            updateUserRelatedStates(session.user);
+            processingSignIn.current = false;
+          }, 0);
+        } else {
+          processingSignIn.current = false;
         }
         break;
 
       case 'SIGNED_OUT':
-        // console.log("👋 User signed out");
+        console.log("👋 User signed out");
         setAuthState({ 
           session: null, 
           loading: false, 
@@ -334,73 +300,59 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         break;
 
       case 'TOKEN_REFRESHED':
-        // console.log("🔄 Token refreshed");
+        console.log("🔄 Token refreshed");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          updateUserRelatedStates(session.user);
+          // Defer Supabase calls
+          setTimeout(() => {
+            updateUserRelatedStates(session.user);
+          }, 0);
         }
         break;
 
       case 'USER_UPDATED':
-        // console.log("👤 User updated");
+        console.log("👤 User updated");
         setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready' }));
         if (session?.user) {
-          updateUserRelatedStates(session.user);
+          // Defer Supabase calls
+          setTimeout(() => {
+            updateUserRelatedStates(session.user);
+          }, 0);
         }
         break;
 
       case 'PASSWORD_RECOVERY':
-        // console.log('🔑 Password recovery event');
+        console.log('🔑 Password recovery event');
         break;
         
       default:
-        // console.log('🔄 Unknown auth event:', event);
-        
-        // For unknown events, try session recovery if we don't have a session
-        if (!session && !authState.session) {
-          // console.log("🔍 No session in unknown event, attempting recovery...");
-          setTimeout(async () => {
-            const recoveredSession = await attemptSessionRecovery();
-            if (recoveredSession) {
-              setAuthState({
-                session: recoveredSession,
-                loading: false,
-                loadingState: 'ready',
-                error: null,
-                initialized: true
-              });
-              updateUserRelatedStates(recoveredSession.user);
-            }
-          }, 1000);
-        }
+        console.log('🔄 Unknown auth event:', event);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authState.session, authState.initialized]); // Only depend on session and initialized state
+  }, [authState.session, authState.initialized, showAuthToast, updateUserRelatedStates, resetUserStates]);
 
+  // CRITICAL: Proper initialization order
   useEffect(() => {
     let mounted = true;
-    // console.log("🔧 Initializing enhanced auth system...");
-
-    // Enhanced OAuth callback detection
-    const urlParams = new URLSearchParams(window.location.search);
-    const hasOAuthCode = urlParams.get('code');
-    const hasOAuthError = urlParams.get('error');
-    const isOAuthCallback = hasOAuthCode || hasOAuthError;
-
-    // console.log("🔍 OAuth callback detection:", { 
-    //   hasOAuthCode: !!hasOAuthCode, 
-    //   hasOAuthError: !!hasOAuthError, 
-    //   isOAuthCallback,
-    //   url: window.location.href 
-    // });
+    console.log("🔧 Initializing auth system...");
 
     const initializeAuth = async () => {
       try {
         setAuthState(prev => ({ ...prev, loading: true, loadingState: 'checking-session' }));
         
-        // For OAuth callbacks, wait longer before checking session
-        if (isOAuthCallback && hasOAuthCode) {
-          // console.log("🔗 OAuth callback detected - giving Supabase time to process...");
+        // OAuth callback detection
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasOAuthCode = urlParams.get('code');
+        const isOAuthCallback = !!hasOAuthCode;
+        
+        console.log("🔍 OAuth callback detection:", { 
+          hasOAuthCode: !!hasOAuthCode, 
+          isOAuthCallback,
+          url: window.location.href 
+        });
+
+        // For OAuth callbacks, wait for Supabase to process
+        if (isOAuthCallback) {
+          console.log("🔗 OAuth callback detected - waiting for processing...");
           await new Promise(resolve => setTimeout(resolve, 2000));
         }
         
@@ -411,21 +363,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (error) {
           console.error("❌ Auth initialization error:", error);
-          
-          // Try recovery before giving up
-          const recoveredSession = await attemptSessionRecovery();
-          if (recoveredSession && mounted) {
-            setAuthState({
-              session: recoveredSession,
-              loading: false,
-              loadingState: 'ready',
-              error: null,
-              initialized: true
-            });
-            updateUserRelatedStates(recoveredSession.user);
-            return;
-          }
-          
           setAuthState({
             session: null,
             loading: false,
@@ -437,7 +374,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         if (session?.user) {
-          // console.log("✅ Found existing session for:", session.user.email);
+          console.log("✅ Found existing session for:", session.user.email);
           setAuthState({
             session,
             loading: false,
@@ -445,27 +382,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             error: null,
             initialized: true
           });
-          updateUserRelatedStates(session.user);
+          // Defer user state updates
+          setTimeout(() => {
+            updateUserRelatedStates(session.user);
+          }, 0);
         } else {
-          // console.log("❌ No existing session found");
+          console.log("❌ No existing session found");
           
-          // Mobile-optimized recovery for OAuth callbacks
-          if (isOAuthCallback && hasOAuthCode) {
-            // console.log("🔗 No session found in OAuth callback - attempting mobile-optimized recovery...");
+          // For OAuth callbacks without session, retry a few times
+          if (isOAuthCallback) {
+            console.log("🔗 OAuth callback but no session - attempting recovery...");
+            let attempts = 0;
+            const maxAttempts = 3;
             
-            // Mobile-optimized retry attempts
-            let recoveryAttempts = 0;
-            const maxOAuthRetries = mobileConfig.maxOAuthRetries;
-            
-            const attemptOAuthRecovery = async () => {
-              recoveryAttempts++;
-              if (mobileConfig.enableDebugLogging) {
-                // console.log(`🔄 OAuth recovery attempt ${recoveryAttempts}/${maxOAuthRetries}`);
-              }
+            const attemptRecovery = async (): Promise<void> => {
+              attempts++;
+              console.log(`🔄 Recovery attempt ${attempts}/${maxAttempts}`);
               
-              const recoveredSession = await attemptSessionRecovery();
-              if (recoveredSession && mounted) {
-                // console.log("✅ OAuth session recovered successfully!");
+              const { data: { session: recoveredSession } } = await supabase.auth.getSession();
+              
+              if (recoveredSession?.user && mounted) {
+                console.log("✅ OAuth session recovered!");
                 setAuthState({
                   session: recoveredSession,
                   loading: false,
@@ -473,17 +410,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   error: null,
                   initialized: true
                 });
-                updateUserRelatedStates(recoveredSession.user);
-                return true;
+                setTimeout(() => {
+                  updateUserRelatedStates(recoveredSession.user);
+                }, 0);
+                return;
               }
               
-              if (recoveryAttempts < maxOAuthRetries && mounted) {
-                timeoutManager.current.setTimeout(
-                  attemptOAuthRecovery, 
-                  mobileConfig.retryDelay + (recoveryAttempts * 500)
-                );
+              if (attempts < maxAttempts && mounted) {
+                setTimeout(attemptRecovery, 1000 + (attempts * 500));
               } else if (mounted) {
-                // console.log("❌ Failed to recover OAuth session after all attempts");
+                console.log("❌ Failed to recover OAuth session");
                 setAuthState({
                   session: null,
                   loading: false,
@@ -492,39 +428,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   initialized: true
                 });
               }
-              return false;
             };
             
-            timeoutManager.current.setTimeout(attemptOAuthRecovery, mobileConfig.retryDelay);
+            setTimeout(attemptRecovery, 1000);
           } else {
-            // Mobile-optimized standard recovery for non-OAuth cases
-            timeoutManager.current.setTimeout(async () => {
-              if (!mounted) return;
-              
-              const recoveredSession = await attemptSessionRecovery();
-              if (recoveredSession && mounted) {
-                setAuthState({
-                  session: recoveredSession,
-                  loading: false,
-                  loadingState: 'ready',
-                  error: null,
-                  initialized: true
-                });
-                updateUserRelatedStates(recoveredSession.user);
-              } else if (mounted) {
-                setAuthState({
-                  session: null,
-                  loading: false,
-                  loadingState: 'ready',
-                  error: null,
-                  initialized: true
-                });
-              }
-            }, mobileConfig.retryDelay);
+            setAuthState({
+              session: null,
+              loading: false,
+              loadingState: 'ready',
+              error: null,
+              initialized: true
+            });
           }
         }
       } catch (error) {
-        console.error('❌ Auth initialization catch error:', error);
+        console.error('❌ Auth initialization error:', error);
         if (mounted) {
           setAuthState({
             session: null,
@@ -537,51 +455,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
 
-    initializeAuth();
-
+    // Set up auth state listener FIRST (critical for session persistence)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(handleAuthChange);
 
+    // THEN check for existing session
+    initializeAuth();
+
     return () => {
-      // console.log("🧹 Cleaning up auth listener and timeouts");
+      console.log("🧹 Cleaning up auth listener");
       mounted = false;
       subscription.unsubscribe();
-      // Capture ref values to avoid cleanup issues
-      const timeoutManagerRef = timeoutManager.current;
-      const toastShownRefValue = toastShownRef.current;
-      if (timeoutManagerRef) {
-        timeoutManagerRef.clearAll();
-      }
-      if (toastShownRefValue) {
-        toastShownRefValue.clear();
-      }
+      toastShownRef.current.clear();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty deps - this should only run once on mount
+  }, []); // Empty deps - only run once on mount
 
   const refreshSession = useCallback(async () => {
     try {
-      // console.log("🔄 Manual session refresh initiated");
+      console.log("🔄 Manual session refresh initiated");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'refreshing-token' }));
       
       const { data: { session }, error } = await supabase.auth.getSession();
       
       if (error) {
         console.error("❌ Error refreshing session:", error);
-        
-        // Try recovery
-        const recoveredSession = await attemptSessionRecovery();
-        if (recoveredSession) {
-          setAuthState({
-            session: recoveredSession,
-            loading: false,
-            loadingState: 'ready',
-            error: null,
-            initialized: true
-          });
-          updateUserRelatedStates(recoveredSession.user);
-          return;
-        }
-        
         setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error }));
         return;
       }
@@ -589,22 +485,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, session, loading: false, loadingState: 'ready', error: null }));
       
       if (session?.user) {
-        updateUserRelatedStates(session.user);
-        // console.log("✅ Session refreshed for:", session.user.email);
+        setTimeout(() => {
+          updateUserRelatedStates(session.user);
+        }, 0);
+        console.log("✅ Session refreshed for:", session.user.email);
       } else {
         resetUserStates();
-        // console.log("❌ No active session found after refresh");
+        console.log("❌ No active session found after refresh");
       }
     } catch (error) {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Remove dependencies that cause re-renders
+  }, [updateUserRelatedStates, resetUserStates]);
 
   const logout = useCallback(async () => {
     try {
-      // console.log("🚪 Initiating logout...");
+      console.log("🚪 Initiating logout...");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'signing-out' }));
       
       const { error } = await supabase.auth.signOut();
@@ -616,28 +513,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return;
       }
       
-      // console.log("✅ Logout successful - state will be updated by auth listener");
+      console.log("✅ Logout successful - state will be updated by auth listener");
       
     } catch (error) {
       console.error("❌ Logout catch error:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Remove dependencies that cause re-renders
-
-  // Debug logging only when needed (removed continuous effect)
-  if (isDevEnvironment && authState.loadingState === 'ready') {
-    // console.log("🔍 Auth ready:", {
-    //   session: !!authState.session,
-    //   user: authState.session?.user?.email || "null",
-    //   loading: authState.loading,
-    //   loadingState: authState.loadingState,
-    //   initialized: authState.initialized,
-    //   isAdmin,
-    //   isPremium
-    // });
-  }
+  }, [showAuthToast, resetUserStates]);
 
   const value = {
     session: authState.session,
