@@ -45,8 +45,8 @@ export class SupabaseAuthService {
 
       if (error) throw error;
       return { user: data.user, session: data.session, error: null };
-    } catch (error: any) {
-      return { user: null, session: null, error };
+    } catch (error: unknown) {
+      return { user: null, session: null, error: error as Error };
     }
   }
 
@@ -62,8 +62,8 @@ export class SupabaseAuthService {
 
       if (error) throw error;
       return { user: data.user, session: data.session, error: null };
-    } catch (error: any) {
-      return { user: null, session: null, error };
+    } catch (error: unknown) {
+      return { user: null, session: null, error: error as Error };
     }
   }
 
@@ -75,8 +75,8 @@ export class SupabaseAuthService {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       return { error: null };
-    } catch (error: any) {
-      return { error };
+    } catch (error: unknown) {
+      return { error: error as Error };
     }
   }
 
@@ -88,8 +88,8 @@ export class SupabaseAuthService {
       const { data: { session }, error } = await supabase.auth.getSession();
       if (error) throw error;
       return { session, error: null };
-    } catch (error: any) {
-      return { session: null, error };
+    } catch (error: unknown) {
+      return { session: null, error: error as Error };
     }
   }
 
@@ -126,8 +126,8 @@ export class SupabaseAuthService {
 
       if (error) throw error;
       return { profile: data, error: null };
-    } catch (error: any) {
-      return { profile: null, error };
+    } catch (error: unknown) {
+      return { profile: null, error: error as Error };
     }
   }
 
@@ -211,8 +211,8 @@ export class SupabaseAuthService {
 
       if (error) throw error;
       return { subscription: data as UserSubscription, error: null };
-    } catch (error: any) {
-      return { subscription: null, error };
+    } catch (error: unknown) {
+      return { subscription: null, error: error as Error };
     }
   }
 
@@ -230,9 +230,9 @@ export class SupabaseAuthService {
 
       if (error) throw error;
       return { success: true, error: null };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error canceling subscription:', error);
-      return { success: false, error };
+      return { success: false, error: error as Error };
     }
   }
 

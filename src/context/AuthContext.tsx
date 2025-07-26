@@ -5,19 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
 import { getMobileOptimizedConfig, debounce, TimeoutManager, handleMobileNetworkError } from "@/utils/mobile-performance";
 import { SupabaseAuthService, UserProfile, UserSubscription } from "@/services/supabaseAuth";
-
-const ADMIN_EMAILS = [
-  "admin@example.com",
-  "dncar13@gmail.com",
-  "buldir@gmail.com",
-];
-
-const PREMIUM_EMAILS = [
-  "premium@example.com",
-  "dncar13@gmail.com",
-  "buldir@gmail.com",
-  "dncar20@gmail.com",
-];
+import { ADMIN_EMAILS, PREMIUM_EMAILS } from "@/constants/auth";
 
 interface UserData {
   firstName?: string;
@@ -93,6 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                            window.location.hostname.includes('lovableproject.com');
 
   // Mobile-optimized toast management with debouncing
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const showAuthToast = useCallback(debounce((type: string, message: string, description?: string) => {
     const toastKey = `${type}-${message}`;
     if (toastShownRef.current.has(toastKey)) return;
@@ -535,9 +524,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // console.log("🧹 Cleaning up auth listener and timeouts");
       mounted = false;
       subscription.unsubscribe();
-      timeoutManager.current.clearAll();
-      toastShownRef.current.clear();
+      // Capture ref values to avoid cleanup issues
+      const timeoutManagerRef = timeoutManager.current;
+      const toastShownRefValue = toastShownRef.current;
+      if (timeoutManagerRef) {
+        timeoutManagerRef.clearAll();
+      }
+      if (toastShownRefValue) {
+        toastShownRefValue.clear();
+      }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty deps - this should only run once on mount
 
   const refreshSession = useCallback(async () => {
@@ -581,6 +578,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("❌ Error in refreshSession:", error);
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Remove dependencies that cause re-renders
 
   const logout = useCallback(async () => {
@@ -604,6 +602,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
       resetUserStates();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Remove dependencies that cause re-renders
 
   // Debug logging only when needed (removed continuous effect)
