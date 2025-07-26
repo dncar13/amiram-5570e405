@@ -191,8 +191,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
         console.log("✅ Subscription cancelled successfully in database:", result);
         
-        // Immediately sync all states after successful cancellation
-        await syncPremiumStatusFromDatabase(authState.session.user);
+        // For hardcoded premium users, force update the state
+        const userEmail = authState.session.user.email || "";
+        const isPremiumByEmail = PREMIUM_EMAILS.includes(userEmail);
+        
+        if (isPremiumByEmail && result.updatedCount === 0) {
+          // This is a hardcoded premium user with no database subscription
+          // Force update states to non-premium
+          setIsPremium(false);
+          localStorage.removeItem("isPremiumUser");
+          console.log("🔄 Hardcoded premium user status removed");
+        } else {
+          // Regular database subscription cancellation
+          await syncPremiumStatusFromDatabase(authState.session.user);
+        }
         
         console.log("🔄 Premium cancellation completed - all states synchronized");
         return;
