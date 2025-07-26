@@ -1,4 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
+import { PLAN_PRICES, calculateDiscount, type PlanType } from '@/config/pricing';
 
 interface CouponValidationResult {
   valid: boolean;
@@ -103,46 +104,20 @@ export const couponValidationService = {
         }
       }
 
-      // Calculate discount with CORRECT synchronized prices
-      const planPrices = {
-        daily: 20,
-        weekly: 50,   // FIXED: Must match UI pricing ₪50
-        monthly: 99,
-        quarterly: 239
-      };
+      // Calculate discount using centralized pricing
+      const { discountAmount, finalAmount } = calculateDiscount(
+        planType as PlanType,
+        coupon.discount_type as 'percent' | 'amount',
+        coupon.discount_value
+      );
 
-      const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;
-      let discountAmount = 0;
+      const originalAmount = PLAN_PRICES[planType as PlanType] || 99;
 
-      console.log('💰 Starting calculation:', { originalAmount, discountType: coupon.discount_type, discountValue: coupon.discount_value });
-
-      if (coupon.discount_type === "percent") {
-        const calculation = originalAmount * (coupon.discount_value / 100);
-        discountAmount = Math.round(calculation);
-        
-        console.log('📊 Percent calculation:', {
-          formula: 'originalAmount * (discount_value / 100)',
-          substitution: `${originalAmount} * (${coupon.discount_value} / 100)`,
-          calculation: `${originalAmount} * ${coupon.discount_value / 100}`,
-          result: calculation,
-          rounded: discountAmount
-        });
-      } else if (coupon.discount_type === "amount") {
-        discountAmount = Math.min(coupon.discount_value, originalAmount);
-        
-        console.log('💵 Amount calculation:', {
-          formula: 'Min(discount_value, originalAmount)',
-          substitution: `Min(${coupon.discount_value}, ${originalAmount})`,
-          result: discountAmount
-        });
-      }
-
-      const finalAmount = Math.max(0, originalAmount - discountAmount);
-
-      console.log('🏁 Final calculation:', {
-        originalAmount,
+      console.log('💰 Centralized calculation results:', { 
+        originalAmount, 
+        discountType: coupon.discount_type, 
+        discountValue: coupon.discount_value,
         discountAmount,
-        subtraction: `${originalAmount} - ${discountAmount} = ${originalAmount - discountAmount}`,
         finalAmount
       });
 

@@ -1,6 +1,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Clock, Calendar, Target, Trophy } from "lucide-react";
+import { PLAN_PRICES } from "@/config/pricing";
 
 interface PricingOptionsProps {
   selectedPlan: 'daily' | 'weekly' | 'monthly' | 'quarterly';
@@ -12,7 +13,7 @@ const PricingOptions = ({ selectedPlan, setSelectedPlan }: PricingOptionsProps) 
     {
       id: 'daily',
       name: 'גישה ליום',
-      price: 20,
+      price: PLAN_PRICES.daily,
       period: '24 שעות',
       description: 'לתלמידים במבחן מחר',
       subtitle: 'נסיון אינטנסיבי לפני המבחן',
@@ -22,7 +23,7 @@ const PricingOptions = ({ selectedPlan, setSelectedPlan }: PricingOptionsProps) 
     {
       id: 'weekly',
       name: 'גישה לשבוע',
-      price: 50,
+      price: PLAN_PRICES.weekly,
       period: '7 ימים',
       description: 'לחיזוק מיומנויות',
       subtitle: 'תרגול בקצב שלכם',
@@ -32,7 +33,7 @@ const PricingOptions = ({ selectedPlan, setSelectedPlan }: PricingOptionsProps) 
     {
       id: 'monthly',
       name: 'גישה לחודש',
-      price: 99,
+      price: PLAN_PRICES.monthly,
       period: '30 ימים',
       description: 'ההמלצה שלנו!',
       subtitle: 'הכנה יסודית לפטור',
@@ -43,7 +44,7 @@ const PricingOptions = ({ selectedPlan, setSelectedPlan }: PricingOptionsProps) 
     {
       id: 'quarterly',
       name: 'גישה ל-3 חודשים',
-      price: 239,
+      price: PLAN_PRICES.quarterly,
       period: '90 ימים',
       description: 'לשיפור מעמיק',
       subtitle: 'הכי משתלם למתכוננים מוקדם',
