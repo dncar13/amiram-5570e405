@@ -242,28 +242,28 @@ export class SupabaseAuthService {
     try {
       console.log('🚫 Canceling subscription for user:', userId);
       
-      // Update ALL active subscriptions to inactive
-      const { data, error } = await supabase
-        .from('subscriptions')
-        .update({ 
-          status: 'cancelled',  // Use 'cancelled' instead of 'inactive' for clarity
-          updated_at: new Date().toISOString()
-        })
-        .eq('user_id', userId)
-        .eq('status', 'active')
-        .select();
+      // Use the new database function for proper cancellation
+      const { data, error } = await supabase.rpc('cancel_user_subscription', {
+        p_user_id: userId
+      });
 
       if (error) {
-        console.error('❌ Database error canceling subscription:', error);
+        console.error('❌ Database function error canceling subscription:', error);
         throw error;
       }
-      
-      console.log('✅ Subscription cancellation result:', { updatedRows: data?.length || 0, data });
+
+      const result = data && data.length > 0 ? data[0] : null;
+      console.log('✅ Subscription cancellation result:', result);
       
       // Force clear localStorage immediately
       localStorage.removeItem("isPremiumUser");
       
-      return { success: true, error: null, updatedCount: data?.length || 0 };
+      return { 
+        success: result?.success || false, 
+        error: null, 
+        updatedCount: result?.updated_count || 0,
+        message: result?.message 
+      };
     } catch (error: unknown) {
       console.error('❌ Error canceling subscription:', error);
       return { success: false, error: error as Error };

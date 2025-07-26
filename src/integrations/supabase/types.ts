@@ -794,6 +794,14 @@ export type Database = {
       }
     }
     Functions: {
+      cancel_user_subscription: {
+        Args: { p_user_id: string }
+        Returns: {
+          success: boolean
+          updated_count: number
+          message: string
+        }[]
+      }
       clean_duplicate_set_sessions: {
         Args: Record<PropertyKey, never>
         Returns: {
@@ -814,6 +822,21 @@ export type Database = {
       has_active_premium: {
         Args: { user_id: string }
         Returns: boolean
+      }
+      process_free_coupon_subscription: {
+        Args: {
+          p_user_id: string
+          p_coupon_id: string
+          p_plan_type: string
+          p_original_amount: number
+          p_discount_amount: number
+          p_final_amount: number
+        }
+        Returns: {
+          success: boolean
+          subscription_id: string
+          message: string
+        }[]
       }
       validate_set_metadata: {
         Args: { metadata: Json }
