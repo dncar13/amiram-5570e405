@@ -38,7 +38,22 @@ const OverviewTab = () => {
   const photoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
   
   const handleCancelPremium = async () => {
-    await updatePremiumStatus(false);
+    try {
+      await updatePremiumStatus(false);
+      
+      toast({
+        title: "פרימיום בוטל בהצלחה",
+        description: "חשבונך הוחזר למצב חינמי",
+        variant: "default"
+      });
+    } catch (error) {
+      console.error('Error canceling premium:', error);
+      toast({
+        title: "שגיאה בביטול פרימיום",
+        description: "אנא נסה שוב מאוחר יותר",
+        variant: "destructive"
+      });
+    }
   };
 
   return (

@@ -124,12 +124,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const updatePremiumStatus = async (status: boolean) => {
     // console.log("Updating premium status:", status);
     
-    // Update localStorage first for immediate response
+    // If canceling premium (status = false), update database first
+    if (!status && authState.session?.user) {
+      try {
+        await SupabaseAuthService.cancelSubscription(authState.session.user.id);
+      } catch (error) {
+        console.error('Error canceling subscription in database:', error);
+        // Continue with local update even if database update fails
+      }
+    }
+    
+    // Update local storage
     if (status) {
       localStorage.setItem("isPremiumUser", "true");
     } else {
       localStorage.removeItem("isPremiumUser");
     }
+    
+    // Update local state
     setIsPremium(status);
     
     // Update database if user is logged in and cancelling premium
@@ -152,6 +164,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         premiumExpiration: status ? 
           new Date().setMonth(new Date().getMonth() + 1) : undefined
       }));
+      
+      // Refresh user states from server to ensure consistency
+      await updateUserRelatedStates(authState.session.user);
     }
     
     // Force context re-render to ensure all components update immediately

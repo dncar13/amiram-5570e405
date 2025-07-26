@@ -217,22 +217,22 @@ export class SupabaseAuthService {
   }
 
   /**
-   * Cancel user's active subscription
+   * Cancel/deactivate user's active subscription
    */
   static async cancelSubscription(userId: string) {
     try {
       const { data, error } = await supabase
         .from('subscriptions')
-        .update({ status: 'cancelled' })
+        .update({ status: 'inactive' })
         .eq('user_id', userId)
         .eq('status', 'active')
-        .select()
-        .single();
+        .select();
 
       if (error) throw error;
-      return { subscription: data as UserSubscription, error: null };
+      return { success: true, error: null };
     } catch (error: any) {
-      return { subscription: null, error };
+      console.error('Error canceling subscription:', error);
+      return { success: false, error };
     }
   }
 
