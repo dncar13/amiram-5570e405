@@ -37,14 +37,8 @@ const OverviewTab = () => {
   
   const photoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
   
-  const handleCancelPremium = () => {
-    updatePremiumStatus(false);
-    
-    toast({
-      title: "פרימיום בוטל בהצלחה",
-      description: "חשבונך הוחזר למצב חינמי",
-      variant: "default"
-    });
+  const handleCancelPremium = async () => {
+    await updatePremiumStatus(false);
   };
 
   return (

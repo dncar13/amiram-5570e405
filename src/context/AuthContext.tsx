@@ -46,7 +46,7 @@ interface AuthContextType {
   userData: UserData | null;
   error: Error | null;
   logout: () => Promise<void>;
-  updatePremiumStatus: (status: boolean) => void;
+  updatePremiumStatus: (status: boolean) => Promise<void>;
   hasAccessToTopic: (topicId: number) => boolean;
   refreshSession: () => Promise<void>;
 }
@@ -62,7 +62,7 @@ const AuthContext = createContext<AuthContextType>({
   userData: null,
   error: null,
   logout: async () => {},
-  updatePremiumStatus: () => {},
+  updatePremiumStatus: async () => {},
   hasAccessToTopic: () => true,
   refreshSession: async () => {}
 });
@@ -121,14 +121,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return true;
   };
 
-  const updatePremiumStatus = (status: boolean) => {
+  const updatePremiumStatus = async (status: boolean) => {
     // console.log("Updating premium status:", status);
+    
+    // Update localStorage first for immediate response
     if (status) {
       localStorage.setItem("isPremiumUser", "true");
     } else {
       localStorage.removeItem("isPremiumUser");
     }
     setIsPremium(status);
+    
+    // Update database if user is logged in and cancelling premium
+    if (authState.session?.user && !status) {
+      try {
+        const result = await SupabaseAuthService.cancelSubscription(authState.session.user.id);
+        if (result.error) {
+          console.error('Error cancelling subscription in database:', result.error);
+          // Still update UI but log the error
+        }
+      } catch (error) {
+        console.error('Error updating premium status in database:', error);
+        // Still update UI but log the error
+      }
+    }
     
     if (authState.session?.user) {
       setUserData(prevData => ({
