@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import type { Session, AuthChangeEvent, User as SupabaseUser } from '@supabase/supabase-js';
 import { SupabaseAuthService, UserProfile, UserSubscription } from "@/services/supabaseAuth";
-import { ADMIN_EMAILS, PREMIUM_EMAILS } from "@/constants/auth";
+import { ADMIN_EMAILS, PREMIUM_EMAILS } from "@/config/appConfig";
 
 interface UserData {
   firstName?: string;
