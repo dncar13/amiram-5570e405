@@ -161,9 +161,9 @@ serve(async (req) => {
     // Calculate discount - SYNCHRONIZED WITH CLIENT
     const planPrices = {
       daily: 20,
-      weekly: 69,
+      weekly: 50,   // FIXED: Must match UI pricing ₪50
       monthly: 99,
-      quarterly: 239  // CORRECTED: must match client-side validation
+      quarterly: 239
     };
 
     const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;
