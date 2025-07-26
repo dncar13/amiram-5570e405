@@ -43,6 +43,7 @@ import { useAnalytics } from "@/hooks/useAnalytics";
 import { SupabaseAuthService } from "@/services/supabaseAuth";
 import { freeCouponService } from "@/services/freeCouponService";
 import { useAuth } from "@/context/AuthContext";
+import { PLAN_PRICES } from "@/config/pricing";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ const Premium = () => {
     {
       id: 'daily',
       name: 'גישה ליום',
-      price: 20,
+      price: PLAN_PRICES.daily,
       period: '24 שעות',
       description: 'נסיון אינטנסיבי לפני המבחן',
       subtitle: 'לתלמידים במבחן מחר',
@@ -74,7 +75,7 @@ const Premium = () => {
     {
       id: 'weekly',
       name: 'גישה לשבוע',
-      price: 50,
+      price: PLAN_PRICES.weekly,
       period: '7 ימים',
       description: 'תרגול בקצב שלכם',
       subtitle: 'לחיזוק מיומנויות',
@@ -86,7 +87,7 @@ const Premium = () => {
     {
       id: 'monthly',
       name: 'גישה לחודש',
-      price: 99,
+      price: PLAN_PRICES.monthly,
       period: '30 ימים',
       description: 'ההמלצה שלנו!',
       subtitle: 'הכנה יסודית לפטור',
@@ -99,7 +100,7 @@ const Premium = () => {
     {
       id: 'quarterly',
       name: 'גישה ל-3 חודשים',
-      price: 239,
+      price: PLAN_PRICES.quarterly,
       period: '90 ימים',
       description: 'הכי משתלם למתכוננים מוקדם',
       subtitle: 'לשיפור מעמיק',

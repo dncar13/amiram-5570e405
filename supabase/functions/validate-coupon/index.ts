@@ -21,6 +21,32 @@ interface ValidateCouponResponse {
   finalAmount?: number;
 }
 
+// Centralized pricing configuration - MUST match src/config/pricing.ts
+const PLAN_PRICES = {
+  daily: 20,
+  weekly: 50,   // FIXED: Must match UI pricing ₪50
+  monthly: 99,
+  quarterly: 239
+} as const;
+
+const calculateDiscount = (
+  planType: keyof typeof PLAN_PRICES,
+  discountType: 'percent' | 'amount',
+  discountValue: number
+): { discountAmount: number; finalAmount: number; originalAmount: number } => {
+  const originalAmount = PLAN_PRICES[planType];
+  let discountAmount = 0;
+
+  if (discountType === 'percent') {
+    discountAmount = Math.round(originalAmount * (discountValue / 100));
+  } else if (discountType === 'amount') {
+    discountAmount = Math.min(discountValue, originalAmount);
+  }
+
+  const finalAmount = Math.max(0, originalAmount - discountAmount);
+  return { discountAmount, finalAmount, originalAmount };
+};
+
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[VALIDATE-COUPON] ${step}${detailsStr}`);
@@ -158,49 +184,19 @@ serve(async (req) => {
       }
     }
 
-    // Calculate discount - SYNCHRONIZED WITH CLIENT
-    const planPrices = {
-      daily: 20,
-      weekly: 50,   // FIXED: Must match UI pricing ₪50
-      monthly: 99,
-      quarterly: 239
-    };
+    // Calculate discount using centralized function
+    const { originalAmount, discountAmount, finalAmount } = calculateDiscount(
+      planType as keyof typeof PLAN_PRICES,
+      coupon.discount_type as 'percent' | 'amount',
+      coupon.discount_value
+    );
 
-    const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;
-    let discountAmount = 0;
-
-    logStep("BEFORE calculation", { 
-      planType, 
+    logStep("Centralized calculation results", { 
+      planType,
       originalAmount, 
       discountType: coupon.discount_type,
-      discountValue: coupon.discount_value
-    });
-
-    if (coupon.discount_type === "percent") {
-      discountAmount = Math.round(originalAmount * (coupon.discount_value / 100));
-      logStep("PERCENT calculation", {
-        originalAmount,
-        discountValue: coupon.discount_value,
-        calculation: `${originalAmount} * (${coupon.discount_value} / 100)`,
-        result: originalAmount * (coupon.discount_value / 100),
-        rounded: discountAmount
-      });
-    } else if (coupon.discount_type === "amount") {
-      discountAmount = Math.min(coupon.discount_value, originalAmount);
-      logStep("AMOUNT calculation", {
-        discountValue: coupon.discount_value,
-        originalAmount,
-        result: discountAmount
-      });
-    }
-
-    const finalAmount = Math.max(0, originalAmount - discountAmount);
-
-    logStep("FINAL calculation", {
-      originalAmount,
+      discountValue: coupon.discount_value,
       discountAmount,
-      subtraction: `${originalAmount} - ${discountAmount}`,
-      beforeMax: originalAmount - discountAmount,
       finalAmount
     });
 
