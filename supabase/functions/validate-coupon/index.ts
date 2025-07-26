@@ -158,12 +158,12 @@ serve(async (req) => {
       }
     }
 
-    // Calculate discount
+    // Calculate discount - SYNCHRONIZED WITH CLIENT
     const planPrices = {
       daily: 20,
       weekly: 69,
       monthly: 99,
-      quarterly: 249
+      quarterly: 239  // CORRECTED: must match client-side validation
     };
 
     const originalAmount = planPrices[planType as keyof typeof planPrices] || 99;

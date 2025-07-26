@@ -136,13 +136,32 @@ export class SupabaseAuthService {
    */
   static async hasActivePremium(userId: string): Promise<boolean> {
     try {
+      console.log('🔍 Checking premium status for user:', userId);
+      
+      // Direct query instead of RPC to see exactly what's happening
       const { data, error } = await supabase
-        .rpc('has_active_premium', { user_id: userId });
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .gte('end_date', new Date().toISOString());
 
-      if (error) throw error;
-      return data || false;
+      if (error) {
+        console.error('❌ Error checking premium status:', error);
+        throw error;
+      }
+      
+      const isActive = (data && data.length > 0);
+      console.log('📊 Premium status check result:', { 
+        userId, 
+        hasActiveSubscriptions: isActive, 
+        subscriptionsFound: data?.length || 0,
+        subscriptions: data 
+      });
+      
+      return isActive;
     } catch (error) {
-      console.error('Error checking premium status:', error);
+      console.error('❌ Error checking premium status:', error);
       return false;
     }
   }
@@ -221,17 +240,32 @@ export class SupabaseAuthService {
    */
   static async cancelSubscription(userId: string) {
     try {
+      console.log('🚫 Canceling subscription for user:', userId);
+      
+      // Update ALL active subscriptions to inactive
       const { data, error } = await supabase
         .from('subscriptions')
-        .update({ status: 'inactive' })
+        .update({ 
+          status: 'cancelled',  // Use 'cancelled' instead of 'inactive' for clarity
+          updated_at: new Date().toISOString()
+        })
         .eq('user_id', userId)
         .eq('status', 'active')
         .select();
 
-      if (error) throw error;
-      return { success: true, error: null };
+      if (error) {
+        console.error('❌ Database error canceling subscription:', error);
+        throw error;
+      }
+      
+      console.log('✅ Subscription cancellation result:', { updatedRows: data?.length || 0, data });
+      
+      // Force clear localStorage immediately
+      localStorage.removeItem("isPremiumUser");
+      
+      return { success: true, error: null, updatedCount: data?.length || 0 };
     } catch (error: unknown) {
-      console.error('Error canceling subscription:', error);
+      console.error('❌ Error canceling subscription:', error);
       return { success: false, error: error as Error };
     }
   }

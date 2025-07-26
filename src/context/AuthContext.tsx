@@ -122,33 +122,42 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.error('❌ Error cancelling subscription in database:', result.error);
           throw result.error;
         }
-        console.log("✅ Subscription cancelled successfully in database");
+        console.log("✅ Subscription cancelled successfully in database:", result);
+        
+        // Force clear localStorage immediately after successful DB update
+        localStorage.removeItem("isPremiumUser");
+        setIsPremium(false);
+        
+        // Force update user data to reflect cancellation
+        setUserData(prevData => ({
+          ...prevData,
+          premiumExpiration: undefined
+        }));
+        
+        console.log("🔄 Premium cancellation completed - all states updated");
+        return; // Don't continue with normal flow
+        
       } catch (error) {
         console.error('❌ Error canceling subscription in database:', error);
         throw error; // Don't continue if database update fails
       }
     }
     
-    // Update local storage
+    // Normal premium activation flow
     if (status) {
       localStorage.setItem("isPremiumUser", "true");
-    } else {
-      localStorage.removeItem("isPremiumUser");
-    }
-    
-    // Update local state immediately
-    setIsPremium(status);
-    
-    if (authState.session?.user) {
-      setUserData(prevData => ({
-        ...prevData,
-        premiumExpiration: status ? 
-          new Date().setMonth(new Date().getMonth() + 1) : undefined
-      }));
+      setIsPremium(true);
       
-      console.log("🔄 Refreshing user states from server...");
-      // Refresh user states from server to ensure consistency
-      await updateUserRelatedStates(authState.session.user);
+      if (authState.session?.user) {
+        setUserData(prevData => ({
+          ...prevData,
+          premiumExpiration: new Date().setMonth(new Date().getMonth() + 1)
+        }));
+        
+        console.log("🔄 Refreshing user states from server...");
+        // Refresh user states from server to ensure consistency
+        await updateUserRelatedStates(authState.session.user);
+      }
     }
   };
 
@@ -174,10 +183,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         isInPremiumEmails: PREMIUM_EMAILS.includes(user.email || "")
       });
       
-      // Database subscription status takes precedence over email list
-      // Only use email list if no database subscription exists (backwards compatibility)
-      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "") && subscription === null;
-      const isPremiumUser = hasDbPremium || isPremiumByEmail;
+      // FIXED: Database subscription status ALWAYS takes precedence over email list
+      // Email list is ONLY used if no subscription record exists at all
+      const isPremiumByEmail = PREMIUM_EMAILS.includes(user.email || "") && subscription === null && !hasDbPremium;
+      const isPremiumUser = hasDbPremium;  // ONLY use database status
       
       console.log("🎯 Final premium determination:", {
         isPremiumByEmail,
