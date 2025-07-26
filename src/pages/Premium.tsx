@@ -41,6 +41,7 @@ import { SubscriptionManager } from "@/components/subscription/SubscriptionManag
 import { useCoupon } from "@/hooks/useCoupon";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { SupabaseAuthService } from "@/services/supabaseAuth";
+import { freeCouponService } from "@/services/freeCouponService";
 import { useAuth } from "@/context/AuthContext";
 
 const Premium = () => {
@@ -235,8 +236,9 @@ const Premium = () => {
         
         console.log('📊 Processing amounts:', { originalAmount, discountAmount, finalAmount: 0 });
         
-        // Mark coupon as used
-        const result = await applyCouponForPayment(
+        // Mark coupon as used AND create subscription using the new service
+        const result = await freeCouponService.processFreeCouponSubscription(
+          currentUser.id,
           appliedCoupon.coupon.id,
           selectedPlan,
           originalAmount,
@@ -244,22 +246,10 @@ const Premium = () => {
           0
         );
         
-        console.log('✅ Coupon usage result:', result);
+        console.log('✅ Free coupon service result:', result);
         
         if (result.success) {
-          console.log('🎉 Free order successful - creating subscription in database');
-          
-          // Create subscription in database
-          console.log('📝 Creating free subscription in database...', { userId: currentUser.id, planType: selectedPlan });
-          const subscriptionResult = await SupabaseAuthService.createSubscription(currentUser.id, mapPlanType(selectedPlan));
-          
-          if (subscriptionResult.error) {
-            console.error('❌ Failed to create free subscription:', subscriptionResult.error);
-            alert(`שגיאה ביצירת המנוי החינמי: ${subscriptionResult.error.message}`);
-            return;
-          }
-          
-          console.log('✅ Free subscription created successfully:', subscriptionResult.subscription);
+          console.log('🎉 Free subscription created successfully:', result.subscriptionId);
           
           // Track free order completion
           trackPremiumPurchase({
@@ -278,9 +268,9 @@ const Premium = () => {
           console.log('🎉 Free order completed - premium status updated');
           setIsDialogOpen(true);
         } else {
-          console.error('❌ Failed to apply free coupon:', result.error);
-          alert(`שגיאה בהפעלת הקופון: ${result.error || 'שגיאה לא ידועה'}`);
-          trackError(new Error('Free coupon application failed'), 'Premium', {
+          console.error('❌ Failed to process free coupon:', result.error);
+          alert(`שגיאה בהפעלת הקופון החינמי: ${result.error || 'שגיאה לא ידועה'}`);
+          trackError(new Error('Free coupon processing failed'), 'Premium', {
             coupon_code: appliedCoupon.coupon.code,
             plan_type: selectedPlan,
             error: result.error
