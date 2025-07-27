@@ -8,7 +8,22 @@ import { Question } from "../../types/questionTypes";
  * כרגע ריק עד שיתווספו שאלות חדשות
  */
 export const sentenceCompletionQuestions: Question[] = [
-  // TODO: Add questions when available
+  {
+    "type": "sentence-completion",
+    "text": "Despite his extensive preparation, John found the interview considerably more challenging than he had _____.",
+    "options": [
+      "anticipated",
+      "prepared",
+      "experienced", 
+      "studied"
+    ],
+    "correctAnswer": 0,
+    "explanation": "התשובה הנכונה היא 'anticipated' - למרות הכנתו הרחבה, ג'ון מצא שהראיון מאתגר יותר ממה שצפה.",
+    "difficulty": "easy",
+    "id": "sc_001",
+    "categoryId": 1,
+    "topicId": 1
+  }
 ];
 
 // Add topicId and categoryId for compatibility
