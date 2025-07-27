@@ -2,30 +2,16 @@ import { Question } from '../../../types';
 
 const questions: Question[] = [
   {
-    "type": "restatement",
-    "text": "Despite his extensive preparation, John found the interview considerably more challenging than he had anticipated.",
-    "questionSubtext": "בחרו את המשפט הזהה במשמעות:",
+    "type": "vocabulary",
+    "text": "The detective found several ____ clues that helped solve the case.",
     "options": [
-      "John's preparation was insufficient for the difficult interview he faced.",
-      "Although John had prepared thoroughly, the interview proved to be much harder than expected.",
-      "John anticipated a challenging interview, which is why he prepared extensively.",
-      "The interview was challenging because John hadn't prepared enough."
+      "pertinent",
+      "meager",
+      "tedious",
+      "jovial"
     ],
-    "correctAnswer": 1,
-    "explanation": "התשובה הנכונה היא B - Although John had prepared thoroughly, the interview proved to be much harder than expected.",
-    "detailedExplanation": {
-      "mainExplanation": "ניתוח המרכיבים העיקריים:",
-      "analysisTable": [
-        { "component": "ניגוד", "original": "Despite (למרות)", "answer": "Although (למרות ש)" },
-        { "component": "הכנה", "original": "extensive preparation", "answer": "prepared thoroughly" },
-        { "component": "תוצאה", "original": "found...more challenging", "answer": "proved to be much harder" },
-        { "component": "ציפיות", "original": "than he had anticipated", "answer": "than expected" }
-      ],
-      "errorAnalysis": [
-        "A + D: משנות את המשמעות - טוענות שההכנה לא הייתה מספקת",
-        "C: הופכת את הסדר הכרונולוגי - הציפייה באה לפני ההכנה"
-      ]
-    },
+    "correctAnswer": 0,
+    "explanation": "'Pertinent' means relevant or applicable to the matter at hand.",
     "difficulty": "medium",
     "id": 4040
   },
