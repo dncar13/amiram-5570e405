@@ -34,12 +34,15 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     const urls = getCardComUrls();
     const returnValue = generateReturnValue(request.userId, request.planType);
     
+    // Calculate final amount after discount
+    const finalAmount = request.amount - (request.discountAmount || 0);
+    
     const createRequest: CreateLowProfileRequest = {
       TerminalNumber: credentials.terminalNumber,
       ApiName: credentials.apiName,
       Operation: 'ChargeOnly',
       ReturnValue: returnValue,
-      Amount: request.amount,
+      Amount: finalAmount,
       SuccessRedirectUrl: urls.successUrl,
       FailedRedirectUrl: urls.failureUrl,
       WebHookUrl: urls.webhookUrl,
