@@ -37,6 +37,16 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     // Calculate final amount after discount
     const finalAmount = request.amount - (request.discountAmount || 0);
     
+    // CardCom minimum amount validation (most payment processors require minimum 1-5 ILS)
+    const MINIMUM_AMOUNT = 5; // 5 ILS minimum for CardCom
+    if (finalAmount < MINIMUM_AMOUNT) {
+      console.warn(`⚠️ Amount too low for payment processing: ${finalAmount} ILS (minimum: ${MINIMUM_AMOUNT} ILS)`);
+      return {
+        success: false,
+        error: `סכום מינימלי לתשלום הוא ${MINIMUM_AMOUNT} ש"ח. הסכום שלך: ${finalAmount} ש"ח`
+      };
+    }
+    
     const createRequest: CreateLowProfileRequest = {
       TerminalNumber: credentials.terminalNumber,
       ApiName: credentials.apiName,
