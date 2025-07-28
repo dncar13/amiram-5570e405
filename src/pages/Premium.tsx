@@ -45,6 +45,7 @@ import { SupabaseAuthService } from "@/services/supabaseAuth";
 import { freeCouponService } from "@/services/freeCouponService";
 import { useAuth } from "@/context/AuthContext";
 import { PLAN_PRICES } from "@/config/pricing";
+import { subscriptionValidationService, type SubscriptionValidationResult } from "@/services/subscriptionValidationService";
 
 const Premium = () => {
   const navigate = useNavigate();
@@ -56,6 +57,8 @@ const Premium = () => {
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isCouponLocked, setIsCouponLocked] = useState(false);
+  const [subscriptionValidation, setSubscriptionValidation] = useState<SubscriptionValidationResult | null>(null);
+  const [validationLoading, setValidationLoading] = useState(false);
   
   const { validateCoupon, useCoupon: applyCouponForPayment, clearCoupon, appliedCoupon, isValidating } = useCoupon();
   const { trackPremiumView, trackPremiumPurchase, trackBeginCheckout, trackCouponApplied, trackButtonClick, trackError, trackFormSubmit } = useAnalytics();
@@ -176,6 +179,32 @@ const Premium = () => {
       }
     }
   }, [selectedPlan, trackPremiumView, clearCoupon]);
+
+  // Validate subscription when plan changes or user logs in
+  useEffect(() => {
+    const validateSubscription = async () => {
+      if (!currentUser?.id) {
+        setSubscriptionValidation(null);
+        return;
+      }
+
+      setValidationLoading(true);
+      try {
+        const validation = await subscriptionValidationService.validateSubscriptionPurchase(
+          currentUser.id,
+          selectedPlan
+        );
+        setSubscriptionValidation(validation);
+      } catch (error) {
+        console.error('Error validating subscription:', error);
+        setSubscriptionValidation(null);
+      } finally {
+        setValidationLoading(false);
+      }
+    };
+
+    validateSubscription();
+  }, [currentUser?.id, selectedPlan]);
 
   const handlePaymentSuccess = async () => {
     if (!currentUser?.id) {
@@ -730,16 +759,82 @@ const Premium = () => {
                       </div>
                     </div>
                   ) : (
-                    /* Regular Payment Form */
-                    <CardcomPaymentForm
-                      amount={getAmount()}
-                      originalAmount={getOriginalAmount()}
-                      planType={selectedPlan}
-                      discountAmount={appliedCoupon?.discountAmount}
-                      couponCode={appliedCoupon?.coupon?.code}
-                      onSuccess={handlePaymentSuccess}
-                      onCancel={handlePaymentCancel}
-                    />
+                    /* Check subscription validation before showing payment form */
+                    validationLoading ? (
+                      <div className="text-center py-8">
+                        <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                        <p className="text-gray-600">בודק מנויים קיימים...</p>
+                      </div>
+                    ) : subscriptionValidation && !subscriptionValidation.canUpgrade ? (
+                      /* Show subscription conflict message */
+                      <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-orange-900 mb-2">
+                              יש לך כבר מנוי פעיל
+                            </h3>
+                            <p className="text-orange-700 mb-4">
+                              {subscriptionValidation.message}
+                            </p>
+                            {subscriptionValidation.availableUpgrades && subscriptionValidation.availableUpgrades.length > 0 && (
+                              <div className="space-y-2">
+                                <p className="text-orange-700 font-medium">
+                                  שדרוגים זמינים:
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                  {subscriptionValidation.availableUpgrades.map((upgrade) => (
+                                    <Button
+                                      key={upgrade}
+                                      onClick={() => setSelectedPlan(upgrade as any)}
+                                      variant="outline"
+                                      size="sm"
+                                      className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                                    >
+                                      {subscriptionValidationService.getPlanDisplayName(upgrade)}
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                            <div className="mt-4">
+                              <Button
+                                onClick={() => navigate('/account?tab=purchases')}
+                                variant="outline"
+                                size="sm"
+                                className="border-orange-300 text-orange-700 hover:bg-orange-100"
+                              >
+                                צפה במנויים שלי
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Regular Payment Form - only shown if can upgrade or no active subscription */
+                      <>
+                        {subscriptionValidation?.hasActiveSubscription && subscriptionValidation.canUpgrade && (
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                            <div className="flex items-center gap-2 mb-2">
+                              <ShieldCheck className="h-5 w-5 text-blue-600" />
+                              <span className="font-semibold text-blue-900">שדרוג מנוי</span>
+                            </div>
+                            <p className="text-blue-700 text-sm">
+                              {subscriptionValidation.message}
+                            </p>
+                          </div>
+                        )}
+                        <CardcomPaymentForm
+                          amount={getAmount()}
+                          originalAmount={getOriginalAmount()}
+                          planType={selectedPlan}
+                          discountAmount={appliedCoupon?.discountAmount}
+                          couponCode={appliedCoupon?.coupon?.code}
+                          onSuccess={handlePaymentSuccess}
+                          onCancel={handlePaymentCancel}
+                        />
+                      </>
+                    )
                   )}
                 </div>
 
