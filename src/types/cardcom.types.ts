@@ -77,10 +77,7 @@ export interface CardComErrorInfo {
 
 export interface PaymentInitRequest {
   planType: 'daily' | 'weekly' | 'monthly' | 'quarterly';
-  amount: number;
-  originalAmount: number;
-  discountAmount?: number;
-  couponCode?: string;
+  amount: number; // Final amount after discount calculation
   userEmail?: string;
   userName?: string;
   userId: string;

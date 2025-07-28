@@ -75,19 +75,13 @@ const CardcomPaymentForm = ({
     try {
       console.log('🚀 Initializing CardCom payment:', {
         planType,
-        amount,
-        originalAmount,
-        discountAmount,
-        couponCode,
+        amount, // Final amount after discount
         userId: currentUser.id
       });
 
       const paymentRequest: PaymentInitRequest = {
         planType,
-        amount,
-        originalAmount,
-        discountAmount,
-        couponCode,
+        amount, // This is already the final amount after discount
         userId: currentUser.id,
         userEmail: currentUser.email || undefined,
         userName: currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]
