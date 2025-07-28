@@ -1,200 +1,203 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ShieldCheck } from "lucide-react";
-import { getIframeUrl } from "@/services/cardcomService";
+import { ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
+import { initializePayment } from "@/services/cardcomService";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useAuth } from "@/context/AuthContext";
+import type { PaymentInitRequest } from "@/types/cardcom.types";
 
 interface CardcomPaymentFormProps {
   amount: number;
+  originalAmount: number;
+  planType: 'daily' | 'weekly' | 'monthly' | 'quarterly';
+  discountAmount?: number;
+  couponCode?: string;
   onSuccess: () => void;
   onCancel: () => void;
 }
 
-const CardcomPaymentForm = ({ amount, onSuccess, onCancel }: CardcomPaymentFormProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+const CardcomPaymentForm = ({ 
+  amount, 
+  originalAmount, 
+  planType, 
+  discountAmount, 
+  couponCode, 
+  onSuccess, 
+  onCancel 
+}: CardcomPaymentFormProps) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [useIframe, setUseIframe] = useState(false);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   
   const { trackBeginCheckout, trackPurchase, trackError: trackAnalyticsError, trackButtonClick } = useAnalytics();
-  
-  // In a real implementation, terminal number would come from environment variables
-  const terminalNumber = "TERMINAL_NUMBER"; // Replace with actual terminal number
+  const { currentUser } = useAuth();
   
   // Track payment form view on component mount
   useEffect(() => {
     trackBeginCheckout({
-      plan_type: 'monthly' as const, // This should be passed as a prop in real implementation
+      plan_type: planType,
       plan_price: amount,
       payment_status: 'initiated'
     });
-  }, [amount, trackBeginCheckout]);
+  }, [amount, planType, trackBeginCheckout]);
   
-  useEffect(() => {
-    // Set up message listener for iframe communication
-    const handleMessage = (event: MessageEvent) => {
-      // Verify origin (should be Cardcom's domain)
-      // In production, verify this is from Cardcom's domain
-      
-      try {
-        const data = event.data;
-        
-        if (data.status === "success") {
-          // Track successful payment
-          trackPurchase({
-            currency: 'ILS',
-            value: amount,
-            transaction_id: data.transaction_id || `cardcom_${Date.now()}`,
-            payment_method: 'cardcom',
-            items: [{
-              item_id: 'premium_plan',
-              item_name: 'Premium Subscription',
-              category: 'subscription',
-              price: amount,
-              quantity: 1
-            }]
-          });
-          
-          // Payment successful
-          onSuccess();
-        } else if (data.status === "cancel" || data.status === "failure") {
-          // Track payment failure/cancellation
-          trackAnalyticsError(new Error(`Payment ${data.status}`), 'CardcomPayment', {
-            amount,
-            status: data.status,
-            error_message: data.error_message || `Payment ${data.status}`
-          });
-          
-          // Payment cancelled or failed
-          onCancel();
-        }
-      } catch (err) {
-        console.error("Error processing message from payment iframe", err);
-        trackAnalyticsError(err instanceof Error ? err : new Error('Payment iframe message error'), 'CardcomPayment', {
-          amount,
-          action: 'iframe_message_processing'
-        });
-      }
-    };
-    
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [onSuccess, onCancel]);
-  
-  // Handle iframe load events
-  const handleIframeLoad = () => {
-    setIsLoading(false);
-  };
-  
-  // Handle iframe errors
-  const handleIframeError = () => {
-    setIsLoading(false);
-    setError("אירעה שגיאה בטעינת טופס התשלום. אנא נסו שוב מאוחר יותר.");
-    
-    // Track iframe loading error
-    trackAnalyticsError(new Error('Payment iframe failed to load'), 'CardcomPayment', {
-      amount,
-      action: 'iframe_load_error'
+  // Handle successful payment (called when user returns from CardCom)
+  const handlePaymentReturn = () => {
+    // Track successful payment
+    trackPurchase({
+      currency: 'ILS',
+      value: amount,
+      transaction_id: `cardcom_${Date.now()}`,
+      payment_method: 'cardcom',
+      items: [{
+        item_id: 'premium_plan',
+        item_name: 'Premium Subscription',
+        category: 'subscription',
+        price: amount,
+        quantity: 1
+      }]
     });
+    
+    onSuccess();
   };
   
-  // For demo purposes, simulate direct payment without iframe
-  const handleDirectPayment = () => {
+  // Initialize CardCom payment
+  const initializeCardComPayment = async () => {
+    if (!currentUser) {
+      setError('אנא התחבר לחשבון כדי להמשיך בתשלום');
+      return;
+    }
+
     setIsLoading(true);
+    setError(null);
     
-    // Track direct payment button click
-    trackButtonClick('direct_payment', 'cardcom_payment_form');
-    
-    // Simulate payment processing
-    setTimeout(() => {
-      // Track successful payment simulation
-      trackPurchase({
-        currency: 'ILS',
-        value: amount,
-        transaction_id: `demo_${Date.now()}`,
-        payment_method: 'demo',
-        items: [{
-          item_id: 'premium_plan',
-          item_name: 'Premium Subscription',
-          category: 'subscription',
-          price: amount,
-          quantity: 1
-        }]
+    try {
+      console.log('🚀 Initializing CardCom payment:', {
+        planType,
+        amount,
+        originalAmount,
+        discountAmount,
+        couponCode,
+        userId: currentUser.id
       });
+
+      const paymentRequest: PaymentInitRequest = {
+        planType,
+        amount,
+        originalAmount,
+        discountAmount,
+        couponCode,
+        userId: currentUser.id,
+        userEmail: currentUser.email || undefined,
+        userName: currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]
+      };
+
+      const result = await initializePayment(paymentRequest);
       
+      if (result.success && result.paymentUrl) {
+        console.log('✅ Payment page created, redirecting:', result.paymentUrl);
+        
+        // Track payment initiation
+        trackButtonClick('payment_redirect', 'cardcom_payment_form');
+        
+        setIsRedirecting(true);
+        
+        // Redirect to CardCom payment page
+        window.location.href = result.paymentUrl;
+      } else {
+        throw new Error(result.error || 'Failed to create payment page');
+      }
+    } catch (error) {
+      console.error('❌ Payment initialization error:', error);
+      setError(
+        error instanceof Error 
+          ? `שגיאה ביצירת עמוד התשלום: ${error.message}`
+          : 'אירעה שגיאה ביצירת עמוד התשלום. אנא נסו שוב.'
+      );
+      
+      trackAnalyticsError(
+        error instanceof Error ? error : new Error('Payment initialization failed'), 
+        'CardcomPayment', 
+        {
+          amount,
+          planType,
+          action: 'payment_initialization'
+        }
+      );
+    } finally {
       setIsLoading(false);
-      onSuccess();
-    }, 1500);
+    }
   };
   
-  // Generate iframe URL
-  const iframeUrl = getIframeUrl(amount, "he", { 
-    terminalNumber, 
-    userName: "USERNAME" 
-  });
+  // Handle retry after error
+  const handleRetry = () => {
+    setError(null);
+    trackButtonClick('retry_payment', 'cardcom_payment_form');
+    initializeCardComPayment();
+  };
   
   return (
-    <div className="w-full">
-      {useIframe ? (
-        <>
-          {isLoading && (
-            <div className="text-center p-4">
-              <div className="spinner mb-2"></div>
-              <p>טוען טופס תשלום...</p>
-            </div>
-          )}
-          
-          {error && (
-            <div className="text-red-500 p-4 text-center">
-              {error}
-              <Button 
-                onClick={() => {
-                  setError(null);
-                  trackButtonClick('retry_payment', 'cardcom_payment_form');
-                }} 
-                variant="outline" 
-                className="mt-2"
-              >
-                נסה שוב
-              </Button>
-            </div>
-          )}
-          
-          <iframe
-            ref={iframeRef}
-            src={iframeUrl}
-            width="100%"
-            height="400"
-            frameBorder="0"
-            style={{ 
-              display: isLoading || error ? 'none' : 'block', 
-              width: '100%', 
-              minHeight: '400px' 
-            }}
-            onLoad={handleIframeLoad}
-            onError={handleIframeError}
-            title="טופס תשלום מאובטח"
-          />
-        </>
-      ) : (
-        <Button 
-          onClick={handleDirectPayment}
-          disabled={isLoading}
-          className="w-full py-6 bg-electric-blue hover:bg-blue-600 text-lg flex items-center gap-2 justify-center"
-        >
-          {isLoading ? (
-            <>מעבד תשלום...</>
-          ) : (
-            <>
-              <ShieldCheck className="h-5 w-5" />
-              לתשלום מאובטח {amount} ₪
-            </>
-          )}
-        </Button>
+    <div className="w-full space-y-4">
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <p className="text-red-700 text-sm">{error}</p>
+            <Button 
+              onClick={handleRetry}
+              variant="outline" 
+              size="sm"
+              className="mt-2 text-red-600 border-red-200 hover:bg-red-50"
+            >
+              נסה שוב
+            </Button>
+          </div>
+        </div>
       )}
+      
+      {isRedirecting && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+          <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-blue-600" />
+          <p className="text-blue-700 text-sm">מעביר לעמוד התשלום המאובטח...</p>
+        </div>
+      )}
+      
+      <Button 
+        onClick={initializeCardComPayment}
+        disabled={isLoading || isRedirecting || !currentUser}
+        className="w-full py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg font-semibold flex items-center gap-3 justify-center shadow-lg transition-all duration-200"
+      >
+        {isLoading ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            יוצר עמוד תשלום...
+          </>
+        ) : isRedirecting ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            מעביר לתשלום...
+          </>
+        ) : (
+          <>
+            <ShieldCheck className="h-5 w-5" />
+            תשלום מאובטח {amount} ₪
+          </>
+        )}
+      </Button>
+      
+      <div className="text-center text-xs text-gray-500">
+        <p>התשלום מתבצע באתר המאובטח של CardCom</p>
+        <p>לא נשמרים נתוני אשראי באתר שלנו</p>
+      </div>
     </div>
   );
 };
 
 export default CardcomPaymentForm;
+
+// Handle successful return from CardCom (this should be called from success page)
+export const handleCardComReturn = (onSuccess: () => void) => {
+  // This function can be called from the success page to trigger the success callback
+  onSuccess();
+};
