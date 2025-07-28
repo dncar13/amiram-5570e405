@@ -34,7 +34,7 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     const urls = getCardComUrls();
     const returnValue = generateReturnValue(request.userId, request.planType);
     
-    // Use the amount as final amount (it's already calculated with discount)
+    // The amount is already the final amount after discount calculation
     const finalAmount = request.amount;
     
     // CardCom minimum amount validation (most payment processors require minimum 1-5 ILS)
@@ -226,8 +226,7 @@ export const processWebhook = (payload: any): LowProfileResult | null => {
  * 1. Initialize Payment:
  *    const result = await initializePayment({
  *      planType: 'monthly',
- *      amount: 99,
- *      originalAmount: 99,
+ *      amount: 99, // Final amount after discount
  *      userId: 'user-id',
  *      userEmail: 'user@example.com'
  *    });
