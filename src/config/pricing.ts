@@ -25,21 +25,50 @@ export const getPlanDuration = (planType: PlanType): number => {
   return PLAN_DURATIONS[planType];
 };
 
+// Discount validation rules
+export const DISCOUNT_RULES = {
+  MAX_DISCOUNT_PERCENT: 50, // Maximum 50% discount
+  MIN_FINAL_PRICE: 5, // Minimum final price in NIS
+  MIN_PRICE_PERCENT: 20 // Final price cannot be less than 20% of original
+} as const;
+
 export const calculateDiscount = (
   planType: PlanType,
   discountType: 'percent' | 'amount',
   discountValue: number
-): { discountAmount: number; finalAmount: number } => {
+): { discountAmount: number; finalAmount: number; valid: boolean; error?: string } => {
   const originalAmount = getPlanPrice(planType);
   let discountAmount = 0;
 
   if (discountType === 'percent') {
+    // Enforce maximum discount percentage
+    if (discountValue > DISCOUNT_RULES.MAX_DISCOUNT_PERCENT) {
+      return {
+        discountAmount: 0,
+        finalAmount: originalAmount,
+        valid: false,
+        error: `הנחה מקסימלית מותרת: ${DISCOUNT_RULES.MAX_DISCOUNT_PERCENT}%`
+      };
+    }
     discountAmount = Math.round(originalAmount * (discountValue / 100));
   } else if (discountType === 'amount') {
     discountAmount = Math.min(discountValue, originalAmount);
   }
 
-  const finalAmount = Math.max(0, originalAmount - discountAmount);
+  let finalAmount = Math.max(0, originalAmount - discountAmount);
+  
+  // Enforce minimum final price
+  if (finalAmount < DISCOUNT_RULES.MIN_FINAL_PRICE) {
+    finalAmount = DISCOUNT_RULES.MIN_FINAL_PRICE;
+    discountAmount = originalAmount - finalAmount;
+  }
+  
+  // Enforce minimum price percentage
+  const minAllowedPrice = Math.round(originalAmount * (DISCOUNT_RULES.MIN_PRICE_PERCENT / 100));
+  if (finalAmount < minAllowedPrice) {
+    finalAmount = minAllowedPrice;
+    discountAmount = originalAmount - finalAmount;
+  }
 
-  return { discountAmount, finalAmount };
+  return { discountAmount, finalAmount, valid: true };
 };
