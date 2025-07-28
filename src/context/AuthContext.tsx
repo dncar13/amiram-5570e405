@@ -547,8 +547,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error } = await supabase.auth.signOut();
       
       if (error) {
-        // Handle "Auth session missing" error gracefully
-        if (error.message === 'Auth session missing') {
+        // Handle "Auth session missing" error gracefully (with various message formats)
+        if (error.message.includes('Auth session missing') || 
+            error.name === 'AuthSessionMissingError' ||
+            error.message.includes('Session not found')) {
           console.log("⚠️ Auth session missing - clearing state anyway");
           setAuthState({ 
             session: null, 
