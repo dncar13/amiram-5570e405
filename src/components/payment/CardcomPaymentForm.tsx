@@ -5,6 +5,7 @@ import { ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
 import { initializePayment } from "@/services/cardcomService";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useAuth } from "@/context/AuthContext";
+import { couponValidationService } from "@/utils/couponValidationService";
 import type { PaymentInitRequest } from "@/types/cardcom.types";
 
 interface CardcomPaymentFormProps {
@@ -71,6 +72,9 @@ const CardcomPaymentForm = ({
 
     setIsLoading(true);
     setError(null);
+    
+    // Lock coupon session to prevent modifications during payment
+    couponValidationService.lockCouponSession();
     
     try {
       console.log('🚀 Initializing CardCom payment:', {

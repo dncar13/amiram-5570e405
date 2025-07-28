@@ -1,5 +1,5 @@
 import { supabase } from '@/integrations/supabase/client';
-import { PLAN_PRICES, calculateDiscount, type PlanType } from '@/config/pricing';
+import { PLAN_PRICES, calculateDiscount, type PlanType, DISCOUNT_RULES } from '@/config/pricing';
 
 interface CouponValidationResult {
   valid: boolean;
@@ -13,6 +13,7 @@ interface CouponValidationResult {
   error?: string;
   discountAmount?: number;
   finalAmount?: number;
+  sessionLocked?: boolean;
 }
 
 interface Coupon {
@@ -29,7 +30,66 @@ interface Coupon {
   assigned_user_email: string | null;
 }
 
+// Session-based coupon tracking to prevent stacking
+const COUPON_SESSION_KEY = 'applied_coupon_session';
+const SESSION_DURATION = 30 * 60 * 1000; // 30 minutes
+
+interface CouponSession {
+  couponId: string;
+  couponCode: string;
+  planType: string;
+  appliedAt: number;
+  locked: boolean;
+}
+
+const getCouponSession = (): CouponSession | null => {
+  try {
+    const stored = localStorage.getItem(COUPON_SESSION_KEY);
+    if (!stored) return null;
+    
+    const session: CouponSession = JSON.parse(stored);
+    
+    // Check if session expired
+    if (Date.now() - session.appliedAt > SESSION_DURATION) {
+      localStorage.removeItem(COUPON_SESSION_KEY);
+      return null;
+    }
+    
+    return session;
+  } catch {
+    localStorage.removeItem(COUPON_SESSION_KEY);
+    return null;
+  }
+};
+
+const setCouponSession = (couponId: string, couponCode: string, planType: string, locked: boolean = false) => {
+  const session: CouponSession = {
+    couponId,
+    couponCode,
+    planType,
+    appliedAt: Date.now(),
+    locked
+  };
+  localStorage.setItem(COUPON_SESSION_KEY, JSON.stringify(session));
+};
+
+const clearCouponSession = () => {
+  localStorage.removeItem(COUPON_SESSION_KEY);
+};
+
+const lockCouponSession = () => {
+  const session = getCouponSession();
+  if (session) {
+    session.locked = true;
+    localStorage.setItem(COUPON_SESSION_KEY, JSON.stringify(session));
+  }
+};
+
 export const couponValidationService = {
+  getCouponSession,
+  setCouponSession,
+  clearCouponSession,
+  lockCouponSession,
   async validateCoupon(
     code: string, 
     planType: string, 
@@ -41,6 +101,36 @@ export const couponValidationService = {
 
       if (!code || !planType) {
         return { valid: false, error: 'קוד קופון וסוג תוכנית נדרשים' };
+      }
+
+      // Check for existing coupon session to prevent stacking
+      const existingSession = getCouponSession();
+      if (existingSession) {
+        if (existingSession.locked) {
+          return { 
+            valid: false, 
+            error: 'תשלום בתהליך - לא ניתן לשנות קופון',
+            sessionLocked: true 
+          };
+        }
+        
+        if (existingSession.couponCode !== code.toUpperCase()) {
+          return { 
+            valid: false, 
+            error: 'יש כבר קופון פעיל. בטל אותו לפני החלת קופון חדש' 
+          };
+        }
+        
+        if (existingSession.planType !== planType) {
+          // Plan changed, clear session and continue validation
+          clearCouponSession();
+        } else {
+          // Same coupon and plan, return cached result
+          return { 
+            valid: false, 
+            error: 'קופון זה כבר הוחל' 
+          };
+        }
       }
 
       // Get coupon details from database
@@ -104,8 +194,8 @@ export const couponValidationService = {
         }
       }
 
-      // Calculate discount using centralized pricing
-      const { discountAmount, finalAmount } = calculateDiscount(
+      // Calculate discount using centralized pricing with validation
+      const discountResult = calculateDiscount(
         planType as PlanType,
         coupon.discount_type as 'percent' | 'amount',
         coupon.discount_value
@@ -117,15 +207,26 @@ export const couponValidationService = {
         originalAmount, 
         discountType: coupon.discount_type, 
         discountValue: coupon.discount_value,
-        discountAmount,
-        finalAmount
+        discountAmount: discountResult.discountAmount,
+        finalAmount: discountResult.finalAmount,
+        valid: discountResult.valid
       });
 
-      // Validation check
+      // Check if discount calculation was valid
+      if (!discountResult.valid) {
+        return { valid: false, error: discountResult.error || 'הנחה לא תקינה' };
+      }
+
+      const { discountAmount, finalAmount } = discountResult;
+
+      // Additional validation check
       if (finalAmount > originalAmount) {
         console.error('🚨 CALCULATION ERROR: Final amount is higher than original!');
         return { valid: false, error: 'שגיאה בחישוב הנחה' };
       }
+
+      // Set coupon session to prevent stacking
+      setCouponSession(coupon.id, coupon.code, planType);
 
       return {
         valid: true,
@@ -219,7 +320,10 @@ export const couponValidationService = {
         // Continue as success since usage was recorded
       }
 
-      console.log('✅ Coupon used successfully');
+      // Lock the coupon session to prevent further modifications
+      lockCouponSession();
+      
+      console.log('✅ Coupon used successfully and session locked');
       return { success: true };
 
     } catch (error) {

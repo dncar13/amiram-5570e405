@@ -39,6 +39,7 @@ import CardcomPaymentForm from "@/components/payment/CardcomPaymentForm";
 import SuccessDialog from "@/components/premium/SuccessDialog";
 import { SubscriptionManager } from "@/components/subscription/SubscriptionManager";
 import { useCoupon } from "@/hooks/useCoupon";
+import { couponValidationService } from "@/utils/couponValidationService";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { SupabaseAuthService } from "@/services/supabaseAuth";
 import { freeCouponService } from "@/services/freeCouponService";
@@ -54,6 +55,7 @@ const Premium = () => {
   const [couponError, setCouponError] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isCouponLocked, setIsCouponLocked] = useState(false);
   
   const { validateCoupon, useCoupon: applyCouponForPayment, clearCoupon, appliedCoupon, isValidating } = useCoupon();
   const { trackPremiumView, trackPremiumPurchase, trackBeginCheckout, trackCouponApplied, trackButtonClick, trackError, trackFormSubmit } = useAnalytics();
@@ -158,7 +160,22 @@ const Premium = () => {
     
     // Track premium page view
     trackPremiumView(selectedPlan);
-  }, [selectedPlan, trackPremiumView]);
+    
+    // Check coupon session status
+    const session = couponValidationService.getCouponSession();
+    if (session) {
+      setIsCouponLocked(session.locked);
+      
+      // If plan changed, clear coupon and session
+      if (session.planType !== selectedPlan) {
+        couponValidationService.clearCouponSession();
+        clearCoupon();
+        setCouponCode('');
+        setCouponError('');
+        setIsCouponLocked(false);
+      }
+    }
+  }, [selectedPlan, trackPremiumView, clearCoupon]);
 
   const handlePaymentSuccess = async () => {
     if (!currentUser?.id) {
@@ -340,6 +357,8 @@ const Premium = () => {
     clearCoupon();
     setCouponCode('');
     setCouponError('');
+    couponValidationService.clearCouponSession();
+    setIsCouponLocked(false);
   };
 
   const getAmount = () => {
@@ -617,11 +636,11 @@ const Premium = () => {
                       <div className="flex gap-2 mb-2">
                         <Input
                           type="text"
-                          placeholder="הכניסו קוד קופון"
+                          placeholder={isCouponLocked ? "תשלום בתהליך" : "הכניסו קוד קופון"}
                           value={couponCode}
                           onChange={(e) => setCouponCode(e.target.value)}
-                          className="bg-white border-gray-300"
-                          disabled={isValidating}
+                          className={`bg-white border-gray-300 ${isCouponLocked ? 'opacity-50' : ''}`}
+                          disabled={isValidating || isCouponLocked || appliedCoupon?.valid}
                         />
                         <Button 
                           onClick={() => {
@@ -629,9 +648,9 @@ const Premium = () => {
                             trackButtonClick('apply_coupon', 'premium_payment');
                           }}
                           className="bg-purple-600 text-white hover:bg-purple-700"
-                          disabled={isValidating || !couponCode.trim()}
+                          disabled={isValidating || !couponCode.trim() || isCouponLocked || appliedCoupon?.valid}
                         >
-                          {isValidating ? "בודק..." : "החל"}
+                          {isValidating ? "בודק..." : isCouponLocked ? "נעול" : "החל"}
                         </Button>
                       </div>
                       {couponError && (
@@ -661,8 +680,16 @@ const Premium = () => {
                           </Button>
                         </div>
                       )}
-                      <div className="mt-3 text-xs text-gray-600">
-                        קודים לדוגמה: WELCOME10, SAVE20, STUDENT25
+                      <div className="mt-3 text-xs text-gray-600 space-y-1">
+                        <div>קודים לדוגמה: WELCOME10, SAVE20, STUDENT25</div>
+                        <div className="text-gray-500">
+                          מדיניות הנחות: הנחה מקסימלית 50%, מחיר מינימלי 5₪, קופון אחד לכל רכישה
+                        </div>
+                        {isCouponLocked && (
+                          <div className="text-orange-600 font-medium">
+                            🔒 הקופון נעול עד להשלמת התשלום
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
