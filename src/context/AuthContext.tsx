@@ -525,9 +525,43 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.log("🚪 Initiating logout...");
       setAuthState(prev => ({ ...prev, loading: true, loadingState: 'signing-out' }));
       
+      // Check if there's an active session before trying to sign out
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        console.log("⚠️ No active session found - clearing local state only");
+        // No session exists, just clear local state
+        setAuthState({ 
+          session: null, 
+          loading: false, 
+          loadingState: 'ready', 
+          error: null,
+          initialized: true 
+        });
+        resetUserStates();
+        showAuthToast('info', 'התנתקת בהצלחה', 'נתראה בקרוב!');
+        return;
+      }
+      
+      // Session exists, proceed with sign out
       const { error } = await supabase.auth.signOut();
       
       if (error) {
+        // Handle "Auth session missing" error gracefully
+        if (error.message === 'Auth session missing') {
+          console.log("⚠️ Auth session missing - clearing state anyway");
+          setAuthState({ 
+            session: null, 
+            loading: false, 
+            loadingState: 'ready', 
+            error: null,
+            initialized: true 
+          });
+          resetUserStates();
+          showAuthToast('info', 'התנתקת בהצלחה', 'נתראה בקרוב!');
+          return;
+        }
+        
         console.error("❌ Logout error:", error);
         showAuthToast('error', 'שגיאה בהתנתקות', error.message);
         setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error }));
@@ -538,8 +572,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
     } catch (error) {
       console.error("❌ Logout catch error:", error);
-      setAuthState(prev => ({ ...prev, loading: false, loadingState: 'error', error: error as Error }));
+      // Even on error, clear the session state to allow user to continue
+      setAuthState({ 
+        session: null, 
+        loading: false, 
+        loadingState: 'ready', 
+        error: null,
+        initialized: true 
+      });
       resetUserStates();
+      showAuthToast('info', 'התנתקת בהצלחה', 'נתראה בקרוב!');
     }
   }, [showAuthToast, resetUserStates]);
 
