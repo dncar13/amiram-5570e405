@@ -14,7 +14,7 @@ export const CARDCOM_CONFIG = {
   // URLs for payment flow (use environment or fallback to production)
   SUCCESS_URL: typeof window !== 'undefined' ? `${window.location.origin}/thankyou` : 'https://amiram.net/thankyou',
   FAILURE_URL: typeof window !== 'undefined' ? `${window.location.origin}/payment-failed` : 'https://amiram.net/payment-failed',
-  WEBHOOK_URL: 'https://amiram.net/functions/v1/cardcom-webhook', // Supabase Edge Function URL
+  WEBHOOK_URL: 'https://llyunioulzfbgqvmeaxq.supabase.co/functions/v1/cardcom-webhook', // Supabase Edge Function URL
   
   // Payment settings
   DEFAULT_CURRENCY_ISO: 1, // ILS
