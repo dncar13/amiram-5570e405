@@ -124,3 +124,12 @@ security-reports/
 *.sarif
 *.json.security
 security/reports/
+
+# ==========================
+# API DOCUMENTATION
+# ==========================
+# Swagger/OpenAPI generated files
+swagger.json
+swagger.yaml
+openapi.json
+openapi.yaml
