@@ -14,6 +14,7 @@ import SavedQuestionsTab from "@/components/account/SavedQuestionsTab";
 import HistoryTab from "@/components/account/HistoryTab";
 import OverviewTab from "@/components/account/OverviewTab";
 import AdminTab from "@/components/account/AdminTab";
+import PurchaseHistoryTab from "@/components/account/PurchaseHistoryTab";
 
 const UserAccount = () => {
   const { currentUser, userData, isAdmin, logout } = useAuth();
@@ -29,7 +30,7 @@ const UserAccount = () => {
     
     const params = new URLSearchParams(location.search);
     const tab = params.get("tab");
-    if (tab && ["overview", "saved", "history", "admin", "settings"].includes(tab)) {
+    if (tab && ["overview", "saved", "history", "purchases", "admin", "settings"].includes(tab)) {
       setActiveTab(tab);
     }
   }, [currentUser, navigate, location.search]);
@@ -62,8 +63,9 @@ const UserAccount = () => {
             </div>
             
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className={`grid ${isAdmin ? 'grid-cols-5' : 'grid-cols-4'} mb-8`}>
+              <TabsList className={`grid ${isAdmin ? 'grid-cols-6' : 'grid-cols-5'} mb-8`}>
                 <TabsTrigger value="settings">הגדרות</TabsTrigger>
+                <TabsTrigger value="purchases">רכישות</TabsTrigger>
                 <TabsTrigger value="history">התקדמות</TabsTrigger>
                 <TabsTrigger value="saved">שמורות</TabsTrigger>
                 <TabsTrigger value="overview">סקירה</TabsTrigger>
@@ -82,6 +84,10 @@ const UserAccount = () => {
               
               <TabsContent value="history">
                 <HistoryTab />
+              </TabsContent>
+              
+              <TabsContent value="purchases">
+                <PurchaseHistoryTab />
               </TabsContent>
               
               <TabsContent value="settings">

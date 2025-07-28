@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -14,12 +14,30 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { PLAN_PRICES } from "@/config/pricing";
 
 const ThankYou = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { currentUser, updatePremiumStatus } = useAuth();
   const { trackPremiumPurchase, trackButtonClick } = useAnalytics();
   const [isUpdating, setIsUpdating] = useState(true);
+
+  // Extract transaction details from URL parameters
+  const planType = searchParams.get('plan') || 'monthly';
+  const transactionId = searchParams.get('transaction_id');
+  const amount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[planType as keyof typeof PLAN_PRICES] || 99;
+
+  // Helper function to get plan display name in Hebrew
+  const getPlanDisplayName = (plan: string): string => {
+    const displayNames: Record<string, string> = {
+      'daily': 'יום אחד',
+      'weekly': 'שבוע אחד', 
+      'monthly': 'חודש אחד',
+      'quarterly': '3 חודשים'
+    };
+    return displayNames[plan] || plan;
+  };
 
   useEffect(() => {
     // Update premium status after successful payment
@@ -28,11 +46,12 @@ const ThankYou = () => {
         try {
           console.log('🎉 Payment successful, updating premium status');
           
-          // Track successful purchase
+          // Track successful purchase with actual transaction details
           trackPremiumPurchase({
-            plan_type: 'monthly', // This should be passed from URL params in real implementation
-            plan_price: 99, // This should be passed from URL params
-            payment_status: 'completed'
+            plan_type: planType,
+            plan_price: amount,
+            payment_status: 'completed',
+            transaction_id: transactionId
           });
           
           // Update premium status in context
@@ -94,6 +113,27 @@ const ThankYou = () => {
                 <p className="text-xl text-gray-600">
                   ברוך הבא למועדון הפרימיום של אמיר"ם
                 </p>
+              </div>
+
+              {/* Purchase Details */}
+              <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                <h3 className="text-lg font-semibold text-blue-900 mb-3">פרטי הרכישה</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">תוכנית:</span>
+                    <span className="font-medium">{getPlanDisplayName(planType)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">סכום ששולם:</span>
+                    <span className="font-medium">{amount} ₪</span>
+                  </div>
+                  {transactionId && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">מספר עסקה:</span>
+                      <span className="font-mono text-xs">{transactionId}</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Features Unlocked */}

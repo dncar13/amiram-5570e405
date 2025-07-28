@@ -12,7 +12,7 @@ export const CARDCOM_CONFIG = {
   API_PASSWORD: '9YYTm4iSvzW3nhGxGzu6',
   
   // URLs for payment flow (use environment or fallback to production)
-  SUCCESS_URL: typeof window !== 'undefined' ? `${window.location.origin}/thankyou` : 'https://amiram.net/thankyou',
+  SUCCESS_URL: typeof window !== 'undefined' ? `${window.location.origin}/thank-you` : 'https://amiram.net/thank-you',
   FAILURE_URL: typeof window !== 'undefined' ? `${window.location.origin}/payment-failed` : 'https://amiram.net/payment-failed',
   WEBHOOK_URL: 'https://llyunioulzfbgqvmeaxq.supabase.co/functions/v1/cardcom-webhook', // Supabase Edge Function URL
   
@@ -59,7 +59,7 @@ export const getCardComUrls = (baseUrl?: string) => {
   const base = baseUrl || (typeof window !== 'undefined' ? window.location.origin : 'https://amiram.net');
   
   return {
-    successUrl: `${base}/thankyou`,
+    successUrl: `${base}/thank-you`,
     failureUrl: `${base}/payment-failed`,
     webhookUrl: CARDCOM_CONFIG.WEBHOOK_URL, // Always use the Supabase edge function URL
   };
