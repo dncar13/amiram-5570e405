@@ -64,20 +64,13 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
         Email: request.userEmail,
         Products: [{
           Description: `גישה פרימיום - ${getPlanDisplayName(request.planType)}`,
-          UnitCost: request.originalAmount || request.amount,
+          UnitCost: finalAmount,
           Quantity: 1
         }]
       }
     };
     
-    // Add discount information if applicable
-    if (request.discountAmount && request.discountAmount > 0) {
-      createRequest.Document!.Products!.push({
-        Description: `הנחה${request.couponCode ? ` - קופון ${request.couponCode}` : ''}`,
-        UnitCost: -request.discountAmount,
-        Quantity: 1
-      });
-    }
+    // Note: The amount is already calculated with discount, no need to add discount as separate product
     
     const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/Create`, {
       method: 'POST',
