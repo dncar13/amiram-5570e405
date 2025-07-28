@@ -1,101 +1,243 @@
 
 /**
- * Cardcom Payment Integration Service
+ * CardCom Payment Integration Service
  * 
- * This is a placeholder service for integrating with Cardcom payment gateway.
- * In a production environment, this would be replaced with actual API calls to Cardcom.
+ * Complete implementation for CardCom payment gateway integration
+ * Uses CardCom API v11.0 LowProfile endpoints
  */
 
-interface CardcomConfig {
-  terminalNumber: string;
-  userName: string;
-  apiName?: string;
-}
+import type {
+  CreateLowProfileRequest,
+  CreateLowProfileResponse,
+  GetLowProfileResult,
+  LowProfileResult,
+  PaymentInitRequest,
+  PaymentInitResponse,
+  PaymentStatus,
+  CardComErrorInfo
+} from '@/types/cardcom.types';
+import { CARDCOM_CONFIG, getCardComCredentials, generateReturnValue, getCardComUrls } from '@/config/cardcom.config';
+import { PLAN_PRICES } from '@/config/pricing';
 
-interface PaymentRequest {
-  amount: number;
-  currency: string;
-  language: string;
-  productName: string;
-  successUrl: string;
-  cancelUrl: string;
-  failureUrl: string;
-}
+// API Base URL
+const API_BASE_URL = CARDCOM_CONFIG.API_URL;
 
-interface PaymentResponse {
-  success: boolean;
-  transactionId?: string;
-  redirectUrl?: string;
-  errorMessage?: string;
-}
-
-// Default config - would be replaced with actual credentials
-const defaultConfig: CardcomConfig = {
-  terminalNumber: "TERMINAL_NUMBER", // Replace with actual terminal number
-  userName: "USERNAME", // Replace with actual username
-  apiName: "API_NAME" // Optional, replace if needed
+/**
+ * Initialize payment with CardCom LowProfile API
+ * Creates a payment page and returns the URL for user redirection
+ */
+export const initializePayment = async (request: PaymentInitRequest): Promise<PaymentInitResponse> => {
+  try {
+    console.log('🔄 Initializing CardCom payment:', request);
+    
+    const credentials = getCardComCredentials();
+    const urls = getCardComUrls();
+    const returnValue = generateReturnValue(request.userId, request.planType);
+    
+    const createRequest: CreateLowProfileRequest = {
+      TerminalNumber: credentials.terminalNumber,
+      ApiName: credentials.apiName,
+      Operation: 'ChargeOnly',
+      ReturnValue: returnValue,
+      Amount: request.amount,
+      SuccessRedirectUrl: urls.successUrl,
+      FailedRedirectUrl: urls.failureUrl,
+      WebHookUrl: urls.webhookUrl,
+      ProductName: `גישה פרימיום - ${getPlanDisplayName(request.planType)}`,
+      Language: CARDCOM_CONFIG.DEFAULT_LANGUAGE,
+      ISOCoinId: CARDCOM_CONFIG.DEFAULT_CURRENCY_ISO,
+      Document: {
+        Name: request.userName || 'לקוח',
+        Email: request.userEmail,
+        Products: [{
+          Description: `גישה פרימיום - ${getPlanDisplayName(request.planType)}`,
+          UnitCost: request.amount,
+          Quantity: 1
+        }]
+      }
+    };
+    
+    // Add discount information if applicable
+    if (request.discountAmount && request.discountAmount > 0) {
+      createRequest.Document!.Products!.push({
+        Description: `הנחה${request.couponCode ? ` - קופון ${request.couponCode}` : ''}`,
+        UnitCost: -request.discountAmount,
+        Quantity: 1
+      });
+    }
+    
+    const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/Create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(createRequest)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result: CreateLowProfileResponse = await response.json();
+    
+    console.log('✅ CardCom response:', result);
+    
+    if (result.ResponseCode === 0 && result.Url) {
+      return {
+        success: true,
+        paymentUrl: result.Url,
+        lowProfileId: result.LowProfileId
+      };
+    } else {
+      return {
+        success: false,
+        error: result.Description || 'Failed to create payment page'
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ CardCom payment initialization error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    };
+  }
 };
 
 /**
- * Initialize payment with Cardcom
- * This would typically create a transaction and return a URL to redirect to
+ * Get payment result from CardCom using LowProfile ID
  */
-export const initializePayment = async (
-  request: PaymentRequest,
-  config: CardcomConfig = defaultConfig
-): Promise<PaymentResponse> => {
-  // In a real implementation, this would make API calls to Cardcom
-  console.log("Initializing payment with Cardcom", { request, config });
+export const getPaymentResult = async (lowProfileId: string): Promise<PaymentStatus> => {
+  try {
+    console.log('🔍 Getting CardCom payment result for:', lowProfileId);
+    
+    const credentials = getCardComCredentials();
+    
+    const request: GetLowProfileResult = {
+      TerminalNumber: credentials.terminalNumber,
+      ApiName: credentials.apiName,
+      LowProfileId: lowProfileId
+    };
+    
+    const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/GetLpResult`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(request)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result: LowProfileResult = await response.json();
+    
+    console.log('📊 CardCom payment result:', result);
+    
+    return {
+      success: result.ResponseCode === 0,
+      transactionId: result.TranzactionId,
+      amount: result.Amount,
+      error: result.ResponseCode !== 0 ? result.Description : undefined,
+      description: result.OperationResultDescription
+    };
+    
+  } catch (error) {
+    console.error('❌ Error getting CardCom payment result:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    };
+  }
+};
+
+/**
+ * Generate iframe URL for embedding CardCom payment form
+ * This creates the payment and returns an iframe-compatible URL
+ */
+export const getIframeUrl = async (request: PaymentInitRequest): Promise<string | null> => {
+  const result = await initializePayment(request);
   
-  // For demo purposes, simulate a successful response
-  return {
-    success: true,
-    transactionId: "MOCK_TRANSACTION_" + Date.now(),
-    redirectUrl: "https://secure.cardcom.solutions/Interface/LoadCSS.aspx?TerminalNumber=" + config.terminalNumber
+  if (result.success && result.paymentUrl) {
+    return result.paymentUrl;
+  }
+  
+  console.error('Failed to get iframe URL:', result.error);
+  return null;
+};
+
+/**
+ * Verify transaction status with CardCom
+ */
+export const verifyTransaction = async (lowProfileId: string): Promise<boolean> => {
+  try {
+    const result = await getPaymentResult(lowProfileId);
+    return result.success;
+  } catch (error) {
+    console.error('❌ Transaction verification error:', error);
+    return false;
+  }
+};
+
+/**
+ * Helper function to get plan display name in Hebrew
+ */
+const getPlanDisplayName = (planType: string): string => {
+  const displayNames: Record<string, string> = {
+    'daily': 'יום אחד',
+    'weekly': 'שבוע אחד', 
+    'monthly': 'חודש אחד',
+    'quarterly': '3 חודשים'
   };
+  return displayNames[planType] || planType;
 };
 
 /**
- * Generate an iframe URL for embedding Cardcom payment form
+ * Process webhook payload from CardCom
  */
-export const getIframeUrl = (
-  amount: number,
-  language: string = "he",
-  config: CardcomConfig = defaultConfig
-): string => {
-  // In a real implementation, this would generate the correct iframe URL
-  const baseUrl = "https://secure.cardcom.solutions/Interface/LoadCSS.aspx";
-  return `${baseUrl}?TerminalNumber=${config.terminalNumber}&Language=${language}&Amount=${amount}`;
+export const processWebhook = (payload: any): LowProfileResult | null => {
+  try {
+    // Validate the webhook payload structure
+    if (!payload.LowProfileId || !payload.TerminalNumber) {
+      console.error('❌ Invalid webhook payload structure');
+      return null;
+    }
+    
+    console.log('📥 Processing CardCom webhook:', payload);
+    return payload as LowProfileResult;
+  } catch (error) {
+    console.error('❌ Error processing webhook:', error);
+    return null;
+  }
 };
 
 /**
- * Verify transaction status with Cardcom
- */
-export const verifyTransaction = async (
-  transactionId: string,
-  config: CardcomConfig = defaultConfig
-): Promise<boolean> => {
-  // In a real implementation, this would verify the transaction with Cardcom API
-  console.log("Verifying transaction with Cardcom", { transactionId, config });
-  
-  // For demo purposes, always return success
-  return true;
-};
-
-/**
- * Implementation notes for integrating real Cardcom API:
+ * CardCom Integration Usage:
  * 
- * 1. For standard redirect flow:
- *    - Use the Low Profile API to create a transaction
- *    - Redirect user to the provided URL
- *    - Handle callbacks from Cardcom to your success/cancel/failure URLs
+ * 1. Initialize Payment:
+ *    const result = await initializePayment({
+ *      planType: 'monthly',
+ *      amount: 99,
+ *      originalAmount: 99,
+ *      userId: 'user-id',
+ *      userEmail: 'user@example.com'
+ *    });
  * 
- * 2. For iframe integration:
- *    - Embed the iframe using the URL from getIframeUrl()
- *    - Configure postMessage for communication
- *    - Listen for payment status messages from the iframe
+ * 2. Redirect user to payment page:
+ *    if (result.success) {
+ *      window.location.href = result.paymentUrl;
+ *    }
  * 
- * 3. API Documentation:
- *    - Refer to Cardcom developer documentation for complete API reference
- *    - Ensure proper error handling and validation
+ * 3. Handle webhook notifications:
+ *    const webhookResult = processWebhook(payload);
+ *    if (webhookResult && webhookResult.ResponseCode === 0) {
+ *      // Payment successful - create subscription
+ *    }
+ * 
+ * 4. For iframe integration:
+ *    const iframeUrl = await getIframeUrl(paymentRequest);
+ *    // Embed in iframe element
  */
