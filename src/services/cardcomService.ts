@@ -34,8 +34,8 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     const urls = getCardComUrls();
     const returnValue = generateReturnValue(request.userId, request.planType);
     
-    // Calculate final amount after discount
-    const finalAmount = request.amount - (request.discountAmount || 0);
+    // Use the amount as final amount (it's already calculated with discount)
+    const finalAmount = request.amount;
     
     // CardCom minimum amount validation (most payment processors require minimum 1-5 ILS)
     const MINIMUM_AMOUNT = 5; // 5 ILS minimum for CardCom
@@ -64,7 +64,7 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
         Email: request.userEmail,
         Products: [{
           Description: `גישה פרימיום - ${getPlanDisplayName(request.planType)}`,
-          UnitCost: request.amount,
+          UnitCost: request.originalAmount || request.amount,
           Quantity: 1
         }]
       }
