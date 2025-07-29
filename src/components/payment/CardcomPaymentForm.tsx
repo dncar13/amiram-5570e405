@@ -80,8 +80,14 @@ const CardcomPaymentForm = ({
       console.log('🚀 Initializing CardCom payment:', {
         planType,
         amount, // Final amount after discount
+        amountType: typeof amount,
         userId: currentUser.id
       });
+
+      // Validate amount before sending to payment service
+      if (!amount || typeof amount !== 'number' || isNaN(amount) || amount <= 0) {
+        throw new Error(`Invalid payment amount: ${amount} (type: ${typeof amount})`);
+      }
 
       const paymentRequest: PaymentInitRequest = {
         planType,

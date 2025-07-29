@@ -70,5 +70,20 @@ export const calculateDiscount = (
     discountAmount = originalAmount - finalAmount;
   }
 
+  // Ensure amounts are integers (avoid floating point precision issues)
+  finalAmount = Math.round(finalAmount);
+  discountAmount = Math.round(discountAmount);
+
+  // Final validation
+  if (finalAmount <= 0 || !isFinite(finalAmount) || isNaN(finalAmount)) {
+    console.error('Invalid final amount calculated:', { originalAmount, discountAmount, finalAmount });
+    return {
+      discountAmount: 0,
+      finalAmount: originalAmount,
+      valid: false,
+      error: 'שגיאה בחישוב הנחה'
+    };
+  }
+
   return { discountAmount, finalAmount, valid: true };
 };

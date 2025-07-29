@@ -392,11 +392,32 @@ const Premium = () => {
 
   const getAmount = () => {
     if (appliedCoupon?.valid && appliedCoupon.finalAmount !== undefined) {
-      return appliedCoupon.finalAmount;
+      console.log('💰 Using coupon final amount:', {
+        appliedCoupon: appliedCoupon,
+        finalAmount: appliedCoupon.finalAmount,
+        finalAmountType: typeof appliedCoupon.finalAmount
+      });
+      
+      // Safety check: ensure coupon final amount is valid
+      const finalAmount = appliedCoupon.finalAmount;
+      if (typeof finalAmount !== 'number' || isNaN(finalAmount) || finalAmount < 0) {
+        console.error('🚨 Invalid coupon final amount:', finalAmount);
+        // Fall back to original plan price
+        const plan = plans.find(p => p.id === selectedPlan);
+        return plan?.price || 99;
+      }
+      
+      return finalAmount;
     }
     
     const plan = plans.find(p => p.id === selectedPlan);
-    return plan?.price || 99;
+    const planPrice = plan?.price || 99;
+    console.log('💰 Using plan price:', {
+      selectedPlan,
+      planPrice,
+      planPriceType: typeof planPrice
+    });
+    return planPrice;
   };
 
   const getOriginalAmount = () => {
@@ -833,6 +854,18 @@ const Premium = () => {
                           onSuccess={handlePaymentSuccess}
                           onCancel={handlePaymentCancel}
                         />
+                        
+                        {/* Debug info in development */}
+                        {import.meta.env.DEV && (
+                          <div className="mt-4 p-3 bg-gray-100 border rounded text-xs font-mono">
+                            <strong>Debug Info:</strong><br/>
+                            Amount: {getAmount()} (type: {typeof getAmount()})<br/>
+                            Original: {getOriginalAmount()}<br/>
+                            Coupon: {appliedCoupon?.valid ? 'valid' : 'invalid'}<br/>
+                            Final Amount: {appliedCoupon?.finalAmount}<br/>
+                            Discount: {appliedCoupon?.discountAmount}
+                          </div>
+                        )}
                       </>
                     )
                   )}
