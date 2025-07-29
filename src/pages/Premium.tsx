@@ -847,7 +847,6 @@ const Premium = () => {
                         )}
                         <CardcomPaymentForm
                           amount={getAmount()}
-                          originalAmount={getOriginalAmount()}
                           planType={selectedPlan}
                           discountAmount={appliedCoupon?.discountAmount}
                           couponCode={appliedCoupon?.coupon?.code}
