@@ -37,6 +37,34 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     // The amount is already the final amount after discount calculation
     const finalAmount = request.amount;
     
+    // CRITICAL DEBUG: Log the exact amount being sent to CardCom
+    console.log('🔍 PAYMENT AMOUNT DEBUG:', {
+      requestAmount: request.amount,
+      requestAmountType: typeof request.amount,
+      finalAmount: finalAmount,
+      finalAmountType: typeof finalAmount,
+      isPositive: finalAmount > 0,
+      isNumber: !isNaN(finalAmount),
+      isFinite: isFinite(finalAmount)
+    });
+    
+    // Validate amount is a positive number
+    if (!finalAmount || typeof finalAmount !== 'number' || isNaN(finalAmount) || !isFinite(finalAmount)) {
+      console.error('❌ Invalid payment amount:', { finalAmount, type: typeof finalAmount });
+      return {
+        success: false,
+        error: `סכום התשלום לא תקין: ${finalAmount}`
+      };
+    }
+
+    if (finalAmount <= 0) {
+      console.error('❌ Payment amount must be positive:', { finalAmount });
+      return {
+        success: false,
+        error: `סכום התשלום חייב להיות חיובי. הסכום שלך: ${finalAmount} ש"ח`
+      };
+    }
+
     // CardCom minimum amount validation (most payment processors require minimum 1-5 ILS)
     const MINIMUM_AMOUNT = 5; // 5 ILS minimum for CardCom
     if (finalAmount < MINIMUM_AMOUNT) {
@@ -70,6 +98,15 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
       }
     };
     
+    // CRITICAL DEBUG: Log the exact request being sent to CardCom
+    console.log('📤 CardCom API Request:', {
+      amount: createRequest.Amount,
+      amountType: typeof createRequest.Amount,
+      unitCost: createRequest.Document.Products[0].UnitCost,
+      unitCostType: typeof createRequest.Document.Products[0].UnitCost,
+      fullRequest: createRequest
+    });
+    
     // Note: The amount is already calculated with discount, no need to add discount as separate product
     
     const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/Create`, {
@@ -87,15 +124,26 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     
     const result: CreateLowProfileResponse = await response.json();
     
-    console.log('✅ CardCom response:', result);
+    console.log('📥 CardCom response:', {
+      responseCode: result.ResponseCode,
+      description: result.Description,
+      url: result.Url,
+      lowProfileId: result.LowProfileId,
+      fullResponse: result
+    });
     
     if (result.ResponseCode === 0 && result.Url) {
+      console.log('✅ Payment initialization successful');
       return {
         success: true,
         paymentUrl: result.Url,
         lowProfileId: result.LowProfileId
       };
     } else {
+      console.error('❌ CardCom payment failed:', {
+        responseCode: result.ResponseCode,
+        description: result.Description
+      });
       return {
         success: false,
         error: result.Description || 'Failed to create payment page'
