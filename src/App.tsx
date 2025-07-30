@@ -39,6 +39,7 @@ import PracticeSets from "./pages/PracticeSets";
 import SimulationSets from "./pages/SimulationSets";
 import SimulationResults from "./pages/SimulationResults";
 import WhatIsAmirant from "./pages/WhatIsAmirant";
+import Terms from "./pages/Terms";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
@@ -153,6 +154,7 @@ const AnimatedRoutes = () => {
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/what-is-amirant" element={<WhatIsAmirant />} />
           <Route path="/migration" element={<Migration />} />
           <Route path="/account" element={
