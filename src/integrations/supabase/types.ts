@@ -184,6 +184,59 @@ export type Database = {
         }
         Relationships: []
       }
+      payment_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          currency: string
+          id: string
+          low_profile_code: string
+          metadata: Json | null
+          plan_type: string
+          status: string
+          subscription_id: string | null
+          transaction_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          currency?: string
+          id?: string
+          low_profile_code: string
+          metadata?: Json | null
+          plan_type: string
+          status?: string
+          subscription_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          currency?: string
+          id?: string
+          low_profile_code?: string
+          metadata?: Json | null
+          plan_type?: string
+          status?: string
+          subscription_id?: string | null
+          transaction_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_payment_transactions_subscription_id"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -454,90 +507,6 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
-      }
-      payment_transactions: {
-        Row: {
-          amount: number
-          auth_number: string | null
-          card_holder_name: string | null
-          card_last_four: string | null
-          coupon_code: string | null
-          created_at: string
-          currency: string
-          discount_amount: number | null
-          id: string
-          low_profile_id: string | null
-          metadata: Json | null
-          original_amount: number | null
-          payment_method: string
-          status: string
-          subscription_id: string | null
-          transaction_date: string
-          transaction_id: string
-          updated_at: string
-          user_id: string
-          voucher_number: string | null
-        }
-        Insert: {
-          amount: number
-          auth_number?: string | null
-          card_holder_name?: string | null
-          card_last_four?: string | null
-          coupon_code?: string | null
-          created_at?: string
-          currency?: string
-          discount_amount?: number | null
-          id?: string
-          low_profile_id?: string | null
-          metadata?: Json | null
-          original_amount?: number | null
-          payment_method?: string
-          status?: string
-          subscription_id?: string | null
-          transaction_date?: string
-          transaction_id: string
-          updated_at?: string
-          user_id: string
-          voucher_number?: string | null
-        }
-        Update: {
-          amount?: number
-          auth_number?: string | null
-          card_holder_name?: string | null
-          card_last_four?: string | null
-          coupon_code?: string | null
-          created_at?: string
-          currency?: string
-          discount_amount?: number | null
-          id?: string
-          low_profile_id?: string | null
-          metadata?: Json | null
-          original_amount?: number | null
-          payment_method?: string
-          status?: string
-          subscription_id?: string | null
-          transaction_date?: string
-          transaction_id?: string
-          updated_at?: string
-          user_id?: string
-          voucher_number?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "payment_transactions_subscription_id_fkey"
-            columns: ["subscription_id"]
-            isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "payment_transactions_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["user_id"]
-          },
-        ]
       }
       subscriptions: {
         Row: {
