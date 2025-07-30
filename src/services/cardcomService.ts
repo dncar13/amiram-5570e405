@@ -16,11 +16,8 @@ import type {
   PaymentStatus,
   CardComErrorInfo
 } from '@/types/cardcom.types';
-import { CARDCOM_CONFIG, getCardComCredentials, generateReturnValue, getCardComUrls } from '@/config/cardcom.config';
+import { CARDCOM_CONFIG, getCardComCredentials, generateReturnValue, getCardComUrls, isTestEnvironment, getCardComApiUrl, logCardComEnvironment } from '@/config/cardcom.config';
 import { PLAN_PRICES } from '@/config/pricing';
-
-// API Base URL
-const API_BASE_URL = CARDCOM_CONFIG.API_URL;
 
 /**
  * Initialize payment with CardCom LowProfile API
@@ -28,7 +25,28 @@ const API_BASE_URL = CARDCOM_CONFIG.API_URL;
  */
 export const initializePayment = async (request: PaymentInitRequest): Promise<PaymentInitResponse> => {
   try {
+    // Get API URL dynamically at runtime
+    const API_BASE_URL = getCardComApiUrl();
+    
+    // CRITICAL DEBUG: Call getCardComApiUrl multiple times to ensure consistency
+    const apiUrl1 = getCardComApiUrl();
+    const apiUrl2 = getCardComApiUrl();
+    const apiUrl3 = getCardComApiUrl();
+    
     console.log('🔄 Initializing CardCom payment:', request);
+    console.log(`💳 CardCom Environment: ${isTestEnvironment() ? 'TEST' : 'PRODUCTION'} (${API_BASE_URL})`);
+    console.log('🔍 MULTIPLE API URL CALLS CHECK:', {
+      API_BASE_URL,
+      apiUrl1,
+      apiUrl2,
+      apiUrl3,
+      allSame: API_BASE_URL === apiUrl1 && apiUrl1 === apiUrl2 && apiUrl2 === apiUrl3,
+      windowLocationOrigin: typeof window !== 'undefined' ? window.location.origin : 'undefined',
+      windowLocationHostname: typeof window !== 'undefined' ? window.location.hostname : 'undefined'
+    });
+    
+    // Log environment configuration
+    logCardComEnvironment();
     
     const credentials = getCardComCredentials();
     const urls = getCardComUrls();
@@ -109,7 +127,13 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     
     // Note: The amount is already calculated with discount, no need to add discount as separate product
     
-    const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/Create`, {
+    // CRITICAL DEBUG: Log the exact URL being used for the API call
+    const fullApiUrl = `${API_BASE_URL}/api/v11/LowProfile/Create`;
+    console.log('🚀 CRITICAL DEBUG: Actual API URL being used:', fullApiUrl);
+    console.log('🔍 API_BASE_URL variable:', API_BASE_URL);
+    console.log('🔍 getCardComApiUrl() result:', getCardComApiUrl());
+    
+    const response = await fetch(fullApiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -164,6 +188,9 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
  */
 export const getPaymentResult = async (lowProfileId: string): Promise<PaymentStatus> => {
   try {
+    // Get API URL dynamically at runtime
+    const API_BASE_URL = getCardComApiUrl();
+    
     console.log('🔍 Getting CardCom payment result for:', lowProfileId);
     
     const credentials = getCardComCredentials();
@@ -174,7 +201,13 @@ export const getPaymentResult = async (lowProfileId: string): Promise<PaymentSta
       LowProfileId: lowProfileId
     };
     
-    const response = await fetch(`${API_BASE_URL}/api/v11/LowProfile/GetLpResult`, {
+    // CRITICAL DEBUG: Log the exact URL for GetLpResult API call
+    const fullGetResultUrl = `${API_BASE_URL}/api/v11/LowProfile/GetLpResult`;
+    console.log('🚀 CRITICAL DEBUG: GetLpResult API URL being used:', fullGetResultUrl);
+    console.log('🔍 API_BASE_URL variable:', API_BASE_URL);
+    console.log('🔍 getCardComApiUrl() result:', getCardComApiUrl());
+    
+    const response = await fetch(fullGetResultUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

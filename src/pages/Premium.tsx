@@ -391,6 +391,19 @@ const Premium = () => {
   };
 
   const getAmount = () => {
+    console.log('🔍 PREMIUM.TSX - getAmount() called:', {
+      selectedPlan,
+      selectedPlanType: typeof selectedPlan,
+      appliedCoupon: appliedCoupon ? {
+        valid: appliedCoupon.valid,
+        finalAmount: appliedCoupon.finalAmount,
+        discountAmount: appliedCoupon.discountAmount
+      } : null,
+      PLAN_PRICES,
+      PLAN_PRICES_daily: PLAN_PRICES.daily,
+      PLAN_PRICES_monthly: PLAN_PRICES.monthly
+    });
+    
     if (appliedCoupon?.valid && appliedCoupon.finalAmount !== undefined) {
       console.log('💰 Using coupon final amount:', {
         appliedCoupon: appliedCoupon,
@@ -404,25 +417,38 @@ const Premium = () => {
         console.error('🚨 Invalid coupon final amount:', finalAmount);
         // Fall back to original plan price
         const plan = plans.find(p => p.id === selectedPlan);
-        return plan?.price || 99;
+        const fallbackPrice = plan?.price || PLAN_PRICES[selectedPlan as keyof typeof PLAN_PRICES] || PLAN_PRICES.monthly;
+        console.log('🔄 Fallback to plan price:', fallbackPrice);
+        return fallbackPrice;
       }
       
+      console.log('✅ Returning coupon final amount:', finalAmount);
       return finalAmount;
     }
     
     const plan = plans.find(p => p.id === selectedPlan);
-    const planPrice = plan?.price || 99;
-    console.log('💰 Using plan price:', {
+    const planFromPlansPriceConfig = PLAN_PRICES[selectedPlan as keyof typeof PLAN_PRICES];
+    const planPrice = plan?.price || planFromPlansPriceConfig || PLAN_PRICES.monthly;
+    
+    console.log('💰 PREMIUM.TSX - Using plan price:', {
       selectedPlan,
+      plan: plan ? { id: plan.id, price: plan.price } : null,
+      planFromPlansPriceConfig,
       planPrice,
-      planPriceType: typeof planPrice
+      planPriceType: typeof planPrice,
+      comparison: {
+        planPriceEqualsPlansPriceConfig: plan?.price === planFromPlansPriceConfig,
+        allPlans: plans,
+        matchingPlan: plans.find(p => p.id === selectedPlan)
+      }
     });
+    
     return planPrice;
   };
 
   const getOriginalAmount = () => {
     const plan = plans.find(p => p.id === selectedPlan);
-    return plan?.price || 99;
+    return plan?.price || PLAN_PRICES[selectedPlan as keyof typeof PLAN_PRICES] || PLAN_PRICES.monthly;
   };
 
   // Map frontend plan types to backend subscription types

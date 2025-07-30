@@ -15,6 +15,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { PLAN_PRICES } from "@/config/pricing";
+import { supabase } from "@/integrations/supabase/client";
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -22,11 +23,12 @@ const ThankYou = () => {
   const { currentUser, updatePremiumStatus } = useAuth();
   const { trackPremiumPurchase, trackButtonClick } = useAnalytics();
   const [isUpdating, setIsUpdating] = useState(true);
-
-  // Extract transaction details from URL parameters
-  const planType = searchParams.get('plan') || 'monthly';
-  const transactionId = searchParams.get('transaction_id');
-  const amount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[planType as keyof typeof PLAN_PRICES] || 99;
+  const [transactionDetails, setTransactionDetails] = useState<{
+    planType: string;
+    amount: number;
+    transactionId: string | null;
+    subscriptionId: string | null;
+  } | null>(null);
 
   // Helper function to get plan display name in Hebrew
   const getPlanDisplayName = (plan: string): string => {
@@ -40,18 +42,113 @@ const ThankYou = () => {
   };
 
   useEffect(() => {
-    // Update premium status after successful payment
+    // Fetch actual transaction details and update premium status
     const updateStatus = async () => {
       if (currentUser) {
         try {
-          console.log('🎉 Payment successful, updating premium status');
+          console.log('🎉 Payment successful, fetching transaction details and updating premium status');
+          
+          // Retry mechanism to handle webhook processing delay
+          const fetchTransactionWithRetry = async (maxRetries = 3, delay = 2000) => {
+            let lastError = null;
+            
+            for (let attempt = 1; attempt <= maxRetries; attempt++) {
+              console.log(`🔄 Fetching transaction details (attempt ${attempt}/${maxRetries})`);
+              
+              const { data: recentTransaction, error } = await supabase
+                .from('payment_transactions')
+                .select(`
+                  *,
+                  subscription:subscriptions(
+                    plan_type,
+                    start_date,
+                    end_date,
+                    status
+                  )
+                `)
+                .eq('user_id', currentUser.id)
+                .eq('status', 'completed')
+                .order('transaction_date', { ascending: false })
+                .limit(1)
+                .single();
+
+              if (!error && recentTransaction) {
+                return { data: recentTransaction, error: null };
+              }
+              
+              lastError = error;
+
+              if (attempt < maxRetries) {
+                console.log(`⏳ Waiting ${delay}ms before retry...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
+              }
+            }
+            
+            return { data: null, error: lastError };
+          };
+
+          const { data: recentTransaction, error } = await fetchTransactionWithRetry();
+
+          if (error) {
+            console.error('❌ Error fetching transaction:', error);
+            // If no recent transaction found, show a meaningful message
+            if (error.code === 'PGRST116') {
+              console.log('⚠️ No recent completed transactions found for user');
+              // Still set fallback details to show something to the user
+              const urlPlanType = searchParams.get('plan') || 'monthly';
+              const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
+              setTransactionDetails({
+                planType: urlPlanType,
+                amount: urlAmount,
+                transactionId: searchParams.get('transaction_id'),
+                subscriptionId: null
+              });
+            } else {
+              // Fallback to URL parameters if database fetch fails
+              const urlPlanType = searchParams.get('plan') || 'monthly';
+              const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
+              setTransactionDetails({
+                planType: urlPlanType,
+                amount: urlAmount,
+                transactionId: searchParams.get('transaction_id'),
+                subscriptionId: null
+              });
+            }
+          } else if (recentTransaction) {
+            console.log('📊 Retrieved transaction details:', recentTransaction);
+            
+            // Set actual transaction details
+            setTransactionDetails({
+              planType: recentTransaction.subscription?.plan_type || 'monthly',
+              amount: recentTransaction.amount,
+              transactionId: recentTransaction.transaction_id,
+              subscriptionId: recentTransaction.subscription_id
+            });
+          } else {
+            console.warn('⚠️ No transaction data returned');
+            // Fallback to URL parameters
+            const urlPlanType = searchParams.get('plan') || 'monthly';
+            const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
+            setTransactionDetails({
+              planType: urlPlanType,
+              amount: urlAmount,
+              transactionId: searchParams.get('transaction_id'),
+              subscriptionId: null
+            });
+          }
           
           // Track successful purchase with actual transaction details
+          const trackingDetails = transactionDetails || {
+            planType: recentTransaction?.subscription?.plan_type || 'monthly',
+            amount: recentTransaction?.amount || 99,
+            transactionId: recentTransaction?.transaction_id || null
+          };
+          
           trackPremiumPurchase({
-            plan_type: planType,
-            plan_price: amount,
+            plan_type: trackingDetails.planType,
+            plan_price: trackingDetails.amount,
             payment_status: 'completed',
-            transaction_id: transactionId
+            transaction_id: trackingDetails.transactionId
           });
           
           // Update premium status in context
@@ -67,15 +164,12 @@ const ThankYou = () => {
     };
 
     updateStatus();
-  }, [currentUser, updatePremiumStatus, trackPremiumPurchase]);
+  }, [currentUser, updatePremiumStatus, trackPremiumPurchase, searchParams]);
   
   const handleContinue = () => {
     navigate("/simulations-entry");
   };
 
-  const handleViewAccount = () => {
-    navigate("/profile");
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-green-50 to-blue-50">
@@ -116,25 +210,35 @@ const ThankYou = () => {
               </div>
 
               {/* Purchase Details */}
-              <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-                <h3 className="text-lg font-semibold text-blue-900 mb-3">פרטי הרכישה</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">תוכנית:</span>
-                    <span className="font-medium">{getPlanDisplayName(planType)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">סכום ששולם:</span>
-                    <span className="font-medium">{amount} ₪</span>
-                  </div>
-                  {transactionId && (
+              {transactionDetails ? (
+                <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-3">פרטי הרכישה</h3>
+                  <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">מספר עסקה:</span>
-                      <span className="font-mono text-xs">{transactionId}</span>
+                      <span className="text-gray-600">תוכנית:</span>
+                      <span className="font-medium">{getPlanDisplayName(transactionDetails.planType)}</span>
                     </div>
-                  )}
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">סכום ששולם:</span>
+                      <span className="font-medium">{transactionDetails.amount} ₪</span>
+                    </div>
+                    {transactionDetails.transactionId && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">מספר עסקה:</span>
+                        <span className="font-mono text-xs">{transactionDetails.transactionId}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                  <h3 className="text-lg font-semibold text-blue-900 mb-3">פרטי הרכישה</h3>
+                  <div className="text-center py-4">
+                    <Loader2 className="h-6 w-6 animate-spin mx-auto mb-2 text-blue-600" />
+                    <p className="text-blue-700 text-sm">טוען פרטי רכישה...</p>
+                  </div>
+                </div>
+              )}
 
               {/* Features Unlocked */}
               <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-6 border border-purple-200">
@@ -174,15 +278,6 @@ const ThankYou = () => {
                 >
                   התחל להתרגל עכשיו
                   <ArrowRight className="w-5 h-5" />
-                </Button>
-                
-                <Button
-                  onClick={handleViewAccount}
-                  variant="outline"
-                  size="lg"
-                  className="w-full py-3 border-gray-300 text-gray-700 hover:bg-gray-50"
-                >
-                  צפה בפרטי החשבון
                 </Button>
               </div>
 
