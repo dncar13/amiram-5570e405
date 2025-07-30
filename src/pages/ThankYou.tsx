@@ -68,7 +68,7 @@ const ThankYou = () => {
                 `)
                 .eq('user_id', currentUser.id)
                 .eq('status', 'completed')
-                .order('transaction_date', { ascending: false })
+                .order('created_at', { ascending: false })
                 .limit(1)
                 .single();
 

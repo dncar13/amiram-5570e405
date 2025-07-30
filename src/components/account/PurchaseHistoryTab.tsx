@@ -12,17 +12,10 @@ interface Transaction {
   id: string;
   transaction_id: string;
   amount: number;
-  original_amount: number | null;
-  discount_amount: number | null;
   currency: string;
-  payment_method: string;
   status: string;
-  coupon_code: string | null;
-  transaction_date: string;
+  created_at: string;
   subscription_id: string | null;
-  card_last_four: string | null;
-  auth_number: string | null;
-  voucher_number: string | null;
   subscription?: {
     plan_type: string;
     start_date: string;
@@ -55,7 +48,7 @@ const PurchaseHistoryTab = () => {
             )
           `)
           .eq('user_id', currentUser.id)
-          .order('transaction_date', { ascending: false });
+          .order('created_at', { ascending: false });
 
         if (error) throw error;
         setTransactions(data || []);
@@ -211,66 +204,23 @@ const PurchaseHistoryTab = () => {
                     </div>
                     <div className="flex items-center gap-1 text-sm text-gray-600 mb-2">
                       <Calendar className="h-4 w-4" />
-                      {formatDate(transaction.transaction_date)}
+                      {formatDate(transaction.created_at)}
                     </div>
                   </div>
                   <div className="text-left">
                     <p className="text-lg font-bold text-green-600">
                       {transaction.amount} ₪
                     </p>
-                    {transaction.original_amount && transaction.discount_amount && (
-                      <div className="text-sm text-gray-500">
-                        <span className="line-through">{transaction.original_amount} ₪</span>
-                        <span className="text-green-600 mr-2">
-                          (-{transaction.discount_amount} ₪)
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  {/* Payment Details */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-4 w-4 text-gray-500" />
-                      <span className="text-gray-600">אמצעי תשלום:</span>
-                      <span className="capitalize">{transaction.payment_method}</span>
-                    </div>
-                    {transaction.card_last_four && (
-                      <div className="flex items-center gap-2 mr-6">
-                        <span className="text-gray-600">כרטיס:</span>
-                        <span>****{transaction.card_last_four}</span>
-                      </div>
-                    )}
-                    {transaction.coupon_code && (
-                      <div className="flex items-center gap-2 mr-6">
-                        <span className="text-gray-600">קופון:</span>
-                        <Badge variant="outline">{transaction.coupon_code}</Badge>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Transaction Details */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="text-gray-600">מספר עסקה:</span>
-                      <span className="font-mono text-xs">{transaction.transaction_id}</span>
-                    </div>
-                    {transaction.auth_number && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-600">מספר אישור:</span>
-                        <span className="font-mono text-xs">{transaction.auth_number}</span>
-                      </div>
-                    )}
-                    {transaction.voucher_number && (
-                      <div className="flex items-center gap-2">
-                        <span className="text-gray-600">מספר קבלה:</span>
-                        <span className="font-mono text-xs">{transaction.voucher_number}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                 {/* Transaction Details */}
+                 <div className="text-sm">
+                   <div className="flex items-center gap-2">
+                     <span className="text-gray-600">מספר עסקה:</span>
+                     <span className="font-mono text-xs">{transaction.transaction_id}</span>
+                   </div>
+                 </div>
 
                 {/* Subscription Details */}
                 {transaction.subscription && (
