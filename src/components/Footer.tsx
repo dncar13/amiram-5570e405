@@ -75,6 +75,15 @@ const Footer = () => {
                   אודות
                 </Link>
               </li>
+              <li>
+                <Link 
+                  to="/terms" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  תקנון האתר
+                </Link>
+              </li>
             </ul>
           </div>
           
