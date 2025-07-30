@@ -49,7 +49,16 @@ export const initializePayment = async (request: PaymentInitRequest): Promise<Pa
     logCardComEnvironment();
     
     const credentials = getCardComCredentials();
-    const urls = getCardComUrls();
+    
+    // Pass payment details to URL generator for immediate display on Thank You page
+    const paymentDetails = {
+      planType: request.planType,
+      amount: request.amount,
+      discountAmount: request.discountAmount,
+      couponCode: request.couponCode
+    };
+    
+    const urls = getCardComUrls(undefined, paymentDetails);
     const returnValue = generateReturnValue(request.userId, request.planType);
     
     // The amount is already the final amount after discount calculation

@@ -16,6 +16,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { PLAN_PRICES } from "@/config/pricing";
 import { supabase } from "@/integrations/supabase/client";
+import { SupabaseAuthService } from "@/services/supabaseAuth";
 
 const ThankYou = () => {
   const navigate = useNavigate();
@@ -42,128 +43,88 @@ const ThankYou = () => {
   };
 
   useEffect(() => {
-    // Fetch actual transaction details and update premium status
-    const updateStatus = async () => {
+    // Create subscription immediately and update premium status
+    const createSubscriptionAndUpdateStatus = async () => {
       if (currentUser) {
         try {
-          console.log('🎉 Payment successful, fetching transaction details and updating premium status');
+          console.log('🎉 Payment successful, creating subscription and updating premium status');
           
-          // Retry mechanism to handle webhook processing delay
-          const fetchTransactionWithRetry = async (maxRetries = 3, delay = 2000) => {
-            let lastError = null;
-            
-            for (let attempt = 1; attempt <= maxRetries; attempt++) {
-              console.log(`🔄 Fetching transaction details (attempt ${attempt}/${maxRetries})`);
-              
-              const { data: recentTransaction, error } = await supabase
-                .from('payment_transactions')
-                .select(`
-                  *,
-                  subscription:subscriptions(
-                    plan_type,
-                    start_date,
-                    end_date,
-                    status
-                  )
-                `)
-                .eq('user_id', currentUser.id)
-                .eq('status', 'completed')
-                .order('created_at', { ascending: false })
-                .limit(1)
-                .single();
+          // Get payment details from URL parameters (passed from CardCom redirect)
+          const urlPlanType = searchParams.get('plan') || 'monthly';
+          const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
+          const urlDiscount = searchParams.get('discount') ? parseFloat(searchParams.get('discount')!) : 0;
+          const urlCoupon = searchParams.get('coupon');
+          const timestamp = searchParams.get('timestamp');
+          
+          console.log('💳 Payment details from URL:', {
+            planType: urlPlanType,
+            amount: urlAmount,
+            discount: urlDiscount,
+            coupon: urlCoupon,
+            timestamp
+          });
 
-              if (!error && recentTransaction) {
-                return { data: recentTransaction, error: null };
-              }
-              
-              lastError = error;
-
-              if (attempt < maxRetries) {
-                console.log(`⏳ Waiting ${delay}ms before retry...`);
-                await new Promise(resolve => setTimeout(resolve, delay));
-              }
-            }
-            
-            return { data: null, error: lastError };
-          };
-
-          const { data: recentTransaction, error } = await fetchTransactionWithRetry();
-
-          if (error) {
-            console.error('❌ Error fetching transaction:', error);
-            // If no recent transaction found, show a meaningful message
-            if (error.code === 'PGRST116') {
-              console.log('⚠️ No recent completed transactions found for user');
-              // Still set fallback details to show something to the user
-              const urlPlanType = searchParams.get('plan') || 'monthly';
-              const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
-              setTransactionDetails({
-                planType: urlPlanType,
-                amount: urlAmount,
-                transactionId: searchParams.get('transaction_id'),
-                subscriptionId: null
-              });
-            } else {
-              // Fallback to URL parameters if database fetch fails
-              const urlPlanType = searchParams.get('plan') || 'monthly';
-              const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
-              setTransactionDetails({
-                planType: urlPlanType,
-                amount: urlAmount,
-                transactionId: searchParams.get('transaction_id'),
-                subscriptionId: null
-              });
-            }
-          } else if (recentTransaction) {
-            console.log('📊 Retrieved transaction details:', recentTransaction);
-            
-            // Set actual transaction details
-            setTransactionDetails({
-              planType: recentTransaction.subscription?.plan_type || 'monthly',
-              amount: recentTransaction.amount,
-              transactionId: recentTransaction.transaction_id,
-              subscriptionId: recentTransaction.subscription_id
-            });
-          } else {
-            console.warn('⚠️ No transaction data returned');
-            // Fallback to URL parameters
-            const urlPlanType = searchParams.get('plan') || 'monthly';
-            const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
-            setTransactionDetails({
-              planType: urlPlanType,
-              amount: urlAmount,
-              transactionId: searchParams.get('transaction_id'),
-              subscriptionId: null
-            });
+          // Create subscription immediately (don't wait for webhook)
+          console.log('🔄 Creating subscription immediately...');
+          
+          // Map plan types to match database schema
+          const dbPlanType = urlPlanType === 'quarterly' ? '3months' : 
+                            urlPlanType === 'daily' ? 'day' :
+                            urlPlanType === 'weekly' ? 'week' :
+                            urlPlanType === 'monthly' ? 'month' : 'month';
+          
+          const subscriptionResult = await SupabaseAuthService.createSubscription(
+            currentUser.id, 
+            dbPlanType as 'day' | 'week' | 'month' | '3months'
+          );
+          
+          if (subscriptionResult.error) {
+            console.error('❌ Error creating subscription:', subscriptionResult.error);
+            throw subscriptionResult.error;
           }
           
-          // Track successful purchase with actual transaction details
-          const trackingDetails = transactionDetails || {
-            planType: recentTransaction?.subscription?.plan_type || 'monthly',
-            amount: recentTransaction?.amount || 99,
-            transactionId: recentTransaction?.transaction_id || null
-          };
+          console.log('✅ Subscription created successfully:', subscriptionResult.subscription);
           
-          trackPremiumPurchase({
-            plan_type: trackingDetails.planType,
-            plan_price: trackingDetails.amount,
-            payment_status: 'completed',
-            transaction_id: trackingDetails.transactionId
+          // Set transaction details from URL parameters
+          setTransactionDetails({
+            planType: urlPlanType,
+            amount: urlAmount,
+            transactionId: `cardcom_${timestamp || Date.now()}`,
+            subscriptionId: subscriptionResult.subscription?.id || null
           });
           
-          // Update premium status in context
+          // Track successful purchase
+          trackPremiumPurchase({
+            plan_type: urlPlanType,
+            plan_price: urlAmount,
+            payment_status: 'completed',
+            transaction_id: `cardcom_${timestamp || Date.now()}`
+          });
+
+          // Update premium status to trigger UI refresh
           await updatePremiumStatus(true);
           
-          console.log('✅ Premium status updated successfully');
+          console.log('🎊 Premium status updated successfully');
         } catch (error) {
-          console.error('❌ Error updating premium status:', error);
+          console.error('❌ Error creating subscription or updating premium status:', error);
+          
+          // Fallback: still show payment details even if subscription creation fails
+          const urlPlanType = searchParams.get('plan') || 'monthly';
+          const urlAmount = searchParams.get('amount') ? parseFloat(searchParams.get('amount')!) : PLAN_PRICES[urlPlanType as keyof typeof PLAN_PRICES] || 99;
+          
+          setTransactionDetails({
+            planType: urlPlanType,
+            amount: urlAmount,
+            transactionId: null,
+            subscriptionId: null
+          });
         }
       }
       
       setIsUpdating(false);
     };
 
-    updateStatus();
+    createSubscriptionAndUpdateStatus();
   }, [currentUser, updatePremiumStatus, trackPremiumPurchase, searchParams]);
   
   const handleContinue = () => {

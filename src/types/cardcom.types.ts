@@ -81,6 +81,8 @@ export interface PaymentInitRequest {
   userEmail?: string;
   userName?: string;
   userId: string;
+  discountAmount?: number; // For URL parameter passing
+  couponCode?: string; // For URL parameter passing
 }
 
 export interface PaymentInitResponse {

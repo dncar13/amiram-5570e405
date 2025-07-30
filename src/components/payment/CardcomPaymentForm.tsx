@@ -93,7 +93,9 @@ const CardcomPaymentForm = ({
         amount, // This is already the final amount after discount
         userId: currentUser.id,
         userEmail: currentUser.email || undefined,
-        userName: currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0]
+        userName: currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0],
+        discountAmount, // Pass discount details for URL parameters
+        couponCode // Pass coupon code for URL parameters
       };
 
       const result = await initializePayment(paymentRequest);
@@ -102,7 +104,7 @@ const CardcomPaymentForm = ({
         console.log('✅ Payment page created, redirecting:', result.paymentUrl);
         
         // Ensure we ALWAYS redirect to full CardCom page, never embed iframe
-        if (!result.paymentUrl.includes('cardcom.co.il')) {
+        if (!result.paymentUrl.includes('cardcom.solutions')) {
           throw new Error('Invalid payment URL - must be CardCom official domain');
         }
         

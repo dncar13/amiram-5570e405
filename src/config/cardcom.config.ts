@@ -167,11 +167,37 @@ export const isTestEnvironment = (): boolean => {
 };
 
 // Helper function to get complete URLs (for server-side usage)
-export const getCardComUrls = (baseUrl?: string) => {
+export const getCardComUrls = (baseUrl?: string, paymentDetails?: {
+  planType: string;
+  amount: number;
+  discountAmount?: number;
+  couponCode?: string;
+}) => {
   const base = baseUrl || (typeof window !== 'undefined' ? window.location.origin : 'https://amiram.net');
   
+  let successUrl = `${base}/thank-you`;
+  
+  // Add payment details as URL parameters for immediate display
+  if (paymentDetails) {
+    const params = new URLSearchParams({
+      plan: paymentDetails.planType,
+      amount: paymentDetails.amount.toString(),
+      timestamp: Date.now().toString()
+    });
+    
+    if (paymentDetails.discountAmount && paymentDetails.discountAmount > 0) {
+      params.set('discount', paymentDetails.discountAmount.toString());
+    }
+    
+    if (paymentDetails.couponCode) {
+      params.set('coupon', paymentDetails.couponCode);
+    }
+    
+    successUrl = `${successUrl}?${params.toString()}`;
+  }
+  
   return {
-    successUrl: `${base}/thank-you`,
+    successUrl,
     failureUrl: `${base}/payment-failed`,
     webhookUrl: CARDCOM_CONFIG.WEBHOOK_URL, // Always use the Supabase edge function URL
   };
