@@ -6,6 +6,7 @@ import { initializePayment } from "@/services/cardcomService";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { useAuth } from "@/context/AuthContext";
 import { couponValidationService } from "@/utils/couponValidationService";
+import { isTestEnvironment, getCardComApiUrl } from "@/config/cardcom.config";
 import type { PaymentInitRequest } from "@/types/cardcom.types";
 
 interface CardcomPaymentFormProps {
@@ -193,6 +194,13 @@ const CardcomPaymentForm = ({
       <div className="text-center text-xs text-gray-500">
         <p>התשלום מתבצע באתר המאובטח של CardCom</p>
         <p>לא נשמרים נתוני אשראי באתר שלנו</p>
+        {isTestEnvironment() && (
+          <div className="mt-2 p-2 bg-yellow-100 border border-yellow-300 rounded text-yellow-800">
+            <p className="font-semibold">🧪 מצב בדיקה - TEST MODE</p>
+            <p>תשלומים לא יחויבו באמת</p>
+            <p className="text-xs mt-1">API: {getCardComApiUrl()}</p>
+          </div>
+        )}
       </div>
     </div>
   );

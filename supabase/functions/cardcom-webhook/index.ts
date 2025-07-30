@@ -163,18 +163,29 @@ serve(async (req) => {
       });
     }
 
-    // Verify terminal number matches our configuration
-    const expectedTerminal = 172801;
-    if (payload.TerminalNumber !== expectedTerminal) {
+    // Verify terminal number matches our configuration (production or sandbox)
+    const expectedProdTerminal = 172801;
+    const expectedSandboxTerminal = 1000;
+    const isValidTerminal = payload.TerminalNumber === expectedProdTerminal || 
+                           payload.TerminalNumber === expectedSandboxTerminal;
+    
+    if (!isValidTerminal) {
       logStep("Invalid terminal number", { 
         received: payload.TerminalNumber, 
-        expected: expectedTerminal 
+        expectedProd: expectedProdTerminal,
+        expectedSandbox: expectedSandboxTerminal
       });
       return new Response(JSON.stringify({ error: "Invalid terminal number" }), {
         status: 403,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
+    
+    const isTestPayment = payload.TerminalNumber === expectedSandboxTerminal;
+    logStep("Terminal validation passed", { 
+      terminalNumber: payload.TerminalNumber,
+      environment: isTestPayment ? 'SANDBOX' : 'PRODUCTION'
+    });
 
     // Check if payment was successful
     if (payload.ResponseCode !== 0) {
