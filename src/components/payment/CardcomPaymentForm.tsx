@@ -101,12 +101,17 @@ const CardcomPaymentForm = ({
       if (result.success && result.paymentUrl) {
         console.log('✅ Payment page created, redirecting:', result.paymentUrl);
         
+        // Ensure we ALWAYS redirect to full CardCom page, never embed iframe
+        if (!result.paymentUrl.includes('cardcom.co.il')) {
+          throw new Error('Invalid payment URL - must be CardCom official domain');
+        }
+        
         // Track payment initiation
         trackButtonClick('payment_redirect', 'cardcom_payment_form');
         
         setIsRedirecting(true);
         
-        // Redirect to CardCom payment page
+        // Force full page redirect to CardCom payment page - never iframe or embed
         window.location.href = result.paymentUrl;
       } else {
         throw new Error(result.error || 'Failed to create payment page');
