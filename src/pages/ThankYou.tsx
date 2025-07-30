@@ -34,10 +34,10 @@ const ThankYou = () => {
   // Helper function to get plan display name in Hebrew
   const getPlanDisplayName = (plan: string): string => {
     const displayNames: Record<string, string> = {
-      'daily': 'יום אחד',
-      'weekly': 'שבוע אחד', 
-      'monthly': 'חודש אחד',
-      'quarterly': '3 חודשים'
+      'day': 'יום אחד',
+      'week': 'שבוע אחד', 
+      'month': 'חודש אחד',
+      '3months': '3 חודשים'
     };
     return displayNames[plan] || plan;
   };
@@ -67,11 +67,8 @@ const ThankYou = () => {
           // Create subscription immediately (don't wait for webhook)
           console.log('🔄 Creating subscription immediately...');
           
-          // Map plan types to match database schema
-          const dbPlanType = urlPlanType === 'quarterly' ? '3months' : 
-                            urlPlanType === 'daily' ? 'day' :
-                            urlPlanType === 'weekly' ? 'week' :
-                            urlPlanType === 'monthly' ? 'month' : 'month';
+          // The plan types from URL should already match database schema
+          const dbPlanType = urlPlanType as 'day' | 'week' | 'month' | '3months';
           
           const subscriptionResult = await SupabaseAuthService.createSubscription(
             currentUser.id, 
