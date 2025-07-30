@@ -56,21 +56,26 @@ const createSubscription = async (
   try {
     logStep("Creating subscription", { userId, planType, transactionId, amount });
 
-    // Calculate end date based on plan type
+    // Map plan types to database schema and calculate end date
     const startDate = new Date();
     const endDate = new Date();
+    let dbPlanType: string;
     
     switch (planType) {
       case 'daily':
+        dbPlanType = 'day';
         endDate.setDate(startDate.getDate() + 1);
         break;
       case 'weekly':
+        dbPlanType = 'week';
         endDate.setDate(startDate.getDate() + 7);
         break;
       case 'monthly':
+        dbPlanType = 'month';
         endDate.setMonth(startDate.getMonth() + 1);
         break;
       case 'quarterly':
+        dbPlanType = '3months';
         endDate.setMonth(startDate.getMonth() + 3);
         break;
       default:
@@ -82,7 +87,7 @@ const createSubscription = async (
       .from('subscriptions')
       .insert({
         user_id: userId,
-        plan_type: planType,
+        plan_type: dbPlanType,
         start_date: startDate.toISOString(),
         end_date: endDate.toISOString(),
         status: 'active'

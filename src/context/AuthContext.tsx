@@ -99,7 +99,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const hasAccessToTopic = (topicId: number): boolean => {
-    return true;
+    // Topic 1 is always free and accessible to everyone
+    if (topicId === 1) {
+      return true;
+    }
+    
+    // All other topics require premium access
+    return isPremium;
   };
 
   // CRITICAL: Single source of truth for premium status - database first
