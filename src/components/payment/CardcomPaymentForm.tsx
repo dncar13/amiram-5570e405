@@ -11,7 +11,6 @@ import type { PaymentInitRequest } from "@/types/cardcom.types";
 
 interface CardcomPaymentFormProps {
   amount: number;
-  originalAmount: number;
   planType: 'daily' | 'weekly' | 'monthly' | 'quarterly';
   discountAmount?: number;
   couponCode?: string;
@@ -21,7 +20,6 @@ interface CardcomPaymentFormProps {
 
 const CardcomPaymentForm = ({ 
   amount, 
-  originalAmount, 
   planType, 
   discountAmount, 
   couponCode, 
