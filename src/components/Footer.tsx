@@ -6,7 +6,12 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer style={{ backgroundColor: '#343a40' }} className="text-white pt-12 pb-6">
+    <footer 
+      id="footer" 
+      role="contentinfo" 
+      style={{ backgroundColor: '#343a40' }} 
+      className="text-white pt-12 pb-6"
+    >
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Contact Section */}
@@ -82,6 +87,15 @@ const Footer = () => {
                   style={{ fontFamily: 'Rubik, sans-serif' }}
                 >
                   תקנון האתר
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  to="/accessibility" 
+                  className="text-gray-300 hover:text-white transition-colors"
+                  style={{ fontFamily: 'Rubik, sans-serif' }}
+                >
+                  הצהרת נגישות
                 </Link>
               </li>
             </ul>

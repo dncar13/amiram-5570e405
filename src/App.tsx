@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { SimulationSettingsProvider } from "@/context/SimulationSettingsContext";
+import { AccessibilityProvider } from "@/context/AccessibilityContext";
+import SkipNavigation from "@/components/accessibility/SkipNavigation";
+import AccessibilityToolbar from "@/components/accessibility/AccessibilityToolbar";
 import { AnimatePresence, motion, Variants, Transition } from 'framer-motion';
 import { useEffect } from 'react';
 
@@ -40,6 +43,7 @@ import SimulationSets from "./pages/SimulationSets";
 import SimulationResults from "./pages/SimulationResults";
 import WhatIsAmirant from "./pages/WhatIsAmirant";
 import Terms from "./pages/Terms";
+import AccessibilityStatement from "./pages/AccessibilityStatement";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
@@ -155,6 +159,7 @@ const AnimatedRoutes = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/accessibility" element={<AccessibilityStatement />} />
           <Route path="/what-is-amirant" element={<WhatIsAmirant />} />
           <Route path="/migration" element={<Migration />} />
           <Route path="/account" element={
@@ -320,21 +325,25 @@ const queryClient = new QueryClient({
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <AuthProvider>
-        <SimulationSettingsProvider>
-          <div dir="rtl" className="rtl">
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <ScrollToTop />
-              <RouteTracker />
-              <AnimatedRoutes />
-              <CookieConsent />
-              <ConditionalAnalyticsDashboard />
-            </BrowserRouter>
-          </div>
-        </SimulationSettingsProvider>
-      </AuthProvider>
+      <AccessibilityProvider>
+        <AuthProvider>
+          <SimulationSettingsProvider>
+            <div dir="rtl" className="rtl">
+              <SkipNavigation />
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <ScrollToTop />
+                <RouteTracker />
+                <AnimatedRoutes />
+                <CookieConsent />
+                <AccessibilityToolbar />
+                <ConditionalAnalyticsDashboard />
+              </BrowserRouter>
+            </div>
+          </SimulationSettingsProvider>
+        </AuthProvider>
+      </AccessibilityProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
