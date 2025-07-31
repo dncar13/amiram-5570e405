@@ -74,6 +74,9 @@ const Navbar: React.FC = () => {
   return (
     <>
       <motion.nav
+        id="navigation"
+        role="navigation"
+        aria-label="ניווט ראשי"
         className="fixed top-0 left-0 right-0 z-50"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -206,6 +209,9 @@ const Navbar: React.FC = () => {
               onClick={() => setIsOpen(!isOpen)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              aria-label={isOpen ? "סגירת תפריט ניווט" : "פתיחת תפריט ניווט"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </motion.button>
@@ -228,6 +234,9 @@ const Navbar: React.FC = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              id="mobile-menu"
+              role="menu"
+              aria-label="תפריט ניווט נייד"
               className="fixed right-0 top-0 h-full w-3/4 max-w-sm bg-gray-900/95 backdrop-blur-xl border-l border-white/10"
               onClick={(e) => e.stopPropagation()}
             >

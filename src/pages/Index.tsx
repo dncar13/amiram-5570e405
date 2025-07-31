@@ -52,6 +52,8 @@ const Index: React.FC = () => {
       data-testid="homepage"
     >
       <Header />
+      
+      <main id="main-content" role="main">
         {/* Hero Section with parallax */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -89,6 +91,7 @@ const Index: React.FC = () => {
       <AnimatedSection delay={isMobile ? 0.4 : 0.5}>
         <CTASection />
       </AnimatedSection>
+      </main>
 
       <Footer />
     </motion.div>

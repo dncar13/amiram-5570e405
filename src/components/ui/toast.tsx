@@ -82,9 +82,11 @@ const ToastClose = React.forwardRef<
       className
     )}
     toast-close=""
+    aria-label="סגירת הודעה"
     {...props}
   >
     <X className="h-4 w-4" />
+    <span className="sr-only">סגירת הודעה</span>
   </ToastPrimitives.Close>
 ))
 ToastClose.displayName = ToastPrimitives.Close.displayName

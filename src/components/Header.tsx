@@ -91,9 +91,9 @@ const Header = React.memo(() => {
               <GraduationCap className="h-8 w-8 text-white" />
             </div>
             <div className="text-right">
-              <h1 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
+              <h2 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
                 Amiram Academy
-              </h1>
+              </h2>
               <p className="text-sm text-slate-400 font-medium">
                 Your Path to Success
               </p>
@@ -254,14 +254,24 @@ const Header = React.memo(() => {
             variant="ghost"
             className="md:hidden bg-slate-800/60 border border-slate-600/50 text-slate-300 hover:bg-slate-700/60 hover:text-slate-100 rounded-xl transition-all duration-300"
             onClick={toggleMenu}
+            aria-label={isMenuOpen ? "סגירת תפריט" : "פתיחת תפריט"}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <span className="sr-only">{isMenuOpen ? "סגירת תפריט" : "פתיחת תפריט"}</span>
           </Button>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <nav className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm" data-testid="mobile-menu">
+          <nav 
+            id="mobile-menu"
+            className="md:hidden mt-4 py-4 border-t border-slate-700/50 bg-slate-800/30 rounded-xl backdrop-blur-sm" 
+            data-testid="mobile-menu"
+            role="menu"
+            aria-label="תפריט ניווט נייד"
+          >
             <div className="flex flex-col space-y-2">
               <Link 
                 to="/" 
