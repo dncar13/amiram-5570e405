@@ -269,10 +269,18 @@ export const CouponManagement = () => {
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">ניהול קופונים</h1>
-        <Button onClick={() => { resetForm(); setIsCreateMode(true); }}>
-          <Plus className="h-4 w-4 mr-2" />
-          קופון חדש
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => { resetForm(); setIsCreateMode(true); }}>
+            <Plus className="h-4 w-4 mr-2" />
+            קופון חדש
+          </Button>
+          <Button 
+            variant="outline" 
+            onClick={() => window.open('/admin/coupons/usage', '_blank')}
+          >
+            צפה בשימושים
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
