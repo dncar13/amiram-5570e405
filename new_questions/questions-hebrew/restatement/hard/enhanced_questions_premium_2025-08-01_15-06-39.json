@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:06:39.243Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060753947_406qpaepu",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 477
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened decisively, the economic crisis would have spiraled completely out of control.'",
+      "options": [
+        "If the government had not intervened decisively, the economic crisis would have spiraled completely out of control.",
+        "Because the government intervened decisively, the economic crisis did not spiral completely out of control.",
+        "The government's decisive intervention prevented the economic crisis from getting worse.",
+        "Without government intervention, the economic crisis could have been more severe."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך (inversion) עם 'Had' בתחילת המשפט, המבטא תנאי בזמן עבר (third conditional). המשמעות המדויקת היא שהממשלה כן התערבה, ובזכך המשבר לא יצא מכלל שליטה. האפשרות הנכונה (1) משמרת את אותה המשמעות בדיוק באמצעות מבנה תנאי רגיל. אפשרות 2 נכונה עובדתית אך משנה את המבנה הדקדוקי והדגש. אפשרות 3 מפשטת יתר על המידה ומאבדת את הביטוי 'spiral out of control'. אפשרות 4 משתמשת ב-'could have been' במקום 'would have', מה שמחליש את הוודאות של התוצאה ומשנה את המשמעות.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had she studied harder, she would have passed the exam. = If she had studied harder, she would have passed the exam."
+      ],
+      "grammarRule": "Conditional inversion with 'Had' creates a formal third conditional structure. The inverted form 'Had + subject + past participle' equals 'If + subject + had + past participle' in meaning and refers to hypothetical past situations.",
+      "commonMistakes": "Students often confuse the factual meaning (the government DID intervene) with the hypothetical structure, or choose options that change the certainty level from 'would have' to 'could have' or 'might have'.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning of a sentence, convert it to 'If + subject + had + past participle' to check meaning. Both express the same hypothetical past condition.",
+      "difficulty": "hard",
+      "id": "rst_prem_334",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began plummeting dramatically.'",
+      "options": [
+        "The CEO had barely announced the merger before stock prices began plummeting dramatically.",
+        "After the CEO announced the merger, stock prices immediately began plummeting dramatically.",
+        "As soon as the CEO announced the merger, stock prices started to fall significantly.",
+        "The CEO announced the merger and then stock prices began plummeting dramatically."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך עם 'Scarcely had' המבטא רצף זמן מיידי וכמעט בו-זמני בין שני אירועים. המילה 'scarcely' (בקושי, כמעט לא) מדגישה שהזמן בין ההכרזה לנפילת המחירים היה קצר ביותר. האפשרות הנכונה (1) משמרת את המשמעות המדויקת עם 'barely' (בקושי) ו-'before', המבטאים את אותו הרצף הזמני המיידי. אפשרויות 2-3 משתמשות ב-'immediately' ו-'as soon as' שמבטאות רצף מהיר אך לא את הדגש על הזמן המינימלי. אפשרות 4 פשוטה מדי ולא מבטאת את המיידיות והדרמטיות של הרצף.",
+      "examples": [
+        "Scarcely had we arrived when it started raining. = We had barely arrived before it started raining.",
+        "Hardly had she finished speaking when the audience applauded. = She had hardly finished speaking before the audience applauded."
+      ],
+      "grammarRule": "Inversion with negative adverbs (scarcely, hardly, barely, no sooner) creates emphasis on immediate sequence. Structure: 'Scarcely/Hardly + had + subject + past participle + when...' The main clause uses simple past tense.",
+      "commonMistakes": "Students often miss the emphasis on minimal time gap and choose options with 'immediately' or 'as soon as' which don't capture the 'barely/scarcely' meaning. They may also ignore the dramatic emphasis of the original structure.",
+      "usageTip": "When you see 'Scarcely had/Hardly had + subject + past participle + when', look for restatements with 'barely/hardly + before' or 'no sooner...than' to maintain the emphasis on immediate, almost simultaneous timing.",
+      "difficulty": "hard",
+      "id": "rst_prem_335",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final witness testified did the jury begin to comprehend the defendant's true motives.'",
+      "options": [
+        "The jury began to comprehend the defendant's true motives only when the final witness testified.",
+        "After the final witness testified, the jury understood the defendant's true motives.",
+        "The final witness's testimony helped the jury understand the defendant's motives better.",
+        "When the final witness testified, the jury finally comprehended the defendant's true motives."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך עם 'Not until' המדגיש שרק בנקודת זמן ספציפית (עדות העד האחרון) החל תהליך ההבנה. המבנה הדקדוקי כולל היפוך של הפועל העזר 'did' לפני הנושא. האפשרות הנכונה (1) משמרת את המשמעות המדויקת עם 'only when', המבטאת שהתחלת ההבנה התרחשה אך ורק באותו רגע. אפשרות 2 משתמשת ב-'after' שמרמזת על זמן שעבר מאז העדות, לא על מיידיות. אפשרות 3 מחליפה 'comprehend' ב-'understand better' ומשנה את המשמעות מתחילת הבנה להעמקתها. אפשרות 4 עם 'finally' לא מדגישה שזה היה הרגע הראשון של ההבנה.",
+      "examples": [
+        "Not until midnight did she realize her mistake. = She realized her mistake only at midnight.",
+        "Not until he graduated did his parents feel proud. = His parents felt proud only when he graduated."
+      ],
+      "grammarRule": "Inversion with 'Not until' emphasizes the exact moment when something begins or happens. Structure: 'Not until + time/event + auxiliary verb + subject + main verb'. This creates strong emphasis on the timing being the first and only moment of occurrence.",
+      "commonMistakes": "Students often choose options with 'after', 'finally', or 'eventually' which don't capture the precise timing emphasis of 'not until'. They may also miss that this marks the beginning of understanding, not just any moment of understanding.",
+      "usageTip": "When you see 'Not until...did/does', look for restatements with 'only when/at/after' that emphasize this was the first and precise moment something occurred. Avoid options that suggest the action happened sometime after the specified moment.",
+      "difficulty": "hard",
+      "id": "rst_prem_336",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

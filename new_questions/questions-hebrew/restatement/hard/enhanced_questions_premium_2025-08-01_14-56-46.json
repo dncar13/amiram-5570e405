@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:56:46.859Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060170039_5d8b00hmj",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 449.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened decisively, the entire project would have collapsed under the weight of bureaucratic inefficiency.'",
+      "options": [
+        "Without the committee's decisive intervention, the project would have failed due to bureaucratic inefficiency.",
+        "The committee's intervention prevented the project from succeeding despite bureaucratic problems.",
+        "If the committee had intervened more decisively, the project wouldn't have suffered from bureaucracy.",
+        "The project collapsed because the committee failed to intervene in the bureaucratic process."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי הפוך (inverted conditional) עם 'Had + subject + not + past participle' המבטא תנאי בזמן עבר. המשמעות היא שהוועדה כן התערבה והציל את הפרויקט. האפשרות הנכונה משמרת את המשמעות הזו על ידי שימוש ב-'Without' + gerund, המבטא את אותו רעיון היפותטי. האפשרויות האחרות משנות את המשמעות: האפשרות השנייה טוענת שההתערבות מנעה הצלחה, השלישית מציעה שלא היתה התערבות מספקת, והרביעית טוענת שהפרויקט אכן קרס.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had she not called, we would have missed the appointment. = Without her call, we would have missed the appointment."
+      ],
+      "grammarRule": "Inverted conditionals use 'Had + subject + (not) + past participle' to express hypothetical past situations, equivalent to 'If + past perfect' structures.",
+      "commonMistakes": "Students often confuse the meaning of inverted conditionals, thinking 'Had not' means the action didn't happen, when it actually confirms the action did occur.",
+      "usageTip": "When you see 'Had + subject + not + verb', remember it means the opposite actually happened. Convert to 'Without + noun/gerund' for clearer understanding.",
+      "difficulty": "hard",
+      "id": "rst_prem_295",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new regulations been implemented when complaints began pouring in from various stakeholders.'",
+      "options": [
+        "The new regulations were barely implemented before stakeholders started complaining heavily.",
+        "After the new regulations were fully implemented, many stakeholders complained about them.",
+        "Stakeholders complained even before the new regulations were properly implemented.",
+        "The implementation of new regulations was delayed due to stakeholder complaints."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when...' שמבטא שני אירועים שקרו כמעט בו-זמנית, כאשר האירוע השני התרחש מיד לאחר הראשון. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', והמבנה כולו מדגיש את הזמן הקצר שחלף בין יישום התקנות לבין התלונות. האפשרות הנכונה משמרת את המשמעות הזו עם 'barely... before'. האפשרויות האחרות משנות את הזמן או הסיבתיות: השנייה מציעה שהיישום הושלם לפני התלונות, השלישית טוענת שהתלונות היו לפני היישום, והרביעית הופכת את סדר הסיבה והתוצאה.",
+      "examples": [
+        "Scarcely had I arrived when it started raining. = I had barely arrived when it started raining.",
+        "Hardly had she finished speaking when the audience applauded. = She had hardly finished speaking before the audience applauded."
+      ],
+      "grammarRule": "'Scarcely/Hardly/Barely + had + subject + past participle + when...' indicates two events happening in very quick succession, with inversion for emphasis.",
+      "commonMistakes": "Students often miss the immediate succession aspect and treat it as a simple past sequence, or confuse the inverted word order.",
+      "usageTip": "Replace 'Scarcely had... when' with 'barely... before' or 'hardly... when' to maintain the same meaning of immediate succession.",
+      "difficulty": "hard",
+      "id": "rst_prem_296",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Were it not for the unprecedented support from international donors, the humanitarian crisis would have escalated beyond manageable proportions.'",
+      "options": [
+        "Without the unprecedented international donor support, the humanitarian crisis would have become unmanageable.",
+        "Despite unprecedented international support, the humanitarian crisis escalated beyond control.",
+        "The humanitarian crisis was managed only because international donors provided expected support.",
+        "International donors failed to provide support, causing the humanitarian crisis to escalate dangerously."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה תנאי היפותטי הפוך 'Were it not for...' המבטא מצב נגדי לעובדות - כלומר, התמיכה הבינלאומית כן התקיימה ומנעה את החמרת המשבר. המבנה הזה שווה ערך ל-'If it were not for' או 'Without'. המילה 'unprecedented' (חסרת תקדים) חשובה למשמעות. האפשרות הנכונה משמרת את כל המרכיבים הללו. האפשרויות האחרות משנות את העובדות: השנייה טוענת שהמשבר החמיר למרות התמיכה, השלישית מתעלמת מהיקף התמיכה החריג, והרביעית הופכת את העובדות לחלוטין על ידי טענה שלא היתה תמיכה.",
+      "examples": [
+        "Were it not for your help, I would have failed. = Without your help, I would have failed.",
+        "Were it not for the rain, we would have had a picnic. = If it weren't for the rain, we would have had a picnic."
+      ],
+      "grammarRule": "'Were it not for + noun' is a formal inverted conditional expressing a contrary-to-fact situation, equivalent to 'If it were not for' or 'Without'.",
+      "commonMistakes": "Students often interpret this as a real condition rather than understanding it expresses the opposite of what actually happened.",
+      "usageTip": "When you see 'Were it not for...', immediately think 'Without...' and remember that the condition mentioned actually exists or happened.",
+      "difficulty": "hard",
+      "id": "rst_prem_297",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

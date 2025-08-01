@@ -162,10 +162,41 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
   try {
     console.log('🔍 [ADMIN] Fetching ALL questions from database (including premium)...', filters)
 
-    // Build query - NO premium filtering for admin
+    // First, get accurate count with a separate query
+    let countQuery = supabase
+      .from('questions')
+      .select('*', { count: 'exact', head: true })
+
+    // Apply same filters to count query
+    if (filters.type) {
+      countQuery = countQuery.eq('type', filters.type)
+    }
+    if (filters.difficulty) {
+      countQuery = countQuery.eq('difficulty', filters.difficulty)
+    }
+    if (filters.topicId) {
+      countQuery = countQuery.eq('topic_id', filters.topicId)
+    }
+    if (filters.setId) {
+      if (filters.setId.includes('premium')) {
+        countQuery = countQuery.filter('metadata->set_id', 'eq', filters.setId)
+      } else {
+        countQuery = countQuery.eq('set_id', filters.setId)
+      }
+    }
+
+    const { count: totalCount, error: countError } = await countQuery
+    
+    if (countError) {
+      console.error('❌ [ADMIN] Error getting question count:', countError)
+    } else {
+      console.log(`📊 [ADMIN] Total questions in database: ${totalCount}`)
+    }
+
+    // Build main query - NO premium filtering for admin
     let query = supabase
       .from('questions')
-      .select('*', { count: 'exact' })
+      .select('*')
 
     // Apply filters
     if (filters.type) {
@@ -192,10 +223,11 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
     // FIFO Logic: Newest questions first (created_at DESC)
     query = query.order('created_at', { ascending: false })
     
-    // For admin panel, get ALL questions without any limit
-    // Remove any pagination to get the complete dataset
+    // For admin panel, set a high limit to bypass Supabase's default 1000-row limit
+    // This ensures we get ALL questions, not just the first 1000
+    query = query.limit(50000) // Set high limit to get all possible questions
 
-    const { data: questions, error, count } = await query
+    const { data: questions, error } = await query
 
     if (error) {
       console.error('❌ [ADMIN] Error fetching questions:', error)
@@ -204,12 +236,13 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
 
     console.log(`✅ [ADMIN] Fetched ${questions?.length || 0} questions from database`)
     console.log(`🔍 [ADMIN] Premium questions found:`, questions?.filter(q => q.is_premium).length || 0)
+    console.log(`📊 [ADMIN] Using accurate count: ${totalCount} (vs fetched: ${questions?.length || 0})`)
 
     const transformedQuestions = questions?.map(transformQuestion) || []
     
     const result: QuestionsResponse = {
       questions: transformedQuestions,
-      total: count || transformedQuestions.length,
+      total: totalCount || transformedQuestions.length, // Use accurate count from separate query
       hasMore: false // Admin panel gets all questions, no pagination
     }
 

@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:56:04.714Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060118821_hnf1fd9rw",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 449.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened decisively, the project would have collapsed entirely due to insufficient funding and poor management.'",
+      "options": [
+        "Without the committee's decisive intervention, the project would have failed completely because of inadequate funding and mismanagement.",
+        "The committee's intervention was decisive, so the project didn't collapse despite funding issues and management problems.",
+        "If the committee had intervened more decisively, the project wouldn't have collapsed from funding and management issues.",
+        "The committee intervened decisively, which prevented the project from collapsing due to funding and management problems."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי מתקדם 'Had + subject + not + past participle' שמציין תנאי בעבר. המשמעות היא שהוועדה כן התערבה, ובלי ההתערבות הזו הפרויקט היה קורס. האפשרות הנכונה משמרת את המשמעות הזו בעזרת 'Without' ו-'would have failed'. שאר האפשרויות משנות את המשמעות - האפשרות השנייה מציינת שההתערבות קרתה אבל הפרויקט לא קרס (משמעות הפוכה), השלישית מציעה שההתערבות לא הייתה מספיק החלטית, והרביעית פשוט קובעת עובדות בלי המבנה ההיפותטי.",
+      "examples": [
+        "Had she not studied medicine, she would never have discovered her passion for research.",
+        "Without her medical studies, she would never have discovered her passion for research."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + (not) + past participle' = 'If + subject + had (not) + past participle'. Can be restated using 'Without + noun phrase' + 'would have + past participle'.",
+      "commonMistakes": "שינוי המשמעות ההיפותטית למשמעות עובדתית, או הפיכת התוצאה החיובית לשלילית",
+      "usageTip": "במבני תנאי מתקדמים עם היפוך, זהה תחילה מה באמת קרה במציאות, ואז מצא את הניסוח המקביל שמשמר את אותה משמעות",
+      "difficulty": "hard",
+      "id": "rst_prem_292",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the negotiations begun when fundamental disagreements emerged that threatened to derail the entire peace process.'",
+      "options": [
+        "The negotiations had barely started before major disagreements appeared that could have undermined the whole peace process.",
+        "As soon as the negotiations started, serious disagreements emerged that nearly destroyed the entire peace process.",
+        "The negotiations had hardly begun when basic disagreements surfaced that risked sabotaging the entire peace process.",
+        "Once the negotiations began, fundamental disagreements quickly arose and completely derailed the peace process."
+      ],
+      "correctAnswer": 2,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when' שמציין שדבר מה קרה כמעט מיד אחרי התחלת פעולה אחרת. המילה 'threatened' מציינת סיכון פוטנציאלי, לא משהו שקרה בפועל. האפשרות הנכונה משתמשת ב-'hardly' (מילה נרדפת ל-'scarcely'), ב-'risked' (נרדף ל-'threatened') וב-'sabotaging' (נרדף ל-'derail'). האפשרות הראשונה משתמשת ב-'could have' שמשנה את זמן הפעולה, השנייה אומרת ש'nearly destroyed' (כמעט הרס - משמעות חזקה יותר), והרביעית טוענת שההסכם אכן נהרס ('completely derailed').",
+      "examples": [
+        "Hardly had we arrived when it started raining heavily.",
+        "No sooner had the concert begun than the power went out."
+      ],
+      "grammarRule": "'Scarcely/Hardly/No sooner + had + subject + past participle + when/than' indicates immediate succession of events. 'Scarcely' = 'hardly' = 'barely'. 'Threatened to' = 'risked' + gerund.",
+      "commonMistakes": "שינוי מסיכון פוטנציאלי למשהו שקרה בפועל, או שינוי עוצמת הפעולה (מאיום לביצוע בפועל)",
+      "usageTip": "שים לב להבדל בין פעולות שקרו בפועל לבין איומים או סיכונים פוטנציאליים, ושמור על אותו רמת עוצמה",
+      "difficulty": "hard",
+      "id": "rst_prem_293",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final audit was completed did the board realize the extent to which financial irregularities had compromised the company's stability.'",
+      "options": [
+        "The board didn't realize how much financial irregularities had affected the company's stability until the final audit was finished.",
+        "Only after completing the final audit did the board understand how financial irregularities had threatened the company's stability.",
+        "The board realized the extent of financial irregularities only when the final audit was completed and the company's stability was compromised.",
+        "It was not until the final audit was completed that the board realized how severely financial irregularities had undermined the company's stability."
+      ],
+      "correctAnswer": 3,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did' שדורש היפוך של הפועל העזר. המשמעות היא שרק אחרי סיום הביקורת הבינה הדירקטוריון את חומרת הבעיות הכספיות. האפשרות הנכונה משתמשת במבנה 'It was not until... that' שמשמר את אותה משמעות ללא היפוך. האפשרות הראשונה נכונה מבחינת משמעות אבל פשוטה מדי ולא משמרת את המבנה המתקדם, השנייה משנה 'compromised' ל-'threatened' (משמעות שונה), והשלישית מציעה שהיציבות נפגעה רק כשהביקורת הסתיימה, מה שמשנה את הקשר הסיבתי.",
+      "examples": [
+        "Not until midnight did she finish her assignment.",
+        "It was not until midnight that she finished her assignment."
+      ],
+      "grammarRule": "'Not until + time/event + auxiliary verb + subject + main verb' can be restated as 'It was not until + time/event + that + subject + verb'. Both emphasize the timing of realization or action.",
+      "commonMistakes": "שינוי המבנה המודגש לפשוט מדי, או שינוי הקשר הסיבתי בין האירועים",
+      "usageTip": "במבני 'Not until' חפש את נקודת הזמן המדויקת שבה משהו התרחש, ושמור על הקשר הסיבתי המקורי",
+      "difficulty": "hard",
+      "id": "rst_prem_294",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

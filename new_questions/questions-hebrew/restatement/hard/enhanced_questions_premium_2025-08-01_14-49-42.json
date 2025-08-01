@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:49:42.786Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059741019_yny78uwar",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 434.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened promptly, the economic crisis would have escalated into a catastrophic recession that could have taken decades to recover from.'",
+      "options": [
+        "Without the government's prompt intervention, the economic crisis could have developed into a catastrophic recession requiring decades for recovery.",
+        "The government's intervention prevented the economic crisis from becoming a catastrophic recession, though recovery still took decades.",
+        "Because the government intervened promptly, the economic crisis escalated into a catastrophic recession that took decades to recover from.",
+        "If the government had intervened later, the economic crisis would not have become a catastrophic recession lasting decades."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי מורכב עם היפוך (inversion) 'Had the government not...' המבטא תנאי בזמן עבר. המשמעות היא שהממשלה כן התערבה במהירות, ובזכך נמנעה קטסטרופה. האפשרות הנכונה משמרת את המשמעות המדויקת באמצעות 'Without...could have', המבטאת את אותו תנאי היפותטי. שאר האפשרויות משנות את המשמעות: אפשרות 2 מרמזת שההתאוששות אכן לקחה עשרות שנים, אפשרות 3 הופכת את הסיבה והתוצאה, ואפשרות 4 משנה את התנאי לחלוטין.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = Without knowing about the meeting, I couldn't attend.",
+        "Had she studied harder, she would have passed the exam. = If she had studied harder, she would have passed."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' equals 'If + subject + had + past participle'. Used for hypothetical past situations.",
+      "commonMistakes": "Confusing the actual outcome with the hypothetical one, or misunderstanding that 'had not' indicates the opposite actually happened.",
+      "usageTip": "When you see 'Had + subject + not + past participle', remember it means the opposite actually occurred. Convert to 'Without...' or 'If...had not' to check meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_268",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new CEO implemented the restructuring plan when employee morale plummeted to unprecedented lows, prompting immediate concerns about productivity.'",
+      "options": [
+        "The new CEO had barely implemented the restructuring plan before employee morale dropped to unprecedented lows, immediately raising productivity concerns.",
+        "After the new CEO implemented the restructuring plan, employee morale gradually declined to low levels, eventually affecting productivity.",
+        "The new CEO's restructuring plan was scarcely implemented due to employee morale plummeting to unprecedented lows and productivity concerns.",
+        "Employee morale plummeted to unprecedented lows, which prompted the new CEO to scarcely implement the restructuring plan."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had...when' המבטא רצף זמנים מהיר וקשר סיבה ותוצאה מיידי. המילה 'scarcely' משמעותה 'בקושי' או 'כמעט לא', והמבנה כולו מדגיש שהתוצאה (ירידת המורל) התרחשה מיד לאחר הפעולה (יישום התוכנית). האפשרות הנכונה משמרת את המשמעות עם 'barely...before', המבטאת את אותו רצף מהיר. אפשרות 2 משנה את הזמן ל'הדרגתי', אפשרות 3 משנה את הסיבתיות (מרמזת שהתוכנית לא יושמה), ואפשרות 4 הופכת לחלוטין את סדר האירועים והסיבתיות.",
+      "examples": [
+        "Scarcely had I arrived when it started raining. = I had barely arrived before it started raining.",
+        "Hardly had she finished speaking when the audience applauded. = She had hardly finished speaking before the audience applauded."
+      ],
+      "grammarRule": "'Scarcely/Hardly/Barely + had + subject + past participle + when' indicates immediate sequence. Can be restated as 'Subject + had + scarcely/hardly/barely + past participle + before/when'.",
+      "commonMistakes": "Misunderstanding the immediate timing, or thinking 'scarcely' means the action didn't happen rather than it barely happened.",
+      "usageTip": "When you see 'Scarcely had...when', think 'immediately after' or 'as soon as'. The timing is crucial - there's almost no gap between the two events.",
+      "difficulty": "hard",
+      "id": "rst_prem_269",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the whistleblower came forward with irrefutable evidence did the authorities acknowledge the extent of the corruption that had been systematically covered up for years.'",
+      "options": [
+        "The authorities only acknowledged the extent of the systematically covered-up corruption when the whistleblower presented irrefutable evidence.",
+        "The authorities acknowledged the extent of the corruption before the whistleblower came forward with irrefutable evidence that had been covered up.",
+        "Until the whistleblower came forward, the authorities had already acknowledged the systematically covered-up corruption with irrefutable evidence.",
+        "The whistleblower came forward with irrefutable evidence, but the authorities did not acknowledge the extent of the systematically covered-up corruption."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until...did' שהוא מבנה שלילי עם היפוך הדורש הבנה מדויקת של הזמנים והסיבתיות. המשמעות היא שהרשויות לא הכירו בהיקף השחיתות עד שהמלשין הגיש ראיות. המילים 'Not until' יוצרות תנאי שלילי - משהו לא קרה עד לרגע מסוים. האפשרות הנכונה משמרת את המשמעות עם 'only...when', המבטאת את אותו תנאי. אפשרות 2 הופכת את סדר האירועים, אפשרות 3 טוענת שהרשויות כבר הכירו בשחיתות לפני המלשין, ואפשרות 4 טוענת שהרשויות לא הכירו בשחיתות גם אחרי המלשין.",
+      "examples": [
+        "Not until midnight did she realize her mistake. = She only realized her mistake at midnight.",
+        "Not until he apologized did she forgive him. = She only forgave him when he apologized."
+      ],
+      "grammarRule": "'Not until + time/event + auxiliary verb + subject + main verb' means something didn't happen before that specific point. Equivalent to 'only when/after' or 'it was only when'.",
+      "commonMistakes": "Confusing the timing - thinking the action happened before the specified point, or missing the negative aspect of 'not until'.",
+      "usageTip": "Transform 'Not until X did Y happen' to 'Y only happened when/after X' to check your understanding. The key is that Y was delayed until X occurred.",
+      "difficulty": "hard",
+      "id": "rst_prem_270",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

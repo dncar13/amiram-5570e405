@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:59:49.759Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060352233_zbdohqto4",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 478
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Despite the overwhelming evidence against his theory, the scientist persisted in defending his controversial hypothesis with unwavering determination.'",
+      "options": [
+        "Even though there was compelling proof that contradicted his theory, the scientist continued to support his debatable hypothesis with steadfast resolve.",
+        "Because of the strong evidence supporting his theory, the scientist maintained his controversial position with great determination.",
+        "Although the evidence was insufficient, the scientist defended his popular theory with occasional hesitation.",
+        "The scientist abandoned his controversial hypothesis due to the overwhelming evidence that supported alternative theories."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי מביע ניגוד בין העובדות (ראיות מכריעות נגד התיאוריה) לבין פעולת המדען (המשך הגנה נחושה). האפשרות הנכונה משמרת את המבנה הלוגי: 'למרות ש...' (despite/even though), 'ראיות משכנעות שסותרות' (overwhelming evidence against/compelling proof that contradicted), 'המשיך לתמוך' (persisted in defending/continued to support), ו'נחישות איתנה' (unwavering determination/steadfast resolve). האפשרויות האחרות משנות את המשמעות: האפשרות השנייה הופכת את כיוון הראיות, השלישית משנה את טיב הראיות והעמדה, והרביעית הופכת את פעולת המדען לחלוטין.",
+      "examples": [
+        "Despite the rain, we continued our hike = Even though it was raining, we kept hiking",
+        "Notwithstanding the criticism, she maintained her position = Although there was criticism, she held her ground"
+      ],
+      "grammarRule": "Despite/In spite of + noun phrase = Even though/Although + clause. Both express contrast but require different grammatical structures.",
+      "commonMistakes": "Confusing 'despite' (contrast) with 'because of' (cause), or changing 'persisted in defending' to 'abandoned' which reverses the meaning completely.",
+      "usageTip": "Look for signal words that indicate contrast (despite, although, even though) and ensure the logical relationship between clauses remains identical in the restatement.",
+      "difficulty": "hard",
+      "id": "rst_prem_307",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government implemented stricter regulations earlier, the environmental catastrophe could have been averted entirely.'",
+      "options": [
+        "If the government had introduced more stringent rules sooner, the ecological disaster might have been completely prevented.",
+        "Since the government failed to implement regulations, the environmental catastrophe was inevitable and occurred as expected.",
+        "The government's early implementation of strict regulations directly caused the environmental catastrophe that followed.",
+        "Unless the government implements stricter regulations now, future environmental catastrophes will definitely occur."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה של תנאי מסוג שלישי (third conditional) עם היפוך (inversion): 'Had + subject + past participle' שמשמעותו 'If + past perfect'. המשפט מביע חרטה על פעולה שלא התרחשה בעבר ותוצאותיה. האפשרות הנכונה משמרת את המשמעות: 'אם הממשלה הייתה מכניסה חוקים מחמירים יותר מוקדם יותר, האסון האקולוגי היה יכול להימנע לחלוטין'. האפשרויות האחרות משנות את המשמעות: השנייה מדברת על מה שקרה בפועל, השלישית הופכת את הסיבתיות, והרביעית מדברת על העתיד במקום על העבר.",
+      "examples": [
+        "Had I known about the meeting, I would have attended = If I had known about the meeting, I would have attended",
+        "Had she studied harder, she could have passed = If she had studied harder, she could have passed"
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' = 'If + subject + had + past participle'. Used for hypothetical past situations.",
+      "commonMistakes": "Confusing third conditional (past hypothetical) with other conditional types, or changing the time reference from past to present/future.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning, it's an inverted third conditional expressing regret or hypothetical past situations.",
+      "difficulty": "hard",
+      "id": "rst_prem_308",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not only did the new policy fail to address the underlying issues, but it also exacerbated the existing problems significantly.'",
+      "options": [
+        "The new policy both failed to tackle the fundamental problems and made the current difficulties considerably worse.",
+        "Although the new policy addressed some underlying issues, it created several new problems that were quite serious.",
+        "The new policy successfully resolved the underlying issues but unfortunately created some minor additional problems.",
+        "While the new policy didn't completely solve all issues, it made significant progress in improving the overall situation."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not only... but also' שמדגיש שתי פעולות שליליות: א) הכישלון בטיפול בבעיות הבסיסיות, ב) החמרת הבעיות הקיימות. המבנה הזה מדגיש שהמצב גרוע פי שניים ממה שציפו. האפשרות הנכונה משמרת את שני האלמנטים: 'גם כשלה בטיפול בבעיות הבסיסיות וגם החמירה את הקשיים הנוכחיים באופן משמעותי'. האפשרויות האחרות משנות את המשמעות: השנייה מציינת הצלחה חלקית, השלישית מדברת על הצלחה עם בעיות קלות, והרביעית מציגת תמונה חיובית של התקדמות.",
+      "examples": [
+        "Not only was he late, but he also forgot the documents = He was both late and forgot the documents",
+        "She not only speaks French fluently, but also teaches it = She both speaks French fluently and teaches it"
+      ],
+      "grammarRule": "'Not only... but also' emphasizes two related points, often with inversion after 'not only'. Both elements should be parallel in structure.",
+      "commonMistakes": "Missing the double negative impact - both the failure AND the worsening, or changing one of the negative aspects to positive.",
+      "usageTip": "When you see 'Not only... but also', ensure both parts of the statement are preserved in the restatement, maintaining the emphasis on two connected points.",
+      "difficulty": "hard",
+      "id": "rst_prem_309",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

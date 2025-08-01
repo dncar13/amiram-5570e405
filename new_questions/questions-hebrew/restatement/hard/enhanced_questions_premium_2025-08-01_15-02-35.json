@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:02:35.509Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060522076_llte0b5ks",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 371.3333333333333
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Despite having invested considerable resources in the project, the company was compelled to abandon it due to unforeseen regulatory changes.'",
+      "options": [
+        "Although the company had put significant resources into the project, it was forced to give it up because of unexpected regulatory modifications.",
+        "The company abandoned the project because it didn't want to invest more resources in regulatory changes.",
+        "Due to regulatory changes, the company decided to invest more resources in the project.",
+        "The company was successful in the project despite regulatory changes and resource investments."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי מביע רעיון של ניגוד - למרות השקעה משמעותית, החברה נאלצה לנטוש את הפרויקט. האפשרות הנכונה משמרת את המבנה הלוגי: 'Although' מביעה את אותו ניגוד כמו 'Despite', 'had put significant resources' זהה ל'invested considerable resources', 'forced to give up' זהה ל'compelled to abandon', ו'unexpected regulatory modifications' זהה ל'unforeseen regulatory changes'. שאר האפשרויות משנות את המשמעות הבסיסית או הקשר הסיבתי.",
+      "examples": [
+        "Despite studying hard, he failed the exam = Although he studied hard, he failed the exam",
+        "Due to the rain, we stayed home = Because of the rain, we stayed home"
+      ],
+      "grammarRule": "Despite + noun/gerund = Although + subject + verb. Both express contrast between expectation and reality.",
+      "commonMistakes": "Confusing 'despite' with 'because of', or changing the logical relationship between clauses when paraphrasing.",
+      "usageTip": "When paraphrasing contrast structures, maintain the same logical relationship - what was expected vs. what actually happened.",
+      "difficulty": "hard",
+      "id": "rst_prem_316",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the investigation was completed did the authorities realize the full extent of the corruption scandal.'",
+      "options": [
+        "The authorities didn't realize the full extent of the corruption scandal until the investigation was completed.",
+        "The authorities realized the corruption scandal before completing the investigation.",
+        "The investigation was completed because the authorities realized the extent of corruption.",
+        "Only during the investigation did the authorities ignore the corruption scandal."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך (inversion) עם 'Not until' שיוצר דגש. המשמעות היא שהרשויות הבינו את היקף השחיתות רק לאחר שהחקירה הושלמה. האפשרות הנכונה משמרת את אותה משמעות בצורה ישירה יותר עם 'didn't...until'. האפשרויות האחרות משנות את רצף הזמנים או את הקשר הסיבתי. זהו מבנה מורכב הדורש הבנה מדויקת של זמני הפעלים והקשר ביניהם.",
+      "examples": [
+        "Not until midnight did she arrive = She didn't arrive until midnight",
+        "Only when it rained did we go inside = We went inside only when it rained"
+      ],
+      "grammarRule": "'Not until' at the beginning requires subject-verb inversion. 'Not until + time/event + auxiliary verb + subject + main verb'",
+      "commonMistakes": "Forgetting the inversion rule with 'not until', or misunderstanding the timing sequence in the sentence.",
+      "usageTip": "Convert 'Not until X did Y happen' to 'Y didn't happen until X' to maintain the same meaning without inversion.",
+      "difficulty": "hard",
+      "id": "rst_prem_317",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Were it not for the timely intervention of the emergency services, the consequences would have been catastrophic.'",
+      "options": [
+        "If it hadn't been for the timely intervention of the emergency services, the consequences would have been catastrophic.",
+        "Because of the emergency services' intervention, the consequences were catastrophic.",
+        "The emergency services intervened, so the consequences became catastrophic.",
+        "The consequences were catastrophic despite the emergency services' timely intervention."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה מותנה היפותטי עם היפוך 'Were it not for' שמביע תנאי נגדי בזמן עבר. המשמעות היא שבזכות התערבות שירותי החירום, התוצאות הקטסטרופליות נמנעו. האפשרות הנכונה משמרת את אותה משמעות עם 'If it hadn't been for'. שאר האפשרויות הופכות את הקשר הסיבתי - הן מציגות את שירותי החירום כגורם לקטסטרופה במקום כמונע שלها. זהו מבנה דקדוקי מתקדם הדורש הבנה מדויקת.",
+      "examples": [
+        "Were it not for your help, I would have failed = If it weren't for your help, I would have failed",
+        "Had she not called, we would have left = If she hadn't called, we would have left"
+      ],
+      "grammarRule": "'Were it not for' is a formal inverted conditional meaning 'If it were not for'. Used in hypothetical situations.",
+      "commonMistakes": "Misunderstanding the conditional meaning, or confusing the cause-effect relationship in hypothetical situations.",
+      "usageTip": "Replace 'Were it not for X' with 'If it weren't/hadn't been for X' to simplify while keeping the same meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_318",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

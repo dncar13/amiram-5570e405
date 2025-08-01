@@ -303,8 +303,21 @@ REQUIREMENTS:
 3. Only ONE option should preserve the exact same meaning
 4. Write comprehensive Hebrew explanations (${settings.explanationLength.min}-${settings.explanationLength.max} words)
 5. Include 2 examples and common mistakes
+6. Include grammar rules and usage tips
 
-Return ONLY a valid JSON array with all the required fields for hard level...`;
+Return ONLY a valid JSON array:
+[{
+  "type": "restatement",
+  "text": "Original: 'Complex sentence here'",
+  "options": ["option1", "option2", "option3", "option4"],
+  "correctAnswer": 0,
+  "explanation": "Hebrew explanation here",
+  "examples": ["example1", "example2"],
+  "grammarRule": "Grammar rule here",
+  "commonMistakes": "Common mistakes here",
+  "usageTip": "Usage tip here",
+  "difficulty": "hard"
+}]`;
 }
 
 // ========== MAIN GENERATION FUNCTION ==========

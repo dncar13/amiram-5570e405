@@ -1,5 +1,6 @@
 
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ShieldCheck, AlertCircle, Loader2 } from "lucide-react";
 import { initializePayment } from "@/services/cardcomService";
@@ -32,6 +33,7 @@ const CardcomPaymentForm = ({
   
   const { trackBeginCheckout, trackPurchase, trackError: trackAnalyticsError, trackButtonClick } = useAnalytics();
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
   
   // Track payment form view on component mount
   useEffect(() => {
@@ -65,7 +67,32 @@ const CardcomPaymentForm = ({
   // Initialize CardCom payment
   const initializeCardComPayment = async () => {
     if (!currentUser) {
-      setError('אנא התחבר לחשבון כדי להמשיך בתשלום');
+      // Save payment intent to session storage
+      const paymentIntent = {
+        plan: planType,
+        amount,
+        coupon: couponCode,
+        discountAmount,
+        timestamp: Date.now()
+      };
+      
+      sessionStorage.setItem('paymentIntent', JSON.stringify(paymentIntent));
+      
+      // Track unauthenticated payment attempt
+      trackButtonClick('payment_attempt_unauthenticated', 'cardcom_payment_form', {
+        plan_type: planType,
+        amount: amount
+      });
+      
+      // Redirect to login with payment context
+      navigate('/login', { 
+        state: { 
+          from: '/premium',
+          continuePurchase: true,
+          plan: planType,
+          message: 'כדי להשלים את הרכישה, יש להתחבר או להירשם. תועברו חזרה לכאן מיד לאחר ההתחברות.'
+        }
+      });
       return;
     }
 
@@ -173,9 +200,24 @@ const CardcomPaymentForm = ({
         </div>
       )}
       
+      {!currentUser && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center mb-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <ShieldCheck className="h-5 w-5 text-blue-600" />
+            <span className="font-semibold text-blue-900">כמעט סיימתם!</span>
+          </div>
+          <p className="text-sm text-blue-700 mb-1">
+            כדי להמשיך בתשלום, יש להתחבר או להירשם.
+          </p>
+          <p className="text-xs text-blue-600">
+            ההרשמה מהירה - תוכלו להתחיל מיד לאחר מכן! 🚀
+          </p>
+        </div>
+      )}
+      
       <Button 
         onClick={initializeCardComPayment}
-        disabled={isLoading || isRedirecting || !currentUser}
+        disabled={isLoading || isRedirecting}
         className="w-full py-6 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-lg font-semibold flex items-center gap-3 justify-center shadow-lg transition-all duration-200"
       >
         {isLoading ? (

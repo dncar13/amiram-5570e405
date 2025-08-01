@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:51:42.379Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059869233_ng0fzfv6f",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 386.3333333333333
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the company not implemented the new safety protocols, the accident would have been far more catastrophic.'",
+      "options": [
+        "If the company hadn't implemented the new safety protocols, the accident would have been far more catastrophic.",
+        "Because the company implemented the new safety protocols, the accident was less catastrophic.",
+        "The company's failure to implement safety protocols made the accident more catastrophic.",
+        "Unless the company implements safety protocols, accidents will be more catastrophic."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך (inversion) עם 'Had' בתחילת המשפט, המבטא תנאי בזמן עבר מושלם. זהו מבנה פורמלי המקביל ל-'If + past perfect'. התשובה הנכונה (1) שומרת על אותו משמעות בדיוק - תנאי היפותטי בעבר שלא התממש. התשובות האחרות משנות את המשמעות: (2) מתמקדת בתוצאה החיובית, (3) טוענת שהחברה כשלה ביישום, ו-(4) מדברת על עתיד ולא על עבר.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had they arrived earlier, they wouldn't have missed the show. = If they had arrived earlier, they wouldn't have missed the show."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' = 'If + subject + had + past participle'",
+      "commonMistakes": "Confusing inverted conditionals with simple past tense, or changing the hypothetical nature of the statement",
+      "usageTip": "Inverted conditionals are formal and often used in academic or professional writing. Always maintain the hypothetical meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_274",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began to plummet.'",
+      "options": [
+        "The CEO had barely announced the merger when stock prices began to plummet.",
+        "After the CEO announced the merger, stock prices eventually began to plummet.",
+        "Stock prices began to plummet before the CEO announced the merger.",
+        "The CEO announced the merger because stock prices began to plummet."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when' - מבנה היפוך המדגיש שני אירועים שקרו כמעט באותו זמן, כאשר השני קרה מיד אחרי הראשון. 'Scarcely' פירושו 'בקושי' או 'כמעט לא', ומציין שהזמן בין שני האירועים היה קצר מאוד. התשובה הנכונה (1) משתמשת ב-'barely' (בקושי) ושומרת על הרצף הזמני המיידי. התשובות האחרות משנות את הזמון: (2) מרמזת על פער זמני, (3) הופכת את סדר האירועים, ו-(4) משנה את הקשר הסיבתי.",
+      "examples": [
+        "Scarcely had I entered the room when the phone rang. = I had barely entered the room when the phone rang.",
+        "Hardly had the concert begun when it started raining. = The concert had barely begun when it started raining."
+      ],
+      "grammarRule": "Negative adverbs (scarcely, hardly, barely) with inversion emphasize immediate sequence of events",
+      "commonMistakes": "Changing the immediate timing between events or confusing the sequence of actions",
+      "usageTip": "These constructions emphasize the minimal time gap between two events - use when timing is crucial to meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_275",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not only did the research reveal significant flaws in the methodology, but it also questioned the validity of previous studies.'",
+      "options": [
+        "The research revealed significant flaws in the methodology and also questioned the validity of previous studies.",
+        "The research revealed significant flaws in the methodology, so it questioned the validity of previous studies.",
+        "Besides revealing significant flaws in the methodology, the research also questioned the validity of previous studies.",
+        "The research revealed significant flaws in the methodology instead of questioning the validity of previous studies."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not only... but also' עם היפוך (inversion) אחרי 'Not only'. מבנה זה מדגיש שני דברים שהמחקר עשה, כאשר השני מוסיף על הראשון. ההיפוך ('did the research reveal') הופך את המשפט לפורמלי יותר ומדגיש את החשיבות. התשובה הנכונה (1) שומרת על שני החלקים של המידע ועל הקשר הלוגי ביניהם. התשובות האחרות משנות את הדגש או הקשר: (2) מציגת קשר סיבתי, (3) משתמשת ב-'besides' שמשנה את הדגש, ו-(4) יוצרת ניגוד במקום הוספה.",
+      "examples": [
+        "Not only did she win the award, but she also broke the record. = She won the award and also broke the record.",
+        "Not only is he talented, but he's also hardworking. = He is talented and also hardworking."
+      ],
+      "grammarRule": "'Not only... but also' with inversion adds emphasis to both connected ideas, showing addition rather than contrast",
+      "commonMistakes": "Changing the additive relationship to causation or contrast, or losing the emphasis of the original structure",
+      "usageTip": "When restating 'not only... but also' constructions, maintain the additive relationship and equal importance of both elements.",
+      "difficulty": "hard",
+      "id": "rst_prem_276",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

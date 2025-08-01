@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:48:55.564Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059699691_8lsv3irv4",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 354.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened promptly, the economic crisis would have been far more devastating than anyone could have anticipated.'",
+      "options": [
+        "The government's prompt intervention prevented the economic crisis from being as devastating as it could have been.",
+        "The government intervened promptly, so the economic crisis was not as devastating as expected.",
+        "Without the government's prompt intervention, the economic crisis was more devastating than anticipated.",
+        "The economic crisis would not have been devastating if the government had intervened earlier."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי הוא משפט תנאי מעורב (mixed conditional) המתחיל ב-inversion של had. הוא מתאר מצב היפותטי בעבר - מה היה קורה אילו הממשלה לא הייתה מתערבת. המשפט מציין שההתערבות המהירה של הממשלה מנעה משבר כלכלי הרסני יותר. רק אפשרות 1 משמרת את המשמעות המדויקת - שההתערבות אכן התרחשה ומנעה נזק גדול יותר. שאר האפשרויות משנות את הזמן, הסיבתיות או התוצאה.",
+      "examples": [
+        "Had she studied harder, she would have passed the exam → Her lack of studying caused her to fail the exam.",
+        "Had we left earlier, we wouldn't have missed the flight → We missed the flight because we didn't leave early enough."
+      ],
+      "grammarRule": "Third conditional with inversion: Had + subject + past participle = If + subject + had + past participle. Used for hypothetical past situations.",
+      "commonMistakes": "Confusing the actual outcome with the hypothetical one, or changing the time frame from past to present/future.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning, identify what actually happened versus what would have happened.",
+      "difficulty": "hard",
+      "id": "rst_prem_265",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when shareholders began expressing their vehement opposition to the proposed deal.'",
+      "options": [
+        "The CEO had barely announced the merger before shareholders started strongly opposing the deal.",
+        "After the CEO announced the merger, shareholders eventually began to oppose the proposed deal.",
+        "The CEO announced the merger, and then shareholders expressed their opposition to it.",
+        "Before the CEO could announce the merger, shareholders were already opposing the deal."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when' שמציין רצף מהיר מאוד של אירועים. זהו מבנה formal המדגיש שהאירוע השני (התנגדות בעלי המניות) התרחש כמעט מיד לאחר הראשון (הכרזת המנכ'ל). המילה 'vehement' מדגישה את עוצמת ההתנגדות. רק אפשרות 1 משמרת את כל הרכיבים: הזמן המיידי ('barely... before'), העוצמה ('strongly opposing'), והרצף הסיבתי הנכון.",
+      "examples": [
+        "Scarcely had we arrived when it started raining → We had barely arrived before it started raining.",
+        "Hardly had she finished speaking when the audience applauded → She had just finished speaking when the audience applauded."
+      ],
+      "grammarRule": "Scarcely/Hardly + had + subject + past participle + when = emphasizes immediate sequence of events with inversion.",
+      "commonMistakes": "Missing the immediacy of the sequence or the intensity implied by 'vehement', or reversing the order of events.",
+      "usageTip": "Scarcely/Hardly...when structures emphasize that two events happened almost simultaneously, with the second following immediately after the first.",
+      "difficulty": "hard",
+      "id": "rst_prem_266",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the whistleblower came forward with irrefutable evidence did the authorities finally acknowledge the extent of the corporate malfeasance.'",
+      "options": [
+        "The authorities only acknowledged the extent of corporate wrongdoing after the whistleblower provided undeniable proof.",
+        "The authorities acknowledged the corporate malfeasance when the whistleblower provided evidence.",
+        "Before the whistleblower came forward, the authorities had already acknowledged the corporate wrongdoing.",
+        "The whistleblower's evidence helped the authorities understand some of the corporate problems."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did' שמדגיש שהרשויות לא הכירו בהיקף הבעיה עד לרגע מסוים. המילה 'irrefutable' פירושה בלתי ניתן לערעור, ו'malfeasance' היא מילה פורמלית לעבירות/התנהגות פלילית. המילה 'finally' מדגישה שזה קרה אחרי זמן רב. רק אפשרות 1 משמרת את כל המרכיבים: הזמן המדויק ('only...after'), איכות הראיות ('undeniable'), וההכרה המלאה בהיקף ('extent of wrongdoing').",
+      "examples": [
+        "Not until midnight did she realize her mistake → She only realized her mistake at midnight.",
+        "Not until he apologized did she forgive him → She only forgave him after he apologized."
+      ],
+      "grammarRule": "Not until + time/condition + auxiliary verb + subject + main verb = emphasizes the specific moment when something happened, requires inversion.",
+      "commonMistakes": "Missing the emphasis on timing ('only after'), downgrading the certainty of evidence, or losing the formal tone of 'malfeasance'.",
+      "usageTip": "Not until...did structures emphasize that something happened at a specific point and not before - look for 'only' in the restatement.",
+      "difficulty": "hard",
+      "id": "rst_prem_267",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

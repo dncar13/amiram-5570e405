@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:03:16.217Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060559018_l28yazvdz",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 441.3333333333333
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened when it did, the project would have been terminated prematurely.'",
+      "options": [
+        "The project would have been terminated prematurely if the committee had not intervened when it did.",
+        "The committee intervened to prevent the project from being terminated prematurely.",
+        "Because the committee intervened, the project was not terminated prematurely.",
+        "The project was saved from premature termination by the committee's intervention."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי הוא משפט תנאי מסוג שלישי (Third Conditional) במבנה הפוך, המתחיל ב-'Had'. המשמעות המדויקת היא שאילולא התערבות הוועדה בזמן הנכון, הפרויקט היה מופסק בטרם עת. רק אפשרות 1 משמרת את המשמעות המדויקת והמבנה התנאי. האפשרויות האחרות משנות את המשמעות: אפשרות 2 מציינת מטרה ולא תוצאה היפותטית, אפשרות 3 מציינת עובדה ולא מצב היפותטי, ואפשרות 4 מתמקדת בתוצאה החיובית מבלי לשמר את המבנה התנאי ההיפותטי המקורי.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = I would have attended if I had known about the meeting.",
+        "Had they arrived earlier, they wouldn't have missed the show. = They wouldn't have missed the show if they had arrived earlier."
+      ],
+      "grammarRule": "Inverted Third Conditional: 'Had + subject + past participle' = 'If + subject + had + past participle'. Both express unreal past conditions.",
+      "commonMistakes": "Confusing inverted conditionals with simple past statements, or changing the hypothetical nature to factual statements.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning, convert it to 'If + subject + had + past participle' to maintain exact meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_319",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began to plummet.'",
+      "options": [
+        "Stock prices began to plummet immediately after the CEO announced the merger.",
+        "The CEO had barely announced the merger when stock prices began to plummet.",
+        "As soon as the CEO announced the merger, stock prices started falling dramatically.",
+        "Stock prices plummeted because the CEO announced the merger."
+      ],
+      "correctAnswer": 1,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had' שהוא מבנה הפיכה (inversion) המבטא זמן קצר מאוד בין שני אירועים. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', והיא דורשת הפיכה בסדר המילים. רק אפשרות 2 משמרת את המשמעות המדויקת עם המילה 'barely' שמקבילה ל-'scarcely'. אפשרות 1 נכונה במשמעות אך חסרה את הדגש על הזמן הקצר ביותר. אפשרות 3 משנה את 'plummet' ל-'falling dramatically' ואפשרות 4 מתמקדת בסיבתיות ולא בזמון המיידי של האירועים.",
+      "examples": [
+        "Scarcely had I entered the room when the phone rang. = I had barely entered the room when the phone rang.",
+        "Hardly had they finished dinner when guests arrived. = They had hardly finished dinner when guests arrived."
+      ],
+      "grammarRule": "Negative adverbs (scarcely, hardly, barely) at the beginning require subject-auxiliary inversion and express immediate sequence of events.",
+      "commonMistakes": "Losing the emphasis on the extremely short time gap between events, or changing the dramatic tone of 'plummet'.",
+      "usageTip": "Replace 'scarcely had' with 'had barely' or 'had hardly' while maintaining the 'when' clause to preserve exact meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_320",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The professor's lecture was so convoluted that even the most astute students found themselves at a loss.'",
+      "options": [
+        "Even the smartest students couldn't understand the professor's complicated lecture.",
+        "The professor's lecture was too complex for the intelligent students to follow.",
+        "The most perceptive students were confused by the professor's intricate lecture.",
+        "The professor's lecture was so complex that even the sharpest students were completely puzzled."
+      ],
+      "correctAnswer": 3,
+      "explanation": "המשפט המקורי משתמש במבנה 'so...that' ומכיל מילות מפתח ספציפיות: 'convoluted' (מסובך ומפותל), 'astute' (חד ותובנתי), ו-'at a loss' (מבולבל לחלוטין, לא יודע מה לעשות). רק אפשרות 4 משמרת את כל המרכיבים: המבנה 'so...that', המילה 'complex' המקבילה ל-'convoluted', 'sharpest' המקבילה ל-'astute', ו-'completely puzzled' המקביל ל-'at a loss'. האפשרויות האחרות משנות מרכיבים חשובים: אפשרות 1 משנה את המבנה התחבירי, אפשרות 2 משתמשת ב-'too...to' במקום 'so...that', ואפשרות 3 חסרה את הדגש על הבלבול המוחלט.",
+      "examples": [
+        "The instructions were so convoluted that I was at a loss. = The instructions were so complex that I was completely puzzled.",
+        "She is so astute that nothing escapes her. = She is so sharp that nothing gets past her."
+      ],
+      "grammarRule": "'So + adjective + that' structure expresses result/consequence. 'At a loss' means completely confused or not knowing what to do.",
+      "commonMistakes": "Changing the grammatical structure from 'so...that' to other forms, or not preserving the intensity of confusion expressed by 'at a loss'.",
+      "usageTip": "Match intensity levels: 'convoluted'='complex', 'astute'='sharp/sharpest', 'at a loss'='completely puzzled', while keeping 'so...that' structure.",
+      "difficulty": "hard",
+      "id": "rst_prem_321",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

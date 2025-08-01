@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:57:28.061Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060212252_ps69l4j00",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 411.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened when it did, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "Without the committee's timely intervention, the project would have suffered irreparable failure.",
+        "The committee's intervention prevented the project from collapsing, but it was too late.",
+        "If the committee had intervened earlier, the project wouldn't have collapsed.",
+        "The committee intervened after the project had already collapsed completely."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי הפוך (inverted conditional) 'Had + subject + not + past participle' המבטא תנאי בזמן עבר. המשמעות היא שהוועדה כן התערבה בזמן, ובלי התערבות זו הפרויקט היה קורס. האפשרות הנכונה משמרת את המשמעות הזו בצורה ישירה יותר. האפשרויות האחרות משנות את המשמעות: אפשרות 2 מרמזת שההתערבות הייתה מאוחרת מדי, אפשרות 3 מציעה שההתערבות הייתה צריכה להיות מוקדמת יותר, ואפשרות 4 טוענת שהפרויקט כבר קרס.",
+      "examples": [
+        "Had she not studied hard, she wouldn't have passed = Without her hard study, she wouldn't have passed",
+        "Had they arrived earlier, they would have seen the show = If they had arrived earlier, they would have seen the show"
+      ],
+      "grammarRule": "Inverted conditionals use 'Had + subject + (not) + past participle' to express hypothetical past situations, equivalent to 'If + subject + had (not) + past participle'",
+      "commonMistakes": "Confusing the timing - the inverted conditional describes what WOULD have happened if the action HADN'T occurred, but the action DID occur",
+      "usageTip": "When you see 'Had + subject + not', remember it means the action DID happen and prevented the negative consequence",
+      "difficulty": "hard",
+      "id": "rst_prem_298",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new regulations been implemented before complaints began pouring in from various stakeholders.'",
+      "options": [
+        "The new regulations were barely implemented when complaints started flooding in from different stakeholders.",
+        "Before the new regulations were implemented, stakeholders were already complaining heavily.",
+        "The stakeholders complained only after the regulations had been fully established for some time.",
+        "Stakeholders rarely complained about the new regulations once they were implemented."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... before/when' שמבטא רצף מהיר של אירועים. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', והמבנה כולו מציין שמיד אחרי יישום התקנות החלו התלונות. האפשרות הנכונה משמרת את הרצף המהיר הזה עם 'barely... when'. שאר האפשרויות משנות את הסדר הזמני או את עוצמת התלונות: אפשרות 2 הופכת את סדר האירועים, אפשרות 3 מציעה שהתלונות החלו רק אחרי זמן רב, ואפשרות 4 טוענת שהיו מעט תלונות.",
+      "examples": [
+        "Scarcely had I arrived when the phone rang = I had barely arrived when the phone rang",
+        "Hardly had the movie started before people began leaving = The movie had barely started when people began leaving"
+      ],
+      "grammarRule": "'Scarcely/Hardly/Barely + had + subject + past participle + before/when' indicates that two events happened in very quick succession",
+      "commonMistakes": "Misinterpreting the time sequence - both events happened, but one immediately followed the other",
+      "usageTip": "Words like 'scarcely,' 'hardly,' and 'barely' in inverted structures emphasize how quickly the second event followed the first",
+      "difficulty": "hard",
+      "id": "rst_prem_299",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final audit was completed did the discrepancies in the financial records become apparent to the management team.'",
+      "options": [
+        "The management team only discovered the financial discrepancies when the final audit was finished.",
+        "Before the final audit was completed, the management team was already aware of the financial discrepancies.",
+        "The final audit was completed, but the financial discrepancies remained hidden from management.",
+        "The management team completed the final audit to hide the financial discrepancies."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did...' שמדגיש את הזמן שבו משהו קרה לראשונה. המשמעות היא שרק כשהביקורת הסתיימה, ההנהלה גילתה את הבעיות הכספיות - לא לפני כן. המבנה הזה יוצר הדגשה על העיתוי. האפשרות הנכונה משמרת את המשמעות הזו עם 'only... when'. האפשרויות האחרות משנות את המשמעות: אפשרות 2 טוענת שההנהלה ידעה מראש, אפשרות 3 אומרת שהבעיות נשארו נסתרות, ואפשרות 4 מציעה שההנהלה ביצעה את הביקורת כדי להסתיר בעיות.",
+      "examples": [
+        "Not until midnight did she finish her work = She only finished her work at midnight",
+        "Not until he apologized did she forgive him = She only forgave him when he apologized"
+      ],
+      "grammarRule": "'Not until + time/event + did + subject + verb' emphasizes that something happened only at that specific point, requiring subject-verb inversion",
+      "commonMistakes": "Forgetting that 'not until' means the action happened ONLY at that time, not before",
+      "usageTip": "When you see 'Not until... did...', focus on the timing - it emphasizes when something first happened or became true",
+      "difficulty": "hard",
+      "id": "rst_prem_300",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

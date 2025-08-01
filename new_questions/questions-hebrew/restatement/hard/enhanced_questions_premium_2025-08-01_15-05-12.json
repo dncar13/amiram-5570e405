@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:05:12.386Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060674307_ce4qzcsth",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 415
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened decisively, the entire project would have collapsed under the weight of bureaucratic inefficiency.'",
+      "options": [
+        "Without the committee's decisive intervention, the project would have failed due to bureaucratic inefficiency.",
+        "The committee intervened decisively, so the project didn't collapse from bureaucratic inefficiency.",
+        "If the committee had intervened more decisively, the project wouldn't have collapsed.",
+        "The project collapsed because the committee failed to intervene against bureaucratic inefficiency."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי הפוך (inverted conditional) עם 'Had + subject + not + past participle' המבטא תנאי בעבר. המשמעות: אילולא התערבות הוועדה, הפרויקט היה קורס. האפשרות הנכונה משמרת את המשמעות הזו באמצעות 'Without' שמבטאת אותו רעיון של היעדר פעולה והתוצאה ההיפותטית. שאר האפשרויות משנות את המשמעות: אפשרות 2 מציגה מציאות ולא היפותזה, אפשרות 3 מרמזת שההתערבות לא הייתה מספיק החלטית, ואפשרות 4 טוענת שהפרויקט אכן קרס.",
+      "examples": [
+        "Had she not studied abroad, she wouldn't have become fluent in French. = Without studying abroad, she wouldn't have become fluent in French.",
+        "Had the weather been better, we would have gone hiking. = If the weather had been better, we would have gone hiking."
+      ],
+      "grammarRule": "Inverted conditionals use 'Had + subject + (not) + past participle' to express hypothetical past situations, equivalent to 'If + subject + had (not) + past participle'",
+      "commonMistakes": "Confusing inverted conditionals with simple past tense, or misinterpreting the hypothetical nature as actual events",
+      "usageTip": "When you see 'Had + subject + not + verb', translate it as 'If [subject] had not [verb]' or 'Without [subject's action]'",
+      "difficulty": "hard",
+      "id": "rst_prem_328",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began fluctuating wildly.'",
+      "options": [
+        "The CEO had barely announced the merger before stock prices started fluctuating wildly.",
+        "After the CEO announced the merger, stock prices gradually began to fluctuate.",
+        "Stock prices fluctuated wildly until the CEO announced the merger.",
+        "The CEO announced the merger because stock prices were fluctuating wildly."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when...' שמבטא רצף מהיר של אירועים - כמעט מיד לאחר שהמנכ\"ל הכריז על המיזוג, מחירי המניות החלו לתנודות פראיות. זהו מבנה היפוך (inversion) עם מילת שלילה. האפשרות הנכונה משמרת את הרעיון של הרצף המהיר באמצעות 'barely... before' שמבטאת את אותו תזמון דחוק. אפשרות 2 מציעה תהליך הדרגתי (לא מהיר), אפשרות 3 הופכת את סדר האירועים, ואפשרות 4 מציגה קשר סיבתי הפוך למציאות.",
+      "examples": [
+        "Scarcely had we arrived when it started raining. = We had barely arrived before it started raining.",
+        "Hardly had she finished speaking when the audience erupted in applause. = She had hardly finished speaking before the audience applauded."
+      ],
+      "grammarRule": "'Scarcely/Hardly had + subject + past participle + when...' indicates two events happening in very quick succession, requiring subject-auxiliary inversion",
+      "commonMistakes": "Missing the immediacy of the sequence, or confusing the temporal relationship between the two events",
+      "usageTip": "Replace 'Scarcely had... when' with 'barely... before' or 'hardly... before' to maintain the meaning of immediate succession",
+      "difficulty": "hard",
+      "id": "rst_prem_329",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the investigation was completed did the authorities realize the full extent of the corruption.'",
+      "options": [
+        "The authorities didn't realize the full extent of the corruption until the investigation was completed.",
+        "After completing the investigation, the authorities began to suspect corruption.",
+        "The investigation was completed before the authorities realized there was corruption.",
+        "Only during the investigation did the authorities discover the corruption."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did...' שהוא צורת היפוך (inversion) המדגישה את נקודת הזמן הקריטית. המשמעות: הרשויות לא הבינו את מלוא היקף השחיתות עד שהחקירה הושלמה - רק אז הן הבינו. האפשרות הנכונה משמרת בדיוק את המשמעות הזו בצורה ישירה יותר עם 'didn't... until'. אפשרות 2 מדברת על חשד ולא על הבנת היקף מלא, אפשרות 3 מרמזת שהבינו שיש שחיתות לפני סיום החקירה, ואפשרות 4 טוענת שהגילוי היה במהלך החקירה ולא בסיומה.",
+      "examples": [
+        "Not until midnight did she finish her work. = She didn't finish her work until midnight.",
+        "Not until he moved abroad did he appreciate his hometown. = He didn't appreciate his hometown until he moved abroad."
+      ],
+      "grammarRule": "'Not until + time/event + auxiliary + subject + main verb' emphasizes the specific moment when something happened, requiring inversion after the negative expression",
+      "commonMistakes": "Misunderstanding the timing - the realization happens AT the completion, not before or during the process",
+      "usageTip": "Transform 'Not until X did Y happen' into 'Y didn't happen until X' to simplify while keeping the same meaning",
+      "difficulty": "hard",
+      "id": "rst_prem_330",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

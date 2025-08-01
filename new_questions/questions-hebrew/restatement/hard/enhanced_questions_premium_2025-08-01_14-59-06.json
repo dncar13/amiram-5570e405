@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:59:06.844Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060302539_ejol2zroi",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 523
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened promptly, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "Without the committee's prompt intervention, the project would have suffered irreversible collapse.",
+        "The committee's intervention prevented the project from collapsing, but it was too late.",
+        "If the committee had intervened later, the project would still have been saved.",
+        "The project collapsed because the committee failed to intervene in time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי הפוך (inverted conditional) עם 'Had + subject + not + past participle' המבטא תנאי בזמן עבר. המשמעות היא שההתערבות המהירה של הוועדה מנעה קריסה בלתי הפיכה של הפרויקט. אפשרות 1 משמרת את המשמעות הזו במדויק באמצעות 'Without' + שם עצם + תואר, ומציינת שללא ההתערבות המהירה הפרויקट היה קורס באופן בלתי הפיך. שאר האפשרויות משנות את המשמעות: אפשרות 2 מציעה שההתערבות הייתה מאוחרת מדי, אפשרות 3 מציעה שהתערבות מאוחרת יותר עדיין הייתה מצילה את הפרויקט, ואפשרות 4 טוענת שהפרויקט אכן קרס.",
+      "examples": [
+        "Had she not studied hard, she would have failed the exam → Without her hard studying, she would have failed the exam.",
+        "Had they not arrived early, they would have missed the flight → Without their early arrival, they would have missed the flight."
+      ],
+      "grammarRule": "Inverted conditionals with 'Had + subject + not + past participle' can be restated using 'Without + possessive + noun/gerund' while maintaining the same hypothetical meaning about past events.",
+      "commonMistakes": "Students often confuse the timing and causality, thinking the negative outcome actually occurred, or misunderstanding that the intervention was successful in preventing the collapse.",
+      "usageTip": "When converting inverted conditionals, focus on the cause-effect relationship: what prevented what from happening, and maintain the hypothetical nature of the consequence.",
+      "difficulty": "hard",
+      "id": "rst_prem_304",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began fluctuating wildly.'",
+      "options": [
+        "The CEO had barely announced the merger before stock prices started fluctuating wildly.",
+        "After the CEO announced the merger, stock prices remained stable for a while.",
+        "Stock prices fluctuated wildly, so the CEO decided to announce the merger.",
+        "The CEO's merger announcement came long after stock prices began fluctuating."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had + subject + past participle + when' המבטא רצף מהיר של אירועים - כמעט מיד לאחר ההכרזה על המיזוג, מחירי המניות החלו להשתנות בפראות. אפשרות 1 משמרת את המשמעות הזו באמצעות 'barely...before' המבטאת את אותו רצף מהיר. המילה 'barely' שווה ערך ל-'scarcely' ו-'before' מתאימה ל-'when' בהקשר זה. אפשרות 2 טוענת שהמחירים נשארו יציבים זמן מה, אפשרות 3 הופכת את סדר הסיבה והתוצאה, ואפשרות 4 טוענת שההכרזה הגיעה הרבה אחרי תחילת התנודות. רק אפשרות 1 משמרת את הרצף המיידי והסיבתיות הנכונה.",
+      "examples": [
+        "Scarcely had the rain started when everyone ran for shelter → Everyone had barely started running when the rain began.",
+        "Scarcely had the meeting begun when the fire alarm sounded → The meeting had barely begun before the fire alarm sounded."
+      ],
+      "grammarRule": "'Scarcely had + subject + past participle + when' indicates immediate sequence and can be restated with 'barely/hardly + had + past participle + before/when' maintaining the same temporal relationship.",
+      "commonMistakes": "Students may reverse the cause-effect relationship or misunderstand that 'scarcely...when' indicates immediate sequence, not a delayed reaction.",
+      "usageTip": "Remember that 'scarcely/barely/hardly' all express the same idea of 'almost not' or 'just barely,' and the timing is crucial - the second event happens almost immediately after the first.",
+      "difficulty": "hard",
+      "id": "rst_prem_305",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final audit was completed did the irregularities in the financial records come to light.'",
+      "options": [
+        "The irregularities in the financial records only became apparent when the final audit was completed.",
+        "The final audit was completed before the irregularities were discovered.",
+        "Irregularities were found throughout the audit process, not just at the end.",
+        "The audit revealed irregularities that had been known about previously."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך עם 'Not until' הדורש היפוך של הפועל העזר והנושא. המשמעות היא שרק כאשר הביקורת הסופית הושלמה, התגלו הליקויים ברישומים הכספיים - לא לפני כן. אפשרות 1 משמרת את המשמעות הזו באמצעות 'only...when' המבטאת את אותו עיתוי מדויק - הליקויים התגלו רק בנקודת זמן ספציפית זו. המילה 'apparent' שווה ערך ל-'come to light' במשמעות של התגלות. אפשרות 2 מציעה שהליקויים התגלו לפני השלמת הביקורת, אפשרות 3 טוענת שהליקויים נמצאו לאורך כל התהליך, ואפשרות 4 מציעה שהליקויים היו ידועים מראש. רק אפשרות 1 משמרת את העיתוי המדויק והחדשנות של הגילוי.",
+      "examples": [
+        "Not until midnight did the party end → The party only ended at midnight.",
+        "Not until she graduated did she realize her potential → She only realized her potential when she graduated."
+      ],
+      "grammarRule": "'Not until + time/event + auxiliary verb + subject + main verb' can be restated using 'only + when/at + time/event' without inversion, maintaining the same temporal restriction.",
+      "commonMistakes": "Students often miss the precise timing aspect, thinking the discovery happened earlier or was gradual rather than occurring specifically at the moment the audit was completed.",
+      "usageTip": "Focus on the exclusivity of timing - 'not until' means 'only at that specific moment and not before,' so look for restatements that preserve this precise temporal boundary.",
+      "difficulty": "hard",
+      "id": "rst_prem_306",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

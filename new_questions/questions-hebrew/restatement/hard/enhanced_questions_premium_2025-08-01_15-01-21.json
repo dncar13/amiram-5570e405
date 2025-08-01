@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:01:21.352Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060445959_cijsqydi0",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 460.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened decisively, the economic crisis would have spiraled into a catastrophic depression.'",
+      "options": [
+        "Without decisive government intervention, the economic crisis would have escalated into a catastrophic depression.",
+        "The government's intervention prevented the economic crisis from becoming a catastrophic depression.",
+        "If the government had intervened decisively, the economic crisis wouldn't have become a catastrophic depression.",
+        "The economic crisis spiraled into a catastrophic depression because the government didn't intervene decisively."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי הפוך (inverted conditional) עם 'Had + subject + not + past participle'. המשפט מתאר מצב היפותטי בעבר שבו ללא התערבות ממשלתית, המשבר היה הופך לדיכאון קטסטרופלי. האפשרות הנכונה משמרת את אותו המשמעות בדיוק - ללא התערבות ממשלתית החלטית, המשבר היה מסלים לדיכאון קטסטרופלי. שאר האפשרויות משנות את המשמעות: אפשרות 2 מציינת שהממשלה אכן התערבה ומנעה, אפשרות 3 מציגה תנאי חיובי במקום שלילי, ואפשרות 4 מציינת שהמשבר אכן הפך לדיכאון.",
+      "examples": [
+        "Had she not studied diligently, she wouldn't have passed = Without diligent study, she wouldn't have passed",
+        "Had they not arrived early, they would have missed the flight = Without arriving early, they would have missed the flight"
+      ],
+      "grammarRule": "Inverted conditionals use 'Had + subject + (not) + past participle' to express hypothetical past situations, equivalent to 'If + subject + had (not) + past participle'",
+      "commonMistakes": "Confusing the direction of causality or changing the hypothetical nature to actual events",
+      "usageTip": "When rewriting inverted conditionals, maintain the hypothetical nature and the same cause-effect relationship using 'without' or 'if...not' structures",
+      "difficulty": "hard",
+      "id": "rst_prem_310",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new CEO announced the restructuring plan when employees began expressing their concerns about job security.'",
+      "options": [
+        "The new CEO had barely announced the restructuring plan before employees started voicing concerns about job security.",
+        "After the new CEO announced the restructuring plan, employees gradually began expressing concerns about job security.",
+        "The new CEO announced the restructuring plan, and then employees began expressing their concerns about job security.",
+        "Before the new CEO could announce the restructuring plan, employees were already concerned about job security."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had...when' המבטא רצף מהיר של אירועים - כמעט מיד לאחר שהמנכ\"ל החדש הכריז על תוכנית הארגון מחדש, העובדים החלו להביע דאגות. המילה 'scarcely' מדגישה שהזמן בין שני האירועים היה קצר מאוד. האפשרות הנכונה משמרת את המשמעות הזו באמצעות 'barely...before' שמבטאת את אותו הרצף המהיר. אפשרות 2 משתמשת ב'gradually' שסותרת את המהירות המקורית, אפשרות 3 לא מדגישה את המהירות של הרצף, ואפשרות 4 הופכת את סדר האירועים לחלוטין.",
+      "examples": [
+        "Scarcely had we arrived when it started raining = We had barely arrived before it started raining",
+        "Hardly had the meeting begun when the fire alarm went off = The meeting had barely begun before the fire alarm went off"
+      ],
+      "grammarRule": "'Scarcely/Hardly had + subject + past participle + when' expresses immediate sequence of events, requiring subject-auxiliary inversion",
+      "commonMistakes": "Losing the emphasis on immediate timing or reversing the sequence of events",
+      "usageTip": "Replace 'scarcely...when' with 'barely...before' to maintain the sense of immediate succession without changing meaning",
+      "difficulty": "hard",
+      "id": "rst_prem_311",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the archaeological team discovered the ancient artifacts did historians realize the true significance of the site.'",
+      "options": [
+        "Historians didn't realize the true significance of the site until the archaeological team discovered the ancient artifacts.",
+        "After the archaeological team discovered the ancient artifacts, historians began to understand the site's importance.",
+        "The archaeological team's discovery of ancient artifacts helped historians appreciate the site's significance.",
+        "Historians realized the site's significance when the archaeological team discovered the ancient artifacts."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until...did' שמדגיש שרק בנקודת זמן מסוימת משהו קרה - רק כאשר צוות הארכיאולוגיה גילה את החפצים העתיקים, היסטוריונים הבינו את המשמעות האמיתית של האתר. המבנה הזה דורש היפוך של עזר ונושא (inversion). האפשרות הנכונה משמרת את המשמעות המדויקת באמצעות מבנה פשוט יותר עם 'didn't...until' שמבטא את אותה הנקודה - שההבנה לא הגיעה לפני הגילוי. שאר האפשרויות משנות משמעות: אפשרות 2 מציעה התחלה הדרגתית, אפשרות 3 מתמקדת בעזרה ולא בזמן, ואפשרות 4 לא מדגישה שרק אז הם הבינו.",
+      "examples": [
+        "Not until she graduated did she find a job = She didn't find a job until she graduated",
+        "Not until the rain stopped did we leave = We didn't leave until the rain stopped"
+      ],
+      "grammarRule": "'Not until + time clause + auxiliary + subject + verb' emphasizes that something happened only at a specific point, requiring subject-auxiliary inversion",
+      "commonMistakes": "Losing the emphasis on 'only then' or failing to maintain the precise timing relationship",
+      "usageTip": "Transform 'Not until...did' constructions to 'didn't...until' to preserve the meaning while using simpler structure",
+      "difficulty": "hard",
+      "id": "rst_prem_312",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

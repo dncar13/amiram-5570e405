@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:58:17.152Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060253471_oeqkm54t9",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 481.3333333333333
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Despite having been warned repeatedly about the consequences, the committee proceeded to implement the controversial policy, thereby alienating a significant portion of their constituency.'",
+      "options": [
+        "The committee implemented the controversial policy even though they had been warned many times about the results, which caused them to lose support from many of their voters.",
+        "The committee was warned about the policy but decided to implement it anyway, which made some people angry.",
+        "Although the committee received warnings, they implemented the policy and this made everyone upset.",
+        "The committee ignored the warnings and implemented the policy, causing problems with their supporters."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי מכיל מספר רכיבים מורכבים: 'Despite having been warned repeatedly' (למרות שהוזהרו שוב ושוב), 'proceeded to implement' (המשיכו ליישם), 'thereby alienating' (ובכך הרחיקו), ו-'significant portion of their constituency' (חלק משמעותי מבסיס הבוחרים שלהם). התשובה הנכונה משמרת את כל המשמעויות הללו במדויק. האפשרויות האחרות מפשטות יתר על המידה או משמיטות פרטים חשובים כמו 'repeatedly', 'significant portion', או המשמעות המדויקת של 'constituency'.",
+      "examples": [
+        "Despite being exhausted, she continued working → She continued working even though she was exhausted",
+        "Having studied extensively, he passed the exam → He passed the exam because he had studied extensively"
+      ],
+      "grammarRule": "Perfect participle constructions (having + past participle) express completed actions that occurred before the main verb. 'Despite/Although + perfect participle' shows contrast with a completed background action.",
+      "commonMistakes": "Students often miss the temporal aspect of 'having been warned' (past perfect passive) and the precise meaning of 'constituency' (voters/supporters, not just 'people'). They also tend to oversimplify 'thereby' which shows direct causation.",
+      "usageTip": "When dealing with complex sentences containing perfect participles and formal vocabulary, ensure every semantic element is preserved: time relationships, degree of intensity (repeatedly, significant), and precise terminology.",
+      "difficulty": "hard",
+      "id": "rst_prem_301",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the researchers not overlooked the crucial variable in their initial analysis, the subsequent findings would have been far more conclusive and the entire project timeline significantly accelerated.'",
+      "options": [
+        "If the researchers had not missed the important variable in their first analysis, the later results would have been much more definitive and the whole project would have been completed much faster.",
+        "The researchers missed an important factor, so their results were not clear and the project took longer.",
+        "Because the researchers overlooked a variable, their findings were inconclusive and the project was delayed.",
+        "If the researchers had found the variable, their results would have been better and faster."
+      ],
+      "correctAnswer": 0,
+      "explanation": "זהו משפט תנאי מסוג שלישי (third conditional) בצורה הפוכה, המתחיל ב-'Had' במקום 'If'. המבנה 'Had + subject + not + past participle' שווה ערך ל-'If + subject + had not + past participle'. המשפט מתאר מצב היפותטי בעבר ותוצאותיו. התשובה הנכונה משמרת את כל האלמנטים: המשתנה הקרוב ('crucial variable'), הניתוח הראשוני ('initial analysis'), התוצאות המאוחרות ('subsequent findings'), והאצת לוח הזמנים ('timeline significantly accelerated'). האפשרויות האחרות מפשטות או משמיטות מידע חיוני.",
+      "examples": [
+        "Had I known earlier, I would have acted differently → If I had known earlier, I would have acted differently",
+        "Had they arrived on time, we could have started the meeting → If they had arrived on time, we could have started the meeting"
+      ],
+      "grammarRule": "Inverted third conditional: 'Had + subject + (not) + past participle' = 'If + subject + had + (not) + past participle'. This structure describes hypothetical past situations and their imagined consequences.",
+      "commonMistakes": "Students often fail to recognize inverted conditionals and miss the hypothetical nature. They also tend to oversimplify 'subsequent' (following in sequence), 'conclusive' (definitive/decisive), and 'significantly accelerated' (made much faster).",
+      "usageTip": "When encountering sentences beginning with 'Had + subject', recognize this as an inverted conditional. Maintain the hypothetical meaning and all specific qualifiers (crucial, subsequent, significantly) in your restatement.",
+      "difficulty": "hard",
+      "id": "rst_prem_302",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Notwithstanding the board's unanimous endorsement of the proposal, the CEO's reluctance to commit additional resources stems from her concern that market volatility could undermine the venture's long-term viability.'",
+      "options": [
+        "Even though the board unanimously supported the proposal, the CEO is hesitant to allocate more resources because she worries that unstable market conditions might threaten the project's ability to succeed in the long run.",
+        "The board supported the proposal, but the CEO doesn't want to spend more money because the market is unstable.",
+        "Despite the board's support, the CEO is concerned about market problems affecting the project's success.",
+        "Although the board agreed to the proposal, the CEO is worried about market volatility and doesn't want to invest more resources."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט מכיל מספר מושגים מורכבים ופורמליים: 'Notwithstanding' (למרות, על אף), 'unanimous endorsement' (תמיכה פה אחד), 'reluctance to commit' (חוסר נכונות להקצות), 'market volatility' (תנודתיות השוק), ו-'long-term viability' (כדאיות לטווח ארוך). התשובה הנכונה משמרת את כל הרכיבים הללו במדויק: הניגוד ('even though'), התמיכה הפה אחד ('unanimously'), החשש לגבי תנודות השוק ('unstable market conditions'), והדאגה לגבי הצלחה לטווח ארוך ('ability to succeed in the long run'). האפשרויות האחרות מקצרות או מפשטות יתר על המידה.",
+      "examples": [
+        "Notwithstanding his objections, the plan proceeded → Despite his objections, the plan proceeded",
+        "The venture's viability depends on market conditions → The project's ability to succeed depends on market conditions"
+      ],
+      "grammarRule": "'Notwithstanding' is a formal synonym for 'despite/although' and introduces a contrasting clause. 'Stems from' indicates origin or cause. Complex noun phrases like 'long-term viability' require careful unpacking while preserving meaning.",
+      "commonMistakes": "Students often miss the formal register and precise meanings: 'notwithstanding' ≠ simple 'but', 'unanimous endorsement' ≠ just 'support', 'commit resources' ≠ just 'spend money', 'viability' ≠ just 'success'.",
+      "usageTip": "For high-register formal texts, identify sophisticated vocabulary and complex noun phrases. Break them down while maintaining their precise meanings and the overall formal tone of the original.",
+      "difficulty": "hard",
+      "id": "rst_prem_303",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}
