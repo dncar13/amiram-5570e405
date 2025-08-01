@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T13:52:51.235Z",
+    "type": "sentence-completion",
+    "difficulty": "hard",
+    "count": 2,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753969950929_u0p5td86c",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 2,
+      "withExamples": 2,
+      "withGrammarRules": 2,
+      "withCommonMistakes": 2,
+      "averageExplanationLength": 358
+    }
+  },
+  "questions": [
+    {
+      "type": "sentence-completion",
+      "text": "Had the company ______ the environmental regulations more strictly, the devastating oil spill could have been prevented.",
+      "options": [
+        "followed",
+        "follow",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'followed'. זהו מבנה של Third Conditional עם היפוך (inversion). במקום 'If the company had followed', אנו משתמשים ב-'Had the company followed'. המבנה הוא: Had + subject + past participle, would/could have + past participle. זהו מבנה פורמלי מאוד המבטא חרטה או ספקולציה על עבר שלא קרה. ההיפוך הופך את המשפט לפורמלי יותר ונפוץ בכתיבה אקדמית ועיתונאית.",
+      "examples": [
+        "Had I known about the traffic, I would have left earlier.",
+        "Had they invested wisely, they would be millionaires now."
+      ],
+      "grammarRule": "Third Conditional Inversion: Had + subject + past participle, would/could have + past participle",
+      "commonMistakes": "טעות נפוצה: להשתמש בצורת הבסיס של הפועל או ב-following. זכרו - אחרי Had תמיד past participle!",
+      "usageTip": "מבנה זה נפוץ בכתיבה פורמלית ומחליף את 'If' בתחילת המשפט.",
+      "difficulty": "hard",
+      "id": "sc_prem_947",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The research findings were so ______ that even the most skeptical scientists had to acknowledge their validity.",
+      "options": [
+        "compelling",
+        "compelled",
+        "compulsive",
+        "compulsory"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'compelling'. המילה compelling פירושה 'משכנע' או 'כפוי'. זוהי תכונה של הממצאים עצמם - הם כל כך משכנעים עד שאפילו המדענים הספקנים נאלצו להכיר בתוקפם. compelled הוא past participle שמתאר מישהו שנכפה עליו משהו, compulsive מתאר התנהגות כפייתית, ו-compulsory פירושו חובה או מחויב. רק compelling מתאר את איכות הראיות שגורמת לאחרים להשתכנע.",
+      "examples": [
+        "Her compelling argument convinced the entire jury.",
+        "The documentary presented compelling evidence of climate change."
+      ],
+      "grammarRule": "Adjective usage: compelling (convincing) vs compelled (forced) vs compulsive (obsessive) vs compulsory (mandatory)",
+      "commonMistakes": "טעות נפוצה: לבלבל בין compelling (משכנע) ל-compelled (נכפה). זכרו - compelling תיאור של דבר, compelled תיאור של אדם!",
+      "usageTip": "compelling תמיד מתאר את הדבר שמשכנע, לא את האדם שמשתכנע.",
+      "difficulty": "hard",
+      "id": "sc_prem_948",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

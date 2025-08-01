@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T17:05:02.806Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 1,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753981453635_yfmxcwysb",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 1,
+      "withExamples": 1,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 481
+    }
+  },
+  "questions": [
+    {
+      "id": "rst_prem_003",
+      "level": "hard",
+      "type": "restatement",
+      "question": "Despite the ostensible advantages of implementing cutting-edge technology in educational institutions, the underlying pedagogical implications remain largely unexplored, potentially undermining the efficacy of traditional instructional methodologies.",
+      "options": [
+        "Although modern technology in schools appears beneficial, its educational impact hasn't been thoroughly studied, which might weaken conventional teaching methods.",
+        "Even though technology seems helpful in education, teachers are reluctant to abandon traditional methods due to lack of proper research.",
+        "While schools invest in new technology for obvious benefits, the cost of implementation often exceeds the educational value it provides.",
+        "Despite technological advances in education appearing useful, most institutions continue using traditional methods because they are more effective."
+      ],
+      "correct_answer": 0,
+      "explanation": "המשפט המקורי מציג רעיון מורכב על יתרונות טכנולוגיה בחינוך. המילה 'ostensible' פירושה 'לכאורה' או 'נראה כך', 'underlying pedagogical implications' מתייחס להשלכות החינוכיות הבסיסיות, ו'undermining efficacy' אומר פגיעה ביעילות. תשובה א' משמרת את המשמעות המדויקת: טכנולוגיה נראית מועילה אך השפעתה לא נחקרה מספיק, מה שעלול לפגוע בשיטות הוראה מסורתיות. תשובה ב' מוסיפה מידע על היסוס מורים, ג' מתמקדת בעלות כלכלית, ו-ד' טוענת שהשיטות המסורתיות יעילות יותר - כולן משנות את המשמעות המקורית.",
+      "examples": [
+        "Original: 'The ostensible reason for his departure was health issues.' Restatement: 'He claimed health problems as his reason for leaving.' (preserves the idea of apparent/claimed reason)",
+        "Original: 'The policy's underlying ramifications were not anticipated.' Restatement: 'The deeper consequences of the policy were unforeseen.' (maintains the concept of hidden deeper effects)"
+      ],
+      "common_mistakes": [
+        "בלבול בין 'ostensible' (לכאורה) ל'obvious' (ברור) - המילה הראשונה מרמזת על ספק בעוד השנייה על וודאות",
+        "אי הבנה של 'underlying implications' כ'עלויות נסתרות' במקום 'השלכות עמוקות יותר' - זהו בלבול סמנטי נפוץ"
+      ],
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,4203 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T20:40:21.923Z",
+    "type": "sentence-completion",
+    "difficulty": "easy",
+    "count": 167,
+    "topic": "Basic Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753993739792_fj9yhc23w",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 167,
+      "withExamples": 0,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 108.55089820359281
+    }
+  },
+  "questions": [
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "gone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, ולכן הפועל מקבל תוספת s.",
+      "difficulty": "easy",
+      "id": "sc_prem_535",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא יחיד ובגוף שלישי, ו'every morning' מצביע על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_536",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_537",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_538",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_539",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט, לכן נוסיפים 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_540",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "gone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד בזמן הווה פשוט, ולכן הפועל מקבל תוספת 's'.",
+      "difficulty": "easy",
+      "id": "sc_prem_541",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_542",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_543",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_544",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "gone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_545",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_546",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_547",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_548",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה שחוזרת על עצמה.",
+      "difficulty": "easy",
+      "id": "sc_prem_549",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_550",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_551",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_552",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_553",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_554",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_555",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_556",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד בזמן הווה פשוט, ולכן הפועל מקבל תוספת 's'.",
+      "difficulty": "easy",
+      "id": "sc_prem_557",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת s לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_558",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_559",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_560",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_561",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_562",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_563",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_564",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_565",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_566",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school by bus every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_567",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_568",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_569",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_570",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, ולכן הפועל מקבל תוספת s.",
+      "difficulty": "easy",
+      "id": "sc_prem_571",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_572",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_573",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_574",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_575",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_576",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד בזמן הווה פשוט, ולכן הפועל מקבל תוספת 's'.",
+      "difficulty": "easy",
+      "id": "sc_prem_577",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_578",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_579",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_580",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_581",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_582",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_583",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_584",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_585",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_586",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_587",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_588",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_589",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על הווה פשוט, לכן נוסיפים 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_590",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) ומדובר על פעולה קבועה בהווה פשוט, לכן נוסיפים s לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_591",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד בזמן הווה פשוט, ולכן הפועל מקבל תוספת 's'.",
+      "difficulty": "easy",
+      "id": "sc_prem_592",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_593",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_594",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד בזמן הווה, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_595",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_596",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_597",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_598",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_599",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט, לכן הפועל צריך להיות בצורת 'goes'.",
+      "difficulty": "easy",
+      "id": "sc_prem_600",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_601",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_602",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_603",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_604",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_605",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_606",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) ובזמן הווה פשוט מוסיפים 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_607",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_608",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_609",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_610",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_611",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_612",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_613",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_614",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_615",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_616",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_617",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_618",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_619",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_620",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_621",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_622",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_623",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_624",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_625",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_626",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_627",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_628",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_629",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_630",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_631",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי המשפט מתאר פעולה שחוזרת על עצמה (every morning) בזמן הווה פשוט, והנושא הוא גוף שלישי יחיד.",
+      "difficulty": "easy",
+      "id": "sc_prem_632",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_633",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_634",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_635",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_636",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_637",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_638",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_639",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_640",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_641",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_642",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school by bus every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_643",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_644",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_645",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט, לכן נוסיף 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_646",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "gone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_647",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_648",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_649",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_650",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_651",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_652",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_653",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הכינוי 'she' דורש פועל בגוף שלישי יחיד בזמן הווה, והמילה 'every' מצביעה על הרגל קבוע.",
+      "difficulty": "easy",
+      "id": "sc_prem_654",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_655",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט, לכן נוסיפים 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_656",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_657",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט שדורש הוספת 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_658",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_659",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' בגוף שלישי יחיד דורש הוספת 's' לפועל בזמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_660",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_661",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school by bus every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_662",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_663",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_664",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_665",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_666",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_667",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_668",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_669",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_670",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_671",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_672",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_673",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, ומדובר בהווה פשוט עם המילה 'every morning'.",
+      "difficulty": "easy",
+      "id": "sc_prem_674",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_675",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_676",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_677",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_678",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_679",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_680",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_681",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה קבועה.",
+      "difficulty": "easy",
+      "id": "sc_prem_682",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, ו'every morning' מציין הרגל בהווה פשוט, לכן הפועל צריך להיות עם s.",
+      "difficulty": "easy",
+      "id": "sc_prem_683",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) והמשפט מתאר פעולה קבועה בהווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_684",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_685",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school by bus every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_686",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_687",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_688",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) ובזמן הווה פשוט מוסיפים 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_689",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (She) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה שחוזרת על עצמה.",
+      "difficulty": "easy",
+      "id": "sc_prem_690",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_691",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every day by bus.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'She' הוא גוף שלישי יחיד, והמילה 'every day' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_692",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_693",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_694",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_695",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, ולכן הפועל מקבל תוספת s.",
+      "difficulty": "easy",
+      "id": "sc_prem_696",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, והמילה 'every morning' מצביעה על פעולה חוזרת.",
+      "difficulty": "easy",
+      "id": "sc_prem_697",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_698",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) ובזמן הווה פשוט צריך להוסיף 's' לפועל.",
+      "difficulty": "easy",
+      "id": "sc_prem_699",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning at 8 o'clock.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "went"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא 'she' הוא גוף שלישי יחיד, והמילה 'every morning' מצביעה על זמן הווה פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_700",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "She ______ to school every morning.",
+      "options": [
+        "go",
+        "goes",
+        "going",
+        "gone"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'goes' כי הנושא הוא גוף שלישי יחיד (she) בזמן הווה פשוט, ולכן הפועל מקבל תוספת s.",
+      "difficulty": "easy",
+      "id": "sc_prem_701",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}

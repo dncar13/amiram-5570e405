@@ -48,15 +48,17 @@ import {
   SheetFooter 
 } from "@/components/ui/sheet";
 import {
-  getAllQuestions,
   updateQuestion,
   addQuestion,
   deleteQuestion,
   saveChanges,
   resetChanges,
-  refreshQuestionsFromStorage,
   uploadTestQuestions
 } from "@/services/questions";
+import { 
+  getAllQuestions,
+  refreshQuestionsFromStorage
+} from "@/services/questionsService";
 import { toast } from "sonner";
 import { uploadPremiumSet1Questions } from "@/utils/questionUploadUtils";
 import { QuestionsUploadService } from "@/services/questionsUploadService";

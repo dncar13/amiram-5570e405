@@ -1,0 +1,278 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T13:51:47.850Z",
+    "type": "restatement",
+    "difficulty": "easy",
+    "count": 10,
+    "topic": "Basic Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753969886179_hculj5r7n",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 10,
+      "withExamples": 0,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 99.6
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'The weather is too cold for swimming.'",
+      "options": [
+        "The weather is perfect for swimming.",
+        "It's too warm to go swimming.",
+        "The weather is so cold that we can't swim.",
+        "We should swim because it's cold."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'too cold for' שקול ל-'so cold that we can't'. שניהם מבטאים שהקור מונע שחייה.",
+      "difficulty": "easy",
+      "id": "rst_prem_886",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives early to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She is always late for work.",
+        "She consistently gets to work before the scheduled time.",
+        "She sometimes arrives early to work."
+      ],
+      "correctAnswer": 2,
+      "explanation": "תשובה 3 נכונה כי 'consistently gets to work before the scheduled time' זהה במשמעות ל-'always arrives early to work'.",
+      "difficulty": "easy",
+      "id": "rst_prem_887",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book was too difficult for me to understand.'",
+      "options": [
+        "I found the book easy to read.",
+        "The book was so hard that I couldn't understand it.",
+        "I understood the book perfectly.",
+        "The book was simple enough for me."
+      ],
+      "correctAnswer": 1,
+      "explanation": "תשובה 2 נכונה כי 'too difficult for me to understand' זהה ל-'so hard that I couldn't understand it'.",
+      "difficulty": "easy",
+      "id": "rst_prem_888",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'My brother is taller than me.'",
+      "options": [
+        "I am shorter than my brother.",
+        "My brother and I are the same height.",
+        "I am taller than my brother.",
+        "My brother is very short."
+      ],
+      "correctAnswer": 0,
+      "explanation": "תשובה 1 נכונה כי אם האח גבוה יותר ממני, אז אני נמוך יותר מהאח. זו אותה עובדה מזווית אחרת.",
+      "difficulty": "easy",
+      "id": "rst_prem_889",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'It's necessary to study for the exam.'",
+      "options": [
+        "You don't need to study for the exam.",
+        "Studying for the exam is optional.",
+        "You must study for the exam.",
+        "The exam doesn't require preparation."
+      ],
+      "correctAnswer": 2,
+      "explanation": "תשובה 3 נכונה כי 'it's necessary to' שקול ל-'you must'. שניהם מבטאים חובה או הכרח.",
+      "difficulty": "easy",
+      "id": "rst_prem_890",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The movie was boring.'",
+      "options": [
+        "The movie was exciting and interesting.",
+        "The movie was not interesting.",
+        "The movie was fantastic.",
+        "Everyone loved the movie."
+      ],
+      "correctAnswer": 1,
+      "explanation": "תשובה 2 נכונה כי 'boring' זהה במשמעות ל-'not interesting'. שניהם מתארים משהו שלא מעניין.",
+      "difficulty": "easy",
+      "id": "rst_prem_891",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'I prefer tea to coffee.'",
+      "options": [
+        "I like coffee more than tea.",
+        "I like tea and coffee equally.",
+        "I like tea better than coffee.",
+        "I don't like tea or coffee."
+      ],
+      "correctAnswer": 2,
+      "explanation": "תשובה 3 נכונה כי 'prefer tea to coffee' זהה ל-'like tea better than coffee'. שניהם מבטאים העדפה של תה על פני קפה.",
+      "difficulty": "easy",
+      "id": "rst_prem_892",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store opens at 9 AM.'",
+      "options": [
+        "The store closes at 9 AM.",
+        "The store starts operating at 9 AM.",
+        "The store is closed at 9 AM.",
+        "The store opens at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "תשובה 2 נכונה כי 'opens at 9 AM' זהה ל-'starts operating at 9 AM'. שניהם מתארים את זמן תחילת הפעילות.",
+      "difficulty": "easy",
+      "id": "rst_prem_893",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'He is unable to come to the party.'",
+      "options": [
+        "He can come to the party.",
+        "He will definitely attend the party.",
+        "He cannot come to the party.",
+        "He is excited about the party."
+      ],
+      "correctAnswer": 2,
+      "explanation": "תשובה 3 נכונה כי 'unable to' זהה במשמעות ל-'cannot'. שניהם מבטאים חוסר יכולת או אי-אפשרות.",
+      "difficulty": "easy",
+      "id": "rst_prem_894",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The test was easy for most students.'",
+      "options": [
+        "Most students found the test difficult.",
+        "No students could pass the test.",
+        "Most students found the test simple.",
+        "All students failed the test."
+      ],
+      "correctAnswer": 2,
+      "explanation": "תשובה 3 נכונה כי 'easy for most students' זהה ל-'most students found the test simple'. 'Easy' ו-'simple' נרדפים.",
+      "difficulty": "easy",
+      "id": "rst_prem_895",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}

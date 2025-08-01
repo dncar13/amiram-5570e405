@@ -1,0 +1,158 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T13:52:22.494Z",
+    "type": "restatement",
+    "difficulty": "medium",
+    "count": 5,
+    "topic": "Intermediate Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753969915607_n55zw2djm",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 5,
+      "withExamples": 0,
+      "withGrammarRules": 5,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 274
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'The company's profits have been declining steadily over the past three years.'",
+      "options": [
+        "The company has been making more money each year for three years.",
+        "The company's profits have been consistently decreasing for three years.",
+        "The company started losing money three years ago.",
+        "The company's profits increased steadily in the last three years."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2. 'declining steadily' זהה במשמעות ל-'consistently decreasing' - שניהם מתארים ירידה מתמשכת ועקבית ברווחים. 'over the past three years' זהה ל-'for three years'. דוגמה דומה: 'Sales are dropping continuously' = 'Sales are consistently decreasing'.",
+      "grammarRule": "Present Perfect Continuous with time expressions: have been + -ing + time period",
+      "difficulty": "medium",
+      "id": "rst_prem_896",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'It is essential that all employees attend the safety training session.'",
+      "options": [
+        "All employees should consider attending the safety training session.",
+        "It would be nice if all employees attended the safety training session.",
+        "All employees must attend the safety training session.",
+        "All employees are invited to attend the safety training session."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3. 'It is essential that' מבטא חובה מוחלטת, זהה ל-'must'. שני הביטויים מדגישים שההשתתפות היא הכרחית ולא רשות. האפשרויות האחרות מבטאות המלצה או הזמנה, לא חובה. דוגמה דומה: 'It is crucial that you arrive on time' = 'You must arrive on time'.",
+      "grammarRule": "Formal necessity: It is essential/crucial that + subject + base verb = must",
+      "difficulty": "medium",
+      "id": "rst_prem_897",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The weather was so terrible that we decided to cancel our picnic.'",
+      "options": [
+        "We cancelled our picnic because the weather was extremely bad.",
+        "Despite the terrible weather, we went on our picnic.",
+        "The weather was nice, so we decided to have a picnic.",
+        "We had our picnic even though the weather was terrible."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1. 'so terrible that' מבטא סיבה ותוצאה, זהה ל-'because... extremely bad'. שני המשפטים מסבירים שמזג האוויר הרע היה הסיבה לביטול הפיקניק. המבנה 'so...that' מציג תוצאה, ו-'because' מציג סיבה. דוגמה דומה: 'It was so cold that we stayed inside' = 'We stayed inside because it was extremely cold'.",
+      "grammarRule": "Cause and effect: so + adjective + that = because + extremely + adjective",
+      "difficulty": "medium",
+      "id": "rst_prem_898",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She rarely goes to the cinema these days.'",
+      "options": [
+        "She goes to the cinema very often nowadays.",
+        "She never went to the cinema in the past.",
+        "She doesn't go to the cinema very often anymore.",
+        "She always goes to the cinema these days."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3. 'rarely' פירושו כמעט לא, זהה ל-'doesn't... very often'. 'these days' ו-'anymore' מתייחסים לתקופה הנוכחית. המשפט מתאר שינוי בהרגלים - בעבר הלכה יותר, כיום פחות. דוגמה דומה: 'He rarely calls me' = 'He doesn't call me very often'.",
+      "grammarRule": "Frequency adverbs: rarely = not very often, seldom = hardly ever",
+      "difficulty": "medium",
+      "id": "rst_prem_899",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Unless you study harder, you won't pass the exam.'",
+      "options": [
+        "If you study harder, you won't pass the exam.",
+        "You will pass the exam even if you don't study harder.",
+        "If you don't study harder, you won't pass the exam.",
+        "You will definitely pass the exam regardless of your studying."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3. 'Unless' פירושו 'אם לא', זהה ל-'if... don't'. שני המשפטים מציגים תנאי שלילי - אם לא תלמד יותר, לא תעבור. 'Unless' הוא דרך קצרה לומר 'if not'. התוצאה זהה בשני המקרים. דוגמה דומה: 'Unless it rains, we'll go out' = 'If it doesn't rain, we'll go out'.",
+      "grammarRule": "Conditional sentences: Unless + positive = If + negative (same meaning)",
+      "difficulty": "medium",
+      "id": "rst_prem_900",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}
