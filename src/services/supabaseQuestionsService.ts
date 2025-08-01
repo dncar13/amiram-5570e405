@@ -189,13 +189,11 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
       }
     }
 
-    // Apply pagination - default to high limit for admin, but allow override
-    const limit = filters.limit || 10000  // Increased default limit for admin
-    const offset = filters.offset || 0
+    // FIFO Logic: Newest questions first (created_at DESC)
+    query = query.order('created_at', { ascending: false })
     
-    query = query
-      .order('created_at', { ascending: false })
-      .range(offset, offset + limit - 1)
+    // For admin panel, get ALL questions without any limit
+    // Remove any pagination to get the complete dataset
 
     const { data: questions, error, count } = await query
 
@@ -212,7 +210,7 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
     const result: QuestionsResponse = {
       questions: transformedQuestions,
       total: count || transformedQuestions.length,
-      hasMore: (count || 0) > offset + transformedQuestions.length
+      hasMore: false // Admin panel gets all questions, no pagination
     }
 
     setCachedData(cacheKey, result)
@@ -272,14 +270,17 @@ export async function getQuestionsFromDB(filters: QuestionsFilters = {}, userIsP
       }
     }
 
-    // UNIFIED PREMIUM FILTERING:
+    // UNIFIED PREMIUM FILTERING with FIFO ordering:
     // Free users only see free questions, premium users see everything
     if (!userIsPremium) {
       query = query.eq('is_premium', false)
-      console.log('🆓 Filtering for FREE questions only')
+      console.log('🆓 Filtering for FREE questions only (FIFO: newest first)')
     } else {
-      console.log('👑 Loading ALL questions for PREMIUM user')
+      console.log('👑 Loading ALL questions for PREMIUM user (FIFO: newest first)')
     }
+
+    // FIFO Logic: Always serve newest questions first
+    query = query.order('created_at', { ascending: false })
 
     // Apply pagination
     const limit = filters.limit || 50
@@ -348,7 +349,7 @@ export async function getReadingQuestions(difficulty?: string, userIsPremium: bo
   console.log('📖 Fetching reading comprehension questions...', { difficulty })
   
   try {
-    // Use direct query with passages join for reading comprehension
+    // Use direct query with passages join for reading comprehension - FIFO ordering
     let query = supabase
       .from('questions')
       .select(`
@@ -365,7 +366,10 @@ export async function getReadingQuestions(difficulty?: string, userIsPremium: bo
       query = query.eq('difficulty', difficulty)
     }
     
-    // Execute query
+    // FIFO Logic: Newest questions first
+    query = query.order('created_at', { ascending: false })
+    
+    // Execute query with reasonable limit
     const { data: questions, error } = await query.limit(100)
     
     if (error) {

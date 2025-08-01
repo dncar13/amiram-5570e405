@@ -95,7 +95,8 @@ const QuestionsManager: React.FC = () => {
   const loadQuestions = useCallback(async (forceRefresh = false) => {
     try {
       console.log("Loading questions in QuestionsManager...");
-      const allQuestions = forceRefresh ? await refreshQuestionsFromStorage() : await getAllQuestions();
+      // Clear cache to ensure fresh data and force refresh to get all questions
+      const allQuestions = await refreshQuestionsFromStorage();
       console.log("Loaded questions in QuestionsManager:", allQuestions.length);
       console.log("Question types found:", [...new Set(allQuestions.map(q => q.type))]);
       

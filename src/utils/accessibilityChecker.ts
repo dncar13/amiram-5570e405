@@ -67,7 +67,7 @@ export const runAccessibilityCheck = (): AccessibilityIssue[] => {
     const hasAriaLabel = input.hasAttribute('aria-label');
     const hasAriaLabelledBy = input.hasAttribute('aria-labelledby');
     
-    if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy && input.type !== 'hidden') {
+    if (!hasLabel && !hasAriaLabel && !hasAriaLabelledBy && (input as HTMLInputElement).type !== 'hidden') {
       issues.push({
         type: 'error',
         element: input as HTMLElement,
