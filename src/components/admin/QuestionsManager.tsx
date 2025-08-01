@@ -56,8 +56,7 @@ import {
   uploadTestQuestions
 } from "@/services/questions";
 import { 
-  getAllQuestions,
-  refreshQuestionsFromStorage
+  getAllQuestions
 } from "@/services/questionsService";
 import { toast } from "sonner";
 import { uploadPremiumSet1Questions } from "@/utils/questionUploadUtils";
@@ -95,8 +94,8 @@ const QuestionsManager: React.FC = () => {
   const loadQuestions = useCallback(async (forceRefresh = false) => {
     try {
       console.log("Loading questions in QuestionsManager...");
-      // Clear cache to ensure fresh data and force refresh to get all questions
-      const allQuestions = await refreshQuestionsFromStorage();
+      // Use getAllQuestions to get all questions directly from database
+      const allQuestions = await getAllQuestions();
       console.log("Loaded questions in QuestionsManager:", allQuestions.length);
       console.log("Question types found:", [...new Set(allQuestions.map(q => q.type))]);
       
