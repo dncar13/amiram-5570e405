@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:04:30.918Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060637290_3kky24s28",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 391
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened decisively, the economic crisis would have spiraled completely out of control.'",
+      "options": [
+        "If the government had not taken decisive action, the economic crisis would have become completely unmanageable.",
+        "Because the government intervened decisively, the economic crisis did not spiral out of control.",
+        "The government's intervention was decisive, but the economic crisis still spiraled out of control.",
+        "Unless the government intervenes decisively, the economic crisis will spiral out of control."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי מורכב עם היפוך (inversion) - 'Had the government not intervened' במקום 'If the government had not intervened'. זהו מבנה של תנאי שלישי (third conditional) המתאר מצב היפותטי בעבר. האפשרות הנכונה משמרת את אותו המשמעות: בלי התערבות הממשלה, המשבר היה יוצא מכלל שליטה. שאר האפשרויות משנות את המשמעות - אפשרות 2 מתארת תוצאה חיובית, אפשרות 3 מציגה ניגוד, ואפשרות 4 מדברת על עתיד.",
+      "examples": [
+        "Had she studied harder, she would have passed the exam → If she had studied harder, she would have passed the exam",
+        "Had we left earlier, we wouldn't have missed the flight → If we had left earlier, we wouldn't have missed the flight"
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' = 'If + subject + had + past participle'",
+      "commonMistakes": "Confusing the hypothetical past situation with actual past events or future possibilities",
+      "usageTip": "Inverted conditionals are formal and appear frequently in academic and news contexts",
+      "difficulty": "hard",
+      "id": "rst_prem_325",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new regulations been implemented when complaints began pouring in from affected businesses.'",
+      "options": [
+        "The new regulations were barely implemented before businesses started complaining heavily.",
+        "After the new regulations were fully implemented, many businesses complained about them.",
+        "Before implementing the new regulations, businesses were already complaining about potential effects.",
+        "The new regulations caused immediate complaints, but only after they were completely established."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when...' שמבטא רצף מהיר של אירועים - כמעט מיד לאחר יישום התקנות החלו התלונות. זהו מבנה פורמלי עם היפוך הדורש 'had + past participle' אחרי 'scarcely'. האפשרות הנכונה משמרת את הרעיון של זמן קצר מאוד בין יישום התקנות לתחילת התלונות. אפשרות 2 מרמזת על פרק זמן ארוך יותר, אפשרות 3 הופכת את סדר האירועים, ואפשרות 4 מדגישה השלמה מלאה של התהליך.",
+      "examples": [
+        "Scarcely had we arrived when it started raining → We had barely arrived when it started raining",
+        "Hardly had the meeting begun when the fire alarm went off → The meeting had just begun when the fire alarm sounded"
+      ],
+      "grammarRule": "Negative adverbials (scarcely, hardly, barely) + inversion express immediate sequence of events",
+      "commonMistakes": "Not recognizing that 'scarcely/hardly/barely' indicate very short time intervals, not long periods",
+      "usageTip": "These structures emphasize the immediate or unexpected nature of the second event",
+      "difficulty": "hard",
+      "id": "rst_prem_326",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final audit results were published did investors realize the full extent of the company's financial irregularities.'",
+      "options": [
+        "Investors only understood how serious the company's financial problems were when the final audit results came out.",
+        "Before the final audit results were published, investors already knew about the company's financial irregularities.",
+        "The final audit results revealed financial irregularities, but investors had expected them all along.",
+        "Even after the final audit results were published, investors still didn't grasp the company's financial situation."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did...' שמדגיש שרק בנקודת זמן מסוימת (פרסום תוצאות הביקורת) המשקיעים הבינו את חומרת הבעיות הכספיות. זהו מבנה עם היפוך שמתחיל עם 'Not until' ודורש שימוש ב-'did' + infinitive. האפשרות הנכונה משמרת את הרעיון שההבנה הגיעה רק באותו רגע מסוים. אפשרות 2 הופכת את המשמעות (ידעו מראש), אפשרות 3 מרמזת על ציפיות קודמות, ואפשרות 4 טוענת שגם אחרי הפרסום לא הבינו.",
+      "examples": [
+        "Not until midnight did she finish her work → She only finished her work at midnight",
+        "Not until he apologized did she forgive him → She only forgave him when he apologized"
+      ],
+      "grammarRule": "'Not until' + time/event + auxiliary verb + subject + main verb (inversion for emphasis)",
+      "commonMistakes": "Missing the emphasis on the specific timing - the realization happened only at that precise moment",
+      "usageTip": "This structure emphasizes that something happened only at a specific point, not before",
+      "difficulty": "hard",
+      "id": "rst_prem_327",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

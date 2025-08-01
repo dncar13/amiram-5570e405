@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:46:11.537Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059534754_bgxrzdnf6",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 479.3333333333333
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the company not diversified its portfolio in the preceding decade, it would have been unable to weather the economic downturn that devastated its primary sector.'",
+      "options": [
+        "If the company hadn't expanded into different areas during the previous ten years, it couldn't have survived the financial crisis that destroyed its main industry.",
+        "Because the company diversified its investments ten years ago, it managed to survive the economic crisis in its main sector.",
+        "The company's diversification strategy failed to protect it from the economic downturn that affected its primary sector.",
+        "Unless the company had diversified earlier, it would have thrived during the economic crisis in its main sector."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי הוא משפט תנאי מסוג שלישי (Third Conditional) המתחיל ב-inversion של 'Had'. המשפט מביע תנאי בלתי אפשרי בעבר - אילו החברה לא הייתה מגוונת את התיק שלה, היא לא הייתה יכולה לשרוד. האפשרות הנכונה משמרת את המשמעות הזו במבנה תנאי רגיל עם 'If + past perfect' ו-'would have + past participle'. שלוש האפשרויות האחרות משנות את המשמעות: האפשרות השנייה הופכת את המשפט לחיובי, השלישית טוענת שהגיוון נכשל, והרביעית משנה את התוצאה ל'thrived'.",
+      "examples": [
+        "Had I studied harder, I would have passed the exam. = If I had studied harder, I would have passed the exam.",
+        "Had they arrived earlier, they wouldn't have missed the show. = If they had arrived earlier, they wouldn't have missed the show."
+      ],
+      "grammarRule": "Third Conditional with inversion: 'Had + subject + past participle' = 'If + subject + had + past participle'. Used for hypothetical past situations.",
+      "commonMistakes": "Confusing the conditional type, misunderstanding the negative implication, or changing the hypothetical nature to a factual statement.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning, convert it to 'If + subject + had + past participle' to better understand the meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_256",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the negotiations commenced when irreconcilable differences emerged, rendering any prospect of agreement virtually impossible.'",
+      "options": [
+        "The negotiations had barely started when major disagreements appeared, making any chance of reaching an agreement almost impossible.",
+        "After long negotiations, the parties discovered they had differences that made agreement difficult to achieve.",
+        "The negotiations were successful despite the initial differences that seemed impossible to resolve.",
+        "Before the negotiations could begin properly, minor disagreements made the talks somewhat challenging."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had...when' שמציין שני אירועים שקרו כמעט בו-זמנית, כאשר האירוע השני קרה מיד אחרי הראשון. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', ו'irreconcilable differences' פירושן חילוקי דעות שאי אפשר לגשר עליהם. האפשרות הנכונה משמרת את כל המרכיבים הללו: 'barely started' = 'scarcely commenced', 'major disagreements' = 'irreconcilable differences', ו'almost impossible' = 'virtually impossible'. האפשרויות האחרות משנות את זמן האירועים, חומרת הבעיות, או התוצאה הסופית.",
+      "examples": [
+        "Scarcely had I arrived when it started raining. = I had barely arrived when it started raining.",
+        "Hardly had the meeting begun when the fire alarm sounded. = The meeting had barely begun when the fire alarm sounded."
+      ],
+      "grammarRule": "'Scarcely/Hardly + had + subject + past participle + when' indicates two events happening in quick succession with inversion for emphasis.",
+      "commonMistakes": "Missing the timing relationship between events, underestimating the severity of 'irreconcilable', or misunderstanding the immediate sequence.",
+      "usageTip": "Replace 'scarcely had...when' with 'had barely...when' to simplify while maintaining the same meaning and timing.",
+      "difficulty": "hard",
+      "id": "rst_prem_257",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not only did the research vindicate the scientist's controversial hypothesis, but it also revolutionized the entire field of study.'",
+      "options": [
+        "The research both proved the scientist's disputed theory correct and transformed the whole academic discipline.",
+        "Although the research supported the scientist's theory, it failed to change the field significantly.",
+        "The research either vindicated the hypothesis or revolutionized the field, but not both.",
+        "The scientist's hypothesis was controversial, so the research had little impact on the field of study."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not only...but also' שמדגיש שני הישגים משמעותיים שקרו יחד. המילה 'vindicate' פירושה להוכיח שמשהו נכון או מוצדק, במיוחד אחרי ביקורת. 'Controversial hypothesis' היא השערה שנויה במחלוקת. המשפט אומר שהמחקר לא רק הוכיח שההשערה נכונה, אלא גם חולל מהפכה בכל התחום. האפשרות הנכונה משמרת את שני המרכיבים: 'proved...correct' = 'vindicate', 'disputed theory' = 'controversial hypothesis', ו'transformed' = 'revolutionized'. האפשרויות האחרות או מכחישות את אחד ההישגים או משנות את הקשר ביניהם.",
+      "examples": [
+        "Not only did she win the race, but she also broke the record. = She both won the race and broke the record.",
+        "Not only is he talented, but he's also hardworking. = He is both talented and hardworking."
+      ],
+      "grammarRule": "'Not only + auxiliary + subject + verb, but also + clause' emphasizes two related achievements or qualities, requiring inversion after 'not only'.",
+      "commonMistakes": "Missing the dual achievement aspect, misunderstanding 'vindicate' as simply 'support', or changing the positive outcome to negative.",
+      "usageTip": "Convert 'Not only...but also' to 'both...and' to simplify while keeping the emphasis on two simultaneous accomplishments.",
+      "difficulty": "hard",
+      "id": "rst_prem_258",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

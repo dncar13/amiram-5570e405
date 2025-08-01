@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:52:23.201Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059907767_840gk70fc",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 414
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened decisively, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "Without the committee's decisive intervention, the project would have suffered irreversible collapse.",
+        "If the committee had intervened decisively, the project would not have collapsed.",
+        "The committee's intervention prevented the project from collapsing temporarily.",
+        "Despite the committee's intervention, the project collapsed anyway."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה התניה היפותטי הפוך (inverted conditional) עם 'Had + subject + not + past participle'. המשמעות היא שהתערבות הוועדה מנעה את קריסת הפרויקט. האפשרות הנכונה משמרת את המשמעות המדויקת: ללא התערבות החלטית, הפרויקט היה קורס באופן בלתי הפיך. שאר האפשרויות משנות את המשמעות - האפשרות השנייה הופכת את התנאי, השלישית מוסיפה 'זמנית' במקום 'בלתי הפיך', והרביעית טוענת שהפרויקט קרס למרות ההתערבות.",
+      "examples": [
+        "Had I not studied hard, I would have failed the exam. = Without studying hard, I would have failed the exam.",
+        "Had they not arrived early, they would have missed the flight. = Without arriving early, they would have missed the flight."
+      ],
+      "grammarRule": "Inverted conditionals use 'Had + subject + (not) + past participle' instead of 'If + subject + had (not) + past participle' for formal third conditional statements.",
+      "commonMistakes": "Students often confuse the direction of the conditional relationship and mistake 'irreversibly' for 'temporarily'.",
+      "usageTip": "When rewriting inverted conditionals, replace 'Had...not' with 'Without' and maintain the same consequence clause.",
+      "difficulty": "hard",
+      "id": "rst_prem_277",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began to plummet dramatically.'",
+      "options": [
+        "The CEO had barely announced the merger before stock prices started falling sharply.",
+        "After the CEO announced the merger, stock prices gradually declined.",
+        "The CEO announced the merger, but stock prices remained stable initially.",
+        "Stock prices plummeted before the CEO could announce the merger."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had...when' שמציין שני אירועים שקרו כמעט בו-זמנית, כאשר האירוע השני התחיל מיד לאחר הראשון. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', והיא דורשת היפוך של הפועל העזר. האפשרות הנכונה משמרת את המשמעות: הכרזת המנכ\"ל והתחלת הירידה החדה במחירי המניות קרו כמעט בו-זמנית. שאר האפשרויות משנות את הזמן (הדרגתית במקום דרמטית), מוסיפות מידע שגוי (יציבות ראשונית), או הופכות את סדר האירועים.",
+      "examples": [
+        "Scarcely had I entered the room when the phone rang. = I had barely entered the room before the phone rang.",
+        "Hardly had we started eating when it began to rain. = We had barely started eating before it began to rain."
+      ],
+      "grammarRule": "Negative adverbs like 'scarcely', 'hardly', 'barely' at the beginning of sentences require subject-auxiliary inversion and express immediate sequence of events.",
+      "commonMistakes": "Students often miss the immediacy aspect and choose options suggesting gradual change or wrong timing sequence.",
+      "usageTip": "Replace 'Scarcely had...when' with 'barely...before' while maintaining the immediate timing relationship between events.",
+      "difficulty": "hard",
+      "id": "rst_prem_278",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the investigation was thoroughly completed did the authorities release any official statement regarding the incident.'",
+      "options": [
+        "The authorities released an official statement only after the investigation was thoroughly completed.",
+        "Before completing the investigation, the authorities released several official statements.",
+        "The authorities completed the investigation but never released an official statement.",
+        "While the investigation was ongoing, the authorities released preliminary statements."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until...did' שמדגיש שפעולה מסוימת לא התרחשה עד לרגע מסוים. המבנה דורש היפוך של הפועל העזר. המשמעות היא שהרשויות המתינו עד לסיום מלא של החקירה לפני שפרסמו הודעה רשמית. האפשרות הנכונה משמרת בדיוק את המשמעות הזו עם המילה 'only after' שמציינת את אותו תזמון. שאר האפשרויות סותרות את המשפט המקורי - הן טוענות שהיו הודעות לפני סיום החקירה, שלא הייתה הודעה כלל, או שהיו הודעות מוקדמות במהלך החקירה.",
+      "examples": [
+        "Not until midnight did she finish her work. = She finished her work only after midnight.",
+        "Not until he apologized did she forgive him. = She forgave him only after he apologized."
+      ],
+      "grammarRule": "'Not until' at the beginning of a sentence requires subject-auxiliary inversion and emphasizes that an action occurred only after a specific condition was met.",
+      "commonMistakes": "Students often choose options that suggest actions happened before the specified time or that contradict the original timing sequence.",
+      "usageTip": "Transform 'Not until X did Y happen' into 'Y happened only after X' to maintain the same temporal relationship and emphasis.",
+      "difficulty": "hard",
+      "id": "rst_prem_279",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

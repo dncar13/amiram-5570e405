@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:53:09.951Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059948589_9adrb8zzc",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 494.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened when it did, the project would have inevitably collapsed under the weight of its own contradictions.'",
+      "options": [
+        "Without the committee's timely intervention, the project's internal contradictions would have caused its certain failure.",
+        "The committee's intervention prevented the project from succeeding despite its contradictions.",
+        "If the committee had intervened earlier, the project would not have had so many contradictions.",
+        "The project collapsed because the committee failed to intervene at the right moment."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה תנאי היפותטי בעבר (third conditional) עם היפוך (inversion). 'Had the committee not intervened' שווה ל-'If the committee had not intervened'. המשפט מביע שההתערבות של הוועדה מנעה את קריסת הפרויקט שהייתה קורה בגלל הסתירות הפנימיות שלו. האפשרות הנכונה שומרת על המשמעות המדויקת: ללא התערבות בזמן, הסתירות הפנימיות היו גורמות לכישלון ודאי. שאר האפשרויות משנות את המשמעות - האפשרות השנייה טוענת שההתערבות מנעה הצלחה, השלישית מדברת על התערבות מוקדמת יותר, והרביעית טוענת שהפרויקט אכן קרס.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Were she to arrive early, we could start immediately. = If she were to arrive early, we could start immediately."
+      ],
+      "grammarRule": "Conditional inversion: In formal English, 'if' can be omitted and the auxiliary verb moved to the beginning: 'Had/Were/Should + subject + main verb'",
+      "commonMistakes": "Confusing the direction of causality - the intervention prevented collapse, not caused it. Misunderstanding that 'inevitably' means 'certainly' not 'possibly'.",
+      "usageTip": "When you see inverted conditionals (Had/Were/Should at the beginning), mentally add 'If' to understand the meaning clearly.",
+      "difficulty": "hard",
+      "id": "rst_prem_280",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Notwithstanding the board's unanimous approval, the merger fell through owing to regulatory complications that nobody had anticipated.'",
+      "options": [
+        "Because the board approved unanimously, the merger succeeded despite unexpected regulatory issues.",
+        "The merger failed due to unforeseen regulatory problems, even though the board had given full approval.",
+        "The board's approval was withdrawn when regulatory complications arose unexpectedly.",
+        "Despite regulatory complications, the merger proceeded thanks to the board's unanimous support."
+      ],
+      "correctAnswer": 1,
+      "explanation": "המשפט המקורי משתמש במילות קישור פורמליות: 'Notwithstanding' (למרות ש) ו-'owing to' (בגלל). המבנה מראה ניגוד - למרות האישור הפה אחד של הדירקטוריון, המיזוג נכשל בגלל בעיות רגולטוריות לא צפויות. 'Fell through' פירושו נכשל או לא התממש. האפשרות הנכונה שומרת על הניגוד הזה ועל סיבת הכישלון. האפשרות הראשונה טוענת שהמיזוג הצליח, השלישית טוענת שהאישור בוטל, והרביעית טוענת שהמיזוג המשיך למרות הבעיות. רק האפשרות השנייה מבטאת נכונה שהמיזוג נכשל בגלל בעיות רגולטוריות למרות האישור המלא.",
+      "examples": [
+        "Notwithstanding his objections, the plan was implemented. = Despite his objections, the plan was implemented.",
+        "The event was cancelled owing to bad weather. = The event was cancelled because of bad weather."
+      ],
+      "grammarRule": "'Notwithstanding' = despite/in spite of (formal). 'Owing to' = because of/due to (formal). 'Fell through' = failed to happen/was unsuccessful.",
+      "commonMistakes": "Misunderstanding 'fell through' as succeeded. Confusing 'notwithstanding' with 'because of'. Missing the contrast between approval and failure.",
+      "usageTip": "Formal conjunctions like 'notwithstanding' and 'owing to' often appear in business and academic contexts. Learn their simpler equivalents.",
+      "difficulty": "hard",
+      "id": "rst_prem_281",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new policy been implemented when complaints began pouring in from customers who felt their privacy had been compromised.'",
+      "options": [
+        "The new policy was barely implemented before customers started complaining about privacy violations.",
+        "After the policy was fully implemented, customers gradually began expressing privacy concerns.",
+        "Customers complained about the new policy before it was properly implemented, fearing privacy issues.",
+        "The implementation of the policy was delayed because customers were already complaining about privacy."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had...when' שמבטא רצף מהיר של אירועים - כמעט מיד אחרי שהמדיניות יושמה, התלונות החלו להגיע. זהו מבנה היפוך (inversion) שבו העזר 'had' מקדים את הנושא. 'Pouring in' מתאר הגעה מסיבית ומהירה של תלונות. 'Compromised' במקרה זה פירושו נפגע או הופר. האפשרות הנכונה שומרת על הרצף המהיר ('barely...before') ועל העובדה שהתלונות התחילו מיד אחרי היישום. שאר האפשרויות משנות את הזמן - השנייה מדברת על תהליך הדרגתי, השלישית טוענת שהתלונות היו לפני היישום, והרביעית טוענת שהיישום נדחה.",
+      "examples": [
+        "Scarcely had I arrived when the phone rang. = I had barely arrived when the phone rang.",
+        "Hardly had we started when it began to rain. = We had hardly started when it began to rain."
+      ],
+      "grammarRule": "'Scarcely/Hardly/Barely + had + subject + past participle + when' = inversion showing immediate sequence of events in the past.",
+      "commonMistakes": "Confusing the time sequence - complaints came AFTER implementation, not before. Misunderstanding 'pouring in' as gradual rather than massive.",
+      "usageTip": "When you see 'Scarcely had...' think 'almost immediately after'. This structure emphasizes how quickly the second event followed the first.",
+      "difficulty": "hard",
+      "id": "rst_prem_282",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

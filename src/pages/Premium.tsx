@@ -33,7 +33,8 @@ import {
   Shield,
   MessageSquare,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Mail
 } from "lucide-react";
 import CardcomPaymentForm from "@/components/payment/CardcomPaymentForm";
 import SuccessDialog from "@/components/premium/SuccessDialog";
@@ -179,6 +180,92 @@ const Premium = () => {
       }
     }
   }, [selectedPlan, trackPremiumView, clearCoupon]);
+
+  // Restore payment intent after login
+  useEffect(() => {
+    const restorePaymentIntent = async () => {
+      const savedIntent = sessionStorage.getItem('paymentIntent');
+      if (savedIntent && currentUser) {
+        try {
+          const intent = JSON.parse(savedIntent);
+          
+          // Check if the intent is not too old (max 30 minutes)
+          const maxAge = 30 * 60 * 1000; // 30 minutes
+          if (Date.now() - intent.timestamp > maxAge) {
+            sessionStorage.removeItem('paymentIntent');
+            return;
+          }
+          
+          // Restore state
+          if (intent.plan && intent.plan !== selectedPlan) {
+            setSelectedPlan(intent.plan);
+          }
+          
+          if (intent.coupon && intent.coupon !== couponCode) {
+            setCouponCode(intent.coupon);
+            // Try to validate the coupon
+            const result = await validateCoupon(intent.coupon, intent.plan);
+            if (!result.valid) {
+              setCouponError('הקופון לא תקין עוד, אנא בדקו שוב');
+            }
+          }
+          
+          // Clear saved state
+          sessionStorage.removeItem('paymentIntent');
+          
+          // Track successful payment resumption
+          trackButtonClick('payment_resumed_after_login', 'premium_page', {
+            plan_type: intent.plan,
+            amount: intent.amount,
+            had_coupon: !!intent.coupon
+          });
+          
+          // Show success message
+          setTimeout(() => {
+            const message = intent.coupon 
+              ? `🎉 ברוכים השבים! החבילה והקופון שלכם ממתינים. כעת תוכלו להשלים את הרכישה.`
+              : `🎉 ברוכים השבים! החבילה שלכם ממתינה. כעת תוכלו להשלים את הרכישה.`;
+            
+            // Create a custom toast notification
+            const toastDiv = document.createElement('div');
+            toastDiv.className = 'fixed top-4 right-4 z-50 bg-green-600 text-white p-4 rounded-lg shadow-lg max-w-md';
+            toastDiv.innerHTML = `
+              <div class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm">${message}</span>
+              </div>
+            `;
+            document.body.appendChild(toastDiv);
+            
+            // Auto-scroll to payment section
+            setTimeout(() => {
+              const paymentSection = document.querySelector('[data-payment-section]');
+              if (paymentSection) {
+                paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }, 500);
+            
+            // Remove toast after 5 seconds
+            setTimeout(() => {
+              if (document.body.contains(toastDiv)) {
+                document.body.removeChild(toastDiv);
+              }
+            }, 5000);
+          }, 100);
+          
+        } catch (error) {
+          console.error('Error restoring payment intent:', error);
+          sessionStorage.removeItem('paymentIntent');
+        }
+      }
+    };
+
+    if (currentUser) {
+      restorePaymentIntent();
+    }
+  }, [currentUser, selectedPlan, couponCode, validateCoupon, trackButtonClick]);
 
   // Validate subscription when plan changes or user logs in
   useEffect(() => {
@@ -667,7 +754,7 @@ const Premium = () => {
                 </div>
 
                 {/* Payment Section */}
-                <div className="bg-white rounded-xl shadow-lg p-6">
+                <div className="bg-white rounded-xl shadow-lg p-6" data-payment-section>
                   <div className="mb-6">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-semibold">סה״כ לתשלום:</span>
@@ -905,6 +992,37 @@ const Premium = () => {
                   <p className="text-sm text-green-700">
                     כל התוכניות הן תשלום חד-פעמי בלבד. אין חידוש אוטומטי.
                   </p>
+                </div>
+
+                {/* Help Section */}
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <MessageSquare className="w-5 h-5 text-blue-600" />
+                    <span className="font-semibold text-blue-900">צריכים עזרה?</span>
+                  </div>
+                  <p className="text-sm text-blue-700 mb-3">
+                    אנחנו כאן לעזור! יש לכם שאלות על התשלום או החבילות?
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                      onClick={() => window.open('https://wa.me/972123456789', '_blank')}
+                    >
+                      <MessageSquare className="w-4 h-4 mr-1" />
+                      ווטסאפ
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="border-blue-300 text-blue-700 hover:bg-blue-100"
+                      onClick={() => window.location.href = 'mailto:support@amiram-academy.com'}
+                    >
+                      <Mail className="w-4 h-4 mr-1" />
+                      מייל
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

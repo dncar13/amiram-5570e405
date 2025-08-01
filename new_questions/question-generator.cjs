@@ -1,5 +1,5 @@
 // enhanced-question-generator.js - Enhanced AMIRAM Question Generator v4.0
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const fs = require('fs').promises;
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
@@ -298,8 +298,21 @@ REQUIREMENTS:
 3. Only ONE option should preserve the exact same meaning
 4. Write comprehensive Hebrew explanations (${settings.explanationLength.min}-${settings.explanationLength.max} words)
 5. Include 2 examples and common mistakes
+6. Include grammar rules and usage tips
 
-Return ONLY a valid JSON array with all the required fields for hard level...`;
+Return ONLY a valid JSON array:
+[{
+  "type": "restatement",
+  "text": "Original: 'Complex sentence here'",
+  "options": ["option1", "option2", "option3", "option4"],
+  "correctAnswer": 0,
+  "explanation": "Hebrew explanation here",
+  "examples": ["example1", "example2"],
+  "grammarRule": "Grammar rule here",
+  "commonMistakes": "Common mistakes here",
+  "usageTip": "Usage tip here",
+  "difficulty": "hard"
+}]`;
 }
 
 // ========== MAIN GENERATION FUNCTION ==========
@@ -378,7 +391,7 @@ async function saveEnhancedHebrewQuestions(questions, category, difficulty, isPr
   const dir = path.join(CONFIG.hebrewOutputDir, category, difficulty);
   await fs.mkdir(dir, { recursive: true });
   
-  const filename = `enhanced_questions_${isPremium ? 'premium' : 'free'}_${timestamp.slice(0, 10)}.json`;
+  const filename = `enhanced_questions_${isPremium ? 'premium' : 'free'}_${timestamp.slice(0, 10)}_${timestamp.slice(11, 19).replace(/:/g, '-')}.json`;
   const filepath = path.join(dir, filename);
   
   // חישוב סטטיסטיקות תוכן

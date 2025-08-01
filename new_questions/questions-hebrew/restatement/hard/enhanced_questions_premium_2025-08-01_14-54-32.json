@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:54:32.017Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060038508_wgny2gtu2",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 369
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened promptly, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "If the committee hadn't intervened promptly, the entire project would have collapsed irreversibly.",
+        "Unless the committee intervened promptly, the entire project would collapse irreversibly.",
+        "The committee's prompt intervention prevented the project from collapsing irreversibly.",
+        "Without the committee's intervention, the project might have faced some difficulties."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך תנאי (conditional inversion) עם 'Had + subject + not + past participle'. זהו מבנה פורמלי המקביל למשפט תנאי מסוג שלישי. האפשרות הנכונה משמרת את המשמעות המדויקת: ההתערבות המהירה של הוועדה מנעה קריסה בלתי הפיכה של הפרויקט. האפשרויות האחרות משנות את הזמן הדקדוקי, מחלישות את התוצאה או משנות את מידת הוודאות של התוצאה.",
+      "examples": [
+        "Had she studied harder, she would have passed the exam. = If she had studied harder, she would have passed the exam.",
+        "Had we left earlier, we wouldn't have missed the flight. = If we had left earlier, we wouldn't have missed the flight."
+      ],
+      "grammarRule": "Conditional inversion with 'Had + subject + not + past participle' equals 'If + subject + hadn't + past participle' in third conditional sentences expressing hypothetical past situations.",
+      "commonMistakes": "Confusing with second conditional (would collapse instead of would have collapsed) or changing the certainty level of the consequence.",
+      "usageTip": "Conditional inversion is formal and often appears in academic writing. Always maintain the same conditional type and certainty level when restating.",
+      "difficulty": "hard",
+      "id": "rst_prem_286",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new regulations been implemented when complaints began pouring in from various stakeholders.'",
+      "options": [
+        "The new regulations were barely implemented when complaints started coming from stakeholders.",
+        "As soon as the new regulations were implemented, complaints began pouring in from various stakeholders.",
+        "Before the new regulations were fully implemented, complaints were already coming in.",
+        "The new regulations caused immediate complaints from some stakeholders."
+      ],
+      "correctAnswer": 1,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך עם 'Scarcely had + subject + past participle + when', המבטא שני אירועים שקרו כמעט בו-זמנית, כאשר השני קרה מיד אחרי הראשון. האפשרות הנכונה 'As soon as' משמרת את המשמעות של רצף מיידי. האפשרויות האחרות משנות את הזמן (barely implemented מרמז על יישום חלקי), את הרצף (before מרמז שהתלונות החלו לפני היישום המלא), או מפשטות יתר על המידה.",
+      "examples": [
+        "Scarcely had we arrived when it started raining. = As soon as we arrived, it started raining.",
+        "Hardly had she finished speaking when the audience applauded. = As soon as she finished speaking, the audience applauded."
+      ],
+      "grammarRule": "'Scarcely/Hardly had + subject + past participle + when' expresses immediate sequence and equals 'As soon as + subject + simple past' with subject-auxiliary inversion after negative adverbs.",
+      "commonMistakes": "Using 'barely' (which suggests incomplete action) instead of maintaining the immediate sequence meaning, or changing the temporal relationship between events.",
+      "usageTip": "Negative adverbs like 'scarcely' and 'hardly' at sentence beginning require inversion and express immediate temporal sequence, not incomplete actions.",
+      "difficulty": "hard",
+      "id": "rst_prem_287",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final audit was completed did the company realize the full extent of the financial discrepancies.'",
+      "options": [
+        "The company didn't realize the full extent of the financial discrepancies until the final audit was completed.",
+        "Before the final audit was completed, the company was unaware of any financial discrepancies.",
+        "The final audit revealed some financial discrepancies that the company hadn't noticed.",
+        "Only after completing the audit did the company discover financial problems."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך עם 'Not until + clause + auxiliary + subject + main verb'. זהו מבנה המדגיש את נקודת הזמן שבה משהו קרה לראשונה. האפשרות הנכונה משמרת את המשמעות המדויקת: החברה לא הבינה את מלוא היקף הפערים הפיננסיים עד שהביקורת הסתיימה. האפשרויות האחרות משנות את המשמעות: 'unaware of any' מרמז על חוסר מודעות מוחלט, 'some discrepancies' מחליש את העוצמה, ו'financial problems' הוא כללי מדי.",
+      "examples": [
+        "Not until midnight did she finish her work. = She didn't finish her work until midnight.",
+        "Not until he apologized did she forgive him. = She didn't forgive him until he apologized."
+      ],
+      "grammarRule": "'Not until + time clause + auxiliary + subject + main verb' requires inversion and equals 'Subject + didn't + main verb + until + time clause' for emphasizing the specific timing of realization or action.",
+      "commonMistakes": "Changing 'full extent' to 'any' (complete vs. partial awareness) or 'some' (weakening the scope), or losing the emphasis on timing.",
+      "usageTip": "When 'not until' begins a sentence, it creates emphasis and requires inversion. The timing and scope of realization must be preserved exactly.",
+      "difficulty": "hard",
+      "id": "rst_prem_288",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

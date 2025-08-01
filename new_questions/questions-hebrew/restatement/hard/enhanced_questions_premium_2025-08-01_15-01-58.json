@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T15:01:58.653Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754060484733_ohbygx0wp",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 417.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened promptly, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "If the committee hadn't intervened promptly, the entire project would have collapsed irreversibly.",
+        "Unless the committee intervened promptly, the entire project would collapse irreversibly.",
+        "The committee's prompt intervention prevented the project from collapsing irreversibly.",
+        "Without the committee's intervention, the project might have faced some difficulties."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפוך תנאי (conditional inversion) - 'Had + subject + not + past participle' שמשמעותו זהה ל-'If + subject + had not + past participle'. שתי האפשרויות מבטאות תנאי לא מציאותי בעבר (third conditional) עם אותה משמעות מדויקת. האפשרות השנייה משתמשת ב-'unless' שמשנה את המשמעות, השלישית משנה את המבנה למשפט חיובי, והרביעית מחלישה את הוודאות מ-'would have' ל-'might have' ומשנה את חומרת התוצאה.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had she studied harder, she would have passed the exam. = If she had studied harder, she would have passed the exam."
+      ],
+      "grammarRule": "Conditional inversion: 'Had + subject + (not) + past participle' equals 'If + subject + had (not) + past participle' in third conditional sentences",
+      "commonMistakes": "Confusing 'unless' with 'if not' - they're not always interchangeable, especially in past unreal conditions",
+      "usageTip": "Conditional inversion is formal and literary - use it in academic writing but recognize it in all contexts",
+      "difficulty": "hard",
+      "id": "rst_prem_313",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began to plummet dramatically.'",
+      "options": [
+        "The CEO had barely announced the merger when stock prices began to plummet dramatically.",
+        "As soon as the CEO announced the merger, stock prices began to plummet dramatically.",
+        "The CEO announced the merger, and immediately stock prices began to plummet dramatically.",
+        "Right after the CEO's merger announcement, stock prices started falling significantly."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had + subject + past participle + when' שמציין פעולה שקרתה כמעט מיד אחרי פעולה אחרת. המילה 'scarcely' פירושה 'barely' או 'hardly', והמבנה דורש היפוך של הפועל העזר. האפשרות הנכונה משמרת את המשמעות המדויקת עם 'barely'. האפשרויות האחרות, למרות שמבטאות רצף זמני מהיר, לא משמרות את הדיוק של 'כמעט לא הספיק' ולא משתמשות במילים בעלות אותה עוצמה כמו 'dramatically' מול 'significantly'.",
+      "examples": [
+        "Scarcely had we arrived when it started raining. = We had barely arrived when it started raining.",
+        "Hardly had she finished speaking when the audience erupted in applause. = She had barely finished speaking when the audience erupted in applause."
+      ],
+      "grammarRule": "Negative adverbs (scarcely, hardly, barely) at sentence beginning require subject-auxiliary inversion: 'Scarcely/Hardly had + subject + past participle'",
+      "commonMistakes": "Forgetting the inversion after negative adverbs, or using 'than' instead of 'when' after 'scarcely/hardly'",
+      "usageTip": "These constructions are formal and emphatic - use them to highlight the immediate sequence of events",
+      "difficulty": "hard",
+      "id": "rst_prem_314",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the investigation was completed did the authorities realize the full extent of the corruption.'",
+      "options": [
+        "The authorities didn't realize the full extent of the corruption until the investigation was completed.",
+        "Only after completing the investigation did the authorities realize the full extent of the corruption.",
+        "The authorities realized the full extent of the corruption when the investigation was completed.",
+        "After the investigation ended, the authorities finally understood how serious the corruption was."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until + clause + auxiliary + subject + main verb' שהוא צורת היפוך של 'subject + auxiliary + not + main verb + until + clause'. המילים 'not until' יוצרות היפוך חובה של הפועל העזר והנושא. האפשרות הנכונה משמרת את המשמעות המדויקת ללא היפוך. האפשרות השנייה משנה ל-'only after' שהיא משמעות שונה מעט, השלישית מסירה את השלילה, והרביעית משנה 'realize' ל-'understand' ומוסיפה 'how serious' במקום 'full extent'.",
+      "examples": [
+        "Not until midnight did she return home. = She didn't return home until midnight.",
+        "Not until he apologized did she forgive him. = She didn't forgive him until he apologized."
+      ],
+      "grammarRule": "'Not until' at sentence beginning requires inversion: 'Not until + time/condition + auxiliary + subject + main verb'",
+      "commonMistakes": "Forgetting the inversion after 'not until', or confusing it with 'only when' which has slightly different emphasis",
+      "usageTip": "Use 'not until' inversion for dramatic emphasis on timing or conditions in formal writing",
+      "difficulty": "hard",
+      "id": "rst_prem_315",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

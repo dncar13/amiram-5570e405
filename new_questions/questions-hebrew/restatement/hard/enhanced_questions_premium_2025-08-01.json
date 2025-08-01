@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T12:45:10.645Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754052272830_8xukb25d5",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 462.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened promptly, the entire project would have collapsed irreversibly.'",
+      "options": [
+        "Without the committee's prompt intervention, the project would have suffered irreversible collapse.",
+        "The committee's intervention prevented the project from collapsing, but it was too late.",
+        "If the committee had intervened later, the project might have been saved.",
+        "The project collapsed because the committee failed to intervene in time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה תנאי היפותטי עם היפוך (inversion) - 'Had the committee not intervened' שווה ל-'If the committee had not intervened'. המשפט מביע שההתערבות המהירה של הוועדה מנעה קריסה בלתי הפיכה. האפשרות הנכונה משמרת את המשמעות הזו בדיוק - ללא ההתערבות המהירה, הפרויקט היה קורס באופן בלתי הפיך. שאר האפשרויות משנות את המשמעות: האפשרות השנייה מציעה שההתערבות הייתה מאוחרת מדי, השלישית מדברת על התערבות מאוחרת יותר, והרביעית טוענת שהפרויקט אכן קרס.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had she studied harder, she would have passed the exam. = Without harder studying, she failed the exam."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' equals 'If + subject + had + past participle'. This structure expresses hypothetical past situations and their consequences.",
+      "commonMistakes": "Confusing the inverted conditional with past perfect simple, or misunderstanding that the intervention DID happen and prevented collapse.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning of a sentence, convert it to 'If + subject + had + past participle' to better understand the meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_253",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the new regulations been implemented when complaints began pouring in from various stakeholders.'",
+      "options": [
+        "The new regulations were barely implemented before stakeholders started complaining heavily.",
+        "After the new regulations were fully implemented, some stakeholders complained occasionally.",
+        "The stakeholders complained about the new regulations before they were implemented.",
+        "It took a long time after implementing the regulations for complaints to emerge."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when...' שמבטא שני אירועים שקרו כמעט בו-זמנית, כאשר האירוע השני התרחש מיד אחרי הראשון. המילה 'scarcely' פירושה 'בקושי' או 'כמעט לא', ו-'pouring in' מתארת זרם גדול של תלונות. האפשרות הנכונה משמרת את שני האלמנטים הללו - הרגולציות בקושי יושמו לפני שהתלונות התחילו להגיע בכמויות גדולות. שאר האפשרויות משנות את הזמון (אחרי יישום מלא, לפני יישום, זמן רב אחרי) או את עוצמת התלונות (מדי פעם במקום בכמויות גדולות).",
+      "examples": [
+        "Scarcely had I arrived when the phone rang. = I had barely arrived before the phone rang.",
+        "Hardly had the movie started when people began leaving. = The movie had barely started before people began leaving."
+      ],
+      "grammarRule": "Negative adverbs (scarcely, hardly, barely) + auxiliary verb + subject + main verb = inversion structure expressing immediate sequence of events.",
+      "commonMistakes": "Misunderstanding the timing - thinking there was a significant gap between implementation and complaints, or not recognizing the intensity of 'pouring in'.",
+      "usageTip": "When you see 'Scarcely/Hardly/Barely had...when/before...', it means the second action happened almost immediately after the first.",
+      "difficulty": "hard",
+      "id": "rst_prem_254",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not only did the merger fail to achieve its projected synergies, but it also resulted in significant cultural clashes between the organizations.'",
+      "options": [
+        "The merger both failed to reach expected synergies and caused major cultural conflicts between the organizations.",
+        "Although the merger didn't achieve synergies, it successfully resolved cultural differences between organizations.",
+        "The merger achieved some synergies despite causing minor cultural disagreements.",
+        "The cultural clashes prevented the merger from achieving any synergies whatsoever."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not only... but also...' שמדגיש שני תוצאות שליליות של המיזוג. המבנה הזה מוסיף מידע ומדגיש שהמצב גרוע יותר ממה שנדמה בהתחלה. המיזוג לא רק שלא השיג את הסינרגיות הצפויות (projected synergies), אלא גם יצר התנגשויות תרבותיות משמעותיות. האפשרות הנכונה משמרת את שתי התוצאות השליליות הללו באמצעות המילה 'both'. שאר האפשרויות משנות את המשמעות - האפשרות השנייה מציעה פתרון מוצלח לבעיות תרבותיות, השלישית מדברת על הישגים חלקיים ובעיות קלות, והרביעית הופכת את הסיבה והתוצאה.",
+      "examples": [
+        "Not only was the exam difficult, but it was also unfairly long. = The exam was both difficult and unfairly long.",
+        "Not only did she miss the deadline, but she also forgot to inform her supervisor. = She both missed the deadline and forgot to inform her supervisor."
+      ],
+      "grammarRule": "'Not only... but also...' structure requires inversion after 'not only' and emphasizes that the second element adds to or worsens the first element.",
+      "commonMistakes": "Missing that both outcomes are negative, or thinking that one problem caused the other rather than both being separate results of the merger.",
+      "usageTip": "When you see 'Not only... but also...', look for two related points where the second one adds emphasis or additional negative/positive information to the first.",
+      "difficulty": "hard",
+      "id": "rst_prem_255",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:46:58.153Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059576926_jn3sn5glg",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 462
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the company not invested heavily in research and development, it would never have achieved such groundbreaking innovations.'",
+      "options": [
+        "The company's substantial investment in research and development was crucial for achieving its groundbreaking innovations.",
+        "The company invested heavily in research and development, but it still didn't achieve groundbreaking innovations.",
+        "Without investing in research and development, the company achieved groundbreaking innovations anyway.",
+        "The company should have invested more in research and development to achieve better innovations."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה של תנאי היפותטי בעבר (third conditional) עם היפוך (inversion). המבנה 'Had + subject + not + past participle' שווה ל-'If the company had not invested'. המשפט מבטא שההשקעה במחקר ופיתוח הייתה הכרחית להשגת החדשנות. האפשרות הנכונה משמרת את המשמעות הזו על ידי הדגשת החשיבות הקריטית של ההשקעה. שאר האפשרויות משנות את המשמעות - אפשרות 2 טוענת שלא הושגו חדשנות למרות ההשקעה, אפשרות 3 טוענת שהושגו חדשנות ללא השקעה, ואפשרות 4 מציעה שהיה צריך להשקיע יותר.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = My knowledge about the meeting was necessary for my attendance.",
+        "Had she not studied medicine, she wouldn't have become a doctor. = Studying medicine was essential for her becoming a doctor."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + (not) + past participle' = 'If + subject + had (not) + past participle'. This structure expresses hypothetical past situations and their consequences.",
+      "commonMistakes": "Students often confuse inverted conditionals with simple past perfect, or fail to recognize that the negative in the condition creates a positive meaning about necessity.",
+      "usageTip": "When you see 'Had + subject + not + past participle', convert it to 'If... had not' to better understand the meaning, then look for options that express the necessity or importance of the action mentioned.",
+      "difficulty": "hard",
+      "id": "rst_prem_259",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when stock prices began to plummet dramatically.'",
+      "options": [
+        "The CEO announced the merger after stock prices had already started falling dramatically.",
+        "Stock prices began falling dramatically almost immediately after the CEO announced the merger.",
+        "The CEO was reluctant to announce the merger because stock prices were falling.",
+        "Stock prices fell dramatically, which prevented the CEO from announcing the merger."
+      ],
+      "correctAnswer": 1,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when', שהוא ביטוי זמן המדגיש שפעולה שנייה התרחשה מיד לאחר הראשונה. המילה 'scarcely' פירושה 'כמעט לא' או 'בקושי', והמבנה כולו מבטא רצף מהיר של אירועים. המשפט אומר שמחירי המניות התחילו לצלול כמעט מיד לאחר שהמנכ'ל הכריז על המיזוג. האפשרות הנכונה משמרת את הרצף הזמני הזה. אפשרות 1 הופכת את סדר האירועים, אפשרות 3 מציגה סיבתיות שגויה (היסוס לפני ההכרזה), ואפשרות 4 טוענת שהירידה במחירים מנעה את ההכרזה.",
+      "examples": [
+        "Scarcely had I entered the room when the phone rang. = The phone rang almost immediately after I entered.",
+        "Hardly had the concert begun when it started raining. = It started raining almost immediately after the concert began."
+      ],
+      "grammarRule": "'Scarcely/Hardly/Barely + had + subject + past participle + when' indicates that the second action happened almost immediately after the first. This requires subject-auxiliary inversion after the negative adverb.",
+      "commonMistakes": "Students often miss the immediate sequence meaning of 'scarcely...when' or confuse the order of events, thinking the second action caused or prevented the first.",
+      "usageTip": "When you see 'Scarcely/Hardly + had...when', focus on the immediate sequence: first action completed, then second action happened right away. Look for options expressing 'almost immediately after' or 'right after'.",
+      "difficulty": "hard",
+      "id": "rst_prem_260",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the final evidence was presented did the jury reach a unanimous verdict.'",
+      "options": [
+        "The jury reached a unanimous verdict before the final evidence was presented.",
+        "The jury couldn't reach a unanimous verdict even after the final evidence was presented.",
+        "The jury reached a unanimous verdict only after the final evidence was presented.",
+        "The final evidence prevented the jury from reaching a unanimous verdict."
+      ],
+      "correctAnswer": 2,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until' עם היפוך של הנושא והפועל העזר. המבנה הזה מדגיש שפעולה מסוימת התרחשה רק לאחר שקרתה פעולה אחרת. במקרה זה, המושבעים הגיעו להחלטה פה אחד רק לאחר שהוצגה העדות האחרונה. המילים 'Not until' יוצרות דגש על כך שלא היה אפשר להגיע להחלטה לפני הרגע הזה. האפשרות הנכונה משמרת את המשמעות הזו על ידי שימוש במילה 'only after'. שאר האפשרויות משנות את המשמעות - אפשרות 1 הופכת את סדר האירועים, אפשרות 2 טוענת שלא הגיעו להחלטה, ואפשרות 4 טוענת שהעדות מנעה החלטה.",
+      "examples": [
+        "Not until midnight did she finish her work. = She finished her work only after midnight arrived.",
+        "Not until he apologized did she forgive him. = She forgave him only after he apologized."
+      ],
+      "grammarRule": "'Not until + time/event + auxiliary + subject + main verb' emphasizes that something happened only after a specific point in time or after a specific event occurred. This structure requires inversion.",
+      "commonMistakes": "Students often miss that 'not until' means 'only after' or 'only when', or they fail to recognize the emphasis on the timing being crucial for the action to occur.",
+      "usageTip": "When you see 'Not until...did', convert it to 'only after' or 'only when' to understand the meaning. The action in the main clause happened solely because the condition in the 'until' clause was met.",
+      "difficulty": "hard",
+      "id": "rst_prem_261",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

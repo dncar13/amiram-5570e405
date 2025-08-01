@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:48:14.333Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059659106_bkxwzfp6d",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 356
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the committee not intervened when it did, the entire project would have been jeopardized beyond repair.'",
+      "options": [
+        "If the committee hadn't intervened at that crucial moment, the project would have suffered irreparable damage.",
+        "The committee's intervention prevented the project from being damaged, but not completely.",
+        "Because the committee intervened, the project was jeopardized beyond repair.",
+        "The committee should have intervened earlier to prevent the project's complete failure."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה היפותטי מורכב עם היפוך (inversion) - 'Had the committee not intervened' במקום 'If the committee had not intervened'. המשמעות היא שהוועדה כן התערבה בזמן הנכון, ובזכך הפרויקט לא נפגע באופן בלתי הפיך. אפשרות 1 משמרת את המשמעות הזו בדיוק. אפשרות 2 מרמזת שהפרויקט כן נפגע חלקית. אפשרות 3 הופכת את המשמעות לחלוטין. אפשרות 4 מציעה ביקורת על התזמון, לא את המשמעות המקורית.",
+      "examples": [
+        "Had I known about the meeting, I would have attended. = If I had known about the meeting, I would have attended.",
+        "Had she studied harder, she would have passed the exam. = If she had studied harder, she would have passed the exam."
+      ],
+      "grammarRule": "Third conditional with inversion: 'Had + subject + past participle' equals 'If + subject + had + past participle'. This structure expresses hypothetical past situations.",
+      "commonMistakes": "Confusing the inverted conditional structure and misunderstanding whether the action actually happened or not in reality.",
+      "usageTip": "When you see 'Had + subject + past participle' at the beginning of a sentence, remember it's a formal way of expressing an unreal past condition.",
+      "difficulty": "hard",
+      "id": "rst_prem_262",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Scarcely had the CEO announced the merger when shareholders began selling their stocks in panic.'",
+      "options": [
+        "The CEO had barely announced the merger before shareholders started panic-selling their stocks.",
+        "After the CEO announced the merger, shareholders waited before selling their stocks in panic.",
+        "The CEO announced the merger, but shareholders didn't sell their stocks immediately.",
+        "Shareholders sold their stocks in panic, which prompted the CEO to announce the merger."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Scarcely had... when...' שמבטא רצף מהיר של אירועים. המילה 'scarcely' (בקושי) עם היפוך מציינת שמיד אחרי ההכרזה על המיזוג, בעלי המניות החלו למכור בפאניקה. אפשרות 1 משמרת את המשמעות עם 'barely... before'. אפשרות 2 מרמזת על המתנה. אפשרות 3 מכחישה את המכירה המיידית. אפשרות 4 הופכת את סדר הסיבה והתוצאה.",
+      "examples": [
+        "Scarcely had I arrived when the phone rang. = I had barely arrived when the phone rang.",
+        "Hardly had the show started when it began to rain. = The show had barely started when it began to rain."
+      ],
+      "grammarRule": "Negative adverbs (scarcely, hardly, barely) + auxiliary verb + subject + main verb create emphasis and require inversion. 'Scarcely/Hardly had' + past participle + 'when' shows immediate sequence.",
+      "commonMistakes": "Forgetting the inversion after negative adverbs and confusing the time sequence of events.",
+      "usageTip": "'Scarcely/Hardly/Barely had... when...' emphasizes how quickly one event followed another.",
+      "difficulty": "hard",
+      "id": "rst_prem_263",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Not until the investigation was completed did the authorities realize the full extent of the corruption.'",
+      "options": [
+        "The authorities didn't realize the full extent of the corruption until the investigation was completed.",
+        "The investigation was completed before the authorities realized there was corruption.",
+        "The authorities completed the investigation and then realized there was some corruption.",
+        "Only after realizing the corruption did the authorities complete the investigation."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי משתמש במבנה 'Not until... did...' שמדגיש את נקודת הזמן שבה משהו קרה. המילים 'Not until' בתחילת המשפט גורמות להיפוך בסדר המילים. המשמעות היא שהרשויות הבינו את מלוא היקף השחיתות רק כשהחקירה הסתיימה. אפשרות 1 מבטאת את אותה המשמעות בדיוק ללא היפוך. אפשרות 2 מרמזת על רצף זמנים שונה. אפשרות 3 ממעיטה בחומרת השחיתות. אפשרות 4 הופכת את סדר האירועים.",
+      "examples": [
+        "Not until midnight did he return home. = He didn't return home until midnight.",
+        "Not until she graduated did she find a job. = She didn't find a job until she graduated."
+      ],
+      "grammarRule": "'Not until' at the beginning of a sentence requires inversion: 'Not until + time/event + auxiliary verb + subject + main verb'. This structure emphasizes the timing.",
+      "commonMistakes": "Forgetting to use inversion after 'Not until' and misunderstanding the emphasis on timing.",
+      "usageTip": "When 'Not until' starts a sentence, expect inversion. The meaning emphasizes that something happened only at that specific point in time.",
+      "difficulty": "hard",
+      "id": "rst_prem_264",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

@@ -40,6 +40,9 @@ const Login = () => {
   const { trackLogin, trackSignup, trackFormStart, trackFormSubmit, trackButtonClick, trackError } = useAnalytics();
   
   const from = location.state?.from?.pathname || "/simulations-entry";
+  const continuePurchase = location.state?.continuePurchase || false;
+  const planType = location.state?.plan || null;
+  const paymentMessage = location.state?.message || null;
   const isLoading = loginState !== 'idle' || authLoading;
   
   // Navigate user if already authenticated
@@ -555,6 +558,22 @@ const Login = () => {
                 </AlertDescription>
               </Alert>
             )}
+
+            {/* Payment Flow Banner */}
+            {continuePurchase && (
+              <div className="mb-6 p-4 bg-gradient-to-r from-green-600 to-blue-600 rounded-lg text-white text-center">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <ShieldCheck className="h-5 w-5" />
+                  <span className="font-bold">כמעט סיימתם! 🎉</span>
+                </div>
+                <p className="text-sm mb-2">התחברו או הירשמו כדי להשלים את הרכישה</p>
+                {planType && (
+                  <p className="text-xs bg-white/20 rounded px-2 py-1 inline-block">
+                    החבילה שלכם מחכה: {planType === 'daily' ? 'גישה ליום' : planType === 'weekly' ? 'גישה לשבוע' : planType === 'monthly' ? 'גישה לחודש' : 'גישה ל-3 חודשים'}
+                  </p>
+                )}
+              </div>
+            )}
             
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-6 dark-tabs">
@@ -567,7 +586,10 @@ const Login = () => {
                   <CardHeader className="dark-card-header">
                     <CardTitle className="dark-card-title">התחברות</CardTitle>
                     <CardDescription className="dark-card-description">
-                      התחברו כדי לקבל גישה להתקדמות שלכם ולנושאים נוספים
+                      {continuePurchase 
+                        ? "התחברו כדי להשלים את הרכישה שלכם" 
+                        : "התחברו כדי לקבל גישה להתקדמות שלכם ולנושאים נוספים"
+                      }
                     </CardDescription>
                   </CardHeader>
                   <form onSubmit={handleLogin}>
@@ -676,7 +698,10 @@ const Login = () => {
                   <CardHeader className="dark-card-header">
                     <CardTitle className="dark-card-title">הרשמה</CardTitle>
                     <CardDescription className="dark-card-description">
-                      צרו חשבון חדש לגישה לנושאים נוספים ולסימולציות
+                      {continuePurchase 
+                        ? "הרשמה מהירה כדי להשלים את הרכישה שלכם - רק דקה!" 
+                        : "צרו חשבון חדש לגישה לנושאים נוספים ולסימולציות"
+                      }
                     </CardDescription>
                   </CardHeader>
                   <form onSubmit={handleRegister}>

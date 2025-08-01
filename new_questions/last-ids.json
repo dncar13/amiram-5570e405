@@ -1,0 +1,22 @@
+{
+  "sentence-completion": {
+    "start": 2020,
+    "end": 2999,
+    "current": 2020
+  },
+  "restatement": {
+    "start": 3000,
+    "end": 3999,
+    "current": 3336
+  },
+  "vocabulary": {
+    "start": 4000,
+    "end": 4999,
+    "current": 4000
+  },
+  "reading-comprehension": {
+    "start": 5000,
+    "end": 5999,
+    "current": 5000
+  }
+}

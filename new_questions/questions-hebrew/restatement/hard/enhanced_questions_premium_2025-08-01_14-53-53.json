@@ -1,0 +1,124 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T14:53:53.177Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754059993379_vyoiy0ym5",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 3,
+      "withCommonMistakes": 3,
+      "averageExplanationLength": 535.6666666666666
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'Despite having been warned repeatedly about the consequences, the company proceeded with the controversial merger, which ultimately proved to be a financial disaster.'",
+      "options": [
+        "Although the company had been warned many times about what might happen, it went ahead with the disputed merger that eventually turned out to be a monetary catastrophe.",
+        "The company ignored several warnings about the results and continued with the merger, which was successful in the end.",
+        "Because the company was warned about the consequences, it decided not to proceed with the controversial merger.",
+        "The company was warned about the merger, but it was ultimately a financial success despite the controversy."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי מכיל כמה רכיבים מרכזיים: למרות אזהרות חוזרות, החברה המשיכה במיזוג השנוי במחלוקת, והתוצאה הייתה אסון כלכלי. האופציה הנכונה משמרת את כל הרכיבים הללו: 'Although' מקבילה ל-'Despite', 'had been warned many times' מקבילה ל-'having been warned repeatedly', 'went ahead' מקבילה ל-'proceeded', 'disputed' מקבילה ל-'controversial', ו-'monetary catastrophe' מקבילה ל-'financial disaster'. שאר האופציות משנות את המשמעות המקורית - האופציה השנייה טוענת שהמיזוג היה מוצלח, השלישית טוענת שהחברה החליטה שלא להמשיך, והרביעית גם טוענת שהמיזוג היה מוצלח.",
+      "examples": [
+        "Despite being tired, she continued working → Although she was tired, she kept on working",
+        "Having been rejected twice, he gave up → After being turned down two times, he quit trying"
+      ],
+      "grammarRule": "When restating complex sentences with 'despite + gerund', use 'although/though + past perfect' while maintaining the same logical relationships between clauses.",
+      "commonMistakes": "שינוי המשמעות על ידי החלפת תוצאות חיוביות בשליליות או להיפך, או אי שמירה על הקשר הסיבתי בין האזהרות להחלטה.",
+      "usageTip": "Pay attention to contrast markers (despite, although) and ensure the cause-effect relationship remains unchanged in the restatement.",
+      "difficulty": "hard",
+      "id": "rst_prem_283",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'Had the government not intervened when it did, the economic crisis would have escalated beyond any possibility of recovery.'",
+      "options": [
+        "If the government hadn't stepped in at that time, the economic crisis would have become impossible to recover from.",
+        "Because the government intervened, the economic crisis escalated and became impossible to recover from.",
+        "The government's intervention caused the economic crisis to escalate beyond recovery.",
+        "Without government intervention, the economic crisis was successfully resolved."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המשפט המקורי הוא משפט תנאי מסוג שלישי (third conditional) במבנה הפוך, המתחיל ב-'Had' במקום 'If'. המשמעות היא שהתערבות הממשלה מנעה את החמרת המשבר. האופציה הנכונה משמרת את המשמעות הזו: 'If the government hadn't stepped in' מקבילה ל-'Had the government not intervened', 'at that time' מקבילה ל-'when it did', ו-'would have become impossible to recover from' מקבילה ל-'would have escalated beyond any possibility of recovery'. שאר האופציות הופכות את המשמעות - האופציה השנייה והשלישית טוענות שהתערבות הממשלה גרמה להחמרה, והרביעית טוענת שהמשבר נפתר בלי התערבות.",
+      "examples": [
+        "Had I known earlier, I would have helped → If I had known earlier, I would have helped",
+        "Had they arrived on time, we wouldn't have missed the show → If they had arrived on time, we wouldn't have missed the show"
+      ],
+      "grammarRule": "Inverted third conditionals starting with 'Had' can be restated using standard 'If + past perfect' structure while maintaining the hypothetical past meaning.",
+      "commonMistakes": "הפיכת התנאי ההיפותטי למציאות או שינוי הקשר הסיבתי בין התערבות הממשלה לתוצאות המשבר.",
+      "usageTip": "When dealing with inverted conditionals, first convert them to standard 'if' form mentally, then find the equivalent meaning.",
+      "difficulty": "hard",
+      "id": "rst_prem_284",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'No sooner had the new policy been implemented than complaints began pouring in from various stakeholders.'",
+      "options": [
+        "As soon as the new policy was put into effect, complaints started flooding in from different stakeholders.",
+        "Before the new policy was implemented, many stakeholders had already started complaining.",
+        "The new policy was implemented successfully without any complaints from stakeholders.",
+        "After a long time following the policy implementation, stakeholders finally began to complain."
+      ],
+      "correctAnswer": 0,
+      "explanation": "המבנה 'No sooner... than' הוא ביטוי זמן המציין שמשהו קרה מיד לאחר משהו אחר. המשפט המקורי אומר שמיד לאחר יישום המדיניות החדשה, התלונות החלו להגיע. האופציה הנכונה משמרת את המשמעות הזו: 'As soon as' מקבילה ל-'No sooner... than', 'was put into effect' מקבילה ל-'had been implemented', 'started flooding in' מקבילה ל-'began pouring in', ו-'different stakeholders' מקבילה ל-'various stakeholders'. האופציה השנייה הופכת את סדר האירועים, השלישית טוענת שלא היו תלונות, והרביעית טוענת שהתלונות הגיעו רק לאחר זמן רב.",
+      "examples": [
+        "No sooner had I left than it started raining → As soon as I left, it began to rain",
+        "No sooner had the meeting ended than people started leaving → Immediately after the meeting finished, people began to leave"
+      ],
+      "grammarRule": "'No sooner... than' constructions express immediate sequence and can be restated using 'as soon as' or 'immediately after' while maintaining the timing relationship.",
+      "commonMistakes": "שינוי סדר האירועים או הוספת פער זמן בין יישום המדיניות לבין התלונות.",
+      "usageTip": "Remember that 'no sooner... than' always indicates immediate consequence - look for restatements that preserve this immediacy.",
+      "difficulty": "hard",
+      "id": "rst_prem_285",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}
