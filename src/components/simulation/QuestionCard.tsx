@@ -492,8 +492,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
               <h4 className="font-bold text-blue-300 mb-2 sm:mb-3 text-base sm:text-lg">הסבר:</h4>
               <p 
                 className="text-blue-200 leading-relaxed text-sm sm:text-base"
-                dir="ltr" 
-                style={{direction: 'ltr', textAlign: 'left'}}
+                dir="rtl" 
+                style={{direction: 'rtl', textAlign: 'right'}}
               >
                 {currentQuestion.explanation}
               </p>
