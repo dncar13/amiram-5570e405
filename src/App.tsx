@@ -53,6 +53,8 @@ import AnalyticsDashboard from "./components/dev/AnalyticsDashboard";
 import RouteTracker from "./components/RouteTracker";
 import { useAuth } from "./context/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
+import CouponManagement from "./pages/CouponManagement";
+import CouponUsageManagement from "./pages/CouponUsageManagement";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -192,6 +194,20 @@ const AnimatedRoutes = () => {
             <ProtectedRoute requireAuth={true}>
               <ErrorBoundary>
                 <AdminPanel />
+              </ErrorBoundary>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/coupons" element={
+            <ProtectedRoute requireAuth={true}>
+              <ErrorBoundary>
+                <CouponManagement />
+              </ErrorBoundary>
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/coupons/usage" element={
+            <ProtectedRoute requireAuth={true}>
+              <ErrorBoundary>
+                <CouponUsageManagement />
               </ErrorBoundary>
             </ProtectedRoute>
           } />
