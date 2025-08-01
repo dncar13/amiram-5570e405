@@ -1,0 +1,130 @@
+{
+  "easy_sentence_completion": {
+    "id": "12345678-1234-4567-8901-234567890123",
+    "question_text": "I ______ my homework yesterday evening.",
+    "answer_options": ["do", "did", "doing", "done"],
+    "correct_answer": "1",
+    "explanation": "התשובה הנכונה היא 'did' כי המילה 'yesterday' מצביעה על זמן עבר פשוט.",
+    "type": "sentence-completion",
+    "difficulty": "easy",
+    "is_premium": true,
+    "ai_generated": true,
+    "generation_model": "claude-sonnet-4-20250514",
+    "batch_id": "batch_1753969950929_u0p5td86c",
+    "quality_score": 85,
+    "metadata": {
+      "custom_id": "sc_prem_947",
+      "tags": ["grammar", "basic", "premium"],
+      "enhanced_features": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      },
+      "grammar_rule": null,
+      "examples": null,
+      "common_mistakes": null,
+      "usage_tip": null
+    },
+    "created_at": "2025-07-31T17:45:00.000Z",
+    "updated_at": "2025-07-31T17:45:00.000Z"
+  },
+  "medium_sentence_completion": {
+    "id": "87654321-4321-7654-2109-876543210987",
+    "question_text": "If she ______ harder, she would have passed the exam.",
+    "answer_options": ["studied", "had studied", "studies", "would study"],
+    "correct_answer": "1",
+    "explanation": "התשובה הנכונה היא 'had studied'. זהו משפט תנאי מסוג שלישי (Third Conditional) המתאר מצב היפותטי בעבר. המבנה: If + Past Perfect, would have + Past Participle. דוגמה נוספת: If I had known, I would have come.",
+    "type": "sentence-completion",
+    "difficulty": "medium",
+    "is_premium": true,
+    "ai_generated": true,
+    "generation_model": "claude-sonnet-4-20250514",
+    "batch_id": "batch_1753969950929_u0p5td86c",
+    "quality_score": 90,
+    "metadata": {
+      "custom_id": "sc_prem_948",
+      "tags": ["grammar", "intermediate", "premium"],
+      "enhanced_features": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      },
+      "grammar_rule": "Third Conditional: If + had + V3, would have + V3",
+      "examples": ["If I had known, I would have come"],
+      "common_mistakes": null,
+      "usage_tip": null
+    },
+    "created_at": "2025-07-31T17:45:00.000Z",
+    "updated_at": "2025-07-31T17:45:00.000Z"
+  },
+  "hard_sentence_completion": {
+    "id": "11111111-2222-4333-8444-555555555555",
+    "question_text": "The committee insisted that the proposal ______ before the deadline.",
+    "answer_options": ["is submitted", "be submitted", "was submitted", "will be submitted"],
+    "correct_answer": "1",
+    "explanation": "התשובה הנכונה היא 'be submitted'. אחרי פעלים של דרישה או המלצה (insist, suggest, recommend) משתמשים ב-Subjunctive Mood. הפועל מופיע בצורת הבסיס ללא הטיות, גם בגוף שלישי. זהו מבנה פורמלי הנפוץ באנגלית אקדמית וכתובה.",
+    "type": "sentence-completion",
+    "difficulty": "hard",
+    "is_premium": true,
+    "ai_generated": true,
+    "generation_model": "claude-sonnet-4-20250514",
+    "batch_id": "batch_1753969950929_u0p5td86c",
+    "quality_score": 95,
+    "metadata": {
+      "custom_id": "sc_prem_949",
+      "tags": ["grammar", "advanced", "premium"],
+      "enhanced_features": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      },
+      "grammar_rule": "Subjunctive: demand/suggest/insist + that + subject + base verb",
+      "examples": [
+        "The doctor recommended that she take the medicine.",
+        "They demanded that he apologize immediately."
+      ],
+      "common_mistakes": "טעות נפוצה: להוסיף 's' בגוף שלישי. זכרו - תמיד צורת הבסיס!",
+      "usage_tip": "בדיבור יומיומי אפשר להשתמש ב-'should be submitted' כחלופה."
+    },
+    "created_at": "2025-07-31T17:45:00.000Z",
+    "updated_at": "2025-07-31T17:45:00.000Z"
+  },
+  "easy_restatement": {
+    "id": "66666666-7777-4888-8999-000000000000",
+    "question_text": "Original: 'The weather is too cold for swimming.'",
+    "answer_options": [
+      "The weather is perfect for swimming.",
+      "It's too warm to go swimming.",
+      "The weather is so cold that we can't swim.",
+      "We should swim because it's cold."
+    ],
+    "correct_answer": "2",
+    "explanation": "התשובה הנכונה היא משפט 3 כי 'too cold for' שקול ל-'so cold that we can't'. שניהם מבטאים שהקור מונע שחייה.",
+    "type": "restatement",
+    "difficulty": "easy",
+    "is_premium": true,
+    "ai_generated": true,
+    "generation_model": "claude-sonnet-4-20250514",
+    "batch_id": "batch_1753969950929_u0p5td86c",
+    "quality_score": 85,
+    "metadata": {
+      "custom_id": "rst_prem_886",
+      "tags": ["grammar", "basic", "premium"],
+      "enhanced_features": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      },
+      "grammar_rule": null,
+      "examples": null,
+      "common_mistakes": null,
+      "usage_tip": null
+    },
+    "created_at": "2025-07-31T17:45:00.000Z",
+    "updated_at": "2025-07-31T17:45:00.000Z"
+  }
+}

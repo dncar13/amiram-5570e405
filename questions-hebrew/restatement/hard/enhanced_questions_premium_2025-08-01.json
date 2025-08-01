@@ -1,0 +1,115 @@
+{
+  "metadata": {
+    "generated": "2025-08-01T04:11:12.645Z",
+    "type": "restatement",
+    "difficulty": "hard",
+    "count": 3,
+    "topic": "Advanced Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1754021411523_jj3mmaywj",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 3,
+      "withExamples": 3,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 393.6666666666667
+    }
+  },
+  "questions": [
+    {
+      "level": "hard",
+      "question": "The unprecedented proliferation of misinformation through digital platforms has necessitated the implementation of more stringent regulatory frameworks to safeguard the integrity of public discourse.",
+      "options": [
+        "The rapid spread of false information online has required stricter rules to protect honest public discussion.",
+        "Digital platforms have been forced to create new policies because of the increase in fake news affecting conversations.",
+        "The growth of misinformation on the internet has led to the need for better ways to control what people say publicly.",
+        "Social media companies must now regulate content more carefully due to the rise in misleading information online."
+      ],
+      "correct_answer": 0,
+      "explanation": "המשפט המקורי מתאר תהליך מורכב של התפשטות דיסאינפורמציה בפלטפורמות דיגיטליות והצורך במסגרות רגולטוריות מחמירות יותר כדי לשמור על שלמות השיח הציבורי. התשובה הנכונה (1) משמרת את כל המרכיבים המהותיים: התפשטות מהירה של מידע כוזב (misinformation), הפלטפורמות המקוונות, הצורך בכללים מחמירים יותר, והמטרה של הגנה על דיון ציבורי כנה. האפשרויות האחרות משנות את המשמעות: אפשרות 2 מתמקדת בפלטפורמות עצמן כיוצרות מדיניות במקום ברגולציה חיצונית, אפשרות 3 מדברת על 'דרכים טובות יותר לשלוט' במקום על מסגרות רגולטוריות, ואפשרות 4 מתמקדת בחברות המדיה החברתית במקום ברגולציה הכללית.",
+      "examples": [
+        "דוגמה לשמירה על משמעות: 'The company's revenue declined significantly' = 'The firm's income dropped substantially' - שני המשפטים מתארים ירידה משמעותית ברווחים.",
+        "דוגמה לשינוי משמעות: 'Students must complete all assignments' ≠ 'Students should try to finish their homework' - המשפט הראשון מדבר על חובה מוחלטת, השני על המלצה."
+      ],
+      "common_mistakes": "טעויות נפוצות כוללות בחירה באפשרות הנשמעת דומה אך משנה את הגורם הפועל (מי אחראי לרגולציה), או בחירה במשפט המשתמש במילים פשוטות יותר אך מאבד ניואנסים חשובים כמו ההבחנה בין רגולציה ממשלתית לבין מדיניות פנימית של חברות.",
+      "id": "rst_prem_1036",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "level": "hard",
+      "question": "The proliferation of social media platforms has engendered an unprecedented erosion of traditional privacy boundaries, compelling individuals to navigate an increasingly complex landscape of digital exposure and personal autonomy.",
+      "options": [
+        "The spread of social media has caused a unique breakdown of old privacy limits, forcing people to deal with a more complicated world of online exposure and personal freedom.",
+        "The expansion of social media platforms has created an unusual decline in conventional privacy barriers, requiring individuals to manage a progressively intricate environment of digital visibility and individual independence.",
+        "The growth of social media has resulted in an exceptional deterioration of established privacy borders, obligating people to handle an ever more challenging terrain of internet exposure and personal control.",
+        "The multiplication of social media has produced an extraordinary weakening of customary privacy restrictions, necessitating individuals to cope with an increasingly difficult sphere of digital revelation and personal liberty."
+      ],
+      "correct": 1,
+      "explanation": "התשובה הנכונה היא אפשרות 2. המשפט המקורי מתאר את התפשטות הרשתות החברתיות כגורם שיצר שחיקה חסרת תקדים של גבולות הפרטיות המסורתיים, מה שמחייב אנשים לנווט בנוף מורכב יותר של חשיפה דיגיטלית ואוטונומיה אישית. אפשרות 2 משמרת במדויק את המשמעות הזו באמצעות מילים נרדפות מתאימות: 'expansion' במקום 'proliferation', 'decline' במקום 'erosion', 'conventional' במקום 'traditional', ו'requiring' במקום 'compelling'. שאר האפשרויות משנות משמעויות עדינות: אפשרות 1 משתמשת ב'forcing' שמרמז על כפייה חזקה יותר, אפשרות 3 משתמשת ב'obligating' שמרמז על חובה פורמלית, ואפשרות 4 משתמשת ב'necessitating' ו'cope' שמשנים את הגוון הרגשי של המשפט.",
+      "examples": [
+        "Original: 'The implementation of stringent regulations has precipitated a substantial decline in industrial emissions.' Correct restatement: 'The introduction of strict rules has caused a significant decrease in factory pollution.'",
+        "Original: 'Her unwavering commitment to excellence consistently manifested itself in exemplary performance.' Correct restatement: 'Her steadfast dedication to quality regularly showed itself through outstanding work.'"
+      ],
+      "common_mistakes": "טעויות נפוצות כוללות בחירה במילים שנשמעות דומות אך משנות את העוצמה הרגשית (כמו 'forcing' במקום 'compelling'), או שימוש במילים שמשנות את הרמה הפורמלית של המשפט. חשוב להבחין בין מילים נרדפות שמשמרות את אותו גוון למילים שמשנות את האווירה הכללית של המשפט.",
+      "id": "rst_prem_1037",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    },
+    {
+      "level": "hard",
+      "question": "The proliferation of digital surveillance technologies has engendered an unprecedented erosion of personal privacy, compelling society to grapple with the fundamental tension between collective security imperatives and individual autonomy rights.",
+      "options": [
+        "The widespread adoption of digital monitoring systems has created an unparalleled decline in personal privacy, forcing society to wrestle with the basic conflict between public safety needs and personal freedom rights.",
+        "The expansion of digital surveillance has led to privacy concerns, making society balance security and individual rights more carefully than before.",
+        "Digital surveillance technologies have grown rapidly, causing privacy issues that require society to consider both security and personal freedom.",
+        "The increase in digital monitoring has resulted in privacy problems, leading to debates about security versus individual rights in modern society."
+      ],
+      "correct": 0,
+      "explanation_hebrew": "המשפט המקורי מציג רעיון מורכב על התפשטות טכנולוגיות מעקב דיגיטליות והשפעתן על הפרטיות. התשובה הנכונה (1) משמרת את כל הרכיבים הקריטיים: 'proliferation' = 'widespread adoption', 'engendered' = 'created', 'unprecedented erosion' = 'unparalleled decline', 'compelling' = 'forcing', 'grapple with' = 'wrestle with', 'fundamental tension' = 'basic conflict', 'collective security imperatives' = 'public safety needs', ו-'individual autonomy rights' = 'personal freedom rights'. תשובות 2-4 מפשטות יתר על המידה את המשמעות המקורית ומאבדות את העוצמה הרטורית והדיוק הטרמינולוגי של המשפט המקורי.",
+      "examples": [
+        "דוגמה 1: 'The company's unprecedented growth' יכול להיות מנוסח מחדש כ-'The company's unparalleled expansion' אך לא כ-'The company grew well'.",
+        "דוגמה 2: 'Compelling evidence' שומר על משמעותו ב-'Convincing proof' אך לא ב-'Good information'."
+      ],
+      "common_mistakes": "טעויות נפוצות כוללות בחירה בתשובות שמפשטות מושגים מורכבים (כמו 'collective security imperatives' ל-'security'), החמצת ביטויים בעלי משמעות ספציפית ('unprecedented', 'compelling'), ובחירה בניסוחים שמשנים את רמת הפורמליות או העוצמה הרטורית של המשפט המקורי.",
+      "id": "rst_prem_1038",
+      "tags": [
+        "grammar",
+        "advanced",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "hard",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": true
+      }
+    }
+  ]
+}

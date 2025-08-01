@@ -16,7 +16,7 @@ console.log(`[questionsService] Service loaded. Using Supabase backend.`);
 export const getAllQuestions = async (): Promise<Question[]> => {
   console.log(`[getAllQuestions] Fetching all questions from database (admin mode)`);
   try {
-    const response = await getQuestionsFromDBAdmin({ limit: 1000 }); // Use admin function to get ALL questions
+    const response = await getQuestionsFromDBAdmin({}); // Use admin function to get ALL questions without limit
     console.log(`[getAllQuestions] Returning ${response.questions.length} total questions (including premium)`);
     console.log(`[getAllQuestions] Premium questions:`, response.questions.filter(q => q.is_premium).length);
     console.log(`[getAllQuestions] Sample questions:`, response.questions.slice(0, 2));
@@ -186,7 +186,7 @@ export const getHardQuestions = async (): Promise<Question[]> => {
 };
 
 export const refreshQuestionsFromStorage = async (): Promise<Question[]> => {
-  console.log('[refreshQuestionsFromStorage] Clearing cache and refreshing questions');
+  console.log('[refreshQuestionsFromStorage] Clearing cache and refreshing questions from database');
   clearQuestionsCache();
   return getAllQuestions();
 };

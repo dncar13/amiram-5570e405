@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T17:52:00.000Z",
+    "type": "sentence-completion",
+    "difficulty": "easy",
+    "count": 2,
+    "topic": "Basic Grammar",
+    "tags": ["grammar", "vocabulary", "premium", "enhanced"],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_test_sample_12345",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 2,
+      "withExamples": 0,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 85
+    }
+  },
+  "questions": [
+    {
+      "type": "sentence-completion",
+      "text": "I ______ my homework yesterday evening.",
+      "options": ["do", "did", "doing", "done"],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'did' כי המילה 'yesterday' מצביעה על זמן עבר פשוט.",
+      "difficulty": "easy",
+      "id": "sc_prem_001",
+      "tags": ["grammar", "basic", "premium"],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The weather is too cold for swimming.'",
+      "options": [
+        "The weather is perfect for swimming.",
+        "It's too warm to go swimming.",
+        "The weather is so cold that we can't swim.",
+        "We should swim because it's cold."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'too cold for' שקול ל-'so cold that we can't'. שניהם מבטאים שהקור מונע שחייה.",
+      "difficulty": "easy",
+      "id": "rst_prem_001",
+      "tags": ["grammar", "basic", "premium"],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}

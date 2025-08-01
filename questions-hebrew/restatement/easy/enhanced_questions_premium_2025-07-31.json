@@ -1,0 +1,4203 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T19:12:30.173Z",
+    "type": "restatement",
+    "difficulty": "easy",
+    "count": 167,
+    "topic": "Basic Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753984699075_n7m4mzetw",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 167,
+      "withExamples": 0,
+      "withGrammarRules": 0,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 123.83233532934132
+    }
+  },
+  "questions": [
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework at dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'completed' שקול ל-'finished' ו-'prior to eating dinner' שקול ל-'before dinner'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_034",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_035",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She arrived late because her car broke down.'",
+      "options": [
+        "She came early when her car stopped working.",
+        "Her car broke down, so she arrived late.",
+        "She fixed her car and arrived on time.",
+        "She was late but her car worked perfectly."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'because' ו-'so' מבטאים אותה קשר סיבתי. שני המשפטים מסבירים שהתקלה ברכב גרמה לאיחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_036",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She usually gets to work early.",
+        "She sometimes arrives late to work.",
+        "She arrives to work at the right time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אדם שתמיד מאחר.",
+      "difficulty": "easy",
+      "id": "rst_prem_037",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The student finished his homework before dinner.'",
+      "options": [
+        "The student ate dinner before doing his homework.",
+        "The student completed his homework prior to eating dinner.",
+        "The student forgot to do his homework before dinner.",
+        "The student will finish his homework after dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'completed' שקול ל-'finished' ו-'prior to eating dinner' שקול ל-'before dinner'. שני המשפטים מבטאים את אותו רצף אירועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_038",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'finished' שקול ל-'completed' ו-'before dinner' שקול ל-'prior to eating dinner'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_039",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_040",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired during the journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' זהה ל-'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_041",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting and hard to put down.'",
+      "options": [
+        "The book is boring and easy to stop reading.",
+        "The book is so fascinating that it's difficult to stop reading it.",
+        "The book is simple and not worth reading.",
+        "The book is expensive and heavy to carry."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'fascinating' ו-'hard to put down' זהה ל-'difficult to stop reading'.",
+      "difficulty": "easy",
+      "id": "rst_prem_042",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו מידע בדיוק.",
+      "difficulty": "easy",
+      "id": "rst_prem_043",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' זהה במשמעות ל-'extremely exhausted', ושניהם מתארים עייפות רבה אחרי מסע ארוך.",
+      "difficulty": "easy",
+      "id": "rst_prem_044",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_045",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_046",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She decided to buy a new car because her old one was broken.'",
+      "options": [
+        "She chose to purchase a new vehicle since her previous one wasn't working.",
+        "She sold her old car to buy a new one.",
+        "She repaired her broken car instead of buying a new one.",
+        "She decided to keep her old car even though it was broken."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'decided to buy' = 'chose to purchase', 'new car' = 'new vehicle', ו-'because her old one was broken' = 'since her previous one wasn't working'.",
+      "difficulty": "easy",
+      "id": "rst_prem_047",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes comes late to meetings.",
+        "She prefers to skip meetings entirely."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_048",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock every evening.'",
+      "options": [
+        "The store opens at nine o'clock every night.",
+        "The store shuts down at 9 PM each day.",
+        "The store stays open until nine in the morning.",
+        "The store is closed before nine every evening."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' זהה ל-'shuts down' ו-'every evening' זהה ל-'each day'. שני המשפטים מתארים את אותו זמן סגירה.",
+      "difficulty": "easy",
+      "id": "rst_prem_049",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_050",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_051",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes misses meetings entirely.",
+        "She prefers to skip meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_052",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_053",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting and I can't put it down.'",
+      "options": [
+        "The book is boring so I stopped reading it.",
+        "I find the book so fascinating that I keep reading it.",
+        "The book is heavy and I need help carrying it.",
+        "I don't like the book because it's too long."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'fascinating' ו-'can't put it down' אומר שממשיכים לקרוא.",
+      "difficulty": "easy",
+      "id": "rst_prem_054",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She never attends meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_055",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_056",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting to read.'",
+      "options": [
+        "The book is boring and dull.",
+        "Reading the book is quite fascinating.",
+        "The book is difficult to understand.",
+        "Nobody wants to read this book."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'quite fascinating'. שני הביטויים מתארים ספר מעניין וכיפי לקריאה.",
+      "difficulty": "easy",
+      "id": "rst_prem_057",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She usually gets to work early.",
+        "She sometimes arrives late to work.",
+        "She arrives to work at the right time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אדם שתמיד מאחר.",
+      "difficulty": "easy",
+      "id": "rst_prem_058",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store stays open until seven.",
+        "The store is closed all day."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_059",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים שהתלמידים סיימו את עבודתם במהירות.",
+      "difficulty": "easy",
+      "id": "rst_prem_060",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_061",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing their homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון בדיוק.",
+      "difficulty": "easy",
+      "id": "rst_prem_062",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_063",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very happy about her test results.'",
+      "options": [
+        "She was disappointed with her test results.",
+        "Her test results made her extremely pleased.",
+        "She didn't care about her test results.",
+        "She was worried about her test results."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very happy about' שקול ל-'extremely pleased'. שני הביטויים מתארים שמחה גדולה מתוצאות הבחינה.",
+      "difficulty": "easy",
+      "id": "rst_prem_064",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock every evening.'",
+      "options": [
+        "The store opens at nine o'clock every night.",
+        "The store shuts down at 9 PM each day.",
+        "The store stays open until nine in the morning.",
+        "The store is closed during nine o'clock."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' זהה ל-'shuts down' ו-'every evening' זהה ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_065",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store closes at 9 AM daily."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'shuts down' הוא מילה נרדפת ל-'closes' ו-'each day' זהה ל-'every day'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_066",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store closes at 9 AM daily."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_067",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_068",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing for her."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' שקול ל-'the long journey made her'. שני המשפטים מבטאים עייפות קיצונית אחרי נסיעה ארוכה.",
+      "difficulty": "easy",
+      "id": "rst_prem_069",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store is open until seven.",
+        "The store never closes at six."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_070",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes comes late to meetings.",
+        "She arrives exactly on time for meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_071",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired during the journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted'. שני המשפטים מתארים עייפות רבה לאחר מסע ארוך.",
+      "difficulty": "easy",
+      "id": "rst_prem_072",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים שהתלמידים סיימו את המטלות לפני הארוחה.",
+      "difficulty": "easy",
+      "id": "rst_prem_073",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She forgot about the meeting."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שניהם מבטאים שהיא תמיד מאחרת לפגישות.",
+      "difficulty": "easy",
+      "id": "rst_prem_074",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She never attends meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_075",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The student forgot to bring his homework to class.'",
+      "options": [
+        "The student remembered to bring his homework to class.",
+        "The student didn't remember to bring his homework to class.",
+        "The student brought extra homework to class.",
+        "The student finished his homework in class."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'forgot to bring' שקול ל-'didn't remember to bring'. שני הביטויים מתארים שהתלמיד לא הביא את שיעורי הבית.",
+      "difficulty": "easy",
+      "id": "rst_prem_076",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework at dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'completed' שקול ל-'finished' ו-'prior to eating dinner' שקול ל-'before dinner'. שני המשפטים מבטאים את אותו רצף זמנים.",
+      "difficulty": "easy",
+      "id": "rst_prem_077",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותה משמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_078",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_079",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes comes late to meetings.",
+        "She never attends any meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחורים קבועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_080",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_081",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework at dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'completed' שקול ל-'finished' ו-'prior to eating dinner' שקול ל-'before dinner'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_082",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 6 PM every day.'",
+      "options": [
+        "The store opens at 6 PM daily.",
+        "The store shuts down at 6 PM each day.",
+        "The store is open until 6 AM every day.",
+        "The store never closes at 6 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'shuts down' הוא מילה נרדפת ל-'closes' ו-'each day' שקול ל-'every day'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_083",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_084",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The movie was so boring that I fell asleep.'",
+      "options": [
+        "The movie was exciting and kept me awake.",
+        "I stayed awake because the movie was interesting.",
+        "The movie was dull enough to make me sleep.",
+        "I enjoyed the movie and watched it completely."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'so boring that I fell asleep' זהה במשמעות ל-'dull enough to make me sleep'. שניהם מתארים סרט משעמם שגרם לישון.",
+      "difficulty": "easy",
+      "id": "rst_prem_085",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_086",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to class.'",
+      "options": [
+        "She never comes to class on time.",
+        "She usually gets to class early.",
+        "She sometimes arrives late to class.",
+        "She always leaves class late."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_087",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted'. שני הביטויים מתארים עייפות רבה אחרי מסע ארוך.",
+      "difficulty": "easy",
+      "id": "rst_prem_088",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock every evening.'",
+      "options": [
+        "The store opens at nine o'clock every night.",
+        "The store shuts down at 9 PM each day.",
+        "The store stays open until nine in the morning.",
+        "The store is closed during nine o'clock."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every evening' שקול ל-'each day'. שניהם מתארים את אותו זמן סגירה.",
+      "difficulty": "easy",
+      "id": "rst_prem_089",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She usually gets to work early.",
+        "She sometimes arrives late to work.",
+        "She always leaves work late."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שניהם מבטאים שהיא תמיד מאחרת לעבודה.",
+      "difficulty": "easy",
+      "id": "rst_prem_090",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_091",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות.",
+      "difficulty": "easy",
+      "id": "rst_prem_092",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_093",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_094",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_095",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_096",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store is always open at six.",
+        "The store never closes at six."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_097",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' זהה במשמעות ל-'never comes on time'. שניהם מתארים התנהגות קבועה של איחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_098",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 6 PM every day.'",
+      "options": [
+        "The store opens at 6 PM daily.",
+        "The store shuts down at 6 PM each day.",
+        "The store is closed before 6 PM.",
+        "The store stays open after 6 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'shuts down' הוא מילה נרדפת ל-'closes' ו-'each day' זהה ל-'every day'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_099",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is closed all day.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות בערב.",
+      "difficulty": "easy",
+      "id": "rst_prem_100",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She arrived late because of the heavy traffic.'",
+      "options": [
+        "She came early due to light traffic.",
+        "The heavy traffic made her arrive late.",
+        "She left late because of traffic.",
+        "Traffic was light so she arrived on time."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'because of the heavy traffic' שקול ל-'the heavy traffic made her'. שניהם מסבירים שהפקק גרם לאיחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_101",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_102",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to class.'",
+      "options": [
+        "She never comes to class on time.",
+        "She usually arrives early to class.",
+        "She sometimes comes late to class.",
+        "She arrives to class at the right time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_103",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_104",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' זהה ל-'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_105",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_106",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is closed all day.",
+        "The store never closes."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות.",
+      "difficulty": "easy",
+      "id": "rst_prem_107",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו מידע.",
+      "difficulty": "easy",
+      "id": "rst_prem_108",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes misses meetings entirely.",
+        "She prefers to skip meetings altogether."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_109",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She arrived late because of the heavy traffic.'",
+      "options": [
+        "She came early due to light traffic.",
+        "The heavy traffic made her arrive late.",
+        "She left late because of traffic.",
+        "Traffic was light so she arrived on time."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'because of the heavy traffic' שקול ל-'the heavy traffic made her'. שניהם מסבירים שהפקק גרם לאיחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_110",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_111",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה למשפט המקורי.",
+      "difficulty": "easy",
+      "id": "rst_prem_112",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The movie was so boring that I fell asleep.'",
+      "options": [
+        "The movie was exciting and kept me awake.",
+        "I stayed awake because the movie was interesting.",
+        "The movie was so dull that I dozed off.",
+        "I enjoyed the movie and watched it completely."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'boring' שקול ל-'dull' ו-'fell asleep' שקול ל-'dozed off'. שני המשפטים מבטאים שהסרט היה משעמם עד כדי כך שהדובר נרדם.",
+      "difficulty": "easy",
+      "id": "rst_prem_113",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות.",
+      "difficulty": "easy",
+      "id": "rst_prem_114",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She never attends any meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחורים קבועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_115",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She arrived at the party late.'",
+      "options": [
+        "She came to the party early.",
+        "She got to the party after the scheduled time.",
+        "She left the party late.",
+        "She was on time for the party."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'arrived late' שקול ל-'got to... after the scheduled time'. שניהם מבטאים הגעה מאוחרת למסיבה.",
+      "difficulty": "easy",
+      "id": "rst_prem_116",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_117",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_118",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_119",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_120",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו מידע.",
+      "difficulty": "easy",
+      "id": "rst_prem_121",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired despite the long journey.",
+        "The journey was short but tiring."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו'after the long journey' זהה ל'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_122",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock every evening.'",
+      "options": [
+        "The store opens at nine o'clock every night.",
+        "The store shuts down at 9 PM each day.",
+        "The store stays open until nine in the morning.",
+        "The store closes at nine o'clock every morning."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down', ו-'every evening' שקול ל-'each day' (בהקשר של סגירה בערב).",
+      "difficulty": "easy",
+      "id": "rst_prem_123",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students ate dinner before doing their homework.",
+        "The students never finished their homework.",
+        "The students are still working on their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_124",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_125",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_126",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She walks to school every morning.'",
+      "options": [
+        "She drives to school every morning.",
+        "She goes to school on foot each morning.",
+        "She runs to school every evening.",
+        "She takes the bus to school daily."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'walks' שקול ל-'goes on foot' ו-'every morning' שקול ל-'each morning'. שניהם מתארים אותה פעולה בדיוק.",
+      "difficulty": "easy",
+      "id": "rst_prem_127",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting to read.'",
+      "options": [
+        "The book is boring and dull.",
+        "Reading the book is quite fascinating.",
+        "The book is too difficult to understand.",
+        "Nobody wants to read this book."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'quite fascinating'. שני הביטויים מתארים משהו מעניין ומרתק לקריאה.",
+      "difficulty": "easy",
+      "id": "rst_prem_128",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'finished' שקול ל-'completed' ו-'before dinner' שקול ל-'prior to eating dinner'. שני המשפטים מבטאים את אותו רצף אירועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_129",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting and I can't put it down.'",
+      "options": [
+        "The book is boring so I stopped reading it.",
+        "I find the book so fascinating that I keep reading it.",
+        "The book is heavy and I need help carrying it.",
+        "I don't like the book because it's too long."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'fascinating' ו-'can't put it down' שקול ל-'keep reading it'. שניהם מבטאים שהספר מרתק ולא מפסיקים לקרוא אותו.",
+      "difficulty": "easy",
+      "id": "rst_prem_130",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_131",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_132",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_133",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחורים קבועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_134",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה למשפט המקורי.",
+      "difficulty": "easy",
+      "id": "rst_prem_135",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store is open until seven.",
+        "The store never closes at six."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_136",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives at work on time.'",
+      "options": [
+        "She is never late for work.",
+        "She sometimes comes to work early.",
+        "She often arrives at work late.",
+        "She rarely goes to work on time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives on time' שקול ל-'never late'. שני הביטויים מתארים אדם שמגיע תמיד בזמן.",
+      "difficulty": "easy",
+      "id": "rst_prem_137",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_138",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She decided to buy a new car because her old one was broken.'",
+      "options": [
+        "She chose to purchase a new vehicle since her previous one wasn't working.",
+        "She decided to fix her old car instead of buying a new one.",
+        "Her new car broke down, so she bought another one.",
+        "She sold her broken car and kept using it."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'decided to buy' = 'chose to purchase', 'new car' = 'new vehicle', 'old one was broken' = 'previous one wasn't working'.",
+      "difficulty": "easy",
+      "id": "rst_prem_139",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting to read.'",
+      "options": [
+        "The book is boring and dull.",
+        "Reading the book is quite fascinating.",
+        "The book is too difficult to understand.",
+        "Nobody wants to read this book."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'quite fascinating'. שני הביטויים מתארים ספר מעניין וכיפי לקריאה.",
+      "difficulty": "easy",
+      "id": "rst_prem_140",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always gets to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' זהה במשמעות ל-'never comes on time'. שניהם מתארים התנהגות עקבית של איחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_141",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She never attends meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_142",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו מידע על זמן הסגירה.",
+      "difficulty": "easy",
+      "id": "rst_prem_143",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always gets to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She forgot about the meeting today."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחורים קבועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_144",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store is always open at six.",
+        "The store never closes at six."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_145",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The movie was so boring that I fell asleep.'",
+      "options": [
+        "The movie was exciting and kept me awake.",
+        "I stayed awake because the movie was interesting.",
+        "The movie was so dull that I dozed off.",
+        "I enjoyed the movie and watched it completely."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'boring' שקול ל-'dull' ו-'fell asleep' שקול ל-'dozed off'. שני המשפטים מבטאים שהסרט היה משעמם עד כדי כך שהאדם נרדם.",
+      "difficulty": "easy",
+      "id": "rst_prem_146",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is closed all day.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות.",
+      "difficulty": "easy",
+      "id": "rst_prem_147",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She arrived late because her car broke down.'",
+      "options": [
+        "She came early when her car stopped working.",
+        "Her car broke down, so she was late.",
+        "She fixed her car and arrived on time.",
+        "Her car worked perfectly and she was early."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'because' ו-'so' מבטאים אותה סיבתיות. שני המשפטים מסבירים שהתקלה ברכב גרמה לאיחור.",
+      "difficulty": "easy",
+      "id": "rst_prem_148",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She usually gets to work early.",
+        "She sometimes arrives late to work.",
+        "She is always punctual at work."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' זהה במשמעות ל-'never comes on time'. שני הביטויים מתארים אדם שתמיד מאחר.",
+      "difficulty": "easy",
+      "id": "rst_prem_149",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_150",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_151",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing their homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_152",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She is very happy about her new job.'",
+      "options": [
+        "She is sad about her new job.",
+        "She is extremely pleased with her new job.",
+        "She doesn't like her new job.",
+        "She is worried about her new job."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very happy about' שקול ל-'extremely pleased with'. שני הביטויים מבטאים שמחה רבה לגבי העבודה החדשה.",
+      "difficulty": "easy",
+      "id": "rst_prem_153",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students completed their assignments fast.",
+        "The students started their homework slowly.",
+        "The homework was too difficult for the students.",
+        "The students forgot to do their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_154",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She walks to school every morning.'",
+      "options": [
+        "She drives to school each morning.",
+        "She goes to school on foot every morning.",
+        "She runs to school every evening.",
+        "She takes the bus to school daily."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'walks' שקול ל-'goes on foot' ו-'every morning' שקול ל-'each morning'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_155",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שניהם מבטאים שהתלמידים סיימו את המטלות לפני הארוחה.",
+      "difficulty": "easy",
+      "id": "rst_prem_156",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה לחלוטין.",
+      "difficulty": "easy",
+      "id": "rst_prem_157",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives at work on time.'",
+      "options": [
+        "She is never late for work.",
+        "She sometimes comes to work early.",
+        "She often arrives at work late.",
+        "She rarely goes to work on time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives on time' שקול ל-'never late'. שני הביטויים מתארים אדם שמגיע תמיד בזמן.",
+      "difficulty": "easy",
+      "id": "rst_prem_158",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_159",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished' שקול ל-'completed' ו-'before dinner' שקול ל-'prior to eating dinner'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_160",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick travel.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' זהה ל-'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_161",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'every day' ו-'each day' מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_162",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She usually arrives early to meetings.",
+        "She sometimes misses meetings entirely.",
+        "She prefers to leave meetings early."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחור קבוע.",
+      "difficulty": "easy",
+      "id": "rst_prem_163",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students will finish their homework after dinner.",
+        "The students forgot to do their homework before dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'completed their assignments prior to eating dinner' זהה במשמעות ל'finished their homework before dinner'. שניהם מתארים סיום המטלות לפני הארוחה.",
+      "difficulty": "easy",
+      "id": "rst_prem_164",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is open until ten o'clock.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_165",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_166",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_167",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing for her."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' זהה ל-'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_168",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_169",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students did their homework in a short time.",
+        "The students forgot to do their homework.",
+        "The students started their homework late.",
+        "The students found their homework difficult."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'finished quickly' שקול ל-'did in a short time'. שני הביטויים מתארים השלמה מהירה של המשימה.",
+      "difficulty": "easy",
+      "id": "rst_prem_170",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. המשמעות זהה למשפט המקורי.",
+      "difficulty": "easy",
+      "id": "rst_prem_171",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The library closes at 6 PM every day.'",
+      "options": [
+        "The library opens at 6 PM daily.",
+        "The library shuts down at 6 PM each day.",
+        "The library stays open until 6 PM on weekends.",
+        "The library is closed before 6 PM every day."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'shuts down' פירושו 'נסגר' ו-'each day' שקול ל-'every day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_172",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very happy about her test results.'",
+      "options": [
+        "She was disappointed with her test results.",
+        "Her test results made her extremely pleased.",
+        "She failed her test badly.",
+        "She was worried about her test results."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very happy about' שקול ל-'extremely pleased'. שני הביטויים מתארים שמחה גדולה מהתוצאות.",
+      "difficulty": "easy",
+      "id": "rst_prem_173",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to class.'",
+      "options": [
+        "She never comes to class on time.",
+        "She always comes to class early.",
+        "She sometimes arrives late to class.",
+        "She never goes to class."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים את אותה התנהגות של איחורים קבועים.",
+      "difficulty": "easy",
+      "id": "rst_prem_174",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The student forgot to bring his homework to class.'",
+      "options": [
+        "The student remembered to bring his homework to class.",
+        "The student left his homework at home by mistake.",
+        "The student finished his homework in class.",
+        "The student gave his homework to the teacher."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'forgot to bring' שקול ל-'left at home by mistake'. שניהם מתארים שהתלמיד לא הביא את שיעורי הבית בטעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_175",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' שקול ל-'finished' ו-'prior to' שקול ל-'before'. שני המשפטים מבטאים את אותו הרעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_176",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The book is very interesting and I can't put it down.'",
+      "options": [
+        "The book is boring so I stopped reading it.",
+        "I find the book so fascinating that I keep reading it.",
+        "The book is heavy and I need help carrying it.",
+        "I don't like the book because it's too long."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very interesting' שקול ל-'fascinating' ו-'can't put it down' אומר שממשיכים לקרוא.",
+      "difficulty": "easy",
+      "id": "rst_prem_177",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students forgot to do their homework before dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'finished' שקול ל-'completed' ו-'before dinner' שקול ל-'prior to eating dinner'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_178",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She is very happy about her new job.'",
+      "options": [
+        "She is sad about her new job.",
+        "She is extremely pleased with her new job.",
+        "She doesn't like her new job.",
+        "She is worried about her new job."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very happy about' שקול ל-'extremely pleased with'. שני הביטויים מבטאים שמחה רבה לגבי העבודה החדשה.",
+      "difficulty": "easy",
+      "id": "rst_prem_179",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock.'",
+      "options": [
+        "The store opens at six o'clock.",
+        "The store shuts down at 6 PM.",
+        "The store is open until seven.",
+        "The store never closes at six."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'six o'clock' זהה ל-'6 PM'.",
+      "difficulty": "easy",
+      "id": "rst_prem_180",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is closed all day.",
+        "The store never closes at nine."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' ו-'shuts down' הם מילים נרדפות, ו-'nine o'clock' זהה ל-'9 PM' בהקשר של סגירת חנות.",
+      "difficulty": "easy",
+      "id": "rst_prem_181",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She wasn't tired from the quick journey.",
+        "The journey was short and relaxing."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted' ו-'after the long journey' זהה ל-'the long journey made her'.",
+      "difficulty": "easy",
+      "id": "rst_prem_182",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long day at work.'",
+      "options": [
+        "She felt energetic after her short workday.",
+        "She was exhausted following her lengthy day at the office.",
+        "She wasn't tired despite working all day.",
+        "She had a relaxing day at work."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'exhausted' זהה ל-'very tired' ו-'lengthy day at the office' זהה ל-'long day at work'.",
+      "difficulty": "easy",
+      "id": "rst_prem_183",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to work.'",
+      "options": [
+        "She never comes to work on time.",
+        "She usually gets to work early.",
+        "She sometimes arrives late to work.",
+        "She never goes to work."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שניהם מבטאים שהיא תמיד מאחרת.",
+      "difficulty": "easy",
+      "id": "rst_prem_184",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at nine o'clock.'",
+      "options": [
+        "The store opens at nine o'clock.",
+        "The store shuts down at 9 PM.",
+        "The store is closed all day.",
+        "The store never closes."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes at nine' זהה ל-'shuts down at 9 PM'. שני הביטויים מתארים את אותה פעולה באותו זמן.",
+      "difficulty": "easy",
+      "id": "rst_prem_185",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always comes to meetings early.",
+        "She sometimes arrives late to meetings.",
+        "She refuses to attend meetings."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' זהה במשמעות ל-'never comes on time'. שני הביטויים מתארים אדם שתמיד מאחר.",
+      "difficulty": "easy",
+      "id": "rst_prem_186",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The movie was so boring that I fell asleep.'",
+      "options": [
+        "The movie was exciting and kept me awake.",
+        "I stayed awake because the movie was interesting.",
+        "The movie was dull enough to make me sleep.",
+        "I enjoyed the movie and watched it completely."
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא משפט 3 כי 'so boring that I fell asleep' שקול ל-'dull enough to make me sleep'. שני הביטויים מתארים סרט משעמם שגרם לישון.",
+      "difficulty": "easy",
+      "id": "rst_prem_187",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework after dinner.",
+        "The students ate dinner before doing homework.",
+        "The students never finished their homework."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to' זהה ל-'before'.",
+      "difficulty": "easy",
+      "id": "rst_prem_188",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_189",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students ate dinner before doing their homework.",
+        "The students completed their assignments prior to eating dinner.",
+        "The students started their homework during dinner.",
+        "The students forgot to do their homework before dinner."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'finished' שקול ל-'completed' ו-'before dinner' שקול ל-'prior to eating dinner'. שני המשפטים מבטאים את אותו רעיון.",
+      "difficulty": "easy",
+      "id": "rst_prem_190",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותה משמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_191",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives at work on time.'",
+      "options": [
+        "She is never late for work.",
+        "She sometimes comes to work early.",
+        "She often arrives at work late.",
+        "She rarely goes to work on time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives on time' שקול ל-'never late'. שני הביטויים מתארים דיוק בהגעה לעבודה.",
+      "difficulty": "easy",
+      "id": "rst_prem_192",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives at work on time.'",
+      "options": [
+        "She is never late for work.",
+        "She sometimes comes to work early.",
+        "She often arrives at work late.",
+        "She rarely goes to work on time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives on time' שקול ל-'never late'. שני הביטויים מתארים אדם שמגיע בזמן תמיד.",
+      "difficulty": "easy",
+      "id": "rst_prem_193",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework quickly.'",
+      "options": [
+        "The students started their homework slowly.",
+        "The students completed their assignments fast.",
+        "The students forgot to do their homework.",
+        "The students are still working on their homework."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'finished' שקול ל-'completed' ו-'quickly' שקול ל-'fast'. שני המשפטים מבטאים את אותה המשמעות.",
+      "difficulty": "easy",
+      "id": "rst_prem_194",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives at work on time.'",
+      "options": [
+        "She is never late for work.",
+        "She sometimes comes to work early.",
+        "She often arrives at work late.",
+        "She rarely goes to work on time."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives on time' זהה במשמעות ל-'never late'. שני הביטויים מתארים אדם שתמיד מגיע בזמן.",
+      "difficulty": "easy",
+      "id": "rst_prem_195",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at 9 PM every day.'",
+      "options": [
+        "The store opens at 9 PM daily.",
+        "The store shuts down at 9 PM each day.",
+        "The store is open until 9 AM every day.",
+        "The store never closes at 9 PM."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שני המשפטים מבטאים את אותו הדבר.",
+      "difficulty": "easy",
+      "id": "rst_prem_196",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She was very tired after the long journey.'",
+      "options": [
+        "She felt energetic after the short trip.",
+        "The long journey made her extremely exhausted.",
+        "She was well-rested before the journey.",
+        "The journey was too short to make her tired."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'very tired' שקול ל-'extremely exhausted'. שני הביטויים מתארים עייפות רבה אחרי מסע ארוך.",
+      "difficulty": "easy",
+      "id": "rst_prem_197",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The students finished their homework before dinner.'",
+      "options": [
+        "The students completed their assignments prior to the evening meal.",
+        "The students started their homework after eating dinner.",
+        "The students forgot to do their homework before dinner.",
+        "The students will finish their homework during dinner."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'completed' זהה ל-'finished', 'assignments' זהה ל-'homework', ו-'prior to the evening meal' זהה ל-'before dinner'.",
+      "difficulty": "easy",
+      "id": "rst_prem_198",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'She always arrives late to meetings.'",
+      "options": [
+        "She never comes to meetings on time.",
+        "She always arrives early to meetings.",
+        "She sometimes arrives late to meetings.",
+        "She never attends meetings at all."
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא משפט 1 כי 'always arrives late' שקול ל-'never comes on time'. שני הביטויים מתארים אדם שתמיד מאחר.",
+      "difficulty": "easy",
+      "id": "rst_prem_199",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "restatement",
+      "text": "Original: 'The store closes at six o'clock every day.'",
+      "options": [
+        "The store opens at six o'clock daily.",
+        "The store shuts down at 6 PM each day.",
+        "The store is open until seven every day.",
+        "The store closes early on weekdays."
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא משפט 2 כי 'closes' שקול ל-'shuts down' ו-'every day' שקול ל-'each day'. שניהם מבטאים את אותו זמן סגירה.",
+      "difficulty": "easy",
+      "id": "rst_prem_200",
+      "tags": [
+        "grammar",
+        "basic",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "easy",
+        "hasExamples": false,
+        "hasGrammarRules": false,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,4370 @@
+{
+  "metadata": {
+    "generated": "2025-07-31T21:00:24.147Z",
+    "type": "sentence-completion",
+    "difficulty": "medium",
+    "count": 167,
+    "topic": "Intermediate Grammar",
+    "tags": [
+      "grammar",
+      "vocabulary",
+      "premium",
+      "enhanced"
+    ],
+    "model": "claude-sonnet-4-20250514",
+    "is_premium": true,
+    "batch_id": "batch_1753993739792_fj9yhc23w",
+    "version": "enhanced_hybrid_v1",
+    "contentStats": {
+      "totalQuestions": 167,
+      "withExamples": 0,
+      "withGrammarRules": 167,
+      "withCommonMistakes": 0,
+      "averageExplanationLength": 290.251497005988
+    }
+  },
+  "questions": [
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth over the past three years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הפועל 'experience' כאן משמש כפועל רגיל ולא כשם עצם. דוגמה נוספת: 'We have been working on this project for months' - אנחנו עובדים על הפרויקט הזה כבר חודשים.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_702",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף (that clause) מופיע בצורת הבסיס שלו ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_703",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_704",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company ______ significant growth over the past five years, expanding into three new markets.",
+      "options": [
+        "experienced",
+        "has experienced",
+        "will experience",
+        "was experiencing"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'has experienced'. זמן Present Perfect משמש כאשר מדברים על פעולה שהתחילה בעבר והשפעתה נמשכת עד היום. הביטוי 'over the past five years' מציין תקופת זמן שמתחילה בעבר ונמשכת עד עכשיו. דוגמה נוספת: She has lived here for ten years (היא גרה כאן עשר שנים - החלה בעבר ועדיין גרה כאן).",
+      "grammarRule": "Present Perfect: have/has + Past Participle for actions with present relevance",
+      "difficulty": "medium",
+      "id": "sc_prem_705",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety regulations immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive) באנגלית. במקרה זה, הפועל מופיע בצורת הבסיס ללא שינוי, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_706",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_707",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth over the past five years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "experiences"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has + been + V-ing. הביטוי 'over the past five years' מעיד על תקופה שמתחילה בעבר וממשיכה עד היום. דוגמה נוספת: We have been working on this project for three months.",
+      "grammarRule": "Present Perfect Continuous: have/has + been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_708",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו insist, demand, suggest, recommend משתמשים ב-subjunctive mood, כלומר צורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive mood after verbs like insist, demand, suggest: Subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_709",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. כלל זה חשוב במיוחד בכתיבה פורמלית ובעסקית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_710",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety protocols before starting work.",
+      "options": [
+        "learns",
+        "learned",
+        "learn",
+        "learning"
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא 'learn'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא הוספות. זה נקרא 'That-clause with subjunctive'. המבנה: Subject + insist/demand/require + that + subject + base form of verb. דוגמה נוספת: The doctor recommended that she take vitamins daily.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_711",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follows",
+        "follow",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, גם אם הנושא הוא יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_712",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, שבו הפועל מופיע בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_713",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_714",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety regulations immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive), שבו הפועל מופיע בצורת הבסיס ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take this medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_715",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה משתמשים בצורת הבסיס של הפועל ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. חשוב לזכור שלא מוסיפים 's' לפועל גם כשהנושא הוא 'he/she/it'.",
+      "grammarRule": "Subjunctive after verbs like insist/demand/require: Subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_716",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining steadily, ______ the management decided to restructure the organization.",
+      "options": [
+        "therefore",
+        "however",
+        "although",
+        "unless"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'therefore'. המילה מציינת תוצאה או מסקנה הנובעת מהמשפט הקודם. ירידת הרווחים גרמה להחלטה על רה-ארגון. 'However' מציין ניגוד, 'although' מציין ויתור, ו-'unless' מציין תנאי שלילי. דוגמה: It was raining heavily, therefore we stayed inside.",
+      "grammarRule": "Logical connectors: therefore shows cause and effect relationship",
+      "difficulty": "medium",
+      "id": "sc_prem_717",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית המשנה נשאר בצורת הבסיס ללא הוספת 's' גם בגוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב המבטא דרישה או המלצה חזקה.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_718",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף מופיע בצורת הבסיס שלו (infinitive ללא to) ללא קשר לגוף או לזמן. דוגמה נוספת: The doctor recommended that he rest for a week.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_719",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בגוף שלישי יחיד לא מקבל 's'. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_720",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו או השפיעה על ההווה. המילה 'steadily' מחזקת את הרעיון של תהליך מתמשך. דוגמה נוספת: The temperature has been rising all day.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_721",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive), שבו הפועל מופיע בצורת הבסיס ללא הוספות, גם עם גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take this medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/suggest + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_722",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth in the Asian market over the past three years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המציין פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הביטוי 'over the past three years' מעיד על תקופה ממושכת. דוגמה נוספת: They have been working on this project for six months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_723",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company announced that it ______ a new branch office in Tokyo next year.",
+      "options": [
+        "will open",
+        "would open",
+        "opens",
+        "had opened"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'would open'. כאשר הפועל הראשי במשפט הוא בזמן עבר (announced), הפועל במשפט הכפוף חייב להיות בזמן עבר גם כן - זה נקרא 'רצף זמנים' (Sequence of Tenses). במקום 'will' אנו משתמשים ב-'would' כדי לשמור על הרצף הזמני. דוגמה נוספת: She said she would call me later.",
+      "grammarRule": "Reported Speech: Past tense in main clause requires past form in subordinate clause",
+      "difficulty": "medium",
+      "id": "sc_prem_724",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new management took over last year.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת עם Present Perfect כדי לציין נקודת זמן ספציפית בעבר שממנה התחילה פעולה הנמשכת עד היום. 'Since' מתייחסת לנקודת זמן מסוימת, בעוד ש-'for' מתייחסת לתקופת זמן. דוגמה: I have lived here since 2020 (נקודת זמן) לעומת I have lived here for three years (תקופת זמן).",
+      "grammarRule": "Present Perfect + since + specific point in time",
+      "difficulty": "medium",
+      "id": "sc_prem_725",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. זה נקרא 'Mandative Subjunctive'. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_726",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הפועל 'suffer' מתאים כאן כי החברה ממשיכה לחוות הפסדים. דוגמה נוספת: They have been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_727",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית המשנה נשאר בצורת הבסיס (base form) ללא תלות בגוף או זמן. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_728",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר הפועל מופיע בצורת הבסיס ללא שינויים, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_729",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time. שימו לב שלא אומרים 'arrives' למרות שמדובר בגוף שלישי יחיד.",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_730",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, שבו הפעל מופיע בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take medicine daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_731",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety protocols immediately.",
+      "options": [
+        "follows",
+        "follow",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא תלות בגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: subject + base form verb",
+      "difficulty": "medium",
+      "id": "sc_prem_732",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף התלוי נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_733",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth in overseas markets since last year.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "experiences"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המציין פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: has/have been + V-ing. המילה 'since' מעידה על נקודת זמן מסוימת בעבר שממנה הפעולה נמשכת. דוגמה נוספת: They have been working on this project since January.",
+      "grammarRule": "Present Perfect Continuous: has/have been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_734",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_735",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new competitor entered the market.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת לציון נקודת זמן ספציפית בעבר שממנה החל מצב מתמשך עד היום. כאן, הירידה ברווחים החלה מהרגע שהמתחרה החדש נכנס לשוק והמשיכה עד עכשיו. דוגמה נוספת: I haven't seen him since Monday. לעומת זאת, 'for' מציינת משך זמן (for two years), 'during' מתייחסת לתקופה שבה משהו קרה, ו-'while' מציינת פעולות בו-זמניות.",
+      "grammarRule": "Since + specific point in time (present perfect context)",
+      "difficulty": "medium",
+      "id": "sc_prem_736",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. במשפט זה משתמשים ב-Present Perfect Continuous (have been + V-ing) כדי לתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. המילה 'steadily' מחזקת את הרעיון של תהליך מתמשך. דוגמה נוספת: The temperature has been rising gradually all morning. זמן זה מדגיש את ההמשכיות של הפעולה.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_737",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth over the past five years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "experiences"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד היום. המבנה: have/has been + V-ing. הביטוי 'over the past five years' מצביע על תקופה שמתחילה בעבר וממשיכה עד עכשיו. דוגמה נוספת: They have been working on this project for three months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_738",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_739",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'ונקטיב (subjunctive) באנגלית. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב המופיע לעתים קרובות בבחינות.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_740",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה משתמשים בצורת הבסיס של הפועל (Base Form) ללא הוספת 's' גם בגוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_741",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהתחילה בעבר וממשיכה בהווה, עם דגש על המשכיות והקשר להווה. דוגמה נוספת: She has been working here for five years. המילה 'been' מעידה על כך שאנו זקוקים לצורת ה-ing.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_742",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take this medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_743",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take this medication twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_744",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_745",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_746",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף ה-'that' נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take medicine daily. שימו לב שלא אומרים 'takes' אלא 'take'.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/etc. + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_747",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new competitor entered the market.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת לציון נקודת זמן ספציפית בעבר שממנה החל מצב מתמשך עד היום. כאן, כניסת המתחרה החדש לשוק היא הנקודה הזמנית שממנה החלה ירידת הרווחים. דוגמה נוספת: I haven't seen him since Monday. לעומת זאת, 'for' מציינת משך זמן (for two hours), 'during' מתייחסת לתקופה שבה משהו קורה, ו-'while' מציינת זמניות.",
+      "grammarRule": "Since vs For: Since + point in time, For + duration",
+      "difficulty": "medium",
+      "id": "sc_prem_748",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב המבטא דרישה או המלצה חזקה.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_749",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + object + base form verb",
+      "difficulty": "medium",
+      "id": "sc_prem_750",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה משתמשים בצורת הבסיס של הפועל (base form) ללא שינוי, גם עם גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medication twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: subject + base form verb",
+      "difficulty": "medium",
+      "id": "sc_prem_751",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ their reports by Friday.",
+      "options": [
+        "submit",
+        "submitted",
+        "will submit",
+        "have submitted"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'submit'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו (infinitive ללא to) ללא קשר לגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_752",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, ללא קשר לגוף או למספר. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_753",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף מופיע בצורת הבסיס שלו (infinitive ללא 'to'), ללא קשר לגוף או זמן. דוגמה נוספת: The teacher demanded that he arrive on time. הכלל חל על כל הגופים - גם בגוף שלישי יחיד לא מוסיפים 's'.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_754",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא תלות בגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_755",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זמן Present Perfect Continuous מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הפועל 'suffer' במקרה זה מתאר מצב מתמשך של הפסדים. דוגמה נוספת: They have been working on this project for months. הזמן מדגיש את ההמשכיות והקשר לזמן הנוכחי.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_756",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'suggest' משתמשים ב-Subjunctive Mood, כלומר צורת הבסיס של הפועל ללא שינוי, ללא קשר לגוף. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/suggest + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_757",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף מופיע בצורת הבסיס שלו (base form) ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_758",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בהווה פשוט (base form) ללא שינוי, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_759",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית התלויה נשאר בצורת הבסיס ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_760",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take this medication daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_761",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה משתמשים בצורת הבסיס של הפועל ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב בכתיבה פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_762",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take this medicine twice a day. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_763",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'suggest' משתמשים ב-subjunctive mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, suggest: Subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_764",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth since implementing the new marketing strategy.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. המילה 'since' מעידה על נקודת התחלה בזמן ומחזקת את השימוש בזמן זה. דוגמה נוספת: They have been working on this project since January.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_765",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_766",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new management took over last year.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת עם Present Perfect כדי לציין נקודת זמן ספציפית בעבר שממנה פעולה נמשכת עד היום. 'Since' מתייחסת לנקודת זמן מדויקת, בעוד ש-'for' מתייחסת לתקופת זמן. דוגמה נוספת: I have lived here since 2020. המבנה מדגיש רצף זמן מנקודה מסוימת עד להווה.",
+      "grammarRule": "Present Perfect + since (point in time) vs for (duration)",
+      "difficulty": "medium",
+      "id": "sc_prem_767",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-subjunctive mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_768",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "achieving",
+        "gaining",
+        "earning"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. הפועל 'suffer' משמש עם מילים שליליות כמו losses, damage, pain. זמן Present Perfect Continuous (has been + V-ing) מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. דוגמה נוספת: The patient has been suffering from headaches for weeks. שאר האפשרויות אינן הגיוניות עם המילה 'losses'.",
+      "grammarRule": "Present Perfect Continuous: has/have been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_769",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive) באנגלית. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: that + subject + base form verb",
+      "difficulty": "medium",
+      "id": "sc_prem_770",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו, או שיש לה השפעה על ההווה. כאן החברה סובלת מהפסדים במשך תקופה מסוימת והמצב נמשך. דוגמה נוספת: I have been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_771",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood במשפט המשני. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take this medicine twice a day. שימו לב שלא אומרים 'takes' אלא 'take'.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_772",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood במשפט המשני. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take this medicine twice a day. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist, demand, require, suggest + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_773",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager suggested that we ______ the meeting until next week.",
+      "options": [
+        "postpone",
+        "postponed",
+        "will postpone",
+        "are postponing"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'postpone'. לאחר הפועל 'suggest' במשפט עקיף, משתמשים ב-Subjunctive Mood - הצורה הבסיסית של הפועל ללא 'to' או שינויים. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. שימו לב שלא אומרים 'takes' למרות שהנושא הוא גוף שלישי יחיד.",
+      "grammarRule": "Subjunctive after 'suggest': suggest + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_774",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-subjunctive mood, כלומר הפועל בצורת הבסיס ללא שינוי, גם כשהנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_775",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו, עם דגש על ההמשכיות. במקרה זה, החברה החלה לסבול הפסדים בעבר וממשיכה לסבול מהם כעת. דוגמה נוספת: They have been working on this project for months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_776",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית המשנה נשאר בצורת הבסיס (base form) ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_777",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining steadily, ______ the management decided to implement cost-cutting measures.",
+      "options": [
+        "therefore",
+        "however",
+        "although",
+        "unless"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'therefore'. המילה מציינת תוצאה או מסקנה לוגית מהמשפט הקודם. כאשר הרווחים יורדים, התוצאה הטבעית היא צעדי חיסכון. 'However' מציין ניגוד, 'although' מציין וויתור, ו-'unless' מציין תנאי שלילי. דוגמה נוספת: It was raining heavily; therefore, we stayed inside.",
+      "grammarRule": "Logical connectors: therefore (result), however (contrast), although (concession), unless (negative condition)",
+      "difficulty": "medium",
+      "id": "sc_prem_778",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three years.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. המשפט משתמש בזמן Present Perfect Continuous (have been + V-ing) כדי לתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. הפועל 'decline' הופך ל-'declining' בצורת ה-participle. דוגמה נוספת: The temperature has been rising all day. המבנה מדגיש המשכיות של הפעולה לאורך זמן.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_779",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety training program.",
+      "options": [
+        "attends",
+        "attend",
+        "attended",
+        "will attend"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'attend'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. דוגמה נוספת: The doctor recommended that he take vitamins daily. כלל זה חל גם על ביטויים כמו 'it is important that' או 'it is essential that'.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_780",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם עם גוף שלישי יחיד. זה נקרא Present Subjunctive. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist/demand: Subject + insist + that + someone + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_781",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new competitor entered the market.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת עם Present Perfect כדי לציין נקודת זמן מסוימת בעבר שממנה החלה פעולה שנמשכת עד היום. 'Since' מתייחסת לנקודת זמן ספציפית, בעוד ש-'for' מתייחסת לתקופת זמן. דוגמה נוספת: I have lived here since 2020.",
+      "grammarRule": "Present Perfect + since + specific point in time",
+      "difficulty": "medium",
+      "id": "sc_prem_782",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth in overseas markets over the past two years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "experiences"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הביטוי 'over the past two years' מעיד על רצף זמן המתחיל בעבר וממשיך עד היום. דוגמה נוספת: We have been working on this project for three months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_783",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_784",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף נשאר בצורת הבסיס ללא קשר לגוף או זמן. דוגמה נוספת: The teacher demanded that he arrive on time. זהו כלל דקדוקי חשוב באנגלית פורמלית ובכתיבה אקדמית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_785",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בגוף שלישי יחיד לא מקבל 's'. המבנה: Subject + insist/demand/require + that + subject + base form of verb. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: insist + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_786",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובג'נקטיב (Subjunctive), שבו הפועל מופיע בצורת הבסיס ללא הוספות, גם בגוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take this medicine twice daily. זהו כלל חשוב בדקדוק פורמלי באנגלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_787",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף נשאר בצורת הבסיס ללא הוספת 's' לגוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/requirement: subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_788",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been expanding rapidly, ______ it still maintains its commitment to quality.",
+      "options": [
+        "because",
+        "yet",
+        "so",
+        "since"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'yet'. המילה 'yet' משמשת כחיבור ניגודי (adversative conjunction) המחברת בין שני חלקי משפט הנמצאים בניגוד זה לזה. החברה מתרחבת במהירות, אך בכל זאת שומרת על איכות. מילות החיבור האחרות לא מתאימות: 'because' ו-'since' מבטאות סיבה, ו-'so' מבטאת תוצאה. דוגמה נוספת: He is very young, yet he is extremely talented.",
+      "grammarRule": "Adversative conjunctions: yet, but, however express contrast",
+      "difficulty": "medium",
+      "id": "sc_prem_789",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/etc. + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_790",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. זה נקרא 'Present Subjunctive'. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. שימו לב שלא אומרים 'takes' אלא 'take'.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_791",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. המשפט משתמש בזמן Present Perfect Continuous (have been + V-ing) המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. הפועל 'decline' (לרדת, להידרדר) מופיע כ-Present Participle. דוגמה נוספת: Sales have been increasing rapidly this year. המבנה מדגיש את ההמשכיות של התהליך.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_792",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_793",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס שלו ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that she take the medicine daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + noun + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_794",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company ______ a new policy regarding remote work next month.",
+      "options": [
+        "implements",
+        "will implement",
+        "implemented",
+        "has implemented"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'will implement'. המילה 'next month' מציינת זמן עתידי, ולכן נדרש זמן עתיד פשוט (Simple Future). המבנה: will + פועל בצורת הבסיס. זמן עתיד פשוט משמש לתיאור פעולות שיקרו בעתיד או החלטות שנתקבלו מראש. דוגמה נוספת: They will announce the results tomorrow.",
+      "grammarRule": "Simple Future: will + base verb for future actions",
+      "difficulty": "medium",
+      "id": "sc_prem_795",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'suggest', 'recommend' משתמשים ב-subjunctive mood, כלומר בצורת הבסיס של הפועל ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, suggest: subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_796",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זמן Present Perfect Continuous מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. המילה 'been' מעידה על הצורך בצורת ה-ing. דוגמה נוספת: They have been working on this project for months. הפעולה (הפסדים) החלה בעבר וממשיכה להשפיע על החברה כעת.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_797",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new regulations were implemented.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת לציון נקודת זמן ספציפית בעבר שממנה החל מצב מתמשך עד היום. כאן, הרווחים יורדים מאז שהתקנות החדשות יושמו. דוגמה נוספת: I haven't seen him since Monday. לעומת זאת, 'for' משמשת למשך זמן (for two hours), 'during' לתקופה מוגדרת, ו-'while' לפעולות בו-זמניות.",
+      "grammarRule": "Since vs For: Since + specific time point, For + duration",
+      "difficulty": "medium",
+      "id": "sc_prem_798",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. המשפט משתמש בזמן Present Perfect Continuous (have been + V-ing) כדי לתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. המילה 'steadily' מחזקת את הרעיון של תהליך מתמשך. דוגמה נוספת: The weather has been improving gradually this week. הזמן הזה מדגיש את ההמשכיות של הפעולה.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_799",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. דוגמה נוספת: The doctor recommended that he take medicine daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_800",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הפועל 'suffer' במקרה זה מתאר מצב מתמשך של הפסדים כלכליים. דוגמה נוספת: She has been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_801",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר צורת הבסיס של הפועל ללא שינוי, גם עם גוף שלישי יחיד. זה נקרא 'Present Subjunctive' ומבטא דרישה או הצעה חזקה. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_802",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בסעיף הכפוף נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/etc. + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_803",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'suggest', 'recommend' משתמשים ב-Subjunctive Mood במשפט המשני. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/suggest + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_804",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_805",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית המשנה נשאר בצורת הבסיס (base form) ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל חשוב בכתיבה פורמלית ובמבחנים.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_806",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive) באנגלית. במקרה זה משתמשים בצורת הבסיס של הפועל (base form) ללא שינוי, גם עם גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_807",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_808",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters.",
+      "options": [
+        "declining",
+        "declined",
+        "decline",
+        "to decline"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'declining'. המשפט משתמש בזמן Present Perfect Continuous (have been + V-ing) כדי לתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. המילה 'steadily' מחזקת את הרעיון של תהליך מתמשך. דוגמה נוספת: The weather has been improving gradually this week. הפועל צריך להיות בצורת -ing אחרי 'have been'.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_809",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocol immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, שבו הפעל מופיע בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_810",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new management took over last year.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת עם זמן Present Perfect כדי לציין נקודת זמן ספציפית בעבר שממנה החלה פעולה או מצב והם נמשכים עד עכשיו. 'For' משמש עם תקופת זמן, 'during' עם אירועים, ו-'while' עם פעולות מקבילות. דוגמה: I have lived here since 2020.",
+      "grammarRule": "Present Perfect + since + specific point in time",
+      "difficulty": "medium",
+      "id": "sc_prem_811",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-subjunctive mood באנגלית. המבנה: subject + insist + that + subject + base form של הפועל (ללא 's' בגוף שלישי יחיד). דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב המבטא דרישה או המלצה חזקה.",
+      "grammarRule": "Subjunctive mood after verbs of demand/suggestion: insist that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_812",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth in international markets over the past two years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המציין פעולה שהתחילה בעבר וממשיכה עד היום. המבנה: have/has been + V-ing. הביטוי 'over the past two years' מצביע על תקופת זמן המתחילה בעבר וממשיכה עד עכשיו. דוגמה נוספת: They have been working on this project for six months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_813",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא שינוי לכל הגופים. זה נקרא Present Subjunctive ומשמש להבעת דרישה או הצעה. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Present Subjunctive: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_814",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety procedures before starting work.",
+      "options": [
+        "learns",
+        "learned",
+        "learn",
+        "learning"
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא 'learn'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-subjunctive mood, כלומר הפועל בצורת הבסיס שלו ללא הוספות, גם עבור גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive mood after verbs like insist, demand, require: Subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_815",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-has/have been + V-ing. הזמן מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו, עם דגש על המשכיותה. המילה 'been' מעידה על כך שצריך פועל ב-ing. דוגמה נוספת: They have been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_816",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בגוף שלישי יחיד לא מקבל 's'. המבנה: Subject + insist + that + subject + base form of verb. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_817",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety regulations immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בחלק השני של המשפט נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that he take his medicine daily. שימו לב שהפועל 'take' נשאר בצורת הבסיס למרות שהנושא הוא 'he'.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_818",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה משתמשים בצורת הבסיס של הפועל (base form) ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The teacher demanded that he arrive on time. שימו לב שלא אומרים 'arrives' למרות שמדובר בגוף שלישי.",
+      "grammarRule": "Subjunctive: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_819",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth over the past three years.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. הביטוי 'over the past three years' מעיד על תקופת זמן שמתחילה בעבר וממשיכה לעכשיו. דוגמה נוספת: They have been working on this project for months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_820",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant growth in sales over the past quarter.",
+      "options": [
+        "experiencing",
+        "experienced",
+        "experience",
+        "to experience"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'experiencing'. זהו זמן Present Perfect Continuous המתאר פעולה שהחלה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. המילה 'over the past quarter' מעידה על תקופה שהחלה בעבר וממשיכה. דוגמה נוספת: They have been working on this project for months.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_821",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסאבג'נקטיב (Subjunctive) באנגלית. במקרה זה, הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם אם הנושא הוא יחיד. דוגמה נוספת: The doctor recommended that he take his medicine daily. זהו כלל דקדוקי חשוב המבטא דרישה או המלצה חזקה.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_822",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בגוף שלישי יחיד לא מקבל 's' והוא נשאר בצורת הבסיס. דוגמה נוספת: The doctor recommended that he take medicine daily. זהו כלל דקדוקי חשוב המופיע לעתים קרובות במבחנים.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_823",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם עם גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/etc. + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_824",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בפסוקית המשנה נשאר בצורת הבסיס (base form) ללא קשר לגוף או זמן. דוגמה נוספת: The teacher demanded that every student submit his homework on time. כלל זה חל על פעלים המבטאים דרישה, הצעה או חשיבות.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_825",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-subjunctive mood באנגלית, כלומר בצורת הבסיס של הפועל ללא שינוי, ללא קשר לגוף או זמן. זה נקרא 'mandative subjunctive'. דוגמה נוספת: The doctor recommended that he take medicine daily.",
+      "grammarRule": "Subjunctive mood after verbs like insist, demand, require: that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_826",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant changes to improve productivity over the past year.",
+      "options": [
+        "making",
+        "doing",
+        "taking",
+        "having"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'making'. הביטוי הנכון הוא 'make changes' (לבצע שינויים). זהו צירוף קבוע באנגלית שבו הפועל 'make' משמש עם המילה 'changes'. זמן Present Perfect Continuous מדגיש פעולה שהחלה בעבר וממשיכה עד עכשיו. דוגמה נוספת: We have been making improvements to our website for months.",
+      "grammarRule": "Present Perfect Continuous + collocation 'make changes'",
+      "difficulty": "medium",
+      "id": "sc_prem_827",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new regulations were implemented last year.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת לציון נקודת זמן ספציפית בעבר שממנה החל מצב מתמשך עד היום. כאן, הרווחים יורדים מאז שהתקנות החדשות יושמו. 'For' משמש למשך זמן, 'during' לתקופה מוגדרת, ו-'while' לפעולות בו-זמניות. דוגמה: I haven't seen him since Monday.",
+      "grammarRule": "Since + specific point in time (past moment when something started)",
+      "difficulty": "medium",
+      "id": "sc_prem_828",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס (base form) ללא שינוי, גם עם גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs of demand/suggestion, use base form",
+      "difficulty": "medium",
+      "id": "sc_prem_829",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new management took over last year.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. כאשר אנו מתייחסים לנקודת זמן ספציפית בעבר (last year) שממנה החל תהליך מתמשך עד היום, משתמשים ב-'since'. 'Since' מציינת נקודת התחלה בזמן, בעוד ש-'for' מציינת משך זמן, ו-'during'/'while' מתייחסות לתקופה מוגבלת. דוגמה נוספת: I have lived here since 2020.",
+      "grammarRule": "Since + specific point in time, For + duration",
+      "difficulty": "medium",
+      "id": "sc_prem_830",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining steadily, ______ the management decided to implement cost-cutting measures.",
+      "options": [
+        "therefore",
+        "however",
+        "although",
+        "unless"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'therefore'. המילה מציינת תוצאה או מסקנה הנובעת מהמשפט הקודם. הרווחים יורדים, ולכן ההנהלה החליטה על צעדי חיסכון. זהו קשר לוגי של סיבה ותוצאה. דוגמה נוספת: It was raining heavily, therefore we cancelled the picnic. מילות הקישור האחרות לא מתאימות למשמעות הרצויה במשפט זה.",
+      "grammarRule": "Conjunctive adverbs: therefore shows cause and effect relationship",
+      "difficulty": "medium",
+      "id": "sc_prem_831",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company ______ a new policy regarding remote work next month.",
+      "options": [
+        "implements",
+        "will implement",
+        "implemented",
+        "has implemented"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'will implement'. המילה 'next month' מציינת זמן עתיד, ולכן נדרש זמן עתיד פשוט (Future Simple). המבנה: will + פועל בצורת הבסיס. אנחנו משתמשים ב-will כאשר מתכננים או מחליטים על פעולה עתידית. דוגמה נוספת: They will announce the results next week.",
+      "grammarRule": "Future Simple: will + base verb for future plans and decisions",
+      "difficulty": "medium",
+      "id": "sc_prem_832",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "achieving",
+        "gaining",
+        "earning"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. הפועל 'suffer' משמש עם מילים שליליות כמו losses, damage, pain. זמן Present Perfect Continuous (has been + V-ing) מתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו. שלוש האפשרויות האחרות חיוביות ולא מתאימות למילה 'losses'. דוגמה: The patient has been suffering from headaches for weeks.",
+      "grammarRule": "Present Perfect Continuous + collocations with 'suffer'",
+      "difficulty": "medium",
+      "id": "sc_prem_833",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that she take this medicine twice a day. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_834",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "achieving",
+        "celebrating",
+        "ignoring"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. הפועל 'suffer' משמש עם מילים שליליות כמו 'losses' (הפסדים). הביטוי 'suffer losses' הוא קולוקיישן מקובל באנגלית עסקית. זמן Present Perfect Continuous מדגיש תהליך מתמשך. דוגמה נוספת: The team has been suffering from poor communication.",
+      "grammarRule": "Present Perfect Continuous + Collocations with 'suffer'",
+      "difficulty": "medium",
+      "id": "sc_prem_835",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהתחילה בעבר וממשיכה עד עכשיו, עם דגש על המשכיות. המילה 'has been' מעידה על הצורך בצורת ה-ing. דוגמה נוספת: She has been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_836",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה, הפועל מופיע בצורת הבסיס ללא שינוי, גם אם הנושא הוא יחיד. דוגמה נוספת: The doctor recommended that he take the medication twice daily. זהו כלל דקדוק חשוב המבטא דרישה או המלצה.",
+      "grammarRule": "Subjunctive mood: verb + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_837",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to poor management decisions over the past year.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו, עם דגש על המשכיות. המילים 'over the past year' מעידות על תקופה שהחלה בעבר וממשיכה. דוגמה נוספת: I have been working here for five years.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_838",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The committee decided to ______ the meeting until next week due to the unexpected circumstances.",
+      "options": [
+        "delay",
+        "postpone",
+        "cancel",
+        "advance"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'postpone'. המילה postpone משמעותה לדחות אירוע לזמן מאוחר יותר, והיא המתאימה ביותר כאשר מדובר בדחיית פגישה רשמית לתאריך חדש. המילה delay מתייחסת יותר לעיכוב כללי, cancel פירושה ביטול מוחלט, ו-advance פירושה להקדים. דוגמה: The conference was postponed to allow more participants to attend.",
+      "grammarRule": "Verb choice based on context and precise meaning",
+      "difficulty": "medium",
+      "id": "sc_prem_839",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety regulations immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובז'נקטיב (Subjunctive) באנגלית. במקרה זה, הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_840",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זמן Present Perfect Continuous מציין פעולה שהתחילה בעבר וממשיכה עד עכשיו. המבנה: have/has been + V-ing. המילה 'been' מעידה על כך שאנחנו זקוקים לצורת ה-ing. דוגמה נוספת: They have been working on this project for months. הפעולה (הפסדים) מתרחשת באופן מתמשך מאז ההאטה הכלכלית.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_841",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר בצורת הבסיס של הפועל ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: verb + that + subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_842",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל בצורת הבסיס ללא שינוי, ללא קשר לגוף. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he be quiet (ולא 'is quiet').",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_843",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company ______ a new policy regarding remote work next month.",
+      "options": [
+        "implements",
+        "will implement",
+        "has implemented",
+        "was implementing"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'will implement'. המילה 'next month' מציינת זמן עתיד, ולכן נדרש זמן עתיד פשוט (Future Simple). המבנה: will + פועל בצורת הבסיס. זמן זה משמש לתיאור פעולות שיתרחשו בעתיד. דוגמה נוספת: They will announce the results next week. שימוש ב-'implements' (הווה) או 'has implemented' (הווה מושלם) לא מתאים כי הפעולה טרם התרחשה.",
+      "grammarRule": "Future Simple: will + base verb for future actions",
+      "difficulty": "medium",
+      "id": "sc_prem_844",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר בצורת הבסיס של הפועל ללא שינוי, ללא קשר לגוף או למספר. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_845",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The research team ______ significant progress in developing a new treatment for the disease over the past year.",
+      "options": [
+        "has made",
+        "have made",
+        "made",
+        "is making"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'has made'. הנושא 'The research team' הוא שם עצם קיבוצי (collective noun) שמתייחסים אליו כיחידה אחת, לכן משתמשים בפועל ביחיד. בנוסף, הביטוי 'over the past year' מצביע על זמן Present Perfect. דוגמה נוספת: The committee has decided to postpone the meeting.",
+      "grammarRule": "Collective nouns + Present Perfect: Subject + has/have + Past Participle",
+      "difficulty": "medium",
+      "id": "sc_prem_846",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא קשר לגוף או זמן. המבנה: Subject + insist + that + subject + base form of verb. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_847",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "following",
+        "to follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: verb remains in base form",
+      "difficulty": "medium",
+      "id": "sc_prem_848",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he be quiet (ולא 'is quiet').",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_849",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been declining ______ the new regulations were implemented.",
+      "options": [
+        "since",
+        "for",
+        "during",
+        "while"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'since'. המילה 'since' משמשת לציון נקודת זמן ספציפית בעבר שממנה החל מצב מתמשך עד היום. כאן, הרווחים יורדים מאז שהתקנות החדשות יושמו. דוגמה נוספת: I haven't seen him since Monday. לעומת זאת, 'for' מציינת משך זמן, 'during' מתייחסת לתקופה שבה התרחש משהו, ו-'while' מציינת זמניות.",
+      "grammarRule": "Since vs For: Since + specific time point, For + duration",
+      "difficulty": "medium",
+      "id": "sc_prem_850",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that she take the medicine twice a day. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_851",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה משתמשים בצורת הבסיס של הפועל (base form) ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_852",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety procedures immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים של דרישה כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בחלק השני של המשפט נשאר בצורת הבסיס ללא הוספת 's' גם בגוף שלישי יחיד. דוגמה נוספת: The teacher demanded that he arrive on time. כלל זה חל על פעלי דרישה והצעה באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand: insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_853",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "suffered",
+        "suffer",
+        "suffers"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. זהו זמן Present Perfect Continuous המורכב מ-have/has been + V-ing. הזמן מתאר פעולה שהחלה בעבר וממשיכה עד עכשיו, או שיש לה השפעה על ההווה. במקרה זה, החברה סובלת מהפסדים באופן מתמשך. דוגמה נוספת: They have been working on this project for months. הזמן מדגיש את המשכיות הפעולה והקשר שלها להווה.",
+      "grammarRule": "Present Perfect Continuous: have/has been + V-ing",
+      "difficulty": "medium",
+      "id": "sc_prem_854",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety protocols before starting work.",
+      "options": [
+        "learns",
+        "learned",
+        "learn",
+        "will learn"
+      ],
+      "correctAnswer": 2,
+      "explanation": "התשובה הנכונה היא 'learn'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take medicine daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/suggest + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_855",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company's profits have been ______ steadily over the past three quarters due to increased competition.",
+      "options": [
+        "raising",
+        "rising",
+        "arose",
+        "risen"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'rising'. הפועל 'rise' (לעלות) הוא פועל בלתי-מעבר ואינו דורש מושא ישיר. במשפט זה אנו זקוקים לצורת Present Participle כחלק מזמן Present Perfect Continuous. 'Raising' הוא פועל מעבר הדורש מושא, 'arose' הוא Past Simple, ו-'risen' הוא Past Participle. דוגמה נוספת: The sun is rising in the east.",
+      "grammarRule": "Rise (intransitive) vs Raise (transitive): Present Perfect Continuous with intransitive verbs",
+      "difficulty": "medium",
+      "id": "sc_prem_856",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The company has been ______ significant losses due to the economic downturn.",
+      "options": [
+        "suffering",
+        "achieving",
+        "celebrating",
+        "avoiding"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'suffering'. הפועל 'suffer' משמש עם מילים שמתארות דברים שליליים כמו הפסדים, כאב או קשיים. זמן Present Perfect Continuous מדגיש פעולה שהתחילה בעבר וממשיכה עד עכשיו. דוגמה נוספת: The patient has been suffering from headaches for weeks. המילים האחרות לא מתאימות בהקשר של הפסדים כלכליים.",
+      "grammarRule": "Present Perfect Continuous + appropriate verb collocations",
+      "difficulty": "medium",
+      "id": "sc_prem_857",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במבנה הסובג'נקטיב (Subjunctive), שבו הפועל מופיע בצורת הבסיס ללא שינוי, ללא קשר לגוף הדקדוקי. דוגמה נוספת: The doctor recommended that she take vitamins daily. זהו כלל חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_858",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה, הפועל מופיע בצורת הבסיס שלו ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that he take his medicine daily. זהו כלל דקדוקי חשוב המופיע לעיתים קרובות בבחינות.",
+      "grammarRule": "Subjunctive after verbs of demand/insistence: subject + base form of verb",
+      "difficulty": "medium",
+      "id": "sc_prem_859",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "By the time we arrive at the theater, the play ______ already.",
+      "options": [
+        "will start",
+        "will have started",
+        "starts",
+        "is starting"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'will have started'. זהו זמן Future Perfect המשמש לתיאור פעולה שתושלם לפני נקודת זמן מסוימת בעתיד. הביטוי 'by the time' מעיד על כך שהמחזה יתחיל ויסתיים לפני שנגיע לתיאטרון. המבנה: will have + Past Participle. דוגמה נוספת: By next year, I will have graduated from university.",
+      "grammarRule": "Future Perfect: will have + Past Participle",
+      "difficulty": "medium",
+      "id": "sc_prem_860",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that every student submit his homework on time.",
+      "grammarRule": "Subjunctive after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_861",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא הוספות, ללא קשר לגוף או זמן. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The doctor recommended that he take the medicine twice daily.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_862",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that every employee ______ the new safety procedures immediately.",
+      "options": [
+        "follows",
+        "follow",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 1,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל בחלק השני של המשפט נשאר בצורת הבסיס (base form) ללא שינוי, ללא קשר לגוף או זמן. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_863",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood, כלומר הפועל מופיע בצורת הבסיס שלו ללא שינוי, גם אם הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive after verbs of demand/suggestion: subject + base form verb",
+      "difficulty": "medium",
+      "id": "sc_prem_864",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety regulations immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים במשפט משני עם 'that' ופועל בצורת הבסיס (subjunctive). זה נקרא Present Subjunctive. הפועל אינו משתנה לפי הגוף - תמיד בצורת הבסיס. דוגמה נוספת: The doctor recommended that she take the medicine twice daily.",
+      "grammarRule": "Present Subjunctive: verb + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_865",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים במבנה הסובז'נקטיב (subjunctive) באנגלית. במקרה זה משתמשים בצורת הבסיס של הפועל ללא הוספות, גם כאשר הנושא הוא גוף שלישי יחיד. דוגמה נוספת: The teacher demanded that he arrive on time. שימו לב שלא מוסיפים 's' לפועל גם עם 'he/she/it'.",
+      "grammarRule": "Subjunctive after verbs of demand: Subject + insist/demand/require + that + subject + base verb",
+      "difficulty": "medium",
+      "id": "sc_prem_866",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "will follow"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require' משתמשים ב-subjunctive mood, כלומר צורת הבסיס של הפועל ללא שינוי, גם בגוף שלישי יחיד. זהו כלל דקדוקי חשוב באנגלית פורמלית. דוגמה נוספת: The teacher demanded that he arrive on time.",
+      "grammarRule": "Subjunctive mood after verbs like insist, demand, require: Subject + insist + that + subject + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_867",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    },
+    {
+      "type": "sentence-completion",
+      "text": "The manager insisted that all employees ______ the new safety protocols immediately.",
+      "options": [
+        "follow",
+        "follows",
+        "followed",
+        "following"
+      ],
+      "correctAnswer": 0,
+      "explanation": "התשובה הנכונה היא 'follow'. לאחר פעלים כמו 'insist', 'demand', 'require', 'suggest' משתמשים ב-Subjunctive Mood. במקרה זה, הפועל נשאר בצורת הבסיס ללא שינוי, ללא קשר לגוף או למספר. דוגמה נוספת: The doctor recommended that she take the medicine twice daily. זהו כלל דקדוקי חשוב באנגלית פורמלית.",
+      "grammarRule": "Subjunctive Mood: After verbs like insist/demand/require + that + base form",
+      "difficulty": "medium",
+      "id": "sc_prem_868",
+      "tags": [
+        "grammar",
+        "intermediate",
+        "premium"
+      ],
+      "enhancedFeatures": {
+        "explanationLevel": "medium",
+        "hasExamples": true,
+        "hasGrammarRules": true,
+        "hasCommonMistakes": false
+      }
+    }
+  ]
+}

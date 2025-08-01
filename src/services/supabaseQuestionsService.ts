@@ -165,7 +165,7 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
     // Build query - NO premium filtering for admin
     let query = supabase
       .from('questions')
-      .select('*')
+      .select('*', { count: 'exact' })
 
     // Apply filters
     if (filters.type) {
@@ -189,8 +189,8 @@ export async function getQuestionsFromDBAdmin(filters: QuestionsFilters = {}): P
       }
     }
 
-    // Apply pagination
-    const limit = filters.limit || 1000
+    // Apply pagination - default to high limit for admin, but allow override
+    const limit = filters.limit || 10000  // Increased default limit for admin
     const offset = filters.offset || 0
     
     query = query
