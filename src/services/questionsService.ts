@@ -13,8 +13,8 @@ import {
 
 console.log(`[questionsService] Service loaded. Using Supabase backend.`);
 
-export const getAllQuestions = async (): Promise<Question[]> => {
-  console.log(`[getAllQuestions] Fetching all questions from database (admin mode)`);
+export const getAllQuestions = async (forceRefresh = false): Promise<Question[]> => {
+  console.log(`[getAllQuestions] Fetching all questions from database (admin mode), force refresh: ${forceRefresh}`);
   try {
     const response = await getQuestionsFromDBAdmin({}); // Use admin function to get ALL questions without limit
     console.log(`[getAllQuestions] Returning ${response.questions.length} total questions (including premium)`);
