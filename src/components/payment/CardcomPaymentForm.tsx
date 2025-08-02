@@ -79,10 +79,7 @@ const CardcomPaymentForm = ({
       sessionStorage.setItem('paymentIntent', JSON.stringify(paymentIntent));
       
       // Track unauthenticated payment attempt
-      trackButtonClick('payment_attempt_unauthenticated', 'cardcom_payment_form', {
-        plan_type: planType,
-        amount: amount
-      });
+      trackButtonClick('payment_attempt_unauthenticated', 'cardcom_payment_form');
       
       // Redirect to login with payment context
       navigate('/login', { 

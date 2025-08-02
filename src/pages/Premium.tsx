@@ -214,11 +214,7 @@ const Premium = () => {
           sessionStorage.removeItem('paymentIntent');
           
           // Track successful payment resumption
-          trackButtonClick('payment_resumed_after_login', 'premium_page', {
-            plan_type: intent.plan,
-            amount: intent.amount,
-            had_coupon: !!intent.coupon
-          });
+          trackButtonClick('payment_resumed_after_login', 'premium_page');
           
           // Show success message
           setTimeout(() => {

@@ -124,12 +124,11 @@ const Header = React.memo(() => {
             {/* About Dropdown Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+                <button 
+                  className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50 bg-transparent border-none cursor-pointer"
                 >
                   אודות
-                </Button>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent 
                 className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl rounded-xl backdrop-blur-sm w-40"
