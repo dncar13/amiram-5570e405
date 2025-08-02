@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Shield, Mail, KeyIcon, UserIcon, CheckCircle, AlertTriangle, Eye, EyeOff, Loader2, ShieldCheck } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { signIn, signUp } from "@/utils/auth-utils";
