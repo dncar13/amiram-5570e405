@@ -22,17 +22,30 @@ const WhatIsAmirant: React.FC = () => {
       {/* Stats Section */}
       <StatsSection />
       
-      {/* Benefits Section */}
-      <BenefitsSection />
-      
-      {/* Features Section */}
-      <FeaturesSection />
+      {/* Combined Benefits & Features - למה להתכונן אצלנו */}
+      <WhyPrepareWithUsSection />
       
       {/* Educational Content Sections */}
       <WhatIsAmirantSection />
       <ExamComparisonSection />
+      
+      {/* NEW: Practical Registration Info */}
+      <PracticalInfoSection />
+      
+      {/* NEW: Exemption Scores Table */}
+      <ExemptionScoresTable />
+      
+      {/* Interactive Demo */}
       <InteractiveDemoSection onStartNow={handleStartNow} />
+      
+      {/* NEW: Success Tips */}
+      <SuccessTipsSection />
+      
+      {/* College Differences */}
       <CollegeDifferencesSection />
+      
+      {/* NEW: FAQ Section */}
+      <FAQSection />
       
       {/* Why Us Section */}
       <WhyUsSection />
@@ -45,11 +58,10 @@ const WhatIsAmirant: React.FC = () => {
   );
 };
 
-// Hero Section Component
+// Hero Section Component (unchanged)
 const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
   return (
     <section className="relative bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 text-white py-20 overflow-hidden">
-      {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div 
           className="absolute inset-0 bg-repeat opacity-20 animate-grid-move"
@@ -98,7 +110,7 @@ const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
   );
 };
 
-// Stats Section Component
+// Stats Section (unchanged)
 const StatsSection: React.FC = () => {
   const stats = [
     { number: '92%', label: 'אחוזי הצלחה' },
@@ -129,23 +141,38 @@ const StatsSection: React.FC = () => {
   );
 };
 
-// Benefits Section Component
-const BenefitsSection: React.FC = () => {
+// NEW: Combined Benefits & Features Section
+const WhyPrepareWithUsSection: React.FC = () => {
   const benefits = [
     {
       icon: '⏰',
       title: 'חיסכון בזמן יקר',
-      description: 'פטור מקורסי אנגלית אומר יותר זמן להתמקד בלימודים שבאמת חשובים לכם. תוכלו להשקיע את הזמן הזה בקורסים מקצועיים או בפעילויות אחרות.'
+      description: 'פטור מקורסי אנגלית = יותר זמן להתמקד בלימודים המקצועיים'
     },
     {
       icon: '💸',
-      title: 'חיסכון כספי משמעותי',
-      description: 'קורסי אנגלית אקדמיים עולים אלפי שקלים. הצלחה במבחן אמירנט חוסכת לכם את העלות הזו ומאפשרת להשקיע את הכסף במקומות אחרים.'
+      title: 'חיסכון של אלפי שקלים',
+      description: 'קורסי אנגלית אקדמיים עולים המון - תחסכו את הכסף לדברים חשובים יותר'
     },
     {
       icon: '🎓',
-      title: 'התקדמות מהירה בתואר',
-      description: 'ללא קורסי חובה באנגלית, תוכלו להתקדם מהר יותר בתואר שלכם ולסיים את הלימודים בזמן או אפילו מוקדם יותר.'
+      title: 'סיום התואר מהר יותר',
+      description: 'בלי קורסי חובה מעכבים - תתקדמו ותסיימו בזמן'
+    },
+    {
+      icon: '🎯',
+      title: 'סימולציות מדויקות',
+      description: 'מאות שאלות מבוססות על מבחנים אמיתיים - בלי הפתעות!'
+    },
+    {
+      icon: '📊',
+      title: 'מעקב התקדמות חכם',
+      description: 'AI שמזהה חולשות ומתאים תרגילים אישית בשבילכם'
+    },
+    {
+      icon: '💡',
+      title: 'הסברים מקצועיים',
+      description: 'לא רק התשובה הנכונה - תבינו למה ואיך להצליח'
     }
   ];
 
@@ -153,20 +180,22 @@ const BenefitsSection: React.FC = () => {
     <section className="bg-gray-50 py-20">
       <div className="max-w-6xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
-            למה מבחן אמירנט כל כך חשוב?
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900">
+            למה כדאי להתכונן אצלנו?
           </h2>
+          <p className="text-xl text-center text-gray-700 mb-16 max-w-3xl mx-auto">
+            קבלו פטור מאנגלית וחסכו זמן, כסף ולחץ - עם המערכת המתקדמת ביותר בישראל
+          </p>
         </AnimatedCard>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
-            <AnimatedCard key={index} delay={index * 0.2}>
+            <AnimatedCard key={index} delay={index * 0.1}>
               <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative group overflow-hidden border border-gray-200">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
                 
-                <div className="text-5xl mb-6">{benefit.icon}</div>
-                <h3 className="text-xl font-bold mb-4 text-gray-900">{benefit.title}</h3>
+                <div className="text-4xl mb-4">{benefit.icon}</div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">{benefit.title}</h3>
                 <p className="text-gray-700 leading-relaxed">{benefit.description}</p>
               </div>
             </AnimatedCard>
@@ -177,24 +206,44 @@ const BenefitsSection: React.FC = () => {
   );
 };
 
-// Features Section Component
-const FeaturesSection: React.FC = () => {
-  const features = [
+// NEW: Practical Info Section
+const PracticalInfoSection: React.FC = () => {
+  const infoCards = [
     {
-      title: 'סימולציות מדויקות למבחן האמיתי',
-      description: 'המערכת שלנו מכילה מאות שאלות שנבנו בקפידה על בסיס מבחנים אמיתיים. תתאמנו בדיוק על מה שתפגשו במבחן, בלי הפתעות!'
+      icon: '📅',
+      title: 'מועדי הרשמה',
+      items: [
+        'הרשמה עד 2 ימי עבודה לפני המבחן',
+        'בחינות כל השנה במרכזים ברחבי הארץ',
+        'שינוי מועד אפשרי עד 48 שעות לפני'
+      ]
     },
     {
-      title: 'מערכת מעקב התקדמות חכמה',
-      description: 'אלגוריתם מתקדם מנתח את הביצועים שלכם, מזהה נקודות חולשה ומתאים לכם תרגילים ממוקדים לשיפור מהיר ויעיל.'
+      icon: '📋',
+      title: 'מה להביא למבחן',
+      items: [
+        'תעודת זהות/דרכון בתוקף (מקורי בלבד!)',
+        'אישור הרשמה מודפס מהאזור האישי',
+        'אין צורך בכלי כתיבה או מחשבון'
+      ]
     },
     {
-      title: 'הסברים מפורטים לכל שאלה',
-      description: 'לא רק תדעו מה התשובה הנכונה, אלא גם תבינו למה. כל שאלה מלווה בהסבר מקיף שיעזור לכם להבין את החומר לעומק.'
+      icon: '⏱️',
+      title: 'משך ותוקף',
+      items: [
+        'משך המבחן: כ-60 דקות',
+        'תוקף הציון: 7 שנים',
+        'תוצאות תוך 10 ימי עבודה'
+      ]
     },
     {
-      title: 'גישה מכל מכשיר, בכל זמן',
-      description: 'למדו מהמחשב, הטאבלט או הסמארטפון. המערכת שלנו זמינה 24/7, כך שתוכלו להתאמן מתי שנוח לכם.'
+      icon: '🔄',
+      title: 'בחינות חוזרות',
+      items: [
+        'אפשר להיבחן כמה פעמים שרוצים',
+        'המתנה של 35 יום בין בחינות',
+        'נחשב הציון הגבוה ביותר'
+      ]
     }
   ];
 
@@ -203,75 +252,285 @@ const FeaturesSection: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4">
         <AnimatedCard>
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
-            איך אנחנו מבטיחים את ההצלחה שלכם?
+            מידע חיוני להרשמה למבחן אמירנט
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
         
-        <div className="space-y-6 mt-16">
-          {features.map((feature, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
+          {infoCards.map((card, index) => (
             <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="flex items-center bg-gray-50 p-6 rounded-2xl hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 transition-all duration-300 hover:-translate-x-2 border border-gray-200">
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-3 text-gray-900">{feature.title}</h3>
-                  <p className="text-gray-700 leading-relaxed">{feature.description}</p>
+              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border border-blue-100">
+                <div className="flex items-center mb-6">
+                  <span className="text-4xl ml-4">{card.icon}</span>
+                  <h3 className="text-2xl font-bold text-gray-900">{card.title}</h3>
                 </div>
-                <div className="w-6 h-6 bg-green-500 rounded-full mr-6 flex-shrink-0 flex items-center justify-center">
-                  <div className="w-3 h-3 bg-white rounded-full"></div>
-                </div>
+                <ul className="space-y-3">
+                  {card.items.map((item, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                      <span className="text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </AnimatedCard>
           ))}
         </div>
+
+        <AnimatedCard delay={0.5}>
+          <div className="mt-12 bg-yellow-50 p-6 rounded-2xl border border-yellow-200 text-center">
+            <p className="text-lg text-gray-800">
+              <strong className="text-yellow-700">💡 חשוב:</strong> עלות המבחן כ-250₪ (מתעדכן מעת לעת)
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              המידע מבוסס על הנחיות מאל"ו | 
+              <a href="https://www.nite.org.il" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline mr-1">
+                nite.org.il
+              </a>
+            </p>
+          </div>
+        </AnimatedCard>
       </div>
     </section>
   );
 };
 
-// Why Us Section Component
-const WhyUsSection: React.FC = () => {
-  const reasons = [
+// NEW: Exemption Scores Table
+const ExemptionScoresTable: React.FC = () => {
+  const institutions = [
+    { name: 'אוניברסיטת תל אביב', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'האוניברסיטה העברית', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'הטכניון', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'אוניברסיטת בן גוריון', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'אוניברסיטת חיפה', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'אוניברסיטת בר אילן', full: '134+', partial: '120-133', course: 'עד 119' },
+    { name: 'המכללה למנהל', full: '100+', partial: '85-99', course: 'עד 84' },
+    { name: 'המרכז הבינתחומי', full: '100+', partial: '85-99', course: 'עד 84' },
+    { name: 'מכללת רופין', full: '100+', partial: '85-99', course: 'עד 84' },
+    { name: 'המכללה האקדמית ת"א-יפו', full: '100+', partial: '85-99', course: 'עד 84' }
+  ];
+
+  return (
+    <section className="bg-gray-50 py-20">
+      <div className="max-w-6xl mx-auto px-4">
+        <AnimatedCard>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
+            ציוני סף לפטור במוסדות שונים
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
+          </h2>
+        </AnimatedCard>
+
+        <AnimatedCard delay={0.2}>
+          <div className="overflow-x-auto rounded-2xl shadow-xl">
+            <table className="w-full bg-white">
+              <thead className="bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+                <tr>
+                  <th className="px-6 py-4 text-right font-bold">מוסד לימודים</th>
+                  <th className="px-6 py-4 text-center font-bold">פטור מלא</th>
+                  <th className="px-6 py-4 text-center font-bold">פטור חלקי</th>
+                  <th className="px-6 py-4 text-center font-bold">קורס חובה</th>
+                </tr>
+              </thead>
+              <tbody>
+                {institutions.map((inst, index) => (
+                  <tr key={index} className={`border-b border-gray-200 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-purple-50 transition-colors`}>
+                    <td className="px-6 py-4 font-medium text-gray-900">{inst.name}</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                        {inst.full}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold">
+                        {inst.partial}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span className="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full font-semibold">
+                        {inst.course}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </AnimatedCard>
+
+        <AnimatedCard delay={0.4}>
+          <p className="text-sm text-gray-600 mt-6 text-center bg-blue-50 p-4 rounded-xl border border-blue-200">
+            <strong>שימו לב:</strong> הציונים מתעדכנים מעת לעת ועשויים להשתנות בין מחלקות שונות באותו מוסד. 
+            מומלץ לבדוק את הדרישות המדויקות מול המוסד הרלוונטי.
+          </p>
+        </AnimatedCard>
+      </div>
+    </section>
+  );
+};
+
+// NEW: Success Tips Section
+const SuccessTipsSection: React.FC = () => {
+  const tipCategories = [
     {
-      icon: '🏆',
-      title: 'שיעורי הצלחה מוכחים',
-      description: '92% מהתלמידים שלנו עוברים את המבחן בהצלחה'
-    },
-    {
+      title: 'לפני המבחן',
       icon: '📚',
-      title: 'תוכן עדכני ומקיף',
-      description: 'מאגר ענק של שאלות המתעדכן באופן קבוע'
+      tips: [
+        'הגיעו 30 דקות מוקדם להירגע ולהתארגן',
+        'וודאו שישנתם טוב בלילה שלפני',
+        'אל תלמדו חומר חדש ביום המבחן',
+        'אכלו ארוחה קלה ושתו מים'
+      ]
     },
     {
-      icon: '💡',
-      title: 'טכנולוגיה מתקדמת',
-      description: 'מערכת AI שמתאימה את הלמידה אישית לכל תלמיד'
+      title: 'במהלך המבחן',
+      icon: '⏱️',
+      tips: [
+        'קראו כל שאלה לפחות פעמיים',
+        'אל תבזבזו יותר מדי זמן על שאלה אחת',
+        'השתמשו בתהליך אלימינציה',
+        'סמנו שאלות קשות וחזרו אליהן בסוף'
+      ]
     },
     {
-      icon: '🤝',
-      title: 'תמיכה מלאה',
-      description: 'צוות מומחים זמין לכל שאלה או בעיה'
+      title: 'אסטרטגיות מנצחות',
+      icon: '🎯',
+      tips: [
+        'התחילו מהשאלות הקלות לכם',
+        'שימו לב למילות מפתח בשאלה',
+        'בהבנת הנקרא - קראו קודם את השאלות',
+        'אל תשנו תשובה אלא אם אתם בטוחים'
+      ]
     }
   ];
 
   return (
-    <section className="bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 text-white py-20 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
+    <section className="bg-gradient-to-br from-green-50 to-blue-50 py-20">
+      <div className="max-w-6xl mx-auto px-4">
         <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white"
-              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-            למה דווקא אנחנו?
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
+            טיפים להצלחה במבחן
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
           </h2>
         </AnimatedCard>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-          {reasons.map((reason, index) => (
-            <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="text-center p-6 rounded-2xl bg-white/15 backdrop-blur-lg hover:bg-white/25 transition-all duration-300 hover:scale-105 border border-white/20">
-                <div className="text-4xl mb-4">{reason.icon}</div>
-                <p className="text-lg leading-relaxed text-white">
-                  <strong className="block mb-2 text-white drop-shadow-lg">{reason.title}</strong>
-                  <span className="text-sm text-white/90 drop-shadow-md">{reason.description}</span>
-                </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          {tipCategories.map((category, index) => (
+            <AnimatedCard key={index} delay={index * 0.2}>
+              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-gray-200">
+                <div className="text-center mb-6">
+                  <span className="text-5xl">{category.icon}</span>
+                  <h3 className="text-2xl font-bold mt-4 text-gray-900">{category.title}</h3>
+                </div>
+                <ul className="space-y-3">
+                  {category.tips.map((tip, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ml-3">
+                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                      </div>
+                      <span className="text-gray-700">{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimatedCard>
+          ))}
+        </div>
+
+        <AnimatedCard delay={0.6}>
+          <div className="mt-12 bg-gradient-to-r from-purple-600 to-blue-600 p-8 rounded-2xl text-white text-center">
+            <h3 className="text-2xl font-bold mb-4">💪 הטיפ החשוב ביותר</h3>
+            <p className="text-lg">
+              אל תלחצו! המבחן מותאם לרמה שלכם. 
+              עם הכנה נכונה והסימולציות שלנו - אתם תצליחו!
+            </p>
+          </div>
+        </AnimatedCard>
+      </div>
+    </section>
+  );
+};
+
+// NEW: FAQ Section
+const FAQSection: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  
+  const faqs = [
+    {
+      question: 'כמה עולה מבחן אמירנט?',
+      answer: 'עלות המבחן היא כ-250₪ (המחיר מתעדכן מעת לעת). התשלום מתבצע באתר מאל"ו בעת ההרשמה.'
+    },
+    {
+      question: 'איפה מתקיים המבחן?',
+      answer: 'המבחן מתקיים במרכזי בחינות ברחבי הארץ - תל אביב, ירושלים, חיפה, באר שבע, נתניה, אשדוד ועוד. בעת ההרשמה תוכלו לבחור את המיקום הנוח לכם.'
+    },
+    {
+      question: 'מה קורה אם נכשלתי במבחן?',
+      answer: 'אפשר להיבחן שוב! צריך להמתין 35 יום בין בחינות. אין הגבלה על מספר הפעמים שאפשר להיבחן, והציון הגבוה ביותר הוא שנחשב.'
+    },
+    {
+      question: 'האם המבחן מותאם לדיסלקטים?',
+      answer: 'כן! ניתן לקבל הארכת זמן של 25% עם אישור מתאים. יש להגיש בקשה דרך אתר מאל"ו לפחות שבועיים לפני המבחן.'
+    },
+    {
+      question: 'איך מקבלים את תוצאות המבחן?',
+      answer: 'התוצאות מתפרסמות באזור האישי באתר מאל"ו תוך 10 ימי עבודה. תקבלו הודעה במייל כשהציון יעודכן.'
+    },
+    {
+      question: 'מה ההבדל בין אמירנט לאמירם?',
+      answer: 'שני המבחנים כמעט זהים - שניהם ממוחשבים ומתאימים את רמת השאלות. ההבדל העיקרי הוא שאמירנט נערך בדרך כלל במכללות ואמירם באוניברסיטאות.'
+    },
+    {
+      question: 'כמה זמן תקף הציון?',
+      answer: 'ציון אמירנט תקף ל-7 שנים מיום הבחינה. רוב המוסדות מכבדים את הציון לאורך כל התקופה הזו.'
+    },
+    {
+      question: 'האם אפשר לבטל או לשנות מועד בחינה?',
+      answer: 'כן! ניתן לשנות מועד או מיקום עד 2 ימי עבודה לפני הבחינה ללא תשלום נוסף. ביטול עם החזר כספי אפשרי עד 14 יום לפני המבחן.'
+    }
+  ];
+
+  return (
+    <section className="bg-white py-20">
+      <div className="max-w-4xl mx-auto px-4">
+        <AnimatedCard>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-900 relative group">
+            שאלות נפוצות
+            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4 transition-all duration-300 group-hover:w-80" />
+          </h2>
+        </AnimatedCard>
+
+        <div className="space-y-4 mt-16">
+          {faqs.map((faq, index) => (
+            <AnimatedCard key={index} delay={index * 0.05}>
+              <div className="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200">
+                <button
+                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  className="w-full px-8 py-6 text-right flex justify-between items-center hover:bg-gray-100 transition-colors"
+                >
+                  <span className="font-semibold text-lg text-gray-900">{faq.question}</span>
+                  <motion.span
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-purple-600 text-2xl"
+                  >
+                    ⌄
+                  </motion.span>
+                </button>
+                
+                <motion.div
+                  initial={false}
+                  animate={{ 
+                    height: openIndex === index ? 'auto' : 0,
+                    opacity: openIndex === index ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  style={{ overflow: 'hidden' }}
+                >
+                  <div className="px-8 pb-6">
+                    <p className="text-gray-700 leading-relaxed">{faq.answer}</p>
+                  </div>
+                </motion.div>
               </div>
             </AnimatedCard>
           ))}
@@ -281,82 +540,7 @@ const WhyUsSection: React.FC = () => {
   );
 };
 
-// Final CTA Section Component
-const FinalCTASection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
-  return (
-    <section className="bg-gray-50 py-24 text-center">
-      <div className="max-w-4xl mx-auto px-4">
-        <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
-            הזמן שלכם יקר - <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold">אל תבזבזו אותו!</span>
-          </h2>
-        </AnimatedCard>
-        
-        <AnimatedCard delay={0.2}>
-          <p className="text-xl text-gray-700 mb-10 leading-relaxed">
-            הצטרפו לאלפי הסטודנטים שכבר קיבלו פטור מאנגלית והתקדמו בלימודים
-          </p>
-        </AnimatedCard>
-        
-        <AnimatedCard delay={0.4}>
-          <motion.button
-            whileHover={{ scale: 1.05, y: -3 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onStartNow}
-            className="inline-block bg-gradient-to-r from-pink-600 to-red-600 text-white font-bold px-12 py-4 rounded-full text-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group border-2 border-white/20"
-          >
-            <span className="relative z-10 drop-shadow-lg">התחילו עכשיו!</span>
-            <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </motion.button>
-        </AnimatedCard>
-      </div>
-    </section>
-  );
-};
-
-// Reusable Animated Card Component
-const AnimatedCard: React.FC<{ 
-  children: React.ReactNode; 
-  delay?: number;
-  className?: string;
-}> = ({ children, delay = 0, className = '' }) => {
-  const controls = useAnimation();
-  const [ref, inView] = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
-
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible');
-    }
-  }, [controls, inView]);
-
-  return (
-    <motion.div
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      variants={{
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: {
-            duration: 0.8,
-            delay,
-            ease: [0.25, 0.46, 0.45, 0.94]
-          }
-        },
-        hidden: { opacity: 0, y: 30 }
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-// What is Amirant Section
+// What is Amirant Section (unchanged)
 const WhatIsAmirantSection: React.FC = () => {
   return (
     <section className="bg-white py-20">
@@ -385,7 +569,7 @@ const WhatIsAmirantSection: React.FC = () => {
   );
 };
 
-// Exam Comparison Section
+// Exam Comparison Section - UPDATED
 const ExamComparisonSection: React.FC = () => {
   const exams = [
     {
@@ -393,22 +577,44 @@ const ExamComparisonSection: React.FC = () => {
       format: 'מבחן מודפס (נייר ועיפרון)',
       questions: 'כ-70 שאלות',
       duration: 'כ-75 דקות',
-      color: 'from-red-500 to-red-600'
+      questionTypes: 'השלמת משפטים, ניסוח מחדש, קריאה',
+      location: 'מרכזי מאל"ו',
+      frequency: 'מספר פעמים בשנה',
+      special: 'מבחן סטטי (ללא התאמה)',
+      exemptionScore: 'ציון 134+',
+      tip: 'תכננו זמן – אין חזרה לשאלות',
+      color: 'from-red-500 to-red-600',
+      icon: '📝'
     },
     {
       name: 'מבחן אמירם',
       format: 'מבחן ממוחשב',
-      questions: 'משתנה (מותאם אישית)',
+      questions: 'משתנה (50-80 שאלות, מותאם אישית)',
       duration: 'כ-60 דקות',
-      color: 'from-green-500 to-green-600'
+      questionTypes: 'השלמת משפטים, ניסוח מחדש, קריאה',
+      location: 'מרכזי מאל"ו / מוסדות לימוד',
+      frequency: 'לאורך כל השנה',
+      special: 'מבחן אדפטיבי (קושי משתנה)',
+      exemptionScore: 'ציון 134+',
+      tip: 'כל טעות משפיעה – קראו היטב כל שאלה',
+      color: 'from-green-500 to-green-600',
+      icon: '💻'
     },
     {
       name: 'מבחן אמירנט',
       format: 'מבחן ממוחשב',
-      questions: 'משתנה (מותאם אישית)',
+      questions: 'משתנה (50-80 שאלות, מותאם אישית)',
       duration: 'כ-60 דקות',
+      questionTypes: 'השלמת משפטים, ניסוח מחדש, קריאה',
+      experimentalSections: 'ייתכנו פרקים ניסיוניים (האזנה, דקדוק, יצירת מילה)',
+      location: 'מוסדות לימוד / מרכזי מאל"ו',
+      frequency: 'לאורך כל השנה',
+      special: 'פרקים ניסיוניים בשמיעה, דקדוק, יצירת מילה',
+      exemptionScore: 'ציון 134+',
+      tip: 'בדקו מול המוסד מהם דרישות הפטור',
       color: 'from-purple-500 to-blue-600',
-      highlight: true
+      highlight: true,
+      icon: '🎯'
     }
   ];
 
@@ -421,59 +627,180 @@ const ExamComparisonSection: React.FC = () => {
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full mt-4" />
           </h2>
         </AnimatedCard>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+
+        {/* Desktop View - Cards */}
+        <div className="hidden lg:grid grid-cols-3 gap-8 mt-16">
           {exams.map((exam, index) => (
             <AnimatedCard key={index} delay={index * 0.1}>
-              <div className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative group overflow-hidden border-2 ${exam.highlight ? 'border-purple-200' : 'border-gray-200'}`}>
+              <div className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden border-2 ${exam.highlight ? 'border-purple-200' : 'border-gray-200'}`}>
                 {exam.highlight && (
                   <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-purple-600 to-blue-600" />
                 )}
                 
-                <div className={`w-16 h-16 bg-gradient-to-r ${exam.color} rounded-full flex items-center justify-center mb-6 mx-auto`}>
-                  <span className="text-white font-bold text-xl">
-                    {exam.name.includes('אמיר') ? 'א' : exam.name.includes('אמירם') ? 'ם' : 'נט'}
-                  </span>
+                {/* Header */}
+                <div className={`bg-gradient-to-r ${exam.color} p-6 text-white text-center`}>
+                  <div className="text-4xl mb-3">{exam.icon}</div>
+                  <h3 className="text-2xl font-bold">{exam.name}</h3>
                 </div>
                 
-                <h3 className="text-xl font-bold mb-6 text-gray-900 text-center">{exam.name}</h3>
-                
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-green-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
-                    <div>
-                      <strong className="text-gray-800 block mb-1">פורמט:</strong>
-                      <span className="text-gray-700">{exam.format}</span>
-                    </div>
+                {/* Content */}
+                <div className="p-6 space-y-4">
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">פורמט:</div>
+                    <div className="font-semibold text-gray-900">{exam.format}</div>
                   </div>
                   
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-blue-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
-                    <div>
-                      <strong className="text-gray-800 block mb-1">מספר שאלות:</strong>
-                      <span className="text-gray-700">{exam.questions}</span>
-                    </div>
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">מספר שאלות:</div>
+                    <div className="font-semibold text-gray-900">{exam.questions}</div>
                   </div>
                   
-                  <div className="flex items-start">
-                    <div className="w-3 h-3 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
-                    <div>
-                      <strong className="text-gray-800 block mb-1">משך המבחן:</strong>
-                      <span className="text-gray-700">{exam.duration}</span>
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">משך המבחן:</div>
+                    <div className="font-semibold text-gray-900">{exam.duration}</div>
+                  </div>
+                  
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">סוגי שאלות:</div>
+                    <div className="font-semibold text-gray-900">{exam.questionTypes}</div>
+                    {exam.experimentalSections && (
+                      <div className="mt-2 text-sm text-orange-600 bg-orange-50 p-2 rounded">
+                        <strong>חדש!</strong> {exam.experimentalSections}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">היכן נבחנים:</div>
+                    <div className="font-semibold text-gray-900">{exam.location}</div>
+                  </div>
+                  
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">תדירות:</div>
+                    <div className="font-semibold text-gray-900">{exam.frequency}</div>
+                  </div>
+                  
+                  {exam.special && (
+                    <div className="pb-4 border-b border-gray-200">
+                      <div className="text-sm text-gray-600 mb-1">מיוחד:</div>
+                      <div className="font-semibold text-purple-700">{exam.special}</div>
                     </div>
+                  )}
+                  
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-sm text-gray-600 mb-1">פטור באנגלית:</div>
+                    <div className="font-semibold text-green-600">{exam.exemptionScore}</div>
+                  </div>
+                  
+                  <div className="bg-blue-50 p-4 rounded-xl">
+                    <div className="text-sm font-semibold text-blue-700 mb-1">💡 טיפ:</div>
+                    <div className="text-sm text-blue-800">{exam.tip}</div>
                   </div>
                 </div>
               </div>
             </AnimatedCard>
           ))}
         </div>
-        
+
+        {/* Mobile View - Accordion */}
+        <div className="lg:hidden space-y-4 mt-8">
+          {exams.map((exam, index) => (
+            <AnimatedCard key={index} delay={index * 0.1}>
+              <div className={`bg-white rounded-2xl shadow-lg overflow-hidden border-2 ${exam.highlight ? 'border-purple-200' : 'border-gray-200'}`}>
+                {exam.highlight && (
+                  <div className="h-2 bg-gradient-to-r from-purple-600 to-blue-600" />
+                )}
+                
+                <div className={`bg-gradient-to-r ${exam.color} p-4 text-white`}>
+                  <div className="flex items-center justify-center gap-3">
+                    <span className="text-3xl">{exam.icon}</span>
+                    <h3 className="text-xl font-bold">{exam.name}</h3>
+                  </div>
+                </div>
+                
+                <div className="p-4 space-y-3">
+                  {[
+                    { label: 'פורמט', value: exam.format },
+                    { label: 'מספר שאלות', value: exam.questions },
+                    { label: 'משך', value: exam.duration },
+                    { label: 'סוגי שאלות', value: exam.questionTypes },
+                    { label: 'היכן נבחנים', value: exam.location },
+                    { label: 'תדירות', value: exam.frequency },
+                    { label: 'פטור', value: exam.exemptionScore, color: 'text-green-600' }
+                  ].map((item, idx) => (
+                    <div key={idx} className="flex flex-col">
+                      <span className="text-sm text-gray-600">{item.label}:</span>
+                      <span className={`font-semibold ${item.color || 'text-gray-900'}`}>
+                        {item.value}
+                      </span>
+                    </div>
+                  ))}
+                  
+                  {exam.experimentalSections && (
+                    <div className="bg-orange-50 p-3 rounded-lg">
+                      <strong className="text-orange-700">חדש!</strong>
+                      <p className="text-sm text-orange-800 mt-1">{exam.experimentalSections}</p>
+                    </div>
+                  )}
+                  
+                  <div className="bg-blue-50 p-3 rounded-lg mt-4">
+                    <strong className="text-blue-700">💡 טיפ:</strong>
+                    <p className="text-sm text-blue-800 mt-1">{exam.tip}</p>
+                  </div>
+                </div>
+              </div>
+            </AnimatedCard>
+          ))}
+        </div>
+
+        {/* Summary Box */}
         <AnimatedCard delay={0.4}>
-          <div className="mt-12 bg-blue-50 p-8 rounded-2xl border border-blue-200">
-            <p className="text-lg text-gray-800 leading-relaxed text-center">
-              <strong className="text-blue-700">חשוב לדעת:</strong> אמירם ואמירנט דומים מאוד - שניהם ממוחשבים ומתאימים את רמת השאלות בהתאם לתשובות שלכם. 
-              ההבדל העיקרי הוא שאמירנט נערך במכללות ספציפיות ואמירם בדרך כלל באוניברסיטאות.
-            </p>
+          <div className="mt-16 bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl border border-purple-200">
+            <h3 className="text-2xl font-bold text-center mb-6 text-gray-900">סיכום מהיר</h3>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-bold text-purple-700 mb-3">🎯 הדמיון בין המבחנים:</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700">כולם בודקים את אותן המיומנויות באנגלית</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700">ציון 134+ מקנה פטור מלא בכל המבחנים</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700">סוגי השאלות הבסיסיים זהים</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div>
+                <h4 className="font-bold text-blue-700 mb-3">🔄 ההבדלים העיקריים:</h4>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700"><strong>אמיר:</strong> מודפס, ללא התאמה אישית</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700"><strong>אמירם/אמירנט:</strong> ממוחשבים ומותאמים אישית</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 ml-3 flex-shrink-0"></div>
+                    <span className="text-gray-700"><strong>אמירנט:</strong> עשוי לכלול פרקים ניסיוניים חדשים</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div className="mt-6 text-center bg-white p-4 rounded-xl">
+              <p className="text-lg font-semibold text-gray-900">
+                🎓 המלצה: בדקו עם המוסד שלכם איזה מבחן הם דורשים ומהם ציוני הסף הספציפיים
+              </p>
+            </div>
           </div>
         </AnimatedCard>
       </div>
@@ -481,7 +808,7 @@ const ExamComparisonSection: React.FC = () => {
   );
 };
 
-// College Differences Section
+// College Differences Section (unchanged)
 const CollegeDifferencesSection: React.FC = () => {
   return (
     <section className="bg-gradient-to-br from-purple-50 to-blue-50 py-20">
@@ -516,38 +843,13 @@ const CollegeDifferencesSection: React.FC = () => {
               </div>
             </div>
           </AnimatedCard>
-          
-          <AnimatedCard delay={0.4}>
-            <div className="bg-gradient-to-r from-green-500 to-teal-600 p-8 rounded-2xl text-white text-center">
-              <h3 className="text-2xl font-bold mb-4">למה כדאי לכם להתכונן אצלנו?</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                <div className="flex items-center space-x-3 space-x-reverse">
-                  <div className="w-3 h-3 bg-white rounded-full flex-shrink-0"></div>
-                  <span className="text-lg">סימולציות מדויקות של המבחן האמיתי</span>
-                </div>
-                <div className="flex items-center space-x-3 space-x-reverse">
-                  <div className="w-3 h-3 bg-white rounded-full flex-shrink-0"></div>
-                  <span className="text-lg">מעקב אישי אחרי התקדמותכם</span>
-                </div>
-                <div className="flex items-center space-x-3 space-x-reverse">
-                  <div className="w-3 h-3 bg-white rounded-full flex-shrink-0"></div>
-                  <span className="text-lg">הסברים מפורטים על כל שאלה</span>
-                </div>
-                <div className="flex items-center space-x-3 space-x-reverse">
-                  <div className="w-3 h-3 bg-white rounded-full flex-shrink-0"></div>
-                  <span className="text-lg">גישה מכל מקום ובכל זמן</span>
-                </div>
-              </div>
-            </div>
-          </AnimatedCard>
         </div>
       </div>
     </section>
   );
 };
 
-// Interactive Demo Section
+// Interactive Demo Section (unchanged)
 const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
   return (
     <section className="bg-white py-16 sm:py-20">
@@ -663,7 +965,146 @@ const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartN
   );
 };
 
-// Question Card Component
+// Why Us Section (unchanged)
+const WhyUsSection: React.FC = () => {
+  const reasons = [
+    {
+      icon: '🏆',
+      title: 'שיעורי הצלחה מוכחים',
+      description: '92% מהתלמידים שלנו עוברים את המבחן בהצלחה'
+    },
+    {
+      icon: '📚',
+      title: 'תוכן עדכני ומקיף',
+      description: 'מאגר ענק של שאלות המתעדכן באופן קבוע'
+    },
+    {
+      icon: '💡',
+      title: 'טכנולוגיה מתקדמת',
+      description: 'מערכת AI שמתאימה את הלמידה אישית לכל תלמיד'
+    },
+    {
+      icon: '🤝',
+      title: 'תמיכה מלאה',
+      description: 'צוות מומחים זמין לכל שאלה או בעיה'
+    }
+  ];
+
+  return (
+    <section className="bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 text-white py-20 relative overflow-hidden">
+      <div className="max-w-6xl mx-auto px-4 relative z-10">
+        <AnimatedCard>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white"
+              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+            למה דווקא אנחנו?
+          </h2>
+        </AnimatedCard>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
+          {reasons.map((reason, index) => (
+            <AnimatedCard key={index} delay={index * 0.1}>
+              <div className="text-center p-6 rounded-2xl bg-white/15 backdrop-blur-lg hover:bg-white/25 transition-all duration-300 hover:scale-105 border border-white/20">
+                <div className="text-4xl mb-4">{reason.icon}</div>
+                <p className="text-lg leading-relaxed text-white">
+                  <strong className="block mb-2 text-white drop-shadow-lg">{reason.title}</strong>
+                  <span className="text-sm text-white/90 drop-shadow-md">{reason.description}</span>
+                </p>
+              </div>
+            </AnimatedCard>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// Final CTA Section (unchanged)
+const FinalCTASection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
+  return (
+    <section className="bg-gray-50 py-24 text-center">
+      <div className="max-w-4xl mx-auto px-4">
+        <AnimatedCard>
+          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
+            הזמן שלכם יקר - <span className="bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent font-bold">אל תבזבזו אותו!</span>
+          </h2>
+        </AnimatedCard>
+        
+        <AnimatedCard delay={0.2}>
+          <p className="text-xl text-gray-700 mb-10 leading-relaxed">
+            הצטרפו לאלפי הסטודנטים שכבר קיבלו פטור מאנגלית והתקדמו בלימודים
+          </p>
+        </AnimatedCard>
+        
+        <AnimatedCard delay={0.4}>
+          <motion.button
+            whileHover={{ scale: 1.05, y: -3 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onStartNow}
+            className="inline-block bg-gradient-to-r from-pink-600 to-red-600 text-white font-bold px-12 py-4 rounded-full text-xl shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group border-2 border-white/20"
+          >
+            <span className="relative z-10 drop-shadow-lg">התחילו עכשיו!</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </motion.button>
+        </AnimatedCard>
+
+        <AnimatedCard delay={0.6}>
+          <div className="mt-16 p-6 bg-gray-900 text-white rounded-2xl">
+            <p className="text-sm">
+              המידע על הרשמה ונהלים מבוסס על הנחיות המרכז הארצי לבחינות והערכה (מאל"ו) | 
+              <a href="https://www.nite.org.il" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline mr-2">
+                nite.org.il
+              </a>
+            </p>
+          </div>
+        </AnimatedCard>
+      </div>
+    </section>
+  );
+};
+
+// Reusable Animated Card Component (unchanged)
+const AnimatedCard: React.FC<{ 
+  children: React.ReactNode; 
+  delay?: number;
+  className?: string;
+}> = ({ children, delay = 0, className = '' }) => {
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
+    }
+  }, [controls, inView]);
+
+  return (
+    <motion.div
+      ref={ref}
+      animate={controls}
+      initial="hidden"
+      variants={{
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.8,
+            delay,
+            ease: [0.25, 0.46, 0.45, 0.94]
+          }
+        },
+        hidden: { opacity: 0, y: 30 }
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+// Question Card Component (unchanged)
 interface Option {
   letter: string;
   text: string;
@@ -730,21 +1171,16 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       
       if (option.letter === selectedOption) {
         if (option.isCorrect) {
-          // תשובה נכונה - ירוק עם הבהוב
           classes += " bg-green-100 border-green-500 animate-pulse shadow-lg";
         } else {
-          // תשובה שגויה - אדום עם הבהוב
           classes += " bg-red-100 border-red-500 animate-pulse shadow-lg";
         }
       } else if (option.isCorrect && selectedOption && !options.find(o => o.letter === selectedOption)?.isCorrect) {
-        // התשובה הנכונה כשבחרו תשובה שגויה
         classes += " bg-green-100 border-green-500 shadow-md";
       } else {
-        // שאר התשובות - אפור
         classes += " bg-gray-100 border-gray-300";
       }
     } else {
-      // לפני בחירה
       classes += " bg-gray-50 border-gray-200 hover:bg-gray-100";
     }
     
