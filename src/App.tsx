@@ -44,6 +44,29 @@ import SimulationResults from "./pages/SimulationResults";
 import WhatIsAmirant from "./pages/WhatIsAmirant";
 import Terms from "./pages/Terms";
 import AccessibilityStatement from "./pages/AccessibilityStatement";
+import Articles from "./pages/Articles";
+import ArticleTemplate from "./pages/ArticleTemplate";
+import PresentSimple from "./pages/PresentSimple";
+import PastSimple from "./pages/PastSimple";
+import Future from "./pages/Future";
+import PresentProgressive from "./pages/PresentProgressive";
+import ArticlesAAnThe from "./pages/ArticlesAAnThe";
+import QuestionForms from "./pages/QuestionForms";
+import Negatives from "./pages/Negatives";
+import PresentPerfect from "./pages/PresentPerfect";
+import PastPerfect from "./pages/PastPerfect";
+import PassiveVoice from "./pages/PassiveVoice";
+import RelativeClauses from "./pages/RelativeClauses";
+import ModalVerbs from "./pages/ModalVerbs";
+import ComparativesSuperlatives from "./pages/ComparativesSuperlatives";
+import Prepositions from "./pages/Prepositions";
+import AdjectivesAdverbs from "./pages/AdjectivesAdverbs";
+import CountableUncountable from "./pages/CountableUncountable";
+import SubjectVerbAgreement from "./pages/SubjectVerbAgreement";
+import WordOrder from "./pages/WordOrder";
+import Conditionals from "./pages/Conditionals";
+import GerundsInfinitives from "./pages/GerundsInfinitives";
+import ReportedSpeech from "./pages/ReportedSpeech";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
@@ -160,6 +183,29 @@ const AnimatedRoutes = () => {
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
+          <Route path="/articles" element={<Articles />} />
+          <Route path="/articles/present-simple" element={<PresentSimple />} />
+          <Route path="/articles/past-simple" element={<PastSimple />} />
+          <Route path="/articles/future" element={<Future />} />
+          <Route path="/articles/present-progressive" element={<PresentProgressive />} />
+          <Route path="/articles/articles" element={<ArticlesAAnThe />} />
+          <Route path="/articles/question-forms" element={<QuestionForms />} />
+          <Route path="/articles/negatives" element={<Negatives />} />
+          <Route path="/articles/present-perfect" element={<PresentPerfect />} />
+          <Route path="/articles/past-perfect" element={<PastPerfect />} />
+          <Route path="/articles/passive-voice" element={<PassiveVoice />} />
+          <Route path="/articles/relative-clauses" element={<RelativeClauses />} />
+          <Route path="/articles/modal-verbs" element={<ModalVerbs />} />
+          <Route path="/articles/comparatives-superlatives" element={<ComparativesSuperlatives />} />
+          <Route path="/articles/prepositions" element={<Prepositions />} />
+          <Route path="/articles/adjectives-adverbs" element={<AdjectivesAdverbs />} />
+          <Route path="/articles/countable-uncountable" element={<CountableUncountable />} />
+          <Route path="/articles/subject-verb-agreement" element={<SubjectVerbAgreement />} />
+          <Route path="/articles/word-order" element={<WordOrder />} />
+          <Route path="/articles/conditionals" element={<Conditionals />} />
+          <Route path="/articles/gerunds-infinitives" element={<GerundsInfinitives />} />
+          <Route path="/articles/reported-speech" element={<ReportedSpeech />} />
+          <Route path="/articles/:articleId" element={<ArticleTemplate />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/accessibility" element={<AccessibilityStatement />} />
           <Route path="/what-is-amirant" element={<WhatIsAmirant />} />
