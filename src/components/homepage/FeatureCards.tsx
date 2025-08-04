@@ -59,7 +59,7 @@ const FeatureCards: React.FC = () => {
     {
       icon: <Shield className="w-8 h-8" />,
       title: 'מאגר שאלות ענק',
-      description: 'מעל 1000 שאלות מעודכנות מכל הקטגוריות',
+      description: 'מעל 2000 שאלות מעודכנות מכל הקטגוריות',
       gradient: 'from-cyan-500 to-blue-600',
       delay: 0.5
     },

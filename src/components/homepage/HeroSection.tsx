@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, useSpring, useInView, AnimatePresence } from "framer-motion";
 import { CheckCircle, Star, Trophy, Users, Zap, ArrowLeft, Sparkles, Brain, Target, Award, BookOpen, TrendingUp } from "lucide-react";
 
-// Custom hook for animated counter
-const useAnimatedCounter = (end: number, duration: number = 2000, delay: number = 0, suffix: string = '') => {
+// Optimized custom hook for animated counter - better performance
+const useAnimatedCounter = (end: number, duration: number = 1500, delay: number = 0, suffix: string = '') => {
   const [count, setCount] = useState(0);
   const nodeRef = useRef<HTMLDivElement>(null);
   const inView = useInView(nodeRef, { once: true });
@@ -18,23 +18,32 @@ const useAnimatedCounter = (end: number, duration: number = 2000, delay: number 
     const startTime = Date.now() + delay;
     const endValue = parseInt(end.toString());
     
-    const timer = setInterval(() => {
+    // Use requestAnimationFrame instead of setInterval for better performance
+    let animationId: number;
+    
+    const animate = () => {
       const now = Date.now();
       const elapsed = Math.max(0, now - startTime);
       const progress = Math.min(elapsed / duration, 1);
       
-      // Easing function for smooth animation
-      const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-      const currentCount = Math.floor(easeOutCubic(progress) * endValue);
+      // Simpler easing function
+      const easeOut = (t: number) => 1 - (1 - t) * (1 - t);
+      const currentCount = Math.floor(easeOut(progress) * endValue);
       
       setCount(currentCount);
       
-      if (progress === 1) {
-        clearInterval(timer);
+      if (progress < 1) {
+        animationId = requestAnimationFrame(animate);
       }
-    }, 16);
+    };
     
-    return () => clearInterval(timer);
+    animationId = requestAnimationFrame(animate);
+    
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
   }, [end, duration, delay, inView]);
 
   return { count: count + suffix, ref: nodeRef };
@@ -46,53 +55,28 @@ const HeroSection: React.FC = () => {
   const isInView = useInView(containerRef, { once: true, amount: 0.3 });
   const { scrollY } = useScroll();
   
-  // Animated counters
-  const studentsCount = useAnimatedCounter(1500, 2500, 500, '+');
-  const successRate = useAnimatedCounter(94, 2000, 700, '%');
-  const questionsCount = useAnimatedCounter(1000, 2200, 900, '+');
+  // Optimized animated counters - faster and lighter
+  const studentsCount = useAnimatedCounter(1500, 1200, 300, '+');
+  const successRate = useAnimatedCounter(94, 1000, 400, '%');
+  const questionsCount = useAnimatedCounter(2000, 1400, 500, '+');
   
-  // Enhanced parallax effects - with limited opacity fade
-  const y1 = useSpring(useTransform(scrollY, [0, 500], [0, -100]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+   // Optimized parallax effects - reduced complexity for better performance
+  const y1 = useTransform(scrollY, [0, 500], [0, -50]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -75]);
+  const y3 = useTransform(scrollY, [0, 500], [0, 50]);
   
-  const y2 = useSpring(useTransform(scrollY, [0, 500], [0, -150]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-  
-  const y3 = useSpring(useTransform(scrollY, [0, 500], [0, 100]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-    // Limited opacity fade - never goes below 0.7 (70%) on mobile, 0.3 on desktop
-  const opacity = useSpring(useTransform(scrollY, [0, 600], [1, typeof window !== 'undefined' && window.innerWidth < 768 ? 0.7 : 0.3]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  // Limited scale - never goes below 0.99 on mobile, 0.98 on desktop
-  const scale = useSpring(useTransform(scrollY, [0, 600], [1, typeof window !== 'undefined' && window.innerWidth < 768 ? 0.99 : 0.98]), {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
+  // Simplified opacity and scale for better performance
+  const opacity = useTransform(scrollY, [0, 400], [1, 0.8]);
+  const scale = useTransform(scrollY, [0, 400], [1, 0.99]);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  // 3D floating cards animation
+  // Simplified floating cards animation - fewer cards for better performance
   const floatingCards = [
     { icon: <Brain className="w-6 h-6" />, color: "from-blue-500 to-indigo-600", delay: 0 },
-    { icon: <Target className="w-6 h-6" />, color: "from-emerald-500 to-green-600", delay: 2 },
-    { icon: <Award className="w-6 h-6" />, color: "from-purple-500 to-pink-600", delay: 4 },
-    { icon: <BookOpen className="w-6 h-6" />, color: "from-orange-500 to-red-600", delay: 6 },
+    { icon: <Target className="w-6 h-6" />, color: "from-emerald-500 to-green-600", delay: 4 },
   ];
 
   return (
@@ -100,16 +84,12 @@ const HeroSection: React.FC = () => {
       {/* Advanced gradient background */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-blue-950/90 to-purple-950/80" />
-          {/* Animated mesh gradient - Mobile optimized */}
-        <svg className="absolute inset-0 w-full h-full opacity-20 md:opacity-30" preserveAspectRatio="none">
+        {/* Optimized mesh gradient for better performance */}
+        <svg className="absolute inset-0 w-full h-full opacity-15" preserveAspectRatio="none">
           <defs>
             <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#3b82f6" stopOpacity={typeof window !== 'undefined' && window.innerWidth < 768 ? "0.15" : "0.2"}>
-                <animate attributeName="stop-color" values="#3b82f6;#8b5cf6;#3b82f6" dur={typeof window !== 'undefined' && window.innerWidth < 768 ? "12s" : "10s"} repeatCount="indefinite" />
-              </stop>
-              <stop offset="100%" stopColor="#8b5cf6" stopOpacity={typeof window !== 'undefined' && window.innerWidth < 768 ? "0.15" : "0.2"}>
-                <animate attributeName="stop-color" values="#8b5cf6;#3b82f6;#8b5cf6" dur={typeof window !== 'undefined' && window.innerWidth < 768 ? "12s" : "10s"} repeatCount="indefinite" />
-              </stop>
+              <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.15" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.15" />
             </linearGradient>
           </defs>
           <rect width="100%" height="100%" fill="url(#grad1)" />
@@ -119,131 +99,100 @@ const HeroSection: React.FC = () => {
         <div className="absolute inset-0 opacity-[0.015]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E")`
         }} />
-      </div>      {/* Floating 3D cards in background - Mobile optimized */}
+      </div>      {/* Floating cards in background - Optimized for performance */}
       <div className="absolute inset-0 overflow-hidden">
         {floatingCards.map((card, index) => (
           <motion.div
             key={index}
-            className="absolute w-16 h-20 md:w-32 md:h-40"
+            className="absolute w-16 h-20 md:w-24 md:h-32"
             initial={{ 
-              x: typeof window !== 'undefined' && window.innerWidth < 768 
-                ? Math.random() * window.innerWidth * 0.8 
-                : Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 800),
+              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth * 0.8 : 600),
               y: (typeof window !== 'undefined' ? window.innerHeight : 600) + 100,
-              rotateX: 0,
-              rotateY: 0,
-              rotateZ: 0,
-              opacity: typeof window !== 'undefined' && window.innerWidth < 768 ? 0.6 : 1
+              opacity: 0.4
             }}
             animate={{
-              y: -200,
-              rotateX: typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 360,
-              rotateY: typeof window !== 'undefined' && window.innerWidth < 768 ? 180 : 360,
-              rotateZ: typeof window !== 'undefined' && window.innerWidth < 768 ? 90 : 180
+              y: -150,
+              rotateZ: 180
             }}
             transition={{
-              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
+              duration: 15,
               delay: card.delay,
               repeat: Infinity,
               ease: "linear"
             }}
             style={{ 
-              left: typeof window !== 'undefined' && window.innerWidth < 768 
-                ? `${10 + index * 15}%` 
-                : `${20 + index * 20}%`,
-              y: y3
+              left: `${20 + index * 40}%`,
+              y: y3,
+              willChange: 'transform'
             }}
           >
-            <div className={`w-full h-full bg-gradient-to-br ${card.color} rounded-xl md:rounded-2xl shadow-xl md:shadow-2xl backdrop-blur-sm bg-opacity-30 md:bg-opacity-20 flex items-center justify-center text-white/60 md:text-white/50`}>
-              <div className="scale-75 md:scale-100">
+            <div className={`w-full h-full bg-gradient-to-br ${card.color} rounded-xl shadow-lg bg-opacity-20 flex items-center justify-center text-white/40`}>
+              <div className="scale-75">
                 {card.icon}
               </div>
             </div>
           </motion.div>
         ))}
-      </div>      {/* Premium animated gradient orbs - Mobile optimized */}
-      <motion.div 
-        className="absolute top-1/4 right-1/4 w-[300px] h-[300px] md:w-[600px] md:h-[600px]"
-        style={{ y: y1 }}
-      >
-        <div className="relative w-full h-full">
+      </div>
+
+      {/* Twinkling stars background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {Array.from({ length: 20 }).map((_, index) => (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-purple-500/15 to-transparent md:from-blue-500/30 md:via-purple-500/20 rounded-full blur-2xl md:blur-3xl"
+            key={`star-${index}`}
+            className="absolute"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            initial={{ opacity: 0, scale: 0 }}
             animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
+              opacity: [0, 1, 0],
+              scale: [0, 1, 0],
             }}
             transition={{
-              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
+              duration: Math.random() * 3 + 2,
+              delay: Math.random() * 5,
               repeat: Infinity,
-              ease: "linear"
+              ease: "easeInOut"
             }}
-          />
-          <motion.div
-            className="absolute inset-5 md:inset-10 bg-gradient-to-br from-purple-600/15 via-pink-500/8 to-transparent md:from-purple-600/20 md:via-pink-500/10 rounded-full blur-xl md:blur-2xl"
-            animate={{
-              scale: [1.1, 1, 1.1],
-              rotate: [360, 180, 0],
-            }}
-            transition={{
-              duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 20 : 15,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-          />
-        </div>
-      </motion.div>
-      
+          >
+            <Star className="w-1 h-1 md:w-2 md:h-2 text-white/30 fill-current" />
+          </motion.div>
+        ))}
+      </div>      {/* Optimized gradient orbs - reduced complexity */}
       <motion.div 
-        className="absolute bottom-1/4 left-1/4 w-[250px] h-[250px] md:w-[500px] md:h-[500px]"
-        style={{ y: y2 }}
+        className="absolute top-1/4 right-1/4 w-[200px] h-[200px] md:w-[400px] md:h-[400px]"
+        style={{ y: y1, willChange: 'transform' }}
       >
         <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-orange-500/15 via-red-500/8 to-transparent md:from-orange-500/20 md:via-red-500/10 rounded-full blur-2xl md:blur-3xl"
+          className="absolute inset-0 bg-gradient-to-br from-blue-500/15 via-purple-500/10 to-transparent rounded-full blur-2xl"
           animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -180, -360],
+            scale: [1, 1.1, 1],
           }}
           transition={{
-            duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 30 : 25,
+            duration: 20,
             repeat: Infinity,
             ease: "linear"
           }}
         />
       </motion.div>
       
-      {/* Premium badge with advanced glow */}
       <motion.div 
-        className="absolute top-8 right-8 z-20"
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="absolute bottom-1/4 left-1/4 w-[150px] h-[150px] md:w-[300px] md:h-[300px]"
+        style={{ y: y2, willChange: 'transform' }}
       >
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative"
-        >
-          <Badge className="relative bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white font-bold px-6 py-3 text-sm border-0 shadow-2xl backdrop-blur-sm overflow-hidden">
-            <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-amber-300 via-orange-400 to-red-400"
-              animate={{
-                x: ["-100%", "100%"],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "linear"
-              }}
-              style={{
-                opacity: 0.3
-              }}
-            />
-            <Trophy className="w-4 h-4 mr-2 relative z-10" />
-            <span className="relative z-10">חשבון פרימיום</span>
-          </Badge>
-          <div className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 blur-2xl opacity-50 -z-10 animate-pulse" />
-        </motion.div>
+          className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-red-500/5 to-transparent rounded-full blur-xl"
+          animate={{
+            rotate: [0, 360],
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
       </motion.div>
       
       {/* Main content with enhanced animations */}
@@ -339,7 +288,7 @@ const HeroSection: React.FC = () => {
                 letterSpacing: '-0.01em'
               }}
             >
-              פלטפורמה מתקדמת עם <span className="text-white font-medium">למעלה מ-1000 שאלות עדכניות</span>, 
+              פלטפורמה מתקדמת עם <span className="text-white font-medium">למעלה מ-2000 שאלות עדכניות</span>, 
               סימולציות אמיתיות ומעקב ביצועים אישי –
               <span className="text-blue-300"> הדרך שלך להצלחה במבחן אמירנט.</span>
             </motion.p>
@@ -352,7 +301,7 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.7 }}
             >
               {[
-                { text: "+1000 שאלות מעודכנות", icon: <BookOpen className="w-5 h-5" /> },
+                { text: "+2000 שאלות מעודכנות", icon: <BookOpen className="w-5 h-5" /> },
                 { text: "סימולציות מדויקות", icon: <Target className="w-5 h-5" /> },
                 { text: "מעקב ביצועים מתקדם", icon: <TrendingUp className="w-5 h-5" /> },
                 { text: "תמיכה מקצועית 24/7", icon: <Users className="w-5 h-5" /> }
@@ -562,19 +511,20 @@ const HeroSection: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-              {/* Central floating element - Mobile optimized */}
+              {/* Central floating element - Simplified */}
             <motion.div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 md:w-40 md:h-40"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 md:w-24 md:h-24"
               animate={{
                 rotate: 360,
               }}
               transition={{
-                duration: typeof window !== 'undefined' && window.innerWidth < 768 ? 25 : 20,
+                duration: 30,
                 repeat: Infinity,
                 ease: "linear"
               }}
+              style={{ willChange: 'transform' }}
             >
-              <div className="w-full h-full bg-gradient-to-br from-orange-500/15 to-purple-500/15 md:from-orange-500/20 md:to-purple-500/20 rounded-full blur-xl md:blur-2xl" />
+              <div className="w-full h-full bg-gradient-to-br from-orange-500/10 to-purple-500/10 rounded-full blur-lg" />
             </motion.div>
           </motion.div>
         </div>

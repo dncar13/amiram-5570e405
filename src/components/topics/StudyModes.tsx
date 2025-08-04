@@ -200,7 +200,7 @@ export default function StudyModes({ categories, isPremium }: StudyModesProps) {
               </h3>
               
               <p className="text-gray-600 mb-8 text-center leading-relaxed">
-                1000 שאלות מחולקות ל-20 קבוצות של 50 שאלות כל אחת
+                2000 שאלות מחולקות ל-40 קבוצות של 50 שאלות כל אחת
               </p>
               
               <div className="space-y-3 mb-8">

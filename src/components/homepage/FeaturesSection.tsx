@@ -51,7 +51,7 @@ const FeaturesSection: React.FC = () => {
     {
       icon: Award,
       title: 'בנק שאלות מעודכן',
-      description: 'למעלה מ-1000 שאלות מעודכנות בכל נושאי המבחן'
+      description: 'למעלה מ-2000 שאלות מעודכנות בכל נושאי המבחן'
     },
     {
       icon: Users,
