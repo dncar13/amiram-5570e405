@@ -189,12 +189,22 @@ serve(async (req) => {
       .eq('status', 'completed')
       .order('created_at', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
-    if (transactionError || !transaction) {
-      logStep("Payment transaction not found", transactionError);
+    if (transactionError) {
+      logStep("Error querying payment transaction", transactionError);
       return new Response(JSON.stringify({ 
-        error: "לא נמצאה עסקת תשלום מתאימה" 
+        error: "שגיאה בשליפת נתוני עסקת התשלום" 
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (!transaction) {
+      logStep("No completed payment transaction found for subscription", { subscriptionId });
+      return new Response(JSON.stringify({ 
+        error: "לא נמצאה עסקת תשלום מושלמת עבור המנוי הזה" 
       }), {
         status: 404,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

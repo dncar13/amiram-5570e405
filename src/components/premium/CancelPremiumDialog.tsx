@@ -34,8 +34,20 @@ export const CancelPremiumDialog = ({ children }: CancelPremiumDialogProps) => {
     try {
       const { subscriptionData, error } = await SupabaseAuthService.getUserSubscriptionForRefund(currentUser.id);
       
-      if (error || !subscriptionData) {
-        toast.error("שגיאה בקבלת פרטי המנוי");
+      if (error) {
+        console.error('Error fetching subscription for refund:', error);
+        
+        // Handle specific error cases
+        if (error.message.includes('לא נמצאה עסקת תשלום מושלמת')) {
+          toast.error("לא ניתן לבטל מנוי זה - לא נמצאה עסקת תשלום מתאימה");
+        } else {
+          toast.error("שגיאה בקבלת פרטי המנוי: " + error.message);
+        }
+        return;
+      }
+
+      if (!subscriptionData) {
+        toast.error("לא נמצא מנוי פעיל לביטול");
         return;
       }
 
@@ -54,7 +66,7 @@ export const CancelPremiumDialog = ({ children }: CancelPremiumDialogProps) => {
       setShowRefundCalculation(true);
     } catch (error) {
       console.error('Error calculating refund:', error);
-      toast.error("שגיאה בחישוב החזר");
+      toast.error("שגיאה בחישוב החזר: " + (error instanceof Error ? error.message : 'שגיאה לא ידועה'));
     } finally {
       setIsLoading(false);
     }
@@ -74,25 +86,33 @@ export const CancelPremiumDialog = ({ children }: CancelPremiumDialogProps) => {
       });
 
       if (response.error) {
-        throw new Error(response.error.message);
+        console.error('Edge function invocation error:', response.error);
+        throw new Error(response.error.message || 'שגיאה בקריאה לשירות הביטול');
       }
 
       const result = response.data;
 
-      if (result.success) {
+      // Handle edge function returning error in response body
+      if (result && result.error) {
+        console.error('Edge function returned error:', result.error);
+        throw new Error(result.error);
+      }
+
+      if (result && result.success) {
         // Update premium status
         await updatePremiumStatus(false);
         
-        toast.success(result.message);
+        toast.success(result.message || 'המנוי בוטל בהצלחה');
         setIsOpen(false);
         setShowRefundCalculation(false);
         setRefundData(null);
       } else {
-        throw new Error(result.error || 'שגיאה לא ידועה');
+        throw new Error(result?.error || 'שגיאה לא ידועה בביטול המנוי');
       }
     } catch (error) {
       console.error('Error canceling subscription:', error);
-      toast.error(error instanceof Error ? error.message : "שגיאה בביטול המנוי");
+      const errorMessage = error instanceof Error ? error.message : "שגיאה בביטול המנוי";
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
