@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,7 @@ import { CancelPremiumDialog } from "@/components/premium/CancelPremiumDialog";
 import { useToast } from "@/hooks/use-toast";
 
 const OverviewTab = () => {
-  const { currentUser, userData, isPremium, updatePremiumStatus } = useAuth();
-  const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const { currentUser, userData, isPremium } = useAuth();
   const { toast } = useToast();
   
   // Enhanced user data extraction for Supabase User
@@ -37,24 +36,6 @@ const OverviewTab = () => {
   
   const photoURL = currentUser?.user_metadata?.avatar_url || currentUser?.user_metadata?.picture;
   
-  const handleCancelPremium = async () => {
-    try {
-      await updatePremiumStatus(false);
-      
-      toast({
-        title: "פרימיום בוטל בהצלחה",
-        description: "חשבונך הוחזר למצב חינמי",
-        variant: "default"
-      });
-    } catch (error) {
-      console.error('Error canceling premium:', error);
-      toast({
-        title: "שגיאה בביטול פרימיום",
-        description: "אנא נסה שוב מאוחר יותר",
-        variant: "destructive"
-      });
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -93,15 +74,16 @@ const OverviewTab = () => {
             </div>
             <div className="flex justify-between items-center">
               {isPremium && (
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  onClick={() => setShowCancelDialog(true)}
-                  className="flex items-center gap-2"
-                >
-                  <Shield className="h-4 w-4" />
-                  ביטול מנוי פרימיום
-                </Button>
+                <CancelPremiumDialog>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="flex items-center gap-2"
+                  >
+                    <Shield className="h-4 w-4" />
+                    ביטול מנוי פרימיום
+                  </Button>
+                </CancelPremiumDialog>
               )}
               
               <div className="text-right">
@@ -109,7 +91,7 @@ const OverviewTab = () => {
                 <p className="font-medium">
                   {isPremium 
                     ? <span className="text-electric-orange font-bold">פרימיום</span> 
-                    : "חינמי"}
+                    : "חينमי"}
                 </p>
               </div>
             </div>
@@ -149,18 +131,6 @@ const OverviewTab = () => {
         </Card>
       </div>
 
-      {showCancelDialog && (
-        <CancelPremiumDialog>
-          <Button
-            variant="destructive"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <Shield className="h-4 w-4" />
-            ביטול מנוי פרימיום
-          </Button>
-        </CancelPremiumDialog>
-      )}
     </div>
   );
 };
