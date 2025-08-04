@@ -276,75 +276,6 @@ export type Database = {
         }
         Relationships: []
       }
-      refund_logs: {
-        Row: {
-          cancellation_fee: number
-          cardcom_response: Json | null
-          created_at: string
-          error_message: string | null
-          id: string
-          original_amount: number
-          original_transaction_id: string
-          processed_at: string | null
-          refund_amount: number
-          refund_transaction_id: string | null
-          status: string
-          subscription_id: string
-          total_days: number
-          unused_days: number
-          user_id: string
-        }
-        Insert: {
-          cancellation_fee?: number
-          cardcom_response?: Json | null
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          original_amount: number
-          original_transaction_id: string
-          processed_at?: string | null
-          refund_amount: number
-          refund_transaction_id?: string | null
-          status?: string
-          subscription_id: string
-          total_days: number
-          unused_days: number
-          user_id: string
-        }
-        Update: {
-          cancellation_fee?: number
-          cardcom_response?: Json | null
-          created_at?: string
-          error_message?: string | null
-          id?: string
-          original_amount?: number
-          original_transaction_id?: string
-          processed_at?: string | null
-          refund_amount?: number
-          refund_transaction_id?: string | null
-          status?: string
-          subscription_id?: string
-          total_days?: number
-          unused_days?: number
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "refund_logs_subscription_id_fkey"
-            columns: ["subscription_id"]
-            isOneToOne: false
-            referencedRelation: "subscriptions"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "refund_logs_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          }
-        ]
-      }
       question_sets: {
         Row: {
           created_at: string | null
@@ -494,6 +425,57 @@ export type Database = {
           },
         ]
       }
+      refund_logs: {
+        Row: {
+          cancellation_fee: number
+          created_at: string
+          error_message: string | null
+          id: string
+          original_amount: number
+          original_transaction_id: string
+          processed_at: string | null
+          refund_amount: number
+          refund_transaction_id: string | null
+          status: string
+          subscription_id: string
+          total_days: number
+          unused_days: number
+          user_id: string
+        }
+        Insert: {
+          cancellation_fee: number
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          original_amount: number
+          original_transaction_id: string
+          processed_at?: string | null
+          refund_amount: number
+          refund_transaction_id?: string | null
+          status: string
+          subscription_id: string
+          total_days: number
+          unused_days: number
+          user_id: string
+        }
+        Update: {
+          cancellation_fee?: number
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          original_amount?: number
+          original_transaction_id?: string
+          processed_at?: string | null
+          refund_amount?: number
+          refund_transaction_id?: string | null
+          status?: string
+          subscription_id?: string
+          total_days?: number
+          unused_days?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       saved_questions: {
         Row: {
           id: string
@@ -588,8 +570,8 @@ export type Database = {
       }
       subscriptions: {
         Row: {
-          cancelled_at: string | null
           cancellation_reason: string | null
+          cancelled_at: string | null
           created_at: string
           end_date: string
           id: string
@@ -603,8 +585,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          cancelled_at?: string | null
           cancellation_reason?: string | null
+          cancelled_at?: string | null
           created_at?: string
           end_date: string
           id?: string
@@ -618,8 +600,8 @@ export type Database = {
           user_id: string
         }
         Update: {
-          cancelled_at?: string | null
           cancellation_reason?: string | null
+          cancelled_at?: string | null
           created_at?: string
           end_date?: string
           id?: string
@@ -940,6 +922,22 @@ export type Database = {
       }
     }
     Functions: {
+      calculate_refund_amount: {
+        Args: {
+          p_original_amount: number
+          p_start_date: string
+          p_end_date: string
+          p_cancel_date: string
+          p_plan_type: string
+        }
+        Returns: {
+          refund_amount: number
+          cancellation_fee: number
+          unused_days: number
+          total_days: number
+          eligible_for_refund: boolean
+        }[]
+      }
       cancel_user_subscription: {
         Args: { p_user_id: string }
         Returns: {
@@ -987,38 +985,6 @@ export type Database = {
       validate_set_metadata: {
         Args: { metadata: Json }
         Returns: boolean
-      }
-      calculate_refund_amount: {
-        Args: {
-          p_original_amount: number
-          p_start_date: string
-          p_end_date: string
-          p_cancel_date: string
-          p_plan_type: string
-        }
-        Returns: {
-          refund_amount: number
-          cancellation_fee: number
-          unused_days: number
-          total_days: number
-          eligible_for_refund: boolean
-        }[]
-      }
-      get_user_refund_history: {
-        Args: { user_uuid: string }
-        Returns: {
-          id: string
-          subscription_id: string
-          original_transaction_id: string
-          refund_transaction_id: string | null
-          original_amount: number
-          refund_amount: number
-          cancellation_fee: number
-          status: string
-          created_at: string
-          processed_at: string | null
-          plan_type: string
-        }[]
       }
     }
     Enums: {

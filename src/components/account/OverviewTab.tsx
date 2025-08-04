@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { UserCircle, Award, Clock, Shield } from "lucide-react";
-import CancelPremiumDialog from "@/components/premium/CancelPremiumDialog";
+import { CancelPremiumDialog } from "@/components/premium/CancelPremiumDialog";
 import { useToast } from "@/hooks/use-toast";
 
 const OverviewTab = () => {
@@ -149,11 +149,18 @@ const OverviewTab = () => {
         </Card>
       </div>
 
-      <CancelPremiumDialog 
-        isOpen={showCancelDialog}
-        onClose={() => setShowCancelDialog(false)}
-        onConfirm={handleCancelPremium}
-      />
+      {showCancelDialog && (
+        <CancelPremiumDialog>
+          <Button
+            variant="destructive"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <Shield className="h-4 w-4" />
+            ביטול מנוי פרימיום
+          </Button>
+        </CancelPremiumDialog>
+      )}
     </div>
   );
 };

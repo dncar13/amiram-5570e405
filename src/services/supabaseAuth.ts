@@ -380,7 +380,7 @@ export class SupabaseAuthService {
         startDate: new Date(subscription.start_date),
         endDate: new Date(subscription.end_date),
         originalAmount: parseFloat(transaction.amount),
-        transactionId: parseInt(transaction.transaction_id)
+        transactionId: transaction.transaction_id
       };
 
       console.log('✅ Subscription data for refund:', subscriptionData);

@@ -1,312 +1,249 @@
-
-import React, { useState, useEffect } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { DollarSign, Loader2, AlertTriangle, Calculator } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import type { RefundPreview, RefundCalculation } from "@/types/cardcom.types";
+import { useState } from "react";
 import { 
-  calculateRefundAmount, 
-  getRefundFormulaExplanation,
-  getProcessingTimeExplanation,
-  getPlanDisplayName,
-  mapPlanTypeToDb,
-  type PlanTypeDB
-} from "@/services/refundService";
-
-interface SubscriptionData {
-  id: string;
-  planType: PlanTypeDB;
-  startDate: Date;
-  endDate: Date;
-  originalAmount: number;
-  transactionId: number;
-}
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle, 
+  DialogTrigger 
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { AlertTriangle, Calculator, Clock, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import { SupabaseAuthService } from "@/services/supabaseAuth";
+import { calculateRefundAmount, getPlanDisplayName } from "@/services/refundService";
+import { supabase } from "@/integrations/supabase/client";
 
 interface CancelPremiumDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm?: (refundPreview?: RefundPreview) => Promise<void>;
-  subscriptionData?: SubscriptionData;
+  children: React.ReactNode;
 }
 
-const CancelPremiumDialog = ({
-  isOpen,
-  onClose,
-  onConfirm = async () => {},
-  subscriptionData
-}: CancelPremiumDialogProps) => {
+export const CancelPremiumDialog = ({ children }: CancelPremiumDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [refundCalculation, setRefundCalculation] = useState<RefundCalculation | null>(null);
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const { toast } = useToast();
+  const [showRefundCalculation, setShowRefundCalculation] = useState(false);
+  const [refundData, setRefundData] = useState<any>(null);
+  const { currentUser, updatePremiumStatus } = useAuth();
 
-  // Calculate refund when dialog opens and subscription data is available
-  useEffect(() => {
-    if (isOpen && subscriptionData) {
-      const calculation = calculateRefundAmount(
+  const handleCalculateRefund = async () => {
+    if (!currentUser) return;
+
+    setIsLoading(true);
+    try {
+      const { subscriptionData, error } = await SupabaseAuthService.getUserSubscriptionForRefund(currentUser.id);
+      
+      if (error || !subscriptionData) {
+        toast.error("שגיאה בקבלת פרטי המנוי");
+        return;
+      }
+
+      const refundCalculation = calculateRefundAmount(
         subscriptionData.originalAmount,
         subscriptionData.startDate,
         subscriptionData.endDate,
         new Date(),
         subscriptionData.planType
       );
-      setRefundCalculation(calculation);
-      setShowConfirmation(false);
-    } else {
-      setRefundCalculation(null);
-      setShowConfirmation(false);
-    }
-  }, [isOpen, subscriptionData]);
 
-  const handleInitialConfirm = () => {
-    if (refundCalculation) {
-      setShowConfirmation(true);
-    }
-  };
-
-  const handleFinalConfirm = async () => {
-    if (!subscriptionData || !refundCalculation) return;
-    
-    setIsLoading(true);
-    try {
-      const refundPreview: RefundPreview = {
-        calculation: refundCalculation,
-        planType: subscriptionData.planType,
-        subscriptionId: subscriptionData.id,
-        transactionId: subscriptionData.transactionId,
-        refundFormula: getRefundFormulaExplanation(),
-        processingTime: getProcessingTimeExplanation()
-      };
-
-      await onConfirm(refundPreview);
-      
-      const successMessage = refundCalculation.eligibleForRefund && refundCalculation.refundAmount > 0
-        ? "ביטול המנוי בוצע בהצלחה. החזר יבוצע תוך 14 ימי עסקים"
-        : "ביטול המנוי בוצע בהצלחה";
-      
-      toast({
-        title: "ביטול פרימיום בוצע בהצלחה",
-        description: successMessage,
-        variant: "default",
+      setRefundData({
+        ...subscriptionData,
+        calculation: refundCalculation
       });
-      onClose();
+      setShowRefundCalculation(true);
     } catch (error) {
-      console.error('Error cancelling premium:', error);
-      toast({
-        title: "שגיאה בביטול הפרימיום",
-        description: "אנא נסה שוב מאוחר יותר",
-        variant: "destructive",
-      });
+      console.error('Error calculating refund:', error);
+      toast.error("שגיאה בחישוב החזר");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleBack = () => {
-    setShowConfirmation(false);
+  const handleConfirmCancellation = async () => {
+    if (!currentUser) return;
+
+    setIsLoading(true);
+    try {
+      const response = await supabase.functions.invoke('cancel-subscription-refund', {
+        body: {
+          userId: currentUser.id,
+          subscriptionId: refundData.id,
+          cancellationReason: "ביטול על ידי המשתמש"
+        }
+      });
+
+      if (response.error) {
+        throw new Error(response.error.message);
+      }
+
+      const result = response.data;
+
+      if (result.success) {
+        // Update premium status
+        await updatePremiumStatus(false);
+        
+        toast.success(result.message);
+        setIsOpen(false);
+        setShowRefundCalculation(false);
+        setRefundData(null);
+      } else {
+        throw new Error(result.error || 'שגיאה לא ידועה');
+      }
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+      toast.error(error instanceof Error ? error.message : "שגיאה בביטול המנוי");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  if (!showConfirmation) {
-    // Initial screen - show refund calculation and explanation
-    return (
-      <AlertDialog open={isOpen} onOpenChange={onClose}>
-        <AlertDialogContent className="max-w-lg text-right">
-          <AlertDialogHeader className="text-right">
-            <AlertDialogTitle className="text-xl flex items-center gap-2 justify-end">
-              <Calculator className="h-5 w-5 text-electric-orange" />
-              ביטול מנוי פרימיום
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-lg text-right">
-              המערכת תחשב החזר יחסי בהתאם לחוק הישראלי
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          
-          <div className="py-4 space-y-4 text-right">
-            {/* Refund Formula Explanation */}
-            <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg border">
-              <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
-                נוסחת החזר:
-              </h4>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
-                {getRefundFormulaExplanation()}
-              </p>
-            </div>
+  const handleCancel = () => {
+    setIsOpen(false);
+    setShowRefundCalculation(false);
+    setRefundData(null);
+  };
 
-            {/* Refund Calculation */}
-            {refundCalculation && subscriptionData && (
-              <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border">
-                <h4 className="font-semibold mb-3">פרטי החישוב:</h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>סוג מנוי:</span>
-                    <span className="font-medium">{getPlanDisplayName(subscriptionData.planType)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>סכום מקורי:</span>
-                    <span className="font-medium">₪{refundCalculation.originalAmount}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>סה"כ ימים במנוי:</span>
-                    <span className="font-medium">{refundCalculation.totalDays}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>ימים שלא נוצלו:</span>
-                    <span className="font-medium">{refundCalculation.unusedDays}</span>
-                  </div>
-                  {refundCalculation.eligibleForRefund ? (
-                    <>
-                      <div className="flex justify-between text-orange-600 dark:text-orange-400">
-                        <span>דמי ביטול:</span>
-                        <span className="font-medium">₪{refundCalculation.cancellationFee}</span>
-                      </div>
-                      <hr className="my-2" />
-                      <div className="flex justify-between text-green-600 dark:text-green-400 font-bold">
-                        <span>סכום החזר:</span>
-                        <span>₪{refundCalculation.refundAmount}</span>
-                      </div>
-                    </>
-                  ) : (
-                    <div className="flex justify-between text-gray-600 dark:text-gray-400">
-                      <span>סכום החזר:</span>
-                      <span className="font-medium">₪0 (לא זכאי להחזר)</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Processing time info */}
-                {refundCalculation.eligibleForRefund && refundCalculation.refundAmount > 0 && (
-                  <div className="mt-3 pt-3 border-t">
-                    <p className="text-xs text-muted-foreground">
-                      {getProcessingTimeExplanation()}
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Daily subscription notice */}
-            {subscriptionData?.planType === 'day' && (
-              <div className="bg-yellow-50 dark:bg-yellow-950 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
-                <div className="flex gap-2">
-                  <AlertTriangle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-yellow-800 dark:text-yellow-200">
-                      מנוי יומי - לא זכאי להחזר
-                    </h4>
-                    <p className="text-sm text-yellow-700 dark:text-yellow-300">
-                      מנוי יומי (₪20) אינו זכאי להחזר כיוון שהשירות מסופק מיידית.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* General info */}
-            <div className="text-sm text-muted-foreground space-y-1">
-              <p>• הגישה לתכנים תסתיים מיידית לאחר הביטול</p>
-              <p>• ניתן לרכוש תוכנית חדשה בכל עת</p>
-              <p>• ביטול המנוי אינו ניתן לביטול</p>
-            </div>
-          </div>
-
-          <AlertDialogFooter className="flex-row-reverse sm:justify-start">
-            <AlertDialogCancel 
-              className="bg-muted hover:bg-muted/80"
-              disabled={isLoading}
-            >
-              ביטול
-            </AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleInitialConfirm}
-              disabled={isLoading || !refundCalculation}
-              className="bg-blue-500 hover:bg-blue-600 text-white disabled:opacity-50"
-            >
-              המשך לביטול
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  }
-
-  // Confirmation screen
   return (
-    <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent className="max-w-md text-right">
-        <AlertDialogHeader className="text-right">
-          <AlertDialogTitle className="text-xl flex items-center gap-2 justify-end">
-            <AlertTriangle className="h-5 w-5 text-red-500" />
-            אישור ביטול מנוי
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-lg text-right">
-            האם אתה בטוח שברצונך לבטל את המנוי?
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        
-        <div className="py-4 space-y-3 text-right">
-          {refundCalculation && refundCalculation.eligibleForRefund && refundCalculation.refundAmount > 0 ? (
-            <div className="bg-green-50 dark:bg-green-950 p-4 rounded-lg border border-green-200 dark:border-green-800">
-              <p className="text-green-800 dark:text-green-200 font-semibold">
-                יתבצע החזר של ₪{refundCalculation.refundAmount}
-              </p>
-              <p className="text-sm text-green-700 dark:text-green-300 mt-1">
-                החזר יועבר תוך 14 ימי עסקים לאמצעי התשלום המקורי
-              </p>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        {children}
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-right">
+            <AlertTriangle className="w-5 h-5 text-destructive" />
+            ביטול מנוי פרימיום
+          </DialogTitle>
+          <DialogDescription className="text-right">
+            {!showRefundCalculation 
+              ? "לפני ביטול המנוי, תוכל לראות את פרטי ההחזר"
+              : "פרטי החזר המנוי שלך"
+            }
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-6">
+          {!showRefundCalculation ? (
+            // Initial warning screen
+            <div className="space-y-4">
+              <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                <h3 className="font-semibold text-destructive mb-2">⚠️ חשוב לדעת:</h3>
+                <ul className="text-sm space-y-1 text-right">
+                  <li>• ביטול המנוי יבוטל גישה מיידית לתכנים הפרימיום</li>
+                  <li>• החזר כספי יבוצע תוך 14 ימי עסקים (אם רלוונטי)</li>
+                  <li>• מנוי יומי (₪20) אינו זכאי להחזר</li>
+                  <li>• החזר מחושב לפי ימים שלא נוצלו פחות דמי ביטול (5% או ₪100)</li>
+                </ul>
+              </div>
+
+              <div className="flex gap-3">
+                <Button 
+                  onClick={handleCancel} 
+                  variant="outline" 
+                  className="flex-1"
+                >
+                  חזור
+                </Button>
+                <Button 
+                  onClick={handleCalculateRefund}
+                  disabled={isLoading}
+                  className="flex-1 flex items-center gap-2"
+                >
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Calculator className="w-4 h-4" />
+                  )}
+                  חשב החזר
+                </Button>
+              </div>
             </div>
           ) : (
-            <div className="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg border">
-              <p className="text-gray-800 dark:text-gray-200 font-semibold">
-                לא יתבצע החזר
-              </p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {subscriptionData?.planType === 'day' 
-                  ? 'מנוי יומי אינו זכאי להחזר'
-                  : 'סכום ההחזר נמוך מהסכום המינימלי'
-                }
-              </p>
+            // Refund calculation screen
+            <div className="space-y-4">
+              <div className="bg-muted rounded-lg p-4">
+                <h3 className="font-semibold mb-3 flex items-center gap-2">
+                  <Calculator className="w-4 h-4" />
+                  חישוב החזר
+                </h3>
+                
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span>סוג מנוי:</span>
+                    <span className="font-medium">{getPlanDisplayName(refundData.planType)}</span>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <span>סכום מקורי:</span>
+                    <span className="font-medium">₪{refundData.originalAmount}</span>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <span>ימים במנוי:</span>
+                    <span className="font-medium">{refundData.calculation.totalDays}</span>
+                  </div>
+                  
+                  <div className="flex justify-between">
+                    <span>ימים שלא נוצלו:</span>
+                    <span className="font-medium">{refundData.calculation.unusedDays}</span>
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="flex justify-between">
+                    <span>דמי ביטול:</span>
+                    <span className="font-medium text-destructive">₪{refundData.calculation.cancellationFee}</span>
+                  </div>
+                  
+                  <div className="flex justify-between text-lg font-bold">
+                    <span>סכום החזר:</span>
+                    <span className="text-green-600">
+                      {refundData.calculation.eligibleForRefund 
+                        ? `₪${refundData.calculation.refundAmount}`
+                        : "אין החזר"
+                      }
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {refundData.calculation.eligibleForRefund && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                  <div className="flex items-start gap-2">
+                    <Clock className="w-4 h-4 text-blue-600 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-medium text-blue-900">זמן עיבוד:</p>
+                      <p className="text-blue-700">החזר יבוצע תוך 14 ימי עסקים לאמצעי התשלום המקורי</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <Button 
+                  onClick={() => setShowRefundCalculation(false)} 
+                  variant="outline" 
+                  className="flex-1"
+                >
+                  חזור
+                </Button>
+                <Button 
+                  onClick={handleConfirmCancellation}
+                  disabled={isLoading}
+                  variant="destructive"
+                  className="flex-1"
+                >
+                  {isLoading ? (
+                    <RefreshCw className="w-4 h-4 animate-spin mr-2" />
+                  ) : null}
+                  אשר ביטול
+                </Button>
+              </div>
             </div>
           )}
-          
-          <p className="text-sm text-red-600 dark:text-red-400 font-medium">
-            פעולה זו אינה ניתנת לביטול!
-          </p>
         </div>
-
-        <AlertDialogFooter className="flex-row-reverse sm:justify-start">
-          <AlertDialogCancel 
-            onClick={handleBack}
-            className="bg-muted hover:bg-muted/80"
-            disabled={isLoading}
-          >
-            חזור
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={handleFinalConfirm}
-            disabled={isLoading}
-            className="bg-red-500 hover:bg-red-600 text-white disabled:opacity-50"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin ml-2" />
-                מבטל מנוי...
-              </>
-            ) : (
-              "אישור ביטול מנוי"
-            )}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+      </DialogContent>
+    </Dialog>
   );
 };
-
-export default CancelPremiumDialog;
