@@ -840,10 +840,6 @@ const Premium = () => {
                         </div>
                       )}
                       <div className="mt-3 text-xs text-gray-600 space-y-1">
-                        <div>קודים לדוגמה: WELCOME10, SAVE20, STUDENT25</div>
-                        <div className="text-gray-500">
-                          מדיניות הנחות: הנחה מקסימלית 50%, מחיר מינימלי 5₪, קופון אחד לכל רכישה
-                        </div>
                         {isCouponLocked && (
                           <div className="text-orange-600 font-medium">
                             🔒 הקופון נעול עד להשלמת התשלום
