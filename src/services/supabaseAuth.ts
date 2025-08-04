@@ -367,11 +367,17 @@ export class SupabaseAuthService {
         .eq('status', 'completed')
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
 
-      if (transError || !transaction) {
+      if (transError) {
         console.error('❌ Error fetching payment transaction:', transError);
         return { subscriptionData: null, error: transError };
+      }
+
+      if (!transaction) {
+        console.log('ℹ️ No completed payment transaction found for subscription:', subscription.id);
+        const noPaymentError = new Error('לא נמצאה עסקת תשלום מושלמת עבור המנוי הזה');
+        return { subscriptionData: null, error: noPaymentError };
       }
 
       const subscriptionData = {
