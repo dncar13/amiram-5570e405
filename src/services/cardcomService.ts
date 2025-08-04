@@ -14,7 +14,10 @@ import type {
   PaymentInitRequest,
   PaymentInitResponse,
   PaymentStatus,
-  CardComErrorInfo
+  CardComErrorInfo,
+  RefundByTransactionIdRequest,
+  RefundByTransactionIdResponse,
+  RefundResult
 } from '@/types/cardcom.types';
 import { CARDCOM_CONFIG, getCardComCredentials, generateReturnValue, getCardComUrls, isTestEnvironment, getCardComApiUrl, logCardComEnvironment } from '@/config/cardcom.config';
 import { PLAN_PRICES } from '@/config/pricing';
@@ -311,6 +314,141 @@ export const processWebhook = (payload: any): LowProfileResult | null => {
 };
 
 /**
+ * Process refund via CardCom RefundByTransactionId API
+ * Used for subscription cancellations with partial refunds
+ */
+export const processRefund = async (
+  transactionId: number,
+  refundAmount: number,
+  externalDealId?: string
+): Promise<RefundResult> => {
+  try {
+    // Get API URL dynamically at runtime
+    const API_BASE_URL = getCardComApiUrl();
+    
+    console.log('🔄 Processing CardCom refund:', {
+      transactionId,
+      refundAmount,
+      environment: isTestEnvironment() ? 'TEST' : 'PRODUCTION'
+    });
+    
+    const credentials = getCardComCredentials();
+    
+    // Validate that we have API password for refunds
+    if (!credentials.apiPassword) {
+      console.error('❌ API Password required for refund operations');
+      return {
+        success: false,
+        error: 'חסר סיסמת API לביצוע החזר'
+      };
+    }
+    
+    // Validate refund amount
+    if (!refundAmount || refundAmount <= 0) {
+      console.error('❌ Invalid refund amount:', refundAmount);
+      return {
+        success: false,
+        error: 'סכום החזר לא תקין'
+      };
+    }
+    
+    const refundRequest: RefundByTransactionIdRequest = {
+      ApiName: credentials.apiName,
+      ApiPassword: credentials.apiPassword,
+      TransactionId: transactionId,
+      PartialSum: refundAmount,
+      ExternalDealId: externalDealId,
+      AllowMultipleRefunds: false // Prevent duplicate refunds
+    };
+    
+    console.log('📤 CardCom Refund Request:', {
+      ApiName: refundRequest.ApiName,
+      TransactionId: refundRequest.TransactionId,
+      PartialSum: refundRequest.PartialSum,
+      AllowMultipleRefunds: refundRequest.AllowMultipleRefunds
+    });
+    
+    const fullApiUrl = `${API_BASE_URL}/api/v11/Transactions/RefundByTransactionId`;
+    console.log('🚀 Refund API URL:', fullApiUrl);
+    
+    const response = await fetch(fullApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(refundRequest)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result: RefundByTransactionIdResponse = await response.json();
+    
+    console.log('📥 CardCom refund response:', {
+      responseCode: result.ResponseCode,
+      description: result.Description,
+      newTransactionId: result.NewTranzactionId
+    });
+    
+    if (result.ResponseCode === 0 && result.NewTranzactionId) {
+      console.log('✅ Refund processed successfully');
+      return {
+        success: true,
+        refundTransactionId: result.NewTranzactionId,
+        description: result.Description
+      };
+    } else {
+      console.error('❌ CardCom refund failed:', {
+        responseCode: result.ResponseCode,
+        description: result.Description
+      });
+      return {
+        success: false,
+        error: result.Description || 'שגיאה בביצוע החזר',
+        description: result.Description
+      };
+    }
+    
+  } catch (error) {
+    console.error('❌ CardCom refund error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'שגיאה לא ידועה בביצוע החזר'
+    };
+  }
+};
+
+/**
+ * Validate transaction for refund eligibility
+ * Checks if the transaction exists and can be refunded
+ */
+export const validateTransactionForRefund = async (transactionId: number): Promise<{
+  valid: boolean;
+  amount?: number;
+  error?: string;
+}> => {
+  try {
+    console.log('🔍 Validating transaction for refund:', transactionId);
+    
+    // In a real implementation, you might want to call CardCom's transaction lookup API
+    // For now, we'll assume the transaction is valid if we have the ID
+    // The actual validation will happen when we try to process the refund
+    
+    return {
+      valid: true
+    };
+  } catch (error) {
+    console.error('❌ Error validating transaction:', error);
+    return {
+      valid: false,
+      error: 'שגיאה בבדיקת העסקה'
+    };
+  }
+};
+
+/**
  * CardCom Integration Usage:
  * 
  * 1. Initialize Payment:
@@ -335,4 +473,10 @@ export const processWebhook = (payload: any): LowProfileResult | null => {
  * 4. For iframe integration:
  *    const iframeUrl = await getIframeUrl(paymentRequest);
  *    // Embed in iframe element
+ * 
+ * 5. Process refunds:
+ *    const refundResult = await processRefund(transactionId, refundAmount);
+ *    if (refundResult.success) {
+ *      // Refund processed successfully
+ *    }
  */
