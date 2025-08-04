@@ -61,7 +61,7 @@ const SubtopicList = ({ subtopics, topicId, isComprehensiveExam = false }: Subto
   if (isComprehensiveExam) {
     return (
       <div className="space-y-4">
-        <h3 className="text-lg font-medium text-electric-navy mb-4 text-right">חלקי המבחן המקיף - 1000 שאלות</h3>
+        <h3 className="text-lg font-medium text-electric-navy mb-4 text-right">חלקי המבחן המקיף - 2000 שאלות</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {subtopics.map((subtopic, index) => {

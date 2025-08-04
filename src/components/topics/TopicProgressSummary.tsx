@@ -52,7 +52,7 @@ const TopicProgressSummary = () => {
           <div className="flex flex-row-reverse items-center justify-between text-sm text-muted-foreground mt-auto">
             <div className="flex flex-row-reverse items-center gap-1">
               <FileText className="h-4 w-4 text-electric-blue/70" />
-              <span>{questionCount} מתוך 1000 שאלות</span>
+              <span>{questionCount} מתוך 2000 שאלות</span>
             </div>
           </div>
         </div>

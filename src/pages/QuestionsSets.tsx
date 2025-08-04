@@ -291,7 +291,7 @@ const QuestionsSets = () => {
       {
         id: "20",
         title: "קבוצת שאלות 20",
-        description: "שאלות 951-1000 - השלמת המסע",
+        description: "שאלות 1951-2000 - השלמת המסע",
         questionsCount: 50,
         difficulty: "hard",
         estimatedTime: 200,
@@ -313,7 +313,7 @@ const QuestionsSets = () => {
         <div className="container mx-auto px-4">
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-electric-navy mb-2">
-              קבוצות שאלות - 1000 שאלות בסך הכל
+              קבוצות שאלות - 2000 שאלות בסך הכל
             </h1>
             <p className="text-electric-slate">
               20 קבוצות של 50 שאלות כל אחת - מבסיסי ועד מתקדם

@@ -11,7 +11,7 @@ const PremiumShowcase = () => {
     {
       icon: <Crown className="h-8 w-8 text-yellow-500" />,
       title: "גישה בלתי מוגבלת",
-      description: "גישה מלאה לכל 1000+ השאלות ו-7 נושאי הלימוד",
+      description: "גישה מלאה לכל 2000+ השאלות ו-7 נושאי הלימוד",
       highlight: true
     },
     {

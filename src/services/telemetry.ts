@@ -21,7 +21,14 @@ export const recordPerformanceMetric = (metric: Omit<PerformanceMetric, 'timesta
     const storedMetrics = localStorage.getItem(METRICS_KEY);
     
     if (storedMetrics) {
-      metrics = JSON.parse(storedMetrics);
+      try {
+        const parsed = JSON.parse(storedMetrics);
+        if (Array.isArray(parsed)) {
+          metrics = parsed;
+        }
+      } catch {
+        // If parsing fails, keep the empty array
+      }
     }
     
     metrics.unshift(fullMetric);
@@ -47,7 +54,10 @@ export const getPerformanceMetrics = (): PerformanceMetric[] => {
   try {
     const storedMetrics = localStorage.getItem(METRICS_KEY);
     if (storedMetrics) {
-      return JSON.parse(storedMetrics);
+      const parsed = JSON.parse(storedMetrics);
+      if (Array.isArray(parsed)) {
+        return parsed;
+      }
     }
   } catch (err) {
     console.warn('Error retrieving metrics:', err);
