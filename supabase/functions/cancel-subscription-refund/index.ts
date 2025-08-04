@@ -23,7 +23,7 @@ interface RefundCalculationResult {
 interface CardComRefundRequest {
   ApiName: string;
   ApiPassword: string;
-  TransactionId: number;
+  TransactionId: string;
   PartialSum: number;
   AllowMultipleRefunds: boolean;
 }
@@ -50,7 +50,7 @@ const getCardComApiUrl = (): string => {
 };
 
 const processCardComRefund = async (
-  transactionId: number,
+  transactionId: string,
   refundAmount: number
 ): Promise<{ success: boolean; refundTransactionId?: number; error?: string }> => {
   const apiName = Deno.env.get("CARDCOM_API_NAME");
@@ -267,7 +267,7 @@ serve(async (req) => {
       logStep("Processing refund with CardCom");
       
       refundResult = await processCardComRefund(
-        parseInt(transaction.transaction_id),
+        transaction.transaction_id,
         calculation.refund_amount
       );
 
