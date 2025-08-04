@@ -105,3 +105,51 @@ export interface PaymentStatus {
   error?: string;
   description?: string;
 }
+
+// Refund API Types based on CardCom RefundByTransactionId endpoint
+export interface RefundByTransactionIdRequest {
+  ApiName: string;
+  ApiPassword: string;
+  TransactionId: number;
+  PartialSum?: number; // For partial refunds
+  ExternalDealId?: string;
+  ExternalMerchantId?: string;
+  AllowMultipleRefunds?: boolean;
+  CancelOnly?: boolean;
+  CustomFields?: Array<{
+    FieldName: string;
+    FieldValue: string;
+  }>;
+}
+
+export interface RefundByTransactionIdResponse {
+  ResponseCode: number;
+  Description?: string;
+  NewTranzactionId?: number; // The ID of the created refund transaction
+}
+
+export interface RefundResult {
+  success: boolean;
+  refundTransactionId?: number;
+  error?: string;
+  description?: string;
+}
+
+// Refund calculation types for Israeli law compliance
+export interface RefundCalculation {
+  refundAmount: number;
+  cancellationFee: number;
+  unusedDays: number;
+  totalDays: number;
+  eligibleForRefund: boolean;
+  originalAmount: number;
+}
+
+export interface RefundPreview {
+  calculation: RefundCalculation;
+  planType: string;
+  subscriptionId: string;
+  transactionId: number;
+  refundFormula: string;
+  processingTime: string;
+}

@@ -33,6 +33,8 @@ interface AuthContextType {
   error: Error | null;
   logout: () => Promise<void>;
   updatePremiumStatus: (status: boolean) => Promise<void>;
+  cancelSubscriptionWithRefund: (subscriptionId: string, cancellationReason?: string) => Promise<any>;
+  getUserSubscriptionForRefund: () => Promise<any>;
   hasAccessToTopic: (topicId: number) => boolean;
   refreshSession: () => Promise<void>;
 }
@@ -49,6 +51,8 @@ const AuthContext = createContext<AuthContextType>({
   error: null,
   logout: async () => {},
   updatePremiumStatus: async () => {},
+  cancelSubscriptionWithRefund: async () => ({ success: false }),
+  getUserSubscriptionForRefund: async () => ({ subscriptionData: null }),
   hasAccessToTopic: () => true,
   refreshSession: async () => {}
 });
@@ -593,6 +597,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [showAuthToast, resetUserStates]);
 
+  // New subscription cancellation with refund
+  const cancelSubscriptionWithRefund = async (subscriptionId: string, cancellationReason?: string) => {
+    if (!authState.session?.user) {
+      throw new Error("לא קיים משתמש מחובר");
+    }
+
+    return await SupabaseAuthService.cancelSubscriptionWithRefund(
+      authState.session.user.id,
+      subscriptionId,
+      cancellationReason
+    );
+  };
+
+  // Get user subscription for refund calculation
+  const getUserSubscriptionForRefund = async () => {
+    if (!authState.session?.user) {
+      return { subscriptionData: null, error: new Error("לא קיים משתמש מחובר") };
+    }
+
+    return await SupabaseAuthService.getUserSubscriptionForRefund(authState.session.user.id);
+  };
+
   const value = {
     session: authState.session,
     currentUser: authState.session?.user || null,
@@ -605,6 +631,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     error: authState.error,
     logout,
     updatePremiumStatus,
+    cancelSubscriptionWithRefund,
+    getUserSubscriptionForRefund,
     hasAccessToTopic,
     refreshSession
   };

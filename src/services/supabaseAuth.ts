@@ -237,6 +237,7 @@ export class SupabaseAuthService {
 
   /**
    * Cancel/deactivate user's active subscription
+   * Legacy method - kept for backwards compatibility
    */
   static async cancelSubscription(userId: string) {
     try {
@@ -270,6 +271,123 @@ export class SupabaseAuthService {
     } catch (error: unknown) {
       console.error('❌ Error canceling subscription:', error);
       return { success: false, error: error as Error };
+    }
+  }
+
+  /**
+   * Cancel subscription with automatic refund processing
+   * Uses the new edge function for complete cancellation and refund flow
+   */
+  static async cancelSubscriptionWithRefund(
+    userId: string, 
+    subscriptionId: string,
+    cancellationReason?: string
+  ) {
+    try {
+      console.log('🔄 Canceling subscription with refund:', { userId, subscriptionId });
+
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const response = await fetch(`${supabaseUrl}/functions/v1/cancel-subscription-refund`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+        },
+        body: JSON.stringify({
+          userId,
+          subscriptionId,
+          cancellationReason
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('✅ Subscription cancellation with refund result:', result);
+
+      if (result.success) {
+        // Force clear localStorage immediately
+        localStorage.removeItem("isPremiumUser");
+        
+        return {
+          success: true,
+          error: null,
+          message: result.message,
+          refund: result.refund,
+          subscription: result.subscription
+        };
+      } else {
+        throw new Error(result.error || 'Unknown error occurred');
+      }
+    } catch (error: unknown) {
+      console.error('❌ Error canceling subscription with refund:', error);
+      return { 
+        success: false, 
+        error: error as Error,
+        message: error instanceof Error ? error.message : 'שגיאה לא ידועה'
+      };
+    }
+  }
+
+  /**
+   * Get user's subscription details for refund calculation
+   */
+  static async getUserSubscriptionForRefund(userId: string) {
+    try {
+      console.log('📊 Getting user subscription for refund calculation:', userId);
+
+      // Get active subscription
+      const { data: subscription, error: subError } = await supabase
+        .from('subscriptions')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (subError) {
+        console.error('❌ Error fetching subscription:', subError);
+        return { subscriptionData: null, error: subError };
+      }
+
+      if (!subscription) {
+        console.log('ℹ️ No active subscription found');
+        return { subscriptionData: null, error: null };
+      }
+
+      // Get payment transaction for this subscription
+      const { data: transaction, error: transError } = await supabase
+        .from('payment_transactions')
+        .select('*')
+        .eq('subscription_id', subscription.id)
+        .eq('status', 'completed')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (transError || !transaction) {
+        console.error('❌ Error fetching payment transaction:', transError);
+        return { subscriptionData: null, error: transError };
+      }
+
+      const subscriptionData = {
+        id: subscription.id,
+        planType: subscription.plan_type,
+        startDate: new Date(subscription.start_date),
+        endDate: new Date(subscription.end_date),
+        originalAmount: parseFloat(transaction.amount),
+        transactionId: parseInt(transaction.transaction_id)
+      };
+
+      console.log('✅ Subscription data for refund:', subscriptionData);
+      return { subscriptionData, error: null };
+    } catch (error: unknown) {
+      console.error('❌ Error getting subscription for refund:', error);
+      return { subscriptionData: null, error: error as Error };
     }
   }
 
