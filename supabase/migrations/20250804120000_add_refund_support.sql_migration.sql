@@ -9,7 +9,7 @@ ADD COLUMN IF NOT EXISTS refunded_transaction_id text,
 ADD COLUMN IF NOT EXISTS cancellation_reason text;
 
 -- 2. Create refund_logs table for comprehensive audit trail
-CREATE TABLE public.refund_logs (
+CREATE TABLE IF NOT EXISTS public.refund_logs (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   subscription_id UUID NOT NULL REFERENCES public.subscriptions(id),
@@ -31,27 +31,54 @@ CREATE TABLE public.refund_logs (
 ALTER TABLE public.refund_logs ENABLE ROW LEVEL SECURITY;
 
 -- Users can view their own refund logs
-CREATE POLICY "Users can view their own refund logs" 
-ON public.refund_logs 
-FOR SELECT 
-USING (auth.uid() = user_id);
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'refund_logs' 
+        AND policyname = 'Users can view their own refund logs'
+    ) THEN
+        CREATE POLICY "Users can view their own refund logs" 
+        ON public.refund_logs 
+        FOR SELECT 
+        USING (auth.uid() = user_id);
+    END IF;
+END $$;
 
 -- Service role can manage all refund logs
-CREATE POLICY "Service role can manage refund logs" 
-ON public.refund_logs 
-FOR ALL 
-USING (current_setting('role') = 'service_role')
-WITH CHECK (current_setting('role') = 'service_role');
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'refund_logs' 
+        AND policyname = 'Service role can manage refund logs'
+    ) THEN
+        CREATE POLICY "Service role can manage refund logs" 
+        ON public.refund_logs 
+        FOR ALL 
+        USING (current_setting('role') = 'service_role')
+        WITH CHECK (current_setting('role') = 'service_role');
+    END IF;
+END $$;
 
 -- Admins can view all refund logs
-CREATE POLICY "Admins can view all refund logs" 
-ON public.refund_logs 
-FOR SELECT 
-USING (auth.uid() IN (
-    SELECT profiles.user_id
-    FROM profiles
-    WHERE profiles.email = ANY(ARRAY['dncar13@gmail.com'::text, 'buldir@gmail.com'::text])
-));
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_policies 
+        WHERE tablename = 'refund_logs' 
+        AND policyname = 'Admins can view all refund logs'
+    ) THEN
+        CREATE POLICY "Admins can view all refund logs" 
+        ON public.refund_logs 
+        FOR SELECT 
+        USING (auth.uid() IN (
+            SELECT profiles.user_id
+            FROM profiles
+            WHERE profiles.email = ANY(ARRAY['dncar13@gmail.com'::text, 'buldir@gmail.com'::text])
+        ));
+    END IF;
+END $$;
 
 -- 4. Create indexes for better performance
 CREATE INDEX idx_refund_logs_user_id ON public.refund_logs(user_id);

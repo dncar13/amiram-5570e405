@@ -46,12 +46,68 @@ const parseReturnValue = (returnValue: string): ReturnValueData | null => {
   }
 };
 
+const sendThankYouEmail = async (supabaseClient: any, userId: string, planType: string) => {
+  try {
+    // Get user profile to extract email and name
+    const { data: profile, error: profileError } = await supabaseClient
+      .from('profiles')
+      .select('email, display_name')
+      .eq('user_id', userId)
+      .single();
+
+    if (profileError || !profile) {
+      logStep("Warning: Could not fetch user profile for thank-you email", profileError);
+      return;
+    }
+
+    // Map plan type to Hebrew display name
+    const planTypeMap: { [key: string]: string } = {
+      'daily': 'יומי',
+      'weekly': 'שבועי', 
+      'monthly': 'חודשי',
+      'quarterly': 'רבעוני (3 חודשים)'
+    };
+
+    const subscriptionTypeHebrew = planTypeMap[planType] || planType;
+    const firstName = profile.display_name || profile.email.split('@')[0];
+
+    // Call email service to send thank-you email
+    const supabaseUrl = Deno.env.get("SUPABASE_URL");
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+
+    const emailResponse = await fetch(`${supabaseUrl}/functions/v1/email-service`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${supabaseServiceKey}`
+      },
+      body: JSON.stringify({
+        type: 'thank-you',
+        to: profile.email,
+        firstName: firstName,
+        subscriptionType: subscriptionTypeHebrew
+      })
+    });
+
+    if (emailResponse.ok) {
+      logStep("Thank-you email sent successfully", { email: profile.email, planType });
+    } else {
+      const errorData = await emailResponse.text();
+      logStep("Warning: Failed to send thank-you email", { error: errorData });
+    }
+
+  } catch (error) {
+    logStep("Warning: Error sending thank-you email", error);
+  }
+};
+
 const createSubscription = async (
   supabaseClient: any,
   userId: string,
   planType: string,
   transactionId: number,
-  amount: number
+  amount: number,
+  payload: CardComWebhookPayload
 ) => {
   try {
     logStep("Creating subscription", { userId, planType, transactionId, amount });
@@ -60,22 +116,27 @@ const createSubscription = async (
     const startDate = new Date();
     const endDate = new Date();
     let dbPlanType: string;
+    let paymentPlanType: string; // For payment_transactions table
     
     switch (planType) {
       case 'daily':
         dbPlanType = 'day';
+        paymentPlanType = 'daily';
         endDate.setDate(startDate.getDate() + 1);
         break;
       case 'weekly':
         dbPlanType = 'week';
+        paymentPlanType = 'weekly';
         endDate.setDate(startDate.getDate() + 7);
         break;
       case 'monthly':
         dbPlanType = 'month';
+        paymentPlanType = 'monthly';
         endDate.setMonth(startDate.getMonth() + 1);
         break;
       case 'quarterly':
         dbPlanType = '3months';
+        paymentPlanType = 'quarterly';
         endDate.setMonth(startDate.getMonth() + 3);
         break;
       default:
@@ -101,23 +162,33 @@ const createSubscription = async (
 
     logStep("Subscription created successfully", { subscriptionId: subscription.id });
 
-    // Create payment transaction record
+    // Create payment transaction record (updated for new schema)
     const { error: transactionError } = await supabaseClient
       .from('payment_transactions')
       .insert({
         user_id: userId,
         subscription_id: subscription.id,
-        transaction_id: transactionId.toString(),
-        payment_method: 'cardcom',
-        amount: amount,
+        low_profile_code: payload.LowProfileId, // New required field
+        plan_type: paymentPlanType, // New required field (use mapped planType)
+        amount: Math.round(amount), // Convert to integer as required by new schema
         currency: 'ILS',
         status: 'completed',
-        transaction_date: startDate.toISOString()
+        metadata: {
+          transaction_id: transactionId.toString(),
+          payment_method: 'cardcom',
+          terminal_number: payload.TerminalNumber,
+          deal_date: payload.DealDate,
+          voucher_number: payload.VoucherNumber,
+          auth_number: payload.AuthNumber
+        }
       });
 
     if (transactionError) {
       logStep("Warning: Failed to create transaction record", transactionError);
     }
+
+    // Send thank-you email after successful subscription creation
+    await sendThankYouEmail(supabaseClient, userId, planType);
 
     return { success: true, subscriptionId: subscription.id };
 
@@ -235,11 +306,11 @@ serve(async (req) => {
       });
     }
 
-    // Check if this transaction was already processed
+    // Check if this transaction was already processed (updated for new schema)
     const { data: existingTransaction } = await supabaseClient
       .from('payment_transactions')
       .select('id')
-      .eq('transaction_id', payload.TranzactionId.toString())
+      .eq('low_profile_code', payload.LowProfileId)
       .single();
 
     if (existingTransaction) {
@@ -260,7 +331,8 @@ serve(async (req) => {
         returnData.userId,
         returnData.planType,
         payload.TranzactionId,
-        payload.Amount || 0
+        payload.Amount || 0,
+        payload
       );
 
       logStep("Webhook processed successfully", result);

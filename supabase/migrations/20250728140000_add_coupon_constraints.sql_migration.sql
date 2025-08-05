@@ -20,9 +20,9 @@ CHECK (final_amount >= (original_amount * 0.2));
 -- Add unique constraint to prevent multiple active coupon usage per user per plan
 -- Note: This allows the same user to use different coupons for different plans
 -- but prevents using multiple coupons for the same plan
+-- We'll use a regular index instead of conditional with NOW()
 CREATE UNIQUE INDEX coupon_usage_active_per_user_plan 
-ON coupon_usage (user_id, plan_type, coupon_id) 
-WHERE created_at > (NOW() - INTERVAL '30 minutes');
+ON coupon_usage (user_id, plan_type, coupon_id);
 
 -- Add constraint to coupons table to limit maximum discount percentage
 ALTER TABLE coupons

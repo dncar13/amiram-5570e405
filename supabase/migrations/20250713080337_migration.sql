@@ -48,6 +48,7 @@ CREATE TABLE migration_logs (
 
 -- Update Questions Table
 ALTER TABLE questions 
+  ADD COLUMN original_id integer,
   ADD COLUMN passage_id uuid REFERENCES passages(id),
   ADD COLUMN passage_line_range jsonb,
   ADD COLUMN question_subtype text CHECK (question_subtype IN ('main-idea', 'detail', 'inference', 'vocabulary-in-context', 'sentence-completion', NULL)),
