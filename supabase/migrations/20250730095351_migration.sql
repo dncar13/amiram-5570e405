@@ -10,5 +10,14 @@ END
 WHERE plan_type IN ('daily', 'weekly', 'monthly', 'quarterly');
 
 -- Add the correct constraint with the values actually used in the code
-ALTER TABLE public.subscriptions ADD CONSTRAINT subscriptions_plan_type_check 
-CHECK (plan_type IN ('day', 'week', 'month', '3months'));
+DO $$ 
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.table_constraints 
+        WHERE constraint_name = 'subscriptions_plan_type_check' 
+        AND table_name = 'subscriptions'
+    ) THEN
+        ALTER TABLE public.subscriptions ADD CONSTRAINT subscriptions_plan_type_check 
+        CHECK (plan_type IN ('day', 'week', 'month', '3months'));
+    END IF;
+END $$;

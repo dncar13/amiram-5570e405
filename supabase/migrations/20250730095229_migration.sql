@@ -1,5 +1,14 @@
--- First, drop the constraint temporarily to allow updates
-ALTER TABLE public.subscriptions DROP CONSTRAINT subscriptions_plan_type_check;
+-- Check if constraint exists before trying to drop it
+DO $$ 
+BEGIN
+    IF EXISTS (
+        SELECT 1 FROM information_schema.table_constraints 
+        WHERE constraint_name = 'subscriptions_plan_type_check' 
+        AND table_name = 'subscriptions'
+    ) THEN
+        ALTER TABLE public.subscriptions DROP CONSTRAINT subscriptions_plan_type_check;
+    END IF;
+END $$;
 
 -- Update existing records to use the new plan_type values
 UPDATE public.subscriptions 

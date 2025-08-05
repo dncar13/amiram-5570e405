@@ -1,0 +1,6 @@
+# Amiram Academy Daily Email Check
+# Runs every day at 10:00 AM
+0 10 * * * /home/daniel_pogodin/amiram/scripts/daily-email-check.sh >> /home/daniel_pogodin/amiram/daily-email-cron.log 2>&1
+
+# Alternative: Run every day at 8:00 PM as well  
+# 0 20 * * * /home/daniel_pogodin/amiram/scripts/daily-email-check.sh >> /home/daniel_pogodin/amiram/daily-email-cron.log 2>&1

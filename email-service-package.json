@@ -1,0 +1,28 @@
+{
+  "name": "amiram-email-service",
+  "version": "1.0.0",
+  "description": "Automated email service for Amiram Academy using NodeMailer and Zoho SMTP",
+  "main": "email-service-nodemailer.js",
+  "scripts": {
+    "start": "node email-service-nodemailer.js",
+    "send-welcome": "node -e \"const service = require('./email-service-nodemailer.js'); service.sendEmailWithLogging('welcome', process.argv[1], process.argv[2]);\"",
+    "send-thank-you": "node -e \"const service = require('./email-service-nodemailer.js'); service.sendEmailWithLogging('thank-you', process.argv[1], process.argv[2], process.argv[3]);\"",
+    "send-subscription-end": "node -e \"const service = require('./email-service-nodemailer.js'); service.sendEmailWithLogging('subscription-end', process.argv[1], process.argv[2]);\"",
+    "process-expired": "node -e \"const service = require('./email-service-nodemailer.js'); service.processExpiredSubscriptions();\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "nodemailer": "^6.9.8",
+    "@supabase/supabase-js": "^2.50.0"
+  },
+  "keywords": [
+    "email",
+    "nodemailer",
+    "zoho",
+    "smtp",
+    "amiram",
+    "academy"
+  ],
+  "author": "Amiram Academy",
+  "license": "MIT"
+}
