@@ -46,20 +46,9 @@ const CardcomPaymentForm = ({
   
   // Handle successful payment (called when user returns from CardCom)
   const handlePaymentReturn = () => {
-    // Track successful payment
-    trackPurchase({
-      currency: 'ILS',
-      value: amount,
-      transaction_id: `cardcom_${Date.now()}`,
-      payment_method: 'cardcom',
-      items: [{
-        item_id: 'premium_plan',
-        item_name: 'Premium Subscription',
-        category: 'subscription',
-        price: amount,
-        quantity: 1
-      }]
-    });
+    // Don't track purchase here - it will be tracked on ThankYou page
+    // This prevents duplicate purchase events
+    console.log('📝 Payment return handled, purchase will be tracked on ThankYou page');
     
     onSuccess();
   };
