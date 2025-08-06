@@ -385,7 +385,7 @@ export class SupabaseAuthService {
         planType: subscription.plan_type,
         startDate: new Date(subscription.start_date),
         endDate: new Date(subscription.end_date),
-        originalAmount: parseFloat(transaction.amount),
+        originalAmount: transaction.amount,
         transactionId: transaction.transaction_id
       };
 
