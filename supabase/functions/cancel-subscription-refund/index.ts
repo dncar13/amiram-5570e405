@@ -202,11 +202,50 @@ serve(async (req) => {
     }
 
     if (!transaction) {
-      logStep("No completed payment transaction found for subscription", { subscriptionId });
-      return new Response(JSON.stringify({ 
-        error: "לא נמצאה עסקת תשלום מושלמת עבור המנוי הזה" 
-      }), {
-        status: 404,
+      logStep("No completed payment transaction found for subscription - handling as free/coupon subscription", { subscriptionId });
+      
+      // For free/coupon subscriptions without payment transaction, just cancel without refund
+      const { error: cancelError } = await supabaseClient
+        .from('subscriptions')
+        .update({
+          status: 'cancelled',
+          cancelled_at: new Date().toISOString(),
+          cancellation_reason: cancellationReason
+        })
+        .eq('id', subscriptionId);
+
+      if (cancelError) {
+        logStep("Failed to cancel free subscription", cancelError);
+        return new Response(JSON.stringify({ 
+          error: "שגיאה בביטול המנוי" 
+        }), {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Return success response for free subscription cancellation
+      const response = {
+        success: true,
+        message: "ביטול המנוי בוצע בהצלחה",
+        refund: {
+          eligible: false,
+          amount: 0,
+          cancellationFee: 0,
+          processed: false,
+          refundTransactionId: null
+        },
+        subscription: {
+          id: subscriptionId,
+          status: 'cancelled',
+          cancelledAt: new Date().toISOString()
+        }
+      };
+
+      logStep("Free subscription cancelled successfully", response);
+
+      return new Response(JSON.stringify(response), {
+        status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
