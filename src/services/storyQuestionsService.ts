@@ -15,11 +15,11 @@ export interface Story {
 
 // Get all available stories from reading comprehension questions
 export const getAvailableStories = async (): Promise<Story[]> => {
-  console.log('[DEBUG] getAvailableStories called');
+  // console.log('[DEBUG] getAvailableStories called');
   
   // Use getReadingQuestions to ensure we get questions with passages joined
   const allReadingQuestions = await getReadingQuestions();
-  console.log('[DEBUG] Total reading questions loaded:', allReadingQuestions.length);
+  // console.log('[DEBUG] Total reading questions loaded:', allReadingQuestions.length);
   
   // פילטור שאלות שיש להן גם passageText וגם passageTitle
   const readingQuestions = allReadingQuestions.filter(q => {
@@ -27,15 +27,15 @@ export const getAvailableStories = async (): Promise<Story[]> => {
     const hasPassageTitle = !!q.passageTitle;
     const isReadingType = q.type === 'reading-comprehension';
     
-    console.log(`[DEBUG] Question ${q.id}: hasPassageText=${hasPassageText}, hasPassageTitle=${hasPassageTitle}, isReadingType=${isReadingType}`);
+    // console.log(`[DEBUG] Question ${q.id}: hasPassageText=${hasPassageText}, hasPassageTitle=${hasPassageTitle}, isReadingType=${isReadingType}`);
     
     return hasPassageText && hasPassageTitle && isReadingType;
   });
   
-  console.log('[DEBUG] Reading questions found:', readingQuestions.length);
-  readingQuestions.forEach(q => {
-    console.log(`[DEBUG] Reading question: ${q.id} - "${q.passageTitle}"`);
-  });
+  // console.log('[DEBUG] Reading questions found:', readingQuestions.length);
+  // readingQuestions.forEach(q => {
+  //   console.log(`[DEBUG] Reading question: ${q.id} - "${q.passageTitle}"`);
+  // });
 
   // Group questions by passage title
   const storiesMap = new Map<string, Question[]>();
@@ -48,7 +48,7 @@ export const getAvailableStories = async (): Promise<Story[]> => {
     storiesMap.get(title)!.push(question);
   });
 
-  console.log('[DEBUG] Stories map:', Array.from(storiesMap.keys()));
+  // console.log('[DEBUG] Stories map:', Array.from(storiesMap.keys()));
 
   // Convert to Story objects
   const stories: Story[] = Array.from(storiesMap.entries()).map(([title, questions]) => {
@@ -89,12 +89,12 @@ export const getAvailableStories = async (): Promise<Story[]> => {
       subject: primarySubject
     };
     
-    console.log('[DEBUG] Created story:', story);
+    // console.log('[DEBUG] Created story:', story);
     return story;
   });
 
-  console.log('[DEBUG] Final stories:', stories.length);
-  console.log('[DEBUG] Stories found:', stories.map(s => ({ title: s.title, count: s.questionCount, subject: s.subject })));
+  // console.log('[DEBUG] Final stories:', stories.length);
+  // console.log('[DEBUG] Stories found:', stories.map(s => ({ title: s.title, count: s.questionCount, subject: s.subject })));
   return stories;
 };
 

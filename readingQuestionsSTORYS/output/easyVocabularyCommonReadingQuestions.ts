@@ -1,0 +1,1205 @@
+import { Question, StorySummary } from '../../types/questionTypes';
+
+// שיפור #12: Version tracking
+export const version = "final-ai-filled";
+
+// שיפור #7: Story summary
+export const storySummary: StorySummary = {
+  "title": "Building Blocks of Better Communication",
+  "difficulty": "easy",
+  "topic": "VocabularyCommon",
+  "wordCount": 189,
+  "numQuestions": 25,
+  "estimatedTime": 2,
+  "topicId": 3
+};
+
+// Reading passage - Building Blocks of Better Communication (easy level)
+export const passage = `[1] Words are the building blocks of communication, and having a rich vocabulary helps us express our thoughts more clearly. When we know more words, we can choose exactly the right one to share our ideas, feelings, and opinions. Simple words like "good" or "bad" only tell part of the story, but specific words like "excellent," "fantastic," or "terrible" paint a more detailed picture.
+
+[2] Learning new words happens naturally through reading and conversation. When we read books, magazines, or websites, we encounter unfamiliar words in context, which helps us understand their meanings. Talking with friends, family, and teachers also introduces us to different ways of expressing ideas. Even watching educational videos or listening to podcasts can expand our word knowledge.
+
+[3] The best way to remember new vocabulary is to use it regularly. Writing in a journal, participating in class discussions, or explaining topics to others gives us practice with new words. Some people keep vocabulary notebooks where they write down interesting words they discover. Others play word games or use flashcards to review new terms. With consistent practice, these words become natural parts of our everyday speech.`;
+
+// Enhanced questions with all improvements
+export const questions: Question[] = [
+  {
+    "questionId": "S3_Q1",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [1], what is the main advantage of having a rich vocabulary?",
+    "options": [
+      {
+        "text": "It helps us express our thoughts more clearly",
+        "rationale": "This is explicitly stated in the first paragraph as the main benefit"
+      },
+      {
+        "text": "It makes us sound more intelligent",
+        "rationale": "While this might be true, it's not mentioned in the passage"
+      },
+      {
+        "text": "It helps us read faster",
+        "rationale": "This benefit is not discussed in the passage"
+      },
+      {
+        "text": "It makes writing easier",
+        "rationale": "While this could be true, it's not specifically mentioned in paragraph [1]"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] directly states that 'having a rich vocabulary helps us express our thoughts more clearly.'",
+    "hint": "Look at the first sentence of the passage and what immediately follows it",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "easy-level",
+      "detail",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 1,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 1"
+  },
+  {
+    "questionId": "S3_Q2",
+    "type": "reading-comprehension",
+    "text": "Which of these examples is NOT mentioned in paragraph [2] as a way to learn new words?",
+    "options": [
+      {
+        "text": "Writing essays",
+        "rationale": "This method is not mentioned in paragraph [2]"
+      },
+      {
+        "text": "Reading books",
+        "rationale": "This is explicitly mentioned as a learning method"
+      },
+      {
+        "text": "Watching educational videos",
+        "rationale": "This is mentioned as one way to expand word knowledge"
+      },
+      {
+        "text": "Talking with friends",
+        "rationale": "This is specifically mentioned as a way to learn new words"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "While paragraph [2] lists several ways to learn new words (reading, conversation, videos, podcasts), writing essays is not mentioned.",
+    "hint": "Review all the learning methods listed in paragraph [2] and compare them to the options",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "easy-level",
+      "detail",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 2,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 2"
+  },
+  {
+    "questionId": "S3_Q3",
+    "type": "reading-comprehension",
+    "text": "What does paragraph [3] suggest is the most effective way to remember new vocabulary?",
+    "options": [
+      {
+        "text": "Using it regularly",
+        "rationale": "This is explicitly stated as the best way to remember new vocabulary"
+      },
+      {
+        "text": "Creating flashcards",
+        "rationale": "This is mentioned as one method but not as the best way"
+      },
+      {
+        "text": "Keeping a vocabulary notebook",
+        "rationale": "This is mentioned as one method but not as the best way"
+      },
+      {
+        "text": "Playing word games",
+        "rationale": "This is mentioned as one method but not as the best way"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The first sentence of paragraph [3] directly states that 'The best way to remember new vocabulary is to use it regularly.'",
+    "hint": "Look for the phrase 'best way' in paragraph [3]",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "easy-level",
+      "detail",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 3,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 3"
+  },
+  {
+    "questionId": "S3_Q4",
+    "type": "reading-comprehension",
+    "text": "In paragraph [1], which words are used as examples of alternatives to 'good' or 'bad'?",
+    "options": [
+      {
+        "text": "Excellent, fantastic, and terrible",
+        "rationale": "These are the exact words used as examples in the passage"
+      },
+      {
+        "text": "Great, wonderful, and awful",
+        "rationale": "These words are not used in the passage"
+      },
+      {
+        "text": "Excellent and terrible only",
+        "rationale": "This is incomplete; fantastic is also mentioned"
+      },
+      {
+        "text": "Fantastic and terrible only",
+        "rationale": "This is incomplete; excellent is also mentioned"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] specifically uses 'excellent,' 'fantastic,' and 'terrible' as examples of more specific words than 'good' or 'bad.'",
+    "hint": "Look for the specific example words that follow 'good' and 'bad' in paragraph [1]",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "easy-level",
+      "detail",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 4,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 4"
+  },
+  {
+    "questionId": "S3_Q5",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [2], why is reading helpful for learning new words?",
+    "options": [
+      {
+        "text": "Because we encounter unfamiliar words in context",
+        "rationale": "This is explicitly stated as the reason reading helps"
+      },
+      {
+        "text": "Because it's more entertaining than memorization",
+        "rationale": "This comparison is not made in the passage"
+      },
+      {
+        "text": "Because it improves spelling",
+        "rationale": "This benefit is not mentioned in the passage"
+      },
+      {
+        "text": "Because it's faster than other methods",
+        "rationale": "The passage doesn't compare the speed of different learning methods"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [2] states that when reading, 'we encounter unfamiliar words in context, which helps us understand their meanings.'",
+    "hint": "Look for the explanation that follows the mention of reading in paragraph [2]",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "easy-level",
+      "detail",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 5,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 5"
+  },
+  {
+    "questionId": "S3_Q6",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [1], why is having a rich vocabulary important?",
+    "options": [
+      {
+        "text": "It helps us express our thoughts more clearly and precisely",
+        "rationale": "This is explicitly stated in paragraph [1] and demonstrated with examples"
+      },
+      {
+        "text": "It makes us sound more intelligent",
+        "rationale": "While this might be true, it's not mentioned in the passage"
+      },
+      {
+        "text": "It helps us read faster",
+        "rationale": "This benefit is not discussed in the passage"
+      },
+      {
+        "text": "It makes writing easier",
+        "rationale": "While this could be true, it's not specifically mentioned in paragraph [1]"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] directly states that 'having a rich vocabulary helps us express our thoughts more clearly' and provides examples comparing simple vs. specific words",
+    "hint": "Look at the comparison between simple words like 'good' and more specific words in the text",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 6,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 6"
+  },
+  {
+    "questionId": "S3_Q7",
+    "type": "reading-comprehension",
+    "text": "Which methods of learning new words are mentioned in paragraph [2]?",
+    "options": [
+      {
+        "text": "Reading, conversation, and audiovisual media",
+        "rationale": "These are all explicitly mentioned in paragraph [2]"
+      },
+      {
+        "text": "Only reading books and magazines",
+        "rationale": "This is incomplete as it omits other mentioned methods"
+      },
+      {
+        "text": "Memorizing dictionary definitions",
+        "rationale": "This method is not mentioned in the passage"
+      },
+      {
+        "text": "Taking vocabulary tests",
+        "rationale": "This method is not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [2] lists multiple ways to learn new words: reading various materials, talking with others, and consuming educational media like videos and podcasts",
+    "hint": "Look for all the different activities mentioned that can help in learning new words",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 7,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 7"
+  },
+  {
+    "questionId": "S3_Q8",
+    "type": "reading-comprehension",
+    "text": "What is the main recommendation in paragraph [3] for remembering new vocabulary?",
+    "options": [
+      {
+        "text": "Regular use and practice",
+        "rationale": "This is explicitly stated as 'the best way' in paragraph [3]"
+      },
+      {
+        "text": "Memorization techniques",
+        "rationale": "While methods are mentioned, the emphasis is on regular usage"
+      },
+      {
+        "text": "Reading extensively",
+        "rationale": "This is mentioned in paragraph [2], not [3]"
+      },
+      {
+        "text": "Taking notes",
+        "rationale": "While vocabulary notebooks are mentioned, they're just one example of practice"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [3] emphasizes that 'the best way to remember new vocabulary is to use it regularly' and provides various examples of practice",
+    "hint": "Focus on what the paragraph identifies as 'the best way' to remember vocabulary",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 8,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 8"
+  },
+  {
+    "questionId": "S3_Q9",
+    "type": "reading-comprehension",
+    "text": "What examples of vocabulary practice methods are given in paragraph [3]?",
+    "options": [
+      {
+        "text": "Writing in journals, class discussions, explaining topics, vocabulary notebooks, and word games",
+        "rationale": "All these methods are explicitly listed in paragraph [3]"
+      },
+      {
+        "text": "Only writing in journals",
+        "rationale": "This is just one of several methods mentioned"
+      },
+      {
+        "text": "Reading books and websites",
+        "rationale": "These are mentioned in paragraph [2], not [3]"
+      },
+      {
+        "text": "Taking vocabulary tests and quizzes",
+        "rationale": "These methods are not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [3] provides multiple specific examples of how to practice vocabulary, including journaling, discussions, teaching others, keeping notebooks, and playing word games",
+    "hint": "Look for all the specific activities listed that help practice new vocabulary",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 9,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 9"
+  },
+  {
+    "questionId": "S3_Q10",
+    "type": "reading-comprehension",
+    "text": "What is the overall theme that connects all three paragraphs in this passage?",
+    "options": [
+      {
+        "text": "The importance and methods of building vocabulary",
+        "rationale": "This theme runs through all paragraphs, from importance to learning to practice"
+      },
+      {
+        "text": "How to become a better writer",
+        "rationale": "While vocabulary helps writing, this isn't the main focus of the passage"
+      },
+      {
+        "text": "The benefits of reading",
+        "rationale": "Reading is only one aspect mentioned in paragraph [2]"
+      },
+      {
+        "text": "Ways to improve memory",
+        "rationale": "Memory improvement is not the main focus of the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The passage progresses logically from explaining why vocabulary is important [1], to how to learn new words [2], to how to remember and use them [3]",
+    "hint": "Think about the common thread that connects the importance, acquisition, and retention of vocabulary",
+    "paragraphReference": "Paragraphs [1-3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 10,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 10"
+  },
+  {
+    "questionId": "S3_Q11",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [1], why is having a rich vocabulary important?",
+    "options": [
+      {
+        "text": "It helps us express our thoughts more clearly",
+        "rationale": "This is directly stated in the first paragraph as the main benefit of vocabulary"
+      },
+      {
+        "text": "It makes us sound more intelligent",
+        "rationale": "While this might be true, it's not mentioned in the passage"
+      },
+      {
+        "text": "It helps us read faster",
+        "rationale": "This benefit is not discussed in the passage"
+      },
+      {
+        "text": "It makes writing easier",
+        "rationale": "While this could be true, it's not specifically mentioned in paragraph [1]"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] explicitly states that 'having a rich vocabulary helps us express our thoughts more clearly' and provides examples of how specific words offer better expression than simple ones.",
+    "hint": "Look at the first sentence of the passage and its immediate follow-up.",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 11,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 11"
+  },
+  {
+    "questionId": "S3_Q12",
+    "type": "reading-comprehension",
+    "text": "Which of the following is NOT mentioned in paragraph [2] as a way to learn new words?",
+    "options": [
+      {
+        "text": "Writing essays",
+        "rationale": "This method is not mentioned in paragraph [2]"
+      },
+      {
+        "text": "Reading books",
+        "rationale": "This is explicitly mentioned as a learning method"
+      },
+      {
+        "text": "Watching educational videos",
+        "rationale": "This is mentioned as one way to expand word knowledge"
+      },
+      {
+        "text": "Talking with friends",
+        "rationale": "This is specifically mentioned as a way to learn new words"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "While paragraph [2] lists several ways to learn new words (reading, conversation, videos, podcasts), writing essays is not mentioned.",
+    "hint": "Review all the learning methods listed in paragraph [2] carefully.",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 12,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 12"
+  },
+  {
+    "questionId": "S3_Q13",
+    "type": "reading-comprehension",
+    "text": "Based on paragraph [3], what is the most effective way to retain new vocabulary?",
+    "options": [
+      {
+        "text": "Regular usage",
+        "rationale": "The passage explicitly states this is the best way to remember new vocabulary"
+      },
+      {
+        "text": "Memorization",
+        "rationale": "While implied in some methods, it's not identified as the best way"
+      },
+      {
+        "text": "Reading extensively",
+        "rationale": "This is mentioned in paragraph [2] but not as the best retention method"
+      },
+      {
+        "text": "Playing word games",
+        "rationale": "This is mentioned as one method but not as the most effective"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The first sentence of paragraph [3] clearly states that 'The best way to remember new vocabulary is to use it regularly.'",
+    "hint": "Look for the definitive statement at the beginning of paragraph [3].",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 13,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 13"
+  },
+  {
+    "questionId": "S3_Q14",
+    "type": "reading-comprehension",
+    "text": "How does the passage contrast simple versus specific words in paragraph [1]?",
+    "options": [
+      {
+        "text": "Simple words tell only part of the story, while specific words provide more detail",
+        "rationale": "This directly reflects the passage's comparison"
+      },
+      {
+        "text": "Simple words are incorrect, while specific words are correct",
+        "rationale": "The passage doesn't suggest simple words are wrong"
+      },
+      {
+        "text": "Simple words are faster to use than specific words",
+        "rationale": "This comparison isn't made in the passage"
+      },
+      {
+        "text": "Simple words are older than specific words",
+        "rationale": "This isn't mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] explicitly contrasts simple words like 'good' or 'bad' with specific words like 'excellent,' 'fantastic,' or 'terrible,' noting that specific words paint a more detailed picture.",
+    "hint": "Look at the examples given for both simple and specific words in paragraph [1].",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 14,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 14"
+  },
+  {
+    "questionId": "S3_Q15",
+    "type": "reading-comprehension",
+    "text": "What methods of vocabulary practice are mentioned in paragraph [3]?",
+    "options": [
+      {
+        "text": "Journal writing, class discussions, and vocabulary notebooks",
+        "rationale": "These are all explicitly mentioned as practice methods"
+      },
+      {
+        "text": "Reading books and watching videos",
+        "rationale": "These are mentioned in paragraph [2], not [3]"
+      },
+      {
+        "text": "Taking vocabulary tests",
+        "rationale": "This method is not mentioned in the passage"
+      },
+      {
+        "text": "Studying dictionary definitions",
+        "rationale": "This method is not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [3] specifically lists writing in journals, participating in class discussions, keeping vocabulary notebooks, and using flashcards as methods to practice new vocabulary.",
+    "hint": "Look for the specific activities listed in paragraph [3] for practicing vocabulary.",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "easy-level",
+      "main-idea",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 15,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 15"
+  },
+  {
+    "questionId": "S3_Q16",
+    "type": "reading-comprehension",
+    "text": "Based on paragraph [1], what can be inferred about someone who primarily uses simple words like 'good' or 'bad'?",
+    "options": [
+      {
+        "text": "They likely struggle to communicate nuanced thoughts effectively",
+        "rationale": "The passage indicates that simple words only tell part of the story, suggesting limited expression"
+      },
+      {
+        "text": "They are intentionally being concise",
+        "rationale": "The passage doesn't suggest this is about conciseness, but rather about limited expression"
+      },
+      {
+        "text": "They prefer direct communication",
+        "rationale": "The passage doesn't connect simple words to a preference for directness"
+      },
+      {
+        "text": "They are new language learners",
+        "rationale": "The passage doesn't discuss language learning levels"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [1] explains that simple words like 'good' or 'bad' only tell part of the story, while specific words allow for more detailed expression, suggesting those who use simple words have difficulty expressing complex thoughts.",
+    "hint": "Think about how the passage compares simple versus specific word choices",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "easy-level",
+      "inference",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 16,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 16"
+  },
+  {
+    "questionId": "S3_Q17",
+    "type": "reading-comprehension",
+    "text": "What can be inferred about the relationship between reading and vocabulary development from paragraph [2]?",
+    "options": [
+      {
+        "text": "Context helps make word learning more effective",
+        "rationale": "The passage explicitly mentions context helping understand meanings"
+      },
+      {
+        "text": "Reading is the only way to learn new words",
+        "rationale": "The passage mentions multiple ways to learn vocabulary"
+      },
+      {
+        "text": "Quick reading leads to better vocabulary",
+        "rationale": "Reading speed is not discussed in the passage"
+      },
+      {
+        "text": "Fiction is better than non-fiction for vocabulary",
+        "rationale": "The passage doesn't compare types of reading materials"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [2] specifically mentions that encountering unfamiliar words in context helps understand their meanings, indicating that contextual learning is more effective.",
+    "hint": "Look for how the passage describes the process of learning words through reading",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "easy-level",
+      "inference",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 17,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 17"
+  },
+  {
+    "questionId": "S3_Q18",
+    "type": "reading-comprehension",
+    "text": "What can be concluded about the most effective method of vocabulary retention based on paragraph [3]?",
+    "options": [
+      {
+        "text": "Active usage leads to better retention",
+        "rationale": "The passage emphasizes regular use for remembering new vocabulary"
+      },
+      {
+        "text": "Memorization is the best approach",
+        "rationale": "The passage doesn't promote mere memorization"
+      },
+      {
+        "text": "Writing definitions is most important",
+        "rationale": "While writing is mentioned, it's not presented as the most important method"
+      },
+      {
+        "text": "Group study is essential",
+        "rationale": "Group study isn't mentioned as a key factor"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [3] emphasizes that using words regularly in various ways leads to them becoming natural parts of everyday speech, indicating active usage is key to retention.",
+    "hint": "Consider what the passage says about how new words become part of everyday speech",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "easy-level",
+      "inference",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 18,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 18"
+  },
+  {
+    "questionId": "S3_Q19",
+    "type": "reading-comprehension",
+    "text": "From paragraphs [1] and [2], what can be inferred about the relationship between vocabulary and communication?",
+    "options": [
+      {
+        "text": "Broader vocabulary enables more precise communication",
+        "rationale": "The passage links rich vocabulary to clearer expression and detailed description"
+      },
+      {
+        "text": "Simple vocabulary is always insufficient",
+        "rationale": "The passage doesn't completely dismiss simple vocabulary"
+      },
+      {
+        "text": "Complex words are always better",
+        "rationale": "The passage doesn't suggest complex words are always superior"
+      },
+      {
+        "text": "Communication requires formal vocabulary",
+        "rationale": "Formal vocabulary isn't discussed as a requirement"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The first two paragraphs establish that having more words to choose from allows for more precise and detailed expression of thoughts and ideas.",
+    "hint": "Consider how the passage connects vocabulary size to communication ability",
+    "paragraphReference": "Paragraphs [1-2]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "easy-level",
+      "inference",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 19,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 19"
+  },
+  {
+    "questionId": "S3_Q20",
+    "type": "reading-comprehension",
+    "text": "Based on paragraph [3], what can be inferred about people who keep vocabulary notebooks?",
+    "options": [
+      {
+        "text": "They take an active approach to vocabulary learning",
+        "rationale": "The passage presents this as one of several active learning strategies"
+      },
+      {
+        "text": "They learn faster than others",
+        "rationale": "Learning speed isn't compared in the passage"
+      },
+      {
+        "text": "They prefer writing to speaking",
+        "rationale": "The passage doesn't suggest this preference"
+      },
+      {
+        "text": "They struggle with memorization",
+        "rationale": "This isn't suggested by the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Paragraph [3] presents keeping vocabulary notebooks as one of several active strategies for learning and remembering new words, suggesting these individuals take deliberate steps to improve their vocabulary.",
+    "hint": "Think about what keeping a vocabulary notebook reveals about a person's learning approach",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "easy-level",
+      "inference",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 20,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 20"
+  },
+  {
+    "questionId": "S3_Q21",
+    "type": "reading-comprehension",
+    "text": "Based on paragraph [1], which word best represents the author's contrast to using simple descriptors like 'good' or 'bad'?",
+    "options": [
+      {
+        "text": "excellent",
+        "rationale": "Correct - This is specifically mentioned as a more detailed alternative"
+      },
+      {
+        "text": "okay",
+        "rationale": "Incorrect - This is another simple descriptor like 'good' or 'bad'"
+      },
+      {
+        "text": "nice",
+        "rationale": "Incorrect - This is also a simple descriptor, not adding detail"
+      },
+      {
+        "text": "fine",
+        "rationale": "Incorrect - This is too basic and doesn't provide the detailed description the passage promotes"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The passage explicitly contrasts simple words with more specific ones like 'excellent' to demonstrate richer vocabulary usage",
+    "hint": "Look for words the author lists as specific examples of detailed descriptors",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "easy-level",
+      "vocabulary",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 21,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 21"
+  },
+  {
+    "questionId": "S3_Q22",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [2], how do we naturally acquire new vocabulary?",
+    "options": [
+      {
+        "text": "Through memorization drills",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      },
+      {
+        "text": "Through reading and conversation",
+        "rationale": "Correct - Explicitly stated as natural learning methods"
+      },
+      {
+        "text": "Through writing essays",
+        "rationale": "Incorrect - Not mentioned as a natural acquisition method"
+      },
+      {
+        "text": "Through formal testing",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The passage specifically states that learning new words happens naturally through reading and conversation",
+    "hint": "Focus on the methods described at the beginning of paragraph [2]",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "easy-level",
+      "vocabulary",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 22,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 22"
+  },
+  {
+    "questionId": "S3_Q23",
+    "type": "reading-comprehension",
+    "text": "What is the best way to retain new vocabulary according to paragraph [3]?",
+    "options": [
+      {
+        "text": "Regular usage",
+        "rationale": "Correct - The passage explicitly states this is the best way"
+      },
+      {
+        "text": "Silent reading",
+        "rationale": "Incorrect - Not mentioned as the best method"
+      },
+      {
+        "text": "Listening to others",
+        "rationale": "Incorrect - Mentioned as a learning method but not as the best way to remember"
+      },
+      {
+        "text": "Taking tests",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The passage clearly states that using words regularly is the best way to remember new vocabulary",
+    "hint": "Look for the method described at the beginning of paragraph [3]",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "easy-level",
+      "vocabulary",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 23,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 23"
+  },
+  {
+    "questionId": "S3_Q24",
+    "type": "reading-comprehension",
+    "text": "Which of these is NOT mentioned in paragraph [2] as a way to encounter new words?",
+    "options": [
+      {
+        "text": "Reading books",
+        "rationale": "Incorrect - This is explicitly mentioned"
+      },
+      {
+        "text": "Watching educational videos",
+        "rationale": "Incorrect - This is explicitly mentioned"
+      },
+      {
+        "text": "Writing letters",
+        "rationale": "Correct - This method is not mentioned in the passage"
+      },
+      {
+        "text": "Listening to podcasts",
+        "rationale": "Incorrect - This is explicitly mentioned"
+      }
+    ],
+    "correctAnswer": 2,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "Writing letters is not mentioned among the ways to encounter new vocabulary in paragraph [2]",
+    "hint": "Check the specific learning methods listed in paragraph [2]",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "easy-level",
+      "vocabulary",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 24,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 24"
+  },
+  {
+    "questionId": "S3_Q25",
+    "type": "reading-comprehension",
+    "text": "According to paragraph [3], which practice method is mentioned for reviewing new terms?",
+    "options": [
+      {
+        "text": "Creating crossword puzzles",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      },
+      {
+        "text": "Using flashcards",
+        "rationale": "Correct - Explicitly mentioned as a review method"
+      },
+      {
+        "text": "Taking vocabulary tests",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      },
+      {
+        "text": "Reading aloud",
+        "rationale": "Incorrect - Not mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "easy",
+    "difficultyScore": 2,
+    "explanation": "The passage specifically mentions flashcards as one method to review new terms",
+    "hint": "Look for specific study tools mentioned in paragraph [3]",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "easy-level",
+      "vocabulary",
+      "vocabularycommon"
+    ],
+    "metadata": {
+      "topic": "VocabularyCommon",
+      "questionNumber": 25,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 200,
+      "estimatedTime": 2
+    },
+    "aiPrompt": "Generated question 25"
+  }
+];
+
+// Legacy exports for backward compatibility
+export const easyVocabularyCommonPassageText = passage;
+export const easyVocabularyCommonReadingQuestions = questions;

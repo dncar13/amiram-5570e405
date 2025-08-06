@@ -1,0 +1,1209 @@
+import { Question, StorySummary } from '../../types/questionTypes';
+
+// שיפור #12: Version tracking
+export const version = "final-ai-filled";
+
+// שיפור #7: Story summary
+export const storySummary: StorySummary = {
+  "title": "The Hidden Costs of Digital Convenience",
+  "difficulty": "hard",
+  "topic": "ComprehensiveTest",
+  "wordCount": 371,
+  "numQuestions": 25,
+  "estimatedTime": 5,
+  "topicId": 4
+};
+
+// Reading passage - The Hidden Costs of Digital Convenience (hard level)
+export const passage = `The Hidden Costs of Digital Convenience
+
+[1] In the contemporary digital landscape, the proliferation of smart devices and automated systems has fundamentally transformed how we navigate daily life. While these technological advancements offer unprecedented convenience and efficiency, they simultaneously introduce subtle yet significant societal and psychological costs that often go unrecognized. From automated customer service interfaces to AI-powered personal assistants, these innovations have created a paradoxical situation where increased connectivity may actually be diminishing genuine human interaction and cognitive engagement.
+
+[2] The automation of routine tasks, while ostensibly beneficial, has begun to erode essential cognitive skills and problem-solving capabilities. Research indicates that excessive reliance on GPS navigation systems has led to a marked decline in spatial awareness and mental mapping abilities among younger generations. Similarly, the ubiquity of automated spelling and grammar corrections has resulted in diminished writing proficiency, as individuals increasingly depend on software to rectify their linguistic errors rather than developing a thorough understanding of language rules. These technological crutches, while convenient in the short term, may be inadvertently contributing to a form of cognitive atrophy.
+
+[3] Moreover, the social implications of digital convenience extend far beyond individual cognitive effects. The replacement of face-to-face interactions with digital alternatives has precipitated a subtle transformation in social dynamics and emotional intelligence. Customer service chatbots, online ordering systems, and digital payment platforms have eliminated countless opportunities for meaningful human exchanges that historically served as informal training grounds for developing empathy, patience, and social adaptability. This shift has particular significance for younger individuals who may have fewer opportunities to develop crucial interpersonal skills in authentic social contexts.
+
+[4] The economic ramifications of this digital transformation are equally concerning. While automation and digital systems have undoubtedly created new employment opportunities in the technology sector, they have simultaneously displaced numerous traditional jobs that once provided stable employment for millions. Furthermore, the increasing centralization of digital services among a handful of powerful technology companies has raised serious questions about market competition, data privacy, and economic equality. As society becomes more dependent on these digital systems, the cost of opting out becomes prohibitively high, effectively forcing participation in a digital ecosystem that may not always serve the best interests of individual users or society as a whole.`;
+
+// Enhanced questions with all improvements
+export const questions: Question[] = [
+  {
+    "questionId": "S4_Q1",
+    "type": "reading-comprehension",
+    "text": "According to the passage, what is one specific way that GPS navigation systems have impacted cognitive abilities?",
+    "options": [
+      {
+        "text": "Decreased spatial awareness and mental mapping abilities",
+        "rationale": "This is explicitly stated in paragraph 2 as a research finding"
+      },
+      {
+        "text": "Reduced memory retention",
+        "rationale": "While cognitive impacts are discussed, memory retention is not specifically mentioned"
+      },
+      {
+        "text": "Improved multitasking capabilities",
+        "rationale": "The passage does not mention any positive cognitive impacts of GPS"
+      },
+      {
+        "text": "Enhanced directional skills",
+        "rationale": "This contradicts the passage's statement about declining spatial awareness"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 2 specifically states that 'excessive reliance on GPS navigation systems has led to a marked decline in spatial awareness and mental mapping abilities among younger generations.'",
+    "hint": "Look for specific research findings mentioned in relation to navigation technology",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "hard-level",
+      "detail",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 1,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 1"
+  },
+  {
+    "questionId": "S4_Q2",
+    "type": "reading-comprehension",
+    "text": "What social skill development opportunity has been reduced due to digital convenience?",
+    "options": [
+      {
+        "text": "Empathy development through face-to-face interactions",
+        "rationale": "This is specifically mentioned as a lost opportunity in customer service contexts"
+      },
+      {
+        "text": "Technical problem-solving",
+        "rationale": "While mentioned, this isn't discussed in relation to social skill development"
+      },
+      {
+        "text": "Digital communication skills",
+        "rationale": "The passage focuses on the loss of traditional social skills, not digital ones"
+      },
+      {
+        "text": "Academic performance",
+        "rationale": "This isn't mentioned in relation to social skill development"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 3 explicitly mentions that the reduction in face-to-face interactions has eliminated opportunities for developing empathy, patience, and social adaptability.",
+    "hint": "Consider what skills were traditionally developed through human customer service interactions",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "hard-level",
+      "detail",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 2,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 2"
+  },
+  {
+    "questionId": "S4_Q3",
+    "type": "reading-comprehension",
+    "text": "What economic concern does the passage raise about digital transformation?",
+    "options": [
+      {
+        "text": "Centralization of digital services among few companies",
+        "rationale": "This is explicitly mentioned as a concern in paragraph 4"
+      },
+      {
+        "text": "Increased cost of technology",
+        "rationale": "While costs are mentioned, this specific aspect isn't discussed"
+      },
+      {
+        "text": "Rising unemployment in the tech sector",
+        "rationale": "The passage actually mentions new employment opportunities in tech"
+      },
+      {
+        "text": "Global economic growth",
+        "rationale": "This isn't discussed in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 4 discusses concerns about the centralization of digital services among a few powerful technology companies, raising issues about market competition and economic equality.",
+    "hint": "Look for mentions of market control and competition in the technology sector",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "hard-level",
+      "detail",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 3,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 3"
+  },
+  {
+    "questionId": "S4_Q4",
+    "type": "reading-comprehension",
+    "text": "What language-related consequence of digital convenience does the passage identify?",
+    "options": [
+      {
+        "text": "Diminished writing proficiency",
+        "rationale": "This is specifically mentioned as a result of reliance on spelling and grammar corrections"
+      },
+      {
+        "text": "Improved vocabulary",
+        "rationale": "This positive effect is not mentioned in the passage"
+      },
+      {
+        "text": "Enhanced communication skills",
+        "rationale": "The passage suggests the opposite effect"
+      },
+      {
+        "text": "Faster typing speed",
+        "rationale": "This isn't mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 2 states that 'the ubiquity of automated spelling and grammar corrections has resulted in diminished writing proficiency.'",
+    "hint": "Think about how automatic correction features affect language learning",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "hard-level",
+      "detail",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 4,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 4"
+  },
+  {
+    "questionId": "S4_Q5",
+    "type": "reading-comprehension",
+    "text": "What paradox does the passage identify in the first paragraph?",
+    "options": [
+      {
+        "text": "Increased connectivity leading to decreased human interaction",
+        "rationale": "This paradox is explicitly stated in paragraph 1"
+      },
+      {
+        "text": "Higher costs leading to greater efficiency",
+        "rationale": "This paradox isn't mentioned in the passage"
+      },
+      {
+        "text": "More technology leading to better social skills",
+        "rationale": "The passage argues the opposite"
+      },
+      {
+        "text": "Digital convenience causing economic growth",
+        "rationale": "This relationship isn't presented as paradoxical in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The first paragraph explicitly describes the paradox where increased connectivity through digital technology is actually reducing genuine human interaction.",
+    "hint": "Look for contradictory outcomes of digital connectivity mentioned in the opening paragraph",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "hard-level",
+      "detail",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 5,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 5"
+  },
+  {
+    "questionId": "S4_Q6",
+    "type": "reading-comprehension",
+    "text": "What is the main paradox described in the passage regarding digital convenience?",
+    "options": [
+      {
+        "text": "Increased connectivity leads to decreased human interaction",
+        "rationale": "This accurately captures the central paradox mentioned in paragraph 1"
+      },
+      {
+        "text": "Digital technology creates more jobs than it eliminates",
+        "rationale": "This contradicts the passage's discussion of job displacement"
+      },
+      {
+        "text": "Automated systems are too complex for most users",
+        "rationale": "This isn't mentioned as a paradox in the passage"
+      },
+      {
+        "text": "Digital devices are becoming more expensive yet more necessary",
+        "rationale": "While cost is mentioned, this isn't the main paradox discussed"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage explicitly states in paragraph 1 that increased connectivity through digital technology is paradoxically reducing genuine human interaction and engagement",
+    "hint": "Look for contrasting outcomes of digital advancement in the first paragraph",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 6,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 6"
+  },
+  {
+    "questionId": "S4_Q7",
+    "type": "reading-comprehension",
+    "text": "According to the passage, how does automation affect cognitive skills?",
+    "options": [
+      {
+        "text": "It enhances problem-solving abilities",
+        "rationale": "This contradicts the passage's argument about cognitive decline"
+      },
+      {
+        "text": "It leads to cognitive atrophy through reduced mental effort",
+        "rationale": "This correctly summarizes the passage's position on cognitive effects"
+      },
+      {
+        "text": "It has no significant impact on mental capabilities",
+        "rationale": "This contradicts the evidence presented in the passage"
+      },
+      {
+        "text": "It only affects linguistic abilities",
+        "rationale": "The passage mentions multiple cognitive impacts, not just linguistic"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 2 explicitly discusses how automation erodes cognitive skills, including spatial awareness and writing proficiency",
+    "hint": "Consider the GPS and spelling correction examples provided",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 7,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 7"
+  },
+  {
+    "questionId": "S4_Q8",
+    "type": "reading-comprehension",
+    "text": "What social skill development concern does the passage highlight?",
+    "options": [
+      {
+        "text": "The loss of opportunities to develop interpersonal skills",
+        "rationale": "This correctly identifies the social impact discussed"
+      },
+      {
+        "text": "Increased social anxiety in digital spaces",
+        "rationale": "This isn't mentioned in the passage"
+      },
+      {
+        "text": "Better communication through digital means",
+        "rationale": "This contradicts the passage's argument"
+      },
+      {
+        "text": "Faster development of technical skills",
+        "rationale": "This isn't discussed as a social skill concern"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 3 emphasizes how digital alternatives reduce opportunities for developing empathy, patience, and social adaptability",
+    "hint": "Think about what's lost when face-to-face interactions are replaced",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 8,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 8"
+  },
+  {
+    "questionId": "S4_Q9",
+    "type": "reading-comprehension",
+    "text": "What economic concern does the passage raise about digital transformation?",
+    "options": [
+      {
+        "text": "The rising cost of digital devices",
+        "rationale": "This specific concern isn't mentioned"
+      },
+      {
+        "text": "The concentration of power among few tech companies",
+        "rationale": "This correctly identifies a key economic concern"
+      },
+      {
+        "text": "The increasing complexity of digital systems",
+        "rationale": "This isn't presented as an economic concern"
+      },
+      {
+        "text": "The high cost of internet access",
+        "rationale": "This specific issue isn't discussed"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 4 specifically mentions concerns about the centralization of digital services among a few powerful technology companies",
+    "hint": "Look for concerns about market competition and power distribution",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 9,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 9"
+  },
+  {
+    "questionId": "S4_Q10",
+    "type": "reading-comprehension",
+    "text": "What is the passage's overall stance on digital convenience?",
+    "options": [
+      {
+        "text": "Entirely negative and critical",
+        "rationale": "The passage acknowledges both benefits and drawbacks"
+      },
+      {
+        "text": "Neutral and purely descriptive",
+        "rationale": "The passage takes a clear position on concerns"
+      },
+      {
+        "text": "Critically balanced, acknowledging benefits while emphasizing hidden costs",
+        "rationale": "This accurately reflects the passage's nuanced approach"
+      },
+      {
+        "text": "Overwhelmingly positive",
+        "rationale": "This contradicts the passage's focus on concerns"
+      }
+    ],
+    "correctAnswer": 2,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Throughout all paragraphs, the passage acknowledges convenience benefits while focusing on examining various hidden costs",
+    "hint": "Consider how the passage treats both advantages and disadvantages of digital technology",
+    "paragraphReference": "Paragraphs [1-4]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 10,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 10"
+  },
+  {
+    "questionId": "S4_Q11",
+    "type": "reading-comprehension",
+    "text": "What is the main paradox presented in the passage regarding digital convenience?",
+    "options": [
+      {
+        "text": "Increased connectivity is leading to decreased human interaction",
+        "rationale": "This accurately reflects the central paradox described in paragraph 1, where technological advancement leads to diminished genuine human connections."
+      },
+      {
+        "text": "Digital devices are becoming more expensive yet more common",
+        "rationale": "The passage doesn't discuss device costs as a paradox."
+      },
+      {
+        "text": "Technology creates more jobs while requiring less human labor",
+        "rationale": "While job impacts are discussed in paragraph 4, this isn't presented as the main paradox."
+      },
+      {
+        "text": "Digital tools are becoming simpler yet harder to use",
+        "rationale": "This isn't mentioned in the passage at all."
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage explicitly states in paragraph 1 that increased connectivity through digital technology is paradoxically reducing genuine human interaction and engagement.",
+    "hint": "Look for contrasting effects of digital technology mentioned in the first paragraph.",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 11,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 11"
+  },
+  {
+    "questionId": "S4_Q12",
+    "type": "reading-comprehension",
+    "text": "According to the passage, what cognitive skill has been specifically impacted by GPS navigation systems?",
+    "options": [
+      {
+        "text": "Spatial awareness and mental mapping",
+        "rationale": "This is explicitly stated in paragraph 2 as being affected by GPS reliance."
+      },
+      {
+        "text": "Mathematical calculation abilities",
+        "rationale": "While cognitive skills are discussed, this specific skill isn't mentioned."
+      },
+      {
+        "text": "Memory retention",
+        "rationale": "This isn't specifically mentioned as being affected by GPS usage."
+      },
+      {
+        "text": "Language processing",
+        "rationale": "Language skills are mentioned but in relation to spelling/grammar software, not GPS."
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 2 specifically mentions that GPS navigation systems have led to a decline in spatial awareness and mental mapping abilities among younger generations.",
+    "hint": "Think about what skills people used for navigation before GPS existed.",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 12,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 12"
+  },
+  {
+    "questionId": "S4_Q13",
+    "type": "reading-comprehension",
+    "text": "What social impact does the passage identify as a result of digital convenience?",
+    "options": [
+      {
+        "text": "Reduced opportunities for developing interpersonal skills",
+        "rationale": "This accurately reflects the social impact described in paragraph 3."
+      },
+      {
+        "text": "Increased social anxiety",
+        "rationale": "While social effects are discussed, this specific impact isn't mentioned."
+      },
+      {
+        "text": "Better communication across cultures",
+        "rationale": "This benefit isn't mentioned in the passage."
+      },
+      {
+        "text": "Stronger family relationships",
+        "rationale": "This isn't discussed in the passage."
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 3 explains that digital alternatives to face-to-face interactions have reduced opportunities for developing empathy, patience, and social adaptability.",
+    "hint": "Consider what social skills people developed through traditional human interactions.",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 13,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 13"
+  },
+  {
+    "questionId": "S4_Q14",
+    "type": "reading-comprehension",
+    "text": "What economic concern does the passage raise about digital service providers?",
+    "options": [
+      {
+        "text": "The centralization of services among few powerful companies",
+        "rationale": "This correctly identifies a key economic concern raised in paragraph 4."
+      },
+      {
+        "text": "The high cost of digital devices",
+        "rationale": "Device costs aren't discussed as an economic concern."
+      },
+      {
+        "text": "International trade implications",
+        "rationale": "This isn't mentioned in the passage."
+      },
+      {
+        "text": "Rising subscription fees",
+        "rationale": "This specific economic issue isn't discussed."
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 4 specifically mentions concerns about the centralization of digital services among a few powerful technology companies, raising issues about competition and equality.",
+    "hint": "Look for concerns about market power and control in the technology sector.",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 14,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 14"
+  },
+  {
+    "questionId": "S4_Q15",
+    "type": "reading-comprehension",
+    "text": "What effect does automated spelling and grammar correction have according to the passage?",
+    "options": [
+      {
+        "text": "Diminished writing proficiency",
+        "rationale": "This correctly identifies the effect mentioned in paragraph 2."
+      },
+      {
+        "text": "Improved communication clarity",
+        "rationale": "This positive effect isn't mentioned in the passage."
+      },
+      {
+        "text": "Faster typing speed",
+        "rationale": "This isn't discussed as an effect of automated corrections."
+      },
+      {
+        "text": "Better vocabulary usage",
+        "rationale": "This isn't mentioned as an effect of automated corrections."
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "Paragraph 2 explicitly states that reliance on automated spelling and grammar corrections has led to diminished writing proficiency as people depend on software rather than learning language rules.",
+    "hint": "Think about how automatic corrections might affect someone's ability to learn proper writing skills.",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "hard-level",
+      "main-idea",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 15,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 15"
+  },
+  {
+    "questionId": "S4_Q16",
+    "type": "reading-comprehension",
+    "text": "Based on the passage, what is the most likely long-term consequence of relying heavily on digital convenience?",
+    "options": [
+      {
+        "text": "Decreased ability to perform basic cognitive and social tasks independently",
+        "rationale": "The passage discusses cognitive atrophy and diminished social skills as direct results of digital dependence"
+      },
+      {
+        "text": "Increased efficiency in daily tasks and time management",
+        "rationale": "While mentioned as a short-term benefit, the passage focuses on negative long-term impacts"
+      },
+      {
+        "text": "Better integration of technology in workplace environments",
+        "rationale": "The passage actually suggests concerning economic implications of digital transformation"
+      },
+      {
+        "text": "Enhanced problem-solving abilities through technological assistance",
+        "rationale": "The passage explicitly states that problem-solving capabilities are eroding due to technological dependence"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage consistently emphasizes how digital convenience leads to decreased cognitive abilities, reduced social skills, and increased dependence on technology, suggesting a decline in independent human capabilities over time.",
+    "hint": "Consider the passage's discussion of both cognitive and social impacts of technology use.",
+    "paragraphReference": "Paragraphs [2-3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "hard-level",
+      "inference",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 16,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 16"
+  },
+  {
+    "questionId": "S4_Q17",
+    "type": "reading-comprehension",
+    "text": "What does the passage suggest about the relationship between digital convenience and social development?",
+    "options": [
+      {
+        "text": "Digital convenience enhances social connections through increased connectivity",
+        "rationale": "The passage contradicts this by highlighting diminished genuine human interaction"
+      },
+      {
+        "text": "It creates a deficit in developing crucial interpersonal skills",
+        "rationale": "This aligns with the passage's discussion of reduced opportunities for authentic social interaction"
+      },
+      {
+        "text": "Social skills remain unaffected by digital convenience",
+        "rationale": "The passage explicitly states that social dynamics and emotional intelligence are negatively impacted"
+      },
+      {
+        "text": "It improves emotional intelligence through diverse digital interactions",
+        "rationale": "The passage suggests the opposite effect on emotional intelligence"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage explicitly states that digital alternatives to face-to-face interactions reduce opportunities for developing empathy, patience, and social adaptability, particularly affecting younger individuals.",
+    "hint": "Look for information about how digital convenience affects human interactions and skill development.",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "hard-level",
+      "inference",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 17,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 17"
+  },
+  {
+    "questionId": "S4_Q18",
+    "type": "reading-comprehension",
+    "text": "According to the passage, why is it difficult for individuals to opt out of digital systems?",
+    "options": [
+      {
+        "text": "The cost of traditional services has become too expensive",
+        "rationale": "Not mentioned in the passage as a reason"
+      },
+      {
+        "text": "Digital systems are more reliable than traditional methods",
+        "rationale": "The passage doesn't make this comparison"
+      },
+      {
+        "text": "Society's increasing dependence makes non-participation prohibitively costly",
+        "rationale": "This directly reflects the passage's statement about the high cost of opting out"
+      },
+      {
+        "text": "Digital systems are more environmentally friendly",
+        "rationale": "Environmental impacts are not discussed in the passage"
+      }
+    ],
+    "correctAnswer": 2,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage states that as society becomes more dependent on digital systems, the cost of opting out becomes prohibitively high, forcing participation in the digital ecosystem.",
+    "hint": "Consider the societal pressure and practical implications of avoiding digital systems.",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "hard-level",
+      "inference",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 18,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 18"
+  },
+  {
+    "questionId": "S4_Q19",
+    "type": "reading-comprehension",
+    "text": "What cognitive skill has been most directly affected by GPS navigation systems, according to the passage?",
+    "options": [
+      {
+        "text": "Spatial awareness and mental mapping abilities",
+        "rationale": "The passage explicitly mentions this as being affected by GPS use"
+      },
+      {
+        "text": "Mathematical calculation skills",
+        "rationale": "Not mentioned in the passage in relation to GPS systems"
+      },
+      {
+        "text": "Memory retention",
+        "rationale": "While cognitive effects are discussed, this specific skill isn't mentioned regarding GPS"
+      },
+      {
+        "text": "Decision-making abilities",
+        "rationale": "Not specifically mentioned in relation to GPS usage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage directly states that excessive reliance on GPS navigation systems has led to a decline in spatial awareness and mental mapping abilities, particularly among younger generations.",
+    "hint": "Look for specific cognitive skills mentioned in connection with GPS use.",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "hard-level",
+      "inference",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 19,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 19"
+  },
+  {
+    "questionId": "S4_Q20",
+    "type": "reading-comprehension",
+    "text": "What economic concern does the passage raise about the centralization of digital services?",
+    "options": [
+      {
+        "text": "Increased job creation in the technology sector",
+        "rationale": "Mentioned as a positive effect, not a concern"
+      },
+      {
+        "text": "Questions about market competition and data privacy",
+        "rationale": "This directly reflects the concerns raised in the passage"
+      },
+      {
+        "text": "Higher costs for digital services",
+        "rationale": "Not specifically mentioned as a concern in the passage"
+      },
+      {
+        "text": "Improved efficiency in service delivery",
+        "rationale": "Not presented as a concern in the passage"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage raises concerns about the concentration of digital services among a few powerful technology companies, specifically mentioning issues with market competition, data privacy, and economic equality.",
+    "hint": "Think about the implications of having only a few companies controlling digital services.",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "hard-level",
+      "inference",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 20,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 20"
+  },
+  {
+    "questionId": "S4_Q21",
+    "type": "reading-comprehension",
+    "text": "In paragraph 1, the word 'proliferation' most closely means:",
+    "options": [
+      {
+        "text": "rapid increase",
+        "rationale": "Correct - the context discusses the widespread growth of smart devices"
+      },
+      {
+        "text": "development",
+        "rationale": "Too general - doesn't capture the sense of rapid spreading"
+      },
+      {
+        "text": "invention",
+        "rationale": "Incorrect - focuses on creation rather than spread"
+      },
+      {
+        "text": "adoption",
+        "rationale": "Too narrow - doesn't capture the sense of multiplication"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage uses 'proliferation' to describe how smart devices have become increasingly widespread and numerous in contemporary life",
+    "hint": "Look at how the passage describes the spread of digital technology in modern life",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "hard-level",
+      "vocabulary",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 21,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 21"
+  },
+  {
+    "questionId": "S4_Q22",
+    "type": "reading-comprehension",
+    "text": "The word 'ostensibly' in paragraph 2 suggests that automation is:",
+    "options": [
+      {
+        "text": "apparently but not necessarily actually beneficial",
+        "rationale": "Correct - implies a seeming but questionable benefit"
+      },
+      {
+        "text": "definitively beneficial",
+        "rationale": "Contradicts the skeptical tone implied by 'ostensibly'"
+      },
+      {
+        "text": "partially beneficial",
+        "rationale": "Misses the element of doubt implied by the word"
+      },
+      {
+        "text": "immediately beneficial",
+        "rationale": "Focuses on timing rather than the implied uncertainty"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The author uses 'ostensibly' to suggest that while automation appears beneficial on the surface, its actual benefits are questionable",
+    "hint": "Consider how this word sets up the contrast between apparent and actual benefits",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "hard-level",
+      "vocabulary",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 22,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 22"
+  },
+  {
+    "questionId": "S4_Q23",
+    "type": "reading-comprehension",
+    "text": "The phrase 'cognitive atrophy' in paragraph 2 refers to:",
+    "options": [
+      {
+        "text": "gradual deterioration of mental abilities",
+        "rationale": "Correct - matches the context of declining cognitive skills"
+      },
+      {
+        "text": "brain disease",
+        "rationale": "Too medical and specific for the context"
+      },
+      {
+        "text": "mental exhaustion",
+        "rationale": "Misses the aspect of gradual decline"
+      },
+      {
+        "text": "learning difficulties",
+        "rationale": "Too broad and doesn't capture the deterioration aspect"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage uses this term to describe how reliance on technology leads to the weakening of mental capabilities over time",
+    "hint": "Think about how muscles weaken from lack of use",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "hard-level",
+      "vocabulary",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 23,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 23"
+  },
+  {
+    "questionId": "S4_Q24",
+    "type": "reading-comprehension",
+    "text": "The word 'precipitated' in paragraph 3 most nearly means:",
+    "options": [
+      {
+        "text": "brought about",
+        "rationale": "Correct - fits the context of causing social changes"
+      },
+      {
+        "text": "accelerated",
+        "rationale": "Close but misses the causation aspect"
+      },
+      {
+        "text": "predicted",
+        "rationale": "Incorrect - refers to forecasting rather than causing"
+      },
+      {
+        "text": "accompanied",
+        "rationale": "Too weak - misses the causative relationship"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The passage uses 'precipitated' to show how digital alternatives have caused or brought about changes in social interaction",
+    "hint": "Look for the cause-and-effect relationship in the sentence",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "hard-level",
+      "vocabulary",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 24,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 24"
+  },
+  {
+    "questionId": "S4_Q25",
+    "type": "reading-comprehension",
+    "text": "The word 'prohibitively' in paragraph 4 suggests that the cost of opting out is:",
+    "options": [
+      {
+        "text": "so high as to prevent action",
+        "rationale": "Correct - implies the cost makes opting out practically impossible"
+      },
+      {
+        "text": "gradually increasing",
+        "rationale": "Misses the preventing aspect of the word"
+      },
+      {
+        "text": "legally restricted",
+        "rationale": "Incorrect - refers to rules rather than practical limitations"
+      },
+      {
+        "text": "temporarily high",
+        "rationale": "Doesn't capture the preventing nature of the cost"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "hard",
+    "difficultyScore": 5,
+    "explanation": "The author uses 'prohibitively' to indicate that the cost of not participating in digital systems is so high that it effectively prevents people from choosing not to participate",
+    "hint": "Think about what would make something impossible to do due to cost",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "hard-level",
+      "vocabulary",
+      "comprehensivetest"
+    ],
+    "metadata": {
+      "topic": "ComprehensiveTest",
+      "questionNumber": 25,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 500,
+      "estimatedTime": 5
+    },
+    "aiPrompt": "Generated question 25"
+  }
+];
+
+// Legacy exports for backward compatibility
+export const hardComprehensiveTestPassageText = passage;
+export const hardComprehensiveTestReadingQuestions = questions;

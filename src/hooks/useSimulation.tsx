@@ -50,7 +50,9 @@ export const useSimulation = (
   const isFullExam = simulationId === 'full' || window.location.pathname.includes('/simulation/full');
 
   // Determine simulation mode automatically based on parameters
-  const examMode = isFullExam || examParam === '1' || (!practiceParam && (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)));
+  // Story-based simulations should default to practice mode (show explanations)
+  const isStoryBased = Boolean(storyQuestions && storyQuestions.length > 0);
+  const examMode = isFullExam || examParam === '1' || (!practiceParam && !isStoryBased && (simulationId === 'full' || effectiveType === 'mixed' || (!effectiveType && !difficulty)));
   const showAnswersImmediately = !examMode || practiceParam === '1';
 
   // Enhanced set parameter detection and validation

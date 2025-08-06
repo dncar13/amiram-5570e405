@@ -324,15 +324,19 @@ const Premium = () => {
       
       console.log('✅ Subscription created successfully:', subscriptionResult.subscription);
       
-      // Track successful premium purchase
+      // Track successful premium purchase with unique transaction ID
+      const immediateTransactionId = `immediate_${Date.now()}_${currentUser?.id}`;
       trackPremiumPurchase({
         plan_type: selectedPlan,
         plan_price: getAmount(),
         original_price: getOriginalAmount(),
         discount_amount: appliedCoupon?.discountAmount,
         coupon_code: appliedCoupon?.coupon?.code,
-        payment_status: 'completed'
+        payment_status: 'completed',
+        transaction_id: immediateTransactionId
       });
+      
+      console.log('📊 Immediate purchase tracked:', { transactionId: immediateTransactionId, planType: selectedPlan });
       
       // Update premium status in localStorage and context
       localStorage.setItem("isPremiumUser", "true");
@@ -381,15 +385,19 @@ const Premium = () => {
         if (result.success) {
           console.log('🎉 Free subscription created successfully:', result.subscriptionId);
           
-          // Track free order completion
+          // Track free order completion with unique transaction ID
+          const freeTransactionId = `free_${Date.now()}_${currentUser?.id}_${appliedCoupon.coupon.code}`;
           trackPremiumPurchase({
             plan_type: selectedPlan,
             plan_price: 0,
             original_price: originalAmount,
             discount_amount: discountAmount,
             coupon_code: appliedCoupon.coupon.code,
-            payment_status: 'completed'
+            payment_status: 'completed',
+            transaction_id: freeTransactionId
           });
+          
+          console.log('📊 Free order tracked:', { transactionId: freeTransactionId, planType: selectedPlan, couponCode: appliedCoupon.coupon.code });
           
           // Update premium status in localStorage and context
           localStorage.setItem("isPremiumUser", "true");
@@ -912,7 +920,7 @@ const Premium = () => {
                                   {subscriptionValidation.availableUpgrades.map((upgrade) => (
                                     <Button
                                       key={upgrade}
-                                      onClick={() => setSelectedPlan(upgrade as 'daily' | 'weekly' | 'monthly' | 'quarterly')}
+                                      onClick={() => setSelectedPlan(upgrade as any)}
                                       variant="outline"
                                       size="sm"
                                       className="border-orange-300 text-orange-700 hover:bg-orange-100"

@@ -1,0 +1,1190 @@
+{
+  "version": "final-ai-filled",
+  "storySummary": {
+    "title": "The Perfect Match: Words That Love Company",
+    "difficulty": "medium",
+    "topic": "VocabularyCollocations",
+    "wordCount": 303,
+    "numQuestions": 25,
+    "estimatedTime": 3,
+    "topicId": 12
+  },
+  "passage": "The Perfect Match: Words That Love Company\n\n[1] Just as people form natural friendships and partnerships, words in the English language have their own special relationships. These word partnerships, known as collocations, are combinations that native speakers use instinctively but often puzzle learners of English. For instance, while we naturally say \"heavy rain\" or \"strong wind,\" it would sound peculiar to say \"heavy wind\" or \"strong rain,\" even though these words have similar meanings in other contexts.\n\n[2] The fascinating world of collocations extends far beyond weather descriptions. In business English, we \"launch\" a product, \"conduct\" research, and \"reach\" a conclusion. Each verb has found its perfect match through years of linguistic evolution and common usage. Similarly, in academic writing, students \"draw\" conclusions, \"raise\" questions, and \"make\" progress. These partnerships are so firmly established that using alternative combinations, even if technically correct, might make your writing appear less sophisticated or even incorrect to native speakers.\n\n[3] Understanding collocations becomes even more crucial when we examine idiomatic expressions and formal writing. A speaker might \"pay attention\" but never \"give attention,\" just as one \"takes responsibility\" rather than \"accepts responsibility.\" In professional contexts, we \"submit proposals,\" \"implement solutions,\" and \"address concerns.\" These combinations have become standardized through consistent usage across various fields and industries, creating a sort of linguistic DNA that defines proper English expression.\n\n[4] The mastery of collocations marks a significant milestone in language proficiency. While vocabulary size matters, knowing which words naturally go together can transform basic communication into eloquent expression. This knowledge helps speakers avoid the awkward combinations that often betray non-native usage, such as saying \"do a mistake\" instead of \"make a mistake.\" As language learners progress, they discover that learning words in isolation is far less effective than understanding these natural partnerships that make English both challenging and rich.",
+  "questions": [
+    {
+      "questionId": "S12_Q1",
+      "type": "reading-comprehension",
+      "text": "According to the passage, why would saying 'heavy wind' sound peculiar to native English speakers?",
+      "options": [
+        {
+          "text": "Because wind is always paired with 'strong' in natural collocations",
+          "rationale": "Correct - the passage explicitly states this collocation as a natural pairing"
+        },
+        {
+          "text": "Because wind cannot be measured by weight",
+          "rationale": "Incorrect - the issue is about natural word pairings, not literal meanings"
+        },
+        {
+          "text": "Because 'heavy' only describes solid objects",
+          "rationale": "Incorrect - 'heavy' can describe various things, including rain as mentioned in the passage"
+        },
+        {
+          "text": "Because wind is a light phenomenon",
+          "rationale": "Incorrect - this is not mentioned in the passage and isn't related to collocations"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage explains that certain word combinations are natural to native speakers through established usage, with 'strong wind' being the correct collocation while 'heavy wind' would sound unnatural.",
+      "hint": "Look for the weather-related examples in the first paragraph",
+      "paragraphReference": "Paragraph [1]",
+      "skills": [
+        "attention-to-detail",
+        "fact-finding"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 1,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 1"
+    },
+    {
+      "questionId": "S12_Q2",
+      "type": "reading-comprehension",
+      "text": "In business English, which of the following represents a correct collocation mentioned in the passage?",
+      "options": [
+        {
+          "text": "Start a conclusion",
+          "rationale": "Incorrect - the passage states we 'reach' a conclusion"
+        },
+        {
+          "text": "Launch a product",
+          "rationale": "Correct - this is explicitly mentioned as a proper business collocation"
+        },
+        {
+          "text": "Make research",
+          "rationale": "Incorrect - the passage states we 'conduct' research"
+        },
+        {
+          "text": "Do a conclusion",
+          "rationale": "Incorrect - this is not mentioned and would be an improper collocation"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically lists 'launch a product' as one of the correct business English collocations.",
+      "hint": "Review the business-related examples in the second paragraph",
+      "paragraphReference": "Paragraph [2]",
+      "skills": [
+        "attention-to-detail",
+        "fact-finding"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 2,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 2"
+    },
+    {
+      "questionId": "S12_Q3",
+      "type": "reading-comprehension",
+      "text": "Which pair of words represents an incorrect collocation according to the passage?",
+      "options": [
+        {
+          "text": "Pay attention",
+          "rationale": "Incorrect - this is mentioned as a correct collocation"
+        },
+        {
+          "text": "Draw conclusions",
+          "rationale": "Incorrect - this is mentioned as a correct academic writing collocation"
+        },
+        {
+          "text": "Give attention",
+          "rationale": "Correct - the passage explicitly states this as an incorrect usage"
+        },
+        {
+          "text": "Take responsibility",
+          "rationale": "Incorrect - this is mentioned as a correct collocation"
+        }
+      ],
+      "correctAnswer": 2,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically states that one might 'pay attention' but never 'give attention,' marking the latter as an incorrect collocation.",
+      "hint": "Look for examples of incorrect word pairs in the third paragraph",
+      "paragraphReference": "Paragraph [3]",
+      "skills": [
+        "attention-to-detail",
+        "fact-finding"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 3,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 3"
+    },
+    {
+      "questionId": "S12_Q4",
+      "type": "reading-comprehension",
+      "text": "What does the passage suggest about learning vocabulary in isolation?",
+      "options": [
+        {
+          "text": "It is the most effective way to learn English",
+          "rationale": "Incorrect - the passage states the opposite"
+        },
+        {
+          "text": "It is less effective than learning word partnerships",
+          "rationale": "Correct - directly stated in the final paragraph"
+        },
+        {
+          "text": "It is only useful for advanced learners",
+          "rationale": "Incorrect - not mentioned in the passage"
+        },
+        {
+          "text": "It is better for business English",
+          "rationale": "Incorrect - not suggested in the passage"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage explicitly states that learning words in isolation is far less effective than understanding natural word partnerships.",
+      "hint": "Check the final paragraph's discussion about language learning methods",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "attention-to-detail",
+        "fact-finding"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 4,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 4"
+    },
+    {
+      "questionId": "S12_Q5",
+      "type": "reading-comprehension",
+      "text": "What example does the passage provide of a common collocation mistake made by non-native speakers?",
+      "options": [
+        {
+          "text": "Do a mistake",
+          "rationale": "Correct - explicitly mentioned as an incorrect usage compared to 'make a mistake'"
+        },
+        {
+          "text": "Give attention",
+          "rationale": "Incorrect - while mentioned as incorrect, it's not specifically tied to non-native speakers"
+        },
+        {
+          "text": "Heavy wind",
+          "rationale": "Incorrect - while unnatural, it's not specifically identified as a non-native speaker error"
+        },
+        {
+          "text": "Accept responsibility",
+          "rationale": "Incorrect - not identified as a mistake in the passage"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically mentions 'do a mistake' as an example of an awkward combination that betrays non-native usage, contrasting it with the correct form 'make a mistake'.",
+      "hint": "Look for specific examples of non-native speaker errors in the final paragraph",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "attention-to-detail",
+        "fact-finding"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 5,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 5"
+    },
+    {
+      "questionId": "S12_Q6",
+      "type": "reading-comprehension",
+      "text": "What is the main purpose of collocations in English language?",
+      "options": [
+        {
+          "text": "To form natural word partnerships that sound correct to native speakers",
+          "rationale": "Correct - the passage emphasizes how collocations are natural word combinations that native speakers use instinctively"
+        },
+        {
+          "text": "To create new vocabulary words",
+          "rationale": "Incorrect - collocations combine existing words rather than creating new ones"
+        },
+        {
+          "text": "To simplify English grammar rules",
+          "rationale": "Incorrect - collocations are about word partnerships, not grammar simplification"
+        },
+        {
+          "text": "To translate between languages",
+          "rationale": "Incorrect - the passage doesn't discuss translation purposes"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage consistently emphasizes how collocations are natural word partnerships that native speakers use instinctively, making language sound more natural and sophisticated.",
+      "hint": "Think about how the passage describes native speakers' natural word choices",
+      "paragraphReference": "Paragraphs [1-2]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 6,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 6"
+    },
+    {
+      "questionId": "S12_Q7",
+      "type": "reading-comprehension",
+      "text": "According to the passage, which of these is NOT a correct collocation in business English?",
+      "options": [
+        {
+          "text": "Accept responsibility",
+          "rationale": "Correct - the passage specifically states one 'takes responsibility' rather than 'accepts responsibility'"
+        },
+        {
+          "text": "Launch a product",
+          "rationale": "Incorrect - this is explicitly mentioned as a correct business collocation"
+        },
+        {
+          "text": "Conduct research",
+          "rationale": "Incorrect - this is specifically mentioned as a correct business collocation"
+        },
+        {
+          "text": "Reach a conclusion",
+          "rationale": "Incorrect - this is specifically mentioned as a correct business collocation"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically mentions in paragraph 3 that one 'takes responsibility' rather than 'accepts responsibility'.",
+      "hint": "Look for the example that contradicts proper usage mentioned in the text",
+      "paragraphReference": "Paragraphs [2-3]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 7,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 7"
+    },
+    {
+      "questionId": "S12_Q8",
+      "type": "reading-comprehension",
+      "text": "What indicates mastery of English language proficiency according to the passage?",
+      "options": [
+        {
+          "text": "Understanding and using correct collocations",
+          "rationale": "Correct - the passage explicitly states this marks a significant milestone in language proficiency"
+        },
+        {
+          "text": "Having a large vocabulary",
+          "rationale": "Incorrect - while mentioned, it's stated as less important than knowing collocations"
+        },
+        {
+          "text": "Speaking quickly",
+          "rationale": "Incorrect - speaking speed is not mentioned in the passage"
+        },
+        {
+          "text": "Perfect grammar",
+          "rationale": "Incorrect - grammar mastery is not discussed as a marker of proficiency"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "Paragraph 4 explicitly states that mastery of collocations marks a significant milestone in language proficiency, more important than vocabulary size alone.",
+      "hint": "Consider what the final paragraph identifies as crucial for language expertise",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 8,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 8"
+    },
+    {
+      "questionId": "S12_Q9",
+      "type": "reading-comprehension",
+      "text": "Which example of incorrect collocation is specifically mentioned in the passage?",
+      "options": [
+        {
+          "text": "Do a mistake",
+          "rationale": "Correct - this is explicitly mentioned as an incorrect form compared to 'make a mistake'"
+        },
+        {
+          "text": "Heavy wind",
+          "rationale": "Incorrect - while mentioned, it's used as an example of unusual rather than explicitly incorrect usage"
+        },
+        {
+          "text": "Give attention",
+          "rationale": "Incorrect - while mentioned as not preferred, it's contrasted with 'pay attention'"
+        },
+        {
+          "text": "Strong rain",
+          "rationale": "Incorrect - while mentioned, it's used as an example of unusual rather than explicitly incorrect usage"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically mentions 'do a mistake' as an incorrect collocation that betrays non-native usage, contrasting it with the correct form 'make a mistake'.",
+      "hint": "Look for the example specifically described as betraying non-native usage",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 9,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 9"
+    },
+    {
+      "questionId": "S12_Q10",
+      "type": "reading-comprehension",
+      "text": "How have collocations become standardized in English?",
+      "options": [
+        {
+          "text": "Through consistent usage across various fields and industries",
+          "rationale": "Correct - the passage explicitly states this as the process of standardization"
+        },
+        {
+          "text": "Through formal education",
+          "rationale": "Incorrect - formal education is not mentioned as a standardization method"
+        },
+        {
+          "text": "Through government regulation",
+          "rationale": "Incorrect - regulatory standardization is not mentioned in the passage"
+        },
+        {
+          "text": "Through dictionary definitions",
+          "rationale": "Incorrect - dictionaries are not mentioned as a standardization method"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "Paragraph 3 explains that collocations have become standardized through consistent usage across various fields and industries, creating a linguistic DNA.",
+      "hint": "Consider how the passage describes the natural evolution of these word partnerships",
+      "paragraphReference": "Paragraph [3]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 10,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 10"
+    },
+    {
+      "questionId": "S12_Q11",
+      "type": "reading-comprehension",
+      "text": "What is the main purpose of collocations in English language?",
+      "options": [
+        {
+          "text": "To form natural word partnerships that sound correct to native speakers",
+          "rationale": "This accurately reflects the passage's core message about natural word combinations"
+        },
+        {
+          "text": "To increase vocabulary size in English",
+          "rationale": "While vocabulary is mentioned, it's not the main purpose of collocations"
+        },
+        {
+          "text": "To create grammatically correct sentences",
+          "rationale": "Grammar is not the focus of collocations as discussed in the passage"
+        },
+        {
+          "text": "To make English more difficult for learners",
+          "rationale": "Though challenging for learners, this isn't the purpose of collocations"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage consistently emphasizes how collocations are natural word partnerships that native speakers use instinctively, forming the basis of proper English expression.",
+      "hint": "Think about what the passage says about how native speakers naturally use certain word combinations.",
+      "paragraphReference": "Paragraphs [1-4]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 11,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 11"
+    },
+    {
+      "questionId": "S12_Q12",
+      "type": "reading-comprehension",
+      "text": "According to the passage, what distinguishes advanced language proficiency?",
+      "options": [
+        {
+          "text": "Understanding collocations and natural word partnerships",
+          "rationale": "The passage explicitly states this as a significant milestone"
+        },
+        {
+          "text": "Having a large vocabulary",
+          "rationale": "The passage notes this is less important than knowing collocations"
+        },
+        {
+          "text": "Speaking grammatically correct English",
+          "rationale": "Grammar is not highlighted as a key marker of proficiency"
+        },
+        {
+          "text": "Writing formal academic papers",
+          "rationale": "While mentioned, this isn't identified as the key marker of proficiency"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "Paragraph 4 specifically states that mastery of collocations marks a significant milestone in language proficiency, more important than vocabulary size alone.",
+      "hint": "Look for what the passage identifies as transforming basic communication into eloquent expression.",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 12,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 12"
+    },
+    {
+      "questionId": "S12_Q13",
+      "type": "reading-comprehension",
+      "text": "Which statement best describes how collocations function in business English?",
+      "options": [
+        {
+          "text": "They create standardized expressions across various fields",
+          "rationale": "The passage shows how specific verb-noun combinations are standard in business"
+        },
+        {
+          "text": "They make business writing more complex",
+          "rationale": "This isn't mentioned as a function of collocations"
+        },
+        {
+          "text": "They help businesses communicate internationally",
+          "rationale": "International communication isn't discussed in the passage"
+        },
+        {
+          "text": "They simplify business vocabulary",
+          "rationale": "Simplification isn't mentioned as a function of collocations"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage provides specific examples of standardized business collocations like 'launch a product' and 'conduct research,' showing how these combinations are established across fields.",
+      "hint": "Consider the examples given in paragraph 2 about business-related word combinations.",
+      "paragraphReference": "Paragraph [2]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 13,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 13"
+    },
+    {
+      "questionId": "S12_Q14",
+      "type": "reading-comprehension",
+      "text": "What does the passage suggest about learning words in isolation?",
+      "options": [
+        {
+          "text": "It is less effective than learning word partnerships",
+          "rationale": "This directly matches the passage's statement"
+        },
+        {
+          "text": "It is the best way to build vocabulary",
+          "rationale": "The passage explicitly states the opposite"
+        },
+        {
+          "text": "It helps with grammar understanding",
+          "rationale": "This connection isn't made in the passage"
+        },
+        {
+          "text": "It improves speaking fluency",
+          "rationale": "The passage suggests the opposite is true"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage explicitly states in paragraph 4 that learning words in isolation is far less effective than understanding natural partnerships.",
+      "hint": "Look for the passage's direct statement about the effectiveness of different learning methods.",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 14,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 14"
+    },
+    {
+      "questionId": "S12_Q15",
+      "type": "reading-comprehension",
+      "text": "How does the passage characterize the relationship between words in collocations?",
+      "options": [
+        {
+          "text": "As natural partnerships similar to human friendships",
+          "rationale": "This matches the passage's opening analogy"
+        },
+        {
+          "text": "As random combinations of words",
+          "rationale": "The passage emphasizes these are not random but natural partnerships"
+        },
+        {
+          "text": "As grammatical rules",
+          "rationale": "The passage focuses on natural usage rather than grammar rules"
+        },
+        {
+          "text": "As temporary language trends",
+          "rationale": "The passage presents these as established, not temporary, patterns"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage begins by comparing word partnerships to natural human friendships and consistently uses relationship metaphors throughout.",
+      "hint": "Consider the analogy used in the very first sentence of the passage.",
+      "paragraphReference": "Paragraph [1]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "main-idea",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 15,
+        "questionType": "main-idea",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 15"
+    },
+    {
+      "questionId": "S12_Q16",
+      "type": "reading-comprehension",
+      "text": "Based on the passage, what would be the most likely reason why native speakers naturally use correct collocations?",
+      "options": [
+        {
+          "text": "Years of exposure and linguistic evolution",
+          "rationale": "The passage indicates that collocations develop through years of linguistic evolution and common usage"
+        },
+        {
+          "text": "Formal education in grammar rules",
+          "rationale": "The passage doesn't mention formal education as a source of collocation knowledge"
+        },
+        {
+          "text": "Dictionary memorization",
+          "rationale": "The passage doesn't suggest that native speakers learn collocations through dictionaries"
+        },
+        {
+          "text": "International communication needs",
+          "rationale": "The passage doesn't connect collocation usage to international communication"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage states that these word partnerships develop through 'years of linguistic evolution and common usage,' suggesting natural acquisition rather than formal learning",
+      "hint": "Think about how children naturally learn their first language",
+      "paragraphReference": "Paragraphs [1-2]",
+      "skills": [
+        "logical-reasoning",
+        "cause-effect"
+      ],
+      "tags": [
+        "medium-level",
+        "inference",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 16,
+        "questionType": "inference",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 16"
+    },
+    {
+      "questionId": "S12_Q17",
+      "type": "reading-comprehension",
+      "text": "What does the passage suggest about the relationship between vocabulary size and effective communication?",
+      "options": [
+        {
+          "text": "Vocabulary size alone guarantees effective communication",
+          "rationale": "The passage contradicts this by emphasizing the importance of word partnerships"
+        },
+        {
+          "text": "Knowing word partnerships is more important than vocabulary size",
+          "rationale": "The passage suggests both are important but partnerships transform basic communication"
+        },
+        {
+          "text": "Vocabulary size is irrelevant to communication",
+          "rationale": "The passage acknowledges that vocabulary size matters"
+        },
+        {
+          "text": "Only native speakers can communicate effectively",
+          "rationale": "The passage doesn't suggest this limitation"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage states that while vocabulary size matters, understanding word partnerships can 'transform basic communication into eloquent expression'",
+      "hint": "Consider how the passage compares vocabulary size to knowledge of collocations",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "logical-reasoning",
+        "cause-effect"
+      ],
+      "tags": [
+        "medium-level",
+        "inference",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 17,
+        "questionType": "inference",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 17"
+    },
+    {
+      "questionId": "S12_Q18",
+      "type": "reading-comprehension",
+      "text": "What can be inferred about the use of alternative word combinations in academic writing?",
+      "options": [
+        {
+          "text": "They are always grammatically incorrect",
+          "rationale": "The passage indicates they might be technically correct but appear less sophisticated"
+        },
+        {
+          "text": "They may be technically correct but sound unnatural",
+          "rationale": "This aligns with the passage's explanation about established partnerships"
+        },
+        {
+          "text": "They are equally acceptable as standard collocations",
+          "rationale": "The passage suggests they make writing appear less sophisticated"
+        },
+        {
+          "text": "They should be encouraged for creativity",
+          "rationale": "The passage implies the opposite by emphasizing standard combinations"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage states that alternative combinations, even if technically correct, might make writing appear less sophisticated or incorrect to native speakers",
+      "hint": "Look for information about how non-standard combinations are perceived",
+      "paragraphReference": "Paragraph [2]",
+      "skills": [
+        "logical-reasoning",
+        "cause-effect"
+      ],
+      "tags": [
+        "medium-level",
+        "inference",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 18,
+        "questionType": "inference",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 18"
+    },
+    {
+      "questionId": "S12_Q19",
+      "type": "reading-comprehension",
+      "text": "What does the passage suggest about the role of collocations in professional contexts?",
+      "options": [
+        {
+          "text": "They are optional in business communication",
+          "rationale": "The passage emphasizes their crucial nature in professional contexts"
+        },
+        {
+          "text": "They create standardized professional language",
+          "rationale": "This matches the passage's description of standardized usage across fields"
+        },
+        {
+          "text": "They limit professional expression",
+          "rationale": "The passage presents them as enhancing rather than limiting expression"
+        },
+        {
+          "text": "They are only important in formal writing",
+          "rationale": "The passage suggests their importance across various contexts"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage indicates that collocations have become standardized through consistent usage across various fields and industries, creating a 'linguistic DNA' for proper English expression",
+      "hint": "Consider how the passage describes collocation use in business and professional settings",
+      "paragraphReference": "Paragraph [3]",
+      "skills": [
+        "logical-reasoning",
+        "cause-effect"
+      ],
+      "tags": [
+        "medium-level",
+        "inference",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 19,
+        "questionType": "inference",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 19"
+    },
+    {
+      "questionId": "S12_Q20",
+      "type": "reading-comprehension",
+      "text": "What can be inferred about the relationship between collocation mastery and language proficiency?",
+      "options": [
+        {
+          "text": "It is unnecessary for basic communication",
+          "rationale": "The passage suggests it's crucial for proper language use"
+        },
+        {
+          "text": "It indicates advanced language ability",
+          "rationale": "The passage explicitly states it marks a significant milestone in proficiency"
+        },
+        {
+          "text": "It only matters for writing skills",
+          "rationale": "The passage implies importance for overall language use"
+        },
+        {
+          "text": "It is easily achieved through memorization",
+          "rationale": "The passage suggests it requires more than just memorizing words"
+        }
+      ],
+      "correctAnswer": 1,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage explicitly states that mastery of collocations marks a significant milestone in language proficiency and helps avoid non-native usage patterns",
+      "hint": "Look for how the passage connects collocations to language learning progress",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "logical-reasoning",
+        "cause-effect"
+      ],
+      "tags": [
+        "medium-level",
+        "inference",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 20,
+        "questionType": "inference",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 20"
+    },
+    {
+      "questionId": "S12_Q21",
+      "type": "reading-comprehension",
+      "text": "Based on the passage, what is the best definition of 'collocations'?",
+      "options": [
+        {
+          "text": "Word partnerships that naturally occur together in English",
+          "rationale": "This accurately reflects how the passage defines collocations as natural word combinations"
+        },
+        {
+          "text": "Grammar rules that govern English writing",
+          "rationale": "The passage doesn't describe collocations as grammar rules"
+        },
+        {
+          "text": "Vocabulary words used in academic writing",
+          "rationale": "While some collocations are used in academic writing, this is too narrow a definition"
+        },
+        {
+          "text": "Translations between different languages",
+          "rationale": "The passage doesn't discuss translations or language conversion"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage directly defines collocations in paragraph 1 as word partnerships that native speakers use instinctively, providing examples like 'heavy rain' and 'strong wind.'",
+      "hint": "Look for the explanation in the first paragraph where the term is introduced",
+      "paragraphReference": "Paragraph [1]",
+      "skills": [
+        "context-clues",
+        "word-meaning"
+      ],
+      "tags": [
+        "medium-level",
+        "vocabulary",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 21,
+        "questionType": "vocabulary",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 21"
+    },
+    {
+      "questionId": "S12_Q22",
+      "type": "reading-comprehension",
+      "text": "Which of the following best illustrates the passage's point about inappropriate word combinations?",
+      "options": [
+        {
+          "text": "'heavy wind'",
+          "rationale": "This is explicitly mentioned in the passage as an incorrect combination"
+        },
+        {
+          "text": "'launch a product'",
+          "rationale": "This is mentioned as a correct collocation in business English"
+        },
+        {
+          "text": "'conduct research'",
+          "rationale": "This is presented as a proper collocation"
+        },
+        {
+          "text": "'draw conclusions'",
+          "rationale": "This is given as an example of correct academic usage"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically mentions 'heavy wind' as an example of an unnatural combination that would sound peculiar to native speakers",
+      "hint": "Look for the example that is presented as incorrect rather than natural",
+      "paragraphReference": "Paragraph [1]",
+      "skills": [
+        "context-clues",
+        "word-meaning"
+      ],
+      "tags": [
+        "medium-level",
+        "vocabulary",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 22,
+        "questionType": "vocabulary",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 22"
+    },
+    {
+      "questionId": "S12_Q23",
+      "type": "reading-comprehension",
+      "text": "According to the passage, what marks a significant milestone in language proficiency?",
+      "options": [
+        {
+          "text": "Mastery of collocations",
+          "rationale": "This is explicitly stated in the passage as a significant milestone"
+        },
+        {
+          "text": "Vocabulary size",
+          "rationale": "The passage notes this matters but is not sufficient alone"
+        },
+        {
+          "text": "Grammar knowledge",
+          "rationale": "Grammar is not specifically discussed as a milestone"
+        },
+        {
+          "text": "Translation ability",
+          "rationale": "Translation skills are not mentioned in the passage"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "Paragraph 4 explicitly states that 'The mastery of collocations marks a significant milestone in language proficiency.'",
+      "hint": "Check the opening sentence of the final paragraph",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "context-clues",
+        "word-meaning"
+      ],
+      "tags": [
+        "medium-level",
+        "vocabulary",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 23,
+        "questionType": "vocabulary",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 23"
+    },
+    {
+      "questionId": "S12_Q24",
+      "type": "reading-comprehension",
+      "text": "In professional contexts, which of the following is NOT mentioned as a correct collocation?",
+      "options": [
+        {
+          "text": "give attention",
+          "rationale": "The passage explicitly states this is incorrect, using 'pay attention' instead"
+        },
+        {
+          "text": "submit proposals",
+          "rationale": "This is mentioned as a correct professional collocation"
+        },
+        {
+          "text": "implement solutions",
+          "rationale": "This is listed as a correct professional collocation"
+        },
+        {
+          "text": "address concerns",
+          "rationale": "This is presented as a correct professional collocation"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage specifically mentions that one would 'pay attention' but never 'give attention,' making this the incorrect collocation",
+      "hint": "Look for the example that is specifically mentioned as incorrect",
+      "paragraphReference": "Paragraph [3]",
+      "skills": [
+        "context-clues",
+        "word-meaning"
+      ],
+      "tags": [
+        "medium-level",
+        "vocabulary",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 24,
+        "questionType": "vocabulary",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 24"
+    },
+    {
+      "questionId": "S12_Q25",
+      "type": "reading-comprehension",
+      "text": "What does the passage suggest about learning words in isolation?",
+      "options": [
+        {
+          "text": "It is less effective than learning word partnerships",
+          "rationale": "The passage explicitly states this comparison"
+        },
+        {
+          "text": "It is the best way to increase vocabulary",
+          "rationale": "This contradicts the passage's message"
+        },
+        {
+          "text": "It helps with pronunciation",
+          "rationale": "Pronunciation is not discussed in the passage"
+        },
+        {
+          "text": "It improves grammar understanding",
+          "rationale": "Grammar benefits are not mentioned in the passage"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The final paragraph states that 'learning words in isolation is far less effective than understanding these natural partnerships.'",
+      "hint": "Consider what the passage says about effective learning methods in the final paragraph",
+      "paragraphReference": "Paragraph [4]",
+      "skills": [
+        "context-clues",
+        "word-meaning"
+      ],
+      "tags": [
+        "medium-level",
+        "vocabulary",
+        "vocabularycollocations"
+      ],
+      "metadata": {
+        "topic": "VocabularyCollocations",
+        "questionNumber": 25,
+        "questionType": "vocabulary",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 25"
+    }
+  ]
+}
