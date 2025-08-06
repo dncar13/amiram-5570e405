@@ -90,13 +90,19 @@ const ThankYou = () => {
             subscriptionId: subscriptionResult.subscription?.id || null
           });
           
-          // Track successful purchase
+          // Track successful purchase with unique transaction ID
+          const transactionId = `cardcom_${timestamp || Date.now()}`;
           trackPremiumPurchase({
             plan_type: urlPlanType,
             plan_price: urlAmount,
             payment_status: 'completed',
-            transaction_id: `cardcom_${timestamp || Date.now()}`
+            transaction_id: transactionId,
+            original_price: urlAmount + urlDiscount,
+            discount_amount: urlDiscount,
+            coupon_code: urlCoupon
           });
+          
+          console.log('📊 Purchase tracked on ThankYou page:', { transactionId, planType: urlPlanType, amount: urlAmount });
 
           // Update premium status to trigger UI refresh
           await updatePremiumStatus(true);

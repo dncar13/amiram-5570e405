@@ -34,6 +34,7 @@ class AmiramAnalyticsService implements AnalyticsService {
   private sessionInfo: SessionInfo;
   private userContext: UserContext = {};
   private utmParams: UTMParameters = {};
+  private trackedEvents: Set<string> = new Set(); // For deduplication
 
   constructor() {
     this.config = {
@@ -141,6 +142,49 @@ class AmiramAnalyticsService implements AnalyticsService {
     }
   }
 
+  private generateEventKey(event: BaseEvent): string {
+    // Create a unique key for purchase events to prevent duplicates
+    if (event.event === 'purchase' || event.event === 'premium_purchase') {
+      const transactionId = (event as any).transaction_id;
+      const planType = (event as any).plan_type;
+      const value = (event as any).value || (event as any).plan_price;
+      
+      if (transactionId) {
+        return `${event.event}_${transactionId}`;
+      } else {
+        // Fallback key for events without transaction_id
+        return `${event.event}_${this.userContext.user_id}_${planType}_${value}_${Date.now()}`;
+      }
+    }
+    
+    // For other events, allow duplicates (or create more specific keys if needed)
+    return `${event.event}_${Date.now()}_${Math.random()}`;
+  }
+
+  private isDuplicateEvent(event: BaseEvent): boolean {
+    const eventKey = this.generateEventKey(event);
+    
+    // Only check for duplicates on purchase events
+    if (event.event === 'purchase' || event.event === 'premium_purchase') {
+      if (this.trackedEvents.has(eventKey)) {
+        if (this.config.debugMode) {
+          console.warn('🔄 Duplicate event detected, skipping:', eventKey);
+        }
+        return true;
+      }
+      
+      this.trackedEvents.add(eventKey);
+      
+      // Clean up old events (keep only last 100 to prevent memory leaks)
+      if (this.trackedEvents.size > 100) {
+        const oldestKeys = Array.from(this.trackedEvents).slice(0, 50);
+        oldestKeys.forEach(key => this.trackedEvents.delete(key));
+      }
+    }
+    
+    return false;
+  }
+
   private enrichEvent(event: BaseEvent): BaseEvent {
     return {
       ...event,
@@ -182,6 +226,11 @@ class AmiramAnalyticsService implements AnalyticsService {
     }
 
     const enrichedEvent = this.enrichEvent(event);
+
+    // Check for duplicate events before tracking
+    if (this.isDuplicateEvent(enrichedEvent)) {
+      return; // Skip duplicate event
+    }
 
     try {
       // Send to Google Tag Manager
