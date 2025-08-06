@@ -1,0 +1,35 @@
+{
+  "name": "amiram-enhanced-generator",
+  "version": "2.0.0",
+  "description": "Enhanced AMIRAM Reading Comprehension Generator with 12 improvements",
+  "type": "module",
+  "main": "amiram-generator.ts",
+  "scripts": {
+    "generate-templates": "tsx template-generator.ts",
+    "fill-content": "tsx enhanced-ai-generator.ts",
+    "generate-all": "npm run generate-templates && npm run fill-content",
+    "validate": "tsx validator.ts",
+    "clean": "rm -rf output/*.ts output/*.json logs/*.log"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "tsx": "^4.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "amiram",
+    "reading-comprehension",
+    "education",
+    "ai-generation",
+    "claude-api",
+    "english-learning"
+  ],
+  "author": "AMIRAM Team",
+  "license": "MIT"
+}

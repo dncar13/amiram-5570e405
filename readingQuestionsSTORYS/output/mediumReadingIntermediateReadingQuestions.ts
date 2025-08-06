@@ -1,0 +1,1209 @@
+import { Question, StorySummary } from '../../types/questionTypes';
+
+// שיפור #12: Version tracking
+export const version = "final-ai-filled";
+
+// שיפור #7: Story summary
+export const storySummary: StorySummary = {
+  "title": "The Hidden Power of Reading Strategy",
+  "difficulty": "medium",
+  "topic": "ReadingIntermediate",
+  "wordCount": 323,
+  "numQuestions": 25,
+  "estimatedTime": 3,
+  "topicId": 9
+};
+
+// Reading passage - The Hidden Power of Reading Strategy (medium level)
+export const passage = `The Hidden Power of Reading Strategy
+
+[1] Many students approach reading as a passive activity, simply letting their eyes move across the page without much thought or intention. However, research shows that active reading strategies can dramatically improve both comprehension and retention of written material. These strategies, when properly implemented, transform reading from a mere passive exercise into an engaging intellectual pursuit that yields lasting benefits for learners at all levels.
+
+[2] One particularly effective approach is the SQ3R method, which stands for Survey, Question, Read, Recite, and Review. Before diving into a text, successful readers first survey the material by examining headings, subheadings, and visual elements to get an overview of the content. They then generate questions about what they expect to learn, actively read while seeking answers to these questions, recite key points in their own words, and finally review the material to ensure thorough understanding. This systematic approach helps readers maintain focus and extract maximum value from their reading sessions.
+
+[3] The benefits of strategic reading extend far beyond the classroom. Professionals who employ active reading techniques report higher levels of information retention, improved critical thinking skills, and greater success in their careers. For instance, lawyers who use strategic reading methods can analyze complex legal documents more efficiently, while medical professionals can better keep pace with rapidly evolving research in their field. Furthermore, studies indicate that individuals who regularly practice active reading strategies are more likely to engage in lifelong learning and maintain cognitive flexibility as they age.
+
+[4] Despite these clear advantages, many readers resist adopting strategic approaches, believing them to be too time-consuming or complicated. However, with regular practice, these techniques become natural habits that actually save time by reducing the need for rereading and increasing the speed of comprehension. The initial investment in learning and implementing reading strategies pays dividends throughout one's academic and professional life, making it an essential skill for success in our information-rich world.`;
+
+// Enhanced questions with all improvements
+export const questions: Question[] = [
+  {
+    "questionId": "S9_Q1",
+    "type": "reading-comprehension",
+    "text": "What are the five components of the SQ3R method in correct order?",
+    "options": [
+      {
+        "text": "Survey, Question, Read, Recite, Review",
+        "rationale": "This is the correct order as explicitly stated in the passage"
+      },
+      {
+        "text": "Study, Question, Read, Recall, Review",
+        "rationale": "While similar, this contains incorrect terms 'Study' and 'Recall' instead of 'Survey' and 'Recite'"
+      },
+      {
+        "text": "Survey, Question, Review, Read, Recite",
+        "rationale": "This presents the steps in incorrect order, mixing up the final three steps"
+      },
+      {
+        "text": "Scan, Query, Read, Record, Review",
+        "rationale": "Uses similar but incorrect terminology throughout"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage explicitly states the SQ3R method stands for Survey, Question, Read, Recite, and Review, in that specific order",
+    "hint": "Look for the direct explanation of what SQ3R stands for in the text",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "medium-level",
+      "detail",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 1,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 1"
+  },
+  {
+    "questionId": "S9_Q2",
+    "type": "reading-comprehension",
+    "text": "According to the passage, why do some readers resist adopting strategic reading approaches?",
+    "options": [
+      {
+        "text": "They believe the methods are too time-consuming and complicated",
+        "rationale": "This is explicitly stated in the passage as the main reason for resistance"
+      },
+      {
+        "text": "They prefer passive reading techniques",
+        "rationale": "While the passage mentions passive reading, it doesn't state this as a reason for resistance"
+      },
+      {
+        "text": "They don't believe in the benefits",
+        "rationale": "The passage doesn't mention skepticism about benefits as a reason for resistance"
+      },
+      {
+        "text": "They lack proper training in these methods",
+        "rationale": "This isn't mentioned as a reason for resistance in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage directly states that readers resist these approaches because they believe them to be 'too time-consuming or complicated'",
+    "hint": "Look for explicit reasons for resistance in the final paragraph",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "medium-level",
+      "detail",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 2,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 2"
+  },
+  {
+    "questionId": "S9_Q3",
+    "type": "reading-comprehension",
+    "text": "Which professional group is NOT mentioned as benefiting from strategic reading?",
+    "options": [
+      {
+        "text": "Teachers",
+        "rationale": "Teachers are indeed not mentioned in the passage's examples of professionals"
+      },
+      {
+        "text": "Lawyers",
+        "rationale": "Lawyers are explicitly mentioned as benefiting from strategic reading"
+      },
+      {
+        "text": "Medical professionals",
+        "rationale": "Medical professionals are explicitly mentioned in the passage"
+      },
+      {
+        "text": "Legal professionals",
+        "rationale": "Legal professionals (lawyers) are specifically mentioned in the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "While the passage mentions lawyers and medical professionals as examples, teachers are not mentioned as a professional group benefiting from strategic reading",
+    "hint": "Check paragraph 3 for the specific professional examples provided",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "medium-level",
+      "detail",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 3,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 3"
+  },
+  {
+    "questionId": "S9_Q4",
+    "type": "reading-comprehension",
+    "text": "What long-term benefit of active reading strategies is mentioned for aging individuals?",
+    "options": [
+      {
+        "text": "Maintained cognitive flexibility",
+        "rationale": "This is explicitly stated as a benefit for those who practice active reading as they age"
+      },
+      {
+        "text": "Improved memory",
+        "rationale": "While retention is mentioned earlier, it's not specifically linked to aging benefits"
+      },
+      {
+        "text": "Better social connections",
+        "rationale": "This is not mentioned in the passage"
+      },
+      {
+        "text": "Increased reading speed",
+        "rationale": "While reading efficiency is mentioned, it's not specifically connected to aging benefits"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage states that those who regularly practice active reading strategies are more likely to 'maintain cognitive flexibility as they age'",
+    "hint": "Look for benefits mentioned specifically in relation to aging in paragraph 3",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "medium-level",
+      "detail",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 4,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 4"
+  },
+  {
+    "questionId": "S9_Q5",
+    "type": "reading-comprehension",
+    "text": "What is described as the initial approach many students take to reading?",
+    "options": [
+      {
+        "text": "A passive activity without much thought or intention",
+        "rationale": "This is explicitly stated as the initial approach of many students"
+      },
+      {
+        "text": "An active analytical process",
+        "rationale": "This is described as the better approach, not the initial student approach"
+      },
+      {
+        "text": "A strategic learning method",
+        "rationale": "This is presented as the solution, not the initial problem"
+      },
+      {
+        "text": "A complicated time-consuming task",
+        "rationale": "This is mentioned as a perception of strategic reading, not the initial approach"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage opens by stating that many students approach reading as 'a passive activity, simply letting their eyes move across the page without much thought or intention'",
+    "hint": "Look at how the passage describes student reading behavior in the opening sentence",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "attention-to-detail",
+      "fact-finding"
+    ],
+    "tags": [
+      "medium-level",
+      "detail",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 5,
+      "questionType": "detail",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 5"
+  },
+  {
+    "questionId": "S9_Q6",
+    "type": "reading-comprehension",
+    "text": "What is the main purpose of implementing active reading strategies according to the passage?",
+    "options": [
+      {
+        "text": "To improve comprehension and retention of written material",
+        "rationale": "This is explicitly stated in paragraph 1 as the primary benefit of active reading strategies"
+      },
+      {
+        "text": "To make reading more enjoyable as a hobby",
+        "rationale": "While reading may become more engaging, this is not stated as the main purpose"
+      },
+      {
+        "text": "To increase reading speed only",
+        "rationale": "Speed improvement is mentioned but only as a secondary benefit in paragraph 4"
+      },
+      {
+        "text": "To help students pass exams",
+        "rationale": "Academic success is not specifically mentioned as the main purpose"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage clearly states in paragraph 1 that active reading strategies 'can dramatically improve both comprehension and retention of written material.'",
+    "hint": "Look for the direct benefits mentioned in the first paragraph of the passage.",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 6,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 6"
+  },
+  {
+    "questionId": "S9_Q7",
+    "type": "reading-comprehension",
+    "text": "Which component of the SQ3R method involves examining headings and visual elements?",
+    "options": [
+      {
+        "text": "Survey",
+        "rationale": "This is correct as the passage explicitly states that surveying involves examining headings and visual elements"
+      },
+      {
+        "text": "Question",
+        "rationale": "Question involves generating questions about expected learning, not examining headings"
+      },
+      {
+        "text": "Read",
+        "rationale": "Reading involves seeking answers to questions, not initial examination of headings"
+      },
+      {
+        "text": "Review",
+        "rationale": "Review is about ensuring understanding, not initial examination of structure"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage states that in the Survey step, 'readers first survey the material by examining headings, subheadings, and visual elements.'",
+    "hint": "Think about which step would logically come first when approaching a new text.",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 7,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 7"
+  },
+  {
+    "questionId": "S9_Q8",
+    "type": "reading-comprehension",
+    "text": "According to the passage, what is a key benefit of active reading for professionals?",
+    "options": [
+      {
+        "text": "Higher levels of information retention and improved critical thinking",
+        "rationale": "This is explicitly stated as a benefit for professionals"
+      },
+      {
+        "text": "Increased salary potential",
+        "rationale": "This is not mentioned in the passage"
+      },
+      {
+        "text": "Better work-life balance",
+        "rationale": "This is not discussed in the passage"
+      },
+      {
+        "text": "Enhanced typing speed",
+        "rationale": "This is not mentioned as a benefit"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph 3 directly states that professionals who use active reading techniques 'report higher levels of information retention, improved critical thinking skills, and greater success in their careers.'",
+    "hint": "Focus on the professional benefits mentioned in paragraph 3.",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 8,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 8"
+  },
+  {
+    "questionId": "S9_Q9",
+    "type": "reading-comprehension",
+    "text": "What is the passage's response to those who think reading strategies are too time-consuming?",
+    "options": [
+      {
+        "text": "Regular practice makes them natural habits that save time",
+        "rationale": "This directly addresses the concern about time consumption"
+      },
+      {
+        "text": "They should try simpler strategies instead",
+        "rationale": "This solution is not proposed in the passage"
+      },
+      {
+        "text": "They should read faster",
+        "rationale": "This is not the solution offered in the passage"
+      },
+      {
+        "text": "They should read less frequently",
+        "rationale": "This contradicts the passage's message"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph 4 explains that 'with regular practice, these techniques become natural habits that actually save time.'",
+    "hint": "Look for how the passage addresses common objections to reading strategies.",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 9,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 9"
+  },
+  {
+    "questionId": "S9_Q10",
+    "type": "reading-comprehension",
+    "text": "What long-term benefit does the passage associate with regular practice of active reading strategies?",
+    "options": [
+      {
+        "text": "Maintained cognitive flexibility with age",
+        "rationale": "This is explicitly stated as a long-term benefit"
+      },
+      {
+        "text": "Improved social relationships",
+        "rationale": "This is not mentioned in the passage"
+      },
+      {
+        "text": "Better physical health",
+        "rationale": "This is not discussed in the passage"
+      },
+      {
+        "text": "Increased wealth",
+        "rationale": "This is not mentioned as a benefit"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage states in paragraph 3 that individuals who regularly practice active reading strategies are 'more likely to engage in lifelong learning and maintain cognitive flexibility as they age.'",
+    "hint": "Consider the cognitive benefits mentioned in paragraph 3.",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 10,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 10"
+  },
+  {
+    "questionId": "S9_Q11",
+    "type": "reading-comprehension",
+    "text": "What is the main purpose of using active reading strategies according to the passage?",
+    "options": [
+      {
+        "text": "To improve comprehension and retention of written material",
+        "rationale": "This directly aligns with the passage's central claim in paragraph 1"
+      },
+      {
+        "text": "To increase reading speed only",
+        "rationale": "While efficiency is mentioned, it's not the main purpose described"
+      },
+      {
+        "text": "To help students pass exams",
+        "rationale": "While academic benefits are implied, this is too narrow and not the main focus"
+      },
+      {
+        "text": "To make reading more enjoyable",
+        "rationale": "While engagement is mentioned, it's not presented as the primary purpose"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage explicitly states in paragraph 1 that active reading strategies 'dramatically improve both comprehension and retention of written material.'",
+    "hint": "Look for the broad benefit mentioned in the first paragraph that applies to all readers",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 11,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 11"
+  },
+  {
+    "questionId": "S9_Q12",
+    "type": "reading-comprehension",
+    "text": "What are the five components of the SQ3R method in correct order?",
+    "options": [
+      {
+        "text": "Survey, Question, Read, Recite, Review",
+        "rationale": "This is the exact order presented in the passage"
+      },
+      {
+        "text": "Study, Quiz, Read, Recall, Review",
+        "rationale": "These are similar but incorrect terms"
+      },
+      {
+        "text": "Scan, Question, Read, Remember, Revise",
+        "rationale": "These are similar but not the actual terms used"
+      },
+      {
+        "text": "Survey, Question, Review, Read, Recite",
+        "rationale": "This scrambles the correct order"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph 2 explicitly outlines the SQ3R method in this specific order: Survey, Question, Read, Recite, and Review",
+    "hint": "The passage presents these steps in a specific sequence - look for the exact terms used",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 12,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 12"
+  },
+  {
+    "questionId": "S9_Q13",
+    "type": "reading-comprehension",
+    "text": "According to the passage, how do active reading strategies benefit professionals?",
+    "options": [
+      {
+        "text": "They improve information retention, critical thinking, and career success",
+        "rationale": "This directly matches the benefits listed in paragraph 3"
+      },
+      {
+        "text": "They only help with reading speed",
+        "rationale": "This is too limited and not the main benefit described"
+      },
+      {
+        "text": "They primarily benefit academic performance",
+        "rationale": "The passage emphasizes benefits beyond academics"
+      },
+      {
+        "text": "They only help with memory improvement",
+        "rationale": "This captures only one of several benefits mentioned"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph 3 specifically mentions higher levels of information retention, improved critical thinking skills, and greater career success as benefits for professionals",
+    "hint": "Look for multiple professional benefits listed in the third paragraph",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 13,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 13"
+  },
+  {
+    "questionId": "S9_Q14",
+    "type": "reading-comprehension",
+    "text": "What common objection to active reading strategies does the passage address?",
+    "options": [
+      {
+        "text": "They are too time-consuming and complicated",
+        "rationale": "This is explicitly stated as a common resistance point"
+      },
+      {
+        "text": "They are too expensive to learn",
+        "rationale": "Cost is not mentioned as an objection"
+      },
+      {
+        "text": "They only work for academic reading",
+        "rationale": "The passage argues the opposite"
+      },
+      {
+        "text": "They are difficult to teach",
+        "rationale": "This is not mentioned as an objection"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph 4 directly addresses the common resistance that these strategies are 'too time-consuming or complicated'",
+    "hint": "Consider what barriers people might raise when asked to change their reading habits",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 14,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 14"
+  },
+  {
+    "questionId": "S9_Q15",
+    "type": "reading-comprehension",
+    "text": "What long-term benefit of active reading strategies is highlighted in the passage?",
+    "options": [
+      {
+        "text": "Maintenance of cognitive flexibility with age",
+        "rationale": "This is specifically mentioned as a long-term benefit"
+      },
+      {
+        "text": "Improved vocabulary",
+        "rationale": "This is not mentioned as a benefit in the passage"
+      },
+      {
+        "text": "Better social skills",
+        "rationale": "This is not discussed in the passage"
+      },
+      {
+        "text": "Increased reading speed",
+        "rationale": "While efficiency is mentioned, it's not highlighted as a primary long-term benefit"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage states in paragraph 3 that those who practice active reading strategies are more likely to 'maintain cognitive flexibility as they age'",
+    "hint": "Look for benefits that extend into later life",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "comprehension",
+      "summarization"
+    ],
+    "tags": [
+      "medium-level",
+      "main-idea",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 15,
+      "questionType": "main-idea",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 15"
+  },
+  {
+    "questionId": "S9_Q16",
+    "type": "reading-comprehension",
+    "text": "Based on the passage, what can be inferred about professionals who do NOT use strategic reading methods?",
+    "options": [
+      {
+        "text": "They likely spend more time reviewing materials multiple times",
+        "rationale": "The passage indicates that strategic reading reduces the need for rereading, suggesting non-strategic readers must reread more frequently"
+      },
+      {
+        "text": "They have better natural reading comprehension",
+        "rationale": "This contradicts the passage's emphasis on the benefits of strategic reading"
+      },
+      {
+        "text": "They process information faster initially",
+        "rationale": "The passage suggests strategic reading actually increases comprehension speed"
+      },
+      {
+        "text": "They prefer audio-based learning",
+        "rationale": "The passage makes no mention of alternative learning methods"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph [4] states that strategic reading reduces the need for rereading and increases comprehension speed, implying that those who don't use these methods must spend more time reviewing materials repeatedly",
+    "hint": "Think about what happens when you don't have an organized approach to reading complex material",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "medium-level",
+      "inference",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 16,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 16"
+  },
+  {
+    "questionId": "S9_Q17",
+    "type": "reading-comprehension",
+    "text": "What can be inferred about the relationship between strategic reading and career success?",
+    "options": [
+      {
+        "text": "Strategic reading is only beneficial in academic careers",
+        "rationale": "The passage mentions benefits across various professional fields"
+      },
+      {
+        "text": "Strategic readers are more likely to advance in knowledge-intensive professions",
+        "rationale": "The passage provides examples of how strategic reading benefits various professionals"
+      },
+      {
+        "text": "Strategic reading is only useful for legal documents",
+        "rationale": "The passage uses legal professionals as just one example"
+      },
+      {
+        "text": "Strategic reading slows down professional development",
+        "rationale": "This contradicts the passage's positive association with career success"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph [3] provides examples of how strategic reading benefits professionals in different fields and links it to career success",
+    "hint": "Consider how information processing abilities affect professional performance",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "medium-level",
+      "inference",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 17,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 17"
+  },
+  {
+    "questionId": "S9_Q18",
+    "type": "reading-comprehension",
+    "text": "What can be concluded about the long-term effects of strategic reading on cognitive ability?",
+    "options": [
+      {
+        "text": "It exclusively improves memory",
+        "rationale": "The passage mentions multiple cognitive benefits beyond just memory"
+      },
+      {
+        "text": "It helps maintain mental flexibility with age",
+        "rationale": "This is directly supported by the passage's discussion of cognitive benefits"
+      },
+      {
+        "text": "It decreases critical thinking skills",
+        "rationale": "This contradicts the passage's stated benefits"
+      },
+      {
+        "text": "It only benefits young readers",
+        "rationale": "The passage suggests benefits throughout life"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph [3] states that strategic readers are more likely to maintain cognitive flexibility as they age and engage in lifelong learning",
+    "hint": "Look for mentions of age-related cognitive benefits in the passage",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "medium-level",
+      "inference",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 18,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 18"
+  },
+  {
+    "questionId": "S9_Q19",
+    "type": "reading-comprehension",
+    "text": "What can be inferred about the initial resistance to strategic reading methods?",
+    "options": [
+      {
+        "text": "It stems from a misunderstanding of the time investment",
+        "rationale": "The passage directly addresses misconceptions about time consumption"
+      },
+      {
+        "text": "It comes from prior negative experiences",
+        "rationale": "This is not mentioned in the passage"
+      },
+      {
+        "text": "It is due to lack of access to training",
+        "rationale": "This reason is not discussed in the passage"
+      },
+      {
+        "text": "It results from poor teaching methods",
+        "rationale": "This is not supported by the passage"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph [4] suggests that people resist these methods because they believe them to be too time-consuming, though this proves to be a misconception",
+    "hint": "Consider what initial objections people might have to learning new reading strategies",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "medium-level",
+      "inference",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 19,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 19"
+  },
+  {
+    "questionId": "S9_Q20",
+    "type": "reading-comprehension",
+    "text": "Based on the SQ3R method described, what can be inferred about successful readers?",
+    "options": [
+      {
+        "text": "They read quickly without planning",
+        "rationale": "This contradicts the systematic approach described"
+      },
+      {
+        "text": "They approach texts with specific expectations and questions",
+        "rationale": "This aligns with the SQ3R method's question-generation step"
+      },
+      {
+        "text": "They avoid reviewing material",
+        "rationale": "Review is explicitly mentioned as part of the process"
+      },
+      {
+        "text": "They focus only on main headings",
+        "rationale": "The passage indicates they examine multiple text elements"
+      }
+    ],
+    "correctAnswer": 1,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "Paragraph [2] describes how successful readers generate questions before reading and actively seek answers, suggesting they approach texts with specific expectations",
+    "hint": "Think about how the SQ3R method differs from passive reading",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "logical-reasoning",
+      "cause-effect"
+    ],
+    "tags": [
+      "medium-level",
+      "inference",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 20,
+      "questionType": "inference",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 20"
+  },
+  {
+    "questionId": "S9_Q21",
+    "type": "reading-comprehension",
+    "text": "Based on the context in paragraph 1, what does 'passive' mean when describing how students approach reading?",
+    "options": [
+      {
+        "text": "Without active engagement or deliberate thought",
+        "rationale": "Correct - the passage contrasts this with 'active' reading strategies and describes it as 'simply letting their eyes move across the page'"
+      },
+      {
+        "text": "Moving very slowly",
+        "rationale": "Incorrect - the passage doesn't discuss reading speed in relation to passive reading"
+      },
+      {
+        "text": "Reading silently",
+        "rationale": "Incorrect - silent reading isn't mentioned and doesn't capture the meaning of passive in this context"
+      },
+      {
+        "text": "Reading alone",
+        "rationale": "Incorrect - solitary reading isn't related to the passive approach described"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage describes passive reading as 'simply letting their eyes move across the page without much thought or intention,' contrasting it with active strategies that involve engagement",
+    "hint": "Look at how the passage contrasts this approach with active reading strategies",
+    "paragraphReference": "Paragraph [1]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "medium-level",
+      "vocabulary",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 21,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 21"
+  },
+  {
+    "questionId": "S9_Q22",
+    "type": "reading-comprehension",
+    "text": "In the context of the SQ3R method, what does 'survey' mean?",
+    "options": [
+      {
+        "text": "Quickly preview and examine key elements",
+        "rationale": "Correct - the passage defines survey as examining headings, subheadings, and visual elements for an overview"
+      },
+      {
+        "text": "Count the number of pages",
+        "rationale": "Incorrect - this isn't mentioned as part of the survey step"
+      },
+      {
+        "text": "Ask others about the text",
+        "rationale": "Incorrect - surveying is described as a personal examination of the material"
+      },
+      {
+        "text": "Take detailed notes",
+        "rationale": "Incorrect - this would be more aligned with the 'read' or 'recite' steps"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage explicitly defines surveying as examining headings, subheadings, and visual elements to get an overview of the content",
+    "hint": "Think about what you do before actually reading the main text",
+    "paragraphReference": "Paragraph [2]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "medium-level",
+      "vocabulary",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 22,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 22"
+  },
+  {
+    "questionId": "S9_Q23",
+    "type": "reading-comprehension",
+    "text": "What does 'retention' mean in the context of the passage?",
+    "options": [
+      {
+        "text": "The ability to remember information over time",
+        "rationale": "Correct - the passage uses retention in the context of keeping and remembering information learned"
+      },
+      {
+        "text": "The speed of reading",
+        "rationale": "Incorrect - while reading speed is mentioned later, it's not related to retention"
+      },
+      {
+        "text": "The ability to focus",
+        "rationale": "Incorrect - while focus is mentioned, it's distinct from retention"
+      },
+      {
+        "text": "The process of taking notes",
+        "rationale": "Incorrect - note-taking isn't specifically discussed in relation to retention"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage uses 'retention' in discussing how well readers remember information, particularly in the context of professionals using active reading techniques",
+    "hint": "Consider how the word is used when discussing the benefits of reading strategies",
+    "paragraphReference": "Paragraphs [1,3]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "medium-level",
+      "vocabulary",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 23,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 23"
+  },
+  {
+    "questionId": "S9_Q24",
+    "type": "reading-comprehension",
+    "text": "What does 'cognitive flexibility' refer to in the passage?",
+    "options": [
+      {
+        "text": "Mental adaptability and continued learning ability",
+        "rationale": "Correct - the context suggests it refers to maintaining mental adaptability with age"
+      },
+      {
+        "text": "Physical flexibility",
+        "rationale": "Incorrect - the passage is discussing mental, not physical attributes"
+      },
+      {
+        "text": "Reading speed",
+        "rationale": "Incorrect - while reading speed is mentioned elsewhere, it's not related to cognitive flexibility"
+      },
+      {
+        "text": "Memory capacity",
+        "rationale": "Incorrect - while related, this isn't the specific meaning of cognitive flexibility in context"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The passage mentions cognitive flexibility in relation to lifelong learning and maintaining mental capabilities as people age",
+    "hint": "Look at how this term is used in relation to aging and lifelong learning",
+    "paragraphReference": "Paragraph [3]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "medium-level",
+      "vocabulary",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 24,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 24"
+  },
+  {
+    "questionId": "S9_Q25",
+    "type": "reading-comprehension",
+    "text": "What does 'pays dividends' mean in the final paragraph?",
+    "options": [
+      {
+        "text": "Provides valuable benefits over time",
+        "rationale": "Correct - the phrase is used to describe the long-term benefits of learning reading strategies"
+      },
+      {
+        "text": "Earns money",
+        "rationale": "Incorrect - while this is the literal meaning, it's used metaphorically in the passage"
+      },
+      {
+        "text": "Requires payment",
+        "rationale": "Incorrect - this misinterprets the metaphorical use of the financial term"
+      },
+      {
+        "text": "Creates interest",
+        "rationale": "Incorrect - while related to the financial metaphor, this isn't the intended meaning"
+      }
+    ],
+    "correctAnswer": 0,
+    "difficulty": "medium",
+    "difficultyScore": 3,
+    "explanation": "The phrase is used metaphorically to describe how the initial effort of learning reading strategies yields valuable benefits throughout one's academic and professional life",
+    "hint": "Think about how this financial term is used metaphorically to describe benefits",
+    "paragraphReference": "Paragraph [4]",
+    "skills": [
+      "context-clues",
+      "word-meaning"
+    ],
+    "tags": [
+      "medium-level",
+      "vocabulary",
+      "readingintermediate"
+    ],
+    "metadata": {
+      "topic": "ReadingIntermediate",
+      "questionNumber": 25,
+      "questionType": "vocabulary",
+      "totalQuestions": 25,
+      "wordCount": 350,
+      "estimatedTime": 3
+    },
+    "aiPrompt": "Generated question 25"
+  }
+];
+
+// Legacy exports for backward compatibility
+export const mediumReadingIntermediatePassageText = passage;
+export const mediumReadingIntermediateReadingQuestions = questions;

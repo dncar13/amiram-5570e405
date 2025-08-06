@@ -1,0 +1,62 @@
+{
+  "version": "final-ai-filled",
+  "storySummary": {
+    "title": "When Machines Become Our Teachers",
+    "difficulty": "medium",
+    "topic": "Technology",
+    "wordCount": 306,
+    "numQuestions": 1,
+    "estimatedTime": 3,
+    "topicId": 1
+  },
+  "passage": "[1] The integration of artificial intelligence (AI) into education has sparked both excitement and concern among educators worldwide. As intelligent tutoring systems become increasingly sophisticated, they are transforming the traditional relationship between teachers and students. These AI-powered platforms can now analyze student performance, adapt learning materials in real-time, and provide personalized feedback with remarkable precision. Unlike human teachers, who may struggle to give individual attention to dozens of students simultaneously, AI systems can engage with countless learners at once while maintaining consistent quality.\n\n[2] The advantages of AI-driven education extend far beyond simple automation. Modern educational AI can detect subtle patterns in student behavior, identifying areas where learners struggle before they fall behind. For instance, when a student consistently makes similar mistakes in mathematics, the system can recognize the underlying conceptual misunderstanding and adjust its teaching approach accordingly. Additionally, these platforms operate around the clock, allowing students to learn at their own pace and on their own schedule, effectively democratizing access to quality education.\n\n[3] However, the rise of AI teachers also raises important questions about the future of human educators. Critics argue that machines cannot replicate the emotional intelligence and intuitive understanding that skilled teachers bring to the classroom. They point out that education involves more than just transferring information; it requires building relationships, fostering creativity, and developing social skills. Furthermore, there are concerns about data privacy and the potential for AI systems to reinforce existing educational inequalities if not properly implemented.\n\n[4] Looking ahead, most experts agree that the ideal educational environment will likely combine AI technology with human instruction. This hybrid approach would leverage the computational power and consistency of AI while preserving the irreplaceable human elements of teaching. As these systems continue to evolve, the challenge lies in striking the right balance between technological efficiency and the fundamental human aspects of education.",
+  "questions": [
+    {
+      "questionId": "S1_Q1",
+      "type": "reading-comprehension",
+      "text": "According to the passage, what is the primary advantage of AI-powered educational systems over human teachers when it comes to student interaction?",
+      "options": [
+        {
+          "text": "The ability to engage with multiple students simultaneously while maintaining consistent quality",
+          "rationale": "This is explicitly stated in paragraph 1 as a key advantage of AI systems over human teachers who struggle with individual attention"
+        },
+        {
+          "text": "The capability to develop stronger emotional connections with students",
+          "rationale": "This is incorrect as the passage actually presents emotional intelligence as an advantage of human teachers, not AI systems"
+        },
+        {
+          "text": "The power to operate using advanced computational algorithms",
+          "rationale": "While AI systems do use computational power, this is not specifically mentioned as an advantage in terms of student interaction"
+        },
+        {
+          "text": "The ability to teach creative and social skills more effectively",
+          "rationale": "The passage actually presents this as a limitation of AI systems, noting that human teachers are better at fostering creativity and social skills"
+        }
+      ],
+      "correctAnswer": 0,
+      "difficulty": "medium",
+      "difficultyScore": 3,
+      "explanation": "The passage explicitly states in paragraph 1 that unlike human teachers who struggle to give individual attention to many students at once, AI systems can engage with countless learners simultaneously while maintaining consistent quality of instruction.",
+      "hint": "Think about the scalability aspect of AI systems mentioned in the first paragraph.",
+      "paragraphReference": "Paragraph [1]",
+      "skills": [
+        "comprehension",
+        "summarization"
+      ],
+      "tags": [
+        "medium-level",
+        "detail",
+        "technology"
+      ],
+      "metadata": {
+        "topic": "Technology",
+        "questionNumber": 1,
+        "questionType": "detail",
+        "totalQuestions": 25,
+        "wordCount": 350,
+        "estimatedTime": 3
+      },
+      "aiPrompt": "Generated question 1"
+    }
+  ]
+}

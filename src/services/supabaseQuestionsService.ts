@@ -402,8 +402,8 @@ export async function getReadingQuestions(difficulty?: string, userIsPremium: bo
     // FIFO Logic: Newest questions first
     query = query.order('created_at', { ascending: false })
     
-    // Execute query with reasonable limit
-    const { data: questions, error } = await query.limit(100)
+    // Execute query with higher limit to get all stories (14 stories × 25 questions = 350+ questions)
+    const { data: questions, error } = await query.limit(500)
     
     if (error) {
       console.error('❌ Error fetching reading questions:', error)

@@ -75,7 +75,7 @@ const TopicQuestionsList = ({
               totalQuestions={filteredQuestions.length}
               selectedAnswerIndex={null}
               isAnswerSubmitted={false}
-              showExplanation={false}
+              showExplanation={true}
               isFlagged={question.flagged || false}
               onAnswerSelect={() => {}}
               onSubmitAnswer={() => {}}
