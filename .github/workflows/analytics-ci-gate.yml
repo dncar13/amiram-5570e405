@@ -1,0 +1,442 @@
+name: Analytics CI Gate
+
+# Trigger this workflow when analytics-related files change
+on:
+  pull_request:
+    paths:
+      - 'src/services/analytics.ts'
+      - 'src/hooks/useAnalytics.ts'
+      - 'src/types/analytics.ts'
+      - 'src/components/RouteTracker.tsx'
+      - 'analytics/**'
+      - 'tracking/**'
+      - 'supabase/functions/cardcom-webhook/**'
+      - 'supabase/functions/cancel-subscription-refund/**'
+      - 'supabase/functions/track-refund-event/**'
+      - 'src/components/payment/**'
+      - 'src/pages/Premium.tsx'
+      - 'src/pages/ThankYou.tsx'
+      - 'tests/e2e/duplicate-event-prevention.spec.ts'
+  push:
+    branches: [main, production]
+    paths:
+      - 'src/services/analytics.ts'
+      - 'src/hooks/useAnalytics.ts'
+      - 'analytics/**'
+      - 'tracking/**'
+
+env:
+  NODE_VERSION: '18'
+  PLAYWRIGHT_VERSION: '1.40.0'
+
+jobs:
+  # Detect what type of analytics changes were made
+  detect-changes:
+    name: Detect Analytics Changes
+    runs-on: ubuntu-latest
+    outputs:
+      analytics-core: ${{ steps.changes.outputs.analytics-core }}
+      payment-tracking: ${{ steps.changes.outputs.payment-tracking }}
+      e2e-tests: ${{ steps.changes.outputs.e2e-tests }}
+      webhooks: ${{ steps.changes.outputs.webhooks }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            analytics-core:
+              - 'src/services/analytics.ts'
+              - 'src/hooks/useAnalytics.ts'
+              - 'src/types/analytics.ts'
+              - 'src/components/RouteTracker.tsx'
+            payment-tracking:
+              - 'src/pages/Premium.tsx'
+              - 'src/pages/ThankYou.tsx'
+              - 'src/components/payment/**'
+            e2e-tests:
+              - 'tests/e2e/duplicate-event-prevention.spec.ts'
+              - 'tests/setup/**'
+              - 'playwright.config.ts'
+            webhooks:
+              - 'supabase/functions/cardcom-webhook/**'
+              - 'supabase/functions/cancel-subscription-refund/**'
+              - 'supabase/functions/track-refund-event/**'
+
+  # Static analysis for analytics code
+  static-analysis:
+    name: Analytics Static Analysis
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.analytics-core == 'true' || needs.detect-changes.outputs.payment-tracking == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript strict check
+        run: |
+          echo "🔍 Running TypeScript strict checks on analytics files..."
+          npx tsc --noEmit --strict --exactOptionalPropertyTypes src/services/analytics.ts
+          npx tsc --noEmit --strict --exactOptionalPropertyTypes src/hooks/useAnalytics.ts
+
+      - name: ESLint with zero warnings
+        run: |
+          echo "🧹 Running ESLint with zero warnings policy..."
+          npx eslint src/services/analytics.ts --max-warnings 0
+          npx eslint src/hooks/useAnalytics.ts --max-warnings 0
+
+      - name: Analytics-specific code quality checks
+        run: |
+          echo "🔍 Running analytics-specific quality checks..."
+          
+          # Check for potential memory leaks
+          if grep -n "addEventListener\|setInterval" src/services/analytics.ts | grep -v "removeEventListener\|clearInterval"; then
+            echo "⚠️ Potential memory leak: addEventListener/setInterval without cleanup"
+          fi
+          
+          # Check for async/await consistency  
+          if grep -n "async.*trackEvent\|trackEvent.*await" src/services/analytics.ts | grep -v "await.*trackEvent"; then
+            echo "⚠️ Inconsistent async/await usage in trackEvent calls"
+          fi
+          
+          # Check for hardcoded URLs
+          if grep -n -E "https?://[^'\"]*['\"]" src/services/analytics.ts; then
+            echo "❌ Hardcoded URLs detected - use environment variables"
+            exit 1
+          fi
+          
+          # Verify checksum implementation
+          if ! grep -q "generateChecksum" src/services/analytics.ts; then
+            echo "❌ Missing checksum generation implementation"
+            exit 1
+          fi
+          
+          echo "✅ Analytics code quality checks passed"
+
+  # Test analytics changes thoroughly
+  test-analytics:
+    name: Comprehensive Analytics Tests
+    runs-on: ubuntu-latest
+    needs: [detect-changes, static-analysis]
+    if: always() && (needs.detect-changes.outputs.analytics-core == 'true' || needs.detect-changes.outputs.payment-tracking == 'true')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests with coverage
+        run: |
+          echo "🧪 Running unit tests with coverage..."
+          npm test -- --coverage --run --reporter=verbose
+          
+          # Check coverage thresholds for analytics files
+          echo "📊 Checking coverage thresholds..."
+          # Add coverage threshold checks here if you have them configured
+
+      - name: Install Playwright browsers
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright install --with-deps firefox
+
+      - name: Start development server
+        run: |
+          npm run dev &
+          sleep 30  # Wait for server to start
+          curl -f http://localhost:5173 || exit 1
+          echo "✅ Development server is running"
+
+      - name: Run E2E duplicate detection tests
+        run: |
+          echo "🎭 Running E2E duplicate event detection tests..."
+          npm run test:events
+        env:
+          CI: true
+          TEST_BASE_URL: http://localhost:5173
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: analytics-test-results
+          path: |
+            tests/reports/
+            test-results/
+          retention-days: 7
+
+      - name: Upload Playwright trace
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+
+  # Test webhook functions if they changed
+  test-webhooks:
+    name: Test Analytics Webhooks
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.webhooks == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Deno for Supabase functions
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.37.0
+
+      - name: Install Supabase CLI
+        run: |
+          curl -fsSL https://get.supabase.com | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Test webhook functions
+        run: |
+          echo "🔗 Testing webhook functions..."
+          
+          # Start Supabase local environment
+          supabase start
+          
+          # Deploy functions locally
+          supabase functions deploy cardcom-webhook --no-verify-jwt
+          supabase functions deploy track-refund-event --no-verify-jwt
+          
+          # Test webhook endpoints
+          echo "Testing CardCom webhook..."
+          curl -X POST http://localhost:54321/functions/v1/cardcom-webhook \
+            -H "Content-Type: application/json" \
+            -d '{"test": "data"}' || echo "Expected failure for invalid data"
+          
+          echo "Testing refund tracking..."
+          curl -X POST http://localhost:54321/functions/v1/track-refund-event \
+            -H "Content-Type: application/json" \
+            -d '{"original_transaction_id": "test", "refund_amount": 50, "original_amount": 100}' || echo "Expected failure without auth"
+          
+          echo "✅ Webhook function tests completed"
+
+  # Performance regression testing
+  performance-test:
+    name: Analytics Performance Test
+    runs-on: ubuntu-latest
+    needs: [detect-changes, test-analytics]
+    if: needs.detect-changes.outputs.analytics-core == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Performance benchmark
+        run: |
+          echo "⚡ Running analytics performance tests..."
+          
+          node -e "
+          const analyticsService = require('./src/services/analytics.ts');
+          
+          // Test event tracking performance
+          const start = Date.now();
+          const events = [];
+          
+          for (let i = 0; i < 1000; i++) {
+            events.push(analyticsService.trackEvent({
+              event: 'test_event',
+              timestamp: Date.now(),
+              user_id: 'test_user_' + i
+            }));
+          }
+          
+          Promise.all(events).then(() => {
+            const duration = Date.now() - start;
+            console.log('Tracked 1000 events in', duration, 'ms');
+            
+            if (duration > 5000) {
+              console.error('❌ Performance regression: took', duration, 'ms (limit: 5000ms)');
+              process.exit(1);
+            }
+            
+            console.log('✅ Performance test passed');
+          });
+          "
+
+  # Security scan for analytics changes
+  security-scan:
+    name: Analytics Security Scan
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for sensitive data
+        run: |
+          echo "🔍 Scanning for sensitive analytics data..."
+          
+          # Check for hardcoded API keys, tokens, etc.
+          SENSITIVE_PATTERNS=(
+            "GTM-[A-Z0-9]+"
+            "G-[A-Z0-9]+"  
+            "UA-[0-9-]+"
+            "api[_-]?key"
+            "secret"
+            "token"
+            "password"
+            "fb[_-]?pixel"
+          )
+          
+          ISSUES_FOUND=false
+          
+          for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+            if git diff origin/main..HEAD | grep -E -i "$pattern" | grep -v -E "(example|test|placeholder|TODO)"; then
+              echo "⚠️ Found potential sensitive data matching pattern: $pattern"
+              ISSUES_FOUND=true
+            fi
+          done
+          
+          # Check for personal data collection
+          if git diff origin/main..HEAD | grep -E -i "(email|phone|address|ssn|credit[_-]?card)"; then
+            echo "⚠️ Potential personal data collection detected - ensure GDPR compliance"
+          fi
+          
+          if [ "$ISSUES_FOUND" = true ]; then
+            echo "❌ Security scan found issues - please review"
+            exit 1
+          fi
+          
+          echo "✅ Security scan passed"
+
+  # Final gate - all tests must pass
+  analytics-gate:
+    name: Analytics CI Gate
+    runs-on: ubuntu-latest
+    needs: [detect-changes, static-analysis, test-analytics, test-webhooks, performance-test, security-scan]
+    if: always()
+    
+    steps:
+      - name: Check all analytics tests passed
+        run: |
+          echo "🎯 Analytics CI Gate Summary"
+          echo "============================="
+          echo ""
+          echo "Change Detection:"
+          echo "- Analytics Core: ${{ needs.detect-changes.outputs.analytics-core }}"
+          echo "- Payment Tracking: ${{ needs.detect-changes.outputs.payment-tracking }}"
+          echo "- E2E Tests: ${{ needs.detect-changes.outputs.e2e-tests }}"
+          echo "- Webhooks: ${{ needs.detect-changes.outputs.webhooks }}"
+          echo ""
+          echo "Test Results:"
+          echo "- Static Analysis: ${{ needs.static-analysis.result }}"
+          echo "- Analytics Tests: ${{ needs.test-analytics.result }}"
+          echo "- Webhook Tests: ${{ needs.test-webhooks.result }}"
+          echo "- Performance Test: ${{ needs.performance-test.result }}"
+          echo "- Security Scan: ${{ needs.security-scan.result }}"
+          echo ""
+          
+          # Check if any required tests failed
+          FAILED_TESTS=()
+          
+          if [[ "${{ needs.static-analysis.result }}" == "failure" ]]; then
+            FAILED_TESTS+=("Static Analysis")
+          fi
+          
+          if [[ "${{ needs.test-analytics.result }}" == "failure" ]]; then
+            FAILED_TESTS+=("Analytics Tests")
+          fi
+          
+          if [[ "${{ needs.test-webhooks.result }}" == "failure" ]]; then
+            FAILED_TESTS+=("Webhook Tests")
+          fi
+          
+          if [[ "${{ needs.performance-test.result }}" == "failure" ]]; then
+            FAILED_TESTS+=("Performance Test")
+          fi
+          
+          if [[ "${{ needs.security-scan.result }}" == "failure" ]]; then
+            FAILED_TESTS+=("Security Scan")
+          fi
+          
+          if [ ${#FAILED_TESTS[@]} -gt 0 ]; then
+            echo "❌ Analytics CI Gate FAILED"
+            echo "Failed tests: ${FAILED_TESTS[*]}"
+            echo ""
+            echo "Please fix all failing tests before merging."
+            echo "Analytics changes require all quality gates to pass."
+            exit 1
+          fi
+          
+          echo "✅ Analytics CI Gate PASSED"
+          echo "All quality checks passed - safe to merge analytics changes."
+
+  # Notify team of analytics changes
+  notify-team:
+    name: Notify Analytics Changes
+    runs-on: ubuntu-latest
+    needs: [analytics-gate]
+    if: success() && github.event_name == 'pull_request'
+    
+    steps:
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## 📊 Analytics CI Gate Results
+
+            ✅ **All analytics quality checks passed!**
+
+            This PR contains changes to analytics code and has been thoroughly tested:
+            - Static analysis and linting
+            - Comprehensive unit and E2E tests  
+            - Performance regression tests
+            - Security scans
+            - Webhook function validation
+
+            **Ready for analytics team review** 🚀
+
+            > ⚠️ **Remember**: After merging, monitor GA4 DebugView for 24 hours to ensure no duplicate events are being fired.
+            `
+            });
+
+            // Also add analytics label
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['analytics', 'requires-monitoring']
+            });

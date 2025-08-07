@@ -11,12 +11,17 @@ import {
   PremiumEvent,
   SimulationEvent,
   EngagementEvent,
-  ErrorEvent
+  ErrorEvent,
+  BaseEvent
 } from '@/types/analytics';
+
+// 🛡️ Control flag to prevent manual tracking when GTM handles it automatically
+// In production, GTM should handle page tracking automatically
+const DISABLE_MANUAL_PAGE_TRACKING = true; // Always true - GTM handles all page tracking
 
 export interface UseAnalyticsReturn {
   // Core tracking functions
-  trackEvent: (event: any) => void;
+  trackEvent: (event: BaseEvent) => void;
   trackPageView: (pageData?: Partial<EngagementEvent>) => void;
   
   // Authentication tracking
@@ -45,10 +50,10 @@ export interface UseAnalyticsReturn {
   trackContentView: (contentType: string, contentId: string) => void;
   
   // Error tracking
-  trackError: (error: Error | string, component?: string, context?: Record<string, any>) => void;
+  trackError: (error: Error | string, component?: string, context?: Record<string, unknown>) => void;
   
   // User properties
-  setUserProperties: (properties: Record<string, any>) => void;
+  setUserProperties: (properties: Record<string, unknown>) => void;
   
   // Consent management
   updateConsent: (granted: boolean) => void;
@@ -116,16 +121,24 @@ export const useAnalytics = (): UseAnalyticsReturn => {
     }
   }, [currentUser]);
 
-  // Auto-track page views on route changes
+  // Track page views on route changes
   useEffect(() => {
-    const currentPath = location.pathname + location.search;
+    const currentPath = location.pathname;
     
-    // Only track if this is a new route
+    // Prevent tracking on initial load (to avoid duplicate with GTM)
+    if (!lastTrackedPath.current) {
+      lastTrackedPath.current = currentPath;
+      pageStartTime.current = Date.now();
+      return;
+    }
+    
+    // Only track if path actually changed
     if (lastTrackedPath.current !== currentPath) {
-      // Track engagement time for previous page (if exists)
-      if (lastTrackedPath.current && pageStartTime.current) {
+      
+      // Track engagement on previous page
+      if (pageStartTime.current) {
         const engagementTime = Date.now() - pageStartTime.current;
-        if (engagementTime > 5000) { // Only track if engaged for more than 5 seconds
+        if (engagementTime > 3000) { // Only track if engaged for more than 3 seconds
           analyticsService.trackEvent({
             event: 'page_engagement',
             engagement_time_msec: engagementTime,
@@ -138,22 +151,26 @@ export const useAnalytics = (): UseAnalyticsReturn => {
       // Update page title based on route
       updatePageTitle(location.pathname);
       
-      // Track new page view
-      const pageData: EngagementEvent = {
-        event: 'page_view',
-        page_title: document.title,
-        page_location: window.location.href,
-        content_group1: getContentGroup(),
-        page_referrer: lastTrackedPath.current || document.referrer
-      };
+      // 🚫 Skip manual page tracking if GTM handles it automatically
+      if (!DISABLE_MANUAL_PAGE_TRACKING) {
+        // Track new page view
+        const pageData: EngagementEvent = {
+          event: 'page_view',
+          page_title: document.title,
+          page_location: window.location.href,
+          content_group1: getContentGroup(),
+          page_referrer: lastTrackedPath.current || document.referrer
+        };
+        
+        analyticsService.trackPageView(pageData);
+      } else if (import.meta.env.DEV) {
+        console.log('🚫 Manual page tracking disabled - GTM handles automatically');
+      }
       
-      analyticsService.trackPageView(pageData);
       lastTrackedPath.current = currentPath;
       pageStartTime.current = Date.now();
     }
-  }, [location.pathname, location.search, updatePageTitle, getContentGroup]);
-
-  // Track page engagement on unload
+  }, [location.pathname, location.search, updatePageTitle, getContentGroup]);  // Track page engagement on unload
   useEffect(() => {
     const handleUnload = () => {
       const engagementTime = Date.now() - pageStartTime.current;
@@ -171,7 +188,7 @@ export const useAnalytics = (): UseAnalyticsReturn => {
     return () => window.removeEventListener('beforeunload', handleUnload);
   }, []);
 
-  const trackEvent = useCallback((event: any) => {
+  const trackEvent = useCallback((event: BaseEvent) => {
     analyticsService.trackEvent(event);
   }, []);
 
@@ -322,7 +339,7 @@ export const useAnalytics = (): UseAnalyticsReturn => {
     });
   }, []);
 
-  const trackError = useCallback((error: Error | string, component?: string, context?: Record<string, any>) => {
+  const trackError = useCallback((error: Error | string, component?: string, context?: Record<string, unknown>) => {
     const errorEvent: ErrorEvent = {
       event: 'error',
       error_type: error instanceof Error ? error.name : 'CustomError',
@@ -335,7 +352,7 @@ export const useAnalytics = (): UseAnalyticsReturn => {
     analyticsService.trackError(errorEvent);
   }, []);
 
-  const setUserProperties = useCallback((properties: Record<string, any>) => {
+  const setUserProperties = useCallback((properties: Record<string, unknown>) => {
     analyticsService.setUserProperties(properties);
   }, []);
 

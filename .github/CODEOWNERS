@@ -1,0 +1,66 @@
+# CODEOWNERS file for Amiram Academy
+# This file defines code ownership for critical paths requiring review
+
+# Global default - all files require review from danielpogodin
+* @danielpogodin
+
+# Analytics and tracking code - CRITICAL: Requires analytics team approval
+/src/services/analytics.ts @danielpogodin
+/src/hooks/useAnalytics.ts @danielpogodin
+/src/types/analytics.ts @danielpogodin
+/src/components/RouteTracker.tsx @danielpogodin
+/analytics/ @danielpogodin
+/tracking/ @danielpogodin
+
+# Payment and webhook functions - CRITICAL: Financial impact
+/supabase/functions/cardcom-webhook/ @danielpogodin
+/supabase/functions/cancel-subscription-refund/ @danielpogodin
+/supabase/functions/track-refund-event/ @danielpogodin
+/src/services/cardcomService.ts @danielpogodin
+/src/components/payment/ @danielpogodin
+
+# Database migrations and schema - CRITICAL: Data integrity
+/supabase/migrations/ @danielpogodin
+/supabase/functions/ @danielpogodin
+
+# Configuration files - CRITICAL: System configuration
+/src/config/ @danielpogodin
+/.env* @danielpogodin
+/vite.config.ts @danielpogodin
+/tailwind.config.js @danielpogodin
+
+# CI/CD and deployment - CRITICAL: Infrastructure
+/.github/ @danielpogodin
+/Dockerfile @danielpogodin
+/docker-compose*.yml @danielpogodin
+/package.json @danielpogodin
+/package-lock.json @danielpogodin
+
+# Test files for analytics - Requires analytics team approval
+/tests/e2e/duplicate-event-prevention.spec.ts @danielpogodin
+/tests/setup/ @danielpogodin
+/playwright.config.ts @danielpogodin
+
+# Premium and subscription features - Business critical
+/src/pages/Premium.tsx @danielpogodin
+/src/pages/ThankYou.tsx @danielpogodin
+/src/services/subscriptionService.ts @danielpogodin
+/src/services/freeCouponService.ts @danielpogodin
+
+# Security and authentication - CRITICAL: User data and access
+/src/context/AuthContext.tsx @danielpogodin
+/src/services/supabaseAuth.ts @danielpogodin
+
+# Documentation updates - Less critical, but still require review
+/README.md @danielpogodin
+/docs/ @danielpogodin
+*.md @danielpogodin
+
+# Reports and audit files - Analytics team review
+/reports/ @danielpogodin
+
+# Exception: Allow direct updates to certain non-critical files
+# (uncomment if needed for development velocity)
+# /src/components/ui/ 
+# /src/styles/
+# /public/assets/

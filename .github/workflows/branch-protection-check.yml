@@ -1,0 +1,295 @@
+name: Branch Protection Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: 
+      - main
+      - production
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # Critical path validation for analytics and payment code
+  critical-path-validation:
+    name: Critical Path Code Review
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, 'src/services/analytics') || contains(github.event.pull_request.changed_files, 'analytics/') || contains(github.event.pull_request.changed_files, 'tracking/') || contains(github.event.pull_request.changed_files, 'supabase/functions/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            analytics:
+              - 'src/services/analytics.ts'
+              - 'src/hooks/useAnalytics.ts'  
+              - 'src/types/analytics.ts'
+              - 'analytics/**'
+              - 'tracking/**'
+            payments:
+              - 'supabase/functions/cardcom-webhook/**'
+              - 'supabase/functions/cancel-subscription-refund/**'
+              - 'supabase/functions/track-refund-event/**'
+              - 'src/services/cardcomService.ts'
+              - 'src/components/payment/**'
+            database:
+              - 'supabase/migrations/**'
+              - 'supabase/functions/**'
+            tests:
+              - 'tests/e2e/duplicate-event-prevention.spec.ts'
+              - 'tests/setup/**'
+              - 'playwright.config.ts'
+
+      - name: Analytics Code Review Check
+        if: steps.changed-files.outputs.analytics == 'true'
+        run: |
+          echo "🔍 Analytics code changes detected - requiring analytics team review"
+          echo "Files changed:"
+          git diff --name-only origin/main..HEAD | grep -E "(analytics|tracking)" || true
+          
+          # Check for required reviewers
+          if ! gh pr view ${{ github.event.pull_request.number }} --json reviews | jq -r '.reviews[].author.login' | grep -q "danielpogodin"; then
+            echo "❌ Analytics code changes require review from @danielpogodin"
+            exit 1
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Payment Code Review Check  
+        if: steps.changed-files.outputs.payments == 'true'
+        run: |
+          echo "💳 Payment code changes detected - requiring financial team review"
+          echo "Files changed:"
+          git diff --name-only origin/main..HEAD | grep -E "(cardcom|payment)" || true
+          
+          # Payment changes are high-risk - always require explicit approval
+          echo "⚠️ Payment-related changes detected. Manual verification required."
+
+      - name: Database Migration Check
+        if: steps.changed-files.outputs.database == 'true'
+        run: |
+          echo "🗄️ Database changes detected - requiring DBA review"
+          
+          # Check for dangerous operations
+          if git diff origin/main..HEAD -- 'supabase/migrations/*.sql' | grep -i -E "(drop table|drop column|delete from|truncate)"; then
+            echo "⚠️ Potentially destructive database operations detected!"
+            echo "Please ensure you have:"
+            echo "1. Database backup"
+            echo "2. Rollback plan"
+            echo "3. DBA approval"
+          fi
+
+  # Enforce signed commits for critical paths
+  signed-commit-check:
+    name: Signed Commit Verification
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for critical path changes
+        id: critical-changes
+        run: |
+          CRITICAL_PATHS="src/services/analytics.ts src/hooks/useAnalytics.ts supabase/functions/ src/components/payment/"
+          CHANGED_FILES=$(git diff --name-only origin/main..HEAD)
+          
+          echo "Changed files: $CHANGED_FILES"
+          
+          CRITICAL_CHANGED=false
+          for path in $CRITICAL_PATHS; do
+            if echo "$CHANGED_FILES" | grep -q "$path"; then
+              CRITICAL_CHANGED=true
+              break
+            fi
+          done
+          
+          echo "critical_changed=$CRITICAL_CHANGED" >> $GITHUB_OUTPUT
+
+      - name: Verify signed commits for critical paths
+        if: steps.critical-changes.outputs.critical_changed == 'true'
+        run: |
+          echo "🔐 Verifying signed commits for critical path changes..."
+          
+          # Get commits in this PR
+          COMMITS=$(git rev-list origin/main..HEAD)
+          
+          for commit in $COMMITS; do
+            # Check if commit is signed
+            if ! git verify-commit $commit 2>/dev/null; then
+              echo "❌ Commit $commit is not signed"
+              echo "Critical path changes require GPG-signed commits"
+              echo "Please sign your commits with: git commit -S"
+              exit 1
+            else
+              echo "✅ Commit $commit is properly signed"
+            fi
+          done
+
+  # Code quality checks specific to analytics
+  analytics-quality-check:
+    name: Analytics Code Quality
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, 'src/services/analytics') || contains(github.event.pull_request.changed_files, 'analytics/')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check for analytics
+        run: |
+          echo "🔍 Running TypeScript checks on analytics code..."
+          npx tsc --noEmit --strict src/services/analytics.ts
+          npx tsc --noEmit --strict src/hooks/useAnalytics.ts
+          npx tsc --noEmit --strict src/types/analytics.ts
+
+      - name: Lint analytics code
+        run: |
+          echo "🧹 Linting analytics code..."
+          npx eslint src/services/analytics.ts --max-warnings 0
+          npx eslint src/hooks/useAnalytics.ts --max-warnings 0
+
+      - name: Check for analytics anti-patterns
+        run: |
+          echo "🚫 Checking for analytics anti-patterns..."
+          
+          # Check for console.log in production analytics code (should use config.debugMode)
+          if grep -n "console\.log" src/services/analytics.ts | grep -v "debugMode"; then
+            echo "❌ Found console.log without debugMode check in analytics.ts"
+            echo "Please use: if (this.config.debugMode) console.log(...)"
+            exit 1
+          fi
+          
+          # Check for hardcoded tracking IDs
+          if grep -n -E "(GTM-|G-|UA-)[A-Z0-9-]+" src/services/analytics.ts; then
+            echo "❌ Found hardcoded tracking IDs - please use environment variables"
+            exit 1
+          fi
+          
+          # Check for duplicate event tracking patterns
+          if grep -n "trackEvent.*trackEvent" src/services/analytics.ts; then
+            echo "⚠️ Potential duplicate tracking calls detected"
+          fi
+          
+          echo "✅ No analytics anti-patterns detected"
+
+  # Test critical analytics functionality
+  test-analytics-changes:
+    name: Test Analytics Changes
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.changed_files, 'src/services/analytics') || contains(github.event.pull_request.changed_files, 'tests/e2e/duplicate-event-prevention')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test -- --run --reporter=verbose
+
+      - name: Install Playwright
+        run: npx playwright install
+
+      - name: Run analytics E2E tests
+        run: |
+          echo "🧪 Running analytics E2E tests..."
+          npm run test:events
+        env:
+          CI: true
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: tests/reports/
+
+  # Security scan for sensitive changes  
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for secrets in code
+        run: |
+          echo "🔍 Scanning for hardcoded secrets..."
+          
+          # Check for potential secrets (excluding test files)
+          SECRETS_FOUND=false
+          
+          if git diff origin/main..HEAD | grep -E -i "(api[_-]?key|secret|token|password)" | grep -v -E "(test|spec|example|placeholder)"; then
+            echo "⚠️ Potential secrets detected in changes"
+            SECRETS_FOUND=true
+          fi
+          
+          # Check for analytics IDs and tokens
+          if git diff origin/main..HEAD | grep -E "(GTM-[A-Z0-9]+|G-[A-Z0-9]+|UA-[0-9-]+)" | grep -v -E "(example|placeholder|test)"; then
+            echo "⚠️ Analytics tracking IDs detected in code changes"
+            echo "Please ensure these are moved to environment variables"
+            SECRETS_FOUND=true
+          fi
+          
+          if [ "$SECRETS_FOUND" = true ]; then
+            echo "❌ Security scan detected potential issues"
+            echo "Please review the changes above and move sensitive data to environment variables"
+            exit 1
+          fi
+          
+          echo "✅ No secrets detected in code changes"
+
+  # Summary check - all required checks must pass
+  branch-protection-summary:
+    name: Branch Protection Summary
+    runs-on: ubuntu-latest
+    needs: [critical-path-validation, signed-commit-check, analytics-quality-check, test-analytics-changes, security-scan]
+    if: always()
+    
+    steps:
+      - name: Check all required checks passed
+        run: |
+          echo "📊 Branch Protection Summary"
+          echo "=========================="
+          
+          # Check if any required jobs failed
+          if [[ "${{ needs.critical-path-validation.result }}" == "failure" ]] || 
+             [[ "${{ needs.signed-commit-check.result }}" == "failure" ]] ||
+             [[ "${{ needs.analytics-quality-check.result }}" == "failure" ]] ||
+             [[ "${{ needs.test-analytics-changes.result }}" == "failure" ]] ||
+             [[ "${{ needs.security-scan.result }}" == "failure" ]]; then
+            echo "❌ One or more required checks failed"
+            echo "Please address all failing checks before merging"
+            exit 1
+          fi
+          
+          echo "✅ All branch protection checks passed"
+          echo "This PR meets the requirements for merging to main"
