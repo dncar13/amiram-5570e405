@@ -82,6 +82,32 @@ const ThankYou = () => {
           
           console.log('✅ Subscription created successfully:', subscriptionResult.subscription);
           
+          // Send thank you email
+          try {
+            console.log('📧 Sending thank you email...');
+            const userFirstName = currentUser.user_metadata?.display_name || 
+                                currentUser.email?.split('@')[0] || 
+                                'משתמש יקר';
+            
+            const { data, error } = await supabase.functions.invoke('email-service', {
+              body: {
+                type: 'thank-you',
+                to: currentUser.email,
+                firstName: userFirstName,
+                subscriptionType: getPlanDisplayName(urlPlanType)
+              }
+            });
+
+            if (error) {
+              console.error('❌ Error sending thank you email:', error);
+            } else {
+              console.log('✅ Thank you email sent successfully:', data);
+            }
+          } catch (emailError) {
+            console.error('❌ Failed to send thank you email:', emailError);
+            // Don't fail the whole process if email fails
+          }
+          
           // Set transaction details from URL parameters
           setTransactionDetails({
             planType: urlPlanType,
