@@ -2,8 +2,9 @@
 // Comprehensive testing and validation of analytics tracking
 
 import analyticsService from '@/services/analytics';
+import { BaseEvent } from '@/types/analytics';
 
-interface AnalyticsTestResults {
+export interface AnalyticsTestResults {
   gtmLoaded: boolean;
   dataLayerExists: boolean;
   eventCount: number;
@@ -132,23 +133,30 @@ export const testAnalyticsService = (): AnalyticsTestResults => {
 };
 
 // Test specific event types
-export const testEventTypes = (): Record<string, boolean> => {
+export const testEventTypes = async (): Promise<Record<string, boolean>> => {
   const eventTests: Record<string, boolean> = {};
   
   try {
     const initialDataLayerLength = window.dataLayer?.length || 0;
+    console.log('🧪 Starting event type tests, initial dataLayer length:', initialDataLayerLength);
     
     // Test authentication events
-    analyticsService.trackAuth({
+    console.log('🔐 Testing auth tracking...');
+    await analyticsService.trackAuth({
       event: 'test_login',
       method: 'email',
       success: true,
       user_id: 'test_user'
     });
-    eventTests.auth_tracking = (window.dataLayer?.length || 0) > initialDataLayerLength;
+    // Wait a bit for the event to be processed
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const afterAuth = window.dataLayer?.length || 0;
+    eventTests.auth_tracking = afterAuth > initialDataLayerLength;
+    console.log(`Auth tracking: ${eventTests.auth_tracking} (${initialDataLayerLength} → ${afterAuth})`);
     
     // Test e-commerce events
-    analyticsService.trackEcommerce({
+    console.log('🛒 Testing ecommerce tracking...');
+    await analyticsService.trackEcommerce({
       event: 'test_purchase',
       currency: 'ILS',
       value: 99,
@@ -161,36 +169,49 @@ export const testEventTypes = (): Record<string, boolean> => {
         quantity: 1
       }]
     });
-    eventTests.ecommerce_tracking = (window.dataLayer?.length || 0) > initialDataLayerLength + 1;
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const afterEcommerce = window.dataLayer?.length || 0;
+    eventTests.ecommerce_tracking = afterEcommerce > afterAuth;
+    console.log(`Ecommerce tracking: ${eventTests.ecommerce_tracking} (${afterAuth} → ${afterEcommerce})`);
     
     // Test premium events
-    analyticsService.trackPremium({
+    console.log('💎 Testing premium tracking...');
+    await analyticsService.trackPremium({
       event: 'test_premium',
       plan_type: 'monthly',
       plan_price: 99,
       payment_status: 'completed'
     });
-    eventTests.premium_tracking = (window.dataLayer?.length || 0) > initialDataLayerLength + 2;
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const afterPremium = window.dataLayer?.length || 0;
+    eventTests.premium_tracking = afterPremium > afterEcommerce;
+    console.log(`Premium tracking: ${eventTests.premium_tracking} (${afterEcommerce} → ${afterPremium})`);
     
     // Test simulation events
-    analyticsService.trackSimulation({
+    console.log('🎯 Testing simulation tracking...');
+    await analyticsService.trackSimulation({
       event: 'test_simulation',
       simulation_type: 'topic_based',
       simulation_id: 'test_simulation_1',
       score: 85,
       completion_rate: 100
     });
-    eventTests.simulation_tracking = (window.dataLayer?.length || 0) > initialDataLayerLength + 3;
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const afterSimulation = window.dataLayer?.length || 0;
+    eventTests.simulation_tracking = afterSimulation > afterPremium;
+    console.log(`Simulation tracking: ${eventTests.simulation_tracking} (${afterPremium} → ${afterSimulation})`);
+    
+    console.log('✅ Event type tests completed:', eventTests);
     
   } catch (error) {
-    console.error('Event types test failed:', error);
+    console.error('❌ Event types test failed:', error);
   }
   
   return eventTests;
 };
 
 // Validate event structure
-export const validateEventStructure = (event: any): { valid: boolean; issues: string[] } => {
+export const validateEventStructure = (event: BaseEvent): { valid: boolean; issues: string[] } => {
   const issues: string[] = [];
   
   if (!event.event) {
@@ -240,24 +261,25 @@ export const startDataLayerMonitoring = (): () => void => {
   }
 
   const originalPush = window.dataLayer.push;
-  const eventLog: any[] = [];
+  const eventLog: unknown[] = [];
   
-  window.dataLayer.push = function(...args: any[]) {
+  window.dataLayer.push = function(...args: unknown[]) {
     // Log all events for debugging
     args.forEach(event => {
-      if (typeof event === 'object' && event.event) {
+      if (typeof event === 'object' && event && 'event' in event) {
+        const eventData = event as BaseEvent;
         eventLog.push({
           timestamp: Date.now(),
-          event: event.event,
-          data: event
+          event: eventData.event,
+          data: eventData
         });
         
         // Validate event structure
-        const validation = validateEventStructure(event);
+        const validation = validateEventStructure(eventData);
         if (!validation.valid) {
-          console.warn('Analytics Event Validation Issues:', validation.issues, event);
+          console.warn('Analytics Event Validation Issues:', validation.issues, eventData);
         } else {
-          console.log('✅ Analytics Event Tracked:', event.event, event);
+          console.log('✅ Analytics Event Tracked:', eventData.event, eventData);
         }
       }
     });
@@ -340,7 +362,7 @@ export const enableAnalyticsDebugMode = (): void => {
     const stopMonitoring = startDataLayerMonitoring();
     
     // Add to window for cleanup
-    (window as any).stopAnalyticsDebugMode = stopMonitoring;
+    (window as unknown as { stopAnalyticsDebugMode: () => void }).stopAnalyticsDebugMode = stopMonitoring;
     
     console.log('🐛 Analytics Debug Mode Enabled');
     console.log('Run generateAnalyticsHealthReport() to see current status');
@@ -352,9 +374,10 @@ export const disableAnalyticsDebugMode = (): void => {
   if (typeof window !== 'undefined') {
     localStorage.removeItem('gtm_debug');
     
-    if ((window as any).stopAnalyticsDebugMode) {
-      (window as any).stopAnalyticsDebugMode();
-      delete (window as any).stopAnalyticsDebugMode;
+    const windowWithMethod = window as unknown as { stopAnalyticsDebugMode?: () => void };
+    if (windowWithMethod.stopAnalyticsDebugMode) {
+      windowWithMethod.stopAnalyticsDebugMode();
+      delete windowWithMethod.stopAnalyticsDebugMode;
     }
     
     console.log('🔇 Analytics Debug Mode Disabled');
@@ -378,7 +401,7 @@ export const disableAnalyticsDashboard = (): void => {
 
 // Export all functions for window access in development
 if (typeof window !== 'undefined') {
-  (window as any).analyticsTest = {
+  (window as unknown as { analyticsTest: Record<string, unknown> }).analyticsTest = {
     testGTMIntegration,
     testAnalyticsService,
     testEventTypes,

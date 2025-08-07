@@ -30,11 +30,60 @@ interface ReturnValueData {
   planType: string;
   timestamp: number;
   source: string;
+  checksum?: string; // Optional checksum for validation
 }
 
 const logStep = (step: string, details?: any) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[CARDCOM-WEBHOOK] ${step}${detailsStr}`);
+};
+
+/**
+ * Generate checksum for validation (matches client-side implementation)
+ * Format: SHA-256(timestamp + userId + SECRET_SALT)
+ */
+const generateChecksum = async (timestamp: number, userId: string): Promise<string> => {
+  const SECRET_SALT = 'amiram_analytics_2025_salt_key'; // Should match client-side
+  const data = `${timestamp}_${userId}_${SECRET_SALT}`;
+  
+  try {
+    const encoder = new TextEncoder();
+    const dataBuffer = encoder.encode(data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+    
+    // Convert to hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    
+    // Return first 16 characters for compactness (matches client)
+    return hashHex.substring(0, 16);
+  } catch (error) {
+    logStep("Checksum generation failed, using fallback", error);
+    // Fallback for environments without crypto.subtle
+    const fallback = btoa(`${timestamp}_${userId}_${Date.now()}`).replace(/[+/=]/g, '');
+    return fallback.substring(0, 16);
+  }
+};
+
+/**
+ * Validate transaction checksum
+ */
+const validateChecksum = async (timestamp: number, userId: string, providedChecksum: string): Promise<boolean> => {
+  try {
+    const expectedChecksum = await generateChecksum(timestamp, userId);
+    const isValid = expectedChecksum === providedChecksum;
+    
+    logStep("Checksum validation", {
+      expected: expectedChecksum,
+      provided: providedChecksum,
+      valid: isValid
+    });
+    
+    return isValid;
+  } catch (error) {
+    logStep("Checksum validation error", error);
+    return false; // Fail secure - reject invalid checksums
+  }
 };
 
 const parseReturnValue = (returnValue: string): ReturnValueData | null => {
@@ -107,7 +156,8 @@ const createSubscription = async (
   planType: string,
   transactionId: number,
   amount: number,
-  payload: CardComWebhookPayload
+  payload: CardComWebhookPayload,
+  checksum?: string
 ) => {
   try {
     logStep("Creating subscription", { userId, planType, transactionId, amount });
@@ -162,30 +212,65 @@ const createSubscription = async (
 
     logStep("Subscription created successfully", { subscriptionId: subscription.id });
 
-    // Create payment transaction record (updated for new schema)
-    const { error: transactionError } = await supabaseClient
-      .from('payment_transactions')
-      .insert({
-        user_id: userId,
-        subscription_id: subscription.id,
-        low_profile_code: payload.LowProfileId, // New required field
-        plan_type: paymentPlanType, // New required field (use mapped planType)
-        amount: Math.round(amount), // Convert to integer as required by new schema
-        currency: 'ILS',
-        status: 'completed',
-        metadata: {
-          transaction_id: transactionId.toString(),
+    // Use idempotent transaction creation function
+    const { data: transactionResult, error: transactionError } = await supabaseClient
+      .rpc('create_idempotent_transaction', {
+        p_user_id: userId,
+        p_subscription_id: subscription.id,
+        p_low_profile_code: payload.LowProfileId,
+        p_plan_type: paymentPlanType,
+        p_amount: Math.round(amount),
+        p_currency: 'ILS',
+        p_status: 'completed',
+        p_transaction_id: transactionId.toString(),
+        p_checksum: checksum,
+        p_metadata: {
           payment_method: 'cardcom',
           terminal_number: payload.TerminalNumber,
           deal_date: payload.DealDate,
           voucher_number: payload.VoucherNumber,
-          auth_number: payload.AuthNumber
+          auth_number: payload.AuthNumber,
+          cardcom_transaction_id: transactionId
         }
       });
 
     if (transactionError) {
-      logStep("Warning: Failed to create transaction record", transactionError);
+      throw new Error(`Failed to create idempotent transaction: ${transactionError.message}`);
     }
+
+    const result = transactionResult[0];
+    if (!result.created) {
+      // Transaction already exists - this is a duplicate webhook
+      logStep("Duplicate transaction detected", {
+        existingTransactionId: result.transaction_id,
+        message: result.message
+      });
+      
+      // Log the duplicate attempt
+      await supabaseClient
+        .from('transaction_idempotency_log')
+        .insert({
+          low_profile_code: payload.LowProfileId,
+          transaction_id: transactionId.toString(),
+          checksum: checksum,
+          user_id: userId,
+          failure_reason: 'Duplicate webhook received',
+          request_data: {
+            payload: payload,
+            planType: planType,
+            amount: amount
+          }
+        });
+
+      // Return 409 Conflict for duplicate
+      throw new Error(`DUPLICATE_TRANSACTION:${result.transaction_id}`);
+    }
+
+    logStep("Idempotent transaction created successfully", {
+      transactionId: result.transaction_id,
+      created: result.created,
+      message: result.message
+    });
 
     // Send thank-you email after successful subscription creation
     await sendThankYouEmail(supabaseClient, userId, planType);
@@ -306,23 +391,33 @@ serve(async (req) => {
       });
     }
 
-    // Check if this transaction was already processed (updated for new schema)
-    const { data: existingTransaction } = await supabaseClient
-      .from('payment_transactions')
-      .select('id')
-      .eq('low_profile_code', payload.LowProfileId)
-      .single();
-
-    if (existingTransaction) {
-      logStep("Transaction already processed", { transactionId: payload.TranzactionId });
-      return new Response(JSON.stringify({ 
-        status: "already_processed", 
-        message: "Transaction already handled" 
-      }), {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    // Validate checksum if provided (optional for backward compatibility)
+    if (returnData.checksum && returnData.timestamp) {
+      const isValidChecksum = await validateChecksum(returnData.timestamp, returnData.userId, returnData.checksum);
+      
+      if (!isValidChecksum) {
+        logStep("Invalid transaction checksum", {
+          userId: returnData.userId,
+          timestamp: returnData.timestamp,
+          checksum: returnData.checksum
+        });
+        
+        return new Response(JSON.stringify({ 
+          error: "Invalid transaction checksum",
+          code: "CHECKSUM_VALIDATION_FAILED"
+        }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      
+      logStep("Checksum validation passed", { userId: returnData.userId });
+    } else {
+      logStep("No checksum provided - allowing for backward compatibility");
     }
+
+    // Use idempotent transaction creation with HTTP 409 for conflicts
+    // This will be handled by the createSubscription function with proper error codes
 
     // Create subscription for successful payment
     try {
@@ -332,7 +427,8 @@ serve(async (req) => {
         returnData.planType,
         payload.TranzactionId,
         payload.Amount || 0,
-        payload
+        payload,
+        returnData.checksum // Pass checksum for idempotency
       );
 
       logStep("Webhook processed successfully", result);
@@ -350,7 +446,22 @@ serve(async (req) => {
     } catch (error) {
       logStep("Error processing payment", error);
       
-      // Return error but still acknowledge receipt to CardCom
+      // Check if this is a duplicate transaction error
+      if (error.message && error.message.startsWith('DUPLICATE_TRANSACTION:')) {
+        const existingTransactionId = error.message.split(':')[1];
+        
+        return new Response(JSON.stringify({
+          status: "duplicate",
+          message: "Transaction already processed",
+          existing_transaction_id: existingTransactionId,
+          code: "TRANSACTION_ALREADY_EXISTS"
+        }), {
+          status: 409, // HTTP 409 Conflict
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      
+      // Return error but still acknowledge receipt to CardCom for other errors
       return new Response(JSON.stringify({
         status: "error",
         message: "Internal processing error",

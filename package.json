@@ -9,7 +9,13 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "playwright test tests/e2e/duplicate-event-prevention.spec.ts",
+    "test:events": "playwright test tests/e2e/duplicate-event-prevention.spec.ts --reporter=line",
+    "test:events:debug": "playwright test tests/e2e/duplicate-event-prevention.spec.ts --debug",
+    "test:events:headed": "playwright test tests/e2e/duplicate-event-prevention.spec.ts --headed",
+    "ci:analytics": "npm run lint && npm run test && npm run test:events",
+    "verify:analytics": "echo 'Analytics verification starting...' && npm run ci:analytics && echo 'Analytics verification passed!'"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.57.0",

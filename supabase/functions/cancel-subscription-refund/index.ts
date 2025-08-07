@@ -376,6 +376,38 @@ serve(async (req) => {
     if (refundResult?.success && refundResult.refundTransactionId) {
       logStep("Creating refund transaction record");
       
+      // Track refund event for analytics BEFORE creating transaction record
+      try {
+        const supabaseUrl = Deno.env.get("SUPABASE_URL");
+        const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+        
+        if (supabaseUrl && supabaseServiceKey) {
+          await fetch(`${supabaseUrl}/functions/v1/track-refund-event`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${supabaseServiceKey}`
+            },
+            body: JSON.stringify({
+              original_transaction_id: transaction.transaction_id,
+              refund_transaction_id: refundResult.refundTransactionId.toString(),
+              refund_amount: calculation.refund_amount,
+              original_amount: transaction.amount,
+              currency: 'ILS',
+              refund_reason: 'subscription_cancellation',
+              plan_type: subscription.plan_type,
+              user_id: userId,
+              subscription_id: subscriptionId
+            })
+          });
+          
+          logStep("Refund event tracked successfully");
+        }
+      } catch (error) {
+        logStep("Warning: Failed to track refund event", error);
+        // Don't fail the refund process if tracking fails
+      }
+      
       await supabaseClient
         .from('payment_transactions')
         .insert({

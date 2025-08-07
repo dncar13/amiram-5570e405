@@ -78,6 +78,7 @@ import { useAuth } from "./context/AuthContext";
 import ErrorBoundary from "./components/ErrorBoundary";
 import CouponManagement from "./pages/CouponManagement";
 import CouponUsageManagement from "./pages/CouponUsageManagement";
+import analyticsService from "./services/analytics";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -383,6 +384,27 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Initialize Analytics Service
+const initializeAnalytics = () => {
+  try {
+    console.log('🔧 Initializing Analytics Service...');
+    analyticsService.initialize();
+    console.log('✅ Analytics Service initialized successfully');
+  } catch (error) {
+    console.error('❌ Failed to initialize Analytics Service:', error);
+  }
+};
+
+// Initialize analytics when app loads
+if (typeof window !== 'undefined') {
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeAnalytics);
+  } else {
+    initializeAnalytics();
+  }
+}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

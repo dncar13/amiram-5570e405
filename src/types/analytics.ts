@@ -7,7 +7,9 @@ export interface BaseEvent {
   timestamp?: number;
   user_id?: string;
   session_id?: string;
-  [key: string]: any; // Allow any additional custom properties
+  transaction_id?: string;
+  checksum?: string; // Cryptographic checksum for transaction validation
+  [key: string]: unknown; // Allow any additional custom properties
 }
 
 // Google Analytics Enhanced Ecommerce Events
@@ -16,7 +18,7 @@ export interface GAEvent extends BaseEvent {
   action?: string;
   label?: string;
   value?: number;
-  custom_parameters?: Record<string, any>;
+  custom_parameters?: Record<string, unknown>;
 }
 
 // Authentication Events - flexible for partial data
@@ -61,6 +63,7 @@ export interface PremiumEvent extends BaseEvent {
 export interface SimulationEvent extends BaseEvent {
   simulation_type?: string;
   simulation_id?: string;
+  topic?: string; // Dashboard requires this parameter
   difficulty_level?: string;
   question_count?: number;
   time_limit?: number;
@@ -69,7 +72,42 @@ export interface SimulationEvent extends BaseEvent {
   time_spent?: number; // in seconds
   current_score?: number;
   questions_answered?: number;
-  [key: string]: any; // Allow additional simulation properties
+  [key: string]: unknown; // Allow additional simulation properties
+}
+
+// Extended event interfaces for type-safe property access
+export interface EcommerceBaseEvent extends BaseEvent {
+  transaction_id?: string;
+  value?: number;
+  plan_price?: number;
+  checksum?: string;
+  plan_type?: string;
+}
+
+export interface SimulationBaseEvent extends BaseEvent {
+  simulation_id?: string;
+  simulation_type?: string;
+  user_id?: string;
+}
+
+// Event data interfaces for tracking methods
+export interface PremiumEventData extends BaseEvent {
+  event: string;
+  plan_type?: string;
+  plan_id?: string;
+  value?: number;
+  currency?: string;
+  transaction_id?: string;
+  items?: EcommerceItem[];
+  coupon?: string;
+  discount_amount?: number;
+}
+
+export interface TransactionEventData extends BaseEvent {
+  transaction_id?: string;
+  checksum?: string;
+  timestamp?: number;
+  user_id?: string;
 }
 
 // User Engagement Events - flexible for additional properties
@@ -79,13 +117,13 @@ export interface EngagementEvent extends BaseEvent {
   page_location?: string;
   page_referrer?: string;
   content_group1?: string;
-  [key: string]: any; // Allow additional engagement properties
+  [key: string]: unknown; // Allow additional engagement properties
 }
 
 // Facebook Pixel Events
 export interface FacebookPixelEvent {
   eventName: 'PageView' | 'Lead' | 'Purchase' | 'CompleteRegistration' | 'InitiateCheckout';
-  parameters?: Record<string, any>;
+  parameters?: Record<string, unknown>;
   eventID?: string;
 }
 
@@ -110,6 +148,7 @@ export interface ErrorEvent extends BaseEvent {
 // Custom Analytics Configuration
 export interface AnalyticsConfig {
   gtmId: string;
+  measurementId?: string;
   ga4MeasurementId?: string;
   facebookPixelId?: string;
   enabledServices: {
@@ -126,21 +165,21 @@ export interface AnalyticsConfig {
 // DataLayer Event Structure (for GTM)
 export interface DataLayerEvent {
   event: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // Analytics Service Interface
 export interface AnalyticsService {
-  initialize: (config: AnalyticsConfig) => void;
-  trackEvent: (event: BaseEvent) => void;
-  trackPageView: (pageData: EngagementEvent) => void;
-  trackAuth: (authEvent: AuthEvent) => void;
-  trackEcommerce: (ecommerceEvent: EcommerceEvent) => void;
-  trackPremium: (premiumEvent: PremiumEvent) => void;
-  trackSimulation: (simulationEvent: SimulationEvent) => void;
-  trackError: (errorEvent: ErrorEvent) => void;
+  initialize: (config: AnalyticsConfig) => Promise<void>;
+  trackEvent: (event: BaseEvent) => Promise<void>;
+  trackPageView: (pageData: EngagementEvent) => Promise<void>;
+  trackAuth: (authEvent: AuthEvent) => Promise<void>;
+  trackEcommerce: (ecommerceEvent: EcommerceEvent) => Promise<void>;
+  trackPremium: (premiumEvent: PremiumEvent) => Promise<void>;
+  trackSimulation: (simulationEvent: SimulationEvent) => Promise<void>;
+  trackError: (errorEvent: ErrorEvent) => Promise<void>;
   setUserId: (userId: string) => void;
-  setUserProperties: (properties: Record<string, any>) => void;
+  setUserProperties: (properties: Record<string, unknown>) => void;
   consent: (granted: boolean) => void;
 }
 

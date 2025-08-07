@@ -261,6 +261,7 @@ const Simulation = () => {
       trackSimulationStart({
         simulation_type: simulationType,
         simulation_id: formattedSimulationId,
+        topic: topicId || type || effectiveType || 'general', // Dashboard requires topic parameter
         difficulty_level: difficulty || 'mixed',
         question_count: questionsToUse.length,
         time_limit: simulation.examMode ? 90 * 60 : undefined // 90 minutes for exam mode
@@ -282,6 +283,7 @@ const Simulation = () => {
             trackSimulationProgress({
               simulation_type: isFullExam ? 'full_exam' : isStoryBased ? 'story_based' : 'standard',
               simulation_id: formattedSimulationId,
+              topic: topicId || type || effectiveType || 'general', // Dashboard requires topic parameter
               completion_rate: milestone,
               current_score: simulation.currentScorePercentage,
               time_spent: simulation.examMode ? ((90 * 60) - (simulation.remainingTime || 0)) : undefined
@@ -301,6 +303,7 @@ const Simulation = () => {
         trackSimulationComplete({
           simulation_type: isFullExam ? 'full_exam' : isStoryBased ? 'story_based' : 'standard',
           simulation_id: formattedSimulationId,
+          topic: topicId || type || effectiveType || 'general', // Dashboard requires topic parameter
           score: simulation.currentScorePercentage,
           time_spent: simulation.examMode ? ((90 * 60) - (simulation.remainingTime || 0)) : undefined,
           questions_answered: simulation.answeredQuestionsCount,
