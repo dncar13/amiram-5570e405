@@ -25,25 +25,56 @@ const logStep = (step: string, details?: any) => {
 
 const sendEmail = async (to: string, subject: string, html: string): Promise<boolean> => {
   try {
-    const smtpUser = Deno.env.get('SMTP_USER') || 'support@amiram.net';
-    const smtpPassword = Deno.env.get('SMTP_PASSWORD') || 'YhpVaMpFKKYz';
+    // Priority 1: Try to use SMTP if credentials are available
+    const smtpHost = Deno.env.get('SMTP_HOST');
+    const smtpUser = Deno.env.get('SMTP_USER');
+    const smtpPassword = Deno.env.get('SMTP_PASSWORD');
+    const smtpFromName = Deno.env.get('SMTP_FROM_NAME') || 'אמירם - צוות התמיכה';
+    const smtpFromEmail = Deno.env.get('SMTP_FROM_EMAIL') || 'support@amiram.net';
 
-    // Create the email payload for a generic SMTP service
-    const emailPayload = {
-      from: {
-        email: smtpUser,
-        name: 'Amiram Academy'
-      },
-      to: [{ email: to }],
-      subject: subject,
-      html: html,
-      text: html.replace(/<[^>]*>/g, ''), // Simple HTML to text conversion
-    };
+    if (smtpHost && smtpUser && smtpPassword) {
+      logStep('Using SMTP for email sending', { 
+        host: smtpHost, 
+        user: smtpUser,
+        to: to,
+        subject: subject.substring(0, 50) + '...'
+      });
 
-    // Use a third-party email service like SendGrid, Mailgun, or similar
-    // For this implementation, we'll use a direct SMTP approach via fetch to a mail service
-    
-    // Alternative 1: Using Resend (simple email API)
+      try {
+        // Call our nodemailer-smtp function
+        const smtpResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/nodemailer-smtp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
+          },
+          body: JSON.stringify({
+            to: to,
+            subject: subject,
+            html: html
+          })
+        });
+
+        if (smtpResponse.ok) {
+          const result = await smtpResponse.json();
+          logStep('Email sent successfully via SMTP service', { to, status: result.status });
+          return true;
+        } else {
+          const error = await smtpResponse.text();
+          logStep('SMTP service failed, trying fallback methods', { error, status: smtpResponse.status });
+        }
+      } catch (smtpError) {
+        logStep('SMTP service error, trying fallback methods', { error: smtpError.message });
+      }
+    } else {
+      logStep('SMTP credentials not fully configured, trying API services', {
+        hasHost: !!smtpHost,
+        hasUser: !!smtpUser,
+        hasPassword: !!smtpPassword
+      });
+    }
+
+    // Priority 2: Using Resend API (if available)
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     if (resendApiKey) {
       const response = await fetch('https://api.resend.com/emails', {
@@ -53,7 +84,7 @@ const sendEmail = async (to: string, subject: string, html: string): Promise<boo
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'Amiram Academy <support@amiram.net>',
+          from: `${smtpFromName} <${smtpFromEmail}>`,
           to: [to],
           subject: subject,
           html: html,
@@ -69,7 +100,7 @@ const sendEmail = async (to: string, subject: string, html: string): Promise<boo
       }
     }
 
-    // Alternative 2: Using SendGrid
+    // Priority 3: Using SendGrid API (if available)
     const sendgridApiKey = Deno.env.get('SENDGRID_API_KEY');
     if (sendgridApiKey) {
       const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
@@ -83,7 +114,7 @@ const sendEmail = async (to: string, subject: string, html: string): Promise<boo
             to: [{ email: to }],
             subject: subject
           }],
-          from: { email: smtpUser, name: 'Amiram Academy' },
+          from: { email: smtpFromEmail, name: smtpFromName },
           content: [{
             type: 'text/html',
             value: html
@@ -100,20 +131,31 @@ const sendEmail = async (to: string, subject: string, html: string): Promise<boo
       }
     }
 
-    // Alternative 3: Direct SMTP using nodemailer-like implementation
-    // This is a simplified version - in production you'd want to use a proper SMTP library
-    logStep('No email service configured, logging email details', {
+    // If all methods failed, log the email for debugging
+    logStep('All email services failed or not configured', {
       to,
       subject,
       htmlLength: html.length,
-      note: 'Set RESEND_API_KEY or SENDGRID_API_KEY environment variable to actually send emails'
+      smtpConfigured: !!(smtpHost && smtpUser && smtpPassword),
+      resendConfigured: !!resendApiKey,
+      sendgridConfigured: !!sendgridApiKey,
+      note: 'Email content logged for debugging'
     });
 
-    // For development/testing, return true to avoid blocking the flow
-    return true;
+    // Log email content for debugging purposes
+    logStep('Email content preview', {
+      to,
+      subject,
+      fromName: smtpFromName,
+      fromEmail: smtpFromEmail,
+      htmlPreview: html.substring(0, 200) + '...'
+    });
+
+    // Return false to indicate email was not sent
+    return false;
 
   } catch (error) {
-    logStep('Error sending email', { error: error.message, to, subject });
+    logStep('Error in email sending process', { error: error.message, to, subject });
     return false;
   }
 };
