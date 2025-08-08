@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, Variants, Transition } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { BookOpen, ArrowRight, Clock, Target, TrendingUp, Filter, Star, Sparkles, Brain, Zap, Rocket, ChevronLeft, Eye, Award, CircuitBoard } from 'lucide-react';
+import { BookOpen, ArrowRight, Clock, Target, TrendingUp, Filter, Star, Sparkles, Brain, Zap, Rocket, ChevronLeft, Eye, Award, CircuitBoard, CheckCircle } from 'lucide-react';
 import { getFilteredStories, getAvailableStories } from '@/services/storyQuestionsService';
 import { Badge } from '@/components/ui/badge';
 import FilterPanel, { FilterOptions } from '@/components/reading-comprehension/FilterPanel';
 import { useAuth } from '@/context/AuthContext';
 import { isFreeStory } from '@/utils/storyAccess';
-
+import PremiumUpgradeModal from '@/components/ui/PremiumUpgradeModal';
 const ReadingComprehensionTopics: React.FC = () => {
   const navigate = useNavigate();
   const { isPremium, isAdmin } = useAuth();
@@ -22,6 +22,7 @@ const ReadingComprehensionTopics: React.FC = () => {
   const [stories, setStories] = useState<any[]>([]);
   const [allStories, setAllStories] = useState<any[]>([]);
   const [storiesLoading, setStoriesLoading] = useState(true);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   // Load all stories initially
   useEffect(() => {
@@ -152,7 +153,7 @@ const ReadingComprehensionTopics: React.FC = () => {
 const handleStorySelect = (storyTitle: string) => {
   const isFree = isFreeStory(storyTitle);
   if (!isPremium && !isAdmin && !isFree) {
-    navigate('/premium');
+    setShowUpgradeModal(true);
     return;
   }
   const encodedTitle = encodeURIComponent(storyTitle);
@@ -448,7 +449,7 @@ const handleStorySelect = (storyTitle: string) => {
                     <motion.div
                       key={story.id}
                       variants={itemVariants}
-                      className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 cursor-pointer border border-slate-700/50 hover:border-cyan-500/50 h-full flex flex-col overflow-hidden"
+                      className={`group relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-sm rounded-2xl shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500 cursor-pointer border border-slate-700/50 hover:border-cyan-500/50 h-full flex flex-col overflow-hidden ${(!isPremium && !isAdmin && !isFreeStory(story.title)) ? 'ring-2 ring-yellow-400/40' : ''}`}
                       onClick={() => handleStorySelect(story.title)}
                       onMouseEnter={() => setHoveredCard(story.id)}
                       onMouseLeave={() => setHoveredCard(null)}
@@ -490,10 +491,11 @@ const handleStorySelect = (storyTitle: string) => {
                               </Badge>
                             )}
                             {(!isPremium && !isAdmin) && (
-                              <Badge className={`${isFreeStory(story.title) ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/25' : 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white shadow-lg shadow-amber-500/25'} font-medium transform transition-transform group-hover:scale-105`}>
-                                {isFreeStory(story.title) ? 'חינם' : 'פרימיום'}
+                              <Badge className={`${isFreeStory(story.title) ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/25' : 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white shadow-lg shadow-amber-500/25'} font-medium transform transition-transform group-hover:scale-105 flex items-center`}>
+                                {isFreeStory(story.title) ? 'חינם' : (<><Star className="w-3 h-3 ml-1" /> פרימיום</>)}
                               </Badge>
                             )}
+
                           </div>
                         </div>
 
@@ -504,7 +506,14 @@ const handleStorySelect = (storyTitle: string) => {
                         <p className="text-slate-300 text-sm mb-4 line-clamp-3 leading-relaxed flex-grow min-h-[4.5rem] group-hover:text-slate-200 transition-colors duration-300">
                           {story.description}
                         </p>
-                        
+                        {(!isPremium && !isAdmin && !isFreeStory(story.title)) && (
+                          <div className="mt-2 space-y-1">
+                            <div className="flex items-center text-yellow-300 text-xs"><CheckCircle className="w-3 h-3 ml-1" /> Access all exercises</div>
+                            <div className="flex items-center text-yellow-300 text-xs"><CheckCircle className="w-3 h-3 ml-1" /> Track your progress</div>
+                            <div className="flex items-center text-yellow-300 text-xs"><CheckCircle className="w-3 h-3 ml-1" /> Professional support</div>
+                          </div>
+                        )}
+                         
                         <div className="flex items-center justify-between mt-auto">
                           <div className="flex items-center text-slate-400 text-sm group-hover:text-cyan-300 transition-colors duration-300">
                             <Clock className="w-4 h-4 ml-1" />
@@ -514,24 +523,37 @@ const handleStorySelect = (storyTitle: string) => {
                           <motion.button 
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleStorySelect(story.title);
+                              const locked = !isPremium && !isAdmin && !isFreeStory(story.title);
+                              if (locked) {
+                                setShowUpgradeModal(true);
+                              } else {
+                                handleStorySelect(story.title);
+                              }
                             }}
-                            className="relative bg-gradient-to-r from-purple-600 to-cyan-600 text-white px-6 py-2 rounded-xl text-sm font-medium transition-all duration-300 flex items-center shadow-lg hover:shadow-cyan-500/25 overflow-hidden group/btn"
+                            className={`relative bg-gradient-to-r ${(!isPremium && !isAdmin && !isFreeStory(story.title)) ? 'from-yellow-500 to-amber-500 text-black' : 'from-purple-600 to-cyan-600 text-white'} px-6 py-2 rounded-xl text-sm font-bold transition-all duration-300 flex items-center shadow-lg hover:shadow-cyan-500/25 overflow-hidden group/btn`}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                           >
-                            <motion.div
-                              className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
-                            />
-                            <span className="relative z-10">התחל</span>
-                            <motion.div
-                              className="relative z-10"
-                              animate={{ x: [0, 3, 0] }}
-                              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                              <ArrowRight className="w-4 h-4 ml-1" />
-                            </motion.div>
+                            {(!isPremium && !isAdmin && !isFreeStory(story.title)) ? null : (
+                              <motion.div
+                                className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-purple-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"
+                              />
+                            )}
+                            <span className="relative z-10">{(!isPremium && !isAdmin && !isFreeStory(story.title)) ? 'Upgrade to Premium' : 'התחל'}</span>
+                            {(!isPremium && !isAdmin && !isFreeStory(story.title)) ? null : (
+                              <motion.div
+                                className="relative z-10"
+                                animate={{ x: [0, 3, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                              >
+                                <ArrowRight className="w-4 h-4 ml-1" />
+                              </motion.div>
+                            )}
                           </motion.button>
+                          {(!isPremium && !isAdmin && !isFreeStory(story.title)) && (
+                            <div className="mt-2 text-[11px] text-slate-400">Premium purchase required to continue</div>
+                          )}
+
                         </div>
                       </div>
                     </motion.div>
@@ -604,8 +626,10 @@ const handleStorySelect = (storyTitle: string) => {
           )}
         </div>
       </div>
+      <PremiumUpgradeModal isOpen={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} setTitle="גישה לסיפור פרימיום" />
       <Footer />
     </>
+
   );
 };
 
