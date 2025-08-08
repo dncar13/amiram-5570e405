@@ -985,6 +985,10 @@ export type Database = {
           deleted_count: number
         }[]
       }
+      get_public_homepage_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
       get_user_set_progress_summary: {
         Args: { p_user_id: string }
         Returns: {
