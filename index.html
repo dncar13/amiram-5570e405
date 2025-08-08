@@ -4,29 +4,45 @@
     <!-- Google Tag Manager -->
     <script>
       // Get GTM ID from environment or use fallback
-      (function(w,d,s,l,i){
+      (function (w, d, s, l, i) {
         // Use environment variable or fallback
-        var gtmId = '%VITE_GTM_ID%' || 'GTM-M95H8KJP';
-        if (gtmId.startsWith('%VITE_GTM_ID')) {
-          gtmId = 'GTM-M95H8KJP'; // Fallback if env var not replaced
+        var gtmId = "%VITE_GTM_ID%" || "GTM-M95H8KJP";
+        if (gtmId.startsWith("%VITE_GTM_ID")) {
+          gtmId = "GTM-M95H8KJP"; // Fallback if env var not replaced
         }
-        
-        w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+gtmId+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer');
+
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + gtmId + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer");
     </script>
     <!-- End Google Tag Manager -->
-    
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="אקדמיית אמירם - הכנה מתקדמת למבחן אמירם עם סימולציות אמיתיות, הכנה מותאמת אישית ותרגול מאסיבי. הצליחו במבחן בקלות עם המערכת המובילה בישראל." />
-    <meta name="keywords" content="אמירם, מבחן אמירם, הכנה למבחן, סימולציות, הבנת הנקרא, כמותי, לוגי" />
+    <meta
+      name="description"
+      content="אקדמיית אמירם - הכנה מתקדמת למבחן אמירם עם סימולציות אמיתיות, הכנה מותאמת אישית ותרגול מאסיבי. הצליחו במבחן בקלות עם המערכת המובילה בישראל."
+    />
+    <meta
+      name="keywords"
+      content="אמירם, מבחן אמירם, הכנה למבחן, סימולציות, הבנת הנקרא, כמותי, לוגי"
+    />
     <meta name="author" content="Amiram Academy" />
-    <meta property="og:title" content="Amiram Academy - הכנה חכמה למבחן אמירם" />
-    <meta property="og:description" content="המערכת המובילה להכנה למבחן אמירם - סימולציות מתקדמות, הכנה מותאמת אישית ותוצאות מוכחות" />
+    <meta
+      property="og:title"
+      content="Amiram Academy - הכנה חכמה למבחן אמירם"
+    />
+    <meta
+      property="og:description"
+      content="המערכת המובילה להכנה למבחן אמירם - סימולציות מתקדמות, הכנה מותאמת אישית ותוצאות מוכחות"
+    />
     <meta property="og:type" content="website" />
     <link
       href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap"
@@ -37,10 +53,16 @@
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M95H8KJP"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-M95H8KJP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
     <div id="root"></div>
     <!-- GPT Engineer script removed - was empty and unnecessary for security -->
     <script type="module" src="/src/main.tsx"></script>

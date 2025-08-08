@@ -89,7 +89,7 @@ const ThankYou = () => {
                                 currentUser.email?.split('@')[0] || 
                                 'משתמש יקר';
             
-            const { data, error } = await supabase.functions.invoke('email-service', {
+            const { data, error } = await supabase.functions.invoke('email-service-simple', {
               body: {
                 type: 'thank-you',
                 to: currentUser.email,

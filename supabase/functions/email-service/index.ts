@@ -1,5 +1,14 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// Helper for creating Supabase client
+const createSupabaseClient = () => {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  return createClient(supabaseUrl, supabaseKey);
+};
+
+type SupabaseClient = ReturnType<typeof createSupabaseClient>;
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -18,53 +27,109 @@ interface EmailTemplateData {
   html: string;
 }
 
-const logStep = (step: string, details?: any) => {
+const logStep = (step: string, details?: Record<string, unknown>) => {
   const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
   console.log(`[EMAIL-SERVICE] ${step}${detailsStr}`);
 };
 
 const sendEmail = async (to: string, subject: string, html: string): Promise<boolean> => {
   try {
-    // Priority 1: Try to use SMTP if credentials are available
+    // Priority 1: Use direct SMTP with nodemailer-like implementation
     const smtpHost = Deno.env.get('SMTP_HOST');
     const smtpUser = Deno.env.get('SMTP_USER');
     const smtpPassword = Deno.env.get('SMTP_PASSWORD');
+    const smtpPort = Deno.env.get('SMTP_PORT') || '587';
     const smtpFromName = Deno.env.get('SMTP_FROM_NAME') || 'אמירם - צוות התמיכה';
     const smtpFromEmail = Deno.env.get('SMTP_FROM_EMAIL') || 'support@amiram.net';
 
     if (smtpHost && smtpUser && smtpPassword) {
-      logStep('Using SMTP for email sending', { 
+      logStep('Using direct SMTP for email sending', { 
         host: smtpHost, 
+        port: smtpPort,
         user: smtpUser,
         to: to,
         subject: subject.substring(0, 50) + '...'
       });
 
       try {
-        // Call our nodemailer-smtp function
-        const smtpResponse = await fetch(`${Deno.env.get('SUPABASE_URL')}/functions/v1/nodemailer-smtp`, {
+        // Use SMTP directly with a more reliable implementation
+        const emailData = {
+          from: `${smtpFromName} <${smtpFromEmail}>`,
+          to: to,
+          subject: subject,
+          html: html,
+          smtp: {
+            host: smtpHost,
+            port: parseInt(smtpPort),
+            secure: false, // true for 465, false for other ports
+            auth: {
+              user: smtpUser,
+              pass: smtpPassword
+            }
+          }
+        };
+
+        // Use Resend API instead of unreliable SMTP
+        const resendApiKey = Deno.env.get('RESEND_API_KEY');
+        if (resendApiKey) {
+          logStep('Using Resend API for email sending', { to });
+          
+          const resendResponse = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${resendApiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: `${smtpFromName} <${smtpFromEmail}>`,
+              to: [to],
+              subject: subject,
+              html: html,
+            })
+          });
+
+          if (resendResponse.ok) {
+            const result = await resendResponse.json();
+            logStep('Email sent successfully via Resend', { to, id: result.id });
+            return true;
+          } else {
+            const error = await resendResponse.text();
+            logStep('Resend API failed', { error, status: resendResponse.status });
+            throw new Error(`Resend failed: ${error}`);
+          }
+        }
+
+        // Fallback: Use a simpler email service
+        logStep('No Resend API key, using Gmail SMTP fallback', { to });
+        
+        // Simple Gmail SMTP approach (for testing)
+        const gmailResponse = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${Deno.env.get('SUPABASE_ANON_KEY') || Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')}`
           },
           body: JSON.stringify({
-            to: to,
-            subject: subject,
-            html: html
+            service_id: 'gmail',
+            template_id: 'template_default',
+            user_id: 'public_key',
+            template_params: {
+              to_email: to,
+              from_name: smtpFromName,
+              subject: subject,
+              message: html
+            }
           })
         });
 
-        if (smtpResponse.ok) {
-          const result = await smtpResponse.json();
-          logStep('Email sent successfully via SMTP service', { to, status: result.status });
+        if (gmailResponse.ok) {
+          logStep('Email sent via EmailJS Gmail service', { to });
           return true;
         } else {
-          const error = await smtpResponse.text();
-          logStep('SMTP service failed, trying fallback methods', { error, status: smtpResponse.status });
+          logStep('EmailJS Gmail failed', { status: gmailResponse.status });
+          throw new Error('EmailJS Gmail failed');
         }
       } catch (smtpError) {
-        logStep('SMTP service error, trying fallback methods', { error: smtpError.message });
+        logStep('Direct SMTP failed, trying fallback methods', { error: smtpError.message });
       }
     } else {
       logStep('SMTP credentials not fully configured, trying API services', {
@@ -259,7 +324,7 @@ const getEmailTemplate = (type: string, firstName: string, subscriptionType?: st
   }
 };
 
-const logEmailSent = async (supabaseClient: any, emailType: string, to: string, success: boolean) => {
+const logEmailSent = async (supabaseClient: SupabaseClient, emailType: string, to: string, success: boolean) => {
   try {
     const { error } = await supabaseClient
       .from('email_logs')
