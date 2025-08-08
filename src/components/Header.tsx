@@ -124,7 +124,7 @@ const Header = React.memo(() => {
               to="/articles" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
-              מאמרים
+              חומרי לימוד
             </Link>
             
             {/* About Dropdown Menu */}
@@ -304,7 +304,7 @@ const Header = React.memo(() => {
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Articles
+                חומרי לימוד
               </Link>
               
               {/* Mobile About Submenu */}
