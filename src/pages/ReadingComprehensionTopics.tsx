@@ -4,7 +4,7 @@ import { motion, AnimatePresence, Variants, Transition } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BookOpen, ArrowRight, Clock, Target, TrendingUp, Filter, Star, Sparkles, Brain, Zap, Rocket, ChevronLeft, Eye, Award, CircuitBoard, CheckCircle } from 'lucide-react';
-import { getFilteredStories, getAvailableStories } from '@/services/storyQuestionsService';
+import { getFilteredStories, getAvailableStories, Story } from '@/services/storyQuestionsService';
 import { Badge } from '@/components/ui/badge';
 import FilterPanel, { FilterOptions } from '@/components/reading-comprehension/FilterPanel';
 import { useAuth } from '@/context/AuthContext';
@@ -19,8 +19,8 @@ const ReadingComprehensionTopics: React.FC = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [stories, setStories] = useState<any[]>([]);
-  const [allStories, setAllStories] = useState<any[]>([]);
+  const [stories, setStories] = useState<Story[]>([]);
+  const [allStories, setAllStories] = useState<Story[]>([]);
   const [storiesLoading, setStoriesLoading] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
@@ -504,7 +504,7 @@ const handleStorySelect = (storyTitle: string) => {
                         </h3>
                         
                         <p className="text-slate-300 text-sm mb-4 line-clamp-3 leading-relaxed flex-grow min-h-[4.5rem] group-hover:text-slate-200 transition-colors duration-300">
-                          {story.description}
+                          {story.description as string || 'תיאור לא זמין'}
                         </p>
                         {(!isPremium && !isAdmin && !isFreeStory(story.title)) && (
                           <div className="mt-2 space-y-1">
