@@ -7,9 +7,12 @@ import { BookOpen, ArrowRight, Clock, Target, TrendingUp, Filter, Star, Sparkles
 import { getFilteredStories, getAvailableStories } from '@/services/storyQuestionsService';
 import { Badge } from '@/components/ui/badge';
 import FilterPanel, { FilterOptions } from '@/components/reading-comprehension/FilterPanel';
+import { useAuth } from '@/context/AuthContext';
+import { isFreeStory } from '@/utils/storyAccess';
 
 const ReadingComprehensionTopics: React.FC = () => {
   const navigate = useNavigate();
+  const { isPremium, isAdmin } = useAuth();
   const [filters, setFilters] = useState<FilterOptions>({
     difficulty: 'all',
     subject: 'all'
@@ -146,10 +149,15 @@ const ReadingComprehensionTopics: React.FC = () => {
     return subject ? colorMap[subject] || 'bg-gradient-to-r from-gray-400 to-slate-400 text-white shadow-lg shadow-gray-400/25' : 'bg-gradient-to-r from-gray-400 to-slate-400 text-white shadow-lg shadow-gray-400/25';
   };
 
-  const handleStorySelect = (storyTitle: string) => {
-    const encodedTitle = encodeURIComponent(storyTitle);
-    navigate(`/simulation/story/${encodedTitle}`);
-  };
+const handleStorySelect = (storyTitle: string) => {
+  const isFree = isFreeStory(storyTitle);
+  if (!isPremium && !isAdmin && !isFree) {
+    navigate('/premium');
+    return;
+  }
+  const encodedTitle = encodeURIComponent(storyTitle);
+  navigate(`/simulation/story/${encodedTitle}`);
+};
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -479,6 +487,11 @@ const ReadingComprehensionTopics: React.FC = () => {
                             {story.subject && (
                               <Badge className={`${getSubjectColor(story.subject)} font-medium transform transition-transform group-hover:scale-105`}>
                                 {getSubjectText(story.subject)}
+                              </Badge>
+                            )}
+                            {(!isPremium && !isAdmin) && (
+                              <Badge className={`${isFreeStory(story.title) ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg shadow-emerald-500/25' : 'bg-gradient-to-r from-yellow-500 to-amber-500 text-white shadow-lg shadow-amber-500/25'} font-medium transform transition-transform group-hover:scale-105`}>
+                                {isFreeStory(story.title) ? 'חינם' : 'פרימיום'}
                               </Badge>
                             )}
                           </div>

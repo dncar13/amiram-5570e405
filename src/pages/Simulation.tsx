@@ -23,10 +23,11 @@ import { Question } from "@/data/types/questionTypes";
 import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
 import { useAuth } from "@/context/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { isFreeStory } from "@/utils/storyAccess";
 
 const Simulation = () => {
-  const navigate = useNavigate();
-  const { currentUser, isPremium, isLoading: authLoading } = useAuth();
+const navigate = useNavigate();
+  const { currentUser, isPremium, isLoading: authLoading, isAdmin } = useAuth();
   const { trackSimulationStart, trackSimulationProgress, trackSimulationComplete, trackError } = useAnalytics();
   const { topicId, setId, difficulty, type, storyId } = useParams<{ 
     topicId: string; 
@@ -71,6 +72,16 @@ const Simulation = () => {
   const [storyQuestions, setStoryQuestions] = useState<Question[]>([]);
   const [story, setStory] = useState<any>(undefined);
   const [storyLoading, setStoryLoading] = useState(false);
+
+// Enforce premium access for stories (except allowed free stories)
+  useEffect(() => {
+    if (!isStoryBased || !storyId) return;
+    if (authLoading) return;
+    const decoded = decodeURIComponent(storyId);
+    if (!isPremium && !isAdmin && !isFreeStory(decoded)) {
+      navigate('/premium');
+    }
+  }, [isStoryBased, storyId, authLoading, isPremium, isAdmin, navigate]);
 
   // Load story-specific questions if this is a story simulation
   useEffect(() => {
