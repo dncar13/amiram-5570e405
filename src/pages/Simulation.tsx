@@ -20,7 +20,7 @@ import {
   getRestatementQuestions 
 } from "@/services/questionsService";
 import { Question } from "@/data/types/questionTypes";
-import { getQuestionsByStory, getStoryById } from "@/services/storyQuestionsService";
+import { getQuestionsByStory, getStoryById, Story as RCStory } from "@/services/storyQuestionsService";
 import { useAuth } from "@/context/AuthContext";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { isFreeStory } from "@/utils/storyAccess";
@@ -70,7 +70,7 @@ const navigate = useNavigate();
   
   // State for story-specific data
   const [storyQuestions, setStoryQuestions] = useState<Question[]>([]);
-  const [story, setStory] = useState<any>(undefined);
+  const [story, setStory] = useState<RCStory | undefined>(undefined);
   const [storyLoading, setStoryLoading] = useState(false);
 
 // Enforce premium access for stories (except allowed free stories)
@@ -118,7 +118,7 @@ const navigate = useNavigate();
     };
 
     loadStoryData();
-  }, [isStoryBased, storyId]);
+  }, [isStoryBased, storyId, trackError]);
 
   // Get simulation data (questions, topic info, etc.) - only for non-full-exam simulations
   const { 
@@ -278,7 +278,24 @@ const navigate = useNavigate();
         time_limit: simulation.examMode ? 90 * 60 : undefined // 90 minutes for exam mode
       });
     }
-  }, [simulation?.progressLoaded, questionsToUse.length, formattedSimulationId]);
+  }, [
+    simulation,
+    simulation?.progressLoaded,
+    simulation?.simulationComplete,
+    simulation?.currentQuestionIndex,
+    questionsToUse.length,
+    formattedSimulationId,
+    isFullExam,
+    isStoryBased,
+    isDifficultyBased,
+    isQuickPractice,
+    isQuestionSet,
+    difficulty,
+    type,
+    effectiveType,
+    topicId,
+    trackSimulationStart
+  ]);
   
   // Track simulation progress at 25%, 50%, 75% completion
   useEffect(() => {
@@ -304,7 +321,20 @@ const navigate = useNavigate();
         }
       });
     }
-  }, [simulation?.currentQuestionIndex, questionsToUse.length, formattedSimulationId, simulation?.currentScorePercentage]);
+  }, [
+    simulation,
+    simulation?.progressLoaded,
+    simulation?.currentQuestionIndex,
+    simulation?.currentScorePercentage,
+    questionsToUse.length,
+    formattedSimulationId,
+    isFullExam,
+    isStoryBased,
+    topicId,
+    type,
+    effectiveType,
+    trackSimulationProgress
+  ]);
   
   // Track simulation completion
   useEffect(() => {
@@ -329,10 +359,22 @@ const navigate = useNavigate();
         });
       }
     }
-  }, [simulation?.simulationComplete, formattedSimulationId, simulation?.currentScorePercentage]);
-  
+  }, [
+    simulation,
+    simulation?.simulationComplete,
+    simulation?.currentScorePercentage,
+    questionsToUse.length,
+    formattedSimulationId,
+    isFullExam,
+    isStoryBased,
+    topicId,
+    type,
+    effectiveType,
+    trackSimulationComplete
+  ]);
+
+  // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה
   useEffect(() => {
-    // גלילה אוטומטית לשאלה הנוכחית כל פעם שעוברים לשאלה חדשה
     const scrollToQuestion = () => {
       if (simulation.questionContainerRef?.current) {
         simulation.questionContainerRef.current.scrollIntoView({
@@ -384,10 +426,11 @@ const navigate = useNavigate();
       return () => clearTimeout(saveTimeout);
     }
   }, [
-    simulation.currentQuestionIndex, 
-    simulation.userAnswers, 
-    simulation.simulationComplete,
-    simulation.progressLoaded,
+    simulation,
+    simulation?.currentQuestionIndex, 
+    simulation?.userAnswers, 
+    simulation?.simulationComplete,
+    simulation?.progressLoaded,
     effectiveIsLoading,
     questionsToUse.length
   ]);  // Handle navigation to topics
@@ -561,6 +604,8 @@ const navigate = useNavigate();
             onBackToTopics={handleBackToTopics}
             onResetProgress={simulation.resetProgress}
             onFinishSimulation={handleFinishSimulation}
+            // New: indicate story-based (reading comprehension) simulation for layout adjustments
+            isStorySimulation={isStoryBased}
           />
         </div>
       </main>
