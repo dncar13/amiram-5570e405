@@ -1,6 +1,10 @@
 -- Add full idempotency constraints for payment transactions
 -- This ensures that duplicate webhooks are properly handled at the database level
 
+-- Add checksum column if it doesn't exist (must be first)
+ALTER TABLE public.payment_transactions 
+ADD COLUMN IF NOT EXISTS checksum TEXT;
+
 -- First, create a unique constraint on transaction_id + checksum combination
 -- This prevents duplicate transactions even with the same ID but different checksums
 ALTER TABLE public.payment_transactions 
@@ -9,16 +13,12 @@ UNIQUE (transaction_id, checksum) DEFERRABLE INITIALLY DEFERRED;
 
 -- Add a partial unique constraint for backward compatibility
 -- This handles cases where checksum might not be present
-CREATE UNIQUE INDEX CONCURRENTLY unique_transaction_id_when_checksum_null
+CREATE UNIQUE INDEX unique_transaction_id_when_checksum_null
 ON public.payment_transactions (transaction_id) 
 WHERE checksum IS NULL;
 
--- Add checksum column if it doesn't exist
-ALTER TABLE public.payment_transactions 
-ADD COLUMN IF NOT EXISTS checksum TEXT;
-
 -- Add an index for faster checksum lookups
-CREATE INDEX CONCURRENTLY idx_payment_transactions_checksum 
+CREATE INDEX idx_payment_transactions_checksum 
 ON public.payment_transactions(checksum) 
 WHERE checksum IS NOT NULL;
 

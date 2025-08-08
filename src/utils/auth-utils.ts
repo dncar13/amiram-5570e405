@@ -1,6 +1,7 @@
 
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { sendWelcomeEmail } from './email-utils';
 
 export interface AuthResponse {
   success: boolean;
@@ -99,6 +100,26 @@ export const signUp = async (email: string, password: string): Promise<AuthRespo
         success: false,
         error: getAuthErrorMessage(error.message)
       };
+    }
+    
+    // Send welcome email if user was created successfully
+    if (data.user) {
+      try {
+        console.log('Sending welcome email for new user:', data.user.email);
+        const firstName = data.user.user_metadata?.name || 
+                         data.user.user_metadata?.display_name || 
+                         email.split('@')[0];
+        
+        await sendWelcomeEmail(
+          data.user.email || email,
+          firstName,
+          data.user.id
+        );
+        console.log('Welcome email sent successfully');
+      } catch (emailError) {
+        console.error('Failed to send welcome email, but user was created:', emailError);
+        // Don't fail the entire signup process if email fails
+      }
     }
     
     return {
