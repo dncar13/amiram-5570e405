@@ -42,8 +42,7 @@ export const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({
 
   const handleUpgrade = () => {
     onClose();
-    // In a real app, this would navigate to a subscription page
-    window.open('mailto:support@example.com?subject=Premium Subscription Request', '_blank');
+    navigate('/premium');
   };
 
   const premiumFeatures = [
