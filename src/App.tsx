@@ -79,6 +79,10 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import CouponManagement from "./pages/CouponManagement";
 import CouponUsageManagement from "./pages/CouponUsageManagement";
 import analyticsService from "./services/analytics";
+import ListeningQuestions from "./pages/ListeningQuestions";
+import ListeningContinuationSets from "./pages/ListeningContinuationSets";
+import ListeningContinuationSet from "./pages/ListeningContinuationSet";
+import ListeningContinuationSimulation from "./pages/ListeningContinuationSimulation";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -273,6 +277,11 @@ const AnimatedRoutes = () => {
               <Simulation />
             </ErrorBoundary>
           } />
+
+          {/* New Listening Routes */}
+          <Route path="/listening" element={<ListeningQuestions />} />
+          <Route path="/listening/continuation" element={<ListeningContinuationSets />} />
+          <Route path="/listening/continuation/:setId" element={<ListeningContinuationSet />} />
           
           {/* Existing Simulations Entry Routes */}
           <Route path="/simulations-entry" element={<SimulationsEntry />} />
