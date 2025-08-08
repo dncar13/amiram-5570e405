@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -26,6 +25,8 @@ interface QuestionCardProps {
   onToggleExplanation: () => void;
   onToggleQuestionFlag: () => void;
   onFinishSimulation?: () => void;
+  // New: whether to render the passage inside the card (default true)
+  showPassage?: boolean;
 }
 
 const getTypeIcon = (type: Question['type']) => {
@@ -120,7 +121,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   onPreviousQuestion,
   onToggleExplanation,
   onToggleQuestionFlag,
-  onFinishSimulation
+  onFinishSimulation,
+  showPassage = true
 }) => {
   if (!currentQuestion) {
     return null;
@@ -241,8 +243,8 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
         </CardHeader>
 
         <CardContent className="space-y-3 sm:space-y-6 p-4 sm:p-6">
-          {/* Passage Text (for reading comprehension) - רחב יותר במובייל */}
-          {currentQuestion.passageText && (
+          {/* Passage Text (for reading comprehension) - controlled by showPassage */}
+          {showPassage && currentQuestion.passageText && (
             <div 
               className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm"
               dir="ltr" 

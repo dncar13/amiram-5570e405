@@ -39,6 +39,8 @@ interface SimulationContentProps {
   onBackToTopics: () => string;
   onResetProgress: () => void;
   onFinishSimulation?: () => void;
+  // New: whether this simulation is a reading-comprehension story flow
+  isStorySimulation?: boolean;
 }
 
 const SimulationContent = ({
@@ -74,18 +76,10 @@ const SimulationContent = ({
   onRestart,
   onBackToTopics,
   onResetProgress,
-  onFinishSimulation
+  onFinishSimulation,
+  isStorySimulation
 }: SimulationContentProps) => {
   const [showRestartDialog, setShowRestartDialog] = useState(false);
-
-  // console.log('[SimulationContent] Rendering with:', {
-  //   totalQuestions,
-  //   questionsDataLength: questionsData.length,
-  //   currentQuestionIndex,
-  //   hasCurrentQuestion: !!currentQuestion,
-  //   currentQuestionId: currentQuestion?.id,
-  //   simulationComplete
-  // });
 
   // Convert Record objects to arrays for child components that expect arrays
   const userAnswersArray: (number | null)[] = Array.from({ length: totalQuestions }, (_, i) => userAnswers[i] ?? null);
@@ -127,7 +121,6 @@ const SimulationContent = ({
 
   // Show loading if we don't have questions or current question
   if (totalQuestions === 0 || !currentQuestion) {
-    // console.log('[SimulationContent] Showing loading state - totalQuestions:', totalQuestions, 'currentQuestion:', !!currentQuestion);
     return (
       <div className="w-full max-w-none min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
         <div className="flex items-center justify-center h-64">
@@ -142,8 +135,7 @@ const SimulationContent = ({
     );
   }
 
-  // console.log('[SimulationContent] Rendering main content with question:', currentQuestion.id);
-
+  // Main content
   return (
     <>
       <div className="w-full max-w-none bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen px-2 sm:px-4">
@@ -165,30 +157,78 @@ const SimulationContent = ({
           />
         </div>
 
-        {/* Unified Question Display */}
-        <div ref={questionContainerRef} className="max-w-none">
-          <QuestionCard
-            currentQuestion={currentQuestion}
-            currentQuestionIndex={currentQuestionIndex}
-            totalQuestions={totalQuestions}
-            selectedAnswerIndex={selectedAnswerIndex}
-            isAnswerSubmitted={isAnswerSubmitted}
-            showExplanation={showExplanation}
-            isFlagged={questionFlags[currentQuestionIndex] || false}
-            examMode={examMode}
-            showAnswersImmediately={showAnswersImmediately}
-            answeredQuestionsCount={answeredQuestionsCount}
-            correctQuestionsCount={correctQuestionsCount}
-            progressPercentage={progressPercentage}
-            onAnswerSelect={onAnswerSelect}
-            onSubmitAnswer={onSubmitAnswer}
-            onNextQuestion={onNextQuestion}
-            onPreviousQuestion={onPreviousQuestion}
-            onToggleExplanation={onToggleExplanation}
-            onToggleQuestionFlag={onToggleQuestionFlag}
-            onFinishSimulation={onFinishSimulation}
-          />
-        </div>
+        {/* Two-column layout for reading comprehension story simulations */}
+        {isStorySimulation && currentQuestion.passageText ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6" ref={questionContainerRef} dir="ltr">
+            {/* Left: Passage */}
+            <div className="order-1 lg:order-none">
+              <div 
+                className="bg-slate-700/50 rounded-xl p-3 sm:p-6 border border-slate-600/30 backdrop-blur-sm h-full"
+                dir="ltr"
+                style={{ direction: 'ltr', textAlign: 'left' }}
+              >
+                <h4 className="font-bold text-slate-200 mb-2 sm:mb-4 text-sm sm:text-lg">
+                  {currentQuestion.passageTitle || 'קטע לקריאה'}
+                </h4>
+                <div className="text-slate-300 leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+                  {currentQuestion.passageText}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Question */}
+            <div className="order-2 lg:order-none" dir="rtl">
+              <QuestionCard
+                currentQuestion={currentQuestion}
+                currentQuestionIndex={currentQuestionIndex}
+                totalQuestions={totalQuestions}
+                selectedAnswerIndex={selectedAnswerIndex}
+                isAnswerSubmitted={isAnswerSubmitted}
+                showExplanation={showExplanation}
+                isFlagged={questionFlags[currentQuestionIndex] || false}
+                examMode={examMode}
+                showAnswersImmediately={showAnswersImmediately}
+                answeredQuestionsCount={answeredQuestionsCount}
+                correctQuestionsCount={correctQuestionsCount}
+                progressPercentage={progressPercentage}
+                onAnswerSelect={onAnswerSelect}
+                onSubmitAnswer={onSubmitAnswer}
+                onNextQuestion={onNextQuestion}
+                onPreviousQuestion={onPreviousQuestion}
+                onToggleExplanation={onToggleExplanation}
+                onToggleQuestionFlag={onToggleQuestionFlag}
+                onFinishSimulation={onFinishSimulation}
+                // Hide passage inside the card since it's shown on the left
+                showPassage={false}
+              />
+            </div>
+          </div>
+        ) : (
+          // Default unified layout
+          <div ref={questionContainerRef} className="max-w-none">
+            <QuestionCard
+              currentQuestion={currentQuestion}
+              currentQuestionIndex={currentQuestionIndex}
+              totalQuestions={totalQuestions}
+              selectedAnswerIndex={selectedAnswerIndex}
+              isAnswerSubmitted={isAnswerSubmitted}
+              showExplanation={showExplanation}
+              isFlagged={questionFlags[currentQuestionIndex] || false}
+              examMode={examMode}
+              showAnswersImmediately={showAnswersImmediately}
+              answeredQuestionsCount={answeredQuestionsCount}
+              correctQuestionsCount={correctQuestionsCount}
+              progressPercentage={progressPercentage}
+              onAnswerSelect={onAnswerSelect}
+              onSubmitAnswer={onSubmitAnswer}
+              onNextQuestion={onNextQuestion}
+              onPreviousQuestion={onPreviousQuestion}
+              onToggleExplanation={onToggleExplanation}
+              onToggleQuestionFlag={onToggleQuestionFlag}
+              onFinishSimulation={onFinishSimulation}
+            />
+          </div>
+        )}
       </div>
       
       <RestartConfirmationDialog
