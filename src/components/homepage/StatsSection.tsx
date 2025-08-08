@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, BarChart2, Layers, ListChecks } from 'lucide-react';
-import { useHomepageStats } from '@/hooks/useHomepageStats';
+import { Users, Trophy, BookOpen, Clock } from 'lucide-react';
+
+const targetCounts = {
+  students: 1500,
+  successRate: 94,
+  questions: 1000,
+  hours: 24
+};
 
 const StatsSection: React.FC = () => {
-  const { data } = useHomepageStats();
   const [inView, setInView] = useState(false);
   const [counts, setCounts] = useState({
+    students: 0,
+    successRate: 0,
     questions: 0,
-    simulations: 0,
-    topics: 0,
-    sets: 0
+    hours: 0
   });
 
   useEffect(() => {
@@ -30,63 +35,57 @@ const StatsSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-useEffect(() => {
-  if (!inView) return;
-  const duration = 2000;
-  const steps = 60;
-  const interval = duration / steps;
+  useEffect(() => {
+    if (inView) {
+      const duration = 2000;
+      const steps = 60;
+      const interval = duration / steps;
 
-  const targets = {
-    questions: data?.total_questions ?? 0,
-    simulations: data?.simulations_display ?? 0,
-    topics: data?.total_topics ?? 0,
-    sets: data?.question_sets ?? 0,
-  };
+      const timer = setInterval(() => {
+        setCounts(prevCounts => ({
+          students: Math.min(prevCounts.students + Math.ceil(targetCounts.students / steps), targetCounts.students),
+          successRate: Math.min(prevCounts.successRate + Math.ceil(targetCounts.successRate / steps), targetCounts.successRate),
+          questions: Math.min(prevCounts.questions + Math.ceil(targetCounts.questions / steps), targetCounts.questions),
+          hours: Math.min(prevCounts.hours + Math.ceil(targetCounts.hours / steps), targetCounts.hours)
+        }));
+      }, interval);
 
-  const timer = setInterval(() => {
-    setCounts(prev => ({
-      questions: Math.min(prev.questions + Math.ceil(targets.questions / steps), targets.questions),
-      simulations: Math.min(prev.simulations + Math.ceil(targets.simulations / steps), targets.simulations),
-      topics: Math.min(prev.topics + Math.ceil(targets.topics / steps), targets.topics),
-      sets: Math.min(prev.sets + Math.ceil(targets.sets / steps), targets.sets)
-    }));
-  }, interval);
-
-  return () => clearInterval(timer);
-}, [inView, data]);
+      return () => clearInterval(timer);
+    }
+  }, [inView]);
 
   const stats = [
     {
-      icon: BookOpen,
-      count: counts.questions,
-      suffix: '',
-      label: 'Questions in the platform',
-      color: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50'
-    },
-    {
-      icon: BarChart2,
-      count: counts.simulations,
-      suffix: '',
-      label: 'Simulations completed',
+      icon: Users,
+      count: counts.students,
+      suffix: '+',
+      label: 'סטודנטים מצליחים',
       color: 'from-blue-500 to-blue-600',
       bgColor: 'bg-blue-50'
     },
     {
-      icon: Layers,
-      count: counts.sets,
-      suffix: '',
-      label: 'Question sets',
-      color: 'from-orange-500 to-orange-600',
-      bgColor: 'bg-orange-50'
-    },
-    {
-      icon: ListChecks,
-      count: counts.topics,
-      suffix: '',
-      label: 'Topics covered',
+      icon: Trophy,
+      count: counts.successRate,
+      suffix: '%',
+      label: 'שיעור הצלחה',
       color: 'from-green-500 to-green-600',
       bgColor: 'bg-green-50'
+    },
+    {
+      icon: BookOpen,
+      count: counts.questions,
+      suffix: '+',
+      label: 'שאלות מעודכנות',
+      color: 'from-purple-500 to-purple-600',
+      bgColor: 'bg-purple-50'
+    },
+    {
+      icon: Clock,
+      count: counts.hours,
+      suffix: '/7',
+      label: 'תמיכה מקצועית',
+      color: 'from-orange-500 to-orange-600',
+      bgColor: 'bg-orange-50'
     }
   ];
 
@@ -101,13 +100,13 @@ useEffect(() => {
             className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-l from-blue-600 to-purple-600 bg-clip-text text-transparent"
             style={{ fontFamily: 'Rubik, sans-serif' }}
           >
-            The numbers that matter
+            המספרים מדברים בעד עצמם
           </h2>
           <p 
             className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed"
             style={{ fontFamily: 'Rubik, sans-serif' }}
           >
-            Live figures from our database—updated counts, not guesses.
+            אלפי סטודנטים כבר השתמשו בפלטפורמה שלנו והשיגו תוצאות מצוינות במבחן אמירם
           </p>
         </div>
 
@@ -158,7 +157,7 @@ useEffect(() => {
                 </div>
               </div>
               <span className="text-gray-700 font-medium mr-3" style={{ fontFamily: 'Rubik, sans-serif' }}>
-                New learners join daily
+                מצטרפים אלינו מדי יום
               </span>
             </div>
           </div>
