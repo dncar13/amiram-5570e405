@@ -792,15 +792,22 @@ const Premium = () => {
                         <Gift className="w-5 h-5 text-purple-600" />
                         יש לכם קוד קופון?
                       </h3>
-                      <div className="flex gap-2 mb-2">
-                        <Input
-                          type="text"
-                          placeholder={isCouponLocked ? "תשלום בתהליך" : "הכניסו קוד קופון"}
-                          value={couponCode}
-                          onChange={(e) => setCouponCode(e.target.value)}
-                          className={`bg-white border-gray-300 ${isCouponLocked ? 'opacity-50' : ''}`}
-                          disabled={isValidating || isCouponLocked || appliedCoupon?.valid}
-                        />
+                      <div className="flex gap-2 mb-2 items-start">
+                        <div className="flex-1">
+                          <label htmlFor="coupon-code" className="sr-only">קוד קופון</label>
+                          <Input
+                            id="coupon-code"
+                            name="couponCode"
+                            type="text"
+                            placeholder={isCouponLocked ? "תשלום בתהליך" : "הכניסו קוד קופון"}
+                            value={couponCode}
+                            onChange={(e) => setCouponCode(e.target.value)}
+                            className={`bg-white border-gray-300 ${isCouponLocked ? 'opacity-50' : ''}`}
+                            disabled={isValidating || isCouponLocked || appliedCoupon?.valid}
+                            aria-invalid={Boolean(couponError)}
+                            aria-describedby={couponError ? 'coupon-error' : undefined}
+                          />
+                        </div>
                         <Button 
                           onClick={() => {
                             applyCoupon();
@@ -813,7 +820,7 @@ const Premium = () => {
                         </Button>
                       </div>
                       {couponError && (
-                        <p className="text-red-600 text-sm">{couponError}</p>
+                        <p id="coupon-error" role="alert" className="text-red-600 text-sm">{couponError}</p>
                       )}
                       {appliedCoupon?.valid && appliedCoupon.coupon && (
                         <div className="flex items-center justify-between">
