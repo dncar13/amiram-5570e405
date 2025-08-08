@@ -10,6 +10,7 @@ import StatsSection from '@/components/homepage/StatsSection';
 import TestimonialsSection from '@/components/homepage/TestimonialsSection';
 import CTASection from '@/components/homepage/CTASection';
 import FAQSection from '@/components/homepage/FAQSection';
+import KnowledgeSection from '@/components/homepage/KnowledgeSection';
 import Footer from '@/components/Footer';
 
 // Optional: Skeleton Loaders
@@ -82,6 +83,9 @@ const Index: React.FC = () => {
         <TestimonialsSection />
       </AnimatedSection>
 
+      <AnimatedSection delay={isMobile ? 0.25 : 0.35}>
+        <KnowledgeSection />
+      </AnimatedSection>
       {/* FAQ Section - Condensed on mobile */}
       <AnimatedSection delay={isMobile ? 0.3 : 0.4}>
         <FAQSection />
