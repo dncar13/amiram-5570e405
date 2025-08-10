@@ -194,28 +194,44 @@ async function validateAudioUrl(url) {
   }
 }
 
-// Convenience function for different question types
-async function synthesizeToUrl(id, text, questionType = 'listening_continuation') {
-  const typeConfig = {
-    'listening_comprehension': {
-      subdirectory: 'comprehension',
-      pauseDurationMs: 0 // No blanks in comprehension
-    },
-    'listening_continuation': {
-      subdirectory: 'listening-continuation', 
-      pauseDurationMs: 1000
-    },
-    'word_formation': {
-      subdirectory: 'word-formation',
-      pauseDurationMs: 600
-    },
-    'grammar_in_context': {
-      subdirectory: 'grammar-context',
-      pauseDurationMs: 600
-    }
-  };
+// Enhanced synthesizeToUrl function with better subfolder support
+async function synthesizeToUrl(idOrPath, text, options = {}) {
+  // Handle both legacy and new calling patterns
+  let config, id;
+  
+  if (typeof options === 'string') {
+    // Legacy: synthesizeToUrl(id, text, questionType)
+    const questionType = options;
+    const typeConfig = {
+      'listening_comprehension': {
+        subdirectory: 'comprehension',
+        pauseDurationMs: 0 // No blanks in comprehension
+      },
+      'listening_continuation': {
+        subdirectory: 'listening-continuation', 
+        pauseDurationMs: 1000
+      },
+      'word_formation': {
+        subdirectory: 'word-formation',
+        pauseDurationMs: 600
+      },
+      'grammar_in_context': {
+        subdirectory: 'grammar-context',
+        pauseDurationMs: 600
+      }
+    };
+    config = typeConfig[questionType] || typeConfig['listening_continuation'];
+    id = idOrPath;
+  } else {
+    // New: synthesizeToUrl(idOrPath, text, { folder, pauseForUnderscoreMs, ... })
+    config = {
+      subdirectory: options.folder || 'listening-continuation',
+      pauseDurationMs: options.pauseForUnderscoreMs || 1000,
+      ...options
+    };
+    id = idOrPath;
+  }
 
-  const config = typeConfig[questionType] || typeConfig['listening_continuation'];
   const result = await synthesizeToGCS(id, text, config);
   
   return {

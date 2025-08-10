@@ -1243,6 +1243,124 @@ if (require.main === module) {
   });
 }
 
+// ============================================
+// AUDIO BACKFILL FUNCTIONS
+// ============================================
+
+// Generate segment ID from audio script for consistency
+function segmentIdFromScript(script) {
+  return 'lec_' + crypto.createHash('md5').update(script.trim()).digest('hex').slice(0, 12);
+}
+
+// Backfill audio for Listening Comprehension questions
+async function backfillComprehensionAudio() {
+  console.log('🔍 Searching for listening comprehension questions missing audio...');
+  
+  try {
+    const { data: rows, error } = await supabase
+      .from('questions')
+      .select('id, question_text, metadata, type')
+      .eq('type', 'listening_comprehension');
+
+    if (error) throw error;
+
+    // Find questions with audioScript but no audioUrl
+    const missing = (rows || []).filter(r => {
+      const audioScript = r.metadata && r.metadata.audio_script;
+      const audioUrl = r.metadata && r.metadata.audio_url;
+      return audioScript && !audioUrl;
+    });
+
+    if (!missing.length) {
+      console.log('✅ No missing comprehension audio found.');
+      return;
+    }
+
+    console.log(`📝 Found ${missing.length} questions missing audio. Grouping by script...`);
+
+    // Group by audioScript to avoid duplicate synthesis
+    const scriptGroups = new Map();
+    for (const row of missing) {
+      const script = row.metadata.audio_script.trim();
+      const segmentId = segmentIdFromScript(script);
+      
+      if (!scriptGroups.has(segmentId)) {
+        scriptGroups.set(segmentId, {
+          segmentId,
+          script,
+          questions: []
+        });
+      }
+      scriptGroups.get(segmentId).questions.push(row);
+    }
+
+    console.log(`🎯 Processing ${scriptGroups.size} unique audio segments...`);
+
+    // Process each unique segment
+    for (const [segmentId, group] of scriptGroups) {
+      try {
+        console.log(`🎵 Synthesizing audio for segment: ${segmentId} (${group.questions.length} questions)`);
+        console.log(`📝 Script preview: "${group.script.substring(0, 100)}${group.script.length > 100 ? '...' : ''}"`);
+
+        // Synthesize audio using the new pattern
+        const { url, size } = await synthesizeToUrl(segmentId, group.script, {
+          folder: 'comprehension',
+          pauseForUnderscoreMs: 0 // No pauses for comprehension
+        });
+
+        console.log(`✅ Audio synthesized: ${url}`);
+
+        // Update all questions that share this script
+        const updates = group.questions.map(q => ({
+          id: q.id,
+          audioUrl: url,
+          metadata: {
+            ...(q.metadata || {}),
+            segmentId: segmentId,
+            audio_generated: true,
+            audio_size: size,
+            audio_url: url // Also store in metadata for compatibility
+          }
+        }));
+
+        // Update in batches of 100 to avoid payload limits
+        while (updates.length > 0) {
+          const batch = updates.splice(0, 100);
+          const { error: updateError } = await supabase
+            .from('questions')
+            .upsert(batch, { onConflict: 'id' });
+
+          if (updateError) throw updateError;
+        }
+
+        console.log(`🎧 Updated ${group.questions.length} question(s) for segment ${segmentId}`);
+        
+        // Brief pause between segments to be respectful to the API
+        if (scriptGroups.size > 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+
+      } catch (error) {
+        console.error(`❌ Failed to process segment ${segmentId}:`, error.message);
+        continue; // Continue with next segment
+      }
+    }
+
+    console.log('✅ Comprehension audio backfill complete.');
+    
+    // Return summary
+    return {
+      totalQuestions: missing.length,
+      uniqueSegments: scriptGroups.size,
+      success: true
+    };
+
+  } catch (error) {
+    console.error('❌ Backfill failed:', error.message);
+    throw error;
+  }
+}
+
 module.exports = {
   generateAllQuestionTypes,
   generateQuestionsWithAI,
@@ -1253,5 +1371,7 @@ module.exports = {
   uploadQuestionsToDatabase,
   shuffleWithAnswer,
   validateCorrectAnswer,
-  parseArgs
+  parseArgs,
+  backfillComprehensionAudio,
+  segmentIdFromScript
 };

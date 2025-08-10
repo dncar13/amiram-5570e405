@@ -82,7 +82,7 @@ const ListeningPractice: React.FC = () => {
     };
   }, [location.pathname]);
 
-  // Audio controls - exactly like continuation system
+  // Audio controls - show script or play appropriate audio
   const playAudio = () => {
     if (!audioRef.current || !currentQuestion) return;
 
@@ -92,45 +92,27 @@ const ListeningPractice: React.FC = () => {
       return;
     }
 
-    let audioSrc = '';
+    // For questions with audio_script, always show the script first
+    if (currentQuestion.metadata?.audio_script) {
+      const script = currentQuestion.metadata.audio_script as string;
+      alert(`🎧 הטקסט הנכון לשאלה:\n\n"${script}"\n\n💡 זה הטקסט שאמור להיות באודיו. האודיו הנוכחי אינו תואם לשאלה.`);
+      return;
+    }
 
-    // Check if question has specific audio_url
+    // Fallback to existing audio files only if no script
+    let audioSrc = '';
     if (currentQuestion.audio_url) {
       audioSrc = currentQuestion.audio_url;
-    }
-    // Check for audio_url in metadata
-    else if (currentQuestion.metadata?.audio_url) {
-      audioSrc = currentQuestion.metadata.audio_url as string;
-    }
-    // Use fallback audio based on question type and stable_id
-    else {
+    } else {
       const { audioFolder } = getPageInfo();
-      
-      // Map stable_id to specific audio file
-      let audioIndex = 0;
-      if (currentQuestion.stable_id?.includes('lc_')) {
-        // For listening comprehension, cycle through audio files
-        audioIndex = currentQuestionIndex % 4;
-      } else if (currentQuestion.stable_id?.includes('wf_')) {
-        // For word formation, use consistent audio
-        audioIndex = (currentQuestionIndex + 1) % 4;
-      } else if (currentQuestion.stable_id?.includes('gc_')) {
-        // For grammar context, use different audio
-        audioIndex = (currentQuestionIndex + 2) % 4;
-      } else {
-        // Default cycling
-        audioIndex = currentQuestionIndex % 4;
-      }
-      
+      const audioIndex = currentQuestionIndex % 4;
       const legacy = [
         `/audioFiles/${audioFolder}/firstQ.mp3`,
         `/audioFiles/${audioFolder}/secentQ.mp3`, 
         `/audioFiles/${audioFolder}/thitdQ.mp3`,
         `/audioFiles/${audioFolder}/fourthQ.mp3`
       ];
-      
       audioSrc = legacy[audioIndex];
-      console.log(`🔊 Using audio ${audioIndex + 1} for ${currentQuestion.stable_id}:`, audioSrc);
     }
 
     if (audioSrc) {
@@ -173,47 +155,27 @@ const ListeningPractice: React.FC = () => {
 
       const { types } = getPageInfo();
       
-      // Use hardcoded questions that work
-      const hardcodedQuestions: Question[] = [
+      // Always use hardcoded questions for now (database integration disabled)
+      const hardcodedQuestions = [
         {
           id: "demo_1",
-          question_text: "The company's ______ to expand internationally was met with enthusiasm from investors.",
-          answer_options: ["decision", "decide", "decisively", "decisive"],
+          question_text: "What's the correct form? 'The new manager is very _____ and works well with teams.'",
+          answer_options: ["collaborative", "collaboration", "collaborating", "collaboratively"],
           correct_answer: "0",
-          explanation: "נדרש שם עצם אחרי 's possessive. 'decision' היא צורת שם העצם של 'decide'.",
-          difficulty: "easy",
-          topic_id: 21,
+          explanation: "כאן נדרש תואר (adjective) לתיאור המנהל. 'collaborative' הוא התואר הנכון.",
+          difficulty: "medium",
+          topic_id: 15,
           type: "word_formation"
         },
         {
-          id: "demo_2",
-          question_text: "The scientist made a ______ discovery that changed our understanding of genetics.",
-          answer_options: ["revolutionary", "revolution", "revolutionize", "revolutionarily"],
-          correct_answer: "0",
-          explanation: "נדרש שם תואר לתאר את 'discovery'. 'revolutionary' פירושו מהפכני.",
+          id: "demo_2", 
+          question_text: "Complete: 'The company's _____ policy has led to increased employee satisfaction.'",
+          answer_options: ["flexible", "flexibility", "flexibly", "flexing"],
+          correct_answer: "1",
+          explanation: "לפני 'policy' נדרש שם עצם. 'flexibility' הוא שם העצם הנכון.",
           difficulty: "medium",
           topic_id: 21,
           type: "word_formation"
-        },
-        {
-          id: "demo_3",
-          question_text: "If I ______ you, I would accept the job offer.",
-          answer_options: ["was", "were", "am", "will be"],
-          correct_answer: "1",
-          explanation: "במשפט תנאי מסוג שני, משתמשים ב-'were' לכל הגופים אחרי If.",
-          difficulty: "medium",
-          topic_id: 22,
-          type: "grammar_in_context"
-        },
-        {
-          id: "demo_4",
-          question_text: "The team worked ______ to meet the deadline.",
-          answer_options: ["tire", "tirelessly", "tiring", "tireless"],
-          correct_answer: "1",
-          explanation: "נדרש תואר הפועל לתאר איך הם עבדו. 'tirelessly' = ללא לאות.",
-          difficulty: "easy",
-          topic_id: 22,
-          type: "grammar_in_context"
         },
         {
           id: "demo_5",
@@ -224,21 +186,25 @@ const ListeningPractice: React.FC = () => {
           difficulty: "easy",
           topic_id: 23,
           type: "listening_comprehension",
+          audio_url: "/audioFiles/comprehension/lec_4aa6ee856a45.mp3",
           metadata: {
-            audio_script: "Sarah and Mike are discussing their weekend plans. Sarah mentions she's thinking about going to the farmers market on Saturday morning because she needs fresh vegetables for a dinner party she's hosting."
+            audio_script: "Sarah and Mike are discussing their weekend plans. Sarah mentions she's thinking about going to the farmers market on Saturday morning because she needs fresh vegetables for a dinner party she's hosting.",
+            audio_url: "/audioFiles/comprehension/lec_4aa6ee856a45.mp3"
           }
         },
         {
           id: "demo_6",
-          question_text: "According to the speaker, what happens during deep sleep?",
-          answer_options: ["Students dream about their studies", "Neural connections are strengthened", "The body produces more energy", "The brain creates new memories"],
-          correct_answer: "1",
-          explanation: "הדובר מציין שבמהלך שינה עמוקה, הקשרים העצביים מתחזקים, מה שמקל על היזכרות במידע.",
-          difficulty: "medium",
+          question_text: "According to the lecture, how many hours of sleep do students need for optimal academic performance?",
+          answer_options: ["Six hours", "At least eight hours", "Exactly seven hours", "No specific amount mentioned"],
+          correct_answer: "1", 
+          explanation: "המרצה מציין במפורש שסטודנטים שישנים לפחות שמונה שעות מציגים ביצועים טובים יותר במבחנים.",
+          difficulty: "easy",
           topic_id: 23,
           type: "listening_comprehension",
+          audio_url: "/audioFiles/comprehension/lec_29057a221e8f.mp3",
           metadata: {
-            audio_script: "Today we'll discuss the importance of sleep for academic performance. During deep sleep, neural connections are strengthened, making it easier to recall information later."
+            audio_script: "Good morning, class. Today we'll discuss the importance of sleep for academic performance. Recent studies show that students who get at least eight hours of sleep perform significantly better on exams than those who sleep less. The brain uses sleep time to consolidate memories and process information from the day. During deep sleep, neural connections are strengthened, making it easier to recall information later.",
+            audio_url: "/audioFiles/comprehension/lec_29057a221e8f.mp3"
           }
         }
       ];
@@ -246,7 +212,7 @@ const ListeningPractice: React.FC = () => {
       // Filter hardcoded questions by current page type
       const filteredQuestions = hardcodedQuestions.filter(q => types.includes(q.type));
       setQuestions(filteredQuestions);
-      console.log(`✅ Using ${filteredQuestions.length} hardcoded questions for ${types.join(', ')}`);
+      console.log(`✅ Using ${filteredQuestions.length} fallback questions for ${types.join(', ')}`);
 
     } catch (err) {
       console.error('Fetch error:', err);
@@ -254,14 +220,24 @@ const ListeningPractice: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [getPageInfo]);
-
-  useEffect(() => {
+  }, [getPageInfo]);  useEffect(() => {
     fetchQuestions();
   }, [fetchQuestions]);
 
   const currentQuestion = questions[currentQuestionIndex];
   const { title, description } = getPageInfo();
+  const correctAnswerIndex = currentQuestion ? parseInt(currentQuestion.correct_answer || '0') : 0;
+
+  // Safety check
+  if (!currentQuestion) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <div className="text-white">טוען שאלות...</div>
+        </div>
+      </div>
+    );
+  }
 
   const handleAnswerSelect = (answerIndex: number) => {
     if (showResult) return;
@@ -270,7 +246,6 @@ const ListeningPractice: React.FC = () => {
   
   const checkAnswer = () => {
     if (selectedAnswer === null || showResult) return;
-    const correctAnswerIndex = parseInt(currentQuestion.correct_answer || '0');
     const isCorrectNow = selectedAnswer === correctAnswerIndex;
     setShowResult(true);
     setScore(prev => ({ correct: prev.correct + (isCorrectNow ? 1 : 0), total: prev.total + 1 }));
@@ -335,7 +310,6 @@ const ListeningPractice: React.FC = () => {
     );
   }
 
-  const correctAnswerIndex = parseInt(currentQuestion.correct_answer || '0');
   const isCorrect = selectedAnswer === correctAnswerIndex;
 
   return (
@@ -404,6 +378,21 @@ const ListeningPractice: React.FC = () => {
                     אפס
                   </Button>
                 </div>
+
+                {/* Show audio script if available */}
+                {currentQuestion?.metadata?.audio_script && (
+                  <div className="mb-4 p-4 bg-amber-50/90 border border-amber-200 rounded-lg">
+                    <div className="text-sm text-amber-800 font-medium mb-2 flex items-center">
+                      📜 הטקסט לאודיו (זה מה שהשאלה מבוססת עליו):
+                    </div>
+                    <div className="text-gray-800 italic font-light text-sm">
+                      "{currentQuestion.metadata.audio_script as string}"
+                    </div>
+                    <div className="text-xs text-amber-600 mt-2">
+                      💡 האודיו הנוכחי זמני - זה הטקסט הנכון לשאלה
+                    </div>
+                  </div>
+                )}
 
                 {duration > 0 && (
                   <div className="mb-4">
