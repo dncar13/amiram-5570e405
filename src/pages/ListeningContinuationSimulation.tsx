@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<(Question & { audioUrl?: string; metadata?: any })[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,13 +25,13 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
           // Load our smoke test questions
           const allQuestions = await getQuestionsByType('listening_continuation');
           const smokeTestQuestions = allQuestions.filter(q => 
-            q.metadata?.listening_set === 'smoketest'
+            (q.metadata as any)?.listening_set === 'smoketest'
           );
           
           // Map audioUrl from metadata if it exists there
-          const questionsWithAudio = smokeTestQuestions.map(q => ({
+            const questionsWithAudio = smokeTestQuestions.map(q => ({
             ...q,
-            audioUrl: q.audioUrl || q.metadata?.audio_url
+            audioUrl: (q as any).audioUrl || (q.metadata as any)?.audio_url
           }));
           
           setQuestions(questionsWithAudio);
@@ -40,7 +40,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
           const hardcodedQuestions: Question[] = [
             {
               id: "1",
-              type: "listening_continuation",
+              type: "listening",
               text: "Sarah was walking through the park when she noticed something unusual. The birds had suddenly stopped singing, and there was an eerie silence. She looked around and...",
               options: [
                 "saw a beautiful rainbow appearing in the sky",
@@ -54,7 +54,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
             },
             {
               id: "2", 
-              type: "listening_continuation",
+              type: "listening",
               text: "The meeting was supposed to start at 9 AM, but when David arrived at the conference room, he found it empty. He checked his calendar again and...",
               options: [
                 "realized the meeting was actually scheduled for tomorrow",
@@ -68,7 +68,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
             },
             {
               id: "3",
-              type: "listening_continuation", 
+              type: "listening", 
               text: "The chef carefully tasted the soup and frowned. Something was missing. He thought for a moment, then...",
               options: [
                 "threw the entire pot away",
@@ -82,7 +82,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
             },
             {
               id: "4",
-              type: "listening_continuation",
+              type: "listening",
               text: "As the plane began its descent, Emma looked out the window and saw the city lights below. The captain announced that...",
               options: [
                 "they would be landing in approximately 20 minutes",

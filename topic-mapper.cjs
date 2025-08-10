@@ -45,16 +45,16 @@ const TOPIC_MAPPING = {
   
   // Listening topics (need to be added to topicsData)
   listening_comprehension: {
-    academic: 11,        // New: Listening - Academic Content
-    workplace: 12,       // New: Listening - Workplace Situations
-    daily_life: 13,      // New: Listening - Daily Conversations
-    general: 13          // New: Listening - Daily Conversations (default)
+    academic: 21,        // New: Listening - Academic Content
+    workplace: 22,       // New: Listening - Workplace Situations
+    daily_life: 23,      // New: Listening - Daily Conversations
+    general: 23          // New: Listening - Daily Conversations (default)
   },
   
   listening_continuation: {
-    logical_reasoning: 14, // New: Listening - Logical Completion
-    context_understanding: 14, // New: Listening - Logical Completion
-    general: 14           // New: Listening - Logical Completion (default)
+    logical_reasoning: 24, // New: Listening - Logical Completion
+    context_understanding: 24, // New: Listening - Logical Completion
+    general: 24           // New: Listening - Logical Completion (default)
   }
 };
 
@@ -188,10 +188,10 @@ function getTopicInfo(topicId) {
     8: { title: "Vocabulary - Collocations & Phrases", categoryId: 3, tags: ["vocabulary", "phrases"] },
     
     // New listening topics (to be added to database)
-    11: { title: "Listening - Academic Content", categoryId: 4, tags: ["listening", "academic"] },
-    12: { title: "Listening - Workplace Situations", categoryId: 4, tags: ["listening", "workplace"] },
-    13: { title: "Listening - Daily Conversations", categoryId: 4, tags: ["listening", "daily"] },
-    14: { title: "Listening - Logical Completion", categoryId: 4, tags: ["listening", "reasoning"] }
+    21: { title: "Listening - Academic Content", categoryId: 4, tags: ["listening", "academic"] },
+    22: { title: "Listening - Workplace Situations", categoryId: 4, tags: ["listening", "workplace"] },
+    23: { title: "Listening - Daily Conversations", categoryId: 4, tags: ["listening", "daily"] },
+    24: { title: "Listening - Logical Completion", categoryId: 4, tags: ["listening", "reasoning"] }
   };
   
   return topics[topicId] || null;

@@ -34,12 +34,12 @@ async function checkDatabaseStatus() {
     
     console.log('✅ Questions table schema is ready');
     
-    // Check if listening topics exist (11-14)
+    // Check if listening topics exist (21-24)
     console.log('📋 Checking listening topics...');
     const { data: topics, error: topicsError } = await supabase
       .from('topics')
-      .select('id, title')
-      .in('id', [11, 12, 13, 14]);
+      .select('id, name')
+      .in('id', [21, 22, 23, 24]);
     
     if (topicsError) {
       console.log('⚠️ Topics table issue:', topicsError.message);
@@ -47,8 +47,8 @@ async function checkDatabaseStatus() {
       console.log(`📊 Found ${topics.length}/4 listening topics`);
       if (topics.length < 4) {
         console.log('⚠️ Missing listening topics - some may need to be added');
-        console.log('   Expected: IDs 11, 12, 13, 14');
-        console.log('   Found:', topics.map(t => `${t.id}: ${t.title}`));
+        console.log('   Expected: IDs 21, 22, 23, 24');
+        console.log('   Found:', topics.map(t => `${t.id}: ${t.name}`));
       } else {
         console.log('✅ All listening topics present');
       }

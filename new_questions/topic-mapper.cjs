@@ -23,17 +23,17 @@ const TOPIC_MAPPING = {
   'phrasal_verbs': 9,
   'collocations': 10,
   
-  // Listening topics (11-14)
-  'academic_listening': 11,
-  'workplace_listening': 12, 
-  'daily_conversation': 13,
-  'logical_completion': 14
+  // Listening topics (21-24)
+  'academic_listening': 21,
+  'workplace_listening': 22, 
+  'daily_conversation': 23,
+  'logical_completion': 24
 };
 
 // Default fallback topics by question type
 const DEFAULT_TOPICS = {
-  'listening_comprehension': 11, // Academic listening
-  'listening_continuation': 14,  // Logical completion
+  'listening_comprehension': 21, // Academic listening
+  'listening_continuation': 24,  // Logical completion
   'word_formation': 6,          // Common words
   'grammar_in_context': 3       // Tenses
 };
