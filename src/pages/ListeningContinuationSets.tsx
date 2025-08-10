@@ -61,8 +61,31 @@ const ListeningContinuationSets = () => {
                 </Card>
               </Link>
 
-              {/* Sets 2-5 - Locked */}
-              {[2,3,4,5].map((n) => (
+              {/* Smoke Test Set - Available */}
+              <Link to="/listening/continuation/smoketest" className="group">
+                <Card className="h-full bg-slate-800/80 border-green-500/40 hover:border-green-400/60 hover:bg-green-900/20 transition-colors p-6">
+                  <div className="flex flex-col justify-between h-full">
+                    <div>
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-lg bg-green-600/40 border border-green-500/40 flex items-center justify-center">
+                          <Play className="w-5 h-5 text-green-200" />
+                        </div>
+                        <div>
+                          <div className="text-white font-bold">Smoke Test</div>
+                          <Badge className="bg-green-600 text-white border-0 text-xs">זמין</Badge>
+                        </div>
+                      </div>
+                      <div className="text-slate-300 text-sm mb-3">5 קטעים • TTS Audio</div>
+                    </div>
+                    <div className="mt-4 inline-flex items-center justify-center px-3 py-2 rounded-md bg-green-600 text-white text-sm group-hover:bg-green-700 transition-colors">
+                      בדיקת מערכת
+                    </div>
+                  </div>
+                </Card>
+              </Link>
+
+              {/* Sets 3-5 - Locked */}
+              {[3,4,5].map((n) => (
                 <Card key={n} className="h-full bg-slate-800/60 border-slate-700/60 p-6 opacity-70">
                   <div className="flex flex-col justify-between h-full">
                     <div>

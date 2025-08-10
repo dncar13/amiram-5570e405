@@ -1,65 +1,113 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Volume2, PlayCircle, CheckCircle, XCircle, ArrowRight, RotateCcw, Headphones, ChevronRight, Play, Pause } from 'lucide-react';
+import { Question } from '@/data/types/questionTypes';
+import { getQuestionsByType } from '@/services/questionsService';
 
 interface Props {
   setId: string;
 }
 
 const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
-  // Sample questions for listening continuation
-  const questions = [
-    {
-      id: 1,
-      audioText: "Sarah was walking through the park when she noticed something unusual. The birds had suddenly stopped singing, and there was an eerie silence. She looked around and...",
-      options: [
-        "saw a beautiful rainbow appearing in the sky",
-        "noticed a large hawk circling overhead",
-        "heard her phone ringing loudly",
-        "decided to go home immediately"
-      ],
-      correct: 1,
-      explanation: "הנץ הגדול שחג מעל גרם לציפורים להפסיק לשיר - זו תגובה טבעית של ציפורים קטנות כשהן מזהות טורף."
-    },
-    {
-      id: 2,
-      audioText: "The meeting was supposed to start at 9 AM, but when David arrived at the conference room, he found it empty. He checked his calendar again and...",
-      options: [
-        "realized the meeting was actually scheduled for tomorrow",
-        "saw everyone was waiting in the other conference room",
-        "noticed an email saying the meeting was cancelled",
-        "decided to start the meeting by himself"
-      ],
-      correct: 2,
-      explanation: "ההמשך ההגיוני ביותר הוא שדיוויד קיבל הודעת ביטול במייל - זה מסביר למה החדר ריק."
-    },
-    {
-      id: 3,
-      audioText: "The chef carefully tasted the soup and frowned. Something was missing. He thought for a moment, then...",
-      options: [
-        "threw the entire pot away",
-        "added a pinch of salt and some fresh herbs",
-        "called for the restaurant manager",
-        "served it to the customers anyway"
-      ],
-      correct: 1,
-      explanation: "שף מקצועי יוסיף תבלינים חסרים (מלח ועשבי תיבול) כדי לתקן את הטעם - זו הפעולה הסבירה ביותר."
-    },
-    {
-      id: 4,
-      audioText: "As the plane began its descent, Emma looked out the window and saw the city lights below. The captain announced that...",
-      options: [
-        "they would be landing in approximately 20 minutes",
-        "there was severe turbulence ahead",
-        "they needed to return to the departure airport",
-        "dinner would be served shortly"
-      ],
-      correct: 0,
-      explanation: "בזמן נחיתה, ההודעה הסטנדרטית של הקפטן היא על זמן הנחיתה הצפוי - זה ההמשך ההגיוני ביותר."
-    }
-  ];
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load questions from database
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        setLoading(true);
+        
+        if (setId === "smoketest") {
+          // Load our smoke test questions
+          const allQuestions = await getQuestionsByType('listening_continuation');
+          const smokeTestQuestions = allQuestions.filter(q => 
+            q.metadata?.listening_set === 'smoketest'
+          );
+          
+          // Map audioUrl from metadata if it exists there
+          const questionsWithAudio = smokeTestQuestions.map(q => ({
+            ...q,
+            audioUrl: q.audioUrl || q.metadata?.audio_url
+          }));
+          
+          setQuestions(questionsWithAudio);
+        } else {
+          // Use hardcoded questions for set 1 (backward compatibility)
+          const hardcodedQuestions: Question[] = [
+            {
+              id: "1",
+              type: "listening_continuation",
+              text: "Sarah was walking through the park when she noticed something unusual. The birds had suddenly stopped singing, and there was an eerie silence. She looked around and...",
+              options: [
+                "saw a beautiful rainbow appearing in the sky",
+                "noticed a large hawk circling overhead",
+                "heard her phone ringing loudly",
+                "decided to go home immediately"
+              ],
+              correctAnswer: 1,
+              explanation: "הנץ הגדול שחג מעל גרם לציפורים להפסיק לשיר - זו תגובה טבעית של ציפורים קטנות כשהן מזהות טורף.",
+              difficulty: "medium"
+            },
+            {
+              id: "2", 
+              type: "listening_continuation",
+              text: "The meeting was supposed to start at 9 AM, but when David arrived at the conference room, he found it empty. He checked his calendar again and...",
+              options: [
+                "realized the meeting was actually scheduled for tomorrow",
+                "saw everyone was waiting in the other conference room",
+                "noticed an email saying the meeting was cancelled",
+                "decided to start the meeting by himself"
+              ],
+              correctAnswer: 2,
+              explanation: "ההמשך ההגיוני ביותר הוא שדיוויד קיבל הודעת ביטול במייל - זה מסביר למה החדר ריק.",
+              difficulty: "easy"
+            },
+            {
+              id: "3",
+              type: "listening_continuation", 
+              text: "The chef carefully tasted the soup and frowned. Something was missing. He thought for a moment, then...",
+              options: [
+                "threw the entire pot away",
+                "added a pinch of salt and some fresh herbs",
+                "called for the restaurant manager",
+                "served it to the customers anyway"
+              ],
+              correctAnswer: 1,
+              explanation: "שף מקצועי יוסיף תבלינים חסרים (מלח ועשבי תיבול) כדי לתקן את הטעם - זו הפעולה הסבירה ביותר.",
+              difficulty: "medium"
+            },
+            {
+              id: "4",
+              type: "listening_continuation",
+              text: "As the plane began its descent, Emma looked out the window and saw the city lights below. The captain announced that...",
+              options: [
+                "they would be landing in approximately 20 minutes",
+                "there was severe turbulence ahead", 
+                "they needed to return to the departure airport",
+                "dinner would be served shortly"
+              ],
+              correctAnswer: 0,
+              explanation: "בזמן נחיתה, ההודעה הסטנדרטית של הקפטן היא על זמן הנחיתה הצפוי - זה ההמשך ההגיוני ביותר.",
+              difficulty: "easy"
+            }
+          ];
+          setQuestions(hardcodedQuestions);
+        }
+        
+      } catch (err) {
+        console.error('Failed to load listening continuation questions:', err);
+        setError('Failed to load questions');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadQuestions();
+  }, [setId]);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -72,26 +120,70 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const currentQuestion = questions[currentQuestionIndex];
-
-  // Audio file mapping
-  const audioFiles = [
-    '/audioFiles/tests/firstQ.mp3',
-    '/audioFiles/tests/secentQ.mp3', 
-    '/audioFiles/tests/thitdQ.mp3',
-    '/audioFiles/tests/fourthQ.mp3'
-  ];
+  
+  // Handle loading and error states
+  if (loading) {
+    return (
+      <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700/40 p-8">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 text-slate-300">
+            <div className="w-4 h-4 border-2 border-slate-300 border-t-transparent rounded-full animate-spin"></div>
+            Loading questions...
+          </div>
+        </div>
+      </Card>
+    );
+  }
+  
+  if (error || questions.length === 0) {
+    return (
+      <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700/40 p-8">
+        <div className="text-center">
+          <p className="text-red-400 mb-4">{error || 'No questions found'}</p>
+          <p className="text-slate-300">Please check if the listening continuation questions are available.</p>
+        </div>
+      </Card>
+    );
+  }
 
   const playAudio = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        audioRef.current.src = audioFiles[currentQuestionIndex];
-        audioRef.current.play()
-          .then(() => setIsPlaying(true))
-          .catch(err => console.error('Error playing audio:', err));
-      }
+    if (!audioRef.current || !currentQuestion) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    let audioSrc = '';
+
+    if (currentQuestion.audioUrl) {
+      audioSrc = currentQuestion.audioUrl;        // Primary source
+    } else if (setId === '1') {
+      // Legacy fallback only for set 1
+      const legacy = [
+        '/audioFiles/tests/firstQ.mp3',
+        '/audioFiles/tests/secentQ.mp3',
+        '/audioFiles/tests/thitdQ.mp3',
+        '/audioFiles/tests/fourthQ.mp3'
+      ];
+      audioSrc = legacy[currentQuestionIndex] || '';
+    } else {
+      console.warn('No audioUrl for this question (no fallback for non-legacy sets).');
+      return;
+    }
+
+    if (audioSrc) {
+      console.log(`🔊 Playing audio for set ${setId}:`, audioSrc);
+      audioRef.current.src = audioSrc;
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch(err => {
+          console.error('Error playing audio:', err);
+          console.log('Attempted to play:', audioSrc);
+        });
+    } else {
+      console.log('No audio source available for question:', currentQuestion.id);
     }
   };
 
@@ -136,7 +228,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
   const checkAnswer = () => {
     if (selectedAnswer !== null) {
       setShowFeedback(true);
-      const isCorrect = selectedAnswer === currentQuestion.correct;
+      const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
       setScore(prev => ({
         correct: prev.correct + (isCorrect ? 1 : 0),
         total: prev.total + 1
@@ -215,6 +307,15 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
       <Card className="bg-slate-800/80 backdrop-blur-sm border-slate-700/40 p-6">
         {!showFeedback ? (
           <>
+            {/* Missing Audio Alert */}
+            {!currentQuestion.audioUrl && setId !== '1' && (
+              <Card className="mb-4 p-3 bg-yellow-600/10 border-yellow-500/30">
+                <p className="text-yellow-300 text-sm text-center">
+                  ⚠️ Audio missing for this item
+                </p>
+              </Card>
+            )}
+
             {/* Audio Player */}
             <div className="mb-6">
               <div className="flex justify-center mb-4">
@@ -222,7 +323,10 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
                   onClick={playAudio}
                   variant="ghost"
                   size="lg"
-                  className={`group relative w-20 h-20 rounded-full bg-purple-600/20 border-2 border-purple-500/40 hover:bg-purple-600/30`}
+                  className={`group relative w-20 h-20 rounded-full bg-purple-600/20 border-2 border-purple-500/40 hover:bg-purple-600/30 ${
+                    (!currentQuestion.audioUrl && setId !== '1') ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                  disabled={!currentQuestion.audioUrl && setId !== '1'}
                 >
                   {isPlaying ? (
                     <Pause size={32} className="text-purple-300" />
@@ -273,7 +377,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
 
             {/* Answer Options */}
             <div className="space-y-3 mb-6">
-              {currentQuestion.options.map((option, index) => (
+              {currentQuestion.options?.map((option, index) => (
                 <button
                   key={index}
                   onClick={() => handleAnswerSelect(index)}
@@ -312,7 +416,7 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
                 <Volume2 className="w-5 h-5 text-slate-400 ml-2" />
                 <span className="font-semibold text-slate-300">טקסט הקטע:</span>
               </div>
-              <p className="text-slate-100 italic leading-relaxed">"{currentQuestion.audioText}"</p>
+              <p className="text-slate-100 italic leading-relaxed">"{currentQuestion.text}"</p>
               
               <Button
                 onClick={playAudio}
@@ -326,8 +430,8 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
 
             {/* Answer Review */}
             <div className="space-y-3 mb-6">
-              {currentQuestion.options.map((option, index) => {
-                const isCorrect = index === currentQuestion.correct;
+              {currentQuestion.options?.map((option, index) => {
+                const isCorrect = index === currentQuestion.correctAnswer;
                 const isSelected = index === selectedAnswer;
                 
                 return (
