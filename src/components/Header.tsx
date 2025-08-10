@@ -86,9 +86,10 @@ const Header = React.memo(() => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
+                    {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 rounded-xl shadow-lg border border-blue-500/50 group-hover:shadow-blue-500/30 transition-all duration-300">
-              <GraduationCap className="h-8 w-8 text-white" />
+              {/* Logo will be added later */}
             </div>
             <div className="text-right">
               <h2 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
@@ -203,7 +204,6 @@ const Header = React.memo(() => {
                       navigate("/account");
                     }}
                   >
-                    <Archive className="ml-2 h-4 w-4" />
                     החשבון שלי
                   </DropdownMenuItem>
                   <DropdownMenuItem 
@@ -214,7 +214,6 @@ const Header = React.memo(() => {
                       navigate("/progress-stats");
                     }}
                   >
-                    <TrendingUp className="ml-2 h-4 w-4" />
                     התקדמות
                   </DropdownMenuItem>
                   <DropdownMenuItem 
@@ -225,7 +224,6 @@ const Header = React.memo(() => {
                       navigate("/account?tab=saved");
                     }}
                   >
-                    <BookmarkCheck className="ml-2 h-4 w-4" />
                     שאלות שמורות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
@@ -237,7 +235,6 @@ const Header = React.memo(() => {
                       navigate("/account");
                     }}
                   >
-                    <Settings className="ml-2 h-4 w-4" />
                     הגדרות
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-slate-700/50" />
@@ -245,7 +242,6 @@ const Header = React.memo(() => {
                     className="text-red-400 hover:text-red-300 hover:bg-red-900/30 rounded-lg transition-colors duration-300 cursor-pointer flex flex-row-reverse justify-start text-right"
                     onClick={handleLogout}
                   >
-                    <LogOut className="ml-2 h-4 w-4" />
                     התנתקות
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -361,7 +357,6 @@ const Header = React.memo(() => {
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Archive className="h-4 w-4 ml-2" />
                       החשבון שלי
                     </Link>
                     <Link 
@@ -369,7 +364,6 @@ const Header = React.memo(() => {
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <TrendingUp className="h-4 w-4 ml-2" />
                       התקדמות
                     </Link>
                     <Link 
@@ -377,7 +371,6 @@ const Header = React.memo(() => {
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <BookmarkCheck className="h-4 w-4 ml-2" />
                       שאילות שמורות
                     </Link>
                     <Link 
@@ -385,7 +378,6 @@ const Header = React.memo(() => {
                       className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300 flex items-center"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Settings className="h-4 w-4 ml-2" />
                       הגדרות
                     </Link>
                     <button 
@@ -395,7 +387,6 @@ const Header = React.memo(() => {
                       }}
                       className="w-full text-right text-red-400 hover:text-red-300 font-medium py-3 px-4 rounded-lg hover:bg-red-900/30 transition-all duration-300 flex items-center"
                     >
-                      <LogOut className="h-4 w-4 ml-2" />
                       התנתקות
                     </button>
                   </>

@@ -15,7 +15,7 @@ const FAQItem = ({ question, answer, isOpen, onClick }) => {
         onClick={onClick}
       >
         <span className="text-blue-600">
-          {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          {isOpen ? "▲" : "▼"}
         </span>
         <h3 className="text-lg font-semibold pr-2 flex-grow text-right">{question}</h3>
       </button>
@@ -86,7 +86,6 @@ const FAQSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center mb-4">
-            <HelpCircle className="text-blue-600 mr-2" size={24} />
             <Button
               onClick={() => setShowFAQ(!showFAQ)}
               variant="ghost"
@@ -94,7 +93,7 @@ const FAQSection = () => {
             >
               שאלות נפוצות
               <span className="mr-2">
-                {showFAQ ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                {showFAQ ? "▲" : "▼"}
               </span>
             </Button>
           </div>

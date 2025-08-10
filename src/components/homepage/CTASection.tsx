@@ -26,7 +26,6 @@ const CTASection: React.FC = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Premium badge */}
           <div className="inline-flex items-center bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-3 rounded-full mb-8 shadow-lg">
-            <Star className="w-5 h-5 mr-2" />
             <span style={{ fontFamily: 'Rubik, sans-serif' }}>עכשיו זה הזמן להתחיל!</span>
           </div>
 
@@ -47,19 +46,16 @@ const CTASection: React.FC = () => {
           {/* Benefits list */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
             <div className="flex items-center justify-center text-blue-100">
-              <Shield className="w-6 h-6 text-green-400 mr-3 flex-shrink-0" />
               <span className="text-lg font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>
                 גישה מיידית לכל התכנים
               </span>
             </div>
             <div className="flex items-center justify-center text-blue-100">
-              <Shield className="w-6 h-6 text-green-400 mr-3 flex-shrink-0" />
               <span className="text-lg font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>
                 ללא התחייבות ארוכת טווח
               </span>
             </div>
             <div className="flex items-center justify-center text-blue-100">
-              <Shield className="w-6 h-6 text-green-400 mr-3 flex-shrink-0" />
               <span className="text-lg font-medium" style={{ fontFamily: 'Rubik, sans-serif' }}>
                 תמיכה מקצועית 24/7
               </span>
@@ -74,9 +70,7 @@ const CTASection: React.FC = () => {
                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl border-0 transform hover:scale-105 transition-all duration-300 group"
                 style={{ fontFamily: 'Rubik, sans-serif' }}
               >
-                <Zap className="w-6 h-6 mr-3 group-hover:animate-pulse" />
                 התחל עכשיו בחינם
-                <ArrowLeft className="w-5 h-5 mr-3 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             
