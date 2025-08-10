@@ -11,15 +11,8 @@ import { useAuth } from '@/context/AuthContext';
 import { isFreeStory } from '@/utils/storyAccess';
 import PremiumUpgradeModal from '@/components/ui/PremiumUpgradeModal';
 
-// Strong typing for stories
-interface Story {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: 'easy' | 'medium' | 'hard' | 'mixed' | string;
-  subject?: string;
-  questionCount: number;
-}
+// Using Story type from services to avoid conflicts
+
 
 const ReadingComprehensionTopics: React.FC = () => {
   const navigate = useNavigate();

@@ -32,6 +32,10 @@ const ListeningPractice: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isStarted, setIsStarted] = useState(false);
+  const [score, setScore] = useState({ correct: 0, total: 0 });
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -145,6 +149,19 @@ const ListeningPractice: React.FC = () => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
       setIsPlaying(false);
+      setCurrentTime(0);
+    }
+  };
+  
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+  
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
     }
   };
 
@@ -211,10 +228,17 @@ const ListeningPractice: React.FC = () => {
   const currentQuestion = questions[currentQuestionIndex];
   const { title, description } = getPageInfo();
 
-  const handleAnswerClick = (answerIndex: number) => {
+  const handleAnswerSelect = (answerIndex: number) => {
     if (showResult) return;
     setSelectedAnswer(answerIndex);
+  };
+  
+  const checkAnswer = () => {
+    if (selectedAnswer === null || showResult) return;
+    const correctAnswerIndex = parseInt(currentQuestion.correct_answer || '0');
+    const isCorrectNow = selectedAnswer === correctAnswerIndex;
     setShowResult(true);
+    setScore(prev => ({ correct: prev.correct + (isCorrectNow ? 1 : 0), total: prev.total + 1 }));
     stopAudio();
   };
 
@@ -295,140 +319,179 @@ const ListeningPractice: React.FC = () => {
           </div>
         </div>
 
-        {/* Question Card */}
-        <Card className="max-w-4xl mx-auto p-6 bg-slate-800/50 border-slate-700">
-          {/* Audio Controls - Same as Continuation */}
-          <div className="mb-6 text-center">
-            <div className="flex justify-center items-center gap-4 mb-4">
-              <Button
-                onClick={playAudio}
-                size="lg"
-                className={`rounded-full w-16 h-16 ${
-                  isPlaying 
-                    ? 'bg-red-600 hover:bg-red-700' 
-                    : 'bg-purple-600 hover:bg-purple-700'
-                }`}
-              >
-                {isPlaying ? (
-                  <Pause className="w-6 h-6 text-white" />
-                ) : (
-                  <Play className="w-6 h-6 text-white" />
-                )}
-              </Button>
-              
-              <Button
-                onClick={stopAudio}
-                variant="outline"
-                size="sm"
-                className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="text-purple-300 text-sm">
-              {isPlaying ? 'מושמע כעת...' : 'לחץ Play להשמעת הקטע'}
-            </div>
-          </div>
-
-          {/* Question */}
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold text-white mb-4">
-              {currentQuestion.question_text}
-            </h3>
-          </div>
-
-          {/* Answer Options */}
-          <div className="space-y-3 mb-6">
-            {currentQuestion.answer_options.map((option, index) => {
-              let buttonClass = "w-full p-4 text-left rounded-lg border transition-all duration-200 ";
-              
-              if (showResult) {
-                if (index === correctAnswerIndex) {
-                  buttonClass += "bg-green-600 border-green-500 text-white";
-                } else if (index === selectedAnswer && index !== correctAnswerIndex) {
-                  buttonClass += "bg-red-600 border-red-500 text-white";
-                } else {
-                  buttonClass += "bg-slate-700 border-slate-600 text-gray-300";
-                }
-              } else {
-                buttonClass += "bg-slate-700 border-slate-600 text-white hover:bg-slate-600 hover:border-slate-500";
-              }
-
-              return (
-                <Button
-                  key={index}
-                  onClick={() => handleAnswerClick(index)}
-                  className={buttonClass}
-                  disabled={showResult}
-                >
-                  <span className="font-semibold mr-3">
-                    {String.fromCharCode(65 + index)}.
-                  </span>
-                  {option}
-                </Button>
-              );
-            })}
-          </div>
-
-          {/* Result & Explanation */}
-          {showResult && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`p-4 rounded-lg mb-6 ${
-                isCorrect ? 'bg-green-600/20 border border-green-500' : 'bg-red-600/20 border border-red-500'
-              }`}
-            >
-              <div className="flex items-center gap-2 mb-2">
-                {isCorrect ? (
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-red-400" />
-                )}
-                <span className={`font-semibold ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-                  {isCorrect ? 'תשובה נכונה!' : 'תשובה שגויה'}
-                </span>
+        {!isStarted ? (
+          <Card className="max-w-2xl mx-auto p-8 bg-slate-800/80 border-slate-700">
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-600/20 border border-purple-500/40 flex items-center justify-center">
+                <Headphones className="w-8 h-8 text-purple-300" />
               </div>
-              
-              <p className="text-gray-300">{currentQuestion.explanation}</p>
-            </motion.div>
-          )}
-
-          {/* Navigation */}
-          <div className="flex justify-between items-center">
-            <Button
-              onClick={resetQuestion}
-              variant="outline"
-              className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
-            >
-              נסה שוב
-            </Button>
-
-            {showResult && currentQuestionIndex < questions.length - 1 && (
-              <Button
-                onClick={nextQuestion}
-                className="bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                השאלה הבאה
+              <h3 className="text-xl font-bold mb-3">{title}</h3>
+              <p className="text-slate-300 mb-6">{description}</p>
+              <Button onClick={() => setIsStarted(true)} className="bg-purple-600 hover:bg-purple-700">
+                התחל
               </Button>
-            )}
-          </div>
-        </Card>
+            </div>
+          </Card>
+        ) : (
+          <>
+            {/* Progress Header */}
+            <Card className="bg-slate-800/80 border-slate-700 p-4">
+              <div className="flex justify-between items-center mb-3">
+                <div className="text-sm text-slate-400">שאלה {currentQuestionIndex + 1} מתוך {questions.length}</div>
+                {score.total > 0 && (
+                  <div className="text-sm text-slate-400">ניקוד: {score.correct}/{score.total}</div>
+                )}
+              </div>
+              <div className="w-full bg-slate-700/50 rounded-full h-2">
+                <div className="bg-purple-600 h-2 rounded-full transition-all duration-300" style={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }} />
+              </div>
+            </Card>
 
-        {/* Question Info */}
-        <div className="text-center text-sm text-gray-400">
-          <p>שאלות דמו לתרגול הבנת השמע</p>
-          <p className="mt-1">
-            Topic ID: {currentQuestion?.topic_id} | Type: {currentQuestion?.type}
-          </p>
-        </div>
+            {/* Question Card */}
+            <Card className="max-w-4xl mx-auto p-6 bg-slate-800/80 border-slate-700">
+              {/* Audio Controls */}
+              <div className="mb-6 text-center">
+                <div className="flex justify-center items-center gap-4 mb-4">
+                  <Button
+                    onClick={playAudio}
+                    variant="ghost"
+                    size="lg"
+                    className="group relative w-20 h-20 rounded-full bg-purple-600/20 border-2 border-purple-500/40 hover:bg-purple-600/30"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-8 h-8 text-purple-300" />
+                    ) : (
+                      <Play className="w-8 h-8 text-purple-300" />
+                    )}
+                  </Button>
+                  <Button onClick={stopAudio} variant="ghost" size="sm" className="text-slate-400 hover:text-purple-300">
+                    <RotateCcw className="w-4 h-4" />
+                    אפס
+                  </Button>
+                </div>
 
-        {/* Audio Element - Same as Continuation */}
+                {duration > 0 && (
+                  <div className="mb-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <span className="text-sm text-slate-400">{Math.floor(currentTime/60)}:{String(Math.floor(currentTime%60)).padStart(2,'0')}</span>
+                      <div className="flex-1 bg-slate-600 rounded-full h-2">
+                        <div className="bg-purple-400 h-2 rounded-full transition-all duration-300" style={{ width: `${(currentTime / duration) * 100}%` }} />
+                      </div>
+                      <span className="text-sm text-slate-400">{Math.floor(duration/60)}:{String(Math.floor(duration%60)).padStart(2,'0')}</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="text-purple-300 text-sm">
+                  {isPlaying ? 'מושמע כעת...' : 'לחץ Play להשמעת הקטע'}
+                </div>
+              </div>
+
+              {/* Question */}
+              <div className="mb-6">
+                <h3 className="text-xl font-semibold text-white mb-4">
+                  {currentQuestion.question_text}
+                </h3>
+              </div>
+
+              {/* Answer Options */}
+              <div className="space-y-3 mb-6">
+                {currentQuestion.answer_options.map((option, index) => {
+                  if (showResult) {
+                    const isSelected = index === selectedAnswer;
+                    const isCorrectOpt = index === correctAnswerIndex;
+                    const cls = isCorrectOpt
+                      ? 'w-full p-4 text-right rounded-lg border bg-green-600 border-green-500 text-white'
+                      : isSelected
+                      ? 'w-full p-4 text-right rounded-lg border bg-red-600 border-red-500 text-white'
+                      : 'w-full p-4 text-right rounded-lg border bg-slate-700 border-slate-600 text-gray-300';
+                    return (
+                      <div key={index} className={cls}>
+                        <span className="font-semibold ml-3">{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </div>
+                    );
+                  } else {
+                    const selected = index === selectedAnswer;
+                    const base = 'w-full p-4 text-right rounded-lg border transition-all duration-200 ';
+                    const cls = selected
+                      ? base + 'bg-purple-600/20 border-purple-500 text-white'
+                      : base + 'bg-slate-700 border-slate-600 text-white hover:bg-slate-600 hover:border-slate-500';
+                    return (
+                      <Button
+                        key={index}
+                        onClick={() => handleAnswerSelect(index)}
+                        className={cls}
+                        variant="ghost"
+                      >
+                        <span className="font-semibold ml-3">{String.fromCharCode(65 + index)}.</span>
+                        {option}
+                      </Button>
+                    );
+                  }
+                })}
+              </div>
+
+              {/* Feedback */}
+              {showResult && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`p-4 rounded-lg mb-6 ${isCorrect ? 'bg-green-600/20 border border-green-500' : 'bg-red-600/20 border border-red-500'}`}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    {isCorrect ? (
+                      <CheckCircle className="w-5 h-5 text-green-400" />
+                    ) : (
+                      <XCircle className="w-5 h-5 text-red-400" />
+                    )}
+                    <span className={`font-semibold ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
+                      {isCorrect ? 'תשובה נכונה!' : 'תשובה שגויה'}
+                    </span>
+                  </div>
+                  <p className="text-gray-300">{currentQuestion.explanation}</p>
+                </motion.div>
+              )}
+
+              {/* Actions */}
+              <div className="flex justify-between items-center">
+                {!showResult ? (
+                  <Button onClick={checkAnswer} className="bg-purple-600 hover:bg-purple-700 text-white">
+                    בדוק תשובה
+                  </Button>
+                ) : (
+                  currentQuestionIndex < questions.length - 1 && (
+                    <Button onClick={nextQuestion} className="bg-purple-600 hover:bg-purple-700 text-white">
+                      השאלה הבאה
+                    </Button>
+                  )
+                )}
+
+                <Button
+                  onClick={resetQuestion}
+                  variant="outline"
+                  className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
+                >
+                  אפס שאלה
+                </Button>
+              </div>
+            </Card>
+
+            {/* Question Info */}
+            <div className="text-center text-sm text-gray-400">
+              <p>שאלות דמו לתרגול הבנת השמע</p>
+              <p className="mt-1">
+                Topic ID: {currentQuestion?.topic_id} | Type: {currentQuestion?.type}
+              </p>
+            </div>
+          </>
+        )}
+
+        {/* Audio Element */}
         <audio 
           ref={audioRef}
-          onTimeUpdate={() => {}}
-          onLoadedMetadata={() => {}}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
           onEnded={() => setIsPlaying(false)}
           preload="metadata"
         />
