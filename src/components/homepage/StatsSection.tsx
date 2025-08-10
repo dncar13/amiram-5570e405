@@ -56,7 +56,6 @@ const StatsSection: React.FC = () => {
 
   const stats = [
     {
-      icon: Users,
       count: counts.students,
       suffix: '+',
       label: 'סטודנטים מצליחים',
@@ -64,7 +63,6 @@ const StatsSection: React.FC = () => {
       bgColor: 'bg-blue-50'
     },
     {
-      icon: Trophy,
       count: counts.successRate,
       suffix: '%',
       label: 'שיעור הצלחה',
@@ -72,7 +70,6 @@ const StatsSection: React.FC = () => {
       bgColor: 'bg-green-50'
     },
     {
-      icon: BookOpen,
       count: counts.questions,
       suffix: '+',
       label: 'שאלות מעודכנות',
@@ -80,7 +77,6 @@ const StatsSection: React.FC = () => {
       bgColor: 'bg-purple-50'
     },
     {
-      icon: Clock,
       count: counts.hours,
       suffix: '/7',
       label: 'תמיכה מקצועית',
@@ -112,7 +108,6 @@ const StatsSection: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => {
-            const IconComponent = stat.icon;
             return (
               <div
                 key={index}
@@ -123,7 +118,7 @@ const StatsSection: React.FC = () => {
                 }}
               >
                 <div className={`w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-r ${stat.color} flex items-center justify-center shadow-lg`}>
-                  <IconComponent className="w-8 h-8 text-white" />
+                  {/* Icon removed */}
                 </div>
                 
                 <div 

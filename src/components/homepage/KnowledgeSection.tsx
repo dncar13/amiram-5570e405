@@ -26,7 +26,7 @@ const KnowledgeSection: React.FC = () => {
               className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-5"
               aria-hidden="true"
             >
-              <FileText className="w-6 h-6" />
+              {/* Icon removed */}
             </div>
             <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3">מה זה בכלל אמיר"ם?</h3>
             <div className="space-y-4">
@@ -63,7 +63,7 @@ const KnowledgeSection: React.FC = () => {
               className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-5"
               aria-hidden="true"
             >
-              <ListChecks className="w-6 h-6" />
+              {/* Icon removed */}
             </div>
             <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">מבנה המבחן</h3>
             <div className="flex flex-col gap-3">
@@ -91,7 +91,7 @@ const KnowledgeSection: React.FC = () => {
               className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-5"
               aria-hidden="true"
             >
-              <Target className="w-6 h-6" />
+              {/* Icon removed */}
             </div>
             <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-4">למה התרגול שלנו עובד</h3>
             <p className="text-sm md:text-base text-muted-foreground mb-4">

@@ -24,7 +24,6 @@ const Footer = () => {
             </h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-2 space-x-reverse">
-                <Mail className="h-4 w-4 text-gray-300" />
                 <span 
                   className="text-gray-300 text-sm"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
@@ -33,7 +32,6 @@ const Footer = () => {
                 </span>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse">
-                <Phone className="h-4 w-4 text-gray-300" />
                 <span 
                   className="text-gray-300 text-sm"
                   style={{ fontFamily: 'Rubik, sans-serif' }}
@@ -144,7 +142,6 @@ const Footer = () => {
                   style={{ color: '#ff7f0e' }}
                 >
                   <span style={{ fontFamily: 'Rubik, sans-serif' }}>לגישה לכל הנושאים</span>
-                  <ExternalLink className="h-4 w-4" />
                 </a>
               </li>
             </ul>

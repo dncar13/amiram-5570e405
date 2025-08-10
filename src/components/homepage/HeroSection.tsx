@@ -75,8 +75,8 @@ const HeroSection: React.FC = () => {
 
   // Simplified floating cards animation - fewer cards for better performance
   const floatingCards = [
-    { icon: <Brain className="w-6 h-6" />, color: "from-blue-500 to-indigo-600", delay: 0 },
-    { icon: <Target className="w-6 h-6" />, color: "from-emerald-500 to-green-600", delay: 4 },
+    { color: "from-blue-500 to-indigo-600", delay: 0 },
+    { color: "from-emerald-500 to-green-600", delay: 4 },
   ];
 
   return (
@@ -128,7 +128,7 @@ const HeroSection: React.FC = () => {
           >
             <div className={`w-full h-full bg-gradient-to-br ${card.color} rounded-xl shadow-lg bg-opacity-20 flex items-center justify-center text-white/40`}>
               <div className="scale-75">
-                {card.icon}
+                {/* Icon removed */}
               </div>
             </div>
           </motion.div>
@@ -157,7 +157,7 @@ const HeroSection: React.FC = () => {
               ease: "easeInOut"
             }}
           >
-            <Star className="w-1 h-1 md:w-2 md:h-2 text-white/30 fill-current" />
+            <div className="w-1 h-1 md:w-2 md:h-2 text-white/30 fill-current rounded-full bg-white/30" />
           </motion.div>
         ))}
       </div>      {/* Optimized gradient orbs - reduced complexity */}
@@ -223,12 +223,6 @@ const HeroSection: React.FC = () => {
                   repeatDelay: 3
                 }}
               />
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                <Sparkles className="w-5 h-5 text-amber-400 mr-3 relative z-10" />
-              </motion.div>
               <span className="text-sm font-medium bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent relative z-10">
                 הפלטפורמה המובילה להכנה למבחן אמירם
               </span>
@@ -301,10 +295,10 @@ const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.7 }}
             >
               {[
-                { text: "+2000 שאלות מעודכנות", icon: <BookOpen className="w-5 h-5" /> },
-                { text: "סימולציות מדויקות", icon: <Target className="w-5 h-5" /> },
-                { text: "מעקב ביצועים מתקדם", icon: <TrendingUp className="w-5 h-5" /> },
-                { text: "תמיכה מקצועית 24/7", icon: <Users className="w-5 h-5" /> }
+                { text: "+2000 שאלות מעודכנות" },
+                { text: "סימולציות מדויקות" },
+                { text: "מעקב ביצועים מתקדם" },
+                { text: "תמיכה מקצועית 24/7" }
               ].map((feature, index) => (
                 <motion.div 
                   key={index}
@@ -319,7 +313,7 @@ const HeroSection: React.FC = () => {
                     whileHover={{ scale: 1.1, rotate: 5 }}
                   >
                     <div className="text-green-400 relative z-10">
-                      {feature.icon}
+                      {/* Icon removed */}
                     </div>
                     <div className="absolute inset-0 bg-green-400 blur-xl opacity-0 group-hover:opacity-60 transition-opacity" />
                   </motion.div>
@@ -356,14 +350,12 @@ const HeroSection: React.FC = () => {
                       style={{ opacity: 0.3 }}
                     />
                     <span className="relative z-10 flex items-center">
-                      <Zap className="w-5 h-5 mr-3" />
                       התחל תרגול מתקדם
                       <motion.div
                         initial={{ x: 0 }}
                         whileHover={{ x: -5 }}
                         transition={{ type: "spring", stiffness: 400 }}
                       >
-                        <ArrowLeft className="w-5 h-5 mr-3" />
                       </motion.div>
                     </span>
                   </Button>
@@ -412,31 +404,27 @@ const HeroSection: React.FC = () => {
                   ref: studentsCount.ref,
                   label: "סטודנטים מצליחים", 
                   color: "from-yellow-400 to-orange-500", 
-                  delay: 0.5,
-                  icon: <Users className="w-6 h-6" />
+                  delay: 0.5
                 },
                 { 
                   value: successRate.count, 
                   ref: successRate.ref,
                   label: "שיעור הצלחה", 
                   color: "from-green-400 to-emerald-500", 
-                  delay: 0.6,
-                  icon: <Award className="w-6 h-6" />
+                  delay: 0.6
                 },
                 { 
                   value: questionsCount.count, 
                   ref: questionsCount.ref,
                   label: "שאלות מעודכנות", 
                   color: "from-blue-400 to-indigo-500", 
-                  delay: 0.7,
-                  icon: <BookOpen className="w-6 h-6" />
+                  delay: 0.7
                 },
                 { 
                   value: "24/7", 
                   label: "תמיכה מקצועית", 
                   color: "from-purple-400 to-pink-500", 
-                  delay: 0.8,
-                  icon: <Users className="w-6 h-6" />
+                  delay: 0.8
                 }
               ].map((stat, index) => (
                 <motion.div
@@ -474,7 +462,7 @@ const HeroSection: React.FC = () => {
                         ease: "easeInOut"
                       }}
                     />
-                      {/* Icon with animation */}
+                    {/* Icon removed */}
                     <motion.div 
                       className={`w-8 h-8 md:w-12 md:h-12 mx-auto mb-2 md:mb-4 bg-gradient-to-br ${stat.color} rounded-xl md:rounded-2xl flex items-center justify-center text-white relative z-10`}
                       whileHover={{ 
@@ -482,10 +470,8 @@ const HeroSection: React.FC = () => {
                         scale: 1.1
                       }}
                       transition={{ duration: 0.5 }}
+                      style={{ display: 'none' }}
                     >
-                      <div className="w-4 h-4 md:w-6 md:h-6">
-                        {stat.icon}
-                      </div>
                     </motion.div>
                     
                     {/* Animated number */}
