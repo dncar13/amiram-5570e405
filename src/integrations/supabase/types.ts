@@ -375,6 +375,7 @@ export type Database = {
           question_text: string
           set_id: string | null
           set_order: number | null
+          stable_id: string | null
           subtopic_id: number | null
           topic_id: number | null
           type: string
@@ -405,6 +406,7 @@ export type Database = {
           question_text: string
           set_id?: string | null
           set_order?: number | null
+          stable_id?: string | null
           subtopic_id?: number | null
           topic_id?: number | null
           type: string
@@ -435,6 +437,7 @@ export type Database = {
           question_text?: string
           set_id?: string | null
           set_order?: number | null
+          stable_id?: string | null
           subtopic_id?: number | null
           topic_id?: number | null
           type?: string
@@ -984,6 +987,10 @@ export type Database = {
         Returns: {
           deleted_count: number
         }[]
+      }
+      get_public_homepage_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
       }
       get_user_set_progress_summary: {
         Args: { p_user_id: string }
