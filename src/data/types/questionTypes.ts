@@ -31,6 +31,9 @@ export interface Question {
   passage?: string; // Add passage property
   story?: string; // Add story property
   
+  // Audio support for listening questions
+  audioUrl?: string;
+  
   // Additional optional metadata
   tags?: string[];
   createdAt?: string;
@@ -38,6 +41,9 @@ export interface Question {
     topic?: string;
     wordCount?: number;
     estimatedTime?: number;
+    stable_id?: string;
+    audio_generated?: boolean;
+    audio_size?: number;
   };
   
   // Legacy fields for backward compatibility

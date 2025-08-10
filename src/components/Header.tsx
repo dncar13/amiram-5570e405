@@ -122,6 +122,12 @@ const Header = React.memo(() => {
               הבנת הנקרא
             </Link>
             <Link 
+              to="/listening" 
+              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
+            >
+              שאלות שמע
+            </Link>
+            <Link 
               to="/articles" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
@@ -294,6 +300,13 @@ const Header = React.memo(() => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 הבנת הנקרא
+              </Link>
+              <Link 
+                to="/listening" 
+                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                שאלות שמע
               </Link>
               <Link 
                 to="/articles" 
