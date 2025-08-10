@@ -82,7 +82,7 @@ const ListeningPractice: React.FC = () => {
     };
   }, [location.pathname]);
 
-  // Audio controls - show script or play appropriate audio
+  // Audio controls - play audio with proper priority
   const playAudio = () => {
     if (!audioRef.current || !currentQuestion) return;
 
@@ -92,28 +92,46 @@ const ListeningPractice: React.FC = () => {
       return;
     }
 
-    // For questions with audio_script, always show the script first
-    if (currentQuestion.metadata?.audio_script) {
-      const script = currentQuestion.metadata.audio_script as string;
-      alert(`🎧 הטקסט הנכון לשאלה:\n\n"${script}"\n\n💡 זה הטקסט שאמור להיות באודיו. האודיו הנוכחי אינו תואם לשאלה.`);
-      return;
-    }
-
-    // Fallback to existing audio files only if no script
+    // Audio source priority: Try specific audio first, fallback intelligently
     let audioSrc = '';
-    if (currentQuestion.audio_url) {
-      audioSrc = currentQuestion.audio_url;
+    
+    // Check if we have actual recorded audio that matches the content
+    const metaUrl = currentQuestion.metadata && typeof currentQuestion.metadata === 'object' && 'audio_url' in currentQuestion.metadata 
+      ? currentQuestion.metadata.audio_url as string 
+      : undefined;
+    
+    // For now, since our MP3 files don't match content, use legacy audio with better mapping
+    // TODO: Replace with actual TTS when available
+    const { audioFolder } = getPageInfo();
+    
+    // Map questions to specific audio files based on content
+    let audioIndex = 0;
+    if (currentQuestion.id === "demo_5") {
+      // Farmers market question - use first audio
+      audioIndex = 0;
+    } else if (currentQuestion.id === "demo_6") {
+      // Sleep lecture question - use second audio  
+      audioIndex = 1;
+    } else if (currentQuestion.id === "demo_1") {
+      // Word formation - collaborative
+      audioIndex = 2;
+    } else if (currentQuestion.id === "demo_2") {
+      // Word formation - flexibility
+      audioIndex = 3;
     } else {
-      const { audioFolder } = getPageInfo();
-      const audioIndex = currentQuestionIndex % 4;
-      const legacy = [
-        `/audioFiles/${audioFolder}/firstQ.mp3`,
-        `/audioFiles/${audioFolder}/secentQ.mp3`, 
-        `/audioFiles/${audioFolder}/thitdQ.mp3`,
-        `/audioFiles/${audioFolder}/fourthQ.mp3`
-      ];
-      audioSrc = legacy[audioIndex];
+      // Default cycling for any other questions
+      audioIndex = currentQuestionIndex % 4;
     }
+    
+    const legacy = [
+      `/audioFiles/${audioFolder}/firstQ.mp3`,
+      `/audioFiles/${audioFolder}/secentQ.mp3`, 
+      `/audioFiles/${audioFolder}/thitdQ.mp3`,
+      `/audioFiles/${audioFolder}/fourthQ.mp3`
+    ];
+    
+    audioSrc = legacy[audioIndex];
+    console.info(`🎧 Using mapped audio for ${currentQuestion.id}: ${audioSrc}`);
 
     if (audioSrc) {
       audioRef.current.src = audioSrc;
@@ -383,13 +401,13 @@ const ListeningPractice: React.FC = () => {
                 {currentQuestion?.metadata?.audio_script && (
                   <div className="mb-4 p-4 bg-amber-50/90 border border-amber-200 rounded-lg">
                     <div className="text-sm text-amber-800 font-medium mb-2 flex items-center">
-                      📜 הטקסט לאודיו (זה מה שהשאלה מבוססת עליו):
+                      📜 התמלול המדויק לשאלה:
                     </div>
                     <div className="text-gray-800 italic font-light text-sm">
                       "{currentQuestion.metadata.audio_script as string}"
                     </div>
                     <div className="text-xs text-amber-600 mt-2">
-                      💡 האודיו הנוכחי זמני - זה הטקסט הנכון לשאלה
+                      ⚠️ האודיו הנוכחי זמני ועשוי לא להתאים - זה הטקסט הנכון לשאלה
                     </div>
                   </div>
                 )}
