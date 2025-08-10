@@ -95,6 +95,16 @@ const SimulationsEntry: React.FC = () => {
       mode: '🎯 מצב מבחן'
     },
     {
+      id: 'listening-questions',
+      title: 'שאלות הבנת השמע',
+      description: 'תרגול שאלות הבנת השמע והשלמת דיאלוגים - כולל קבצי אודיו',
+      icon: <span className="w-8 h-8 flex items-center justify-center text-2xl">🎧</span>,
+      gradient: 'from-green-600 via-emerald-500 to-teal-600',
+      path: '/listening',
+      stats: 'חדש!',
+      mode: '🎵 כולל אודיו'
+    },
+    {
       id: 'history',
       title: 'היסטוריה ושאלות שמורות',
       description: 'צפיה בתוצאות קודמות ושאלות שמרת',

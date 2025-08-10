@@ -17,8 +17,9 @@ const PUBLIC = String(process.env.PUBLIC_FILES || 'true').toLowerCase() === 'tru
 const MAX_CONCURRENCY = parseInt(process.env.MAX_CONCURRENCY || '8');
 
 // Convert text to SSML format, replacing underscores with pauses
-function toSSML(text) {
-  const withBreaks = String(text || '').replace(/_+/g, '<break time="1s"/>');
+function toSSML(text, pauseDurationMs = 1000) {
+  const pauseTime = pauseDurationMs >= 1000 ? `${pauseDurationMs/1000}s` : `${pauseDurationMs}ms`;
+  const withBreaks = String(text || '').replace(/_+/g, `<break time="${pauseTime}"/>`);
   return `<speak>${withBreaks}</speak>`;
 }
 
@@ -28,7 +29,13 @@ function stableIdFromText(text) {
 }
 
 // Synthesize speech and upload to GCS with retry and backoff
-async function synthesizeToGCS(id, text, retries = 3) {
+async function synthesizeToGCS(id, text, options = {}) {
+  const { 
+    retries = 3, 
+    pauseDurationMs = 1000, 
+    subdirectory = 'listening-continuation',
+    voice = VOICE
+  } = options;
   if (!BUCKET) throw new Error('Missing AUDIO_BUCKET environment variable');
   if (!id) throw new Error('Missing question id');
   if (!text) throw new Error('Missing text to synthesize');
@@ -39,12 +46,12 @@ async function synthesizeToGCS(id, text, retries = 3) {
   for (let attempt = 0; attempt < retries; attempt++) {
     try {
       // Generate SSML and synthesize
-      const ssml = toSSML(text);
+      const ssml = toSSML(text, pauseDurationMs);
       console.log(`🔊 SSML: ${ssml}`);
 
       const [response] = await tts.synthesizeSpeech({
         input: { ssml },
-        voice: VOICE,
+        voice: voice,
         audioConfig: { audioEncoding: 'MP3' }
       });
 
@@ -70,7 +77,7 @@ async function synthesizeToGCS(id, text, retries = 3) {
         }
       }
 
-      const fileName = `${PREFIX}${id}.mp3`;
+      const fileName = `${PREFIX}${subdirectory}/${id}.mp3`;
       const file = storage.bucket(BUCKET).file(fileName);
       
       // Upload audio file to GCS
@@ -94,11 +101,11 @@ async function synthesizeToGCS(id, text, retries = 3) {
 
       return { 
         objectPath: `gs://${BUCKET}/${fileName}`, 
-        url, 
+        url: `/audioFiles/${subdirectory}/${id}.mp3`, // Use relative URL for frontend
         public: PUBLIC,
         size: response.audioContent.length,
         bucket: BUCKET,
-        fileName
+        fileName: `${id}.mp3`
       };
 
     } catch (error) {
@@ -117,7 +124,7 @@ async function synthesizeToGCS(id, text, retries = 3) {
 }
 
 // Process multiple texts with concurrency control
-async function synthesizeBatch(textItems, maxConcurrency = MAX_CONCURRENCY) {
+async function synthesizeBatch(textItems, maxConcurrency = MAX_CONCURRENCY, options = {}) {
   console.log(`🚀 Starting batch synthesis of ${textItems.length} items with max concurrency ${maxConcurrency}`);
   
   const results = [];
@@ -131,7 +138,7 @@ async function synthesizeBatch(textItems, maxConcurrency = MAX_CONCURRENCY) {
     const batchPromises = batch.map(async (item) => {
       try {
         const id = item.id || stableIdFromText(item.text);
-        const result = await synthesizeToGCS(id, item.text);
+        const result = await synthesizeToGCS(id, item.text, options);
         return { ...item, id, audioResult: result };
       } catch (error) {
         console.error(`❌ Batch item failed:`, error);
@@ -187,9 +194,41 @@ async function validateAudioUrl(url) {
   }
 }
 
+// Convenience function for different question types
+async function synthesizeToUrl(id, text, questionType = 'listening_continuation') {
+  const typeConfig = {
+    'listening_comprehension': {
+      subdirectory: 'comprehension',
+      pauseDurationMs: 0 // No blanks in comprehension
+    },
+    'listening_continuation': {
+      subdirectory: 'listening-continuation', 
+      pauseDurationMs: 1000
+    },
+    'word_formation': {
+      subdirectory: 'word-formation',
+      pauseDurationMs: 600
+    },
+    'grammar_in_context': {
+      subdirectory: 'grammar-context',
+      pauseDurationMs: 600
+    }
+  };
+
+  const config = typeConfig[questionType] || typeConfig['listening_continuation'];
+  const result = await synthesizeToGCS(id, text, config);
+  
+  return {
+    url: result.url,
+    size: result.size,
+    fileName: result.fileName
+  };
+}
+
 module.exports = { 
   synthesizeToGCS, 
   synthesizeBatch,
+  synthesizeToUrl,
   toSSML, 
   stableIdFromText,
   validateAudioUrl

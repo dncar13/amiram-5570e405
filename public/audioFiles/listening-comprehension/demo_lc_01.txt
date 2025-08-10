@@ -1,0 +1,4 @@
+Audio placeholder for: demo_lc_01.mp3
+Text to speech: "Sarah and Mike are discussing their weekend plans. Sarah mentions she's thinking about going to the farmers market on Saturday morning because she needs fresh vegetables for a dinner party she's hosting. Mike suggests they could go together since he's been wanting to try the new coffee stand there. They agree to meet at 9 AM at the market entrance."
+
+To implement: Use text-to-speech.cjs with Google Cloud credentials

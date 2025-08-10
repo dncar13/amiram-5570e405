@@ -80,6 +80,7 @@ import CouponManagement from "./pages/CouponManagement";
 import CouponUsageManagement from "./pages/CouponUsageManagement";
 import analyticsService from "./services/analytics";
 import ListeningQuestions from "./pages/ListeningQuestions";
+import ListeningPractice from "./pages/ListeningPractice";
 import ListeningContinuationSets from "./pages/ListeningContinuationSets";
 import ListeningContinuationSet from "./pages/ListeningContinuationSet";
 import ListeningContinuationSimulation from "./pages/ListeningContinuationSimulation";
@@ -280,6 +281,10 @@ const AnimatedRoutes = () => {
 
           {/* New Listening Routes */}
           <Route path="/listening" element={<ListeningQuestions />} />
+          <Route path="/listening/practice" element={<ListeningPractice />} />
+          <Route path="/listening/comprehension" element={<ListeningPractice />} />
+          <Route path="/listening/word-formation" element={<ListeningPractice />} />
+          <Route path="/listening/grammar-context" element={<ListeningPractice />} />
           <Route path="/listening/continuation" element={<ListeningContinuationSets />} />
           <Route path="/listening/continuation/:setId" element={<ListeningContinuationSet />} />
           

@@ -465,9 +465,11 @@ const ListeningQuestions = () => {
                     התחילו לתרגל את ארבעת סוגי הפרקים החדשים כבר עכשיו – כדי להגיע רגועים ובטוחים לבחינה.
                   </p>
                   <div className="flex flex-col sm:flex-row justify-center gap-4">
-                    <Button className="bg-white text-orange-600 hover:bg-gray-100 text-lg px-8 py-4 shadow-lg transform hover:scale-105 transition-all font-bold">
-                      התחילו תרגול עכשיו
-                    </Button>
+                    <Link to="/listening/practice">
+                      <Button className="bg-white text-orange-600 hover:bg-gray-100 text-lg px-8 py-4 shadow-lg transform hover:scale-105 transition-all font-bold">
+                        התחילו תרגול עכשיו
+                      </Button>
+                    </Link>
                     <Button 
                       variant="outline" 
                       className="border-2 border-white text-white hover:bg-white hover:text-orange-600 text-lg px-8 py-4 bg-transparent font-bold transform hover:scale-105 transition-all"

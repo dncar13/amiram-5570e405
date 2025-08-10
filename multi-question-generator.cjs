@@ -1,6 +1,6 @@
 // advanced-question-generator.js - Professional Multi-Type Question Generator with TTS
 require('dotenv').config({ path: './.env' });
-const { synthesizeBatch, validateAudioUrl } = require('./new_questions/text-to-speech.cjs');
+const { synthesizeBatch, synthesizeToUrl, validateAudioUrl } = require('./new_questions/text-to-speech.cjs');
 const { mapTopicsForQuestions, getAvailableTopics } = require('./new_questions/topic-mapper.cjs');
 const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
@@ -840,6 +840,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           metadata: {
             lemma: q.lemma,
             posTarget: q.posTarget,
+            audio_url: q.audioUrl,
             chapter: chapterId,
             detectedTopic: q.detectedTopic,
             topicInfo: q.topicInfo
@@ -855,6 +856,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           metadata: {
             grammarRule: q.grammarRule,
             examplesEn: q.examplesEn,
+            audio_url: q.audioUrl,
             chapter: chapterId,
             detectedTopic: q.detectedTopic,
             topicInfo: q.topicInfo
@@ -939,23 +941,41 @@ async function generateAllQuestionTypes(options = {}) {
         });
       }
       
-      // Generate audio
-      console.log(`🔊 Generating TTS audio...`);
-      const lcAudioItems = lcQuestions.map(q => ({
-        id: q.id,
-        text: q.audioScript,
-        metadata: q.metadata // Pass voice settings
-      }));
+      // Generate audio for listening comprehension (with deduplication)
+      console.log(`🔊 Generating TTS audio for listening comprehension...`);
       
-      const { results: lcAudioResults } = await synthesizeBatch(lcAudioItems, 3);
-      
-      // Merge audio URLs
+      // Group questions by audioScript to avoid duplicate synthesis
+      const scriptMap = new Map();
       lcQuestions.forEach(q => {
-        const audioResult = lcAudioResults.find(r => r.id === q.id);
-        if (audioResult && audioResult.audioResult) {
-          q.audioUrl = audioResult.audioResult.url;
+        const script = q.audioScript;
+        if (!scriptMap.has(script)) {
+          scriptMap.set(script, {
+            segmentId: `lec_${chapter}_${crypto.createHash('md5').update(script).digest('hex').slice(0, 8)}`,
+            script: script,
+            questions: []
+          });
         }
+        scriptMap.get(script).questions.push(q);
       });
+      
+      // Generate audio for each unique segment
+      for (const segment of scriptMap.values()) {
+        try {
+          const audioResult = await synthesizeToUrl(segment.segmentId, segment.script, 'listening_comprehension');
+          
+          // Assign the same audioUrl to all questions sharing this segment
+          segment.questions.forEach(q => {
+            q.audioUrl = audioResult.url;
+            q.segmentId = segment.segmentId;
+          });
+          
+          if (verbose) {
+            console.log(`✅ Audio generated for segment ${segment.segmentId}: ${audioResult.url} (shared by ${segment.questions.length} questions)`);
+          }
+        } catch (error) {
+          console.warn(`⚠️ Failed to generate audio for segment ${segment.segmentId}:`, error.message);
+        }
+      }
       
       // Validate audio
       const lcValidations = await validateGeneratedAudio(lcQuestions, verbose);
@@ -1021,6 +1041,20 @@ async function generateAllQuestionTypes(options = {}) {
         });
       }
       
+      // Generate audio for word formation questions
+      console.log(`🔊 Generating TTS audio for word formation questions...`);
+      for (const question of wfQuestions) {
+        try {
+          const audioResult = await synthesizeToUrl(question.id, question.sentence, 'word_formation');
+          question.audioUrl = audioResult.url;
+          if (verbose) {
+            console.log(`✅ Audio generated for ${question.id}: ${audioResult.url}`);
+          }
+        } catch (error) {
+          console.warn(`⚠️ Failed to generate audio for ${question.id}:`, error.message);
+        }
+      }
+      
       results.word_formation = wfQuestions;
     }
 
@@ -1040,6 +1074,20 @@ async function generateAllQuestionTypes(options = {}) {
         });
       }
       
+      // Generate audio for grammar in context questions
+      console.log(`🔊 Generating TTS audio for grammar in context questions...`);
+      for (const question of gcQuestions) {
+        try {
+          const audioResult = await synthesizeToUrl(question.id, question.text, 'grammar_in_context');
+          question.audioUrl = audioResult.url;
+          if (verbose) {
+            console.log(`✅ Audio generated for ${question.id}: ${audioResult.url}`);
+          }
+        } catch (error) {
+          console.warn(`⚠️ Failed to generate audio for ${question.id}:`, error.message);
+        }
+      }
+      
       results.grammar_in_context = gcQuestions;
     }
 
@@ -1057,7 +1105,9 @@ async function generateAllQuestionTypes(options = {}) {
     // Generate summary report
     const totalQuestions = Object.values(results).reduce((sum, arr) => sum + arr.length, 0);
     const totalWithAudio = results.listening_comprehension.filter(q => q.audioUrl).length + 
-                          results.listening_continuation.filter(q => q.audioUrl).length;
+                          results.listening_continuation.filter(q => q.audioUrl).length +
+                          results.word_formation.filter(q => q.audioUrl).length +
+                          results.grammar_in_context.filter(q => q.audioUrl).length;
     const validAudio = audioValidations.filter(v => v.accessible && v.isAudio && v.sizeOk).length;
     
     console.log(`\n${'='.repeat(50)}`);
