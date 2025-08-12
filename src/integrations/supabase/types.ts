@@ -1083,9 +1083,37 @@ export type Database = {
           message: string
         }[]
       }
+      get_latest_user_transaction_for_subscription: {
+        Args: { p_subscription_id: string }
+        Returns: {
+          id: string
+          created_at: string
+          amount: number
+          currency: string
+          status: string
+          subscription_id: string
+          transaction_id: string
+        }[]
+      }
       get_public_homepage_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
+      }
+      get_user_payment_transactions: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          id: string
+          created_at: string
+          amount: number
+          currency: string
+          status: string
+          subscription_id: string
+          transaction_id: string
+          plan_type: string
+          start_date: string
+          end_date: string
+          subscription_status: string
+        }[]
       }
       get_user_set_progress_summary: {
         Args: { p_user_id: string }
