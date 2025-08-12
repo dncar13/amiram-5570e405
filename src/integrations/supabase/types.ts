@@ -142,6 +142,35 @@ export type Database = {
         }
         Relationships: []
       }
+      idempotency_keys: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          key: string
+          used_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          key: string
+          used_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          key?: string
+          used_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idempotency_keys_used_by_fkey"
+            columns: ["used_by"]
+            isOneToOne: false
+            referencedRelation: "payment_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       migration_logs: {
         Row: {
           batch_id: string
@@ -228,6 +257,7 @@ export type Database = {
           metadata: Json | null
           original_transaction_id: string | null
           plan_type: string
+          provider: string | null
           refund_reason: string | null
           status: string
           subscription_id: string | null
@@ -245,6 +275,7 @@ export type Database = {
           metadata?: Json | null
           original_transaction_id?: string | null
           plan_type: string
+          provider?: string | null
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
@@ -262,6 +293,7 @@ export type Database = {
           metadata?: Json | null
           original_transaction_id?: string | null
           plan_type?: string
+          provider?: string | null
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
@@ -275,6 +307,47 @@ export type Database = {
             columns: ["subscription_id"]
             isOneToOne: false
             referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      payment_webhook_events: {
+        Row: {
+          event_id: string
+          handled: boolean
+          headers: Json | null
+          id: number
+          payload: Json | null
+          provider: string
+          received_at: string
+          transaction_id: string | null
+        }
+        Insert: {
+          event_id: string
+          handled?: boolean
+          headers?: Json | null
+          id?: number
+          payload?: Json | null
+          provider: string
+          received_at?: string
+          transaction_id?: string | null
+        }
+        Update: {
+          event_id?: string
+          handled?: boolean
+          headers?: Json | null
+          id?: number
+          payload?: Json | null
+          provider?: string
+          received_at?: string
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_webhook_events_transaction_id_fkey"
+            columns: ["transaction_id"]
+            isOneToOne: false
+            referencedRelation: "payment_transactions"
             referencedColumns: ["id"]
           },
         ]
@@ -354,6 +427,7 @@ export type Database = {
         Row: {
           ai_generated: boolean | null
           answer_options: Json
+          audio_url: string | null
           batch_id: string | null
           correct_answer: string
           created_at: string
@@ -385,6 +459,7 @@ export type Database = {
         Insert: {
           ai_generated?: boolean | null
           answer_options: Json
+          audio_url?: string | null
           batch_id?: string | null
           correct_answer: string
           created_at?: string
@@ -416,6 +491,7 @@ export type Database = {
         Update: {
           ai_generated?: boolean | null
           answer_options?: Json
+          audio_url?: string | null
           batch_id?: string | null
           correct_answer?: string
           created_at?: string
@@ -988,6 +1064,25 @@ export type Database = {
           deleted_count: number
         }[]
       }
+      create_idempotent_transaction: {
+        Args: {
+          p_user_id: string
+          p_subscription_id: string
+          p_low_profile_code: string
+          p_plan_type: string
+          p_amount: number
+          p_currency: string
+          p_status: string
+          p_transaction_id: string
+          p_checksum: string
+          p_metadata: Json
+        }
+        Returns: {
+          created: boolean
+          transaction_id: string
+          message: string
+        }[]
+      }
       get_public_homepage_stats: {
         Args: Record<PropertyKey, never>
         Returns: Json
@@ -1020,6 +1115,41 @@ export type Database = {
           success: boolean
           subscription_id: string
           message: string
+        }[]
+      }
+      purge_expired_idempotency_keys: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      record_coupon_usage_secure: {
+        Args: {
+          p_coupon_id: string
+          p_user_id: string
+          p_plan_type: string
+          p_original_amount: number
+          p_discount_amount: number
+          p_final_amount: number
+        }
+        Returns: {
+          success: boolean
+          message: string
+        }[]
+      }
+      validate_coupon_secure: {
+        Args: {
+          p_code: string
+          p_plan_type: string
+          p_user_id?: string
+          p_user_email?: string
+        }
+        Returns: {
+          valid: boolean
+          coupon_id: string
+          code: string
+          discount_type: string
+          discount_value: number
+          is_personal: boolean
+          error: string
         }[]
       }
       validate_set_metadata: {
