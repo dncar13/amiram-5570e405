@@ -1,7 +1,7 @@
 // advanced-question-generator.js - Professional Multi-Type Question Generator with TTS
 require('dotenv').config({ path: './.env' });
-const { synthesizeBatch, synthesizeToUrl, validateAudioUrl } = require('./new_questions/text-to-speech.cjs');
-const { mapTopicsForQuestions, getAvailableTopics } = require('./new_questions/topic-mapper.cjs');
+const { synthesizeBatch, synthesizeToUrl, validateAudioUrl } = require('../new_questions/text-to-speech.cjs');
+const { mapTopicsForQuestions, getAvailableTopics } = require('../new_questions/topic-mapper.cjs');
 const { createClient } = require('@supabase/supabase-js');
 const crypto = require('crypto');
 const Anthropic = require('@anthropic-ai/sdk');
@@ -927,6 +927,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           answer_options: null, // LC has sub-questions
           correct_answer: null,
           explanation: null,
+          audio_url: q.audioUrl, // Add to top-level field
           metadata: {
             ...q.metadata,
             questions: q.questions, // Store sub-questions
@@ -944,6 +945,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           answer_options: q.options,
           correct_answer: q.correctAnswer.toString(),
           explanation: q.explanationHe,
+          audio_url: q.audioUrl, // Add to top-level field
           metadata: {
             audio_url: q.audioUrl,
             chapter: chapterId,
@@ -958,6 +960,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           answer_options: q.options,
           correct_answer: q.correctAnswer.toString(),
           explanation: q.explanationHe,
+          audio_url: q.audioUrl, // Add to top-level field
           metadata: {
             lemma: q.lemma,
             posTarget: q.posTarget,
@@ -974,6 +977,7 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
           answer_options: q.options,
           correct_answer: q.correctAnswer.toString(),
           explanation: q.explanationHe,
+          audio_url: q.audioUrl, // Add to top-level field
           metadata: {
             grammarRule: q.grammarRule,
             examplesEn: q.examplesEn,
@@ -1085,7 +1089,7 @@ async function generateAllQuestionTypes(options = {}) {
         try {
       await ttsLimiter.throttle();
           const audioResult = await withTimeout(
-            synthesizeToUrl(segment.segmentId, segment.script, 'listening_comprehension'),
+            synthesizeToUrl(segment.segmentId, segment.script, 'listening-comprehension'),
             45000
           );
           metrics.increment('tts.success');
@@ -1134,7 +1138,8 @@ async function generateAllQuestionTypes(options = {}) {
   if (!isShuttingDown) await ttsLimiter.throttle();
       const contAudioItems = contQuestions.map(q => ({
         id: q.id,
-        text: q.text
+        text: q.text,
+        type: 'listening-continuation'
       }));
       
   const { results: contAudioResults } = await withTimeout(synthesizeBatch(contAudioItems, 3), 45000);
@@ -1178,7 +1183,7 @@ async function generateAllQuestionTypes(options = {}) {
           try {
             await ttsLimiter.throttle();
             const audioResult = await withTimeout(
-              synthesizeToUrl(question.id, question.sentence, 'word_formation'),
+              synthesizeToUrl(question.id, question.sentence, 'word-formation'),
               45000
             );
             question.audioUrl = audioResult.url;
@@ -1220,7 +1225,7 @@ async function generateAllQuestionTypes(options = {}) {
           try {
             await ttsLimiter.throttle();
             const audioResult = await withTimeout(
-              synthesizeToUrl(question.id, question.text, 'grammar_in_context'),
+              synthesizeToUrl(question.id, question.text, 'grammar-in-context'),
               45000
             );
             question.audioUrl = audioResult.url;

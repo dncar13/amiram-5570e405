@@ -5,7 +5,7 @@ const {
   generateGrammarInContextQuestions,
   generateListeningComprehensionQuestions,
   generateListeningContinuationQuestions
-} = require('./multi-question-generator.cjs');
+} = require('./audio-generator/multi-question-generator.cjs');
 
 async function showQuestions() {
   console.log('🎯 Generated Questions Preview\n');
