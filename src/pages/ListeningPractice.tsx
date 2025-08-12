@@ -92,22 +92,32 @@ const ListeningPractice: React.FC = () => {
       return;
     }
 
-    // Audio source - use working legacy files for now
+    // Audio source - use new generated MP3 files with fallback
     let audioSrc = '';
     
-    const { audioFolder } = getPageInfo();
-    
-    // Use simple cycling through available audio files that actually work
-    const audioIndex = currentQuestionIndex % 4;
-    const legacy = [
-      `/audioFiles/${audioFolder}/firstQ.mp3`,
-      `/audioFiles/${audioFolder}/secentQ.mp3`, 
-      `/audioFiles/${audioFolder}/thitdQ.mp3`,
-      `/audioFiles/${audioFolder}/fourthQ.mp3`
-    ];
-    
-    audioSrc = legacy[audioIndex];
-    console.info(`🎧 Using legacy audio: ${audioSrc}`);
+    // Priority 1: Use the correct audio_url from the question (updated by script)
+    if (currentQuestion.audio_url) {
+      audioSrc = currentQuestion.audio_url;
+      console.info(`🎧 Using question audio: ${audioSrc}`);
+    }
+    // Priority 2: Check metadata audio_url
+    else if (currentQuestion.metadata && typeof currentQuestion.metadata === 'object' && 'audio_url' in currentQuestion.metadata) {
+      audioSrc = currentQuestion.metadata.audio_url as string;
+      console.info(`🎧 Using metadata audio: ${audioSrc}`);
+    }
+    // Priority 3: Legacy fallback (should not be needed anymore)
+    else {
+      const { audioFolder } = getPageInfo();
+      const audioIndex = currentQuestionIndex % 4;
+      const legacy = [
+        `/audioFiles/${audioFolder}/firstQ.mp3`,
+        `/audioFiles/${audioFolder}/secentQ.mp3`, 
+        `/audioFiles/${audioFolder}/thitdQ.mp3`,
+        `/audioFiles/${audioFolder}/fourthQ.mp3`
+      ];
+      audioSrc = legacy[audioIndex];
+      console.info(`🎧 Using legacy fallback: ${audioSrc}`);
+    }
 
     if (audioSrc) {
       audioRef.current.src = audioSrc;
