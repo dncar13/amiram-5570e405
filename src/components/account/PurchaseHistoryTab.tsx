@@ -36,22 +36,29 @@ const PurchaseHistoryTab = () => {
 
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('payment_transactions')
-          .select(`
-            *,
-            subscription:subscriptions(
-              plan_type,
-              start_date,
-              end_date,
-              status
-            )
-          `)
-          .eq('user_id', currentUser.id)
-          .order('created_at', { ascending: false });
+        const { data, error } = await (supabase as any)
+          .rpc('get_user_payment_transactions', { p_limit: 100, p_offset: 0 });
 
         if (error) throw error;
-        setTransactions(data || []);
+
+        const rows: any[] = Array.isArray(data) ? (data as any[]) : [];
+        const mapped = rows.map((r: any) => ({
+          id: r.id,
+          transaction_id: r.transaction_id,
+          amount: r.amount,
+          currency: r.currency,
+          status: r.status,
+          created_at: r.created_at,
+          subscription_id: r.subscription_id,
+          subscription: r.plan_type ? {
+            plan_type: r.plan_type,
+            start_date: r.start_date,
+            end_date: r.end_date,
+            status: r.subscription_status,
+          } : undefined,
+        }));
+
+        setTransactions(mapped);
       } catch (err) {
         console.error('Error fetching transactions:', err);
         setError('שגיאה בטעינת היסטוריית הרכישות');
