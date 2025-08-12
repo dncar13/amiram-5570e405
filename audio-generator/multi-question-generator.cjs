@@ -923,13 +923,14 @@ async function uploadQuestionsToDatabase(questions, chapterId, questionType, dry
       if (q.type === 'listening_comprehension') {
         return {
           ...baseQuestion,
-          question_text: q.audioScript,
+          question_text: q.questions && q.questions[0] ? q.questions[0].text : 'Listening comprehension question',
           answer_options: null, // LC has sub-questions
           correct_answer: null,
           explanation: null,
           audio_url: q.audioUrl, // Add to top-level field
           metadata: {
             ...q.metadata,
+            audio_script: q.audioScript, // The text to be read aloud
             questions: q.questions, // Store sub-questions
             durationTargetSec: q.durationTargetSec,
             audio_url: q.audioUrl,

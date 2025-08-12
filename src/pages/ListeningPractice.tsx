@@ -8,6 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Headphones, Play, Pause, RotateCcw, CheckCircle, XCircle, Volume2 } from "lucide-react";
 import { getQuestionsByType } from '@/services/questionsService';
+import { createClient } from '@supabase/supabase-js';
+
+// Supabase client for database access
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 interface Question {
   id: string;
@@ -55,7 +61,7 @@ const ListeningPractice: React.FC = () => {
     
     if (path.includes('/word-formation')) {
       return {
-        types: ['word_formation'],
+        types: ['vocabulary', 'sentence-completion'],
         topics: [21],
         title: 'Word Formation עם השמע',
         description: 'שאלות Word Formation בהקשר של הבנת השמע',
@@ -65,7 +71,7 @@ const ListeningPractice: React.FC = () => {
     
     if (path.includes('/grammar-context')) {
       return {
-        types: ['grammar_in_context'],
+        types: ['reading-comprehension'],
         topics: [22],
         title: 'Grammar in Context עם השמע',
         description: 'שאלות דקדוק בהקשר של הבנת השמע',
@@ -74,7 +80,7 @@ const ListeningPractice: React.FC = () => {
     }
     
     return {
-      types: ['word_formation', 'grammar_in_context', 'listening_comprehension'],
+      types: ['vocabulary', 'sentence-completion', 'reading-comprehension', 'listening_comprehension'],
       topics: [21, 22, 23],
       title: 'תרגול מעורב',
       description: 'כל סוגי השאלות',
@@ -92,7 +98,19 @@ const ListeningPractice: React.FC = () => {
       return;
     }
 
-    // Audio source - use new generated MP3 files with fallback
+    // Only certain question types need audio
+    console.log('🔍 DEBUG: Checking audio for question:', {
+      id: currentQuestion.id,
+      type: currentQuestion.type,
+      hasAudioUrl: !!currentQuestion.audio_url,
+      audioUrl: currentQuestion.audio_url
+    });
+    
+    if (!['listening_comprehension', 'vocabulary', 'sentence-completion'].includes(currentQuestion.type)) {
+      console.info('🔇 No audio needed for question type:', currentQuestion.type);
+      return;
+    }
+
     let audioSrc = '';
     
     // Priority 1: Use the correct audio_url from the question (updated by script)
@@ -105,18 +123,10 @@ const ListeningPractice: React.FC = () => {
       audioSrc = currentQuestion.metadata.audio_url as string;
       console.info(`🎧 Using metadata audio: ${audioSrc}`);
     }
-    // Priority 3: Legacy fallback (should not be needed anymore)
+    // No legacy fallback needed - all questions should have valid audio_url
     else {
-      const { audioFolder } = getPageInfo();
-      const audioIndex = currentQuestionIndex % 4;
-      const legacy = [
-        `/audioFiles/${audioFolder}/firstQ.mp3`,
-        `/audioFiles/${audioFolder}/secentQ.mp3`, 
-        `/audioFiles/${audioFolder}/thitdQ.mp3`,
-        `/audioFiles/${audioFolder}/fourthQ.mp3`
-      ];
-      audioSrc = legacy[audioIndex];
-      console.info(`🎧 Using legacy fallback: ${audioSrc}`);
+      console.warn('⚠️ No audio URL found for this question');
+      return;
     }
 
     if (audioSrc) {
@@ -159,7 +169,94 @@ const ListeningPractice: React.FC = () => {
 
       const { types } = getPageInfo();
       
-      // Always use hardcoded questions for now (database integration disabled)
+      // Try to fetch from database first - get specific questions with audio
+      let dbQuestions = null;
+      let dbError = null;
+      
+      // For word-formation, get specific questions with audio
+      if (types.includes('vocabulary') || types.includes('sentence-completion')) {
+        console.log('🎯 Loading specific Word Formation questions with audio...');
+        const { data, error } = await supabase
+          .from('questions')
+          .select('*')
+          .in('id', [
+            'b0cdbecd-392c-49ba-bce9-c371a1f31daf', // I TV when I heard
+            'e2e47750-ccef-4b68-be13-f498e9a5330b', // coffee too hot
+            'e86687fb-4030-4f15-930d-9ed7b6a92606', // seatbelt law
+            '3dc76cac-808f-4172-b7b4-3aae87e1627f', // She London three years
+            '24a24c9a-c0bc-48e1-88ae-6c9802ec4126', // umbrella rains
+            '3b3ee5ad-46c1-4879-a937-7705139a0097'  // John interview preparation
+          ]);
+        console.log('🔍 Word Formation query result:', { data: data?.length, error, firstQuestion: data?.[0] });
+        dbQuestions = data;
+        dbError = error;
+      } else {
+        // For other types, use the normal query
+        const { data, error } = await supabase
+          .from('questions')
+          .select('*')
+          .in('type', types)
+          .not('audio_url', 'is', null)
+          .limit(10);
+        dbQuestions = data;
+        dbError = error;
+      }
+
+      // If no questions with audio, get any questions of these types
+      if (!dbQuestions || dbQuestions.length === 0) {
+        const { data: fallbackQuestions, error: fallbackError } = await supabase
+          .from('questions')
+          .select('*')
+          .in('type', types)
+          .limit(10);
+          
+        if (fallbackError) {
+          console.error('Database fallback error:', fallbackError);
+          useHardcodedQuestions();
+          return;
+        }
+        
+        if (fallbackQuestions && fallbackQuestions.length > 0) {
+          console.log(`✅ Loaded ${fallbackQuestions.length} fallback questions (no audio) for types: ${types.join(', ')}`);
+          setQuestions(fallbackQuestions);
+          return;
+        }
+      }
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+        // Fall back to hardcoded questions
+        useHardcodedQuestions();
+        return;
+      }
+
+      if (dbQuestions && dbQuestions.length > 0) {
+        console.log(`✅ Loaded ${dbQuestions.length} questions from database for types: ${types.join(', ')}`);
+        console.log('🔍 DEBUG: Questions loaded:', dbQuestions.map(q => ({
+          id: q.id.substring(0, 8),
+          type: q.type,
+          hasAudio: !!q.audio_url,
+          audioUrl: q.audio_url,
+          text: q.question_text.substring(0, 30) + '...'
+        })));
+        setQuestions(dbQuestions);
+      } else {
+        console.log(`📝 No database questions found for types: ${types.join(', ')}, using hardcoded fallback`);
+        useHardcodedQuestions();
+      }
+
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError('שגיאה בטעינת השאלות');
+      useHardcodedQuestions();
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Fallback to hardcoded questions
+  const useHardcodedQuestions = () => {
+    const { types } = getPageInfo();
       const hardcodedQuestions = [
         {
           id: "demo_1",
@@ -190,10 +287,10 @@ const ListeningPractice: React.FC = () => {
           difficulty: "easy",
           topic_id: 23,
           type: "listening_comprehension",
-          audio_url: "/audioFiles/comprehension/lec_4aa6ee856a45.mp3",
+          audio_url: "https://llyunioulzfbgqvmeaxq.supabase.co/storage/v1/object/public/audio-files/listening-comprehension/demo_lc_01_FIXED_1755020344333.mp3",
           metadata: {
             audio_script: "Sarah and Mike are discussing their weekend plans. Sarah mentions she's thinking about going to the farmers market on Saturday morning because she needs fresh vegetables for a dinner party she's hosting.",
-            audio_url: "/audioFiles/comprehension/lec_4aa6ee856a45.mp3"
+            audio_url: "https://llyunioulzfbgqvmeaxq.supabase.co/storage/v1/object/public/audio-files/listening-comprehension/demo_lc_01_FIXED_1755020344333.mp3"
           }
         },
         {
@@ -205,32 +302,54 @@ const ListeningPractice: React.FC = () => {
           difficulty: "easy",
           topic_id: 23,
           type: "listening_comprehension",
-          audio_url: "/audioFiles/comprehension/lec_29057a221e8f.mp3",
+          audio_url: "https://llyunioulzfbgqvmeaxq.supabase.co/storage/v1/object/public/audio-files/listening-comprehension/demo_lc_02_FIXED_1755020347787.mp3",
           metadata: {
             audio_script: "Good morning, class. Today we'll discuss the importance of sleep for academic performance. Recent studies show that students who get at least eight hours of sleep perform significantly better on exams than those who sleep less. The brain uses sleep time to consolidate memories and process information from the day. During deep sleep, neural connections are strengthened, making it easier to recall information later.",
-            audio_url: "/audioFiles/comprehension/lec_29057a221e8f.mp3"
+            audio_url: "https://llyunioulzfbgqvmeaxq.supabase.co/storage/v1/object/public/audio-files/listening-comprehension/demo_lc_02_FIXED_1755020347787.mp3"
           }
+        },
+        // Grammar in Context questions
+        {
+          id: "demo_gc_1",
+          question_text: "If she _____ harder last year, she would have passed the exam.",
+          answer_options: ["studied", "had studied", "studies", "was studying"],
+          correct_answer: "1",
+          explanation: "Third conditional: If + past perfect, would have + past participle",
+          difficulty: "medium",
+          topic_id: 22,
+          type: "grammar_in_context"
+        },
+        {
+          id: "demo_gc_2",
+          question_text: "The book _____ by millions of people worldwide.",
+          answer_options: ["is reading", "reads", "is read", "was reading"],
+          correct_answer: "2",
+          explanation: "Passive voice: 'is read' - הספר נקרא על ידי מיליוני אנשים",
+          difficulty: "easy",
+          topic_id: 22,
+          type: "grammar_in_context"
         }
       ];
       
       // Filter hardcoded questions by current page type
       const filteredQuestions = hardcodedQuestions.filter(q => types.includes(q.type));
       setQuestions(filteredQuestions);
-      console.log(`✅ Using ${filteredQuestions.length} fallback questions for ${types.join(', ')}`);
+      console.log(`✅ Using ${filteredQuestions.length} fallback questions for ${types.join(', ')}`)
+  };
 
-    } catch (err) {
-      console.error('Fetch error:', err);
-      setError('שגיאה בטעינת השאלות');
-    } finally {
-      setLoading(false);
-    }
-  }, [getPageInfo]);  useEffect(() => {
+  useEffect(() => {
     fetchQuestions();
   }, [fetchQuestions]);
 
   const currentQuestion = questions[currentQuestionIndex];
   const { title, description } = getPageInfo();
   const correctAnswerIndex = currentQuestion ? parseInt(currentQuestion.correct_answer || '0') : 0;
+  
+  // Parse answer_options if it's a string (from database)
+  const answerOptions = currentQuestion ? 
+    (typeof currentQuestion.answer_options === 'string' ? 
+      JSON.parse(currentQuestion.answer_options) : 
+      currentQuestion.answer_options || []) : [];
 
   // Safety check
   if (!currentQuestion) {
@@ -364,27 +483,41 @@ const ListeningPractice: React.FC = () => {
             <Card className="max-w-4xl mx-auto p-6 bg-slate-800/80 border-slate-700">
               {/* Audio Controls */}
               <div className="mb-6 text-center">
-                <div className="flex justify-center items-center gap-4 mb-4">
-                  <Button
-                    onClick={playAudio}
-                    variant="ghost"
-                    size="lg"
-                    className="group relative w-20 h-20 rounded-full bg-purple-600/20 border-2 border-purple-500/40 hover:bg-purple-600/30"
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-8 h-8 text-purple-300" />
-                    ) : (
-                      <Play className="w-8 h-8 text-purple-300" />
-                    )}
-                  </Button>
-                  <Button onClick={stopAudio} variant="ghost" size="sm" className="text-slate-400 hover:text-purple-300">
-                    <RotateCcw className="w-4 h-4" />
-                    אפס
-                  </Button>
-                </div>
+                {['listening_comprehension', 'vocabulary', 'sentence-completion'].includes(currentQuestion.type) && 
+                 (currentQuestion.audio_url || (currentQuestion.metadata && currentQuestion.metadata.audio_url)) ? (
+                  <div className="flex justify-center items-center gap-4 mb-4">
+                    <Button
+                      onClick={playAudio}
+                      variant="ghost"
+                      size="lg"
+                      className="group relative w-20 h-20 rounded-full bg-purple-600/20 border-2 border-purple-500/40 hover:bg-purple-600/30"
+                    >
+                      {isPlaying ? (
+                        <Pause className="w-8 h-8 text-purple-300" />
+                      ) : (
+                        <Play className="w-8 h-8 text-purple-300" />
+                      )}
+                    </Button>
+                    <Button onClick={stopAudio} variant="ghost" size="sm" className="text-slate-400 hover:text-purple-300">
+                      <RotateCcw className="w-4 h-4" />
+                      אפס
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="mb-4 p-4 bg-slate-700/50 border border-slate-600 rounded-lg">
+                    <div className="flex items-center justify-center gap-2 text-slate-400">
+                      <Volume2 className="w-5 h-5" />
+                      {currentQuestion.type === 'reading-comprehension' ? (
+                        <span>� שאלת הבנת הנכתב - אין צורך באודיו</span>
+                      ) : (
+                        <span>�🔇 No audio needed for this question type</span>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-                {/* Show audio script if available */}
-                {currentQuestion?.metadata?.audio_script && (
+                {/* Show audio script if available and it's a listening comprehension question */}
+                {currentQuestion.type === 'listening_comprehension' && currentQuestion?.metadata?.audio_script && (
                   <div className="mb-4 p-4 bg-amber-50/90 border border-amber-200 rounded-lg">
                     <div className="text-sm text-amber-800 font-medium mb-2 flex items-center">
                       📜 הטקסט הנכון לשאלה:
@@ -398,7 +531,7 @@ const ListeningPractice: React.FC = () => {
                   </div>
                 )}
 
-                {duration > 0 && (
+                {currentQuestion.type === 'listening_comprehension' && duration > 0 && (
                   <div className="mb-4">
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-sm text-slate-400">{Math.floor(currentTime/60)}:{String(Math.floor(currentTime%60)).padStart(2,'0')}</span>
@@ -410,9 +543,11 @@ const ListeningPractice: React.FC = () => {
                   </div>
                 )}
 
-                <div className="text-purple-300 text-sm">
-                  {isPlaying ? 'מושמע כעת...' : 'לחץ Play להשמעת הקטע'}
-                </div>
+                {currentQuestion.type === 'listening_comprehension' && (
+                  <div className="text-purple-300 text-sm">
+                    {isPlaying ? 'מושמע כעת...' : 'לחץ Play להשמעת הקטע'}
+                  </div>
+                )}
               </div>
 
               {/* Question */}
@@ -424,7 +559,7 @@ const ListeningPractice: React.FC = () => {
 
               {/* Answer Options */}
               <div className="space-y-3 mb-6">
-                {currentQuestion.answer_options.map((option, index) => {
+                {answerOptions.map((option, index) => {
                   if (showResult) {
                     const isSelected = index === selectedAnswer;
                     const isCorrectOpt = index === correctAnswerIndex;

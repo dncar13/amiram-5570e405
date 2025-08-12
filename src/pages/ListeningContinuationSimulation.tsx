@@ -159,17 +159,8 @@ const ListeningContinuationSimulation: React.FC<Props> = ({ setId = "1" }) => {
 
     if (currentQuestion.audioUrl) {
       audioSrc = currentQuestion.audioUrl;        // Primary source
-    } else if (setId === '1') {
-      // Legacy fallback only for set 1
-      const legacy = [
-        '/audioFiles/tests/firstQ.mp3',
-        '/audioFiles/tests/secentQ.mp3',
-        '/audioFiles/tests/thitdQ.mp3',
-        '/audioFiles/tests/fourthQ.mp3'
-      ];
-      audioSrc = legacy[currentQuestionIndex] || '';
     } else {
-      console.warn('No audioUrl for this question (no fallback for non-legacy sets).');
+      console.warn('⚠️ No audioUrl for this question - all questions should have valid audio URLs');
       return;
     }
 
