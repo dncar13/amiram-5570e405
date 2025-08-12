@@ -10,6 +10,9 @@ interface CancelSubscriptionRequest {
   userId: string;
   subscriptionId: string;
   cancellationReason?: string;
+  provider?: string;
+  idemKey?: string;
+  refundCents?: number;
 }
 
 interface RefundCalculationResult {
@@ -146,15 +149,9 @@ serve(async (req) => {
     logStep("Request body", requestBody);
 
     const { userId, subscriptionId, cancellationReason = "ביטול על ידי המשתמש" } = requestBody;
+    const provider = requestBody.provider || 'cardcom';
+    const idemKey = requestBody.idemKey ?? null;
 
-    if (!userId || !subscriptionId) {
-      return new Response(JSON.stringify({ 
-        error: "Missing required fields: userId, subscriptionId" 
-      }), {
-        status: 400,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
 
     // Step 1: Get subscription details
     logStep("Fetching subscription details", { subscriptionId });
@@ -375,6 +372,19 @@ serve(async (req) => {
     // Step 7: Create payment transaction record for refund (if processed)
     if (refundResult?.success && refundResult.refundTransactionId) {
       logStep("Creating refund transaction record");
+
+      // Build unique low_profile_code for refund idempotency
+      const refundLpc = `${transaction.low_profile_code}:refund:${idemKey ?? crypto.randomUUID()}`;
+
+      // Optional idempotency key registration
+      if (idemKey) {
+        await supabaseClient
+          .from('idempotency_keys')
+          .insert({ key: idemKey, expires_at: new Date(Date.now() + 24*60*60*1000).toISOString() }, {
+            onConflict: 'key',
+            ignoreDuplicates: true,
+          });
+      }
       
       // Track refund event for analytics BEFORE creating transaction record
       try {
@@ -393,7 +403,7 @@ serve(async (req) => {
               refund_transaction_id: refundResult.refundTransactionId.toString(),
               refund_amount: calculation.refund_amount,
               original_amount: transaction.amount,
-              currency: 'ILS',
+              currency: transaction.currency,
               refund_reason: 'subscription_cancellation',
               plan_type: subscription.plan_type,
               user_id: userId,
@@ -408,20 +418,44 @@ serve(async (req) => {
         // Don't fail the refund process if tracking fails
       }
       
-      await supabaseClient
+      const insertPayload = {
+        user_id: userId,
+        subscription_id: subscriptionId,
+        transaction_id: refundResult.refundTransactionId.toString(),
+        provider,
+        low_profile_code: refundLpc,
+        amount: -calculation.refund_amount, // Negative amount for refund
+        currency: transaction.currency,
+        status: 'completed',
+        is_refund: true,
+        original_transaction_id: transaction.transaction_id,
+        refund_reason: cancellationReason
+      };
+
+      const { error: refundInsertError } = await supabaseClient
         .from('payment_transactions')
-        .insert({
-          user_id: userId,
-          subscription_id: subscriptionId,
-          transaction_id: refundResult.refundTransactionId.toString(),
-          payment_method: 'cardcom',
-          amount: -calculation.refund_amount, // Negative amount for refund
-          currency: 'ILS',
-          status: 'completed',
-          is_refund: true,
-          original_transaction_id: transaction.transaction_id,
-          refund_reason: cancellationReason
-        });
+        .insert(insertPayload, { onConflict: 'provider,low_profile_code', ignoreDuplicates: true });
+
+      if (refundInsertError) {
+        logStep('Warning: refund transaction insert error', refundInsertError);
+      }
+
+      // Link idempotency key to the refund transaction
+      if (idemKey) {
+        const { data: existingRefund } = await supabaseClient
+          .from('payment_transactions')
+          .select('id')
+          .eq('provider', provider)
+          .eq('low_profile_code', refundLpc)
+          .maybeSingle();
+
+        if (existingRefund?.id) {
+          await supabaseClient
+            .from('idempotency_keys')
+            .update({ used_by: existingRefund.id })
+            .eq('key', idemKey);
+        }
+      }
     }
 
     // Step 8: Return success response
