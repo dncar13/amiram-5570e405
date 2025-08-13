@@ -102,6 +102,24 @@ function generateUUID() {
   });
 }
 
+// Detect if text contains underscores and create TTS options with pauses
+function createTTSOptions(text, baseType = 'general') {
+  const hasUnderscores = /_{5,}/g.test(text); // Match 5 or more underscores (typical blank is ______)
+  
+  if (hasUnderscores) {
+    console.log(`🎵 Detected underscores in text, adding 1s pause: "${text.substring(0, 50)}..."`);
+  }
+  
+  return {
+    type: baseType,
+    useSSML: hasUnderscores,
+    pauseForUnderscoreMs: hasUnderscores ? 1000 : 0, // 1 second pause
+    voice: DEFAULT_VOICE,
+    speakingRate: DEFAULT_SPEAKING_RATE,
+    pitch: DEFAULT_PITCH
+  };
+}
+
 // Generate stable ID from text
 function generateStableId(prefix, text, additionalSalt = '') {
   // Use SHA-256 and include optional salt + timestamp for uniqueness
@@ -1137,11 +1155,15 @@ async function generateAllQuestionTypes(options = {}) {
       // Generate audio
   console.log(`🔊 Generating TTS audio...`);
   if (!isShuttingDown) await ttsLimiter.throttle();
-      const contAudioItems = contQuestions.map(q => ({
-        id: q.id,
-        text: q.text,
-        type: 'listening-continuation'
-      }));
+      const contAudioItems = contQuestions.map(q => {
+        const ttsOptions = createTTSOptions(q.text, 'listening-continuation');
+        return {
+          id: q.id,
+          text: q.text,
+          type: 'listening-continuation',
+          ttsOptions: ttsOptions
+        };
+      });
       
   const { results: contAudioResults } = await withTimeout(synthesizeBatch(contAudioItems, 3), 45000);
       
@@ -1183,8 +1205,9 @@ async function generateAllQuestionTypes(options = {}) {
         for (const question of chunk) {
           try {
             await ttsLimiter.throttle();
+            const ttsOptions = createTTSOptions(question.sentence, 'word-formation');
             const audioResult = await withTimeout(
-              synthesizeToUrl(question.id, question.sentence, 'word-formation'),
+              synthesizeToUrl(question.id, question.sentence, ttsOptions),
               45000
             );
             question.audioUrl = audioResult.url;
@@ -1225,8 +1248,9 @@ async function generateAllQuestionTypes(options = {}) {
         for (const question of chunk) {
           try {
             await ttsLimiter.throttle();
+            const ttsOptions = createTTSOptions(question.text, 'grammar-in-context');
             const audioResult = await withTimeout(
-              synthesizeToUrl(question.id, question.text, 'grammar-in-context'),
+              synthesizeToUrl(question.id, question.text, ttsOptions),
               45000
             );
             question.audioUrl = audioResult.url;
@@ -1535,5 +1559,6 @@ module.exports = {
   validateCorrectAnswer,
   parseArgs,
   backfillComprehensionAudio,
-  segmentIdFromScript
+  segmentIdFromScript,
+  createTTSOptions
 };

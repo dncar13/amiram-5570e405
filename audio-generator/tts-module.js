@@ -270,7 +270,7 @@ async function synthesizeBatch(items, concurrency = 3) {
     console.log(`📦 Processing batch ${Math.floor(i/concurrency) + 1}/${Math.ceil(items.length/concurrency)}`);
     
     const promises = batch.map(item => 
-      synthesizeToUrl(item.id, item.text, item.type || 'batch')
+      synthesizeToUrl(item.id, item.text, item.ttsOptions || item.type || 'batch')
         .then(audioResult => {
           successCount++;
           return {

@@ -71,7 +71,7 @@ const ListeningPractice: React.FC = () => {
     
     if (path.includes('/grammar-context')) {
       return {
-        types: ['reading-comprehension'],
+        types: ['grammar_in_context'],
         topics: [22],
         title: 'Grammar in Context עם השמע',
         description: 'שאלות דקדוק בהקשר של הבנת השמע',
@@ -80,7 +80,7 @@ const ListeningPractice: React.FC = () => {
     }
     
     return {
-      types: ['vocabulary', 'sentence-completion', 'reading-comprehension', 'listening_comprehension'],
+      types: ['vocabulary', 'sentence-completion', 'grammar_in_context', 'listening_comprehension'],
       topics: [21, 22, 23],
       title: 'תרגול מעורב',
       description: 'כל סוגי השאלות',
@@ -106,7 +106,7 @@ const ListeningPractice: React.FC = () => {
       audioUrl: currentQuestion.audio_url
     });
     
-    if (!['listening_comprehension', 'vocabulary', 'sentence-completion'].includes(currentQuestion.type)) {
+    if (!['listening_comprehension', 'vocabulary', 'sentence-completion', 'grammar_in_context'].includes(currentQuestion.type)) {
       console.info('🔇 No audio needed for question type:', currentQuestion.type);
       return;
     }
@@ -483,7 +483,7 @@ const ListeningPractice: React.FC = () => {
             <Card className="max-w-4xl mx-auto p-6 bg-slate-800/80 border-slate-700">
               {/* Audio Controls */}
               <div className="mb-6 text-center">
-                {['listening_comprehension', 'vocabulary', 'sentence-completion'].includes(currentQuestion.type) && 
+                {['listening_comprehension', 'vocabulary', 'sentence-completion', 'grammar_in_context'].includes(currentQuestion.type) && 
                  (currentQuestion.audio_url || (currentQuestion.metadata && currentQuestion.metadata.audio_url)) ? (
                   <div className="flex justify-center items-center gap-4 mb-4">
                     <Button
