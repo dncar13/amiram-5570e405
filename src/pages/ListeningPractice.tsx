@@ -8,12 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Headphones, Play, Pause, RotateCcw, CheckCircle, XCircle, Volume2 } from "lucide-react";
 import { getQuestionsByType } from '@/services/questionsService';
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase client for database access
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from "@/integrations/supabase/client";
 
 interface Question {
   id: string;
@@ -218,7 +213,14 @@ const ListeningPractice: React.FC = () => {
         
         if (fallbackQuestions && fallbackQuestions.length > 0) {
           console.log(`✅ Loaded ${fallbackQuestions.length} fallback questions (no audio) for types: ${types.join(', ')}`);
-          setQuestions(fallbackQuestions);
+          setQuestions((fallbackQuestions as any[]).map((q: any) => ({
+            ...q,
+            answer_options: typeof q.answer_options === 'string'
+              ? JSON.parse(q.answer_options)
+              : Array.isArray(q.answer_options)
+                ? (q.answer_options as string[])
+                : [],
+          })));
           return;
         }
       }
@@ -239,7 +241,14 @@ const ListeningPractice: React.FC = () => {
           audioUrl: q.audio_url,
           text: q.question_text.substring(0, 30) + '...'
         })));
-        setQuestions(dbQuestions);
+        setQuestions((dbQuestions as any[]).map((q: any) => ({
+          ...q,
+          answer_options: typeof q.answer_options === 'string'
+            ? JSON.parse(q.answer_options)
+            : Array.isArray(q.answer_options)
+              ? (q.answer_options as string[])
+              : [],
+        })));
       } else {
         console.log(`📝 No database questions found for types: ${types.join(', ')}, using hardcoded fallback`);
         useHardcodedQuestions();
