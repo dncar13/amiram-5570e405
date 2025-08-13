@@ -7,8 +7,47 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Headphones, Target, CheckCircle, AlertCircle, BookOpen, FileText, Mic, Clock, Zap, Star, Play } from "lucide-react";
+import type { Difficulty, Mode } from '@/constants/listening';
+import { DEFAULTS } from '@/constants/listening';
+import { buildListeningUrl, getSavedSelection } from '@/utils/listening';
 
 const ListeningQuestions = () => {
+  const saved = ((): { level: Difficulty; mode: Mode } => {
+    try { return getSavedSelection() ?? DEFAULTS; } catch { return DEFAULTS; }
+  })();
+  const [level, setLevel] = React.useState<Difficulty>(saved.level);
+  const [mode, setMode] = React.useState<Mode>(saved.mode);
+  React.useEffect(() => { localStorage.setItem('listening_selection', JSON.stringify({ level, mode })); }, [level, mode]);
+
+  const topics = [
+    { title: 'Listening Comprehension', path: '/listening/comprehension', desc: 'Short clips + questions' },
+    { title: 'Listening Continuation',  path: '/listening/continuation/smoketest', desc: 'Continue the dialogue' },
+    { title: 'Word Formation',          path: '/listening/word-formation', desc: 'Vocabulary & sentence completion' },
+    { title: 'Grammar in Context',      path: '/listening/grammar-context', desc: 'Reading—no audio needed' },
+  ] as const;
+
+  const LevelBtn: React.FC<{ v: Difficulty }> = ({ v }) => (
+    <button
+      aria-pressed={level === v}
+      aria-label={`בחר רמה ${v}`}
+      onClick={() => setLevel(v)}
+      className={`px-3 py-1 rounded-full border text-sm transition ${level === v ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted text-foreground/80'}`}
+    >
+      {v}
+    </button>
+  );
+
+  const ModeBtn: React.FC<{ v: Mode; label: string }> = ({ v, label }) => (
+    <button
+      aria-pressed={mode === v}
+      aria-label={`בחר מצב ${v}`}
+      onClick={() => setMode(v)}
+      className={`px-3 py-1 rounded-full border text-sm transition ${mode === v ? 'bg-primary text-primary-foreground border-primary' : 'bg-muted text-foreground/80'}`}
+    >
+      {label}
+    </button>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 via-white to-cyan-50">
       <Header />
