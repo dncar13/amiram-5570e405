@@ -24,12 +24,10 @@ export default defineConfig(async ({ mode }) => {
       },
     },
     server: {
-      host: "::",
+      host: "localhost",
       port: 8080,
-      headers: {
-        'Cross-Origin-Embedder-Policy': 'credentialless',
-        'Cross-Origin-Opener-Policy': 'same-origin'
-      }
+      strictPort: true,
+      open: false
     },
     // Add project name
     name: 'Amiram-Academy'

@@ -1,0 +1,4 @@
+Audio placeholder for: demo_lc_02.mp3
+Text to speech: "Good morning, class. Today we'll discuss the importance of sleep for academic performance. Recent studies show that students who get at least eight hours of sleep perform significantly better on exams than those who sleep less. The brain uses sleep time to consolidate memories and process information from the day. During deep sleep, neural connections are strengthened, making it easier to recall information later."
+
+To implement: Use text-to-speech.cjs with Google Cloud credentials

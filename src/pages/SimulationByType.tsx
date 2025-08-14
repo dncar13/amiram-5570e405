@@ -14,7 +14,11 @@ import {
   ChevronRight,
   Sparkles,
   Crown,
-  Unlock
+  Unlock,
+  VolumeX,
+  Play, 
+  Headphones,
+  Mic
 } from 'lucide-react';
 import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/services/questionsService';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -43,6 +47,14 @@ const SimulationByType: React.FC = () => {
   const [sentenceCompletionCount, setSentenceCompletionCount] = useState(0);
   const [restatementCount, setRestatementCount] = useState(0);
   const [isLoadingCounts, setIsLoadingCounts] = useState(true);
+  
+  // State for listening question counts
+  const [listeningCounts, setListeningCounts] = useState({
+    lecture: 0,
+    continuation: 0, 
+    wordFormation: 0,
+    grammar: 0
+  });
 
   // Redirect reading comprehension directly to stories page
   useEffect(() => {
@@ -71,7 +83,18 @@ const SimulationByType: React.FC = () => {
       }
     };
 
+    const loadListeningCounts = async () => {
+      // placeholder - יעודכן כשיהיו שירותי שאלות אמיתיים
+      setListeningCounts({
+        lecture: 25,
+        continuation: 20,
+        wordFormation: 30,
+        grammar: 22
+      });
+    };
+
     loadQuestionCounts();
+    loadListeningCounts();
   }, []);
 
   const questionTypesData: Record<string, QuestionTypeData> = {
@@ -104,6 +127,66 @@ const SimulationByType: React.FC = () => {
         'הימנע מביטויים חריגים או מיוחדים'
       ],
       questionCount: restatementCount
+    },
+    'listening-lecture-conversation': {
+      type: 'listening-lecture-conversation',
+      title: 'הבנת הנשמע - הרצאות ושיחות',
+      description: 'שאלות הבנה על הרצאות ושיחות באנגלית',
+      icon: <VolumeX className="w-8 h-8" />,
+      color: 'text-indigo-600',
+      gradient: 'from-indigo-500 via-blue-500 to-purple-500',
+      tips: [
+        'הקשב לרעיון המרכזי בהרצאה או בשיחה',
+        'שים לב לפרטים חשובים ולמידע ספציפי',
+        'זכור את המבנה הכללי של התוכן',
+        'התמקד בקשרים בין הרעיונות השונים'
+      ],
+      questionCount: listeningCounts.lecture
+    },
+    'listening-audio-continuation': {
+      type: 'listening-audio-continuation',
+      title: 'השלמת שמע',
+      description: 'שאלות השלמה על בסיס קטעי שמע',
+      icon: <Play className="w-8 h-8" />,
+      color: 'text-orange-600', 
+      gradient: 'from-orange-500 via-red-500 to-pink-500',
+      tips: [
+        'הקשב לטון ולהקשר של הדובר',
+        'שים לב למילות מפתח בקטע השמע',
+        'נסה לחזות את ההמשך הלוגי',
+        'התמקד במשמעות הכללית לפני הפרטים'
+      ],
+      questionCount: listeningCounts.continuation
+    },
+    'listening-word-formation': {
+      type: 'listening-word-formation',
+      title: 'יצירת מילים על בסיס שמע',
+      description: 'תרגילי יצירת מילים בהתבסס על קטעי שמע',
+      icon: <Headphones className="w-8 h-8" />,
+      color: 'text-emerald-600',
+      gradient: 'from-emerald-500 via-teal-500 to-cyan-500', 
+      tips: [
+        'הקשב למבנה המילה ולגזרתה',
+        'שים לב להקשר הדקדוקי הנדרש',
+        'זכור כללי יצירת מילים בנגלית',
+        'התמקד בסיומות ובתחיליות נפוצות'
+      ],
+      questionCount: listeningCounts.wordFormation
+    },
+    'listening-grammar-context': {
+      type: 'listening-grammar-context', 
+      title: 'דקדוק בהקשר שמיעתי',
+      description: 'שאלות דקדוק על בסיס הקשר מקטעי שמע',
+      icon: <Mic className="w-8 h-8" />,
+      color: 'text-violet-600',
+      gradient: 'from-violet-500 via-purple-500 to-indigo-500',
+      tips: [
+        'הקשב למבנה הדקדוקי של המשפטים',
+        'שים לב לזמני הפעלים בהקשר',
+        'התמקד בקשרים דקדוקיים בין המילים',
+        'זכור כללי דקדוק בהקשר מדובר'
+      ],
+      questionCount: listeningCounts.grammar
     }
   };
 

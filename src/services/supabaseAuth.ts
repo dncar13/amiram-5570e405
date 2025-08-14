@@ -359,20 +359,19 @@ export class SupabaseAuthService {
         return { subscriptionData: null, error: null };
       }
 
-      // Get payment transaction for this subscription
-      const { data: transaction, error: transError } = await supabase
-        .from('payment_transactions')
-        .select('*')
-        .eq('subscription_id', subscription.id)
-        .eq('status', 'completed')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      // Get payment transaction for this subscription via sanitized RPC
+      const { data, error: transError } = await (supabase as any)
+        .rpc('get_latest_user_transaction_for_subscription', {
+          p_subscription_id: subscription.id,
+        });
 
       if (transError) {
         console.error('❌ Error fetching payment transaction:', transError);
         return { subscriptionData: null, error: transError };
       }
+
+      const transaction = Array.isArray(data) ? data[0] : null;
+
 
       if (!transaction) {
         console.log('ℹ️ No completed payment transaction found for subscription:', subscription.id);

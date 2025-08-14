@@ -170,22 +170,22 @@ const createSubscription = async (
     
     switch (planType) {
       case 'daily':
-        dbPlanType = 'day';
+        dbPlanType = 'daily';
         paymentPlanType = 'daily';
         endDate.setDate(startDate.getDate() + 1);
         break;
       case 'weekly':
-        dbPlanType = 'week';
+        dbPlanType = 'weekly';
         paymentPlanType = 'weekly';
         endDate.setDate(startDate.getDate() + 7);
         break;
       case 'monthly':
-        dbPlanType = 'month';
+        dbPlanType = 'monthly';
         paymentPlanType = 'monthly';
         endDate.setMonth(startDate.getMonth() + 1);
         break;
       case 'quarterly':
-        dbPlanType = '3months';
+        dbPlanType = 'quarterly';
         paymentPlanType = 'quarterly';
         endDate.setMonth(startDate.getMonth() + 3);
         break;
@@ -419,6 +419,44 @@ serve(async (req) => {
     // Use idempotent transaction creation with HTTP 409 for conflicts
     // This will be handled by the createSubscription function with proper error codes
 
+    // Record webhook event idempotently
+    const provider = 'cardcom';
+    const eventId = String(payload.TranzactionId);
+    const headersObj = Object.fromEntries(req.headers.entries());
+
+    const { error: eventInsertError } = await supabaseClient
+      .from('payment_webhook_events')
+      .insert({ provider, event_id: eventId, payload, headers: headersObj }, {
+        onConflict: 'provider,event_id',
+        ignoreDuplicates: true,
+      });
+
+    if (eventInsertError && eventInsertError.code !== '23505') {
+      logStep("Error inserting webhook event", eventInsertError);
+      return new Response(JSON.stringify({ error: "Event logging failed" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // If duplicate event already handled, exit gracefully
+    const { data: existingEvent } = await supabaseClient
+      .from('payment_webhook_events')
+      .select('handled')
+      .eq('provider', provider)
+      .eq('event_id', eventId)
+      .maybeSingle();
+
+    if (existingEvent?.handled) {
+      return new Response(JSON.stringify({
+        status: "duplicate",
+        message: "Event already processed",
+      }), {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Create subscription for successful payment
     try {
       const result = await createSubscription(
@@ -432,6 +470,13 @@ serve(async (req) => {
       );
 
       logStep("Webhook processed successfully", result);
+
+      // Mark event as handled
+      await supabaseClient
+        .from('payment_webhook_events')
+        .update({ handled: true })
+        .eq('provider', provider)
+        .eq('event_id', eventId);
 
       // Return success response to CardCom
       return new Response(JSON.stringify({
