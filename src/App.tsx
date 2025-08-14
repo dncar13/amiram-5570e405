@@ -80,6 +80,12 @@ import CouponManagement from "./pages/CouponManagement";
 import CouponUsageManagement from "./pages/CouponUsageManagement";
 import analyticsService from "./services/analytics";
 
+// Vocabulary System Components
+import VocabMain from "./pages/vocab/VocabMain";
+import WordOfDay from "./pages/vocab/WordOfDay";
+import VocabDictionary from "./pages/vocab/VocabDictionary";
+import VocabQuiz from "./pages/vocab/VocabQuiz";
+
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -368,6 +374,12 @@ const AnimatedRoutes = () => {
               <Simulation />
             </ErrorBoundary>
           } />
+          
+          {/* Vocabulary Routes */}
+          <Route path="/vocab" element={<VocabMain />} />
+          <Route path="/vocab/word-of-day" element={<WordOfDay />} />
+          <Route path="/vocab/dictionary" element={<VocabDictionary />} />
+          <Route path="/vocab/quiz" element={<VocabQuiz />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
