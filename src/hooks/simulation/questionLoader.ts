@@ -8,6 +8,7 @@ import {
   getVocabularyQuestions
 } from "@/services/questionsService";
 import { getFullExamQuestions } from "@/services/fullExamService";
+import { shuffleQuestions } from "@/utils/questionShuffle";
 
 // Helper function to shuffle array
 export const shuffleArray = <T,>(array: T[]): T[] => {
@@ -223,7 +224,12 @@ export const loadQuestions = async ({
   
   if (questionsToUse.length === 0) {
     console.warn("No questions found for simulation", { effectiveType, difficulty, isFullExam });
+    return [];
   }
   
-  return questionsToUse;
+  // Apply option shuffling to prevent answer pattern gaming
+  console.log(`🔀 Shuffling options for ${questionsToUse.length} questions to prevent gaming`);
+  const shuffledQuestions = shuffleQuestions(questionsToUse);
+  
+  return shuffledQuestions;
 };
