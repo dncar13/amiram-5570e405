@@ -1,0 +1,1494 @@
+{
+  "wordOfDay": {
+    "date": "2024-12-26",
+    "word": "eloquent",
+    "translation": "רהוט, שולט בדיבור",
+    "pronunciation": "/ˈel.ə.kwənt/",
+    "example": "She gave an eloquent speech that moved the audience",
+    "level": "intermediate",
+    "quiz": {
+      "question": "Someone who is eloquent is...",
+      "options": [
+        "Good at speaking",
+        "Very quiet",
+        "Always angry",
+        "Bad at writing"
+      ],
+      "correct": 0
+    }
+  },
+  "words": [
+    {
+      "id": 1,
+      "word": "able",
+      "translation": "מסוגל",
+      "example": "She is able to finish the task on time.",
+      "level": "easy",
+      "category": "adjective",
+      "frequency": 4.46
+    },
+    {
+      "id": 2,
+      "word": "accept",
+      "translation": "לקבל",
+      "example": "We accept the results and move forward.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.54
+    },
+    {
+      "id": 3,
+      "word": "add",
+      "translation": "להוסיף",
+      "example": "Please add sugar to the tea.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.91
+    },
+    {
+      "id": 4,
+      "word": "agree",
+      "translation": "להסכים",
+      "example": "Do you agree with this idea?",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.83
+    },
+    {
+      "id": 5,
+      "word": "allow",
+      "translation": "לאפשר",
+      "example": "The rules allow students to use a dictionary.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.6
+    },
+    {
+      "id": 6,
+      "word": "answer",
+      "translation": "לענות",
+      "example": "Try to answer all the questions.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.52
+    },
+    {
+      "id": 7,
+      "word": "apply",
+      "translation": "ליישם/להגיש",
+      "example": "You can apply these tips in your next essay.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.84
+    },
+    {
+      "id": 8,
+      "word": "argue",
+      "translation": "לטעון/להתווכח",
+      "example": "They argue that the plan will help everyone.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.63
+    },
+    {
+      "id": 9,
+      "word": "arrive",
+      "translation": "להגיע",
+      "example": "The train will arrive at noon.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.13
+    },
+    {
+      "id": 10,
+      "word": "avoid",
+      "translation": "להימנע",
+      "example": "Avoid common mistakes in the exam.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.54
+    },
+    {
+      "id": 11,
+      "word": "cause",
+      "translation": "לגרום",
+      "example": "Lack of sleep can cause problems.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.83
+    },
+    {
+      "id": 12,
+      "word": "choose",
+      "translation": "לבחור",
+      "example": "Choose the correct option.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.26
+    },
+    {
+      "id": 13,
+      "word": "collect",
+      "translation": "לאסוף",
+      "example": "We collect data from many sources.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.54
+    },
+    {
+      "id": 14,
+      "word": "compare",
+      "translation": "להשוות",
+      "example": "Compare the two articles.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.8
+    },
+    {
+      "id": 15,
+      "word": "complete",
+      "translation": "להשלים/לסיים",
+      "example": "Complete the sentence with one word.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.47
+    },
+    {
+      "id": 16,
+      "word": "consider",
+      "translation": "לשקול",
+      "example": "Consider the context before you decide.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.32
+    },
+    {
+      "id": 17,
+      "word": "continue",
+      "translation": "להמשיך",
+      "example": "Please continue reading the next paragraph.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.83
+    },
+    {
+      "id": 18,
+      "word": "create",
+      "translation": "ליצור",
+      "example": "The author tries to create suspense.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.38
+    },
+    {
+      "id": 19,
+      "word": "decide",
+      "translation": "להחליט",
+      "example": "It is hard to decide quickly.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.71
+    },
+    {
+      "id": 20,
+      "word": "describe",
+      "translation": "לתאר",
+      "example": "Describe the main character.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.51
+    },
+    {
+      "id": 21,
+      "word": "develop",
+      "translation": "לפתח",
+      "example": "Children develop language skills early.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.71
+    },
+    {
+      "id": 22,
+      "word": "differ",
+      "translation": "להיות שונה",
+      "example": "Opinions may differ on this topic.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.55
+    },
+    {
+      "id": 23,
+      "word": "discuss",
+      "translation": "לדון",
+      "example": "The class will discuss the issue tomorrow.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.01
+    },
+    {
+      "id": 24,
+      "word": "early",
+      "translation": "מוקדם",
+      "example": "He woke up early to study.",
+      "level": "easy",
+      "category": "adjective",
+      "frequency": 3.73
+    },
+    {
+      "id": 25,
+      "word": "easy",
+      "translation": "קל",
+      "example": "This exercise is easy for most students.",
+      "level": "easy",
+      "category": "adjective",
+      "frequency": 4.94
+    },
+    {
+      "id": 26,
+      "word": "example",
+      "translation": "דוגמה",
+      "example": "The teacher gave an example to explain.",
+      "level": "easy",
+      "category": "noun",
+      "frequency": 4.0
+    },
+    {
+      "id": 27,
+      "word": "explain",
+      "translation": "להסביר",
+      "example": "Can you explain your answer?",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.64
+    },
+    {
+      "id": 28,
+      "word": "form",
+      "translation": "לעצב/ליצור",
+      "example": "The cells form a simple pattern.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 3.65
+    },
+    {
+      "id": 29,
+      "word": "future",
+      "translation": "עתיד",
+      "example": "In the future, we will travel more.",
+      "level": "easy",
+      "category": "noun",
+      "frequency": 4.77
+    },
+    {
+      "id": 30,
+      "word": "improve",
+      "translation": "לשפר",
+      "example": "Practice can improve your writing.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.41
+    },
+    {
+      "id": 31,
+      "word": "include",
+      "translation": "לכלול",
+      "example": "The price includes breakfast.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.71
+    },
+    {
+      "id": 32,
+      "word": "increase",
+      "translation": "להגדיל/לגדול",
+      "example": "Reading will increase your vocabulary.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.59
+    },
+    {
+      "id": 33,
+      "word": "instead",
+      "translation": "במקום זאת",
+      "example": "Use simple words instead of rare ones.",
+      "level": "easy",
+      "category": "adverb",
+      "frequency": 4.3
+    },
+    {
+      "id": 34,
+      "word": "main",
+      "translation": "עיקרי/ראשי",
+      "example": "What is the main idea of the text?",
+      "level": "easy",
+      "category": "adjective",
+      "frequency": 4.96
+    },
+    {
+      "id": 35,
+      "word": "mean",
+      "translation": "להתכוון/משמעותו",
+      "example": "What does this word mean?",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.07
+    },
+    {
+      "id": 36,
+      "word": "need",
+      "translation": "להזדקק/צורך",
+      "example": "You need more examples to support it.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.33
+    },
+    {
+      "id": 37,
+      "word": "order",
+      "translation": "סדר",
+      "example": "The events happen in a clear order.",
+      "level": "easy",
+      "category": "noun",
+      "frequency": 4.74
+    },
+    {
+      "id": 38,
+      "word": "part",
+      "translation": "חלק",
+      "example": "This part explains the method.",
+      "level": "easy",
+      "category": "noun",
+      "frequency": 4.43
+    },
+    {
+      "id": 39,
+      "word": "provide",
+      "translation": "לספק",
+      "example": "The chart will provide extra details.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.79
+    },
+    {
+      "id": 40,
+      "word": "support",
+      "translation": "לתמוך",
+      "example": "Use facts to support your claim.",
+      "level": "easy",
+      "category": "verb",
+      "frequency": 4.37
+    },
+    {
+      "id": 41,
+      "word": "accurate",
+      "translation": "מדויק",
+      "example": "Make sure your answer is accurate.",
+      "level": "intermediate",
+      "category": "adjective",
+      "frequency": 2.99
+    },
+    {
+      "id": 42,
+      "word": "adapt",
+      "translation": "להסתגל/להתאים",
+      "example": "Writers adapt their style to the audience.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.06
+    },
+    {
+      "id": 43,
+      "word": "analysis",
+      "translation": "ניתוח",
+      "example": "The analysis supports the conclusion.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.32
+    },
+    {
+      "id": 44,
+      "word": "approach",
+      "translation": "גישה",
+      "example": "This approach is simple and effective.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.41
+    },
+    {
+      "id": 45,
+      "word": "assess",
+      "translation": "להעריך/למדוד",
+      "example": "We assess progress every week.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.11
+    },
+    {
+      "id": 46,
+      "word": "audience",
+      "translation": "קהל",
+      "example": "Know your audience before writing.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.33
+    },
+    {
+      "id": 47,
+      "word": "benefit",
+      "translation": "תועלת",
+      "example": "This change has a clear benefit.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.14
+    },
+    {
+      "id": 48,
+      "word": "challenge",
+      "translation": "אתגר",
+      "example": "Learning new words is a challenge.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.39
+    },
+    {
+      "id": 49,
+      "word": "complex",
+      "translation": "מורכב",
+      "example": "The theory is complex but useful.",
+      "level": "intermediate",
+      "category": "adjective",
+      "frequency": 2.89
+    },
+    {
+      "id": 50,
+      "word": "concept",
+      "translation": "מושג",
+      "example": "The concept is easy to understand.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.51
+    },
+    {
+      "id": 51,
+      "word": "conclude",
+      "translation": "להסיק",
+      "example": "We conclude that the method works.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.52
+    },
+    {
+      "id": 52,
+      "word": "confirm",
+      "translation": "לאשר",
+      "example": "Data confirm the initial idea.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.29
+    },
+    {
+      "id": 53,
+      "word": "consequence",
+      "translation": "תוצאה",
+      "example": "A poor plan has a bad consequence.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.37
+    },
+    {
+      "id": 54,
+      "word": "constant",
+      "translation": "קבוע",
+      "example": "The speed remained constant.",
+      "level": "intermediate",
+      "category": "adjective",
+      "frequency": 3.31
+    },
+    {
+      "id": 55,
+      "word": "context",
+      "translation": "הקשר",
+      "example": "Meaning depends on context.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.91
+    },
+    {
+      "id": 56,
+      "word": "contrast",
+      "translation": "ניגוד",
+      "example": "There is a contrast between the views.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.85
+    },
+    {
+      "id": 57,
+      "word": "convenient",
+      "translation": "נוח",
+      "example": "Online study is convenient for many.",
+      "level": "intermediate",
+      "category": "adjective",
+      "frequency": 2.24
+    },
+    {
+      "id": 58,
+      "word": "criticize",
+      "translation": "לבקר",
+      "example": "Some readers criticize the author.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 3.02
+    },
+    {
+      "id": 59,
+      "word": "decline",
+      "translation": "לרדת",
+      "example": "Sales continue to decline this year.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.23
+    },
+    {
+      "id": 60,
+      "word": "define",
+      "translation": "להגדיר",
+      "example": "First, define the key terms.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.53
+    },
+    {
+      "id": 61,
+      "word": "demonstrate",
+      "translation": "להדגים",
+      "example": "The chart will demonstrate the trend.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 3.39
+    },
+    {
+      "id": 62,
+      "word": "determine",
+      "translation": "לקבוע",
+      "example": "We determine the winner by points.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.9
+    },
+    {
+      "id": 63,
+      "word": "efficient",
+      "translation": "יעיל",
+      "example": "This tool is very efficient.",
+      "level": "intermediate",
+      "category": "adjective",
+      "frequency": 2.78
+    },
+    {
+      "id": 64,
+      "word": "emphasize",
+      "translation": "להדגיש",
+      "example": "Teachers emphasize clear writing.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.96
+    },
+    {
+      "id": 65,
+      "word": "estimate",
+      "translation": "להעריך (בערך)",
+      "example": "Please estimate the total time.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 3.18
+    },
+    {
+      "id": 66,
+      "word": "evidence",
+      "translation": "ראיות/הוכחה",
+      "example": "There is strong evidence for the claim.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 3.09
+    },
+    {
+      "id": 67,
+      "word": "expand",
+      "translation": "להרחיב",
+      "example": "The company plans to expand abroad.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.32
+    },
+    {
+      "id": 68,
+      "word": "factor",
+      "translation": "גורם",
+      "example": "Time is a critical factor here.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.04
+    },
+    {
+      "id": 69,
+      "word": "feature",
+      "translation": "מאפיין",
+      "example": "Each phone has a new feature.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.44
+    },
+    {
+      "id": 70,
+      "word": "frequency",
+      "translation": "תדירות",
+      "example": "The frequency of errors decreased.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.37
+    },
+    {
+      "id": 71,
+      "word": "function",
+      "translation": "תפקיד/פונקציה",
+      "example": "What is the function of this part?",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.3
+    },
+    {
+      "id": 72,
+      "word": "illustrate",
+      "translation": "להמחיש",
+      "example": "Two examples illustrate the point.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 3.32
+    },
+    {
+      "id": 73,
+      "word": "impact",
+      "translation": "השפעה",
+      "example": "The policy had little impact.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 3.23
+    },
+    {
+      "id": 74,
+      "word": "imply",
+      "translation": "לרמוז",
+      "example": "The results imply a small change.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.44
+    },
+    {
+      "id": 75,
+      "word": "indicate",
+      "translation": "לציין/להצביע",
+      "example": "Graphs indicate a rising trend.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.92
+    },
+    {
+      "id": 76,
+      "word": "interpret",
+      "translation": "לפרש",
+      "example": "How do you interpret the data?",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 2.55
+    },
+    {
+      "id": 77,
+      "word": "maintain",
+      "translation": "לשמר/לתחזק",
+      "example": "It is hard to maintain balance.",
+      "level": "intermediate",
+      "category": "verb",
+      "frequency": 3.28
+    },
+    {
+      "id": 78,
+      "word": "method",
+      "translation": "שיטה",
+      "example": "We use a simple method.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.64
+    },
+    {
+      "id": 79,
+      "word": "outcome",
+      "translation": "תוצאה",
+      "example": "The outcome was better than expected.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.37
+    },
+    {
+      "id": 80,
+      "word": "pattern",
+      "translation": "דפוס",
+      "example": "We can see a pattern over time.",
+      "level": "intermediate",
+      "category": "noun",
+      "frequency": 2.35
+    },
+    {
+      "id": 81,
+      "word": "ambiguous",
+      "translation": "דו-משמעי/עמום",
+      "example": "The sentence is ambiguous without context.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.33
+    },
+    {
+      "id": 82,
+      "word": "anomaly",
+      "translation": "חריגה/אנומליה",
+      "example": "One anomaly appears in the results.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 0.94
+    },
+    {
+      "id": 83,
+      "word": "arbitrary",
+      "translation": "שרירותי",
+      "example": "The limit seems arbitrary and unfair.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.36
+    },
+    {
+      "id": 84,
+      "word": "assert",
+      "translation": "לטעון בביטחון/לקבוע",
+      "example": "Experts assert that the risk is low.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.77
+    },
+    {
+      "id": 85,
+      "word": "bias",
+      "translation": "הטיה/משוא פנים",
+      "example": "We must reduce bias in research.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.12
+    },
+    {
+      "id": 86,
+      "word": "coherent",
+      "translation": "קוהרנטי/עקבי",
+      "example": "The essay is logical and coherent.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.89
+    },
+    {
+      "id": 87,
+      "word": "coincide",
+      "translation": "לחפוף/להתרחש במקביל",
+      "example": "The tests coincide with the holiday.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.9
+    },
+    {
+      "id": 88,
+      "word": "commodity",
+      "translation": "סחורה",
+      "example": "Water became a precious commodity there.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.26
+    },
+    {
+      "id": 89,
+      "word": "compatible",
+      "translation": "תואם",
+      "example": "The devices are compatible with each other.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.72
+    },
+    {
+      "id": 90,
+      "word": "compile",
+      "translation": "ללקט/לקבץ",
+      "example": "We compile the data into one file.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 0.66
+    },
+    {
+      "id": 91,
+      "word": "comprehensive",
+      "translation": "מקיף",
+      "example": "This is a comprehensive review.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.74
+    },
+    {
+      "id": 92,
+      "word": "concede",
+      "translation": "להודות (בטענה/בטעות)",
+      "example": "She had to concede the point.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.42
+    },
+    {
+      "id": 93,
+      "word": "conclusive",
+      "translation": "חד-משמעי",
+      "example": "The evidence is not conclusive yet.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.63
+    },
+    {
+      "id": 94,
+      "word": "conjecture",
+      "translation": "השערה",
+      "example": "The idea is still a conjecture.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.15
+    },
+    {
+      "id": 95,
+      "word": "consecutive",
+      "translation": "עוקב/רציף",
+      "example": "He won three consecutive games.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.68
+    },
+    {
+      "id": 96,
+      "word": "constraint",
+      "translation": "אילוץ/מגבלה",
+      "example": "Budget is the main constraint.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.1
+    },
+    {
+      "id": 97,
+      "word": "controversy",
+      "translation": "מחלוקת",
+      "example": "The new rule caused controversy.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.89
+    },
+    {
+      "id": 98,
+      "word": "correlate",
+      "translation": "להיות בקורלציה; לקשר",
+      "example": "Scores correlate with study time.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.29
+    },
+    {
+      "id": 99,
+      "word": "cumulative",
+      "translation": "מצטבר",
+      "example": "The damage is cumulative over years.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.86
+    },
+    {
+      "id": 100,
+      "word": "deficient",
+      "translation": "לקוי/חסר",
+      "example": "The plan is deficient in details.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.72
+    },
+    {
+      "id": 101,
+      "word": "delineate",
+      "translation": "לתאר/לתחום",
+      "example": "The map delineates the border clearly.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 0.61
+    },
+    {
+      "id": 102,
+      "word": "discrete",
+      "translation": "נפרד/בדיד",
+      "example": "Use discrete categories for clarity.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.54
+    },
+    {
+      "id": 103,
+      "word": "disseminate",
+      "translation": "להפיץ",
+      "example": "They disseminate findings to the public.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.49
+    },
+    {
+      "id": 104,
+      "word": "encompass",
+      "translation": "להקיף/לכלול",
+      "example": "The course will encompass many topics.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.3
+    },
+    {
+      "id": 105,
+      "word": "erroneous",
+      "translation": "שגוי",
+      "example": "The report contains erroneous data.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.95
+    },
+    {
+      "id": 106,
+      "word": "feasible",
+      "translation": "ישים/בר-ביצוע",
+      "example": "The plan is feasible within a month.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.43
+    },
+    {
+      "id": 107,
+      "word": "forthcoming",
+      "translation": "קרוב/ממשמש ובא",
+      "example": "Further details will be forthcoming.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.75
+    },
+    {
+      "id": 108,
+      "word": "implement",
+      "translation": "ליישם",
+      "example": "We implement the policy next week.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.17
+    },
+    {
+      "id": 109,
+      "word": "incentive",
+      "translation": "תמריץ",
+      "example": "The bonus is a strong incentive.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.19
+    },
+    {
+      "id": 110,
+      "word": "inherent",
+      "translation": "טבוע/מובנה",
+      "example": "Risk is inherent in this method.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.84
+    },
+    {
+      "id": 111,
+      "word": "mitigate",
+      "translation": "למתן/להפחית",
+      "example": "Trees mitigate the heat in cities.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 1.74
+    },
+    {
+      "id": 112,
+      "word": "paradigm",
+      "translation": "פרדיגמה/תבנית חשיבה",
+      "example": "The study challenges the old paradigm.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 0.94
+    },
+    {
+      "id": 113,
+      "word": "preliminary",
+      "translation": "ראשוני/מוקדם",
+      "example": "These are preliminary results only.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.25
+    },
+    {
+      "id": 114,
+      "word": "prevalent",
+      "translation": "נפוץ/שכיח",
+      "example": "That habit is prevalent among teens.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.83
+    },
+    {
+      "id": 115,
+      "word": "provisional",
+      "translation": "זמני",
+      "example": "This is a provisional schedule.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.79
+    },
+    {
+      "id": 116,
+      "word": "redundant",
+      "translation": "מיותר/עודף",
+      "example": "Remove redundant words from the text.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.73
+    },
+    {
+      "id": 117,
+      "word": "resilient",
+      "translation": "חסין/בעל יכולת התאוששות",
+      "example": "Plants in the desert are resilient.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 0.99
+    },
+    {
+      "id": 118,
+      "word": "scrutiny",
+      "translation": "בחינה קפדנית/ביקורת",
+      "example": "The plan is under public scrutiny.",
+      "level": "hard",
+      "category": "noun",
+      "frequency": 1.43
+    },
+    {
+      "id": 119,
+      "word": "subtle",
+      "translation": "עדין/מעודן/דק",
+      "example": "There is a subtle change in tone.",
+      "level": "hard",
+      "category": "adjective",
+      "frequency": 1.39
+    },
+    {
+      "id": 120,
+      "word": "validate",
+      "translation": "לאמת/לתקף",
+      "example": "We validate the model with tests.",
+      "level": "hard",
+      "category": "verb",
+      "frequency": 0.8
+    }
+  ],
+  "quickQuizQuestions": [
+    {
+      "id": 1,
+      "type": "meaning",
+      "word": "order",
+      "question": "What does 'order' mean?",
+      "options": [
+        "ליצור",
+        "לענות",
+        "מוקדם",
+        "סדר"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 2,
+      "type": "meaning",
+      "word": "collect",
+      "question": "What does 'collect' mean?",
+      "options": [
+        "לבחור",
+        "לעצב/ליצור",
+        "לשפר",
+        "לאסוף"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 3,
+      "type": "meaning",
+      "word": "include",
+      "question": "What does 'include' mean?",
+      "options": [
+        "להסביר",
+        "להשלים/לסיים",
+        "להתכוון/משמעותו",
+        "לכלול"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 4,
+      "type": "meaning",
+      "word": "support",
+      "question": "What does 'support' mean?",
+      "options": [
+        "להימנע",
+        "חלק",
+        "לתמוך",
+        "לאסוף"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 5,
+      "type": "meaning",
+      "word": "easy",
+      "question": "What does 'easy' mean?",
+      "options": [
+        "להשלים/לסיים",
+        "קל",
+        "להסכים",
+        "להזדקק/צורך"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 6,
+      "type": "meaning",
+      "word": "compare",
+      "question": "What does 'compare' mean?",
+      "options": [
+        "לספק",
+        "להשוות",
+        "להיות שונה",
+        "לקבל"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 7,
+      "type": "meaning",
+      "word": "answer",
+      "question": "What does 'answer' mean?",
+      "options": [
+        "לענות",
+        "לספק",
+        "לשפר",
+        "עיקרי/ראשי"
+      ],
+      "correct": 0
+    },
+    {
+      "id": 8,
+      "type": "meaning",
+      "word": "choose",
+      "question": "What does 'choose' mean?",
+      "options": [
+        "לעצב/ליצור",
+        "לבחור",
+        "לקבל",
+        "לענות"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 9,
+      "type": "meaning",
+      "word": "agree",
+      "question": "What does 'agree' mean?",
+      "options": [
+        "להחליט",
+        "להסכים",
+        "להימנע",
+        "להשוות"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 10,
+      "type": "meaning",
+      "word": "apply",
+      "question": "What does 'apply' mean?",
+      "options": [
+        "להסביר",
+        "לטעון/להתווכח",
+        "ליישם/להגיש",
+        "לגרום"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 11,
+      "type": "meaning",
+      "word": "audience",
+      "question": "What does 'audience' mean?",
+      "options": [
+        "קהל",
+        "גישה",
+        "לרמוז",
+        "להדגים"
+      ],
+      "correct": 0
+    },
+    {
+      "id": 12,
+      "type": "meaning",
+      "word": "feature",
+      "question": "What does 'feature' mean?",
+      "options": [
+        "מאפיין",
+        "לשמר/לתחזק",
+        "גורם",
+        "לרמוז"
+      ],
+      "correct": 0
+    },
+    {
+      "id": 13,
+      "type": "meaning",
+      "word": "frequency",
+      "question": "What does 'frequency' mean?",
+      "options": [
+        "לקבוע",
+        "תדירות",
+        "להעריך (בערך)",
+        "לאשר"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 14,
+      "type": "meaning",
+      "word": "imply",
+      "question": "What does 'imply' mean?",
+      "options": [
+        "להגדיר",
+        "לרמוז",
+        "תועלת",
+        "להסתגל/להתאים"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 15,
+      "type": "meaning",
+      "word": "function",
+      "question": "What does 'function' mean?",
+      "options": [
+        "השפעה",
+        "להרחיב",
+        "לשמר/לתחזק",
+        "תפקיד/פונקציה"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 16,
+      "type": "meaning",
+      "word": "analysis",
+      "question": "What does 'analysis' mean?",
+      "options": [
+        "מאפיין",
+        "השפעה",
+        "ניתוח",
+        "להדגיש"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 17,
+      "type": "meaning",
+      "word": "illustrate",
+      "question": "What does 'illustrate' mean?",
+      "options": [
+        "תוצאה",
+        "נוח",
+        "קהל",
+        "להמחיש"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 18,
+      "type": "meaning",
+      "word": "challenge",
+      "question": "What does 'challenge' mean?",
+      "options": [
+        "לבקר",
+        "קבוע",
+        "אתגר",
+        "תפקיד/פונקציה"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 19,
+      "type": "meaning",
+      "word": "approach",
+      "question": "What does 'approach' mean?",
+      "options": [
+        "להסיק",
+        "להדגים",
+        "גישה",
+        "שיטה"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 20,
+      "type": "meaning",
+      "word": "demonstrate",
+      "question": "What does 'demonstrate' mean?",
+      "options": [
+        "להעריך (בערך)",
+        "שיטה",
+        "גישה",
+        "להדגים"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 21,
+      "type": "meaning",
+      "word": "correlate",
+      "question": "What does 'correlate' mean?",
+      "options": [
+        "מיותר/עודף",
+        "עוקב/רציף",
+        "תואם",
+        "להיות בקורלציה; לקשר"
+      ],
+      "correct": 3
+    },
+    {
+      "id": 22,
+      "type": "meaning",
+      "word": "preliminary",
+      "question": "What does 'preliminary' mean?",
+      "options": [
+        "חד-משמעי",
+        "למתן/להפחית",
+        "ראשוני/מוקדם",
+        "עדין/מעודן/דק"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 23,
+      "type": "meaning",
+      "word": "consecutive",
+      "question": "What does 'consecutive' mean?",
+      "options": [
+        "אילוץ/מגבלה",
+        "מקיף",
+        "עוקב/רציף",
+        "להפיץ"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 24,
+      "type": "meaning",
+      "word": "assert",
+      "question": "What does 'assert' mean?",
+      "options": [
+        "לטעון בביטחון/לקבוע",
+        "נפרד/בדיד",
+        "להקיף/לכלול",
+        "לתאר/לתחום"
+      ],
+      "correct": 0
+    },
+    {
+      "id": 25,
+      "type": "meaning",
+      "word": "encompass",
+      "question": "What does 'encompass' mean?",
+      "options": [
+        "להקיף/לכלול",
+        "מקיף",
+        "מיותר/עודף",
+        "ישים/בר-ביצוע"
+      ],
+      "correct": 0
+    },
+    {
+      "id": 26,
+      "type": "meaning",
+      "word": "concede",
+      "question": "What does 'concede' mean?",
+      "options": [
+        "ראשוני/מוקדם",
+        "להודות (בטענה/בטעות)",
+        "להקיף/לכלול",
+        "ללקט/לקבץ"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 27,
+      "type": "meaning",
+      "word": "ambiguous",
+      "question": "What does 'ambiguous' mean?",
+      "options": [
+        "קרוב/ממשמש ובא",
+        "נפוץ/שכיח",
+        "דו-משמעי/עמום",
+        "לחפוף/להתרחש במקביל"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 28,
+      "type": "meaning",
+      "word": "forthcoming",
+      "question": "What does 'forthcoming' mean?",
+      "options": [
+        "אילוץ/מגבלה",
+        "קרוב/ממשמש ובא",
+        "תואם",
+        "חריגה/אנומליה"
+      ],
+      "correct": 1
+    },
+    {
+      "id": 29,
+      "type": "meaning",
+      "word": "resilient",
+      "question": "What does 'resilient' mean?",
+      "options": [
+        "שרירותי",
+        "מקיף",
+        "חסין/בעל יכולת התאוששות",
+        "חד-משמעי"
+      ],
+      "correct": 2
+    },
+    {
+      "id": 30,
+      "type": "meaning",
+      "word": "prevalent",
+      "question": "What does 'prevalent' mean?",
+      "options": [
+        "ראשוני/מוקדם",
+        "להיות בקורלציה; לקשר",
+        "למתן/להפחית",
+        "נפוץ/שכיח"
+      ],
+      "correct": 3
+    }
+  ]
+}

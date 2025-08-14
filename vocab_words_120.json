@@ -1,0 +1,1204 @@
+{
+  "words": [
+    {
+      "id": "w001",
+      "headword": "able",
+      "he": "מסוגל",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "example": {
+        "en": "She is able to finish the task on time."
+      }
+    },
+    {
+      "id": "w002",
+      "headword": "accept",
+      "he": "לקבל",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "We accept the results and move forward."
+      }
+    },
+    {
+      "id": "w003",
+      "headword": "add",
+      "he": "להוסיף",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Please add sugar to the tea."
+      }
+    },
+    {
+      "id": "w004",
+      "headword": "agree",
+      "he": "להסכים",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Do you agree with this idea?"
+      }
+    },
+    {
+      "id": "w005",
+      "headword": "allow",
+      "he": "לאפשר",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The rules allow students to use a dictionary."
+      }
+    },
+    {
+      "id": "w006",
+      "headword": "answer",
+      "he": "לענות",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Try to answer all the questions."
+      }
+    },
+    {
+      "id": "w007",
+      "headword": "apply",
+      "he": "ליישם/להגיש",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "You can apply these tips in your next essay."
+      }
+    },
+    {
+      "id": "w008",
+      "headword": "argue",
+      "he": "לטעון/להתווכח",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "They argue that the plan will help everyone."
+      }
+    },
+    {
+      "id": "w009",
+      "headword": "arrive",
+      "he": "להגיע",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The train will arrive at noon."
+      }
+    },
+    {
+      "id": "w010",
+      "headword": "avoid",
+      "he": "להימנע",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Avoid common mistakes in the exam."
+      }
+    },
+    {
+      "id": "w011",
+      "headword": "cause",
+      "he": "לגרום",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Lack of sleep can cause problems."
+      }
+    },
+    {
+      "id": "w012",
+      "headword": "choose",
+      "he": "לבחור",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Choose the correct option."
+      }
+    },
+    {
+      "id": "w013",
+      "headword": "collect",
+      "he": "לאסוף",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "We collect data from many sources."
+      }
+    },
+    {
+      "id": "w014",
+      "headword": "compare",
+      "he": "להשוות",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Compare the two articles."
+      }
+    },
+    {
+      "id": "w015",
+      "headword": "complete",
+      "he": "להשלים/לסיים",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Complete the sentence with one word."
+      }
+    },
+    {
+      "id": "w016",
+      "headword": "consider",
+      "he": "לשקול",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Consider the context before you decide."
+      }
+    },
+    {
+      "id": "w017",
+      "headword": "continue",
+      "he": "להמשיך",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Please continue reading the next paragraph."
+      }
+    },
+    {
+      "id": "w018",
+      "headword": "create",
+      "he": "ליצור",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The author tries to create suspense."
+      }
+    },
+    {
+      "id": "w019",
+      "headword": "decide",
+      "he": "להחליט",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "It is hard to decide quickly."
+      }
+    },
+    {
+      "id": "w020",
+      "headword": "describe",
+      "he": "לתאר",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Describe the main character."
+      }
+    },
+    {
+      "id": "w021",
+      "headword": "develop",
+      "he": "לפתח",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Children develop language skills early."
+      }
+    },
+    {
+      "id": "w022",
+      "headword": "differ",
+      "he": "להיות שונה",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Opinions may differ on this topic."
+      }
+    },
+    {
+      "id": "w023",
+      "headword": "discuss",
+      "he": "לדון",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The class will discuss the issue tomorrow."
+      }
+    },
+    {
+      "id": "w024",
+      "headword": "early",
+      "he": "מוקדם",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "example": {
+        "en": "He woke up early to study."
+      }
+    },
+    {
+      "id": "w025",
+      "headword": "easy",
+      "he": "קל",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "example": {
+        "en": "This exercise is easy for most students."
+      }
+    },
+    {
+      "id": "w026",
+      "headword": "example",
+      "he": "דוגמה",
+      "pos": "noun",
+      "difficulty": "easy",
+      "example": {
+        "en": "The teacher gave an example to explain."
+      }
+    },
+    {
+      "id": "w027",
+      "headword": "explain",
+      "he": "להסביר",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Can you explain your answer?"
+      }
+    },
+    {
+      "id": "w028",
+      "headword": "form",
+      "he": "לעצב/ליצור",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The cells form a simple pattern."
+      }
+    },
+    {
+      "id": "w029",
+      "headword": "future",
+      "he": "עתיד",
+      "pos": "noun",
+      "difficulty": "easy",
+      "example": {
+        "en": "In the future, we will travel more."
+      }
+    },
+    {
+      "id": "w030",
+      "headword": "improve",
+      "he": "לשפר",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Practice can improve your writing."
+      }
+    },
+    {
+      "id": "w031",
+      "headword": "include",
+      "he": "לכלול",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The price includes breakfast."
+      }
+    },
+    {
+      "id": "w032",
+      "headword": "increase",
+      "he": "להגדיל/לגדול",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Reading will increase your vocabulary."
+      }
+    },
+    {
+      "id": "w033",
+      "headword": "instead",
+      "he": "במקום זאת",
+      "pos": "adverb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Use simple words instead of rare ones."
+      }
+    },
+    {
+      "id": "w034",
+      "headword": "main",
+      "he": "עיקרי/ראשי",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "example": {
+        "en": "What is the main idea of the text?"
+      }
+    },
+    {
+      "id": "w035",
+      "headword": "mean",
+      "he": "להתכוון/משמעותו",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "What does this word mean?"
+      }
+    },
+    {
+      "id": "w036",
+      "headword": "need",
+      "he": "להזדקק/צורך",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "You need more examples to support it."
+      }
+    },
+    {
+      "id": "w037",
+      "headword": "order",
+      "he": "סדר",
+      "pos": "noun",
+      "difficulty": "easy",
+      "example": {
+        "en": "The events happen in a clear order."
+      }
+    },
+    {
+      "id": "w038",
+      "headword": "part",
+      "he": "חלק",
+      "pos": "noun",
+      "difficulty": "easy",
+      "example": {
+        "en": "This part explains the method."
+      }
+    },
+    {
+      "id": "w039",
+      "headword": "provide",
+      "he": "לספק",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "The chart will provide extra details."
+      }
+    },
+    {
+      "id": "w040",
+      "headword": "support",
+      "he": "לתמוך",
+      "pos": "verb",
+      "difficulty": "easy",
+      "example": {
+        "en": "Use facts to support your claim."
+      }
+    },
+    {
+      "id": "w041",
+      "headword": "accurate",
+      "he": "מדויק",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "example": {
+        "en": "Make sure your answer is accurate."
+      }
+    },
+    {
+      "id": "w042",
+      "headword": "adapt",
+      "he": "להסתגל/להתאים",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Writers adapt their style to the audience."
+      }
+    },
+    {
+      "id": "w043",
+      "headword": "analysis",
+      "he": "ניתוח",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "The analysis supports the conclusion."
+      }
+    },
+    {
+      "id": "w044",
+      "headword": "approach",
+      "he": "גישה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "This approach is simple and effective."
+      }
+    },
+    {
+      "id": "w045",
+      "headword": "assess",
+      "he": "להעריך/למדוד",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "We assess progress every week."
+      }
+    },
+    {
+      "id": "w046",
+      "headword": "audience",
+      "he": "קהל",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "Know your audience before writing."
+      }
+    },
+    {
+      "id": "w047",
+      "headword": "benefit",
+      "he": "תועלת",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "This change has a clear benefit."
+      }
+    },
+    {
+      "id": "w048",
+      "headword": "challenge",
+      "he": "אתגר",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "Learning new words is a challenge."
+      }
+    },
+    {
+      "id": "w049",
+      "headword": "complex",
+      "he": "מורכב",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "example": {
+        "en": "The theory is complex but useful."
+      }
+    },
+    {
+      "id": "w050",
+      "headword": "concept",
+      "he": "מושג",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "The concept is easy to understand."
+      }
+    },
+    {
+      "id": "w051",
+      "headword": "conclude",
+      "he": "להסיק",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "We conclude that the method works."
+      }
+    },
+    {
+      "id": "w052",
+      "headword": "confirm",
+      "he": "לאשר",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Data confirm the initial idea."
+      }
+    },
+    {
+      "id": "w053",
+      "headword": "consequence",
+      "he": "תוצאה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "A poor plan has a bad consequence."
+      }
+    },
+    {
+      "id": "w054",
+      "headword": "constant",
+      "he": "קבוע",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "example": {
+        "en": "The speed remained constant."
+      }
+    },
+    {
+      "id": "w055",
+      "headword": "context",
+      "he": "הקשר",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "Meaning depends on context."
+      }
+    },
+    {
+      "id": "w056",
+      "headword": "contrast",
+      "he": "ניגוד",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "There is a contrast between the views."
+      }
+    },
+    {
+      "id": "w057",
+      "headword": "convenient",
+      "he": "נוח",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "example": {
+        "en": "Online study is convenient for many."
+      }
+    },
+    {
+      "id": "w058",
+      "headword": "criticize",
+      "he": "לבקר",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Some readers criticize the author."
+      }
+    },
+    {
+      "id": "w059",
+      "headword": "decline",
+      "he": "לרדת",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Sales continue to decline this year."
+      }
+    },
+    {
+      "id": "w060",
+      "headword": "define",
+      "he": "להגדיר",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "First, define the key terms."
+      }
+    },
+    {
+      "id": "w061",
+      "headword": "demonstrate",
+      "he": "להדגים",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "The chart will demonstrate the trend."
+      }
+    },
+    {
+      "id": "w062",
+      "headword": "determine",
+      "he": "לקבוע",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "We determine the winner by points."
+      }
+    },
+    {
+      "id": "w063",
+      "headword": "efficient",
+      "he": "יעיל",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "example": {
+        "en": "This tool is very efficient."
+      }
+    },
+    {
+      "id": "w064",
+      "headword": "emphasize",
+      "he": "להדגיש",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Teachers emphasize clear writing."
+      }
+    },
+    {
+      "id": "w065",
+      "headword": "estimate",
+      "he": "להעריך (בערך)",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Please estimate the total time."
+      }
+    },
+    {
+      "id": "w066",
+      "headword": "evidence",
+      "he": "ראיות/הוכחה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "There is strong evidence for the claim."
+      }
+    },
+    {
+      "id": "w067",
+      "headword": "expand",
+      "he": "להרחיב",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "The company plans to expand abroad."
+      }
+    },
+    {
+      "id": "w068",
+      "headword": "factor",
+      "he": "גורם",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "Time is a critical factor here."
+      }
+    },
+    {
+      "id": "w069",
+      "headword": "feature",
+      "he": "מאפיין",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "Each phone has a new feature."
+      }
+    },
+    {
+      "id": "w070",
+      "headword": "frequency",
+      "he": "תדירות",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "The frequency of errors decreased."
+      }
+    },
+    {
+      "id": "w071",
+      "headword": "function",
+      "he": "תפקיד/פונקציה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "What is the function of this part?"
+      }
+    },
+    {
+      "id": "w072",
+      "headword": "illustrate",
+      "he": "להמחיש",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Two examples illustrate the point."
+      }
+    },
+    {
+      "id": "w073",
+      "headword": "impact",
+      "he": "השפעה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "The policy had little impact."
+      }
+    },
+    {
+      "id": "w074",
+      "headword": "imply",
+      "he": "לרמוז",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "The results imply a small change."
+      }
+    },
+    {
+      "id": "w075",
+      "headword": "indicate",
+      "he": "לציין/להצביע",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "Graphs indicate a rising trend."
+      }
+    },
+    {
+      "id": "w076",
+      "headword": "interpret",
+      "he": "לפרש",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "How do you interpret the data?"
+      }
+    },
+    {
+      "id": "w077",
+      "headword": "maintain",
+      "he": "לשמר/לתחזק",
+      "pos": "verb",
+      "difficulty": "medium",
+      "example": {
+        "en": "It is hard to maintain balance."
+      }
+    },
+    {
+      "id": "w078",
+      "headword": "method",
+      "he": "שיטה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "We use a simple method."
+      }
+    },
+    {
+      "id": "w079",
+      "headword": "outcome",
+      "he": "תוצאה",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "The outcome was better than expected."
+      }
+    },
+    {
+      "id": "w080",
+      "headword": "pattern",
+      "he": "דפוס",
+      "pos": "noun",
+      "difficulty": "medium",
+      "example": {
+        "en": "We can see a pattern over time."
+      }
+    },
+    {
+      "id": "w081",
+      "headword": "ambiguous",
+      "he": "דו-משמעי/עמום",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The sentence is ambiguous without context."
+      }
+    },
+    {
+      "id": "w082",
+      "headword": "anomaly",
+      "he": "חריגה/אנומליה",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "One anomaly appears in the results."
+      }
+    },
+    {
+      "id": "w083",
+      "headword": "arbitrary",
+      "he": "שרירותי",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The limit seems arbitrary and unfair."
+      }
+    },
+    {
+      "id": "w084",
+      "headword": "assert",
+      "he": "לטעון בביטחון/לקבוע",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "Experts assert that the risk is low."
+      }
+    },
+    {
+      "id": "w085",
+      "headword": "bias",
+      "he": "הטיה/משוא פנים",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "We must reduce bias in research."
+      }
+    },
+    {
+      "id": "w086",
+      "headword": "coherent",
+      "he": "קוהרנטי/עקבי",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The essay is logical and coherent."
+      }
+    },
+    {
+      "id": "w087",
+      "headword": "coincide",
+      "he": "לחפוף/להתרחש במקביל",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "The tests coincide with the holiday."
+      }
+    },
+    {
+      "id": "w088",
+      "headword": "commodity",
+      "he": "סחורה",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "Water became a precious commodity there."
+      }
+    },
+    {
+      "id": "w089",
+      "headword": "compatible",
+      "he": "תואם",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The devices are compatible with each other."
+      }
+    },
+    {
+      "id": "w090",
+      "headword": "compile",
+      "he": "ללקט/לקבץ",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "We compile the data into one file."
+      }
+    },
+    {
+      "id": "w091",
+      "headword": "comprehensive",
+      "he": "מקיף",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "This is a comprehensive review."
+      }
+    },
+    {
+      "id": "w092",
+      "headword": "concede",
+      "he": "להודות (בטענה/בטעות)",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "She had to concede the point."
+      }
+    },
+    {
+      "id": "w093",
+      "headword": "conclusive",
+      "he": "חד-משמעי",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The evidence is not conclusive yet."
+      }
+    },
+    {
+      "id": "w094",
+      "headword": "conjecture",
+      "he": "השערה",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "The idea is still a conjecture."
+      }
+    },
+    {
+      "id": "w095",
+      "headword": "consecutive",
+      "he": "עוקב/רציף",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "He won three consecutive games."
+      }
+    },
+    {
+      "id": "w096",
+      "headword": "constraint",
+      "he": "אילוץ/מגבלה",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "Budget is the main constraint."
+      }
+    },
+    {
+      "id": "w097",
+      "headword": "controversy",
+      "he": "מחלוקת",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "The new rule caused controversy."
+      }
+    },
+    {
+      "id": "w098",
+      "headword": "correlate",
+      "he": "להיות בקורלציה; לקשר",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "Scores correlate with study time."
+      }
+    },
+    {
+      "id": "w099",
+      "headword": "cumulative",
+      "he": "מצטבר",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The damage is cumulative over years."
+      }
+    },
+    {
+      "id": "w100",
+      "headword": "deficient",
+      "he": "לקוי/חסר",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The plan is deficient in details."
+      }
+    },
+    {
+      "id": "w101",
+      "headword": "delineate",
+      "he": "לתאר/לתחום",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "The map delineates the border clearly."
+      }
+    },
+    {
+      "id": "w102",
+      "headword": "discrete",
+      "he": "נפרד/בדיד",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "Use discrete categories for clarity."
+      }
+    },
+    {
+      "id": "w103",
+      "headword": "disseminate",
+      "he": "להפיץ",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "They disseminate findings to the public."
+      }
+    },
+    {
+      "id": "w104",
+      "headword": "encompass",
+      "he": "להקיף/לכלול",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "The course will encompass many topics."
+      }
+    },
+    {
+      "id": "w105",
+      "headword": "erroneous",
+      "he": "שגוי",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The report contains erroneous data."
+      }
+    },
+    {
+      "id": "w106",
+      "headword": "feasible",
+      "he": "ישים/בר-ביצוע",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "The plan is feasible within a month."
+      }
+    },
+    {
+      "id": "w107",
+      "headword": "forthcoming",
+      "he": "קרוב/ממשמש ובא",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "Further details will be forthcoming."
+      }
+    },
+    {
+      "id": "w108",
+      "headword": "implement",
+      "he": "ליישם",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "We implement the policy next week."
+      }
+    },
+    {
+      "id": "w109",
+      "headword": "incentive",
+      "he": "תמריץ",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "The bonus is a strong incentive."
+      }
+    },
+    {
+      "id": "w110",
+      "headword": "inherent",
+      "he": "טבוע/מובנה",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "Risk is inherent in this method."
+      }
+    },
+    {
+      "id": "w111",
+      "headword": "mitigate",
+      "he": "למתן/להפחית",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "Trees mitigate the heat in cities."
+      }
+    },
+    {
+      "id": "w112",
+      "headword": "paradigm",
+      "he": "פרדיגמה/תבנית חשיבה",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "The study challenges the old paradigm."
+      }
+    },
+    {
+      "id": "w113",
+      "headword": "preliminary",
+      "he": "ראשוני/מוקדם",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "These are preliminary results only."
+      }
+    },
+    {
+      "id": "w114",
+      "headword": "prevalent",
+      "he": "נפוץ/שכיח",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "That habit is prevalent among teens."
+      }
+    },
+    {
+      "id": "w115",
+      "headword": "provisional",
+      "he": "זמני",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "This is a provisional schedule."
+      }
+    },
+    {
+      "id": "w116",
+      "headword": "redundant",
+      "he": "מיותר/עודף",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "Remove redundant words from the text."
+      }
+    },
+    {
+      "id": "w117",
+      "headword": "resilient",
+      "he": "חסין/בעל יכולת התאוששות",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "Plants in the desert are resilient."
+      }
+    },
+    {
+      "id": "w118",
+      "headword": "scrutiny",
+      "he": "בחינה קפדנית/ביקורת",
+      "pos": "noun",
+      "difficulty": "hard",
+      "example": {
+        "en": "The plan is under public scrutiny."
+      }
+    },
+    {
+      "id": "w119",
+      "headword": "subtle",
+      "he": "עדין/מעודן/דק",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "example": {
+        "en": "There is a subtle change in tone."
+      }
+    },
+    {
+      "id": "w120",
+      "headword": "validate",
+      "he": "לאמת/לתקף",
+      "pos": "verb",
+      "difficulty": "hard",
+      "example": {
+        "en": "We validate the model with tests."
+      }
+    }
+  ]
+}
