@@ -83,6 +83,29 @@ export const loadQuestions = async ({
       } else if (effectiveType === 'reading-comprehension') {
         questionsToUse = await getReadingComprehensionQuestions();
         console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} reading comprehension questions`);
+      } else if (effectiveType === 'listening') {
+        // For listening routes, check for specific subtype
+        const listeningSubtype = sessionStorage.getItem('listening_subtype');
+        if (listeningSubtype) {
+          questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+          console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} listening ${listeningSubtype} questions`);
+        } else {
+          // Fallback to all listening questions
+          questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+          console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} listening questions (all subtypes)`);
+        }
+      } else if (effectiveType === 'continuation') {
+        questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} listening continuation questions`);
+      } else if (effectiveType === 'comprehension') {
+        questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} listening comprehension questions`);
+      } else if (effectiveType === 'formation') {
+        questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} word formation questions`);
+      } else if (effectiveType === 'context') {
+        questionsToUse = await getQuestionsByDifficultyAndType('medium', 'listening');
+        console.log(`[QUICK PRACTICE] Found ${questionsToUse.length} grammar context questions`);
       }
       
       // Apply limit and shuffle
@@ -100,8 +123,37 @@ export const loadQuestions = async ({
     console.log(`Loading questions for type: ${effectiveType}, difficulty: ${difficulty}`);
     
     try {
-      questionsToUse = await getQuestionsByDifficultyAndType(difficulty, effectiveType);
-      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${effectiveType}`);
+      // Map listening category types to new structure
+      let dbType = effectiveType;
+      let subType = undefined;
+      
+      // For listening routes, get the subtype from sessionStorage
+      if (effectiveType === 'listening') {
+        const listeningSubtype = sessionStorage.getItem('listening_subtype');
+        if (listeningSubtype) {
+          subType = listeningSubtype;
+          console.log(`🔊 Using listening subtype from sessionStorage: ${subType}`);
+        } else {
+          console.log(`⚠️ No listening subtype found in sessionStorage for listening route`);
+        }
+      }
+      // Legacy mapping for backward compatibility
+      else if (effectiveType === 'continuation') {
+        dbType = 'listening';
+        subType = 'audio-continuation';
+      } else if (effectiveType === 'comprehension') {
+        dbType = 'listening';
+        subType = 'lecture-conversation';
+      } else if (effectiveType === 'formation') {
+        dbType = 'listening';
+        subType = 'word-formation';
+      } else if (effectiveType === 'context') {
+        dbType = 'listening';
+        subType = 'grammar-context';
+      }
+      
+      questionsToUse = await getQuestionsByDifficultyAndType(difficulty, dbType);
+      console.log(`Found ${questionsToUse.length} questions for ${difficulty} ${dbType}${subType ? ` (${subType})` : ''}`);
       
       // Handle set-based question selection
       if (setNumber && startIndex) {
@@ -135,12 +187,33 @@ export const loadQuestions = async ({
     
     if (difficultyLevel && difficultyType) {
       try {
-        if (difficultyType === 'mixed') {
-          questionsToUse = await getMixedDifficultyQuestions(difficultyLevel as 'easy' | 'medium' | 'hard');
-        } else {
-          questionsToUse = await getQuestionsByDifficultyAndType(difficultyLevel, difficultyType);
+        // Map listening category types to new structure
+        let dbType = difficultyType;
+        let subType = undefined;
+        
+        if (difficultyType === 'continuation') {
+          dbType = 'listening';
+          subType = 'audio-continuation';
+        } else if (difficultyType === 'comprehension') {
+          dbType = 'listening';
+          subType = 'lecture-conversation';
+        } else if (difficultyType === 'formation') {
+          dbType = 'listening';
+          subType = 'word-formation';
+        } else if (difficultyType === 'context') {
+          dbType = 'listening';
+          subType = 'grammar-context';
         }
-        console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${difficultyType}`);
+        
+        if (difficultyLevel === 'mixed') {
+          // For mixed difficulty listening questions, use medium as the actual difficulty level
+          const actualDifficulty = dbType === 'listening' ? 'medium' : 'mixed';
+          questionsToUse = await getQuestionsByDifficultyAndType(actualDifficulty, dbType);
+          console.log(`Found ${questionsToUse.length} mixed difficulty questions for type ${dbType}${subType ? ` (${subType})` : ''} (using ${actualDifficulty})`);
+        } else {
+          questionsToUse = await getQuestionsByDifficultyAndType(difficultyLevel, dbType);
+          console.log(`Found ${questionsToUse.length} questions for ${difficultyLevel} ${dbType}${subType ? ` (${subType})` : ''}`);
+        }
       } catch (error) {
         console.error(`Error loading difficulty-based questions:`, error);
         questionsToUse = [];
