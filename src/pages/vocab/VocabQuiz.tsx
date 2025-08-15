@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import vocabData from '@/data/vocab-static.json';
 
 const VocabQuiz: React.FC = () => {
@@ -110,7 +112,9 @@ const VocabQuiz: React.FC = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6">
+    <>
+      <Header />
+      <div className="max-w-3xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <Link to="/vocab" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
@@ -220,7 +224,9 @@ const VocabQuiz: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 };
 

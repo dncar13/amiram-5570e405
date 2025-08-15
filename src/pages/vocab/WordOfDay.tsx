@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import WordCard from '@/components/vocab/WordCard';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import vocabData from '@/data/vocab-static.json';
 
 const WordOfDay: React.FC = () => {
@@ -40,7 +42,9 @@ const WordOfDay: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
+    <>
+      <Header />
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <Link to="/vocab" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
@@ -83,7 +87,6 @@ const WordOfDay: React.FC = () => {
           <div className="bg-white p-4 rounded-lg border">
             <h4 className="font-semibold text-slate-700 mb-2">דוגמה:</h4>
             <p className="text-lg text-slate-800 mb-2">{wordOfDay.example}</p>
-            <p className="text-slate-600 italic">{wordOfDay.exampleTranslation}</p>
           </div>
 
           {/* Etymology */}
@@ -148,7 +151,9 @@ const WordOfDay: React.FC = () => {
           </Link>
         </CardContent>
       </Card>
-    </div>
+      </div>
+      <Footer />
+    </>
   );
 };
 
