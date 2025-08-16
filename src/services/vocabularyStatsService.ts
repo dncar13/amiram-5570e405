@@ -278,3 +278,96 @@ function updateAnonymousProgress(
     console.warn('Error updating anonymous progress:', error);
   }
 }
+
+// Get unknown words for randomized questions
+export async function getUnknownWords(allWordIds: string[]): Promise<string[]> {
+  const userId = await getCurrentUserId();
+  
+  if (!userId) {
+    // For anonymous users, check localStorage
+    try {
+      const vocabData = JSON.parse(localStorage.getItem('vocab_anonymous_data') || '{}');
+      return allWordIds.filter(wordId => !vocabData[wordId]?.is_known);
+    } catch (error) {
+      console.warn('Error reading anonymous data:', error);
+      return allWordIds; // Return all words if error
+    }
+  }
+
+  try {
+    // For authenticated users, query database
+    const { data: knownWords, error } = await supabase
+      .from('user_vocabulary')
+      .select('word_id')
+      .eq('user_id', userId)
+      .eq('is_known', true);
+
+    if (error) {
+      console.warn('Error fetching known words:', error);
+      return allWordIds; // Return all words if error
+    }
+
+    const knownWordIds = new Set(knownWords.map(item => item.word_id));
+    return allWordIds.filter(wordId => !knownWordIds.has(wordId));
+
+  } catch (error) {
+    console.error('Error fetching unknown words:', error);
+    return allWordIds; // Return all words if error
+  }
+}
+
+// Get user's vocabulary knowledge status for a list of words
+export async function getWordsKnowledgeStatus(wordIds: string[]): Promise<Record<string, { isKnown: boolean; isSaved: boolean }>> {
+  const userId = await getCurrentUserId();
+  const result: Record<string, { isKnown: boolean; isSaved: boolean }> = {};
+  
+  // Initialize all words as unknown/unsaved
+  wordIds.forEach(wordId => {
+    result[wordId] = { isKnown: false, isSaved: false };
+  });
+  
+  if (!userId) {
+    // For anonymous users, check localStorage
+    try {
+      const vocabData = JSON.parse(localStorage.getItem('vocab_anonymous_data') || '{}');
+      wordIds.forEach(wordId => {
+        if (vocabData[wordId]) {
+          result[wordId] = {
+            isKnown: vocabData[wordId].is_known || false,
+            isSaved: vocabData[wordId].is_saved || false
+          };
+        }
+      });
+    } catch (error) {
+      console.warn('Error reading anonymous data:', error);
+    }
+    return result;
+  }
+
+  try {
+    // For authenticated users, query database
+    const { data: vocabularyData, error } = await supabase
+      .from('user_vocabulary')
+      .select('word_id, is_known, is_saved')
+      .eq('user_id', userId)
+      .in('word_id', wordIds);
+
+    if (error) {
+      console.warn('Error fetching words knowledge status:', error);
+      return result;
+    }
+
+    vocabularyData.forEach(item => {
+      result[item.word_id] = {
+        isKnown: item.is_known || false,
+        isSaved: item.is_saved || false
+      };
+    });
+
+    return result;
+
+  } catch (error) {
+    console.error('Error fetching words knowledge status:', error);
+    return result;
+  }
+}
