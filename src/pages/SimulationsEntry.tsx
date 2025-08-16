@@ -108,6 +108,14 @@ const SimulationsEntry: React.FC = () => {
 
   const questionTypes: QuestionTypeOption[] = [
     {
+      type: 'vocabulary',
+      title: 'אוצר מילים באנגלית',
+      description: 'שאלות תרגום ואוצר מילים מעברית לאנגלית',
+      icon: <Star className="w-6 h-6" />,
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50'
+    },
+    {
       type: 'sentence-completion',
       title: 'השלמת משפטים',
       description: 'שאלות השלמת משפטים ומילים חסרות',
@@ -130,14 +138,6 @@ const SimulationsEntry: React.FC = () => {
       icon: <BookOpenCheck className="w-6 h-6" />,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
-    },
-    {
-      type: 'vocabulary',
-      title: 'אוצר מילים באנגלית',
-      description: 'שאלות אוצר מילים - תרגום מעברית לאנגלית',
-      icon: <Star className="w-6 h-6" />,
-      color: 'text-amber-600',
-      bgColor: 'bg-amber-50'
     },
   ];
 

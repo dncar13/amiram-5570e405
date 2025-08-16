@@ -224,7 +224,7 @@ const HeroSection: React.FC = () => {
                 }}
               />
               <span className="text-sm font-medium bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent relative z-10">
-                הפלטפורמה המובילה להכנה למבחן אמירם
+                הפלטפורמה המובילה להכנה למבחן אמירנט
               </span>
             </motion.div>
 
@@ -350,7 +350,7 @@ const HeroSection: React.FC = () => {
                       style={{ opacity: 0.3 }}
                     />
                     <span className="relative z-10 flex items-center">
-                      התחל תרגול מתקדם
+                      ערכת הכנה לאמירנט
                       <motion.div
                         initial={{ x: 0 }}
                         whileHover={{ x: -5 }}
@@ -362,7 +362,7 @@ const HeroSection: React.FC = () => {
                 </motion.div>
               </Link>
               
-              <Link to="/premium">
+              <Link to="/vocab">
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -383,7 +383,7 @@ const HeroSection: React.FC = () => {
                         ease: "linear"
                       }}
                     />
-                    <span className="relative z-10">שדרג לפרימיום</span>
+                    <span className="relative z-10">התחל לתרגל אוצר מילים</span>
                   </Button>
                 </motion.div>
               </Link>
@@ -421,8 +421,8 @@ const HeroSection: React.FC = () => {
                   delay: 0.7
                 },
                 { 
-                  value: "24/7", 
-                  label: "תמיכה מקצועית", 
+                  value: "53", 
+                  label: "זמן תגובה ממוצע לתמיכה — דק׳", 
                   color: "from-purple-400 to-pink-500", 
                   delay: 0.8
                 }

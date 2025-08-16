@@ -25,9 +25,7 @@ import { supabase } from "@/integrations/supabase/client";
 export const useSimulation = (
   simulationId: string, 
   isQuestionSet: boolean = false,
-  storyQuestions?: Question[],
-  finalType?: string, // Corrected type parameter
-  finalDifficulty?: string // Corrected difficulty parameter
+  storyQuestions?: Question[]
 ) => {
   const [state, setState] = useState<SimulationState>(initialSimulationState);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
@@ -46,7 +44,7 @@ export const useSimulation = (
   
   // Get type from query params if not in URL path
   const typeFromQuery = searchParams.get('type');
-  const effectiveType = finalType || type || typeFromQuery;
+  const effectiveType = type || typeFromQuery;
 
   // Check if this is a full exam simulation
   const isFullExam = simulationId === 'full' || window.location.pathname.includes('/simulation/full');
@@ -61,8 +59,7 @@ export const useSimulation = (
   const setParams = useMemo(() => {
     const set = setNumber ? parseInt(setNumber) : null;
     const start = startIndex ? parseInt(startIndex) : null;
-    const useDifficulty = finalDifficulty || difficulty;
-    const isSetBased = !!(set && start !== null && effectiveType && useDifficulty);
+    const isSetBased = !!(set && start !== null && effectiveType && difficulty);
     
     if (isSetBased && (isNaN(set) || isNaN(start) || start < 0)) {
       console.warn('⚠️ Invalid set parameters detected:', { setNumber, startIndex, set, start });
@@ -74,10 +71,10 @@ export const useSimulation = (
       setId: set,
       startIdx: start,
       setType: effectiveType,
-      setDifficulty: useDifficulty,
+      setDifficulty: difficulty,
       questionsInSet: 10
     };
-  }, [setNumber, startIndex, effectiveType, difficulty, finalDifficulty]);
+  }, [setNumber, startIndex, effectiveType, difficulty]);
 
   // Clear simulation type identification
   const simulationType = useMemo(() => {
@@ -168,44 +165,8 @@ export const useSimulation = (
   const { startTimer, stopTimer, resetTimer, initializeTimer, clearTimer } = useTimer(setState);
 
   // Enhanced network error handling with retry logic
-  const saveWithRetry = useCallback(async (sessionData: {
-    id?: string;
-    user_id: string;
-    current_question_index: number;
-    answers: Array<{
-      questionIndex: number;
-      selectedAnswer: number;
-      isCorrect: boolean;
-      timeSpent: number;
-    }>;
-    total_questions: number;
-    progress_percentage: number;
-    is_completed: boolean;
-    session_type: string;
-    correct_answers: number;
-    questions_answered: number;
-    time_spent: number;
-    metadata: {
-      exam_mode: boolean;
-      show_answers_immediately: boolean;
-      set_number: string | null;
-      start_index: string | null;
-      type: string | undefined;
-      difficulty: string | undefined;
-      is_set_based: string;
-      set_id: string | null;
-      set_type: string | null;
-      set_difficulty: string | null;
-      questions_in_set: string | null;
-      simulation_id: string;
-      session_subtype: string;
-      simulation_type: string;
-      simulation_category: string;
-      simulation_display_name: string;
-      simulation_description: string;
-    };
-  }, maxRetries = 3) => {
-    let lastError: Error | string | null = null;
+  const saveWithRetry = useCallback(async (sessionData: any, maxRetries = 3) => {
+    let lastError: any = null;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
@@ -777,8 +738,8 @@ export const useSimulation = (
       // 3. Get fresh questions for restart
       const questionsToUse = await loadQuestions({
         storyQuestions,
-        effectiveType: finalType || effectiveType,
-        difficulty: finalDifficulty || difficulty,
+        effectiveType,
+        difficulty,
         questionLimit,
         setNumber,
         startIndex,
@@ -873,8 +834,8 @@ export const useSimulation = (
       // 3. Get fresh questions to avoid undefined state
       const questionsToUse = await loadQuestions({
         storyQuestions,
-        effectiveType: finalType || effectiveType,
-        difficulty: finalDifficulty || difficulty,
+        effectiveType,
+        difficulty,
         questionLimit,
         setNumber,
         startIndex,
@@ -934,31 +895,20 @@ export const useSimulation = (
     // console.log("Story questions available:", !!storyQuestions, "Count:", storyQuestions?.length || 0);
     
     try {
-      console.log('🔄 [useSimulation] Loading questions with params:', {
-        effectiveType,
-        difficulty,
-        questionLimit,
-        setNumber,
-        startIndex,
-        isFullExam,
-        hasStoryQuestions: !!storyQuestions,
-        storyQuestionsLength: storyQuestions?.length || 0
-      });
-      
       const questionsToUse = await loadQuestions({
         storyQuestions,
-        effectiveType: finalType || effectiveType,
-        difficulty: finalDifficulty || difficulty,
+        effectiveType,
+        difficulty,
         questionLimit,
         setNumber,
         startIndex,
         isFullExam
       });
       
-      console.log(`🎯 [useSimulation] Loaded ${questionsToUse.length} questions for simulation. First question type: ${questionsToUse[0]?.type}`);
+      // console.log(`Loaded ${questionsToUse.length} questions for simulation`);
       
       if (questionsToUse.length > 0) {
-        console.log(`✅ [useSimulation] Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
+        // console.log(`Setting ${questionsToUse.length} questions for simulation - first question:`, questionsToUse[0]);
         setState(prevState => ({
           ...prevState,
           questions: questionsToUse,
@@ -1067,7 +1017,7 @@ export const useSimulation = (
               const questionFlags: Record<number, boolean> = {};
               
               if (Array.isArray(session.answers)) {
-                session.answers.forEach((answer: { questionIndex: number; selectedAnswer: number }) => {
+                session.answers.forEach((answer: any) => {
                   userAnswers[answer.questionIndex] = answer.selectedAnswer;
                 });
               }

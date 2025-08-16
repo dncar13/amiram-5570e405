@@ -85,23 +85,28 @@ const Header = React.memo(() => {
     >
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          {/* Logo */}
-                    {/* Logo */}
+          {/* Logo with actual image */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-3 rounded-xl shadow-lg border border-blue-500/50 group-hover:shadow-blue-500/30 transition-all duration-300">
-              {/* Logo will be added later */}
-            </div>
-            <div className="text-right">
-              <h2 className="text-2xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
-                Amiram Academy
-              </h2>
-              <p className="text-sm text-slate-400 font-medium">
-                Your Path to Success
-              </p>
+            <div className="flex items-center space-x-3">
+              <div className="relative bg-white rounded-lg p-1 shadow-lg">
+                <img 
+                  src="/images/image.png" 
+                  alt="Amiram Academy Logo" 
+                  className="w-12 h-12 object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="text-right">
+                <h2 className="text-xl font-bold text-slate-100 group-hover:text-blue-300 transition-colors duration-300">
+                  Amiram Academy
+                </h2>
+                <p className="text-xs text-slate-400 font-medium">
+                  Your Path to Success
+                </p>
+              </div>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - NEW ORDER: בית, סימולציות, אוצר מילים, חומרי לימוד, אודות */}
           <nav className="hidden md:flex items-center space-x-6" data-testid="desktop-nav">
             <Link 
               to="/" 
@@ -116,22 +121,16 @@ const Header = React.memo(() => {
               סימולציות
             </Link>
             <Link 
-              to="/reading-comprehension" 
+              to="/vocab" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
-              הבנת הנקרא
+              אוצר מילים
             </Link>
             <Link 
               to="/articles" 
               className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
             >
               חומרי לימוד
-            </Link>
-            <Link 
-              to="/vocab" 
-              className="text-slate-300 hover:text-blue-400 font-medium transition-colors duration-300 px-3 py-2 rounded-lg hover:bg-slate-800/50"
-            >
-              אוצר מילים
             </Link>
             
             {/* About Dropdown Menu */}
@@ -295,11 +294,11 @@ const Header = React.memo(() => {
                 סימולציות
               </Link>
               <Link 
-                to="/reading-comprehension" 
+                to="/vocab" 
                 className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                הבנת הנקרא
+                אוצר מילים
               </Link>
               <Link 
                 to="/articles" 
@@ -307,13 +306,6 @@ const Header = React.memo(() => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 חומרי לימוד
-              </Link>
-              <Link 
-                to="/vocab" 
-                className="text-slate-300 hover:text-blue-400 font-medium py-3 px-4 rounded-lg hover:bg-slate-700/50 transition-all duration-300"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                אוצר מילים
               </Link>
               
               {/* Mobile About Submenu */}

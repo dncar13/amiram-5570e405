@@ -266,8 +266,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
                 <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
               </div>
               <h4 className="font-bold text-blue-300 text-sm sm:text-base">שאלה:</h4>
-              
-              {/* TODO: Add proper audio implementation for listening questions */}
             </div>
             <div 
               dir="ltr" 

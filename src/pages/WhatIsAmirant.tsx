@@ -19,12 +19,6 @@ const WhatIsAmirant: React.FC = () => {
       {/* Hero Section */}
       <HeroSection onStartNow={handleStartNow} />
       
-      {/* Stats Section */}
-      <StatsSection />
-      
-      {/* Combined Benefits & Features - למה להתכונן אצלנו */}
-      <WhyPrepareWithUsSection />
-      
       {/* Educational Content Sections */}
       <WhatIsAmirantSection />
       <ExamComparisonSection />
@@ -47,9 +41,6 @@ const WhatIsAmirant: React.FC = () => {
       {/* NEW: FAQ Section */}
       <FAQSection />
       
-      {/* Why Us Section */}
-      <WhyUsSection />
-      
       {/* Final CTA Section */}
       <FinalCTASection onStartNow={handleStartNow} />
       
@@ -58,10 +49,20 @@ const WhatIsAmirant: React.FC = () => {
   );
 };
 
-// Hero Section Component (unchanged)
+// Hero Section Component
 const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
   return (
     <section className="relative bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 text-white py-20 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/images/pexels-leeloothefirst-5428830.jpg" 
+          alt="Students studying" 
+          className="w-full h-full object-cover opacity-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/80 via-blue-600/80 to-purple-800/80"></div>
+      </div>
+      
       <div className="absolute inset-0 opacity-10">
         <div 
           className="absolute inset-0 bg-repeat opacity-20 animate-grid-move"
@@ -105,102 +106,6 @@ const HeroSection: React.FC<{ onStartNow: () => void }> = ({ onStartNow }) => {
           <span className="relative z-10 drop-shadow-lg">התחילו להתכונן עכשיו!</span>
           <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </motion.button>
-      </div>
-    </section>
-  );
-};
-
-// Stats Section (unchanged)
-const StatsSection: React.FC = () => {
-  const stats = [
-    { number: '92%', label: 'אחוזי הצלחה' },
-    { number: '3,500₪', label: 'חיסכון ממוצע בקורסים' },
-    { number: '1,200+', label: 'סטודנטים מרוצים' },
-    { number: '24/7', label: 'זמינות מלאה' }
-  ];
-
-  return (
-    <section className="bg-white py-12 sm:py-16 shadow-lg">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-          {stats.map((stat, index) => (
-            <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="text-center p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-200">
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-3">
-                  {stat.number}
-                </div>
-                <div className="text-gray-800 text-base sm:text-lg font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            </AnimatedCard>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-// NEW: Combined Benefits & Features Section
-const WhyPrepareWithUsSection: React.FC = () => {
-  const benefits = [
-    {
-      icon: '⏰',
-      title: 'חיסכון בזמן יקר',
-      description: 'פטור מקורסי אנגלית = יותר זמן להתמקד בלימודים המקצועיים'
-    },
-    {
-      icon: '💸',
-      title: 'חיסכון של אלפי שקלים',
-      description: 'קורסי אנגלית אקדמיים עולים המון - תחסכו את הכסף לדברים חשובים יותר'
-    },
-    {
-      icon: '🎓',
-      title: 'סיום התואר מהר יותר',
-      description: 'בלי קורסי חובה מעכבים - תתקדמו ותסיימו בזמן'
-    },
-    {
-      icon: '🎯',
-      title: 'סימולציות מדויקות',
-      description: 'מאות שאלות מבוססות על מבחנים אמיתיים - בלי הפתעות!'
-    },
-    {
-      icon: '📊',
-      title: 'מעקב התקדמות חכם',
-      description: 'AI שמזהה חולשות ומתאים תרגילים אישית בשבילכם'
-    },
-    {
-      icon: '💡',
-      title: 'הסברים מקצועיים',
-      description: 'לא רק התשובה הנכונה - תבינו למה ואיך להצליח'
-    }
-  ];
-
-  return (
-    <section className="bg-gray-50 py-20">
-      <div className="max-w-6xl mx-auto px-4">
-        <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-gray-900">
-            למה כדאי להתכונן אצלנו?
-          </h2>
-          <p className="text-xl text-center text-gray-700 mb-16 max-w-3xl mx-auto">
-            קבלו פטור מאנגלית וחסכו זמן, כסף ולחץ - עם המערכת המתקדמת ביותר בישראל
-          </p>
-        </AnimatedCard>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {benefits.map((benefit, index) => (
-            <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative group overflow-hidden border border-gray-200">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 to-blue-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
-                
-                <div className="text-4xl mb-4">{benefit.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900">{benefit.title}</h3>
-                <p className="text-gray-700 leading-relaxed">{benefit.description}</p>
-              </div>
-            </AnimatedCard>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -467,10 +372,6 @@ const FAQSection: React.FC = () => {
     {
       question: 'מה קורה אם נכשלתי במבחן?',
       answer: 'אפשר להיבחן שוב! צריך להמתין 35 יום בין בחינות. אין הגבלה על מספר הפעמים שאפשר להיבחן, והציון הגבוה ביותר הוא שנחשב.'
-    },
-    {
-      question: 'האם המבחן מותאם לדיסלקטים?',
-      answer: 'כן! ניתן לקבל הארכת זמן של 25% עם אישור מתאים. יש להגיש בקשה דרך אתר מאל"ו לפחות שבועיים לפני המבחן.'
     },
     {
       question: 'איך מקבלים את תוצאות המבחן?',
@@ -960,59 +861,6 @@ const InteractiveDemoSection: React.FC<{ onStartNow: () => void }> = ({ onStartN
             </motion.button>
           </div>
         </AnimatedCard>
-      </div>
-    </section>
-  );
-};
-
-// Why Us Section (unchanged)
-const WhyUsSection: React.FC = () => {
-  const reasons = [
-    {
-      icon: '🏆',
-      title: 'שיעורי הצלחה מוכחים',
-      description: '92% מהתלמידים שלנו עוברים את המבחן בהצלחה'
-    },
-    {
-      icon: '📚',
-      title: 'תוכן עדכני ומקיף',
-      description: 'מאגר ענק של שאלות המתעדכן באופן קבוע'
-    },
-    {
-      icon: '💡',
-      title: 'טכנולוגיה מתקדמת',
-      description: 'מערכת AI שמתאימה את הלמידה אישית לכל תלמיד'
-    },
-    {
-      icon: '🤝',
-      title: 'תמיכה מלאה',
-      description: 'צוות מומחים זמין לכל שאלה או בעיה'
-    }
-  ];
-
-  return (
-    <section className="bg-gradient-to-br from-purple-600 via-blue-600 to-purple-800 text-white py-20 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 relative z-10">
-        <AnimatedCard>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white"
-              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-            למה דווקא אנחנו?
-          </h2>
-        </AnimatedCard>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-          {reasons.map((reason, index) => (
-            <AnimatedCard key={index} delay={index * 0.1}>
-              <div className="text-center p-6 rounded-2xl bg-white/15 backdrop-blur-lg hover:bg-white/25 transition-all duration-300 hover:scale-105 border border-white/20">
-                <div className="text-4xl mb-4">{reason.icon}</div>
-                <p className="text-lg leading-relaxed text-white">
-                  <strong className="block mb-2 text-white drop-shadow-lg">{reason.title}</strong>
-                  <span className="text-sm text-white/90 drop-shadow-md">{reason.description}</span>
-                </p>
-              </div>
-            </AnimatedCard>
-          ))}
-        </div>
       </div>
     </section>
   );

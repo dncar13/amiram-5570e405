@@ -235,88 +235,94 @@ const VocabDictionary: React.FC = () => {
           {/* Expand button */}
           <button
             onClick={() => toggleExpanded(word.id)}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
+            className="text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0"
             aria-label={isExpanded ? `צמצם פרטי המילה ${word.word}` : `הרחב פרטי המילה ${word.word}`}
             title={isExpanded ? 'צמצם פרטים' : 'הרחב פרטים'}
           >
             {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           </button>
 
-          {/* Word info */}
-          <div className="flex-1 flex items-baseline gap-3">
-            <div className="flex items-center gap-2">
-              <span 
-                className="font-bold text-lg text-gray-900" 
-                dir="ltr"
-              >
-                {highlightText(word.word, searchTerm)}
+          {/* Word info - takes available space */}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline gap-3">
+              <div className="flex items-center gap-2">
+                <span 
+                  className="font-bold text-lg text-gray-900" 
+                  dir="ltr"
+                >
+                  {highlightText(word.word, searchTerm)}
+                </span>
+                {/* V button - FIXED position, never moves */}
+                <button
+                  className="text-gray-400 hover:text-blue-600 transition-colors flex-shrink-0"
+                  title="השמע הגייה"
+                  aria-label={`השמע הגייה של המילה ${word.word}`}
+                  onClick={() => playAudio(word.word)}
+                >
+                  <Volume2 size={16} />
+                </button>
+              </div>
+              <span className="text-xs text-gray-500">
+                {word.category}
               </span>
+              <span className={`text-xs px-2 py-0.5 rounded-full border ${getLevelColor(word.level)}`}>
+                {word.level === 'easy' ? 'קל' : word.level === 'medium' ? 'בינוני' : 'קשה'}
+              </span>
+              <span className="text-gray-600">
+                {highlightText(word.translation, searchTerm)}
+              </span>
+            </div>
+          </div>
+
+          {/* Action buttons - ABSOLUTE positioning to never affect layout */}
+          <div className="relative flex-shrink-0 w-[120px]">
+            {/* Always visible check button */}
+            <div className={`absolute left-0 top-1/2 -translate-y-1/2 transition-opacity duration-200 ${isHovered ? 'opacity-0' : 'opacity-100'}`}>
               <button
-                className="text-gray-400 hover:text-blue-600 transition-colors"
-                title="השמע הגייה"
-                aria-label={`השמע הגייה של המילה ${word.word}`}
-                onClick={() => playAudio(word.word)}
+                onClick={() => onCheck(word.id)}
+                className={`p-1.5 rounded-full transition-colors ${
+                  isMarked ? 'text-green-600' : 'text-gray-400 hover:text-green-600'
+                }`}
+                title={isMarked ? 'מסומנת כמוכרת' : 'סמן כמוכרת'}
+                aria-label={isMarked ? `המילה ${word.word} מסומנת כמוכרת` : `סמן את המילה ${word.word} כמוכרת`}
               >
-                <Volume2 size={16} />
+                <Check size={18} />
               </button>
             </div>
-            <span className="text-xs text-gray-500">
-              {word.category}
-            </span>
-            <span className={`text-xs px-2 py-0.5 rounded-full border ${getLevelColor(word.level)}`}>
-              {word.level === 'easy' ? 'קל' : word.level === 'medium' ? 'בינוני' : 'קשה'}
-            </span>
-            <span className="text-gray-600 mr-auto">
-              {highlightText(word.translation, searchTerm)}
-            </span>
-          </div>
 
-          {/* Quick Actions - visible on hover */}
-          <div className={`flex items-center gap-2 transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-            <button
-              onClick={() => onCheck(word.id)}
-              className={`p-1.5 rounded-full transition-all duration-200 ${
-                isMarked ? 'text-green-600 bg-green-50' : 'text-gray-400 hover:text-green-600 hover:bg-green-50'
-              }`}
-              title={isMarked ? 'מסומנת כמוכרת' : 'סמן כמוכרת'}
-              aria-label={isMarked ? `המילה ${word.word} מסומנת כמוכרת` : `סמן את המילה ${word.word} כמוכרת`}
-            >
-              <Check size={16} />
-            </button>
-            
-            <button
-              onClick={() => onStar(word.id)}
-              className={`p-1.5 rounded-full transition-all duration-200 ${
-                isSaved ? 'text-yellow-600 bg-yellow-50' : 'text-gray-400 hover:text-yellow-600 hover:bg-yellow-50'
-              }`}
-              title={isSaved ? 'נשמר' : 'שמור'}
-              aria-label={isSaved ? `המילה ${word.word} נשמרה` : `שמור את המילה ${word.word}`}
-            >
-              <Star size={16} />
-            </button>
-            
-            <button
-              onClick={() => playAudio(word.word)}
-              className="p-1.5 rounded-full text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
-              title="השמע הגייה"
-              aria-label={`השמע הגייה של המילה ${word.word}`}
-            >
-              <Play size={16} />
-            </button>
-          </div>
-
-          {/* Always visible action buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => onCheck(word.id)}
-              className={`transition-colors ${
-                isMarked ? 'text-green-600' : 'text-gray-400 hover:text-green-600'
-              } ${isHovered ? 'opacity-0' : 'opacity-100'}`}
-              title={isMarked ? 'מסומנת כמוכרת' : 'סמן כמוכרת'}
-              aria-label={isMarked ? `המילה ${word.word} מסומנת כמוכרת` : `סמן את המילה ${word.word} כמוכרת`}
-            >
-              <Check size={18} />
-            </button>
+            {/* Hover buttons - appear in same space */}
+            <div className={`absolute left-0 top-1/2 -translate-y-1/2 flex items-center gap-1 transition-opacity duration-200 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+              <button
+                onClick={() => onCheck(word.id)}
+                className={`p-1.5 rounded-full transition-all duration-200 ${
+                  isMarked ? 'text-green-600 bg-green-50' : 'text-gray-400 hover:text-green-600 hover:bg-green-50'
+                }`}
+                title={isMarked ? 'מסומנת כמוכרת' : 'סמן כמוכרת'}
+                aria-label={isMarked ? `המילה ${word.word} מסומנת כמוכרת` : `סמן את המילה ${word.word} כמוכרת`}
+              >
+                <Check size={16} />
+              </button>
+              
+              <button
+                onClick={() => onStar(word.id)}
+                className={`p-1.5 rounded-full transition-all duration-200 ${
+                  isSaved ? 'text-yellow-600 bg-yellow-50' : 'text-gray-400 hover:text-yellow-600 hover:bg-yellow-50'
+                }`}
+                title={isSaved ? 'נשמר' : 'שמור'}
+                aria-label={isSaved ? `המילה ${word.word} נשמרה` : `שמור את המילה ${word.word}`}
+              >
+                <Star size={16} />
+              </button>
+              
+              <button
+                onClick={() => playAudio(word.word)}
+                className="p-1.5 rounded-full text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+                title="השמע הגייה"
+                aria-label={`השמע הגייה של המילה ${word.word}`}
+              >
+                <Play size={16} />
+              </button>
+            </div>
           </div>
         </div>
 

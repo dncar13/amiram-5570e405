@@ -67,10 +67,6 @@ import WordOrder from "./pages/WordOrder";
 import Conditionals from "./pages/Conditionals";
 import GerundsInfinitives from "./pages/GerundsInfinitives";
 import ReportedSpeech from "./pages/ReportedSpeech";
-import VocabMain from "./pages/vocab/VocabMain";
-import WordOfDay from "./pages/vocab/WordOfDay";
-import VocabDictionary from "./pages/vocab/VocabDictionary";
-import VocabQuiz from "./pages/vocab/VocabQuiz";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import Migration from "./pages/Migration";
 import ProgressTrackingTest from "./components/test/ProgressTrackingTest";
@@ -83,6 +79,12 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import CouponManagement from "./pages/CouponManagement";
 import CouponUsageManagement from "./pages/CouponUsageManagement";
 import analyticsService from "./services/analytics";
+
+// Vocabulary System Components
+import VocabMain from "./pages/vocab/VocabMain";
+import WordOfDay from "./pages/vocab/WordOfDay";
+import VocabDictionary from "./pages/vocab/VocabDictionary";
+import VocabQuiz from "./pages/vocab/VocabQuiz";
 
 // Enhanced ScrollToTop component with smooth behavior
 const ScrollToTop = () => {
@@ -277,25 +279,6 @@ const AnimatedRoutes = () => {
               <Simulation />
             </ErrorBoundary>
           } />
-
-          {/* Listening Routes - Temporarily disabled until reimplementation */}
-          {/* TODO: Implement listening components */}
-          {/*
-          <Route path="/listening-old" element={<ListeningContinuationSimulation setId="1" />} />
-          <Route path="/listening/continuation/easy" element={<ListeningContinuationSimulation setId="smoketest" />} />
-          <Route path="/listening/continuation/medium" element={<ListeningContinuationSimulation setId="smoketest" />} />
-          <Route path="/listening/continuation/hard" element={<ListeningContinuationSimulation setId="smoketest" />} />
-          */}
-          
-          {/* Comprehension listening routes */}
-          <Route path="/listening/comprehension/:difficulty" element={
-            <ErrorBoundary>
-              <Simulation />
-            </ErrorBoundary>
-          } />
-          
-          {/* Fallback for other listening routes - use general simulation */}
-          <Route path="/listening/:category/:level" element={<Simulation />} />
           
           {/* Existing Simulations Entry Routes */}
           <Route path="/simulations-entry" element={<SimulationsEntry />} />

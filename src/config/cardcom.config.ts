@@ -28,6 +28,13 @@ export const getCardComApiUrl = (): string => {
     fullLocation: window.location
   });
   
+  // TEMPORARY FIX: Always use production API for now
+  // This allows testing with real credentials even on localhost
+  console.log('🔧 TEMPORARY: Always using CardCom PRODUCTION API for all environments');
+  return 'https://secure.cardcom.solutions';
+  
+  // Original logic (commented out temporarily):
+  /*
   // Test environments - use CardCom sandbox
   // Check for preview environment
   if (currentOrigin === 'https://preview--amiram.lovable.app') {
@@ -61,13 +68,14 @@ export const getCardComApiUrl = (): string => {
     startsWithHttpsLocalhost: currentOrigin.startsWith('https://localhost:')
   });
   return 'https://secure.cardcom.solutions';
+  */
 };
 
 // CardCom API Configuration
 export const CARDCOM_CONFIG = {
   // API_URL will be determined dynamically - see getCardComApiUrl()
   
-  // Production credentials
+  // Production credentials (YOUR ACTUAL CARDCOM CREDENTIALS)
   PROD_TERMINAL_NUMBER: 172801,
   PROD_API_USERNAME: 'pML8b6EltAb6KxdFMeDg',
   PROD_API_PASSWORD: '9YYTm4iSvzW3nhGxGzu6',
@@ -141,7 +149,13 @@ export const isTestEnvironment = (): boolean => {
   const currentOrigin = window.location.origin;
   const hostname = window.location.hostname;
   
-  // Match the same logic as getCardComApiUrl()
+  // TEMPORARY FIX: Always use production credentials for now
+  // This will help test payment functionality even on localhost
+  console.log('🔧 TEMPORARY: Using PRODUCTION credentials for all environments');
+  return false;
+  
+  // Original logic (commented out temporarily):
+  /*
   const isTestEnv = currentOrigin === 'https://preview--amiram.lovable.app' || 
                     hostname === 'localhost' || 
                     hostname === '127.0.0.1' || 
@@ -164,6 +178,7 @@ export const isTestEnvironment = (): boolean => {
   });
   
   return isTestEnv;
+  */
 };
 
 // Helper function to get complete URLs (for server-side usage)

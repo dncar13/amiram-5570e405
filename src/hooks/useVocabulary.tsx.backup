@@ -1,12 +1,18 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  getFlags, 
-  toggleSaved, 
-  toggleKnown, 
-  getDailyStats,
-  VocabularyFlags 
-} from '@/services/vocabularyService';
+
+// Simple interface for vocabulary stats
+export interface VocabularyFlags {
+  word_id: string;
+  is_saved: boolean;
+  is_known: boolean;
+  mastery: number;
+  next_review: string | null;
+  last_reviewed: string | null;
+}
+
+// Import the vocabulary stats service
+import { updateVocabularyProgress } from '@/services/vocabularyStatsService';
 
 export interface VocabularyStats {
   learnedToday: number;
@@ -46,7 +52,7 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
   
   const { toast } = useToast();
   
-  // Load vocabulary flags and stats
+  // Load vocabulary flags and stats (simplified version without database)
   const loadData = useCallback(async () => {
     if (wordIds.length === 0) {
       setLoading(false);
@@ -56,27 +62,20 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
     try {
       setLoading(true);
       
-      // Load flags for current words
-      const flags = await getFlags(wordIds);
+      // For now, initialize with empty states
+      // TODO: Implement when vocabulary tracking is needed
+      setSaved(new Set());
+      setKnown(new Set());
+      setMastery(new Map());
       
-      // Update state based on flags
-      const newSaved = new Set<string>();
-      const newKnown = new Set<string>();
-      const newMastery = new Map<string, number>();
-      
-      flags.forEach((flag, wordId) => {
-        if (flag.is_saved) newSaved.add(wordId);
-        if (flag.is_known) newKnown.add(wordId);
-        newMastery.set(wordId, flag.mastery);
+      // Mock stats
+      setStats({
+        learnedToday: 0,
+        totalKnown: 0,
+        totalSaved: 0,
+        needsReview: 0,
+        streak: 0
       });
-      
-      setSaved(newSaved);
-      setKnown(newKnown);
-      setMastery(newMastery);
-      
-      // Load daily stats
-      const dailyStats = await getDailyStats();
-      setStats(dailyStats);
       
     } catch (error) {
       console.error('Error loading vocabulary data:', error);
@@ -88,7 +87,7 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
     } finally {
       setLoading(false);
     }
-  }, [wordIds.join(','), toast]);
+  }, [wordIds, toast]);
   
   // Load data on mount and when wordIds change
   useEffect(() => {
@@ -115,10 +114,10 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       totalSaved: prev.totalSaved + (newSavedState ? 1 : -1)
     }));
     
+    // Show success toast immediately and update database
     try {
-      await toggleSaved(wordId, newSavedState);
+      await updateVocabularyProgress(wordId, true, undefined, newSavedState);
       
-      // Show success toast
       toast({
         title: newSavedState ? "המילה נשמרה!" : "המילה הוסרה מהרשימה",
         description: newSavedState 
@@ -126,21 +125,14 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
           : "המילה הוסרה מרשימת המילים השמורות",
         duration: 2000
       });
-      
     } catch (error) {
-      // Rollback on error
+      console.error('Error updating saved status:', error);
+      // Revert optimistic update on error
       setSaved(saved);
       setStats(prev => ({
         ...prev,
         totalSaved: prev.totalSaved + (newSavedState ? -1 : 1)
       }));
-      
-      console.error('Error toggling saved status:', error);
-      toast({
-        title: "שגיאה בשמירה",
-        description: "לא הצלחנו לעדכן את המילה. נסה שוב.",
-        variant: "destructive"
-      });
     }
   }, [saved, toast]);
   
@@ -173,10 +165,10 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       learnedToday: newKnownState ? prev.learnedToday + 1 : prev.learnedToday
     }));
     
+    // Show success toast immediately and update database
     try {
-      await toggleKnown(wordId, newKnownState, currentMasteryLevel);
+      await updateVocabularyProgress(wordId, true, newKnownState, undefined);
       
-      // Show success toast
       toast({
         title: newKnownState ? "מעולה! המילה מוכרת לך" : "המילה הוסרה מהרשימה",
         description: newKnownState 
@@ -184,9 +176,9 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
           : "המילה הוסרה מרשימת המילים הידועות",
         duration: 2000
       });
-      
     } catch (error) {
-      // Rollback on error
+      console.error('Error updating known status:', error);
+      // Revert optimistic update on error
       setKnown(known);
       setMastery(mastery);
       setStats(prev => ({
@@ -194,51 +186,20 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
         totalKnown: prev.totalKnown + (newKnownState ? -1 : 1),
         learnedToday: newKnownState ? prev.learnedToday - 1 : prev.learnedToday
       }));
-      
-      console.error('Error toggling known status:', error);
-      toast({
-        title: "שגיאה בעדכון",
-        description: "לא הצלחנו לעדכן את המילה. נסה שוב.",
-        variant: "destructive"
-      });
     }
   }, [known, mastery, toast]);
   
   // Refresh stats manually
   const refreshStats = useCallback(async () => {
-    try {
-      const dailyStats = await getDailyStats();
-      setStats(dailyStats);
-    } catch (error) {
-      console.error('Error refreshing stats:', error);
-    }
+    // Mock refresh for now
+    console.log('Stats refreshed');
   }, []);
   
   // Refresh flags manually
   const refreshFlags = useCallback(async () => {
-    if (wordIds.length === 0) return;
-    
-    try {
-      const flags = await getFlags(wordIds);
-      
-      const newSaved = new Set<string>();
-      const newKnown = new Set<string>();
-      const newMastery = new Map<string, number>();
-      
-      flags.forEach((flag, wordId) => {
-        if (flag.is_saved) newSaved.add(wordId);
-        if (flag.is_known) newKnown.add(wordId);
-        newMastery.set(wordId, flag.mastery);
-      });
-      
-      setSaved(newSaved);
-      setKnown(newKnown);
-      setMastery(newMastery);
-      
-    } catch (error) {
-      console.error('Error refreshing flags:', error);
-    }
-  }, [wordIds.join(',')]);
+    // Mock refresh for now
+    console.log('Flags refreshed');
+  }, []);
   
   return {
     saved,

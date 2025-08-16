@@ -69,10 +69,10 @@ const Premium = () => {
   const plans = [
     {
       id: 'daily',
-      name: 'גישה ליום',
-      price: PLAN_PRICES.daily,
+      name: 'יום',
+      price: 20,
       period: '24 שעות',
-      description: 'נסיון אינטנסיבי לפני המבחן',
+      description: 'מבחן ממש בקרוב',
       subtitle: 'לתלמידים במבחן מחר',
       icon: Clock,
       features: ['גישה לסימולציות נבחרות', 'מעקב בסיסי', 'תמיכה בווטסאפ'],
@@ -80,10 +80,10 @@ const Premium = () => {
     },
     {
       id: 'weekly',
-      name: 'גישה לשבוע',
-      price: PLAN_PRICES.weekly,
+      name: 'שבוע',
+      price: 69,
       period: '7 ימים',
-      description: 'תרגול בקצב שלכם',
+      description: 'ספרינט ממוקד',
       subtitle: 'לחיזוק מיומנויות',
       icon: Calendar,
       features: ['גישה מלאה לכל התכנים', 'מעקב מתקדם', 'תמיכה בווטסאפ', 'סרטוני הסבר'],
@@ -92,10 +92,10 @@ const Premium = () => {
     },
     {
       id: 'monthly',
-      name: 'גישה לחודש',
-      price: PLAN_PRICES.monthly,
+      name: 'חודש',
+      price: 199,
       period: '30 ימים',
-      description: 'ההמלצה שלנו!',
+      description: 'הכנה יסודית',
       subtitle: 'הכנה יסודית לפטור',
       icon: Zap,
       features: ['יותר מ-50 קטעי קריאה', 'מעל 1,000 שאלות', 'מסלולי למידה מותאמים', 'סטטיסטיקות מתקדמות', 'תמיכה ראשונית'],
@@ -105,10 +105,10 @@ const Premium = () => {
     },
     {
       id: 'quarterly',
-      name: 'גישה ל-3 חודשים',
-      price: PLAN_PRICES.quarterly,
+      name: '3 חודשים',
+      price: 399,
       period: '90 ימים',
-      description: 'הכי משתלם למתכוננים מוקדם',
+      description: 'ללמוד בקצב רגוע',
       subtitle: 'לשיפור מעמיק',
       icon: Trophy,
       features: ['כל התכנים + זמן לשיפור אמיתי', 'מעקב מתקדם', 'תמיכה VIP', 'עדכוני תוכן', 'ייעוץ אישי'],
@@ -116,6 +116,39 @@ const Premium = () => {
       discount: 45
     }
   ];
+
+  // Helper functions for plan display
+  const getPricePerDay = (planId: string) => {
+    const plan = plans.find(p => p.id === planId);
+    if (!plan) return 0;
+    
+    const days = {
+      'daily': 1,
+      'weekly': 7,
+      'monthly': 30,
+      'quarterly': 90
+    }[planId] || 1;
+    
+    return Math.round((plan.price / days) * 10) / 10; // Round to 1 decimal
+  };
+
+  const getEndDate = (planId: string) => {
+    const days = {
+      'daily': 1,
+      'weekly': 7,
+      'monthly': 30,
+      'quarterly': 90
+    }[planId] || 1;
+    
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + days);
+    
+    return endDate.toLocaleDateString('he-IL', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   const testimonials = [
     {
@@ -679,73 +712,62 @@ const Premium = () => {
               {/* Right Column - Pricing */}
               <div className="space-y-8">
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold mb-6 text-gray-900">בחרו את התוכנית המתאימה</h3>
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">בחר/י משך גישה</h3>
                   
-                  {/* Pricing Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                    {plans.map((plan, index) => {
-                      const IconComponent = plan.icon;
-                      const isSelected = selectedPlan === plan.id;
-                      return (
-                        <div
-                          key={plan.id}
-                          className={`relative bg-white border-2 rounded-xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
-                            isSelected ? 'border-purple-500 ring-4 ring-purple-100' : 'border-gray-200 hover:border-purple-300'
-                          }`}
-                          onClick={() => {
-                            setSelectedPlan(plan.id as 'daily' | 'weekly' | 'monthly' | 'quarterly');
-                            // Track plan selection
-                            trackButtonClick(`select_plan_${plan.id}`, 'premium_pricing');
-                          }}
-                          style={{
-                            animationDelay: `${index * 0.1}s`,
-                            animation: isVisible ? 'fadeInUp 0.6s ease-out forwards' : 'none'
-                          }}
-                        >
-                          {plan.recommended && (
-                            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                              <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white border-0 px-4 py-1.5 animate-pulse">
-                                <Crown className="w-3 h-3 ml-1" />
-                                הכי פופולרי
-                              </Badge>
-                            </div>
-                          )}
-                          
-                          {plan.discount && (
-                            <div className="absolute -top-2 -right-2">
-                              <Badge className="bg-red-500 text-white border-0 text-xs px-2 py-1 rounded-full">
-                                -{plan.discount}%
-                              </Badge>
-                            </div>
-                          )}
-                          
-                          <div className="text-center">
-                            <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${plan.color} flex items-center justify-center mx-auto mb-4`}>
-                              <IconComponent className="w-8 h-8 text-white" />
-                            </div>
-                            
-                            <h4 className="text-lg font-bold text-gray-900 mb-2">{plan.name}</h4>
-                            <p className="text-sm text-gray-600 mb-4">{plan.description}</p>
-                            
-                            <div className="mb-4">
-                              <div className="text-3xl font-bold text-gray-900">
-                                ₪{plan.price}
-                              </div>
-                              <div className="text-sm text-gray-500">{plan.period}</div>
-                            </div>
-                            
-                            <div className="space-y-2 text-sm">
-                              {plan.features.map((feature, idx) => (
-                                <div key={idx} className="flex items-center gap-2">
-                                  <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                                  <span className="text-gray-600">{feature}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                  {/* Plan Selector - Segmented Control */}
+                  <div className="bg-gray-100 p-1 rounded-xl mb-8 inline-flex">
+                    {plans.map((plan) => (
+                      <button
+                        key={plan.id}
+                        onClick={() => {
+                          setSelectedPlan(plan.id as 'daily' | 'weekly' | 'monthly' | 'quarterly');
+                          trackButtonClick(`select_plan_${plan.id}`, 'premium_pricing');
+                        }}
+                        className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 relative ${
+                          selectedPlan === plan.id
+                            ? 'bg-white text-purple-600 shadow-sm'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        <div className="text-center">
+                          <div className="font-semibold">{plan.name}</div>
+                          <div className="text-xs mt-1 opacity-75">{plan.description}</div>
                         </div>
-                      );
-                    })}
+                        {plan.recommended && (
+                          <div className="absolute -top-2 -right-2">
+                            <Badge className="bg-purple-500 text-white border-0 text-xs px-2 py-0.5 rounded-full">
+                              מומלץ
+                            </Badge>
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Dynamic Plan Details */}
+                  <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-200">
+                    <div className="text-center space-y-4">
+                      <div>
+                        <div className="text-sm text-gray-600 mb-2">מחיר:</div>
+                        <div className="text-4xl font-bold text-purple-600">
+                          ₪{plans.find(p => p.id === selectedPlan)?.price || 0}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">מחיר ליום:</div>
+                        <div className="text-lg text-gray-700">
+                          ≈ ₪{getPricePerDay(selectedPlan)} ליום
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-sm text-gray-600 mb-1">תאריך סיום:</div>
+                        <div className="text-lg text-gray-700">
+                          גישה עד {getEndDate(selectedPlan)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 

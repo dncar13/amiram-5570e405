@@ -6,8 +6,6 @@ import { useInView } from 'react-intersection-observer';
 import Header from '@/components/Header'; // או Navbar אם תרצה להחליף
 import HeroSection from '@/components/homepage/HeroSection';
 import FeatureCards from '@/components/homepage/FeatureCards'; // הקומפוננטה החדשה שיצרתי
-import StatsSection from '@/components/homepage/StatsSection';
-import TestimonialsSection from '@/components/homepage/TestimonialsSection';
 import CTASection from '@/components/homepage/CTASection';
 import FAQSection from '@/components/homepage/FAQSection';
 import KnowledgeSection from '@/components/homepage/KnowledgeSection';
@@ -71,18 +69,7 @@ const Index: React.FC = () => {
         </AnimatedSection>
       </div>
 
-      {/* Stats Section - Only show on mobile if space allows */}
-      {!isMobile && (
-        <AnimatedSection delay={0.2}>
-          <StatsSection />
-        </AnimatedSection>
-      )}
-
       {/* Testimonials - Simplified on mobile */}
-      <AnimatedSection delay={isMobile ? 0.2 : 0.3}>
-        <TestimonialsSection />
-      </AnimatedSection>
-
       <AnimatedSection delay={isMobile ? 0.25 : 0.35}>
         <KnowledgeSection />
       </AnimatedSection>

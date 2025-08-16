@@ -4,7 +4,7 @@ import { LucideIcon } from 'lucide-react';
 // Define Question type for the application - updated to match new structure
 export interface Question {
   id: string | number; // Support both string and number IDs
-  type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive' | 'vocabulary' | 'grammar' | 'writing' | 'listening' | 'listening_comprehension' | 'listening_continuation' | 'word_formation' | 'grammar_in_context';
+  type: 'reading-comprehension' | 'sentence-completion' | 'restatement' | 'comprehensive' | 'vocabulary' | 'grammar' | 'writing' | 'listening';
   text: string; // Main question text field
   options: string[];
   correctAnswer: number;
@@ -31,10 +31,6 @@ export interface Question {
   passage?: string; // Add passage property
   story?: string; // Add story property
   
-  // Audio support for listening questions
-  audioUrl?: string;
-  audio_url?: string; // Database field name
-  
   // Additional optional metadata
   tags?: string[];
   createdAt?: string;
@@ -42,9 +38,6 @@ export interface Question {
     topic?: string;
     wordCount?: number;
     estimatedTime?: number;
-    stable_id?: string;
-    audio_generated?: boolean;
-    audio_size?: number;
   };
   
   // Legacy fields for backward compatibility
