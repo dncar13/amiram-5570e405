@@ -12,8 +12,9 @@ import WordCard from '@/components/vocab/WordCard';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { useVocabulary } from '@/hooks/useVocabulary';
-import { updateMastery } from '@/services/vocabularyService';
+import { updateMastery } from '@/services/vocabularyServiceDemo';
 import FlashcardTab from '@/components/vocab/FlashcardTab';
+import { SpellingTab } from '@/components/vocab/SpellingTab';
 import vocabData from '@/data/vocab-static.json';
 
 const VocabDictionary: React.FC = () => {
@@ -432,12 +433,10 @@ const VocabDictionary: React.FC = () => {
         <div className="bg-white border-b">
           <div className="max-w-6xl mx-auto px-4">
             <Tabs value={activeMode} onValueChange={setActiveMode} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 h-12">
+              <TabsList className="grid w-full grid-cols-3 h-12">
                 <TabsTrigger value="dictionary" className="text-sm">מילון</TabsTrigger>
                 <TabsTrigger value="flashcards" className="text-sm">פלשקארדים</TabsTrigger>
-                <TabsTrigger value="quiz" className="text-sm">חידון</TabsTrigger>
                 <TabsTrigger value="typing" className="text-sm">כתיב</TabsTrigger>
-                <TabsTrigger value="listening" className="text-sm">האזן</TabsTrigger>
               </TabsList>
 
               {/* Tab Contents */}
@@ -768,25 +767,18 @@ const VocabDictionary: React.FC = () => {
                 />
               </TabsContent>
               
-              <TabsContent value="quiz" className="mt-0">
-                <div className="py-16 text-center">
-                  <h3 className="text-xl font-semibold text-gray-600 mb-2">חידון</h3>
-                  <p className="text-gray-500">בקרוב...</p>
-                </div>
-              </TabsContent>
-              
               <TabsContent value="typing" className="mt-0">
-                <div className="py-16 text-center">
-                  <h3 className="text-xl font-semibold text-gray-600 mb-2">תרגול כתיב</h3>
-                  <p className="text-gray-500">בקרוב...</p>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="listening" className="mt-0">
-                <div className="py-16 text-center">
-                  <h3 className="text-xl font-semibold text-gray-600 mb-2">תרגול הקשבה</h3>
-                  <p className="text-gray-500">בקרוב...</p>
-                </div>
+                <SpellingTab 
+                  words={filteredAndSortedWords.slice(0, 20)}
+                  onWordMastered={async (wordId, masteryLevel) => {
+                    try {
+                      await updateMastery(wordId, masteryLevel >= 2, masteryLevel);
+                      refreshStats();
+                    } catch (error) {
+                      console.error('Failed to update mastery:', error);
+                    }
+                  }}
+                />
               </TabsContent>
             </Tabs>
           </div>

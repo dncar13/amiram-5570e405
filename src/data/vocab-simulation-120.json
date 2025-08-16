@@ -1,0 +1,2541 @@
+{
+  "id": "vocab_mcq_120",
+  "title": "סימולציית אוצר מילים מלאה",
+  "description": "120 שאלות אוצר מילים ברמות קושי שונות - מילים חיוניות למבחן האמיר\"ם",
+  "type": "vocabulary",
+  "difficulty": "mixed",
+  "timeLimit": 60,
+  "totalQuestions": 120,
+  "passingScore": 70,
+  "categories": [
+    "vocabulary"
+  ],
+  "tags": [
+    "אוצר מילים",
+    "vocabulary",
+    "אמיר\"ם",
+    "אמירנט"
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'able'?",
+      "options": [
+        "מסוגל",
+        "לגרום",
+        "לקוי/חסר",
+        "שגוי"
+      ],
+      "correct": 0,
+      "explanation": "The word '' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'accept'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "לקבל",
+        "להסכים",
+        "להגדיר"
+      ],
+      "correct": 1,
+      "explanation": "The word '' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'add'?",
+      "options": [
+        "ליישם/להגיש",
+        "עוקב/רציף",
+        "להוסיף",
+        "להדגיש"
+      ],
+      "correct": 2,
+      "explanation": "The word '' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'agree'?",
+      "options": [
+        "לתאר/לתחום",
+        "לענות",
+        "השפעה",
+        "להסכים"
+      ],
+      "correct": 3,
+      "explanation": "The word 'agree' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "agree",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'allow'?",
+      "options": [
+        "לאפשר",
+        "להמשיך",
+        "חלק",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'allow' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "allow",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'answer'?",
+      "options": [
+        "יעיל",
+        "לענות",
+        "לטעון/להתווכח",
+        "לכלול"
+      ],
+      "correct": 1,
+      "explanation": "The word 'answer' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "answer",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'apply'?",
+      "options": [
+        "לאשר",
+        "קרוב/ממשמש ובא",
+        "ליישם/להגיש",
+        "לבחור"
+      ],
+      "correct": 2,
+      "explanation": "The word 'apply' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "apply",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'argue'?",
+      "options": [
+        "טבוע/מובנה",
+        "להגדיל/לגדול",
+        "להעריך/למדוד",
+        "לטעון/להתווכח"
+      ],
+      "correct": 3,
+      "explanation": "The word 'argue' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "argue",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'arrive'?",
+      "options": [
+        "להגיע",
+        "נפרד/בדיד",
+        "לשקול",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'arrive' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "arrive",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'avoid'?",
+      "options": [
+        "הקשר",
+        "להימנע",
+        "ללקט/לקבץ",
+        "להרחיב"
+      ],
+      "correct": 1,
+      "explanation": "The word 'avoid' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "avoid",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'cause'?",
+      "options": [
+        "לדון",
+        "להגיע",
+        "לגרום",
+        "מאפיין"
+      ],
+      "correct": 2,
+      "explanation": "The word 'cause' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "cause",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'choose'?",
+      "options": [
+        "פרדיגמה/תבנית חשיבה",
+        "להשלים/לסיים",
+        "לתאר",
+        "לבחור"
+      ],
+      "correct": 3,
+      "explanation": "The word 'choose' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "choose",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'collect'?",
+      "options": [
+        "לאסוף",
+        "להסכים",
+        "לשפר",
+        "שרירותי"
+      ],
+      "correct": 0,
+      "explanation": "The word 'collect' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "collect",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'compare'?",
+      "options": [
+        "להסתגל/להתאים",
+        "להשוות",
+        "לפרש",
+        "זמני"
+      ],
+      "correct": 1,
+      "explanation": "The word 'compare' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "compare",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'complete'?",
+      "options": [
+        "להפיץ",
+        "ליישם/להגיש",
+        "להשלים/לסיים",
+        "סדר"
+      ],
+      "correct": 2,
+      "explanation": "The word 'complete' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "complete",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'consider'?",
+      "options": [
+        "אילוץ/מגבלה",
+        "לתאר",
+        "לקרוא",
+        "לשקול"
+      ],
+      "correct": 3,
+      "explanation": "The word 'consider' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "consider",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'continue'?",
+      "options": [
+        "להמשיך",
+        "להשלים/לסיים",
+        "להקיף/לכלול",
+        "עוקב/רציף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'continue' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "continue",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'create'?",
+      "options": [
+        "קרוב/ממשמש ובא",
+        "ליצור",
+        "למתן/להפחית",
+        "להמשיך"
+      ],
+      "correct": 1,
+      "explanation": "The word 'create' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "create",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'decide'?",
+      "options": [
+        "לשמר/לתחזק",
+        "להוסיף",
+        "להחליט",
+        "סחורה"
+      ],
+      "correct": 2,
+      "explanation": "The word 'decide' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "decide",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'describe'?",
+      "options": [
+        "ליישם",
+        "עיקרי/ראשי",
+        "להמחיש",
+        "לתאר"
+      ],
+      "correct": 3,
+      "explanation": "The word 'describe' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "describe",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'develop'?",
+      "options": [
+        "לפתח",
+        "חסין/בעל יכולת התאוששות",
+        "למתן/להפחית",
+        "לבחור"
+      ],
+      "correct": 0,
+      "explanation": "The word 'develop' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "develop",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'differ'?",
+      "options": [
+        "לענות",
+        "להיות שונה",
+        "ללקט/לקבץ",
+        "ניגוד"
+      ],
+      "correct": 1,
+      "explanation": "The word 'differ' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "differ",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'discuss'?",
+      "options": [
+        "לתאר",
+        "לקבוע",
+        "לדון",
+        "זמני"
+      ],
+      "correct": 2,
+      "explanation": "The word 'discuss' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "discuss",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'early'?",
+      "options": [
+        "נוח",
+        "להשוות",
+        "עדין/מעודן/דק",
+        "מוקדם"
+      ],
+      "correct": 3,
+      "explanation": "The word 'early' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "early",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'easy'?",
+      "options": [
+        "קל",
+        "גורם",
+        "זמני",
+        "מקיף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'easy' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "easy",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'example'?",
+      "options": [
+        "מושג",
+        "דוגמה",
+        "שיטה",
+        "להגדיל/לגדול"
+      ],
+      "correct": 1,
+      "explanation": "The word 'example' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "example",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'explain'?",
+      "options": [
+        "לבחור",
+        "תואם",
+        "להסביר",
+        "לשקול"
+      ],
+      "correct": 2,
+      "explanation": "The word 'explain' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "explain",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'form'?",
+      "options": [
+        "קהל",
+        "להעריך/למדוד",
+        "להמחיש",
+        "לעצב/ליצור"
+      ],
+      "correct": 3,
+      "explanation": "The word 'form' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "form",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 29,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'future'?",
+      "options": [
+        "עתיד",
+        "חד-משמעי",
+        "בחינה קפדנית/ביקורת",
+        "דפוס"
+      ],
+      "correct": 0,
+      "explanation": "The word 'future' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "future",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'improve'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "לשפר",
+        "לשקול",
+        "לענות"
+      ],
+      "correct": 1,
+      "explanation": "The word 'improve' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "improve",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'include'?",
+      "options": [
+        "לתאר",
+        "טבוע/מובנה",
+        "לכלול",
+        "לתאר/לתחום"
+      ],
+      "correct": 2,
+      "explanation": "The word 'include' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "include",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'increase'?",
+      "options": [
+        "לדון",
+        "דו-משמעי/עמום",
+        "להימנע",
+        "להגדיל/לגדול"
+      ],
+      "correct": 3,
+      "explanation": "The word 'increase' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "increase",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 33,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'instead'?",
+      "options": [
+        "במקום זאת",
+        "לשקול",
+        "לאסוף",
+        "נפרד/בדיד"
+      ],
+      "correct": 0,
+      "explanation": "The word 'instead' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "instead",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 34,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'main'?",
+      "options": [
+        "מקיף",
+        "עיקרי/ראשי",
+        "חריגה/אנומליה",
+        "ישים/בר-ביצוע"
+      ],
+      "correct": 1,
+      "explanation": "The word 'main' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "main",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'mean'?",
+      "options": [
+        "להחליט",
+        "ללקט/לקבץ",
+        "להתכוון/משמעותו",
+        "יעיל"
+      ],
+      "correct": 2,
+      "explanation": "The word 'mean' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "mean",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'need'?",
+      "options": [
+        "סדר",
+        "להוסיף",
+        "למתן/להפחית",
+        "להזדקק/צורך"
+      ],
+      "correct": 3,
+      "explanation": "The word 'need' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "need",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'order'?",
+      "options": [
+        "סדר",
+        "חריגה/אנומליה",
+        "עתיד",
+        "יעיל"
+      ],
+      "correct": 0,
+      "explanation": "The word 'order' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "order",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'part'?",
+      "options": [
+        "אתגר",
+        "חלק",
+        "לרדת",
+        "עתיד"
+      ],
+      "correct": 1,
+      "explanation": "The word 'part' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "part",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'provide'?",
+      "options": [
+        "להמחיש",
+        "שרירותי",
+        "לספק",
+        "להרחיב"
+      ],
+      "correct": 2,
+      "explanation": "The word 'provide' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "provide",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'read'?",
+      "options": [
+        "לבקר",
+        "להעריך (בערך)",
+        "תפקיד/פונקציה",
+        "לקרוא"
+      ],
+      "correct": 3,
+      "explanation": "The word 'read' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "read",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 41,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'accurate'?",
+      "options": [
+        "מדויק",
+        "שגוי",
+        "קבוע",
+        "למתן/להפחית"
+      ],
+      "correct": 0,
+      "explanation": "The word 'accurate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "accurate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'adapt'?",
+      "options": [
+        "תדירות",
+        "להסתגל/להתאים",
+        "ליישם/להגיש",
+        "למתן/להפחית"
+      ],
+      "correct": 1,
+      "explanation": "The word 'adapt' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "adapt",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'analysis'?",
+      "options": [
+        "חלק",
+        "להמשיך",
+        "ניתוח",
+        "שיטה"
+      ],
+      "correct": 2,
+      "explanation": "The word 'analysis' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "analysis",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'approach'?",
+      "options": [
+        "לשקול",
+        "אילוץ/מגבלה",
+        "הטיה/משוא פנים",
+        "גישה"
+      ],
+      "correct": 3,
+      "explanation": "The word 'approach' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "approach",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'assess'?",
+      "options": [
+        "להעריך/למדוד",
+        "תפקיד/פונקציה",
+        "לדון",
+        "למתן/להפחית"
+      ],
+      "correct": 0,
+      "explanation": "The word 'assess' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "assess",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'audience'?",
+      "options": [
+        "תוצאה",
+        "קהל",
+        "לכלול",
+        "השפעה"
+      ],
+      "correct": 1,
+      "explanation": "The word 'audience' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "audience",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 47,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'benefit'?",
+      "options": [
+        "מאפיין",
+        "ישים/בר-ביצוע",
+        "תועלת",
+        "תמריץ"
+      ],
+      "correct": 2,
+      "explanation": "The word 'benefit' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "benefit",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 48,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'challenge'?",
+      "options": [
+        "להוסיף",
+        "שיטה",
+        "גישה",
+        "אתגר"
+      ],
+      "correct": 3,
+      "explanation": "The word 'challenge' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "challenge",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 49,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'complex'?",
+      "options": [
+        "מורכב",
+        "קרוב/ממשמש ובא",
+        "מוקדם",
+        "לתאר/לתחום"
+      ],
+      "correct": 0,
+      "explanation": "The word 'complex' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "complex",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'concept'?",
+      "options": [
+        "הקשר",
+        "מושג",
+        "להיות שונה",
+        "שיטה"
+      ],
+      "correct": 1,
+      "explanation": "The word 'concept' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "concept",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 51,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'conclude'?",
+      "options": [
+        "תואם",
+        "לבקר",
+        "להסיק",
+        "לתאר"
+      ],
+      "correct": 2,
+      "explanation": "The word 'conclude' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "conclude",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 52,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'confirm'?",
+      "options": [
+        "להודות (בטענה/בטעות)",
+        "מסוגל",
+        "להחליט",
+        "לאשר"
+      ],
+      "correct": 3,
+      "explanation": "The word 'confirm' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "confirm",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'consequence'?",
+      "options": [
+        "תוצאה",
+        "הקשר",
+        "מיותר/עודף",
+        "אילוץ/מגבלה"
+      ],
+      "correct": 0,
+      "explanation": "The word 'consequence' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "consequence",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 54,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'constant'?",
+      "options": [
+        "להתכוון/משמעותו",
+        "קבוע",
+        "לקוי/חסר",
+        "עדין/מעודן/דק"
+      ],
+      "correct": 1,
+      "explanation": "The word 'constant' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "constant",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'context'?",
+      "options": [
+        "גורם",
+        "להגדיל/לגדול",
+        "הקשר",
+        "תמריץ"
+      ],
+      "correct": 2,
+      "explanation": "The word 'context' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "context",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'contrast'?",
+      "options": [
+        "תוצאה",
+        "להמחיש",
+        "גישה",
+        "ניגוד"
+      ],
+      "correct": 3,
+      "explanation": "The word 'contrast' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "contrast",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 57,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'convenient'?",
+      "options": [
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "לקוי/חסר",
+        "עוקב/רציף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'convenient' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "convenient",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 58,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'criticize'?",
+      "options": [
+        "מורכב",
+        "לבקר",
+        "לכלול",
+        "לטעון/להתווכח"
+      ],
+      "correct": 1,
+      "explanation": "The word 'criticize' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "criticize",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 59,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'decline'?",
+      "options": [
+        "ללקט/לקבץ",
+        "להשלים/לסיים",
+        "לרדת",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correct": 2,
+      "explanation": "The word 'decline' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "decline",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'define'?",
+      "options": [
+        "להמחיש",
+        "להוסיף",
+        "דו-משמעי/עמום",
+        "להגדיר"
+      ],
+      "correct": 3,
+      "explanation": "The word 'define' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "define",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'demonstrate'?",
+      "options": [
+        "להדגים",
+        "להשלים/לסיים",
+        "אילוץ/מגבלה",
+        "להשוות"
+      ],
+      "correct": 0,
+      "explanation": "The word 'demonstrate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "demonstrate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 62,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'determine'?",
+      "options": [
+        "להוסיף",
+        "לקבוע",
+        "דפוס",
+        "להגדיל/לגדול"
+      ],
+      "correct": 1,
+      "explanation": "The word 'determine' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "determine",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 63,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'efficient'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "מקיף",
+        "יעיל",
+        "לדון"
+      ],
+      "correct": 2,
+      "explanation": "The word 'efficient' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "efficient",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 64,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'emphasize'?",
+      "options": [
+        "נפוץ/שכיח",
+        "להגדיל/לגדול",
+        "להמשיך",
+        "להדגיש"
+      ],
+      "correct": 3,
+      "explanation": "The word 'emphasize' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "emphasize",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'estimate'?",
+      "options": [
+        "להעריך (בערך)",
+        "לקרוא",
+        "בחינה קפדנית/ביקורת",
+        "להרחיב"
+      ],
+      "correct": 0,
+      "explanation": "The word 'estimate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "estimate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'evidence'?",
+      "options": [
+        "אתגר",
+        "ראיות/הוכחה",
+        "תוצאה",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "The word 'evidence' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "evidence",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 67,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'expand'?",
+      "options": [
+        "עיקרי/ראשי",
+        "לעצב/ליצור",
+        "להרחיב",
+        "לאפשר"
+      ],
+      "correct": 2,
+      "explanation": "The word 'expand' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "expand",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 68,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'factor'?",
+      "options": [
+        "לגרום",
+        "תוצאה",
+        "ניתוח",
+        "גורם"
+      ],
+      "correct": 3,
+      "explanation": "The word 'factor' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "factor",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 69,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'feature'?",
+      "options": [
+        "מאפיין",
+        "מושג",
+        "נפרד/בדיד",
+        "חריגה/אנומליה"
+      ],
+      "correct": 0,
+      "explanation": "The word 'feature' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "feature",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'frequency'?",
+      "options": [
+        "קבוע",
+        "תדירות",
+        "קהל",
+        "מושג"
+      ],
+      "correct": 1,
+      "explanation": "The word 'frequency' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "frequency",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 71,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'function'?",
+      "options": [
+        "מיותר/עודף",
+        "השערה",
+        "תפקיד/פונקציה",
+        "ניגוד"
+      ],
+      "correct": 2,
+      "explanation": "The word 'function' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "function",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 72,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'illustrate'?",
+      "options": [
+        "להגיע",
+        "חד-משמעי",
+        "לעצב/ליצור",
+        "להמחיש"
+      ],
+      "correct": 3,
+      "explanation": "The word 'illustrate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "illustrate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 73,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'impact'?",
+      "options": [
+        "השפעה",
+        "מחלוקת",
+        "לטעון בביטחון/לקבוע",
+        "תוצאה"
+      ],
+      "correct": 0,
+      "explanation": "The word 'impact' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "impact",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 74,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'imply'?",
+      "options": [
+        "לאשר",
+        "לרמוז",
+        "אילוץ/מגבלה",
+        "לאמת/לתקף"
+      ],
+      "correct": 1,
+      "explanation": "The word 'imply' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "imply",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'indicate'?",
+      "options": [
+        "לתאר/לתחום",
+        "להודות (בטענה/בטעות)",
+        "לציין/להצביע",
+        "תואם"
+      ],
+      "correct": 2,
+      "explanation": "The word 'indicate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "indicate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'interpret'?",
+      "options": [
+        "לאסוף",
+        "לציין/להצביע",
+        "חסין/בעל יכולת התאוששות",
+        "לפרש"
+      ],
+      "correct": 3,
+      "explanation": "The word 'interpret' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "interpret",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 77,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'maintain'?",
+      "options": [
+        "לשמר/לתחזק",
+        "להשלים/לסיים",
+        "ניתוח",
+        "לגרום"
+      ],
+      "correct": 0,
+      "explanation": "The word 'maintain' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "maintain",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 78,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'method'?",
+      "options": [
+        "ניתוח",
+        "שיטה",
+        "דפוס",
+        "לאסוף"
+      ],
+      "correct": 1,
+      "explanation": "The word 'method' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "method",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 79,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'outcome'?",
+      "options": [
+        "תדירות",
+        "חד-משמעי",
+        "תוצאה",
+        "שיטה"
+      ],
+      "correct": 2,
+      "explanation": "The word 'outcome' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "outcome",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "multiple_choice",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'pattern'?",
+      "options": [
+        "לדון",
+        "אתגר",
+        "גישה",
+        "דפוס"
+      ],
+      "correct": 3,
+      "explanation": "The word 'pattern' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "pattern",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 81,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'ambiguous'?",
+      "options": [
+        "דו-משמעי/עמום",
+        "תואם",
+        "מצטבר",
+        "השפעה"
+      ],
+      "correct": 0,
+      "explanation": "The word 'ambiguous' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "ambiguous",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 82,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'anomaly'?",
+      "options": [
+        "עתיד",
+        "חריגה/אנומליה",
+        "ללקט/לקבץ",
+        "גישה"
+      ],
+      "correct": 1,
+      "explanation": "The word 'anomaly' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "anomaly",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 83,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'arbitrary'?",
+      "options": [
+        "לפתח",
+        "מורכב",
+        "שרירותי",
+        "נפרד/בדיד"
+      ],
+      "correct": 2,
+      "explanation": "The word 'arbitrary' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "arbitrary",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 84,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'assert'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "ליישם",
+        "להיות בקורלציה; לקשר",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 3,
+      "explanation": "The word 'assert' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "assert",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 85,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'bias'?",
+      "options": [
+        "הטיה/משוא פנים",
+        "חלק",
+        "מסוגל",
+        "אתגר"
+      ],
+      "correct": 0,
+      "explanation": "The word 'bias' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "bias",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'coherent'?",
+      "options": [
+        "לקוי/חסר",
+        "קוהרנטי/עקבי",
+        "תואם",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "The word 'coherent' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "coherent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 87,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'coincide'?",
+      "options": [
+        "לענות",
+        "ישים/בר-ביצוע",
+        "לחפוף/להתרחש במקביל",
+        "להעריך/למדוד"
+      ],
+      "correct": 2,
+      "explanation": "The word 'coincide' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "coincide",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 88,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'commodity'?",
+      "options": [
+        "הטיה/משוא פנים",
+        "להודות (בטענה/בטעות)",
+        "ניתוח",
+        "סחורה"
+      ],
+      "correct": 3,
+      "explanation": "The word 'commodity' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "commodity",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 89,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'compatible'?",
+      "options": [
+        "תואם",
+        "מדויק",
+        "נוח",
+        "לשמר/לתחזק"
+      ],
+      "correct": 0,
+      "explanation": "The word 'compatible' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "compatible",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 90,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'compile'?",
+      "options": [
+        "מאפיין",
+        "ללקט/לקבץ",
+        "לחפוף/להתרחש במקביל",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 1,
+      "explanation": "The word 'compile' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "compile",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 91,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'comprehensive'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "להגדיר",
+        "מקיף",
+        "תואם"
+      ],
+      "correct": 2,
+      "explanation": "The word 'comprehensive' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "comprehensive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 92,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'concede'?",
+      "options": [
+        "יעיל",
+        "להסכים",
+        "לענות",
+        "להודות (בטענה/בטעות)"
+      ],
+      "correct": 3,
+      "explanation": "The word 'concede' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "concede",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 93,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'conclusive'?",
+      "options": [
+        "חד-משמעי",
+        "לקוי/חסר",
+        "מקיף",
+        "תדירות"
+      ],
+      "correct": 0,
+      "explanation": "The word 'conclusive' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "conclusive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 94,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'conjecture'?",
+      "options": [
+        "מושג",
+        "השערה",
+        "תוצאה",
+        "להקיף/לכלול"
+      ],
+      "correct": 1,
+      "explanation": "The word 'conjecture' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "conjecture",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'consecutive'?",
+      "options": [
+        "מיותר/עודף",
+        "זמני",
+        "עוקב/רציף",
+        "לכלול"
+      ],
+      "correct": 2,
+      "explanation": "The word 'consecutive' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "consecutive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'constraint'?",
+      "options": [
+        "לאסוף",
+        "מחלוקת",
+        "סדר",
+        "אילוץ/מגבלה"
+      ],
+      "correct": 3,
+      "explanation": "The word 'constraint' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "constraint",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 97,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'controversy'?",
+      "options": [
+        "מחלוקת",
+        "תדירות",
+        "בחינה קפדנית/ביקורת",
+        "לגרום"
+      ],
+      "correct": 0,
+      "explanation": "The word 'controversy' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "controversy",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 98,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'correlate'?",
+      "options": [
+        "ניתוח",
+        "להיות בקורלציה; לקשר",
+        "ליצור",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "The word 'correlate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "correlate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 99,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'cumulative'?",
+      "options": [
+        "להודות (בטענה/בטעות)",
+        "ראשוני/מוקדם",
+        "מצטבר",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correct": 2,
+      "explanation": "The word 'cumulative' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "cumulative",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'deficient'?",
+      "options": [
+        "קבוע",
+        "לתאר/לתחום",
+        "מורכב",
+        "לקוי/חסר"
+      ],
+      "correct": 3,
+      "explanation": "The word 'deficient' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "deficient",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 101,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'delineate'?",
+      "options": [
+        "לתאר/לתחום",
+        "פרדיגמה/תבנית חשיבה",
+        "להקיף/לכלול",
+        "לענות"
+      ],
+      "correct": 0,
+      "explanation": "The word 'delineate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "delineate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 102,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'discrete'?",
+      "options": [
+        "להמחיש",
+        "נפרד/בדיד",
+        "עוקב/רציף",
+        "זמני"
+      ],
+      "correct": 1,
+      "explanation": "The word 'discrete' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "discrete",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 103,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'disseminate'?",
+      "options": [
+        "ליצור",
+        "חריגה/אנומליה",
+        "להפיץ",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 2,
+      "explanation": "The word 'disseminate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "disseminate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 104,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'encompass'?",
+      "options": [
+        "לפתח",
+        "להסיק",
+        "נוח",
+        "להקיף/לכלול"
+      ],
+      "correct": 3,
+      "explanation": "The word 'encompass' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "encompass",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 105,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'erroneous'?",
+      "options": [
+        "שגוי",
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correct": 0,
+      "explanation": "The word 'erroneous' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "erroneous",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 106,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'feasible'?",
+      "options": [
+        "מיותר/עודף",
+        "ישים/בר-ביצוע",
+        "במקום זאת",
+        "מצטבר"
+      ],
+      "correct": 1,
+      "explanation": "The word 'feasible' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "feasible",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 107,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'forthcoming'?",
+      "options": [
+        "מושג",
+        "קל",
+        "קרוב/ממשמש ובא",
+        "חד-משמעי"
+      ],
+      "correct": 2,
+      "explanation": "The word 'forthcoming' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "forthcoming",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 108,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'implement'?",
+      "options": [
+        "להעריך (בערך)",
+        "לתאר",
+        "שרירותי",
+        "ליישם"
+      ],
+      "correct": 3,
+      "explanation": "The word 'implement' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "implement",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 109,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'incentive'?",
+      "options": [
+        "תמריץ",
+        "בחינה קפדנית/ביקורת",
+        "מאפיין",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'incentive' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "incentive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 110,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'inherent'?",
+      "options": [
+        "להתכוון/משמעותו",
+        "טבוע/מובנה",
+        "לקוי/חסר",
+        "יעיל"
+      ],
+      "correct": 1,
+      "explanation": "The word 'inherent' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "inherent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 111,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'mitigate'?",
+      "options": [
+        "קרוב/ממשמש ובא",
+        "לבחור",
+        "למתן/להפחית",
+        "להעריך (בערך)"
+      ],
+      "correct": 2,
+      "explanation": "The word 'mitigate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "mitigate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 112,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'paradigm'?",
+      "options": [
+        "הקשר",
+        "מורכב",
+        "גישה",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correct": 3,
+      "explanation": "The word 'paradigm' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "paradigm",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 113,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'preliminary'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "קבוע",
+        "אילוץ/מגבלה",
+        "מסוגל"
+      ],
+      "correct": 0,
+      "explanation": "The word 'preliminary' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "preliminary",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 114,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'prevalent'?",
+      "options": [
+        "במקום זאת",
+        "נפוץ/שכיח",
+        "מוקדם",
+        "ישים/בר-ביצוע"
+      ],
+      "correct": 1,
+      "explanation": "The word 'prevalent' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "prevalent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 115,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'provisional'?",
+      "options": [
+        "לטעון בביטחון/לקבוע",
+        "חד-משמעי",
+        "זמני",
+        "מסוגל"
+      ],
+      "correct": 2,
+      "explanation": "The word 'provisional' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "provisional",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 116,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'redundant'?",
+      "options": [
+        "נפוץ/שכיח",
+        "להתכוון/משמעותו",
+        "עיקרי/ראשי",
+        "מיותר/עודף"
+      ],
+      "correct": 3,
+      "explanation": "The word 'redundant' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "redundant",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 117,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'resilient'?",
+      "options": [
+        "חסין/בעל יכולת התאוששות",
+        "לציין/להצביע",
+        "דו-משמעי/עמום",
+        "מקיף"
+      ],
+      "correct": 0,
+      "explanation": "The word 'resilient' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "resilient",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 118,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'scrutiny'?",
+      "options": [
+        "השערה",
+        "בחינה קפדנית/ביקורת",
+        "לתאר",
+        "אתגר"
+      ],
+      "correct": 1,
+      "explanation": "The word 'scrutiny' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "scrutiny",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 119,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'subtle'?",
+      "options": [
+        "דו-משמעי/עמום",
+        "תדירות",
+        "עדין/מעודן/דק",
+        "נוח"
+      ],
+      "correct": 2,
+      "explanation": "The word 'subtle' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "subtle",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    },
+    {
+      "id": 120,
+      "type": "multiple_choice",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'validate'?",
+      "options": [
+        "חריגה/אנומליה",
+        "לרמוז",
+        "להמחיש",
+        "לאמת/לתקף"
+      ],
+      "correct": 3,
+      "explanation": "The word 'validate' is an important vocabulary term for academic English. Mastering these vocabulary words is essential for success in the AMIRAM exam.",
+      "category": "vocabulary",
+      "word": "validate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "amiram"
+      ]
+    }
+  ]
+}

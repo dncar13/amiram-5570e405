@@ -88,7 +88,7 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
     } finally {
       setLoading(false);
     }
-  }, [wordIds.join(','), toast]);
+  }, [wordIds, toast]);
   
   // Load data on mount and when wordIds change
   useEffect(() => {
@@ -238,7 +238,7 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
     } catch (error) {
       console.error('Error refreshing flags:', error);
     }
-  }, [wordIds.join(',')]);
+  }, [wordIds]);
   
   return {
     saved,

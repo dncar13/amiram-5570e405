@@ -35,7 +35,9 @@ export function schedule(currentMastery: number, isCorrect: boolean): { mastery:
 async function getCurrentUserId(): Promise<string> {
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) {
-    throw new Error('No authenticated user found');
+    // Demo mode - use a fixed demo user ID
+    console.warn('No authenticated user found, using demo mode');
+    return 'demo-user-12345';
   }
   return data.user.id;
 }
@@ -109,7 +111,16 @@ export async function toggleKnown(
   try {
     const userId = await getCurrentUserId();
     
-    const updateData: any = {
+    const updateData: {
+      user_id: string;
+      word_id: string;
+      is_known: boolean;
+      mastery?: number;
+      next_review?: string;
+      last_reviewed?: string;
+      review_count?: number;
+      correct_count?: number;
+    } = {
       user_id: userId,
       word_id: wordId,
       is_known: isKnown,

@@ -13,6 +13,11 @@ interface Word {
   etymology?: string;
   synonyms?: string[];
   tip?: string;
+  // Enhanced fields
+  ipa?: string;
+  cefr?: string;
+  opposites?: string[];
+  confusables?: string;
 }
 
 interface WordCardProps {
@@ -44,6 +49,18 @@ const WordCard: React.FC<WordCardProps> = ({
     }
   };
 
+  const getCEFRColor = (cefr: string) => {
+    switch (cefr) {
+      case 'A1': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'A2': return 'bg-green-100 text-green-800 border-green-200';
+      case 'B1': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'B2': return 'bg-orange-100 text-orange-800 border-orange-200';
+      case 'C1': return 'bg-red-100 text-red-800 border-red-200';
+      case 'C2': return 'bg-purple-100 text-purple-800 border-purple-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
   const getLevelColor = (level: string) => {
     switch (level) {
       case 'easy': return 'bg-green-100 text-green-800 border-green-200';
@@ -70,6 +87,11 @@ const WordCard: React.FC<WordCardProps> = ({
             <CardTitle className="text-2xl font-bold text-slate-800">
               {word.word}
             </CardTitle>
+            {word.ipa && (
+              <span className="text-sm text-gray-600 font-mono bg-gray-100 px-2 py-1 rounded">
+                {word.ipa}
+              </span>
+            )}
             <Button
               variant="ghost"
               size="sm"
@@ -79,8 +101,15 @@ const WordCard: React.FC<WordCardProps> = ({
               <Volume2 className="h-4 w-4" />
             </Button>
           </div>
-          <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getLevelColor(word.level)}`}>
-            {getLevelText(word.level)}
+          <div className="flex gap-2">
+            {word.cefr && (
+              <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getCEFRColor(word.cefr)}`}>
+                {word.cefr}
+              </div>
+            )}
+            <div className={`px-3 py-1 rounded-full text-xs font-medium border ${getLevelColor(word.level)}`}>
+              {getLevelText(word.level)}
+            </div>
           </div>
         </div>
         {showTranslation && (
@@ -119,16 +148,41 @@ const WordCard: React.FC<WordCardProps> = ({
             
             {word.synonyms && word.synonyms.length > 0 && (
               <div className="space-y-2">
-                <span className="text-sm font-medium text-slate-700">מילים דומות:</span>
+                <span className="text-sm font-medium text-slate-700">נרדפות:</span>
                 <div className="flex flex-wrap gap-2">
                   {word.synonyms.map((synonym, index) => (
                     <span 
                       key={index}
-                      className="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-md border border-purple-200"
+                      className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-md border border-green-200"
                     >
                       {synonym}
                     </span>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {word.opposites && word.opposites.length > 0 && (
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-slate-700">הפכים:</span>
+                <div className="flex flex-wrap gap-2">
+                  {word.opposites.map((opposite, index) => (
+                    <span 
+                      key={index}
+                      className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-md border border-red-200"
+                    >
+                      {opposite}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {word.confusables && (
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-slate-700">אל תבלבל עם:</span>
+                <div className="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                  <p className="text-yellow-800 text-sm">{word.confusables}</p>
                 </div>
               </div>
             )}

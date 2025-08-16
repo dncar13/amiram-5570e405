@@ -14,9 +14,10 @@ import {
   ChevronRight,
   Sparkles,
   Crown,
-  Unlock
+  Unlock,
+  Star
 } from 'lucide-react';
-import { getSentenceCompletionQuestions, getRestatementQuestions } from '@/services/questionsService';
+import { getSentenceCompletionQuestions, getRestatementQuestions, getVocabularyQuestions } from '@/services/questionsService';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useAuth } from '@/context/AuthContext';
 
@@ -42,6 +43,7 @@ const SimulationByType: React.FC = () => {
   // State for question counts
   const [sentenceCompletionCount, setSentenceCompletionCount] = useState(0);
   const [restatementCount, setRestatementCount] = useState(0);
+  const [vocabularyCount, setVocabularyCount] = useState(0);
   const [isLoadingCounts, setIsLoadingCounts] = useState(true);
 
   // Redirect reading comprehension directly to stories page
@@ -56,16 +58,19 @@ const SimulationByType: React.FC = () => {
     const loadQuestionCounts = async () => {
       setIsLoadingCounts(true);
       try {
-        const [sentenceQuestions, restatementQuestions] = await Promise.all([
+        const [sentenceQuestions, restatementQuestions, vocabularyQuestions] = await Promise.all([
           getSentenceCompletionQuestions(),
-          getRestatementQuestions()
+          getRestatementQuestions(),
+          getVocabularyQuestions()
         ]);
         setSentenceCompletionCount(sentenceQuestions.length);
         setRestatementCount(restatementQuestions.length);
+        setVocabularyCount(vocabularyQuestions.length);
       } catch (error) {
         console.error('Error loading question counts:', error);
         setSentenceCompletionCount(0);
         setRestatementCount(0);
+        setVocabularyCount(0);
       } finally {
         setIsLoadingCounts(false);
       }
@@ -104,6 +109,21 @@ const SimulationByType: React.FC = () => {
         'הימנע מביטויים חריגים או מיוחדים'
       ],
       questionCount: restatementCount
+    },
+    'vocabulary': {
+      type: 'vocabulary',
+      title: 'אוצר מילים באנגלית',
+      description: 'שאלות תרגום ואוצר מילים מעברית לאנגלית',
+      icon: <Star className="w-8 h-8" />,
+      color: 'text-amber-600',
+      gradient: 'from-amber-500 via-orange-500 to-yellow-500',
+      tips: [
+        'קרא את המילה בעברית בעיון',
+        'חפש רמזים בהקשר המשפט',
+        'בחר את התרגום המדויק ביותר',
+        'שים לב להבדלים עדינים בין המילים'
+      ],
+      questionCount: vocabularyCount
     }
   };
 

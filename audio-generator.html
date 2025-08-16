@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio Generator</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <h1>מייצר קבצי אודיו...</h1>
+    <div id="status">התחלה...</div>
+    <div id="progress"></div>
+
+    <script>
+        const words = ["able","accept","add","agree","allow","answer","apply","argue","arrive","avoid","cause","choose","collect","compare","complete","consider","continue","create","decide","describe","develop","differ","discuss","early","easy","example","explain","form","future","improve","include","increase","instead","main","mean","need","order","part","provide","support","accurate","adapt","analysis","approach","assess","audience","benefit","challenge","complex","concept","conclude","confirm","consequence","constant","context","contrast","convenient","criticize","decline","define","demonstrate","determine","efficient","emphasize","estimate","evidence","expand","factor","feature","frequency","function","illustrate","impact","imply","indicate","interpret","maintain","method","outcome","pattern","ambiguous","anomaly","arbitrary","assert","bias","coherent","coincide","commodity","compatible","compile","comprehensive","concede","conclusive","conjecture","consecutive","constraint","controversy","correlate","cumulative","deficient","delineate","discrete","disseminate","encompass","erroneous","feasible","forthcoming","implement","incentive","inherent","mitigate","paradigm","preliminary","prevalent","provisional","redundant","resilient","scrutiny","subtle","validate"];
+        const status = document.getElementById('status');
+        const progress = document.getElementById('progress');
+        
+        async function generateAudio() {
+            // בדוק תמיכה ב-Speech Synthesis
+            if (!('speechSynthesis' in window)) {
+                status.textContent = 'הדפדפן לא תומך ב-Speech Synthesis';
+                return;
+            }
+
+            for (let i = 0; i < words.length; i++) {
+                const word = words[i];
+                status.textContent = `מעבד: ${word} (${i + 1}/${words.length})`;
+                progress.textContent = `התקדמות: ${Math.round((i / words.length) * 100)}%`;
+                
+                try {
+                    await speakWord(word);
+                    await delay(100);
+                } catch (error) {
+                    console.error('שגיאה עבור', word, error);
+                }
+            }
+            
+            status.textContent = 'הושלם! עכשיו אפשר לסגור את הדף';
+        }
+
+        function speakWord(word) {
+            return new Promise((resolve, reject) => {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                utterance.volume = 1;
+                
+                utterance.onend = () => resolve();
+                utterance.onerror = (error) => reject(error);
+                
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // התחל כשהדף נטען
+        window.addEventListener('load', () => {
+            setTimeout(generateAudio, 1000);
+        });
+    </script>
+</body>
+</html>

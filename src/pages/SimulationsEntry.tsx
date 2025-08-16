@@ -131,6 +131,14 @@ const SimulationsEntry: React.FC = () => {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50'
     },
+    {
+      type: 'vocabulary',
+      title: 'אוצר מילים באנגלית',
+      description: 'שאלות אוצר מילים - תרגום מעברית לאנגלית',
+      icon: <Star className="w-6 h-6" />,
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50'
+    },
   ];
 
   const handleOptionClick = (option: SimulationOption) => {

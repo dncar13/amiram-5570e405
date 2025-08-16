@@ -7,10 +7,30 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -220,58 +240,92 @@ export type Database = {
       payment_transactions: {
         Row: {
           amount: number
+          auth_number: string | null
+          card_holder_name: string | null
+          card_last_four: string | null
+          checksum: string | null
+          coupon_code: string | null
           created_at: string
           currency: string
+          discount_amount: number | null
           id: string
           is_refund: boolean | null
-          low_profile_code: string
+          low_profile_id: string | null
           metadata: Json | null
+          original_amount: number | null
           original_transaction_id: string | null
-          plan_type: string
+          payment_method: string
           refund_reason: string | null
           status: string
           subscription_id: string | null
-          transaction_id: string | null
+          transaction_date: string
+          transaction_id: string
           updated_at: string
           user_id: string
+          voucher_number: string | null
         }
         Insert: {
           amount: number
+          auth_number?: string | null
+          card_holder_name?: string | null
+          card_last_four?: string | null
+          checksum?: string | null
+          coupon_code?: string | null
           created_at?: string
           currency?: string
+          discount_amount?: number | null
           id?: string
           is_refund?: boolean | null
-          low_profile_code: string
+          low_profile_id?: string | null
           metadata?: Json | null
+          original_amount?: number | null
           original_transaction_id?: string | null
-          plan_type: string
+          payment_method?: string
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
-          transaction_id?: string | null
+          transaction_date?: string
+          transaction_id: string
           updated_at?: string
           user_id: string
+          voucher_number?: string | null
         }
         Update: {
           amount?: number
+          auth_number?: string | null
+          card_holder_name?: string | null
+          card_last_four?: string | null
+          checksum?: string | null
+          coupon_code?: string | null
           created_at?: string
           currency?: string
+          discount_amount?: number | null
           id?: string
           is_refund?: boolean | null
-          low_profile_code?: string
+          low_profile_id?: string | null
           metadata?: Json | null
+          original_amount?: number | null
           original_transaction_id?: string | null
-          plan_type?: string
+          payment_method?: string
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
-          transaction_id?: string | null
+          transaction_date?: string
+          transaction_id?: string
           updated_at?: string
           user_id?: string
+          voucher_number?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "fk_payment_transactions_subscription_id"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "subscriptions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_transactions_subscription_id_fkey"
             columns: ["subscription_id"]
             isOneToOne: false
             referencedRelation: "subscriptions"
@@ -285,6 +339,7 @@ export type Database = {
           display_name: string | null
           email: string
           id: string
+          is_admin: boolean | null
           phone: string | null
           updated_at: string
           user_id: string
@@ -294,6 +349,7 @@ export type Database = {
           display_name?: string | null
           email: string
           id?: string
+          is_admin?: boolean | null
           phone?: string | null
           updated_at?: string
           user_id: string
@@ -303,6 +359,7 @@ export type Database = {
           display_name?: string | null
           email?: string
           id?: string
+          is_admin?: boolean | null
           phone?: string | null
           updated_at?: string
           user_id?: string
@@ -673,75 +730,36 @@ export type Database = {
         }
         Relationships: []
       }
-      user_preferences: {
+      transaction_idempotency_log: {
         Row: {
-          achievement_notifications: boolean | null
-          adaptive_difficulty: boolean | null
-          allow_analytics: boolean | null
-          auto_advance_time: number | null
-          created_at: string | null
-          daily_reminder_enabled: boolean | null
-          daily_reminder_time: string | null
-          delivery_strategy: string | null
-          enable_smart_delivery: boolean | null
-          enable_sound: boolean | null
-          font_size: string | null
-          id: string
-          preferred_difficulty: string | null
-          questions_per_session: number | null
-          reduce_animations: boolean | null
-          share_anonymous_data: boolean | null
-          show_explanations: boolean | null
-          theme: string | null
-          updated_at: string | null
-          user_id: string
-          weekly_progress_email: boolean | null
+          attempt_timestamp: string | null
+          checksum: string | null
+          failure_reason: string | null
+          id: number
+          low_profile_code: string | null
+          request_data: Json | null
+          transaction_id: string | null
+          user_id: string | null
         }
         Insert: {
-          achievement_notifications?: boolean | null
-          adaptive_difficulty?: boolean | null
-          allow_analytics?: boolean | null
-          auto_advance_time?: number | null
-          created_at?: string | null
-          daily_reminder_enabled?: boolean | null
-          daily_reminder_time?: string | null
-          delivery_strategy?: string | null
-          enable_smart_delivery?: boolean | null
-          enable_sound?: boolean | null
-          font_size?: string | null
-          id?: string
-          preferred_difficulty?: string | null
-          questions_per_session?: number | null
-          reduce_animations?: boolean | null
-          share_anonymous_data?: boolean | null
-          show_explanations?: boolean | null
-          theme?: string | null
-          updated_at?: string | null
-          user_id: string
-          weekly_progress_email?: boolean | null
+          attempt_timestamp?: string | null
+          checksum?: string | null
+          failure_reason?: string | null
+          id?: number
+          low_profile_code?: string | null
+          request_data?: Json | null
+          transaction_id?: string | null
+          user_id?: string | null
         }
         Update: {
-          achievement_notifications?: boolean | null
-          adaptive_difficulty?: boolean | null
-          allow_analytics?: boolean | null
-          auto_advance_time?: number | null
-          created_at?: string | null
-          daily_reminder_enabled?: boolean | null
-          daily_reminder_time?: string | null
-          delivery_strategy?: string | null
-          enable_smart_delivery?: boolean | null
-          enable_sound?: boolean | null
-          font_size?: string | null
-          id?: string
-          preferred_difficulty?: string | null
-          questions_per_session?: number | null
-          reduce_animations?: boolean | null
-          share_anonymous_data?: boolean | null
-          show_explanations?: boolean | null
-          theme?: string | null
-          updated_at?: string | null
-          user_id?: string
-          weekly_progress_email?: boolean | null
+          attempt_timestamp?: string | null
+          checksum?: string | null
+          failure_reason?: string | null
+          id?: number
+          low_profile_code?: string | null
+          request_data?: Json | null
+          transaction_id?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -779,111 +797,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      user_progress_summary: {
-        Row: {
-          average_accuracy: number | null
-          average_time_per_question: number | null
-          created_at: string | null
-          current_streak_days: number | null
-          difficulty: string
-          id: string
-          last_practice_date: string | null
-          longest_streak_days: number | null
-          questions_correct: number
-          questions_flagged: number
-          questions_incorrect: number
-          questions_seen: number
-          total_practice_time: number | null
-          total_questions_available: number
-          updated_at: string | null
-          user_id: string
-        }
-        Insert: {
-          average_accuracy?: number | null
-          average_time_per_question?: number | null
-          created_at?: string | null
-          current_streak_days?: number | null
-          difficulty: string
-          id?: string
-          last_practice_date?: string | null
-          longest_streak_days?: number | null
-          questions_correct?: number
-          questions_flagged?: number
-          questions_incorrect?: number
-          questions_seen?: number
-          total_practice_time?: number | null
-          total_questions_available?: number
-          updated_at?: string | null
-          user_id: string
-        }
-        Update: {
-          average_accuracy?: number | null
-          average_time_per_question?: number | null
-          created_at?: string | null
-          current_streak_days?: number | null
-          difficulty?: string
-          id?: string
-          last_practice_date?: string | null
-          longest_streak_days?: number | null
-          questions_correct?: number
-          questions_flagged?: number
-          questions_incorrect?: number
-          questions_seen?: number
-          total_practice_time?: number | null
-          total_questions_available?: number
-          updated_at?: string | null
-          user_id?: string
-        }
-        Relationships: []
-      }
-      user_question_history: {
-        Row: {
-          answer_selected: number | null
-          created_at: string | null
-          difficulty: string
-          flagged: boolean | null
-          id: string
-          is_correct: boolean
-          last_seen_at: string | null
-          notes: string | null
-          question_id: number
-          simulation_session_id: string | null
-          simulation_type: string | null
-          time_spent_seconds: number | null
-          user_id: string
-        }
-        Insert: {
-          answer_selected?: number | null
-          created_at?: string | null
-          difficulty: string
-          flagged?: boolean | null
-          id?: string
-          is_correct: boolean
-          last_seen_at?: string | null
-          notes?: string | null
-          question_id: number
-          simulation_session_id?: string | null
-          simulation_type?: string | null
-          time_spent_seconds?: number | null
-          user_id: string
-        }
-        Update: {
-          answer_selected?: number | null
-          created_at?: string | null
-          difficulty?: string
-          flagged?: boolean | null
-          id?: string
-          is_correct?: boolean
-          last_seen_at?: string | null
-          notes?: string | null
-          question_id?: number
-          simulation_session_id?: string | null
-          simulation_type?: string | null
-          time_spent_seconds?: number | null
-          user_id?: string
-        }
-        Relationships: []
       }
     }
     Views: {
@@ -964,19 +877,19 @@ export type Database = {
           p_plan_type: string
         }
         Returns: {
-          refund_amount: number
-          cancellation_fee: number
-          unused_days: number
           total_days: number
           eligible_for_refund: boolean
+          unused_days: number
+          refund_amount: number
+          cancellation_fee: number
         }[]
       }
       cancel_user_subscription: {
         Args: { p_user_id: string }
         Returns: {
-          success: boolean
           updated_count: number
           message: string
+          success: boolean
         }[]
       }
       clean_duplicate_set_sessions: {
@@ -985,15 +898,62 @@ export type Database = {
           deleted_count: number
         }[]
       }
+      create_idempotent_transaction: {
+        Args: {
+          p_user_id: string
+          p_subscription_id: string
+          p_low_profile_code: string
+          p_plan_type: string
+          p_amount: number
+          p_currency: string
+          p_status: string
+          p_transaction_id: string
+          p_checksum: string
+          p_metadata: Json
+        }
+        Returns: {
+          transaction_id: number
+          created: boolean
+          message: string
+        }[]
+      }
+      get_user_payment_history: {
+        Args: { user_uuid: string }
+        Returns: {
+          status: string
+          transaction_date: string
+          subscription_plan: string
+          transaction_id: string
+          id: string
+          amount: number
+          currency: string
+        }[]
+      }
+      get_user_refund_history: {
+        Args: { user_uuid: string }
+        Returns: {
+          id: string
+          subscription_id: string
+          original_transaction_id: string
+          refund_transaction_id: string
+          original_amount: number
+          refund_amount: number
+          cancellation_fee: number
+          status: string
+          created_at: string
+          processed_at: string
+          plan_type: string
+        }[]
+      }
       get_user_set_progress_summary: {
         Args: { p_user_id: string }
         Returns: {
+          average_score: number
           set_type: string
           set_difficulty: string
-          total_sets: number
           completed_sets: number
+          total_sets: number
           in_progress_sets: number
-          average_score: number
         }[]
       }
       has_active_premium: {
@@ -1002,11 +962,11 @@ export type Database = {
       }
       process_free_coupon_subscription: {
         Args: {
+          p_discount_amount: number
           p_user_id: string
           p_coupon_id: string
           p_plan_type: string
           p_original_amount: number
-          p_discount_amount: number
           p_final_amount: number
         }
         Returns: {
@@ -1147,7 +1107,11 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
 } as const
+
