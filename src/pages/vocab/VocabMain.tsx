@@ -94,6 +94,7 @@ const BadgeBase = ({ children, className = "", variant = "default" }) => {
 
 const VocabMain: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [showFutureFeatures, setShowFutureFeatures] = useState(false);
   const [stats, setStats] = useState<VocabularyStats>({
     totalWords: 120,
     knownWords: 0,
@@ -346,49 +347,51 @@ const VocabMain: React.FC = () => {
           </CardContent>
         </Card>
 
-        {/* Secondary Features - Minimal & Clean */}
+        {/* Secondary Features - Collapsible */}
         <div className="mb-16">
           <div className="text-center mb-8">
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">שירותים נוספים</h3>
-            <p className="text-gray-500">כלים מתקדמים לשיפור האנגלית</p>
+            <button 
+              className="inline-flex items-center gap-2 text-xl font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+              onClick={() => setShowFutureFeatures(!showFutureFeatures)}
+            >
+              <ChevronRight className={`w-5 h-5 transition-transform duration-200 ${showFutureFeatures ? 'rotate-90' : ''}`} />
+              שירותים עתידיים
+            </button>
+            <p className="text-gray-500 mt-2">כלים מתקדמים לשיפור האנגלית</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {[
-              { title: 'למידה חכמה', icon: Brain, status: 'בפיתוח' },
-              { title: 'מאמרונים', icon: BookMarked, status: '2 שבועות' },
-              { title: 'הגייה', icon: Headphones, status: '3 שבועות' },
-              { title: 'שורשי מילים', icon: Globe, status: 'חודש' }
-            ].map((item, i) => {
-              const IconComponent = item.icon;
-              return (
-                <div key={i} className="bg-white p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors text-center">
-                  <IconComponent className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                  <h4 className="font-medium text-gray-700 text-sm mb-1">{item.title}</h4>
-                  <BadgeBase className="text-xs" variant="outline">
-                    {item.status}
-                  </BadgeBase>
-                </div>
-              );
-            })}
-          </div>
+          {showFutureFeatures && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto animate-in slide-in-from-top-2 duration-300">
+              {[
+                { title: 'למידה חכמה', icon: Brain, status: 'בפיתוח' },
+                { title: 'מאמרונים', icon: BookMarked, status: '2 שבועות' },
+                { title: 'הגייה', icon: Headphones, status: '3 שבועות' },
+                { title: 'שורשי מילים', icon: Globe, status: 'חודש' }
+              ].map((item, i) => {
+                const IconComponent = item.icon;
+                return (
+                  <div key={i} className="bg-white p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors text-center">
+                    <IconComponent className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+                    <h4 className="font-medium text-gray-700 text-sm mb-1">{item.title}</h4>
+                    <BadgeBase className="text-xs" variant="outline">
+                      {item.status}
+                    </BadgeBase>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Community - Minimal */}
         <div className="text-center py-8 border-t border-gray-200">
           <div className="inline-flex items-center gap-2 text-gray-500 mb-4">
             <Users className="w-4 h-4" />
-            <span className="text-sm">1,247 לומדים כרגע באתר</span>
+            <span className="text-sm">67 לומדים כרגע באתר</span>
           </div>
           <div className="flex justify-center gap-4">
-            <BadgeBase variant="outline" className="text-xs">
-              <Trophy className="w-3 h-3 ml-1 text-yellow-500" />
-              אתגר השבוע
-            </BadgeBase>
-            <BadgeBase variant="outline" className="text-xs">
-              <MessageSquare className="w-3 h-3 ml-1 text-blue-500" />
-              פורום
-            </BadgeBase>
+
+        
           </div>
         </div>
 
