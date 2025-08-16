@@ -11,6 +11,9 @@ export interface VocabularyFlags {
   last_reviewed: string | null;
 }
 
+// Import the vocabulary stats service
+import { updateVocabularyProgress } from '@/services/vocabularyStatsService';
+
 export interface VocabularyStats {
   learnedToday: number;
   totalKnown: number;
@@ -111,14 +114,26 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       totalSaved: prev.totalSaved + (newSavedState ? 1 : -1)
     }));
     
-    // Show success toast immediately (no backend call for now)
-    toast({
-      title: newSavedState ? "המילה נשמרה!" : "המילה הוסרה מהרשימה",
-      description: newSavedState 
-        ? "המילה נוספה לרשימת המילים השמורות שלך"
-        : "המילה הוסרה מרשימת המילים השמורות",
-      duration: 2000
-    });
+    // Show success toast immediately and update database
+    try {
+      await updateVocabularyProgress(wordId, true, undefined, newSavedState);
+      
+      toast({
+        title: newSavedState ? "המילה נשמרה!" : "המילה הוסרה מהרשימה",
+        description: newSavedState 
+          ? "המילה נוספה לרשימת המילים השמורות שלך"
+          : "המילה הוסרה מרשימת המילים השמורות",
+        duration: 2000
+      });
+    } catch (error) {
+      console.error('Error updating saved status:', error);
+      // Revert optimistic update on error
+      setSaved(saved);
+      setStats(prev => ({
+        ...prev,
+        totalSaved: prev.totalSaved + (newSavedState ? -1 : 1)
+      }));
+    }
   }, [saved, toast]);
   
   // Toggle check (known) status with optimistic updates
@@ -150,14 +165,28 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       learnedToday: newKnownState ? prev.learnedToday + 1 : prev.learnedToday
     }));
     
-    // Show success toast immediately (no backend call for now)
-    toast({
-      title: newKnownState ? "מעולה! המילה מוכרת לך" : "המילה הוסרה מהרשימה",
-      description: newKnownState 
-        ? "המילה סומנה כמוכרת ותופיע פחות בחידונים"
-        : "המילה הוסרה מרשימת המילים הידועות",
-      duration: 2000
-    });
+    // Show success toast immediately and update database
+    try {
+      await updateVocabularyProgress(wordId, true, newKnownState, undefined);
+      
+      toast({
+        title: newKnownState ? "מעולה! המילה מוכרת לך" : "המילה הוסרה מהרשימה",
+        description: newKnownState 
+          ? "המילה סומנה כמוכרת ותופיע פחות בחידונים"
+          : "המילה הוסרה מרשימת המילים הידועות",
+        duration: 2000
+      });
+    } catch (error) {
+      console.error('Error updating known status:', error);
+      // Revert optimistic update on error
+      setKnown(known);
+      setMastery(mastery);
+      setStats(prev => ({
+        ...prev,
+        totalKnown: prev.totalKnown + (newKnownState ? -1 : 1),
+        learnedToday: newKnownState ? prev.learnedToday - 1 : prev.learnedToday
+      }));
+    }
   }, [known, mastery, toast]);
   
   // Refresh stats manually

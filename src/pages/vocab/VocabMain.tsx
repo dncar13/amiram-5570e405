@@ -12,23 +12,40 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { getVocabularyStats, VocabularyStats } from '@/services/vocabularyStatsService';
+import { useAuth } from '@/context/AuthContext';
 
 const VocabMain: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<VocabularyStats>({
     totalWords: 120,
     knownWords: 0,
     streak: 0,
-    todayPracticed: false
+    accuracy: 0,
+    wordsThisWeek: 0,
+    progressToNext: 0,
+    learnedToday: 0,
+    totalSaved: 0,
+    needsReview: 0
   });
+  const [loading, setLoading] = useState(true);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    // טען סטטיסטיקות מ-localStorage
-    const savedStats = localStorage.getItem('vocab_stats');
-    if (savedStats) {
-      setStats(prev => ({ ...prev, ...JSON.parse(savedStats) }));
-    }
-  }, []);
+    const loadStats = async () => {
+      try {
+        setLoading(true);
+        const vocabularyStats = await getVocabularyStats();
+        setStats(vocabularyStats);
+      } catch (error) {
+        console.error('Error loading vocabulary stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStats();
+  }, [currentUser]); // Reload when user changes
 
   // מילים לדוגמה לתצוגה
   const sampleWords = ['eloquent', 'perseverance', 'serendipity', 'resilient'];
@@ -62,12 +79,14 @@ const VocabMain: React.FC = () => {
                 <div className="text-xs md:text-sm opacity-90">מילים במאגר</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-green-300">{stats.knownWords}</div>
+                <div className="text-2xl md:text-3xl font-bold text-green-300">
+                  {loading ? "..." : stats.knownWords}
+                </div>
                 <div className="text-xs md:text-sm opacity-90">מוכרות</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-orange-300 flex items-center justify-center">
-                  {stats.streak}
+                  {loading ? "..." : stats.streak}
                   <Flame className="w-5 h-5 md:w-6 md:h-6 mr-1" />
                 </div>
                 <div className="text-xs md:text-sm opacity-90">רצף</div>
@@ -308,23 +327,27 @@ const VocabMain: React.FC = () => {
               <div className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-blue-600 flex items-center justify-center">
                   <Star className="w-6 h-6 md:w-8 md:h-8 ml-1 text-yellow-500" />
-                  {stats.knownWords}
+                  {loading ? "..." : stats.knownWords}
                 </div>
                 <div className="text-xs md:text-sm text-gray-600">מילים מוכרות</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl md:text-3xl font-bold text-green-600 flex items-center justify-center">
                   <Flame className="w-6 h-6 md:w-8 md:h-8 ml-1 text-orange-500" />
-                  {stats.streak}
+                  {loading ? "..." : stats.streak}
                 </div>
                 <div className="text-xs md:text-sm text-gray-600">ימים ברצף</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-purple-600">85%</div>
+                <div className="text-2xl md:text-3xl font-bold text-purple-600">
+                  {loading ? "..." : stats.accuracy}%
+                </div>
                 <div className="text-xs md:text-sm text-gray-600">דיוק ממוצע</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-orange-600">12</div>
+                <div className="text-2xl md:text-3xl font-bold text-orange-600">
+                  {loading ? "..." : stats.wordsThisWeek}
+                </div>
                 <div className="text-xs md:text-sm text-gray-600">מילים השבוע</div>
               </div>
             </div>
@@ -333,11 +356,13 @@ const VocabMain: React.FC = () => {
             <div className="mt-4 md:mt-6">
               <div className="flex justify-between text-xs md:text-sm text-gray-600 mb-2">
                 <span>התקדמות לרמה הבאה</span>
-                <span>68%</span>
+                <span>{loading ? "..." : stats.progressToNext}%</span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
-                <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 md:h-3 rounded-full transition-all duration-500" 
-                     style={{ width: '68%' }}></div>
+                <div 
+                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 md:h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${loading ? 0 : stats.progressToNext}%` }}
+                ></div>
               </div>
             </div>
           </CardContent>
