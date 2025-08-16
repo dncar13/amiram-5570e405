@@ -98,14 +98,14 @@ const VocabQuiz: React.FC = () => {
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
     if (isCorrect) {
       setScore(score + 1);
-      
-      // עדכן את הסטטיסטיקות עבור כל מילה בשאלה הנוכחית
-      try {
-        const wordId = `vocab_${currentQuestionIndex}_${currentQuestion.question}`;
-        await updateVocabularyProgress(wordId, true, true, undefined);
-      } catch (error) {
-        console.error('Failed to update vocabulary progress:', error);
-      }
+    }
+    
+    // עדכן את הסטטיסטיקות עבור כל מילה בשאלה הנוכחית (נכון או לא נכון)
+    try {
+      const wordId = `vocab_${currentQuestionIndex}_${currentQuestion.question}`;
+      await updateVocabularyProgress(wordId, isCorrect, isCorrect, undefined);
+    } catch (error) {
+      console.error('Failed to update vocabulary progress:', error);
     }
   }, [selectedAnswer, answeredQuestions, userAnswers, currentQuestionIndex, currentQuestion, score]);
 

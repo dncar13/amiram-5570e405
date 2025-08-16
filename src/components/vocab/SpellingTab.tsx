@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { updateVocabularyProgress } from '@/services/vocabularyStatsService';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
@@ -135,7 +136,7 @@ export function SpellingTab({ words, onWordMastered, className }: SpellingTabPro
     return matrix[str2.length][str1.length];
   };
 
-  const checkSpelling = () => {
+  const checkSpelling = async () => {
     if (!currentWord || !userInput.trim()) return;
 
     const normalizedInput = normalizeText(userInput);
@@ -177,6 +178,13 @@ export function SpellingTab({ words, onWordMastered, className }: SpellingTabPro
 
       onWordMastered(currentWord.id, masteryLevel);
       setCompletedWords(prev => new Set([...prev, currentWord.id]));
+    }
+    
+    // עדכן את הסטטיסטיקות גם עבור שאלות כתיב
+    try {
+      await updateVocabularyProgress(currentWord.id, isCorrect, isCorrect, undefined);
+    } catch (error) {
+      console.error('Failed to update vocabulary progress:', error);
     }
   };
 
