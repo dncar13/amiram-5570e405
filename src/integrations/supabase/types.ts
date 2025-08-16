@@ -7,30 +7,10 @@ export type Json =
   | Json[]
 
 export type Database = {
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
   }
   public: {
     Tables: {
@@ -162,6 +142,35 @@ export type Database = {
         }
         Relationships: []
       }
+      idempotency_keys: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          key: string
+          used_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          key: string
+          used_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          key?: string
+          used_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "idempotency_keys_used_by_fkey"
+            columns: ["used_by"]
+            isOneToOne: false
+            referencedRelation: "payment_transactions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       migration_logs: {
         Row: {
           batch_id: string
@@ -240,81 +249,57 @@ export type Database = {
       payment_transactions: {
         Row: {
           amount: number
-          auth_number: string | null
-          card_holder_name: string | null
-          card_last_four: string | null
-          checksum: string | null
-          coupon_code: string | null
           created_at: string
           currency: string
-          discount_amount: number | null
           id: string
           is_refund: boolean | null
-          low_profile_id: string | null
+          low_profile_code: string
           metadata: Json | null
-          original_amount: number | null
           original_transaction_id: string | null
-          payment_method: string
+          plan_type: string
+          provider: string | null
           refund_reason: string | null
           status: string
           subscription_id: string | null
-          transaction_date: string
-          transaction_id: string
+          transaction_id: string | null
           updated_at: string
           user_id: string
-          voucher_number: string | null
         }
         Insert: {
           amount: number
-          auth_number?: string | null
-          card_holder_name?: string | null
-          card_last_four?: string | null
-          checksum?: string | null
-          coupon_code?: string | null
           created_at?: string
           currency?: string
-          discount_amount?: number | null
           id?: string
           is_refund?: boolean | null
-          low_profile_id?: string | null
+          low_profile_code: string
           metadata?: Json | null
-          original_amount?: number | null
           original_transaction_id?: string | null
-          payment_method?: string
+          plan_type: string
+          provider?: string | null
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
-          transaction_date?: string
-          transaction_id: string
+          transaction_id?: string | null
           updated_at?: string
           user_id: string
-          voucher_number?: string | null
         }
         Update: {
           amount?: number
-          auth_number?: string | null
-          card_holder_name?: string | null
-          card_last_four?: string | null
-          checksum?: string | null
-          coupon_code?: string | null
           created_at?: string
           currency?: string
-          discount_amount?: number | null
           id?: string
           is_refund?: boolean | null
-          low_profile_id?: string | null
+          low_profile_code?: string
           metadata?: Json | null
-          original_amount?: number | null
           original_transaction_id?: string | null
-          payment_method?: string
+          plan_type?: string
+          provider?: string | null
           refund_reason?: string | null
           status?: string
           subscription_id?: string | null
-          transaction_date?: string
-          transaction_id?: string
+          transaction_id?: string | null
           updated_at?: string
           user_id?: string
-          voucher_number?: string | null
         }
         Relationships: [
           {
@@ -324,11 +309,45 @@ export type Database = {
             referencedRelation: "subscriptions"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      payment_webhook_events: {
+        Row: {
+          event_id: string
+          handled: boolean
+          headers: Json | null
+          id: number
+          payload: Json | null
+          provider: string
+          received_at: string
+          transaction_id: string | null
+        }
+        Insert: {
+          event_id: string
+          handled?: boolean
+          headers?: Json | null
+          id?: number
+          payload?: Json | null
+          provider: string
+          received_at?: string
+          transaction_id?: string | null
+        }
+        Update: {
+          event_id?: string
+          handled?: boolean
+          headers?: Json | null
+          id?: number
+          payload?: Json | null
+          provider?: string
+          received_at?: string
+          transaction_id?: string | null
+        }
+        Relationships: [
           {
-            foreignKeyName: "payment_transactions_subscription_id_fkey"
-            columns: ["subscription_id"]
+            foreignKeyName: "payment_webhook_events_transaction_id_fkey"
+            columns: ["transaction_id"]
             isOneToOne: false
-            referencedRelation: "subscriptions"
+            referencedRelation: "payment_transactions"
             referencedColumns: ["id"]
           },
         ]
@@ -339,7 +358,6 @@ export type Database = {
           display_name: string | null
           email: string
           id: string
-          is_admin: boolean | null
           phone: string | null
           updated_at: string
           user_id: string
@@ -349,7 +367,6 @@ export type Database = {
           display_name?: string | null
           email: string
           id?: string
-          is_admin?: boolean | null
           phone?: string | null
           updated_at?: string
           user_id: string
@@ -359,7 +376,6 @@ export type Database = {
           display_name?: string | null
           email?: string
           id?: string
-          is_admin?: boolean | null
           phone?: string | null
           updated_at?: string
           user_id?: string
@@ -411,6 +427,7 @@ export type Database = {
         Row: {
           ai_generated: boolean | null
           answer_options: Json
+          audio_url: string | null
           batch_id: string | null
           correct_answer: string
           created_at: string
@@ -432,6 +449,7 @@ export type Database = {
           question_text: string
           set_id: string | null
           set_order: number | null
+          stable_id: string | null
           subtopic_id: number | null
           topic_id: number | null
           type: string
@@ -441,6 +459,7 @@ export type Database = {
         Insert: {
           ai_generated?: boolean | null
           answer_options: Json
+          audio_url?: string | null
           batch_id?: string | null
           correct_answer: string
           created_at?: string
@@ -462,6 +481,7 @@ export type Database = {
           question_text: string
           set_id?: string | null
           set_order?: number | null
+          stable_id?: string | null
           subtopic_id?: number | null
           topic_id?: number | null
           type: string
@@ -471,6 +491,7 @@ export type Database = {
         Update: {
           ai_generated?: boolean | null
           answer_options?: Json
+          audio_url?: string | null
           batch_id?: string | null
           correct_answer?: string
           created_at?: string
@@ -492,6 +513,7 @@ export type Database = {
           question_text?: string
           set_id?: string | null
           set_order?: number | null
+          stable_id?: string | null
           subtopic_id?: number | null
           topic_id?: number | null
           type?: string
@@ -730,36 +752,75 @@ export type Database = {
         }
         Relationships: []
       }
-      transaction_idempotency_log: {
+      user_preferences: {
         Row: {
-          attempt_timestamp: string | null
-          checksum: string | null
-          failure_reason: string | null
-          id: number
-          low_profile_code: string | null
-          request_data: Json | null
-          transaction_id: string | null
-          user_id: string | null
+          achievement_notifications: boolean | null
+          adaptive_difficulty: boolean | null
+          allow_analytics: boolean | null
+          auto_advance_time: number | null
+          created_at: string | null
+          daily_reminder_enabled: boolean | null
+          daily_reminder_time: string | null
+          delivery_strategy: string | null
+          enable_smart_delivery: boolean | null
+          enable_sound: boolean | null
+          font_size: string | null
+          id: string
+          preferred_difficulty: string | null
+          questions_per_session: number | null
+          reduce_animations: boolean | null
+          share_anonymous_data: boolean | null
+          show_explanations: boolean | null
+          theme: string | null
+          updated_at: string | null
+          user_id: string
+          weekly_progress_email: boolean | null
         }
         Insert: {
-          attempt_timestamp?: string | null
-          checksum?: string | null
-          failure_reason?: string | null
-          id?: number
-          low_profile_code?: string | null
-          request_data?: Json | null
-          transaction_id?: string | null
-          user_id?: string | null
+          achievement_notifications?: boolean | null
+          adaptive_difficulty?: boolean | null
+          allow_analytics?: boolean | null
+          auto_advance_time?: number | null
+          created_at?: string | null
+          daily_reminder_enabled?: boolean | null
+          daily_reminder_time?: string | null
+          delivery_strategy?: string | null
+          enable_smart_delivery?: boolean | null
+          enable_sound?: boolean | null
+          font_size?: string | null
+          id?: string
+          preferred_difficulty?: string | null
+          questions_per_session?: number | null
+          reduce_animations?: boolean | null
+          share_anonymous_data?: boolean | null
+          show_explanations?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id: string
+          weekly_progress_email?: boolean | null
         }
         Update: {
-          attempt_timestamp?: string | null
-          checksum?: string | null
-          failure_reason?: string | null
-          id?: number
-          low_profile_code?: string | null
-          request_data?: Json | null
-          transaction_id?: string | null
-          user_id?: string | null
+          achievement_notifications?: boolean | null
+          adaptive_difficulty?: boolean | null
+          allow_analytics?: boolean | null
+          auto_advance_time?: number | null
+          created_at?: string | null
+          daily_reminder_enabled?: boolean | null
+          daily_reminder_time?: string | null
+          delivery_strategy?: string | null
+          enable_smart_delivery?: boolean | null
+          enable_sound?: boolean | null
+          font_size?: string | null
+          id?: string
+          preferred_difficulty?: string | null
+          questions_per_session?: number | null
+          reduce_animations?: boolean | null
+          share_anonymous_data?: boolean | null
+          show_explanations?: boolean | null
+          theme?: string | null
+          updated_at?: string | null
+          user_id?: string
+          weekly_progress_email?: boolean | null
         }
         Relationships: []
       }
@@ -797,6 +858,156 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_progress_summary: {
+        Row: {
+          average_accuracy: number | null
+          average_time_per_question: number | null
+          created_at: string | null
+          current_streak_days: number | null
+          difficulty: string
+          id: string
+          last_practice_date: string | null
+          longest_streak_days: number | null
+          questions_correct: number
+          questions_flagged: number
+          questions_incorrect: number
+          questions_seen: number
+          total_practice_time: number | null
+          total_questions_available: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          average_accuracy?: number | null
+          average_time_per_question?: number | null
+          created_at?: string | null
+          current_streak_days?: number | null
+          difficulty: string
+          id?: string
+          last_practice_date?: string | null
+          longest_streak_days?: number | null
+          questions_correct?: number
+          questions_flagged?: number
+          questions_incorrect?: number
+          questions_seen?: number
+          total_practice_time?: number | null
+          total_questions_available?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          average_accuracy?: number | null
+          average_time_per_question?: number | null
+          created_at?: string | null
+          current_streak_days?: number | null
+          difficulty?: string
+          id?: string
+          last_practice_date?: string | null
+          longest_streak_days?: number | null
+          questions_correct?: number
+          questions_flagged?: number
+          questions_incorrect?: number
+          questions_seen?: number
+          total_practice_time?: number | null
+          total_questions_available?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_question_history: {
+        Row: {
+          answer_selected: number | null
+          created_at: string | null
+          difficulty: string
+          flagged: boolean | null
+          id: string
+          is_correct: boolean
+          last_seen_at: string | null
+          notes: string | null
+          question_id: number
+          simulation_session_id: string | null
+          simulation_type: string | null
+          time_spent_seconds: number | null
+          user_id: string
+        }
+        Insert: {
+          answer_selected?: number | null
+          created_at?: string | null
+          difficulty: string
+          flagged?: boolean | null
+          id?: string
+          is_correct: boolean
+          last_seen_at?: string | null
+          notes?: string | null
+          question_id: number
+          simulation_session_id?: string | null
+          simulation_type?: string | null
+          time_spent_seconds?: number | null
+          user_id: string
+        }
+        Update: {
+          answer_selected?: number | null
+          created_at?: string | null
+          difficulty?: string
+          flagged?: boolean | null
+          id?: string
+          is_correct?: boolean
+          last_seen_at?: string | null
+          notes?: string | null
+          question_id?: number
+          simulation_session_id?: string | null
+          simulation_type?: string | null
+          time_spent_seconds?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_vocabulary: {
+        Row: {
+          correct_count: number
+          created_at: string
+          id: string
+          is_known: boolean
+          is_saved: boolean
+          last_reviewed: string | null
+          mastery: number
+          next_review: string | null
+          review_count: number
+          updated_at: string
+          user_id: string
+          word_id: string
+        }
+        Insert: {
+          correct_count?: number
+          created_at?: string
+          id?: string
+          is_known?: boolean
+          is_saved?: boolean
+          last_reviewed?: string | null
+          mastery?: number
+          next_review?: string | null
+          review_count?: number
+          updated_at?: string
+          user_id: string
+          word_id: string
+        }
+        Update: {
+          correct_count?: number
+          created_at?: string
+          id?: string
+          is_known?: boolean
+          is_saved?: boolean
+          last_reviewed?: string | null
+          mastery?: number
+          next_review?: string | null
+          review_count?: number
+          updated_at?: string
+          user_id?: string
+          word_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -870,26 +1081,26 @@ export type Database = {
     Functions: {
       calculate_refund_amount: {
         Args: {
-          p_original_amount: number
-          p_start_date: string
-          p_end_date: string
           p_cancel_date: string
+          p_end_date: string
+          p_original_amount: number
           p_plan_type: string
+          p_start_date: string
         }
         Returns: {
-          total_days: number
-          eligible_for_refund: boolean
-          unused_days: number
-          refund_amount: number
           cancellation_fee: number
+          eligible_for_refund: boolean
+          refund_amount: number
+          total_days: number
+          unused_days: number
         }[]
       }
       cancel_user_subscription: {
         Args: { p_user_id: string }
         Returns: {
-          updated_count: number
           message: string
           success: boolean
+          updated_count: number
         }[]
       }
       clean_duplicate_set_sessions: {
@@ -900,60 +1111,64 @@ export type Database = {
       }
       create_idempotent_transaction: {
         Args: {
-          p_user_id: string
-          p_subscription_id: string
-          p_low_profile_code: string
-          p_plan_type: string
           p_amount: number
-          p_currency: string
-          p_status: string
-          p_transaction_id: string
           p_checksum: string
+          p_currency: string
+          p_low_profile_code: string
           p_metadata: Json
+          p_plan_type: string
+          p_status: string
+          p_subscription_id: string
+          p_transaction_id: string
+          p_user_id: string
         }
         Returns: {
-          transaction_id: number
           created: boolean
           message: string
-        }[]
-      }
-      get_user_payment_history: {
-        Args: { user_uuid: string }
-        Returns: {
-          status: string
-          transaction_date: string
-          subscription_plan: string
           transaction_id: string
-          id: string
-          amount: number
-          currency: string
         }[]
       }
-      get_user_refund_history: {
-        Args: { user_uuid: string }
+      get_latest_user_transaction_for_subscription: {
+        Args: { p_subscription_id: string }
         Returns: {
-          id: string
-          subscription_id: string
-          original_transaction_id: string
-          refund_transaction_id: string
-          original_amount: number
-          refund_amount: number
-          cancellation_fee: number
-          status: string
+          amount: number
           created_at: string
-          processed_at: string
+          currency: string
+          id: string
+          status: string
+          subscription_id: string
+          transaction_id: string
+        }[]
+      }
+      get_public_homepage_stats: {
+        Args: Record<PropertyKey, never>
+        Returns: Json
+      }
+      get_user_payment_transactions: {
+        Args: { p_limit?: number; p_offset?: number }
+        Returns: {
+          amount: number
+          created_at: string
+          currency: string
+          end_date: string
+          id: string
           plan_type: string
+          start_date: string
+          status: string
+          subscription_id: string
+          subscription_status: string
+          transaction_id: string
         }[]
       }
       get_user_set_progress_summary: {
         Args: { p_user_id: string }
         Returns: {
           average_score: number
-          set_type: string
-          set_difficulty: string
           completed_sets: number
-          total_sets: number
           in_progress_sets: number
+          set_difficulty: string
+          set_type: string
+          total_sets: number
         }[]
       }
       has_active_premium: {
@@ -962,17 +1177,52 @@ export type Database = {
       }
       process_free_coupon_subscription: {
         Args: {
-          p_discount_amount: number
-          p_user_id: string
           p_coupon_id: string
-          p_plan_type: string
-          p_original_amount: number
+          p_discount_amount: number
           p_final_amount: number
+          p_original_amount: number
+          p_plan_type: string
+          p_user_id: string
         }
         Returns: {
-          success: boolean
-          subscription_id: string
           message: string
+          subscription_id: string
+          success: boolean
+        }[]
+      }
+      purge_expired_idempotency_keys: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      record_coupon_usage_secure: {
+        Args: {
+          p_coupon_id: string
+          p_discount_amount: number
+          p_final_amount: number
+          p_original_amount: number
+          p_plan_type: string
+          p_user_id: string
+        }
+        Returns: {
+          message: string
+          success: boolean
+        }[]
+      }
+      validate_coupon_secure: {
+        Args: {
+          p_code: string
+          p_plan_type: string
+          p_user_email?: string
+          p_user_id?: string
+        }
+        Returns: {
+          code: string
+          coupon_id: string
+          discount_type: string
+          discount_value: number
+          error: string
+          is_personal: boolean
+          valid: boolean
         }[]
       }
       validate_set_metadata: {
@@ -1107,11 +1357,7 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },
 } as const
-

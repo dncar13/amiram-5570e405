@@ -51,7 +51,20 @@ const PurchaseHistoryTab = () => {
           .order('created_at', { ascending: false });
 
         if (error) throw error;
-        setTransactions(data || []);
+        
+        // Filter out transactions with invalid subscription data
+        const validTransactions = (data || []).filter(transaction => {
+          // If subscription exists, ensure it has the required fields
+          if (transaction.subscription) {
+            return transaction.subscription.plan_type && 
+                   transaction.subscription.start_date && 
+                   transaction.subscription.end_date && 
+                   transaction.subscription.status;
+          }
+          return true; // Transaction without subscription is valid
+        });
+        
+        setTransactions(validTransactions);
       } catch (err) {
         console.error('Error fetching transactions:', err);
         setError('שגיאה בטעינת היסטוריית הרכישות');

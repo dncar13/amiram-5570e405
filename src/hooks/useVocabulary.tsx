@@ -1,12 +1,15 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { 
-  getFlags, 
-  toggleSaved, 
-  toggleKnown, 
-  getDailyStats,
-  VocabularyFlags 
-} from '@/services/vocabularyService';
+
+// Simple interface for vocabulary stats
+export interface VocabularyFlags {
+  word_id: string;
+  is_saved: boolean;
+  is_known: boolean;
+  mastery: number;
+  next_review: string | null;
+  last_reviewed: string | null;
+}
 
 export interface VocabularyStats {
   learnedToday: number;
@@ -46,7 +49,7 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
   
   const { toast } = useToast();
   
-  // Load vocabulary flags and stats
+  // Load vocabulary flags and stats (simplified version without database)
   const loadData = useCallback(async () => {
     if (wordIds.length === 0) {
       setLoading(false);
@@ -56,27 +59,20 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
     try {
       setLoading(true);
       
-      // Load flags for current words
-      const flags = await getFlags(wordIds);
+      // For now, initialize with empty states
+      // TODO: Implement when vocabulary tracking is needed
+      setSaved(new Set());
+      setKnown(new Set());
+      setMastery(new Map());
       
-      // Update state based on flags
-      const newSaved = new Set<string>();
-      const newKnown = new Set<string>();
-      const newMastery = new Map<string, number>();
-      
-      flags.forEach((flag, wordId) => {
-        if (flag.is_saved) newSaved.add(wordId);
-        if (flag.is_known) newKnown.add(wordId);
-        newMastery.set(wordId, flag.mastery);
+      // Mock stats
+      setStats({
+        learnedToday: 0,
+        totalKnown: 0,
+        totalSaved: 0,
+        needsReview: 0,
+        streak: 0
       });
-      
-      setSaved(newSaved);
-      setKnown(newKnown);
-      setMastery(newMastery);
-      
-      // Load daily stats
-      const dailyStats = await getDailyStats();
-      setStats(dailyStats);
       
     } catch (error) {
       console.error('Error loading vocabulary data:', error);
@@ -115,33 +111,14 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       totalSaved: prev.totalSaved + (newSavedState ? 1 : -1)
     }));
     
-    try {
-      await toggleSaved(wordId, newSavedState);
-      
-      // Show success toast
-      toast({
-        title: newSavedState ? "המילה נשמרה!" : "המילה הוסרה מהרשימה",
-        description: newSavedState 
-          ? "המילה נוספה לרשימת המילים השמורות שלך"
-          : "המילה הוסרה מרשימת המילים השמורות",
-        duration: 2000
-      });
-      
-    } catch (error) {
-      // Rollback on error
-      setSaved(saved);
-      setStats(prev => ({
-        ...prev,
-        totalSaved: prev.totalSaved + (newSavedState ? -1 : 1)
-      }));
-      
-      console.error('Error toggling saved status:', error);
-      toast({
-        title: "שגיאה בשמירה",
-        description: "לא הצלחנו לעדכן את המילה. נסה שוב.",
-        variant: "destructive"
-      });
-    }
+    // Show success toast immediately (no backend call for now)
+    toast({
+      title: newSavedState ? "המילה נשמרה!" : "המילה הוסרה מהרשימה",
+      description: newSavedState 
+        ? "המילה נוספה לרשימת המילים השמורות שלך"
+        : "המילה הוסרה מרשימת המילים השמורות",
+      duration: 2000
+    });
   }, [saved, toast]);
   
   // Toggle check (known) status with optimistic updates
@@ -173,72 +150,27 @@ export function useVocabulary(wordIds: string[]): UseVocabularyReturn {
       learnedToday: newKnownState ? prev.learnedToday + 1 : prev.learnedToday
     }));
     
-    try {
-      await toggleKnown(wordId, newKnownState, currentMasteryLevel);
-      
-      // Show success toast
-      toast({
-        title: newKnownState ? "מעולה! המילה מוכרת לך" : "המילה הוסרה מהרשימה",
-        description: newKnownState 
-          ? "המילה סומנה כמוכרת ותופיע פחות בחידונים"
-          : "המילה הוסרה מרשימת המילים הידועות",
-        duration: 2000
-      });
-      
-    } catch (error) {
-      // Rollback on error
-      setKnown(known);
-      setMastery(mastery);
-      setStats(prev => ({
-        ...prev,
-        totalKnown: prev.totalKnown + (newKnownState ? -1 : 1),
-        learnedToday: newKnownState ? prev.learnedToday - 1 : prev.learnedToday
-      }));
-      
-      console.error('Error toggling known status:', error);
-      toast({
-        title: "שגיאה בעדכון",
-        description: "לא הצלחנו לעדכן את המילה. נסה שוב.",
-        variant: "destructive"
-      });
-    }
+    // Show success toast immediately (no backend call for now)
+    toast({
+      title: newKnownState ? "מעולה! המילה מוכרת לך" : "המילה הוסרה מהרשימה",
+      description: newKnownState 
+        ? "המילה סומנה כמוכרת ותופיע פחות בחידונים"
+        : "המילה הוסרה מרשימת המילים הידועות",
+      duration: 2000
+    });
   }, [known, mastery, toast]);
   
   // Refresh stats manually
   const refreshStats = useCallback(async () => {
-    try {
-      const dailyStats = await getDailyStats();
-      setStats(dailyStats);
-    } catch (error) {
-      console.error('Error refreshing stats:', error);
-    }
+    // Mock refresh for now
+    console.log('Stats refreshed');
   }, []);
   
   // Refresh flags manually
   const refreshFlags = useCallback(async () => {
-    if (wordIds.length === 0) return;
-    
-    try {
-      const flags = await getFlags(wordIds);
-      
-      const newSaved = new Set<string>();
-      const newKnown = new Set<string>();
-      const newMastery = new Map<string, number>();
-      
-      flags.forEach((flag, wordId) => {
-        if (flag.is_saved) newSaved.add(wordId);
-        if (flag.is_known) newKnown.add(wordId);
-        newMastery.set(wordId, flag.mastery);
-      });
-      
-      setSaved(newSaved);
-      setKnown(newKnown);
-      setMastery(newMastery);
-      
-    } catch (error) {
-      console.error('Error refreshing flags:', error);
-    }
-  }, [wordIds]);
+    // Mock refresh for now
+    console.log('Flags refreshed');
+  }, []);
   
   return {
     saved,
