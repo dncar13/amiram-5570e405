@@ -338,31 +338,46 @@ const VocabMain: React.FC = () => {
         <div className="mb-16">
           <div className="text-center mb-8">
             <button 
-              className="inline-flex items-center gap-2 text-xl font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-3 text-xl font-bold text-transparent bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 bg-clip-text hover:from-yellow-400 hover:via-orange-400 hover:to-red-400 transition-all duration-300 transform hover:scale-105"
               onClick={() => setShowFutureFeatures(!showFutureFeatures)}
             >
-              <ChevronRight className={`w-5 h-5 transition-transform duration-200 ${showFutureFeatures ? 'rotate-90' : ''}`} />
-              שירותים עתידיים
+              <div className="flex items-center gap-2 bg-gradient-to-r from-yellow-100 via-orange-100 to-red-100 px-4 py-2 rounded-full border-2 border-gradient-to-r from-yellow-300 via-orange-300 to-red-300 shadow-lg hover:shadow-xl transition-all duration-300">
+                <ChevronRight className={`w-5 h-5 text-orange-600 transition-transform duration-200 ${showFutureFeatures ? 'rotate-90' : ''}`} />
+                <span className="bg-gradient-to-r from-yellow-600 via-orange-600 to-red-600 bg-clip-text text-transparent font-extrabold">
+                  בקרוב באתר
+                </span>
+                <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse"></div>
+              </div>
             </button>
-            <p className="text-gray-500 mt-2">כלים מתקדמים לשיפור האנגלית</p>
+            <p className="text-gray-500 mt-3 bg-gradient-to-r from-yellow-50 to-orange-50 px-4 py-2 rounded-lg inline-block">
+              כלים מתקדמים לשיפור האנגלית
+            </p>
           </div>
           
           {showFutureFeatures && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto animate-in slide-in-from-top-2 duration-300">
               {[
-                { title: 'למידה חכמה', icon: Brain, status: 'בפיתוח' },
-                { title: 'מאמרונים', icon: BookMarked, status: '2 שבועות' },
-                { title: 'הגייה', icon: Headphones, status: '3 שבועות' },
-                { title: 'שורשי מילים', icon: Globe, status: 'חודש' }
+                { title: 'למידה חכמה', icon: Brain, status: 'בפיתוח', color: 'from-yellow-400 to-orange-500' },
+                { title: 'מאמרונים', icon: BookMarked, status: '2 שבועות', color: 'from-orange-400 to-red-500' },
+                { title: 'הגייה', icon: Headphones, status: '3 שבועות', color: 'from-red-400 to-pink-500' },
+                { title: 'שורשי מילים', icon: Globe, status: 'חודש', color: 'from-pink-400 to-purple-500' }
               ].map((item, i) => {
                 const IconComponent = item.icon;
                 return (
-                  <div key={i} className="bg-white p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors text-center">
-                    <IconComponent className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                    <h4 className="font-medium text-gray-700 text-sm mb-1">{item.title}</h4>
-                    <BadgeBase className="text-xs" variant="outline">
-                      {item.status}
-                    </BadgeBase>
+                  <div key={i} className="bg-white p-4 rounded-xl border-2 border-gradient-to-r from-yellow-200 to-orange-200 hover:border-orange-300 transition-all duration-300 text-center transform hover:scale-105 hover:shadow-xl relative overflow-hidden">
+                    {/* גלואינג אפקט עתידני */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${item.color} opacity-5 rounded-xl`}></div>
+                    <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${item.color} rounded-t-xl`}></div>
+                    
+                    <div className="relative z-10">
+                      <div className={`w-12 h-12 mx-auto mb-3 rounded-xl bg-gradient-to-r ${item.color} flex items-center justify-center shadow-lg`}>
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      <h4 className="font-bold text-gray-800 text-sm mb-2">{item.title}</h4>
+                      <BadgeBase className={`text-xs bg-gradient-to-r ${item.color} text-white border-0 font-medium`}>
+                        {item.status}
+                      </BadgeBase>
+                    </div>
                   </div>
                 );
               })}

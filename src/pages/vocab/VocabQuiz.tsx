@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ArrowLeft, RefreshCw, CheckCircle, XCircle, Clock, Target } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -10,30 +10,78 @@ import Footer from '@/components/Footer';
 import vocabData from '@/data/vocab-static.json';
 
 const VocabQuiz: React.FC = () => {
+  const questions = vocabData.quizQuestions;
+  const total = questions.length;
+
+  // 1. תיקון אתחול State - ללא setState בזמן רנדר
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>([]);
-  const [userAnswers, setUserAnswers] = useState<(number | null)[]>([]);
+  const [answeredQuestions, setAnsweredQuestions] = useState<boolean[]>(
+    () => new Array(total).fill(false)
+  );
+  const [userAnswers, setUserAnswers] = useState<(number | null)[]>(
+    () => new Array(total).fill(null)
+  );
   const [quizComplete, setQuizComplete] = useState(false);
 
-  const questions = vocabData.quizQuestions;
   const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
 
-  // Initialize arrays if not done yet
-  if (answeredQuestions.length === 0) {
-    setAnsweredQuestions(new Array(questions.length).fill(false));
-    setUserAnswers(new Array(questions.length).fill(null));
-  }
+  // מונים מחושבים
+  const answeredCount = useMemo(() => answeredQuestions.filter(Boolean).length, [answeredQuestions]);
+  const wrongCount = answeredCount - score;
 
-  const handleAnswerSelect = (answerIndex: number) => {
+  // 2. טיפול בשינוי אורך שאלות (אם יקרה)
+  useEffect(() => {
+    setAnsweredQuestions(new Array(total).fill(false));
+    setUserAnswers(new Array(total).fill(null));
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setScore(0);
+    setQuizComplete(false);
+  }, [total]);
+
+  // 3. שמירת התקדמות ב-localStorage
+  useEffect(() => {
+    const payload = {
+      currentQuestionIndex,
+      answeredQuestions,
+      userAnswers,
+      score,
+      quizComplete,
+    };
+    localStorage.setItem('vocab_quiz_state', JSON.stringify(payload));
+  }, [currentQuestionIndex, answeredQuestions, userAnswers, score, quizComplete]);
+
+  // 4. שחזור התקדמות מ-localStorage
+  useEffect(() => {
+    const raw = localStorage.getItem('vocab_quiz_state');
+    if (!raw) return;
+    try {
+      const saved = JSON.parse(raw);
+      if (Array.isArray(saved.answeredQuestions) && saved.answeredQuestions.length === total) {
+        setCurrentQuestionIndex(saved.currentQuestionIndex ?? 0);
+        setAnsweredQuestions(saved.answeredQuestions);
+        setUserAnswers(saved.userAnswers);
+        setScore(saved.score ?? 0);
+        setQuizComplete(!!saved.quizComplete);
+        setShowResult(saved.answeredQuestions[saved.currentQuestionIndex] ?? false);
+        setSelectedAnswer(saved.userAnswers[saved.currentQuestionIndex] ?? null);
+      }
+    } catch {
+      // שגיאה בפרסור - ממשיכים עם ברירת מחדל
+    }
+  }, [total]);
+
+  const handleAnswerSelect = useCallback((answerIndex: number) => {
     if (showResult) return;
     setSelectedAnswer(answerIndex);
-  };
+  }, [showResult]);
 
-  const handleSubmitAnswer = () => {
+  const handleSubmitAnswer = useCallback(() => {
     if (selectedAnswer === null) return;
     
     setShowResult(true);
@@ -49,9 +97,9 @@ const VocabQuiz: React.FC = () => {
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore(score + 1);
     }
-  };
+  }, [selectedAnswer, answeredQuestions, userAnswers, currentQuestionIndex, currentQuestion.correctAnswer, score]);
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(userAnswers[currentQuestionIndex + 1]);
@@ -59,23 +107,23 @@ const VocabQuiz: React.FC = () => {
     } else {
       setQuizComplete(true);
     }
-  };
+  }, [currentQuestionIndex, questions.length, userAnswers, answeredQuestions]);
 
-  const handlePreviousQuestion = () => {
+  const handlePreviousQuestion = useCallback(() => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
       setSelectedAnswer(userAnswers[currentQuestionIndex - 1]);
       setShowResult(answeredQuestions[currentQuestionIndex - 1]);
     }
-  };
+  }, [currentQuestionIndex, userAnswers, answeredQuestions]);
 
-  const jumpToQuestion = (questionIndex: number) => {
+  const jumpToQuestion = useCallback((questionIndex: number) => {
     setCurrentQuestionIndex(questionIndex);
     setSelectedAnswer(userAnswers[questionIndex]);
     setShowResult(answeredQuestions[questionIndex]);
-  };
+  }, [userAnswers, answeredQuestions]);
 
-  const resetQuiz = () => {
+  const resetQuiz = useCallback(() => {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setShowResult(false);
@@ -83,7 +131,48 @@ const VocabQuiz: React.FC = () => {
     setAnsweredQuestions(new Array(questions.length).fill(false));
     setUserAnswers(new Array(questions.length).fill(null));
     setQuizComplete(false);
-  };
+    // נקה שמירה מקומית
+    localStorage.removeItem('vocab_quiz_state');
+  }, [questions.length]);
+
+  // 5. קיצורי מקלדת ונגישות
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (quizComplete) return;
+      const key = e.key.toLowerCase();
+
+      // A/B/C/D -> 0/1/2/3
+      const index = ['a','b','c','d'].indexOf(key);
+      if (index !== -1 && index < currentQuestion.options.length && !showResult) {
+        setSelectedAnswer(index);
+        return;
+      }
+      
+      // Enter לאשר / לעבור הלאה
+      if (key === 'enter') {
+        e.preventDefault();
+        if (!showResult && selectedAnswer !== null) {
+          handleSubmitAnswer();
+        } else if (showResult) {
+          handleNextQuestion();
+        }
+        return;
+      }
+      
+      // חיצים לניווט
+      if (key === 'arrowright') {
+        e.preventDefault();
+        handleNextQuestion();
+      }
+      if (key === 'arrowleft') {
+        e.preventDefault();
+        handlePreviousQuestion();
+      }
+    };
+    
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showResult, selectedAnswer, quizComplete, currentQuestion.options.length, handleSubmitAnswer, handleNextQuestion, handlePreviousQuestion]);
 
   const getScoreMessage = () => {
     const percentage = (score / questions.length) * 100;
@@ -158,7 +247,7 @@ const VocabQuiz: React.FC = () => {
               </div>
               <div className="flex items-center gap-1">
                 <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 text-green-600" />
-                <span>ציון: {score}/{answeredQuestions.filter(Boolean).length}</span>
+                <span>ציון: {score}/{answeredCount}</span>
               </div>
             </div>
           </div>
@@ -215,9 +304,9 @@ const VocabQuiz: React.FC = () => {
                       <div className="font-bold text-green-700">{score}</div>
                       <div className="text-green-600">נכונות</div>
                     </div>
-                    <div className="bg-blue-50 p-2 rounded-lg text-center">
-                      <div className="font-bold text-blue-700">{answeredQuestions.filter(Boolean).length - score}</div>
-                      <div className="text-blue-600">שגויות</div>
+                    <div className="bg-red-50 p-2 rounded-lg text-center">
+                      <div className="font-bold text-red-700">{wrongCount}</div>
+                      <div className="text-red-600">טעויות</div>
                     </div>
                   </div>
                 </div>
@@ -268,11 +357,12 @@ const VocabQuiz: React.FC = () => {
                             ? index === currentQuestion.correctAnswer
                               ? 'border-green-500 bg-green-50 text-green-800 shadow-lg'
                               : 'border-red-500 bg-red-50 text-red-800 shadow-lg'
-                            : 'border-blue-500 bg-blue-50 shadow-md'
+                            : 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-300'
                           : showResult && index === currentQuestion.correctAnswer
                           ? 'border-green-500 bg-green-50 text-green-800 shadow-lg'
                           : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50 hover:shadow-sm'
                       } ${showResult ? 'cursor-default' : 'cursor-pointer'}`}
+                      title={!showResult ? `לחץ או הקש ${String.fromCharCode(65 + index)}` : undefined}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-base sm:text-lg font-medium">{option}</span>
@@ -295,24 +385,30 @@ const VocabQuiz: React.FC = () => {
                   ))}
                 </div>
 
+                {/* 6. CTA יחיד וברור */}
                 <div className="flex flex-col sm:flex-row justify-between items-center pt-6 gap-4">
+                  {/* כפתור משני - קודמת */}
                   <Button
                     onClick={handlePreviousQuestion}
                     disabled={currentQuestionIndex === 0}
                     variant="outline"
+                    size="sm"
                     className="flex items-center gap-2 w-full sm:w-auto order-2 sm:order-1"
+                    title="חץ שמאלי ← או הקש חץ שמאלי"
                   >
                     <ArrowLeft className="w-4 h-4 rotate-180" />
                     שאלה קודמת
                   </Button>
 
-                  <div className="flex gap-3 order-1 sm:order-2">
+                  {/* CTA ראשי במרכז */}
+                  <div className="order-1 sm:order-2">
                     {!showResult ? (
                       <Button
                         onClick={handleSubmitAnswer}
                         disabled={selectedAnswer === null}
                         size="lg"
-                        className="px-6 sm:px-8"
+                        className="px-8"
+                        title="Enter או לחץ לאשר"
                       >
                         אשר תשובה
                       </Button>
@@ -320,18 +416,22 @@ const VocabQuiz: React.FC = () => {
                       <Button
                         onClick={handleNextQuestion}
                         size="lg"
-                        className="px-6 sm:px-8"
+                        className="px-8"
+                        title="Enter או לחץ להמשך"
                       >
-                        {currentQuestionIndex < questions.length - 1 ? 'השאלה הבאה' : 'סיים חידון'}
+                        {currentQuestionIndex < questions.length - 1 ? 'לשאלה הבאה' : 'סיום חידון'}
                       </Button>
                     )}
                   </div>
 
+                  {/* כפתור משני - הבאה (רק אם יש תשובה) */}
                   <Button
                     onClick={handleNextQuestion}
                     disabled={currentQuestionIndex === questions.length - 1 || !showResult}
                     variant="outline"
+                    size="sm"
                     className="flex items-center gap-2 w-full sm:w-auto order-3"
+                    title="חץ ימני → או הקש חץ ימני"
                   >
                     שאלה הבאה
                     <ArrowLeft className="w-4 h-4" />
@@ -356,7 +456,7 @@ const VocabQuiz: React.FC = () => {
               <span className="text-xs">קודמת</span>
             </Button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col items-center gap-1">
               <span className="text-sm font-medium text-slate-600">
                 {currentQuestionIndex + 1}/{questions.length}
               </span>
@@ -378,6 +478,15 @@ const VocabQuiz: React.FC = () => {
               <span className="text-xs">הבאה</span>
               <ArrowLeft className="w-3 h-3" />
             </Button>
+          </div>
+        </div>
+
+        {/* הודעת מקלדת למחשב */}
+        <div className="hidden xl:block fixed bottom-4 right-4 bg-slate-800 text-white text-xs p-3 rounded-lg shadow-lg opacity-75">
+          <div className="space-y-1">
+            <div>A/B/C/D - בחירת תשובה</div>
+            <div>Enter - אישור/המשך</div>
+            <div>← → - ניווט בשאלות</div>
           </div>
         </div>
 
