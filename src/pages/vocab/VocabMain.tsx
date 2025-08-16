@@ -276,7 +276,6 @@ const VocabMain: React.FC = () => {
                   className="w-full text-lg py-4 border-2"
                 >
                   פתח מילון מלא
-                  <BookOpen className="w-5 h-5 mr-2" />
                 </ButtonBase>
               </Link>
             </CardContent>
@@ -286,21 +285,9 @@ const VocabMain: React.FC = () => {
         {/* Progress Area - Back to original layout without emojis */}
         <Card className="mb-12 max-w-4xl mx-auto">
           <CardContent className="p-8">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-3">
-                <TrendingUp className="w-6 h-6 text-indigo-600" />
-                <h3 className="text-2xl font-bold text-gray-900">ההתקדמות שלך</h3>
-              </div>
-              <Link to="/vocab/stats">
-                <ButtonBase 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-indigo-600 hover:text-indigo-700 font-medium"
-                >
-                  צפה בכל הסטטיסטיקות
-                  <ChevronRight className="w-4 h-4 mr-1" />
-                </ButtonBase>
-              </Link>
+            <div className="flex items-center gap-3 mb-8">
+              <TrendingUp className="w-6 h-6 text-indigo-600" />
+              <h3 className="text-2xl font-bold text-gray-900">ההתקדמות שלך</h3>
             </div>
             
             {/* Main Stats Grid - 4 columns like original */}
