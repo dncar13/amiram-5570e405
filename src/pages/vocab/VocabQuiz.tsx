@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import vocabData from '@/data/vocab-static.json';
+import { updateVocabularyProgress } from '@/services/vocabularyStatsService';
 
 const VocabQuiz: React.FC = () => {
   const questions = vocabData.quizQuestions;
@@ -81,7 +82,7 @@ const VocabQuiz: React.FC = () => {
     setSelectedAnswer(answerIndex);
   }, [showResult]);
 
-  const handleSubmitAnswer = useCallback(() => {
+  const handleSubmitAnswer = useCallback(async () => {
     if (selectedAnswer === null) return;
     
     setShowResult(true);
@@ -94,10 +95,19 @@ const VocabQuiz: React.FC = () => {
     setAnsweredQuestions(newAnswered);
     setUserAnswers(newUserAnswers);
     
-    if (selectedAnswer === currentQuestion.correctAnswer) {
+    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+    if (isCorrect) {
       setScore(score + 1);
+      
+      // עדכן את הסטטיסטיקות עבור כל מילה בשאלה הנוכחית
+      try {
+        const wordId = `vocab_${currentQuestionIndex}_${currentQuestion.question}`;
+        await updateVocabularyProgress(wordId, true, true, undefined);
+      } catch (error) {
+        console.error('Failed to update vocabulary progress:', error);
+      }
     }
-  }, [selectedAnswer, answeredQuestions, userAnswers, currentQuestionIndex, currentQuestion.correctAnswer, score]);
+  }, [selectedAnswer, answeredQuestions, userAnswers, currentQuestionIndex, currentQuestion, score]);
 
   const handleNextQuestion = useCallback(() => {
     if (currentQuestionIndex < questions.length - 1) {
