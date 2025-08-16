@@ -111,16 +111,7 @@ export async function toggleKnown(
   try {
     const userId = await getCurrentUserId();
     
-    const updateData: {
-      user_id: string;
-      word_id: string;
-      is_known: boolean;
-      mastery?: number;
-      next_review?: string;
-      last_reviewed?: string;
-      review_count?: number;
-      correct_count?: number;
-    } = {
+    const updateData: any = {
       user_id: userId,
       word_id: wordId,
       is_known: isKnown,
