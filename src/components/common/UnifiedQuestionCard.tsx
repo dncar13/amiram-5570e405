@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, BookOpen, Brain, FileText, Volume2, PenTool, Eye, EyeOff, Bookmark, BookmarkCheck, ChevronLeft, ChevronRight, Flag, RotateCcw } from "lucide-react";
 import { Question } from "@/data/types/questionTypes";
+import { shuffleQuestionOptions } from "@/utils/questionShuffle";
 
 interface UnifiedQuestionCardProps {
   // Core question data
@@ -162,7 +163,13 @@ const UnifiedQuestionCard: React.FC<UnifiedQuestionCardProps> = ({
   onEditQuestion
 }) => {
   // Use either currentQuestion or question prop
-  const activeQuestion = currentQuestion || question;
+  const baseQuestion = currentQuestion || question;
+  
+  // Apply shuffling to prevent answer pattern gaming
+  const activeQuestion = useMemo(() => {
+    if (!baseQuestion) return null;
+    return shuffleQuestionOptions(baseQuestion);
+  }, [baseQuestion]);
   
   if (!activeQuestion) {
     return null;
