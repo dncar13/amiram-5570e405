@@ -4,16 +4,93 @@ import {
   BookOpen, Calendar, Brain, Trophy, TrendingUp, 
   Search, Zap, Clock, Target, Sparkles, 
   ChevronRight, Star, Flame, Users, Rocket,
-  BookMarked, MessageSquare, Headphones, Globe
+  BookMarked, MessageSquare, Headphones, Globe,
+  ArrowRight
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getVocabularyStats, VocabularyStats } from '@/services/vocabularyStatsService';
 import { useAuth } from '@/context/AuthContext';
+
+// Professional Card components with subtle depth
+const Card = ({ children, className = "", elevated = false }) => (
+  <div className={`bg-white rounded-xl ${elevated ? 'shadow-lg hover:shadow-xl' : 'shadow-sm hover:shadow-md'} transition-all duration-300 ${className}`}>
+    {children}
+  </div>
+);
+
+const CardHeader = ({ children, className = "" }) => (
+  <div className={`px-6 pt-6 pb-2 ${className}`}>
+    {children}
+  </div>
+);
+
+const CardTitle = ({ children, className = "" }) => (
+  <h3 className={`text-lg font-semibold text-gray-900 ${className}`}>
+    {children}
+  </h3>
+);
+
+const CardContent = ({ children, className = "" }) => (
+  <div className={`px-6 pb-6 ${className}`}>
+    {children}
+  </div>
+);
+
+// Professional Button component that works with Link
+const ButtonBase = ({ 
+  children, 
+  className = "", 
+  variant = "default", 
+  size = "default",
+  onClick = () => {}
+}) => {
+  const baseClasses = "font-medium transition-all duration-200 rounded-xl inline-flex items-center justify-center";
+  const sizeClasses = 
+    size === "lg" ? "px-8 py-4 text-base" : 
+    size === "sm" ? "px-4 py-2 text-sm" : 
+    "px-6 py-3";
+  
+  const variantClasses = 
+    variant === "primary" ? "bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm hover:shadow-md" :
+    variant === "outline" ? "border-2 border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50" :
+    variant === "ghost" ? "hover:bg-gray-100" :
+    variant === "secondary" ? "bg-gray-100 text-gray-700 hover:bg-gray-200" :
+    "bg-gray-900 text-white hover:bg-gray-800 shadow-sm hover:shadow-md";
+  
+  return (
+    <button 
+      className={`${baseClasses} ${sizeClasses} ${variantClasses} ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+};
+
+// Professional Input component
+const InputBase = ({ placeholder, value, onChange, className = "" }) => (
+  <input
+    type="text"
+    placeholder={placeholder}
+    value={value}
+    onChange={onChange}
+    className={`w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all ${className}`}
+  />
+);
+
+// Professional Badge component
+const BadgeBase = ({ children, className = "", variant = "default" }) => {
+  const variantClasses = 
+    variant === "outline" ? "border border-gray-200 bg-white text-gray-600" : 
+    variant === "primary" ? "bg-indigo-100 text-indigo-700" :
+    "bg-gray-100 text-gray-700";
+  return (
+    <span className={`inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium ${variantClasses} ${className}`}>
+      {children}
+    </span>
+  );
+};
 
 const VocabMain: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -53,346 +130,279 @@ const VocabMain: React.FC = () => {
   return (
     <>
       <Header />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
-        <div className="max-w-6xl mx-auto p-4 md:p-6 space-y-6 md:space-y-10">
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
         
-        {/* Hero Section - Mobile Optimized */}
-        <div className="relative overflow-hidden rounded-2xl md:rounded-3xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 p-6 md:p-12 text-white">
-          <div className="absolute inset-0 bg-black opacity-10"></div>
-          <div className="relative z-10">
-            
-            {/* Header */}
-            <div className="text-center md:text-right mb-6 md:mb-8">
-              <h1 className="text-3xl md:text-5xl font-bold mb-3 flex items-center justify-center md:justify-start gap-3">
-                אוצר מילים
-                <Sparkles className="w-8 h-8 md:w-10 md:h-10 text-yellow-300 animate-pulse" />
-              </h1>
-              <p className="text-lg md:text-xl opacity-95">
-                תרגלו אוצר מילים בדקה - בוסט בטוח לאנגלית שלכם
-              </p>
-            </div>
-            
-            {/* KPIs - Mobile Stack */}
-            <div className="grid grid-cols-3 gap-3 md:flex md:gap-6 md:justify-center bg-white/20 backdrop-blur rounded-xl md:rounded-2xl p-4 mb-6 md:mb-8">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold">{stats.totalWords}</div>
-                <div className="text-xs md:text-sm opacity-90">מילים במאגר</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-green-300">
-                  {loading ? "..." : stats.knownWords}
-                </div>
-                <div className="text-xs md:text-sm opacity-90">מוכרות</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-orange-300 flex items-center justify-center">
-                  {loading ? "..." : stats.streak}
-                  <Flame className="w-5 h-5 md:w-6 md:h-6 mr-1" />
-                </div>
-                <div className="text-xs md:text-sm opacity-90">רצף</div>
-              </div>
-            </div>
-
-            {/* Main CTAs - Mobile First */}
-            <div className="space-y-3 md:flex md:flex-wrap md:gap-4 md:justify-center md:space-y-0">
-              <Link to="/vocab/quiz" className="block md:inline-block">
-                <Button size="lg" className="w-full md:w-auto bg-white text-purple-600 hover:bg-gray-100 font-bold text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl shadow-xl transform hover:scale-105 transition-all">
-                  <Zap className="w-5 h-5 md:w-6 md:h-6 ml-2" />
-                  סימולציה מהירה
-                </Button>
-              </Link>
-              <Link to="/vocab/dictionary" className="block md:inline-block">
-                <Button size="lg" variant="outline" className="w-full md:w-auto bg-white/10 backdrop-blur border-white/30 text-white hover:bg-white/20 font-bold text-lg px-6 md:px-8 py-4 md:py-6 rounded-xl">
-                  <BookOpen className="w-5 h-5 md:w-6 md:h-6 ml-2" />
-                  פתח מילון
-                </Button>
-              </Link>
-              <Link to="/vocab/word-of-day" className="flex items-center justify-center md:justify-start text-white/90 hover:text-white font-medium text-lg py-2">
-                מילה ביום
-                <ChevronRight className="w-5 h-5 mr-1" />
-              </Link>
-            </div>
+        {/* Hero Section - Clear Starting Point */}
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 text-white mb-16">
+          {/* Background Image - תמונה יותר בולטת */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+            style={{ backgroundImage: 'url(/images/vocab-hero-bg.jpg)' }}
+          ></div>
+          
+          {/* Overlay for better text readability - פחות חזק */}
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/60 via-purple-600/60 to-pink-600/60"></div>
+          
+          {/* Background Decorative Elements */}
+          <div className="absolute inset-0">
+            <div className="absolute -top-10 -left-10 w-40 h-40 bg-yellow-300 rounded-full opacity-20 blur-3xl"></div>
+            <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-pink-300 rounded-full opacity-20 blur-3xl"></div>
+            <div className="absolute top-1/2 left-1/4 w-32 h-32 bg-white rounded-full opacity-10 blur-2xl"></div>
+            <div className="absolute inset-0 bg-black/10"></div>
           </div>
 
-          {/* Decorative elements */}
-          <div className="absolute -top-10 -left-10 w-40 h-40 bg-yellow-300 rounded-full opacity-20 blur-3xl"></div>
-          <div className="absolute -bottom-10 -right-10 w-60 h-60 bg-pink-300 rounded-full opacity-20 blur-3xl"></div>
-        </div>
-
-        {/* Main Features Grid - Responsive */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
-          
-          {/* מילה ביום */}
-          <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-purple-200 overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-400 to-pink-400"></div>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <Calendar className="w-8 h-8 md:w-10 md:h-10 text-purple-600" />
-                <Badge className="bg-purple-100 text-purple-700 text-xs">יומי</Badge>
-              </div>
-              <CardTitle className="text-xl md:text-2xl mt-2">מילה ביום</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 md:space-y-4">
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-3 md:p-4">
-                <div className="text-lg md:text-xl font-bold text-gray-800">eloquent</div>
-                <div className="text-sm md:text-base text-gray-600">רהוט, שולט בדיבור</div>
-                <div className="text-xs md:text-sm text-gray-500 mt-2 italic">
-                  "She gave an eloquent speech..."
-                </div>
-              </div>
-              <Link to="/vocab/word-of-day">
-                <Button className="w-full group-hover:shadow-lg transition-all">
-                  תרגל עכשיו
-                  <ChevronRight className="w-4 h-4 mr-2 group-hover:translate-x-[-4px] transition-transform" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* מילון */}
-          <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-200 overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-cyan-400"></div>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <BookOpen className="w-8 h-8 md:w-10 md:h-10 text-blue-600" />
-                <Badge className="bg-blue-100 text-blue-700 text-xs">120 מילים</Badge>
-              </div>
-              <CardTitle className="text-xl md:text-2xl mt-2">מילון</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 md:space-y-4">
-              <div className="relative">
-                <Search className="absolute right-3 top-3 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
-                <Input 
-                  placeholder="חפש מילה..."
-                  className="pr-10 text-sm md:text-base"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-wrap gap-1 md:gap-2">
-                {sampleWords.slice(0, 3).map(word => (
-                  <Badge key={word} variant="outline" className="hover:bg-blue-50 cursor-pointer text-xs">
-                    {word}
-                  </Badge>
-                ))}
-                <Badge variant="outline" className="bg-blue-50 text-xs">+117</Badge>
-              </div>
-              <Link to="/vocab/dictionary">
-                <Button variant="outline" className="w-full group-hover:shadow-lg transition-all">
-                  פתח מילון מלא
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* סימולציה מהירה */}
-          <Card className="group hover:shadow-xl transition-all duration-300 border-2 hover:border-green-200 overflow-hidden relative bg-gradient-to-br from-green-50 to-emerald-50">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-emerald-400"></div>
-            <div className="absolute top-2 left-2">
-              <span className="flex h-2 w-2 md:h-3 md:w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 md:h-3 md:w-3 bg-green-500"></span>
-              </span>
-            </div>
-            <CardHeader className="pb-3">
-              <div className="flex justify-between items-start">
-                <Zap className="w-8 h-8 md:w-10 md:h-10 text-green-600" />
-                <Badge className="bg-green-100 text-green-700 text-xs">מומלץ</Badge>
-              </div>
-              <CardTitle className="text-xl md:text-2xl mt-2">סימולציה מהירה</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 md:space-y-4">
-              <div className="grid grid-cols-3 gap-2 text-center">
-                <div className="bg-white rounded-lg p-2">
-                  <div className="text-lg md:text-xl font-bold text-green-600">10</div>
-                  <div className="text-xs text-gray-600">שאלות</div>
-                </div>
-                <div className="bg-white rounded-lg p-2">
-                  <div className="text-lg md:text-xl font-bold text-orange-600">60</div>
-                  <div className="text-xs text-gray-600">שניות</div>
-                </div>
-                <div className="bg-white rounded-lg p-2">
-                  <div className="text-lg md:text-xl font-bold text-purple-600">100</div>
-                  <div className="text-xs text-gray-600">נקודות</div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-1 md:gap-2">
-                <Link to="/vocab/quiz?level=easy" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full text-xs md:text-sm text-green-600 border-green-300 hover:bg-green-50 py-2">
-                    קל
-                  </Button>
-                </Link>
-                <Link to="/vocab/quiz?level=medium" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full text-xs md:text-sm text-yellow-600 border-yellow-300 hover:bg-yellow-50 py-2">
-                    בינוני
-                  </Button>
-                </Link>
-                <Link to="/vocab/quiz?level=hard" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full text-xs md:text-sm text-red-600 border-red-300 hover:bg-red-50 py-2">
-                    קשה
-                  </Button>
-                </Link>
-              </div>
-              
+          {/* Hero Content */}
+          <div className="relative z-10 text-center py-16 px-8">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4">
+              אוצר מילים
+            </h1>
+            <p className="text-xl opacity-95 mb-12 max-w-3xl mx-auto">
+              בחר איך אתה רוצה להתחיל ללמוד
+            </p>
+            
+            {/* Primary CTAs - Fixed visibility */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link to="/vocab/quiz">
-                <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 group-hover:shadow-lg transition-all">
-                  התחל חידון
-                  <Trophy className="w-4 h-4 mr-2" />
-                </Button>
+                <button className="w-full sm:w-auto text-xl px-12 py-6 bg-white text-gray-900 hover:bg-gray-100 shadow-2xl transform hover:scale-105 transition-all font-bold rounded-xl border-4 border-white flex items-center justify-center gap-3">
+                  <Zap className="w-6 h-6 text-indigo-600" />
+                  סימולציה מהירה
+                </button>
+              </Link>
+              <Link to="/vocab/word-of-day">
+                <button className="w-full sm:w-auto text-xl px-12 py-6 border-3 border-white bg-white/20 backdrop-blur hover:bg-white/30 text-white font-bold rounded-xl flex items-center justify-center gap-3">
+                  <Calendar className="w-6 h-6" />
+                  תרגול מילים 
+                </button>
+              </Link>
+            </div>
+
+            {/* Quick Stats - Simple & Clear with fallback values */}
+            <div className="grid grid-cols-3 gap-6 max-w-2xl mx-auto bg-white/20 backdrop-blur rounded-2xl p-6">
+              <div className="text-center">
+                <div className="text-4xl font-bold mb-2">
+                  {loading ? "..." : (stats.knownWords || 0)}
+                </div>
+                <div className="text-sm opacity-90">מילים שנלמדו</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
+                  {loading ? "..." : (stats.streak || 0)}
+                  {(stats.streak || 0) > 0 && <Flame className="w-8 h-8 text-orange-300" />}
+                </div>
+                <div className="text-sm opacity-90">רצף יומי</div>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold mb-2">
+                  {loading ? "..." : (stats.accuracy || 0)}%
+                </div>
+                <div className="text-sm opacity-90">דיוק</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Learning Area - Focused Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 max-w-6xl mx-auto">
+          
+          {/* Word of the Day - Enhanced & Prominent */}
+          <Card elevated={true} className="border-2 border-purple-100">
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <Calendar className="w-6 h-6 text-purple-600" />
+                </div>
+                <BadgeBase variant="primary">מילה ביום</BadgeBase>
+              </div>
+              
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 mb-6">
+                <div className="text-3xl font-bold text-gray-900 mb-3">eloquent</div>
+                <div className="text-lg text-gray-700 mb-3">רהוט, שולט בדיבור</div>
+                <div className="text-gray-600 italic text-base">
+                  "She gave an eloquent speech that moved the entire audience"
+                </div>
+              </div>
+              
+              <Link to="/vocab/word-of-day">
+                <ButtonBase variant="primary" className="w-full text-lg py-4">
+                  למד עכשיו
+                  <ChevronRight className="w-5 h-5 mr-2" />
+                </ButtonBase>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Quick Dictionary - Simple & Functional */}
+          <Card elevated={true} className="border-2 border-blue-100">
+            <CardContent className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Search className="w-6 h-6 text-blue-600" />
+                </div>
+                <span className="text-sm font-medium text-gray-500">120 מילים במילון</span>
+              </div>
+              
+              <div className="mb-6">
+                <div className="relative">
+                  <Search className="absolute right-4 top-4 w-5 h-5 text-gray-400" />
+                  <InputBase 
+                    placeholder="חפש מילה במילון..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pr-12 text-lg py-4"
+                  />
+                </div>
+              </div>
+              
+              <div className="mb-6">
+                <p className="text-sm text-gray-600 mb-3">מילים פופולריות:</p>
+                <div className="flex flex-wrap gap-2">
+                  {sampleWords.map(word => (
+                    <BadgeBase 
+                      key={word} 
+                      variant="outline" 
+                      className="hover:bg-blue-50 cursor-pointer transition-colors text-sm px-3 py-2"
+                    >
+                      {word}
+                    </BadgeBase>
+                  ))}
+                </div>
+              </div>
+              
+              <Link to="/vocab/dictionary">
+                <ButtonBase 
+                  variant="outline" 
+                  className="w-full text-lg py-4 border-2"
+                >
+                  פתח מילון מלא
+                  <BookOpen className="w-5 h-5 mr-2" />
+                </ButtonBase>
               </Link>
             </CardContent>
           </Card>
         </div>
 
-        {/* Future Features Section - Mobile Optimized */}
-        <div className="space-y-4 md:space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <h2 className="text-xl md:text-2xl font-bold text-gray-800 flex items-center gap-2">
-              <Rocket className="w-6 h-6 md:w-7 md:h-7 text-purple-600" />
-              בקרוב באוצר המילים
-            </h2>
-            <Badge variant="outline" className="bg-gradient-to-r from-purple-100 to-pink-100 text-sm w-fit">
-              עדכון Q1 2025
-            </Badge>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-            {/* SRS Learning */}
-            <Card className="border-dashed border-2 border-purple-200 bg-purple-50/50 hover:bg-purple-50 transition-colors">
-              <CardContent className="p-4 md:p-6 text-center">
-                <Brain className="w-10 h-10 md:w-12 md:h-12 mx-auto text-purple-500 mb-3" />
-                <h3 className="font-bold mb-2 text-sm md:text-base">למידה חכמה SRS</h3>
-                <p className="text-xs md:text-sm text-gray-600">
-                  אלגוריתם שזוכר מה קשה לכם ומתאמן בהתאם
-                </p>
-                <Badge className="mt-3 text-xs" variant="outline">בפיתוח</Badge>
-              </CardContent>
-            </Card>
-
-            {/* Context Reading */}
-            <Card className="border-dashed border-2 border-blue-200 bg-blue-50/50 hover:bg-blue-50 transition-colors">
-              <CardContent className="p-4 md:p-6 text-center">
-                <BookMarked className="w-10 h-10 md:w-12 md:h-12 mx-auto text-blue-500 mb-3" />
-                <h3 className="font-bold mb-2 text-sm md:text-base">מאמרונים בהקשר</h3>
-                <p className="text-xs md:text-sm text-gray-600">
-                  קטעי קריאה עם המילים שאתם לומדים
-                </p>
-                <Badge className="mt-3 text-xs" variant="outline">2 שבועות</Badge>
-              </CardContent>
-            </Card>
-
-            {/* Pronunciation */}
-            <Card className="border-dashed border-2 border-green-200 bg-green-50/50 hover:bg-green-50 transition-colors">
-              <CardContent className="p-4 md:p-6 text-center">
-                <Headphones className="w-10 h-10 md:w-12 md:h-12 mx-auto text-green-500 mb-3" />
-                <h3 className="font-bold mb-2 text-sm md:text-base">הגייה ודיבור</h3>
-                <p className="text-xs md:text-sm text-gray-600">
-                  תרגול הגייה עם בינה מלאכותית
-                </p>
-                <Badge className="mt-3 text-xs" variant="outline">3 שבועות</Badge>
-              </CardContent>
-            </Card>
-
-            {/* Root Words */}
-            <Card className="border-dashed border-2 border-orange-200 bg-orange-50/50 hover:bg-orange-50 transition-colors">
-              <CardContent className="p-4 md:p-6 text-center">
-                <Globe className="w-10 h-10 md:w-12 md:h-12 mx-auto text-orange-500 mb-3" />
-                <h3 className="font-bold mb-2 text-sm md:text-base">שורשים ותחיליות</h3>
-                <p className="text-xs md:text-sm text-gray-600">
-                  למדו משפחות מילים שלמות
-                </p>
-                <Badge className="mt-3 text-xs" variant="outline">חודש</Badge>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Progress Section - Simplified */}
-        <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-0">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-              <span className="flex items-center gap-2 text-lg md:text-xl">
-                <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
-                ההתקדמות שלך
-              </span>
-              <Button variant="ghost" size="sm" className="text-sm w-fit">
-                צפה בכל הסטטיסטיקות
-                <ChevronRight className="w-4 h-4 mr-1" />
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-blue-600 flex items-center justify-center">
-                  <Star className="w-6 h-6 md:w-8 md:h-8 ml-1 text-yellow-500" />
+        {/* Progress Area - Back to original layout without emojis */}
+        <Card className="mb-12 max-w-4xl mx-auto">
+          <CardContent className="p-8">
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center gap-3">
+                <TrendingUp className="w-6 h-6 text-indigo-600" />
+                <h3 className="text-2xl font-bold text-gray-900">ההתקדמות שלך</h3>
+              </div>
+              <Link to="/vocab/stats">
+                <ButtonBase 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-indigo-600 hover:text-indigo-700 font-medium"
+                >
+                  צפה בכל הסטטיסטיקות
+                  <ChevronRight className="w-4 h-4 mr-1" />
+                </ButtonBase>
+              </Link>
+            </div>
+            
+            {/* Main Stats Grid - 4 columns like original */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+              <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
+                <div className="text-2xl font-bold text-indigo-600">
                   {loading ? "..." : stats.knownWords}
                 </div>
-                <div className="text-xs md:text-sm text-gray-600">מילים מוכרות</div>
+                <div className="text-sm text-gray-500 mt-1">מילים מוכרות</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-green-600 flex items-center justify-center">
-                  <Flame className="w-6 h-6 md:w-8 md:h-8 ml-1 text-orange-500" />
+              <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
+                <div className="text-2xl font-bold text-gray-900">
                   {loading ? "..." : stats.streak}
                 </div>
-                <div className="text-xs md:text-sm text-gray-600">ימים ברצף</div>
+                <div className="text-sm text-gray-500 mt-1">ימים ברצף</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-purple-600">
+              <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
+                <div className="text-2xl font-bold text-gray-900">
                   {loading ? "..." : stats.accuracy}%
                 </div>
-                <div className="text-xs md:text-sm text-gray-600">דיוק ממוצע</div>
+                <div className="text-sm text-gray-500 mt-1">דיוק ממוצע</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-orange-600">
+              <div className="bg-white rounded-xl p-4 text-center border border-gray-100">
+                <div className="text-2xl font-bold text-gray-900">
                   {loading ? "..." : stats.wordsThisWeek}
                 </div>
-                <div className="text-xs md:text-sm text-gray-600">מילים השבוע</div>
+                <div className="text-sm text-gray-500 mt-1">מילים השבוע</div>
               </div>
             </div>
 
-            {/* Progress Bar */}
-            <div className="mt-4 md:mt-6">
-              <div className="flex justify-between text-xs md:text-sm text-gray-600 mb-2">
+            {/* Progress Bar - Visual Focus */}
+            <div className="bg-gray-50 rounded-2xl p-6">
+              <div className="flex justify-between text-lg font-medium text-gray-700 mb-4">
                 <span>התקדמות לרמה הבאה</span>
                 <span>{loading ? "..." : stats.progressToNext}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-2 md:h-3">
+              <div className="w-full bg-gray-200 rounded-full h-4">
                 <div 
-                  className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 md:h-3 rounded-full transition-all duration-500"
+                  className="bg-gradient-to-r from-indigo-500 to-purple-500 h-4 rounded-full transition-all duration-1000"
                   style={{ width: `${loading ? 0 : stats.progressToNext}%` }}
-                ></div>
+                />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Community Section - Simplified */}
-        <div className="text-center py-6 md:py-8">
-          <div className="inline-flex items-center gap-2 text-gray-600 mb-3 md:mb-4 text-sm md:text-base">
-            <Users className="w-4 h-4 md:w-5 md:h-5" />
-            <span>1,247 לומדים כרגע באתר</span>
+        {/* Secondary Features - Minimal & Clean */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">שירותים נוספים</h3>
+            <p className="text-gray-500">כלים מתקדמים לשיפור האנגלית</p>
           </div>
-          <div className="flex flex-col md:flex-row justify-center gap-2 md:gap-3">
-            <Badge variant="outline" className="px-3 py-2 text-xs md:text-sm">
-              <Trophy className="w-3 h-3 md:w-4 md:h-4 ml-1 text-yellow-500" />
-              אתגר השבוע: 50 מילים חדשות
-            </Badge>
-            <Badge variant="outline" className="px-3 py-2 text-xs md:text-sm">
-              <MessageSquare className="w-3 h-3 md:w-4 md:h-4 ml-1 text-blue-500" />
-              פורום לומדים
-            </Badge>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[
+              { title: 'למידה חכמה', icon: Brain, status: 'בפיתוח' },
+              { title: 'מאמרונים', icon: BookMarked, status: '2 שבועות' },
+              { title: 'הגייה', icon: Headphones, status: '3 שבועות' },
+              { title: 'שורשי מילים', icon: Globe, status: 'חודש' }
+            ].map((item, i) => {
+              const IconComponent = item.icon;
+              return (
+                <div key={i} className="bg-white p-4 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors text-center">
+                  <IconComponent className="w-8 h-8 mx-auto text-gray-400 mb-2" />
+                  <h4 className="font-medium text-gray-700 text-sm mb-1">{item.title}</h4>
+                  <BadgeBase className="text-xs" variant="outline">
+                    {item.status}
+                  </BadgeBase>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Sticky Mobile CTA */}
+        {/* Community - Minimal */}
+        <div className="text-center py-8 border-t border-gray-200">
+          <div className="inline-flex items-center gap-2 text-gray-500 mb-4">
+            <Users className="w-4 h-4" />
+            <span className="text-sm">1,247 לומדים כרגע באתר</span>
+          </div>
+          <div className="flex justify-center gap-4">
+            <BadgeBase variant="outline" className="text-xs">
+              <Trophy className="w-3 h-3 ml-1 text-yellow-500" />
+              אתגר השבוע
+            </BadgeBase>
+            <BadgeBase variant="outline" className="text-xs">
+              <MessageSquare className="w-3 h-3 ml-1 text-blue-500" />
+              פורום
+            </BadgeBase>
+          </div>
+        </div>
+
+        {/* Mobile CTA - Fixed Bottom */}
         <div className="md:hidden fixed bottom-4 right-4 left-4 z-50">
           <Link to="/vocab/quiz">
-            <Button size="lg" className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-2xl rounded-xl py-4">
+            <ButtonBase 
+              variant="primary"
+              size="lg" 
+              className="w-full shadow-2xl text-lg py-4 bg-gradient-to-r from-indigo-600 to-purple-600"
+            >
               <Zap className="w-5 h-5 ml-2" />
-              סימולציה מהירה
-            </Button>
+              התחל תרגול
+            </ButtonBase>
           </Link>
         </div>
 
