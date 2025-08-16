@@ -15,7 +15,8 @@ import { useVocabulary } from '@/hooks/useVocabulary';
 import { updateMastery } from '@/services/vocabularyServiceDemo';
 import FlashcardTab from '@/components/vocab/FlashcardTab';
 import { SpellingTab } from '@/components/vocab/SpellingTab';
-import vocabData from '@/data/vocab-static.json';
+import { vocabularySimulationQuestions } from '@/data/simulation-vocab-120';
+import vocabFlashcardData from '@/data/vocab-flashcard-120.json';
 
 const VocabDictionary: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,8 +34,27 @@ const VocabDictionary: React.FC = () => {
   
   const searchRef = useRef<HTMLInputElement>(null);
   
+  // Convert flashcard data to words format for the vocabulary hook
+  const convertedWords = useMemo(() => {
+    return vocabFlashcardData.questions.map((q, index) => {
+      // Extract the Hebrew word from the correct answer
+      const hebrewTranslation = q.options[q.correct];
+      // Extract the English word from the question
+      const englishWord = q.question.replace("What is the best translation of '", "").replace("'?", "");
+      
+      return {
+        id: `w${String(index + 1).padStart(3, '0')}`,
+        word: englishWord,
+        translation: hebrewTranslation,
+        example: q.explanation || `Example with ${englishWord}`,
+        level: q.difficulty,
+        category: q.category || 'general'
+      };
+    });
+  }, []);
+
   // Get all word IDs for the vocabulary hook
-  const allWordIds = useMemo(() => vocabData.words.map(w => w.id), []);
+  const allWordIds = useMemo(() => convertedWords.map(w => w.id), [convertedWords]);
   
   // Use vocabulary hook for state management
   const {
@@ -89,7 +109,7 @@ const VocabDictionary: React.FC = () => {
 
   // Filter and sort words
   const filteredAndSortedWords = useMemo(() => {
-    const filtered = vocabData.words.filter(word => {
+    const filtered = convertedWords.filter(word => {
       const matchesSearch = searchTerm === '' || 
         word.word.toLowerCase().includes(searchTerm.toLowerCase()) ||
         word.translation.includes(searchTerm);
@@ -129,7 +149,7 @@ const VocabDictionary: React.FC = () => {
   const counts = useMemo(() => {
     const levelCounts = { easy: 0, medium: 0, hard: 0 };
     const statusCounts = { 
-      all: vocabData.words.length,
+      all: convertedWords.length,
       saved: saved.size,
       known: known.size,
       needsReview: 0
@@ -140,7 +160,7 @@ const VocabDictionary: React.FC = () => {
     });
     
     // Count words that need review (known but not fully mastered)
-    vocabData.words.forEach(word => {
+    convertedWords.forEach(word => {
       if (known.has(word.id) && (mastery.get(word.id) || 0) < 5) {
         statusCounts.needsReview++;
       }
@@ -153,7 +173,7 @@ const VocabDictionary: React.FC = () => {
 
   // Get unique categories
   const categories = useMemo(() => {
-    return [...new Set(vocabData.words.map(w => w.category))].sort();
+    return [...new Set(convertedWords.map(w => w.category))].sort();
   }, []);
 
   // Clear all filters

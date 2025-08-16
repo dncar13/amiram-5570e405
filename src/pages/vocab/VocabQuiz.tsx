@@ -7,11 +7,11 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import vocabData from '@/data/vocab-static.json';
+import { vocabularySimulationQuestions } from '@/data/simulation-vocab-120';
 import { updateVocabularyProgress } from '@/services/vocabularyStatsService';
 
 const VocabQuiz: React.FC = () => {
-  const questions = vocabData.quizQuestions;
+  const questions = vocabularySimulationQuestions;
   const total = questions.length;
 
   // 1. תיקון אתחול State - ללא setState בזמן רנדר
@@ -102,7 +102,7 @@ const VocabQuiz: React.FC = () => {
     
     // עדכן את הסטטיסטיקות עבור כל מילה בשאלה הנוכחית (נכון או לא נכון)
     try {
-      const wordId = `vocab_${currentQuestionIndex}_${currentQuestion.question}`;
+      const wordId = `vocab_${currentQuestionIndex}_${currentQuestion.text}`;
       await updateVocabularyProgress(wordId, isCorrect, isCorrect, undefined);
     } catch (error) {
       console.error('Failed to update vocabulary progress:', error);
@@ -335,14 +335,11 @@ const VocabQuiz: React.FC = () => {
                     </div>
                     <div>
                       <CardTitle className="text-lg sm:text-xl mb-1">
-                        {currentQuestion.question}
+                        {currentQuestion.text}
                       </CardTitle>
                       <div className="flex items-center gap-2">
                         <Badge variant="outline" className="text-xs">
-                          {currentQuestion.type === 'translation' ? 'תרגום' :
-                           currentQuestion.type === 'example' ? 'דוגמה' :
-                           currentQuestion.type === 'synonym' ? 'מילה דומה' :
-                           currentQuestion.type === 'fill' ? 'השלמה' : 'שאלה'}
+                          {currentQuestion.type === 'vocabulary' ? 'אוצר מילים' : 'שאלה'}
                         </Badge>
                         {showResult && (
                           <Badge className={selectedAnswer === currentQuestion.correctAnswer ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
