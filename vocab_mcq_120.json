@@ -1,0 +1,1810 @@
+{
+  "id": "vocab_mcq_120",
+  "title": "סימולציית אוצר מילים מלאה",
+  "description": "120 שאלות אוצר מילים ברמות קושי שונות",
+  "type": "vocabulary",
+  "difficulty": "mixed",
+  "timeLimit": 60,
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'able'?",
+      "options": [
+        "מסוגל",
+        "לגרום", 
+        "לקוי/חסר",
+        "שגוי"
+      ],
+      "correct": 0,
+      "explanation": "The word 'able' means capable or having the ability to do something. In Hebrew: מסוגל.",
+      "category": "vocabulary"
+    },
+    {
+      "id": 2,
+      "type": "multiple_choice", 
+      "difficulty": "easy",
+      "question": "What is the best translation of 'accept'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "לקבל",
+        "להסכים",
+        "להגדיר"
+      ],
+      "correct": 1,
+      "explanation": "The word 'accept' means to receive willingly or to agree to. In Hebrew: לקבל.",
+      "category": "vocabulary"
+    },
+    {
+      "id": 3,
+      "type": "multiple_choice",
+      "difficulty": "easy", 
+      "question": "What is the best translation of 'add'?",
+      "options": [
+        "ליישם/להגיש",
+        "עוקב/רציף",
+        "להוסיף",
+        "להדגיש"
+      ],
+      "correct": 2,
+      "explanation": "The word 'add' means to put together or include. In Hebrew: להוסיף.",
+      "category": "vocabulary"
+    },
+    {
+      "id": "q_w004",
+      "headword": "agree",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'agree'?",
+      "choices": [
+        "לתאר/לתחום",
+        "לענות",
+        "השפעה",
+        "להסכים"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w005",
+      "headword": "allow",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'allow'?",
+      "choices": [
+        "לאפשר",
+        "להמשיך",
+        "חלק",
+        "לאמת/לתקף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w006",
+      "headword": "answer",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'answer'?",
+      "choices": [
+        "יעיל",
+        "לענות",
+        "לטעון/להתווכח",
+        "לכלול"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w007",
+      "headword": "apply",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'apply'?",
+      "choices": [
+        "לאשר",
+        "קרוב/ממשמש ובא",
+        "ליישם/להגיש",
+        "לבחור"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w008",
+      "headword": "argue",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'argue'?",
+      "choices": [
+        "טבוע/מובנה",
+        "להגדיל/לגדול",
+        "להעריך/למדוד",
+        "לטעון/להתווכח"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w009",
+      "headword": "arrive",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'arrive'?",
+      "choices": [
+        "להגיע",
+        "נפרד/בדיד",
+        "לשקול",
+        "לאמת/לתקף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w010",
+      "headword": "avoid",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'avoid'?",
+      "choices": [
+        "הקשר",
+        "להימנע",
+        "ללקט/לקבץ",
+        "להרחיב"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w011",
+      "headword": "cause",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'cause'?",
+      "choices": [
+        "לדון",
+        "להגיע",
+        "לגרום",
+        "מאפיין"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w012",
+      "headword": "choose",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'choose'?",
+      "choices": [
+        "פרדיגמה/תבנית חשיבה",
+        "להשלים/לסיים",
+        "לתאר",
+        "לבחור"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w013",
+      "headword": "collect",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'collect'?",
+      "choices": [
+        "לאסוף",
+        "להסכים",
+        "לשפר",
+        "שרירותי"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w014",
+      "headword": "compare",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'compare'?",
+      "choices": [
+        "להסתגל/להתאים",
+        "להשוות",
+        "לפרש",
+        "זמני"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w015",
+      "headword": "complete",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'complete'?",
+      "choices": [
+        "להפיץ",
+        "ליישם/להגיש",
+        "להשלים/לסיים",
+        "סדר"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w016",
+      "headword": "consider",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'consider'?",
+      "choices": [
+        "אילוץ/מגבלה",
+        "לתאר",
+        "לקרוא",
+        "לשקול"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w017",
+      "headword": "continue",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'continue'?",
+      "choices": [
+        "להמשיך",
+        "להשלים/לסיים",
+        "להקיף/לכלול",
+        "עוקב/רציף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w018",
+      "headword": "create",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'create'?",
+      "choices": [
+        "קרוב/ממשמש ובא",
+        "ליצור",
+        "למתן/להפחית",
+        "להמשיך"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w019",
+      "headword": "decide",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'decide'?",
+      "choices": [
+        "לשמר/לתחזק",
+        "להוסיף",
+        "להחליט",
+        "סחורה"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w020",
+      "headword": "describe",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'describe'?",
+      "choices": [
+        "ליישם",
+        "עיקרי/ראשי",
+        "להמחיש",
+        "לתאר"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w021",
+      "headword": "develop",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'develop'?",
+      "choices": [
+        "לפתח",
+        "חסין/בעל יכולת התאוששות",
+        "למתן/להפחית",
+        "לבחור"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w022",
+      "headword": "differ",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'differ'?",
+      "choices": [
+        "לענות",
+        "להיות שונה",
+        "ללקט/לקבץ",
+        "ניגוד"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w023",
+      "headword": "discuss",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'discuss'?",
+      "choices": [
+        "לתאר",
+        "לקבוע",
+        "לדון",
+        "זמני"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w024",
+      "headword": "early",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'early'?",
+      "choices": [
+        "נוח",
+        "להשוות",
+        "עדין/מעודן/דק",
+        "מוקדם"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w025",
+      "headword": "easy",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'easy'?",
+      "choices": [
+        "קל",
+        "גורם",
+        "זמני",
+        "מקיף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w026",
+      "headword": "example",
+      "pos": "noun",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'example'?",
+      "choices": [
+        "מושג",
+        "דוגמה",
+        "שיטה",
+        "להגדיל/לגדול"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w027",
+      "headword": "explain",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'explain'?",
+      "choices": [
+        "לבחור",
+        "תואם",
+        "להסביר",
+        "לשקול"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w028",
+      "headword": "form",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'form'?",
+      "choices": [
+        "קהל",
+        "להעריך/למדוד",
+        "להמחיש",
+        "לעצב/ליצור"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w029",
+      "headword": "future",
+      "pos": "noun",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'future'?",
+      "choices": [
+        "עתיד",
+        "חד-משמעי",
+        "בחינה קפדנית/ביקורת",
+        "דפוס"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w030",
+      "headword": "improve",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'improve'?",
+      "choices": [
+        "ראשוני/מוקדם",
+        "לשפר",
+        "לשקול",
+        "לענות"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w031",
+      "headword": "include",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'include'?",
+      "choices": [
+        "לתאר",
+        "טבוע/מובנה",
+        "לכלול",
+        "לתאר/לתחום"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w032",
+      "headword": "increase",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'increase'?",
+      "choices": [
+        "לדון",
+        "דו-משמעי/עמום",
+        "להימנע",
+        "להגדיל/לגדול"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w033",
+      "headword": "instead",
+      "pos": "adverb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'instead'?",
+      "choices": [
+        "במקום זאת",
+        "לשקול",
+        "לאסוף",
+        "נפרד/בדיד"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w034",
+      "headword": "main",
+      "pos": "adjective",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'main'?",
+      "choices": [
+        "מקיף",
+        "עיקרי/ראשי",
+        "חריגה/אנומליה",
+        "ישים/בר-ביצוע"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w035",
+      "headword": "mean",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'mean'?",
+      "choices": [
+        "להחליט",
+        "ללקט/לקבץ",
+        "להתכוון/משמעותו",
+        "יעיל"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w036",
+      "headword": "need",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'need'?",
+      "choices": [
+        "סדר",
+        "להוסיף",
+        "למתן/להפחית",
+        "להזדקק/צורך"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w037",
+      "headword": "order",
+      "pos": "noun",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'order'?",
+      "choices": [
+        "סדר",
+        "חריגה/אנומליה",
+        "עתיד",
+        "יעיל"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w038",
+      "headword": "part",
+      "pos": "noun",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'part'?",
+      "choices": [
+        "אתגר",
+        "חלק",
+        "לרדת",
+        "עתיד"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w039",
+      "headword": "provide",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'provide'?",
+      "choices": [
+        "להמחיש",
+        "שרירותי",
+        "לספק",
+        "להרחיב"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w040",
+      "headword": "read",
+      "pos": "verb",
+      "difficulty": "easy",
+      "prompt": "What is the best translation of 'read'?",
+      "choices": [
+        "לבקר",
+        "להעריך (בערך)",
+        "תפקיד/פונקציה",
+        "לקרוא"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w041",
+      "headword": "accurate",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'accurate'?",
+      "choices": [
+        "מדויק",
+        "שגוי",
+        "קבוע",
+        "למתן/להפחית"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w042",
+      "headword": "adapt",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'adapt'?",
+      "choices": [
+        "תדירות",
+        "להסתגל/להתאים",
+        "ליישם/להגיש",
+        "למתן/להפחית"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w043",
+      "headword": "analysis",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'analysis'?",
+      "choices": [
+        "חלק",
+        "להמשיך",
+        "ניתוח",
+        "שיטה"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w044",
+      "headword": "approach",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'approach'?",
+      "choices": [
+        "לשקול",
+        "אילוץ/מגבלה",
+        "הטיה/משוא פנים",
+        "גישה"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w045",
+      "headword": "assess",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'assess'?",
+      "choices": [
+        "להעריך/למדוד",
+        "תפקיד/פונקציה",
+        "לדון",
+        "למתן/להפחית"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w046",
+      "headword": "audience",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'audience'?",
+      "choices": [
+        "תוצאה",
+        "קהל",
+        "לכלול",
+        "השפעה"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w047",
+      "headword": "benefit",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'benefit'?",
+      "choices": [
+        "מאפיין",
+        "ישים/בר-ביצוע",
+        "תועלת",
+        "תמריץ"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w048",
+      "headword": "challenge",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'challenge'?",
+      "choices": [
+        "להוסיף",
+        "שיטה",
+        "גישה",
+        "אתגר"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w049",
+      "headword": "complex",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'complex'?",
+      "choices": [
+        "מורכב",
+        "קרוב/ממשמש ובא",
+        "מוקדם",
+        "לתאר/לתחום"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w050",
+      "headword": "concept",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'concept'?",
+      "choices": [
+        "הקשר",
+        "מושג",
+        "להיות שונה",
+        "שיטה"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w051",
+      "headword": "conclude",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'conclude'?",
+      "choices": [
+        "תואם",
+        "לבקר",
+        "להסיק",
+        "לתאר"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w052",
+      "headword": "confirm",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'confirm'?",
+      "choices": [
+        "להודות (בטענה/בטעות)",
+        "מסוגל",
+        "להחליט",
+        "לאשר"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w053",
+      "headword": "consequence",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'consequence'?",
+      "choices": [
+        "תוצאה",
+        "הקשר",
+        "מיותר/עודף",
+        "אילוץ/מגבלה"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w054",
+      "headword": "constant",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'constant'?",
+      "choices": [
+        "להתכוון/משמעותו",
+        "קבוע",
+        "לקוי/חסר",
+        "עדין/מעודן/דק"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w055",
+      "headword": "context",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'context'?",
+      "choices": [
+        "גורם",
+        "להגדיל/לגדול",
+        "הקשר",
+        "תמריץ"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w056",
+      "headword": "contrast",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'contrast'?",
+      "choices": [
+        "תוצאה",
+        "להמחיש",
+        "גישה",
+        "ניגוד"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w057",
+      "headword": "convenient",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'convenient'?",
+      "choices": [
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "לקוי/חסר",
+        "עוקב/רציף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w058",
+      "headword": "criticize",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'criticize'?",
+      "choices": [
+        "מורכב",
+        "לבקר",
+        "לכלול",
+        "לטעון/להתווכח"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w059",
+      "headword": "decline",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'decline'?",
+      "choices": [
+        "ללקט/לקבץ",
+        "להשלים/לסיים",
+        "לרדת",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w060",
+      "headword": "define",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'define'?",
+      "choices": [
+        "להמחיש",
+        "להוסיף",
+        "דו-משמעי/עמום",
+        "להגדיר"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w061",
+      "headword": "demonstrate",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'demonstrate'?",
+      "choices": [
+        "להדגים",
+        "להשלים/לסיים",
+        "אילוץ/מגבלה",
+        "להשוות"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w062",
+      "headword": "determine",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'determine'?",
+      "choices": [
+        "להוסיף",
+        "לקבוע",
+        "דפוס",
+        "להגדיל/לגדול"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w063",
+      "headword": "efficient",
+      "pos": "adjective",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'efficient'?",
+      "choices": [
+        "עדין/מעודן/דק",
+        "מקיף",
+        "יעיל",
+        "לדון"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w064",
+      "headword": "emphasize",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'emphasize'?",
+      "choices": [
+        "נפוץ/שכיח",
+        "להגדיל/לגדול",
+        "להמשיך",
+        "להדגיש"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w065",
+      "headword": "estimate",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'estimate'?",
+      "choices": [
+        "להעריך (בערך)",
+        "לקרוא",
+        "בחינה קפדנית/ביקורת",
+        "להרחיב"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w066",
+      "headword": "evidence",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'evidence'?",
+      "choices": [
+        "אתגר",
+        "ראיות/הוכחה",
+        "תוצאה",
+        "להפיץ"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w067",
+      "headword": "expand",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'expand'?",
+      "choices": [
+        "עיקרי/ראשי",
+        "לעצב/ליצור",
+        "להרחיב",
+        "לאפשר"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w068",
+      "headword": "factor",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'factor'?",
+      "choices": [
+        "לגרום",
+        "תוצאה",
+        "ניתוח",
+        "גורם"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w069",
+      "headword": "feature",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'feature'?",
+      "choices": [
+        "מאפיין",
+        "מושג",
+        "נפרד/בדיד",
+        "חריגה/אנומליה"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w070",
+      "headword": "frequency",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'frequency'?",
+      "choices": [
+        "קבוע",
+        "תדירות",
+        "קהל",
+        "מושג"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w071",
+      "headword": "function",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'function'?",
+      "choices": [
+        "מיותר/עודף",
+        "השערה",
+        "תפקיד/פונקציה",
+        "ניגוד"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w072",
+      "headword": "illustrate",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'illustrate'?",
+      "choices": [
+        "להגיע",
+        "חד-משמעי",
+        "לעצב/ליצור",
+        "להמחיש"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w073",
+      "headword": "impact",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'impact'?",
+      "choices": [
+        "השפעה",
+        "מחלוקת",
+        "לטעון בביטחון/לקבוע",
+        "תוצאה"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w074",
+      "headword": "imply",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'imply'?",
+      "choices": [
+        "לאשר",
+        "לרמוז",
+        "אילוץ/מגבלה",
+        "לאמת/לתקף"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w075",
+      "headword": "indicate",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'indicate'?",
+      "choices": [
+        "לתאר/לתחום",
+        "להודות (בטענה/בטעות)",
+        "לציין/להצביע",
+        "תואם"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w076",
+      "headword": "interpret",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'interpret'?",
+      "choices": [
+        "לאסוף",
+        "לציין/להצביע",
+        "חסין/בעל יכולת התאוששות",
+        "לפרש"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w077",
+      "headword": "maintain",
+      "pos": "verb",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'maintain'?",
+      "choices": [
+        "לשמר/לתחזק",
+        "להשלים/לסיים",
+        "ניתוח",
+        "לגרום"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w078",
+      "headword": "method",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'method'?",
+      "choices": [
+        "ניתוח",
+        "שיטה",
+        "דפוס",
+        "לאסוף"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w079",
+      "headword": "outcome",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'outcome'?",
+      "choices": [
+        "תדירות",
+        "חד-משמעי",
+        "תוצאה",
+        "שיטה"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w080",
+      "headword": "pattern",
+      "pos": "noun",
+      "difficulty": "medium",
+      "prompt": "What is the best translation of 'pattern'?",
+      "choices": [
+        "לדון",
+        "אתגר",
+        "גישה",
+        "דפוס"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w081",
+      "headword": "ambiguous",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'ambiguous'?",
+      "choices": [
+        "דו-משמעי/עמום",
+        "תואם",
+        "מצטבר",
+        "השפעה"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w082",
+      "headword": "anomaly",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'anomaly'?",
+      "choices": [
+        "עתיד",
+        "חריגה/אנומליה",
+        "ללקט/לקבץ",
+        "גישה"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w083",
+      "headword": "arbitrary",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'arbitrary'?",
+      "choices": [
+        "לפתח",
+        "מורכב",
+        "שרירותי",
+        "נפרד/בדיד"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w084",
+      "headword": "assert",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'assert'?",
+      "choices": [
+        "ראשוני/מוקדם",
+        "ליישם",
+        "להיות בקורלציה; לקשר",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w085",
+      "headword": "bias",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'bias'?",
+      "choices": [
+        "הטיה/משוא פנים",
+        "חלק",
+        "מסוגל",
+        "אתגר"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w086",
+      "headword": "coherent",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'coherent'?",
+      "choices": [
+        "לקוי/חסר",
+        "קוהרנטי/עקבי",
+        "תואם",
+        "להפיץ"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w087",
+      "headword": "coincide",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'coincide'?",
+      "choices": [
+        "לענות",
+        "ישים/בר-ביצוע",
+        "לחפוף/להתרחש במקביל",
+        "להעריך/למדוד"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w088",
+      "headword": "commodity",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'commodity'?",
+      "choices": [
+        "הטיה/משוא פנים",
+        "להודות (בטענה/בטעות)",
+        "ניתוח",
+        "סחורה"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w089",
+      "headword": "compatible",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'compatible'?",
+      "choices": [
+        "תואם",
+        "מדויק",
+        "נוח",
+        "לשמר/לתחזק"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w090",
+      "headword": "compile",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'compile'?",
+      "choices": [
+        "מאפיין",
+        "ללקט/לקבץ",
+        "לחפוף/להתרחש במקביל",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w091",
+      "headword": "comprehensive",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'comprehensive'?",
+      "choices": [
+        "עדין/מעודן/דק",
+        "להגדיר",
+        "מקיף",
+        "תואם"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w092",
+      "headword": "concede",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'concede'?",
+      "choices": [
+        "יעיל",
+        "להסכים",
+        "לענות",
+        "להודות (בטענה/בטעות)"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w093",
+      "headword": "conclusive",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'conclusive'?",
+      "choices": [
+        "חד-משמעי",
+        "לקוי/חסר",
+        "מקיף",
+        "תדירות"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w094",
+      "headword": "conjecture",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'conjecture'?",
+      "choices": [
+        "מושג",
+        "השערה",
+        "תוצאה",
+        "להקיף/לכלול"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w095",
+      "headword": "consecutive",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'consecutive'?",
+      "choices": [
+        "מיותר/עודף",
+        "זמני",
+        "עוקב/רציף",
+        "לכלול"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w096",
+      "headword": "constraint",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'constraint'?",
+      "choices": [
+        "לאסוף",
+        "מחלוקת",
+        "סדר",
+        "אילוץ/מגבלה"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w097",
+      "headword": "controversy",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'controversy'?",
+      "choices": [
+        "מחלוקת",
+        "תדירות",
+        "בחינה קפדנית/ביקורת",
+        "לגרום"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w098",
+      "headword": "correlate",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'correlate'?",
+      "choices": [
+        "ניתוח",
+        "להיות בקורלציה; לקשר",
+        "ליצור",
+        "להפיץ"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w099",
+      "headword": "cumulative",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'cumulative'?",
+      "choices": [
+        "להודות (בטענה/בטעות)",
+        "ראשוני/מוקדם",
+        "מצטבר",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w100",
+      "headword": "deficient",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'deficient'?",
+      "choices": [
+        "קבוע",
+        "לתאר/לתחום",
+        "מורכב",
+        "לקוי/חסר"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w101",
+      "headword": "delineate",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'delineate'?",
+      "choices": [
+        "לתאר/לתחום",
+        "פרדיגמה/תבנית חשיבה",
+        "להקיף/לכלול",
+        "לענות"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w102",
+      "headword": "discrete",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'discrete'?",
+      "choices": [
+        "להמחיש",
+        "נפרד/בדיד",
+        "עוקב/רציף",
+        "זמני"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w103",
+      "headword": "disseminate",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'disseminate'?",
+      "choices": [
+        "ליצור",
+        "חריגה/אנומליה",
+        "להפיץ",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w104",
+      "headword": "encompass",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'encompass'?",
+      "choices": [
+        "לפתח",
+        "להסיק",
+        "נוח",
+        "להקיף/לכלול"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w105",
+      "headword": "erroneous",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'erroneous'?",
+      "choices": [
+        "שגוי",
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w106",
+      "headword": "feasible",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'feasible'?",
+      "choices": [
+        "מיותר/עודף",
+        "ישים/בר-ביצוע",
+        "במקום זאת",
+        "מצטבר"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w107",
+      "headword": "forthcoming",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'forthcoming'?",
+      "choices": [
+        "מושג",
+        "קל",
+        "קרוב/ממשמש ובא",
+        "חד-משמעי"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w108",
+      "headword": "implement",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'implement'?",
+      "choices": [
+        "להעריך (בערך)",
+        "לתאר",
+        "שרירותי",
+        "ליישם"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w109",
+      "headword": "incentive",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'incentive'?",
+      "choices": [
+        "תמריץ",
+        "בחינה קפדנית/ביקורת",
+        "מאפיין",
+        "לאמת/לתקף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w110",
+      "headword": "inherent",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'inherent'?",
+      "choices": [
+        "להתכוון/משמעותו",
+        "טבוע/מובנה",
+        "לקוי/חסר",
+        "יעיל"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w111",
+      "headword": "mitigate",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'mitigate'?",
+      "choices": [
+        "קרוב/ממשמש ובא",
+        "לבחור",
+        "למתן/להפחית",
+        "להעריך (בערך)"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w112",
+      "headword": "paradigm",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'paradigm'?",
+      "choices": [
+        "הקשר",
+        "מורכב",
+        "גישה",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w113",
+      "headword": "preliminary",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'preliminary'?",
+      "choices": [
+        "ראשוני/מוקדם",
+        "קבוע",
+        "אילוץ/מגבלה",
+        "מסוגל"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w114",
+      "headword": "prevalent",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'prevalent'?",
+      "choices": [
+        "במקום זאת",
+        "נפוץ/שכיח",
+        "מוקדם",
+        "ישים/בר-ביצוע"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w115",
+      "headword": "provisional",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'provisional'?",
+      "choices": [
+        "לטעון בביטחון/לקבוע",
+        "חד-משמעי",
+        "זמני",
+        "מסוגל"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w116",
+      "headword": "redundant",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'redundant'?",
+      "choices": [
+        "נפוץ/שכיח",
+        "להתכוון/משמעותו",
+        "עיקרי/ראשי",
+        "מיותר/עודף"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    },
+    {
+      "id": "q_w117",
+      "headword": "resilient",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'resilient'?",
+      "choices": [
+        "חסין/בעל יכולת התאוששות",
+        "לציין/להצביע",
+        "דו-משמעי/עמום",
+        "מקיף"
+      ],
+      "correctIndex": 0,
+      "correctLetter": "A"
+    },
+    {
+      "id": "q_w118",
+      "headword": "scrutiny",
+      "pos": "noun",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'scrutiny'?",
+      "choices": [
+        "השערה",
+        "בחינה קפדנית/ביקורת",
+        "לתאר",
+        "אתגר"
+      ],
+      "correctIndex": 1,
+      "correctLetter": "B"
+    },
+    {
+      "id": "q_w119",
+      "headword": "subtle",
+      "pos": "adjective",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'subtle'?",
+      "choices": [
+        "דו-משמעי/עמום",
+        "תדירות",
+        "עדין/מעודן/דק",
+        "נוח"
+      ],
+      "correctIndex": 2,
+      "correctLetter": "C"
+    },
+    {
+      "id": "q_w120",
+      "headword": "validate",
+      "pos": "verb",
+      "difficulty": "hard",
+      "prompt": "What is the best translation of 'validate'?",
+      "choices": [
+        "חריגה/אנומליה",
+        "לרמוז",
+        "להמחיש",
+        "לאמת/לתקף"
+      ],
+      "correctIndex": 3,
+      "correctLetter": "D"
+    }
+  ]
+}

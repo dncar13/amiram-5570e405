@@ -10,6 +10,7 @@ import {
   getSimulationQuestions,
   clearQuestionsCache
 } from "./supabaseQuestionsService";
+import { vocabularySimulationQuestions, vocabularySimulationMetadata } from "@/data/simulation-vocab-120";
 
 console.log(`[questionsService] Service loaded. Using Supabase backend.`);
 
@@ -38,11 +39,25 @@ export const getQuestionsByDifficultyAndType = async (difficulty: string, type: 
   console.log(`[getQuestionsByDifficultyAndType] Looking for ${difficulty} ${type} questions`);
   
   try {
+    // For vocabulary type, return only our new flashcard questions (120 total, 40 per difficulty)
+    if (type === 'vocabulary') {
+      const vocabularyQuestions = vocabularySimulationQuestions.filter(q => q.difficulty === difficulty);
+      console.log(`[getQuestionsByDifficultyAndType] Returning ${vocabularyQuestions.length} flashcard vocabulary questions for ${difficulty}`);
+      return vocabularyQuestions;
+    }
+    
+    // For other types, get questions from DB
     const response = await getQuestionsFromDB({ difficulty, type, limit: 500 }, true);
-    console.log(`[getQuestionsByDifficultyAndType] Found ${response.questions.length} questions for ${difficulty} ${type}`);
+    console.log(`[getQuestionsByDifficultyAndType] Found ${response.questions.length} questions from DB for ${difficulty} ${type}`);
     return response.questions;
   } catch (error) {
     console.error(`[getQuestionsByDifficultyAndType] Error:`, error);
+    // Return local vocabulary questions as fallback if it's vocabulary type
+    if (type === 'vocabulary') {
+      const vocabularyQuestions = vocabularySimulationQuestions.filter(q => q.difficulty === difficulty);
+      console.log(`[getQuestionsByDifficultyAndType] Fallback: returning ${vocabularyQuestions.length} local vocabulary questions`);
+      return vocabularyQuestions;
+    }
     return [];
   }
 };
@@ -157,12 +172,19 @@ export const getVocabularyQuestions = async (): Promise<Question[]> => {
   console.log(`[getVocabularyQuestions] Looking for vocabulary questions`);
   
   try {
-    const questions = await dbGetVocabularyQuestions();
-    console.log(`[getVocabularyQuestions] Found ${questions.length} vocabulary questions`);
-    return questions;
+    // טען את השאלות מהמסד נתונים
+    const dbQuestions = await dbGetVocabularyQuestions();
+    console.log(`[getVocabularyQuestions] Found ${dbQuestions.length} vocabulary questions from DB`);
+    
+    // הוסף את שאלות הסימולציה החדשות שלנו
+    const allVocabQuestions = [...dbQuestions, ...vocabularySimulationQuestions];
+    console.log(`[getVocabularyQuestions] Added ${vocabularySimulationQuestions.length} simulation questions. Total: ${allVocabQuestions.length}`);
+    
+    return allVocabQuestions;
   } catch (error) {
     console.error(`[getVocabularyQuestions] Error:`, error);
-    return [];
+    // במקרה של שגיאה, החזר לפחות את שאלות הסימולציה
+    return vocabularySimulationQuestions;
   }
 };
 
@@ -223,4 +245,23 @@ export const getQuestionsForSimulation = async (count: number = 50): Promise<Que
     console.error(`[getQuestionsForSimulation] Error:`, error);
     return [];
   }
+};
+
+// פונקציה ייעודית לטעינת סימולציית אוצר המילים (120 שאלות)
+export const getVocabularySimulationQuestions = async (): Promise<Question[]> => {
+  console.log(`[getVocabularySimulationQuestions] Loading Hebrew-English vocabulary simulation`);
+  
+  try {
+    console.log(`[getVocabularySimulationQuestions] Loaded ${vocabularySimulationQuestions.length} questions`);
+    console.log(`[getVocabularySimulationQuestions] Metadata:`, vocabularySimulationMetadata);
+    return vocabularySimulationQuestions;
+  } catch (error) {
+    console.error(`[getVocabularySimulationQuestions] Error:`, error);
+    return [];
+  }
+};
+
+// פונקציה להחזרת מטא-דטה של הסימולציה
+export const getVocabularySimulationMetadata = () => {
+  return vocabularySimulationMetadata;
 };

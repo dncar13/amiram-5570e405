@@ -1,0 +1,2547 @@
+{
+  "id": "vocab_flashcard_120",
+  "title": "סימולציית פלאש קארד - אוצר מילים",
+  "description": "120 שאלות פלאש קארד לאוצר מילים באנגלית - תרגום מעברית לאנגלית",
+  "type": "flashcard",
+  "difficulty": "mixed",
+  "timeLimit": 45,
+  "totalQuestions": 120,
+  "passingScore": 70,
+  "categories": [
+    "vocabulary",
+    "flashcard"
+  ],
+  "tags": [
+    "אוצר מילים",
+    "פלאש קארד",
+    "vocabulary",
+    "flashcard"
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'able'?",
+      "options": [
+        "מסוגל",
+        "לגרום",
+        "לקוי/חסר",
+        "שגוי"
+      ],
+      "correct": 0,
+      "explanation": "The word 'able' means capable or having the ability to do something. In Hebrew: מסוגל.",
+      "category": "vocabulary",
+      "word": 1,
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'accept'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "לקבל",
+        "להסכים",
+        "להגדיר"
+      ],
+      "correct": 1,
+      "explanation": "The word 'accept' means to receive willingly or to agree to. In Hebrew: לקבל.",
+      "category": "vocabulary",
+      "word": 2,
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'add'?",
+      "options": [
+        "ליישם/להגיש",
+        "עוקב/רציף",
+        "להוסיף",
+        "להדגיש"
+      ],
+      "correct": 2,
+      "explanation": "The word 'add' means to put together or include. In Hebrew: להוסיף.",
+      "category": "vocabulary",
+      "word": 3,
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'agree'?",
+      "options": [
+        "לתאר/לתחום",
+        "לענות",
+        "השפעה",
+        "להסכים"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'agree' הוא להסכים",
+      "category": "vocabulary",
+      "word": "agree",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'allow'?",
+      "options": [
+        "לאפשר",
+        "להמשיך",
+        "חלק",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'allow' הוא לאפשר",
+      "category": "vocabulary",
+      "word": "allow",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'answer'?",
+      "options": [
+        "יעיל",
+        "לענות",
+        "לטעון/להתווכח",
+        "לכלול"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'answer' הוא לענות",
+      "category": "vocabulary",
+      "word": "answer",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 7,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'apply'?",
+      "options": [
+        "לאשר",
+        "קרוב/ממשמש ובא",
+        "ליישם/להגיש",
+        "לבחור"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'apply' הוא ליישם/להגיש",
+      "category": "vocabulary",
+      "word": "apply",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'argue'?",
+      "options": [
+        "טבוע/מובנה",
+        "להגדיל/לגדול",
+        "להעריך/למדוד",
+        "לטעון/להתווכח"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'argue' הוא לטעון/להתווכח",
+      "category": "vocabulary",
+      "word": "argue",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'arrive'?",
+      "options": [
+        "להגיע",
+        "נפרד/בדיד",
+        "לשקול",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'arrive' הוא להגיע",
+      "category": "vocabulary",
+      "word": "arrive",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'avoid'?",
+      "options": [
+        "הקשר",
+        "להימנע",
+        "ללקט/לקבץ",
+        "להרחיב"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'avoid' הוא להימנע",
+      "category": "vocabulary",
+      "word": "avoid",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'cause'?",
+      "options": [
+        "לדון",
+        "להגיע",
+        "לגרום",
+        "מאפיין"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'cause' הוא לגרום",
+      "category": "vocabulary",
+      "word": "cause",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'choose'?",
+      "options": [
+        "פרדיגמה/תבנית חשיבה",
+        "להשלים/לסיים",
+        "לתאר",
+        "לבחור"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'choose' הוא לבחור",
+      "category": "vocabulary",
+      "word": "choose",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 13,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'collect'?",
+      "options": [
+        "לאסוף",
+        "להסכים",
+        "לשפר",
+        "שרירותי"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'collect' הוא לאסוף",
+      "category": "vocabulary",
+      "word": "collect",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'compare'?",
+      "options": [
+        "להסתגל/להתאים",
+        "להשוות",
+        "לפרש",
+        "זמני"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'compare' הוא להשוות",
+      "category": "vocabulary",
+      "word": "compare",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'complete'?",
+      "options": [
+        "להפיץ",
+        "ליישם/להגיש",
+        "להשלים/לסיים",
+        "סדר"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'complete' הוא להשלים/לסיים",
+      "category": "vocabulary",
+      "word": "complete",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 16,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'consider'?",
+      "options": [
+        "אילוץ/מגבלה",
+        "לתאר",
+        "לקרוא",
+        "לשקול"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'consider' הוא לשקול",
+      "category": "vocabulary",
+      "word": "consider",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'continue'?",
+      "options": [
+        "להמשיך",
+        "להשלים/לסיים",
+        "להקיף/לכלול",
+        "עוקב/רציף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'continue' הוא להמשיך",
+      "category": "vocabulary",
+      "word": "continue",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 18,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'create'?",
+      "options": [
+        "קרוב/ממשמש ובא",
+        "ליצור",
+        "למתן/להפחית",
+        "להמשיך"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'create' הוא ליצור",
+      "category": "vocabulary",
+      "word": "create",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'decide'?",
+      "options": [
+        "לשמר/לתחזק",
+        "להוסיף",
+        "להחליט",
+        "סחורה"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'decide' הוא להחליט",
+      "category": "vocabulary",
+      "word": "decide",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'describe'?",
+      "options": [
+        "ליישם",
+        "עיקרי/ראשי",
+        "להמחיש",
+        "לתאר"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'describe' הוא לתאר",
+      "category": "vocabulary",
+      "word": "describe",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 21,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'develop'?",
+      "options": [
+        "לפתח",
+        "חסין/בעל יכולת התאוששות",
+        "למתן/להפחית",
+        "לבחור"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'develop' הוא לפתח",
+      "category": "vocabulary",
+      "word": "develop",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'differ'?",
+      "options": [
+        "לענות",
+        "להיות שונה",
+        "ללקט/לקבץ",
+        "ניגוד"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'differ' הוא להיות שונה",
+      "category": "vocabulary",
+      "word": "differ",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'discuss'?",
+      "options": [
+        "לתאר",
+        "לקבוע",
+        "לדון",
+        "זמני"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'discuss' הוא לדון",
+      "category": "vocabulary",
+      "word": "discuss",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 24,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'early'?",
+      "options": [
+        "נוח",
+        "להשוות",
+        "עדין/מעודן/דק",
+        "מוקדם"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'early' הוא מוקדם",
+      "category": "vocabulary",
+      "word": "early",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'easy'?",
+      "options": [
+        "קל",
+        "גורם",
+        "זמני",
+        "מקיף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'easy' הוא קל",
+      "category": "vocabulary",
+      "word": "easy",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 26,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'example'?",
+      "options": [
+        "מושג",
+        "דוגמה",
+        "שיטה",
+        "להגדיל/לגדול"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'example' הוא דוגמה",
+      "category": "vocabulary",
+      "word": "example",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 27,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'explain'?",
+      "options": [
+        "לבחור",
+        "תואם",
+        "להסביר",
+        "לשקול"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'explain' הוא להסביר",
+      "category": "vocabulary",
+      "word": "explain",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 28,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'form'?",
+      "options": [
+        "קהל",
+        "להעריך/למדוד",
+        "להמחיש",
+        "לעצב/ליצור"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'form' הוא לעצב/ליצור",
+      "category": "vocabulary",
+      "word": "form",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 29,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'future'?",
+      "options": [
+        "עתיד",
+        "חד-משמעי",
+        "בחינה קפדנית/ביקורת",
+        "דפוס"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'future' הוא עתיד",
+      "category": "vocabulary",
+      "word": "future",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 30,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'improve'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "לשפר",
+        "לשקול",
+        "לענות"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'improve' הוא לשפר",
+      "category": "vocabulary",
+      "word": "improve",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 31,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'include'?",
+      "options": [
+        "לתאר",
+        "טבוע/מובנה",
+        "לכלול",
+        "לתאר/לתחום"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'include' הוא לכלול",
+      "category": "vocabulary",
+      "word": "include",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'increase'?",
+      "options": [
+        "לדון",
+        "דו-משמעי/עמום",
+        "להימנע",
+        "להגדיל/לגדול"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'increase' הוא להגדיל/לגדול",
+      "category": "vocabulary",
+      "word": "increase",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 33,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'instead'?",
+      "options": [
+        "במקום זאת",
+        "לשקול",
+        "לאסוף",
+        "נפרד/בדיד"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'instead' הוא במקום זאת",
+      "category": "vocabulary",
+      "word": "instead",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 34,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'main'?",
+      "options": [
+        "מקיף",
+        "עיקרי/ראשי",
+        "חריגה/אנומליה",
+        "ישים/בר-ביצוע"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'main' הוא עיקרי/ראשי",
+      "category": "vocabulary",
+      "word": "main",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'mean'?",
+      "options": [
+        "להחליט",
+        "ללקט/לקבץ",
+        "להתכוון/משמעותו",
+        "יעיל"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'mean' הוא להתכוון/משמעותו",
+      "category": "vocabulary",
+      "word": "mean",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'need'?",
+      "options": [
+        "סדר",
+        "להוסיף",
+        "למתן/להפחית",
+        "להזדקק/צורך"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'need' הוא להזדקק/צורך",
+      "category": "vocabulary",
+      "word": "need",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'order'?",
+      "options": [
+        "סדר",
+        "חריגה/אנומליה",
+        "עתיד",
+        "יעיל"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'order' הוא סדר",
+      "category": "vocabulary",
+      "word": "order",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'part'?",
+      "options": [
+        "אתגר",
+        "חלק",
+        "לרדת",
+        "עתיד"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'part' הוא חלק",
+      "category": "vocabulary",
+      "word": "part",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'provide'?",
+      "options": [
+        "להמחיש",
+        "שרירותי",
+        "לספק",
+        "להרחיב"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'provide' הוא לספק",
+      "category": "vocabulary",
+      "word": "provide",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 40,
+      "type": "flashcard",
+      "difficulty": "easy",
+      "question": "What is the best translation of 'read'?",
+      "options": [
+        "לבקר",
+        "להעריך (בערך)",
+        "תפקיד/פונקציה",
+        "לקרוא"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'read' הוא לקרוא",
+      "category": "vocabulary",
+      "word": "read",
+      "tags": [
+        "easy",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 41,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'accurate'?",
+      "options": [
+        "מדויק",
+        "שגוי",
+        "קבוע",
+        "למתן/להפחית"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'accurate' הוא מדויק",
+      "category": "vocabulary",
+      "word": "accurate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'adapt'?",
+      "options": [
+        "תדירות",
+        "להסתגל/להתאים",
+        "ליישם/להגיש",
+        "למתן/להפחית"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'adapt' הוא להסתגל/להתאים",
+      "category": "vocabulary",
+      "word": "adapt",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 43,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'analysis'?",
+      "options": [
+        "חלק",
+        "להמשיך",
+        "ניתוח",
+        "שיטה"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'analysis' הוא ניתוח",
+      "category": "vocabulary",
+      "word": "analysis",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'approach'?",
+      "options": [
+        "לשקול",
+        "אילוץ/מגבלה",
+        "הטיה/משוא פנים",
+        "גישה"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'approach' הוא גישה",
+      "category": "vocabulary",
+      "word": "approach",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 45,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'assess'?",
+      "options": [
+        "להעריך/למדוד",
+        "תפקיד/פונקציה",
+        "לדון",
+        "למתן/להפחית"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'assess' הוא להעריך/למדוד",
+      "category": "vocabulary",
+      "word": "assess",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 46,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'audience'?",
+      "options": [
+        "תוצאה",
+        "קהל",
+        "לכלול",
+        "השפעה"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'audience' הוא קהל",
+      "category": "vocabulary",
+      "word": "audience",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 47,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'benefit'?",
+      "options": [
+        "מאפיין",
+        "ישים/בר-ביצוע",
+        "תועלת",
+        "תמריץ"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'benefit' הוא תועלת",
+      "category": "vocabulary",
+      "word": "benefit",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 48,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'challenge'?",
+      "options": [
+        "להוסיף",
+        "שיטה",
+        "גישה",
+        "אתגר"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'challenge' הוא אתגר",
+      "category": "vocabulary",
+      "word": "challenge",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 49,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'complex'?",
+      "options": [
+        "מורכב",
+        "קרוב/ממשמש ובא",
+        "מוקדם",
+        "לתאר/לתחום"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'complex' הוא מורכב",
+      "category": "vocabulary",
+      "word": "complex",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 50,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'concept'?",
+      "options": [
+        "הקשר",
+        "מושג",
+        "להיות שונה",
+        "שיטה"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'concept' הוא מושג",
+      "category": "vocabulary",
+      "word": "concept",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 51,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'conclude'?",
+      "options": [
+        "תואם",
+        "לבקר",
+        "להסיק",
+        "לתאר"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'conclude' הוא להסיק",
+      "category": "vocabulary",
+      "word": "conclude",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 52,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'confirm'?",
+      "options": [
+        "להודות (בטענה/בטעות)",
+        "מסוגל",
+        "להחליט",
+        "לאשר"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'confirm' הוא לאשר",
+      "category": "vocabulary",
+      "word": "confirm",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 53,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'consequence'?",
+      "options": [
+        "תוצאה",
+        "הקשר",
+        "מיותר/עודף",
+        "אילוץ/מגבלה"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'consequence' הוא תוצאה",
+      "category": "vocabulary",
+      "word": "consequence",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 54,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'constant'?",
+      "options": [
+        "להתכוון/משמעותו",
+        "קבוע",
+        "לקוי/חסר",
+        "עדין/מעודן/דק"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'constant' הוא קבוע",
+      "category": "vocabulary",
+      "word": "constant",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 55,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'context'?",
+      "options": [
+        "גורם",
+        "להגדיל/לגדול",
+        "הקשר",
+        "תמריץ"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'context' הוא הקשר",
+      "category": "vocabulary",
+      "word": "context",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 56,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'contrast'?",
+      "options": [
+        "תוצאה",
+        "להמחיש",
+        "גישה",
+        "ניגוד"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'contrast' הוא ניגוד",
+      "category": "vocabulary",
+      "word": "contrast",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 57,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'convenient'?",
+      "options": [
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "לקוי/חסר",
+        "עוקב/רציף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'convenient' הוא נוח",
+      "category": "vocabulary",
+      "word": "convenient",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 58,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'criticize'?",
+      "options": [
+        "מורכב",
+        "לבקר",
+        "לכלול",
+        "לטעון/להתווכח"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'criticize' הוא לבקר",
+      "category": "vocabulary",
+      "word": "criticize",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 59,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'decline'?",
+      "options": [
+        "ללקט/לקבץ",
+        "להשלים/לסיים",
+        "לרדת",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'decline' הוא לרדת",
+      "category": "vocabulary",
+      "word": "decline",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 60,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'define'?",
+      "options": [
+        "להמחיש",
+        "להוסיף",
+        "דו-משמעי/עמום",
+        "להגדיר"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'define' הוא להגדיר",
+      "category": "vocabulary",
+      "word": "define",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 61,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'demonstrate'?",
+      "options": [
+        "להדגים",
+        "להשלים/לסיים",
+        "אילוץ/מגבלה",
+        "להשוות"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'demonstrate' הוא להדגים",
+      "category": "vocabulary",
+      "word": "demonstrate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 62,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'determine'?",
+      "options": [
+        "להוסיף",
+        "לקבוע",
+        "דפוס",
+        "להגדיל/לגדול"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'determine' הוא לקבוע",
+      "category": "vocabulary",
+      "word": "determine",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 63,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'efficient'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "מקיף",
+        "יעיל",
+        "לדון"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'efficient' הוא יעיל",
+      "category": "vocabulary",
+      "word": "efficient",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 64,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'emphasize'?",
+      "options": [
+        "נפוץ/שכיח",
+        "להגדיל/לגדול",
+        "להמשיך",
+        "להדגיש"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'emphasize' הוא להדגיש",
+      "category": "vocabulary",
+      "word": "emphasize",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 65,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'estimate'?",
+      "options": [
+        "להעריך (בערך)",
+        "לקרוא",
+        "בחינה קפדנית/ביקורת",
+        "להרחיב"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'estimate' הוא להעריך (בערך)",
+      "category": "vocabulary",
+      "word": "estimate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'evidence'?",
+      "options": [
+        "אתגר",
+        "ראיות/הוכחה",
+        "תוצאה",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'evidence' הוא ראיות/הוכחה",
+      "category": "vocabulary",
+      "word": "evidence",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 67,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'expand'?",
+      "options": [
+        "עיקרי/ראשי",
+        "לעצב/ליצור",
+        "להרחיב",
+        "לאפשר"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'expand' הוא להרחיב",
+      "category": "vocabulary",
+      "word": "expand",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 68,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'factor'?",
+      "options": [
+        "לגרום",
+        "תוצאה",
+        "ניתוח",
+        "גורם"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'factor' הוא גורם",
+      "category": "vocabulary",
+      "word": "factor",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 69,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'feature'?",
+      "options": [
+        "מאפיין",
+        "מושג",
+        "נפרד/בדיד",
+        "חריגה/אנומליה"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'feature' הוא מאפיין",
+      "category": "vocabulary",
+      "word": "feature",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 70,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'frequency'?",
+      "options": [
+        "קבוע",
+        "תדירות",
+        "קהל",
+        "מושג"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'frequency' הוא תדירות",
+      "category": "vocabulary",
+      "word": "frequency",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 71,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'function'?",
+      "options": [
+        "מיותר/עודף",
+        "השערה",
+        "תפקיד/פונקציה",
+        "ניגוד"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'function' הוא תפקיד/פונקציה",
+      "category": "vocabulary",
+      "word": "function",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 72,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'illustrate'?",
+      "options": [
+        "להגיע",
+        "חד-משמעי",
+        "לעצב/ליצור",
+        "להמחיש"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'illustrate' הוא להמחיש",
+      "category": "vocabulary",
+      "word": "illustrate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 73,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'impact'?",
+      "options": [
+        "השפעה",
+        "מחלוקת",
+        "לטעון בביטחון/לקבוע",
+        "תוצאה"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'impact' הוא השפעה",
+      "category": "vocabulary",
+      "word": "impact",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 74,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'imply'?",
+      "options": [
+        "לאשר",
+        "לרמוז",
+        "אילוץ/מגבלה",
+        "לאמת/לתקף"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'imply' הוא לרמוז",
+      "category": "vocabulary",
+      "word": "imply",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'indicate'?",
+      "options": [
+        "לתאר/לתחום",
+        "להודות (בטענה/בטעות)",
+        "לציין/להצביע",
+        "תואם"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'indicate' הוא לציין/להצביע",
+      "category": "vocabulary",
+      "word": "indicate",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 76,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'interpret'?",
+      "options": [
+        "לאסוף",
+        "לציין/להצביע",
+        "חסין/בעל יכולת התאוששות",
+        "לפרש"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'interpret' הוא לפרש",
+      "category": "vocabulary",
+      "word": "interpret",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 77,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'maintain'?",
+      "options": [
+        "לשמר/לתחזק",
+        "להשלים/לסיים",
+        "ניתוח",
+        "לגרום"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'maintain' הוא לשמר/לתחזק",
+      "category": "vocabulary",
+      "word": "maintain",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 78,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'method'?",
+      "options": [
+        "ניתוח",
+        "שיטה",
+        "דפוס",
+        "לאסוף"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'method' הוא שיטה",
+      "category": "vocabulary",
+      "word": "method",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 79,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'outcome'?",
+      "options": [
+        "תדירות",
+        "חד-משמעי",
+        "תוצאה",
+        "שיטה"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'outcome' הוא תוצאה",
+      "category": "vocabulary",
+      "word": "outcome",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 80,
+      "type": "flashcard",
+      "difficulty": "medium",
+      "question": "What is the best translation of 'pattern'?",
+      "options": [
+        "לדון",
+        "אתגר",
+        "גישה",
+        "דפוס"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'pattern' הוא דפוס",
+      "category": "vocabulary",
+      "word": "pattern",
+      "tags": [
+        "medium",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 81,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'ambiguous'?",
+      "options": [
+        "דו-משמעי/עמום",
+        "תואם",
+        "מצטבר",
+        "השפעה"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'ambiguous' הוא דו-משמעי/עמום",
+      "category": "vocabulary",
+      "word": "ambiguous",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 82,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'anomaly'?",
+      "options": [
+        "עתיד",
+        "חריגה/אנומליה",
+        "ללקט/לקבץ",
+        "גישה"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'anomaly' הוא חריגה/אנומליה",
+      "category": "vocabulary",
+      "word": "anomaly",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 83,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'arbitrary'?",
+      "options": [
+        "לפתח",
+        "מורכב",
+        "שרירותי",
+        "נפרד/בדיד"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'arbitrary' הוא שרירותי",
+      "category": "vocabulary",
+      "word": "arbitrary",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 84,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'assert'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "ליישם",
+        "להיות בקורלציה; לקשר",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'assert' הוא לטעון בביטחון/לקבוע",
+      "category": "vocabulary",
+      "word": "assert",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 85,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'bias'?",
+      "options": [
+        "הטיה/משוא פנים",
+        "חלק",
+        "מסוגל",
+        "אתגר"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'bias' הוא הטיה/משוא פנים",
+      "category": "vocabulary",
+      "word": "bias",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 86,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'coherent'?",
+      "options": [
+        "לקוי/חסר",
+        "קוהרנטי/עקבי",
+        "תואם",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'coherent' הוא קוהרנטי/עקבי",
+      "category": "vocabulary",
+      "word": "coherent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 87,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'coincide'?",
+      "options": [
+        "לענות",
+        "ישים/בר-ביצוע",
+        "לחפוף/להתרחש במקביל",
+        "להעריך/למדוד"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'coincide' הוא לחפוף/להתרחש במקביל",
+      "category": "vocabulary",
+      "word": "coincide",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 88,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'commodity'?",
+      "options": [
+        "הטיה/משוא פנים",
+        "להודות (בטענה/בטעות)",
+        "ניתוח",
+        "סחורה"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'commodity' הוא סחורה",
+      "category": "vocabulary",
+      "word": "commodity",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 89,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'compatible'?",
+      "options": [
+        "תואם",
+        "מדויק",
+        "נוח",
+        "לשמר/לתחזק"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'compatible' הוא תואם",
+      "category": "vocabulary",
+      "word": "compatible",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 90,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'compile'?",
+      "options": [
+        "מאפיין",
+        "ללקט/לקבץ",
+        "לחפוף/להתרחש במקביל",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'compile' הוא ללקט/לקבץ",
+      "category": "vocabulary",
+      "word": "compile",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 91,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'comprehensive'?",
+      "options": [
+        "עדין/מעודן/דק",
+        "להגדיר",
+        "מקיף",
+        "תואם"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'comprehensive' הוא מקיף",
+      "category": "vocabulary",
+      "word": "comprehensive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 92,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'concede'?",
+      "options": [
+        "יעיל",
+        "להסכים",
+        "לענות",
+        "להודות (בטענה/בטעות)"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'concede' הוא להודות (בטענה/בטעות)",
+      "category": "vocabulary",
+      "word": "concede",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 93,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'conclusive'?",
+      "options": [
+        "חד-משמעי",
+        "לקוי/חסר",
+        "מקיף",
+        "תדירות"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'conclusive' הוא חד-משמעי",
+      "category": "vocabulary",
+      "word": "conclusive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 94,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'conjecture'?",
+      "options": [
+        "מושג",
+        "השערה",
+        "תוצאה",
+        "להקיף/לכלול"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'conjecture' הוא השערה",
+      "category": "vocabulary",
+      "word": "conjecture",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 95,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'consecutive'?",
+      "options": [
+        "מיותר/עודף",
+        "זמני",
+        "עוקב/רציף",
+        "לכלול"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'consecutive' הוא עוקב/רציף",
+      "category": "vocabulary",
+      "word": "consecutive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 96,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'constraint'?",
+      "options": [
+        "לאסוף",
+        "מחלוקת",
+        "סדר",
+        "אילוץ/מגבלה"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'constraint' הוא אילוץ/מגבלה",
+      "category": "vocabulary",
+      "word": "constraint",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 97,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'controversy'?",
+      "options": [
+        "מחלוקת",
+        "תדירות",
+        "בחינה קפדנית/ביקורת",
+        "לגרום"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'controversy' הוא מחלוקת",
+      "category": "vocabulary",
+      "word": "controversy",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 98,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'correlate'?",
+      "options": [
+        "ניתוח",
+        "להיות בקורלציה; לקשר",
+        "ליצור",
+        "להפיץ"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'correlate' הוא להיות בקורלציה; לקשר",
+      "category": "vocabulary",
+      "word": "correlate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 99,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'cumulative'?",
+      "options": [
+        "להודות (בטענה/בטעות)",
+        "ראשוני/מוקדם",
+        "מצטבר",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'cumulative' הוא מצטבר",
+      "category": "vocabulary",
+      "word": "cumulative",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 100,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'deficient'?",
+      "options": [
+        "קבוע",
+        "לתאר/לתחום",
+        "מורכב",
+        "לקוי/חסר"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'deficient' הוא לקוי/חסר",
+      "category": "vocabulary",
+      "word": "deficient",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 101,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'delineate'?",
+      "options": [
+        "לתאר/לתחום",
+        "פרדיגמה/תבנית חשיבה",
+        "להקיף/לכלול",
+        "לענות"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'delineate' הוא לתאר/לתחום",
+      "category": "vocabulary",
+      "word": "delineate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 102,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'discrete'?",
+      "options": [
+        "להמחיש",
+        "נפרד/בדיד",
+        "עוקב/רציף",
+        "זמני"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'discrete' הוא נפרד/בדיד",
+      "category": "vocabulary",
+      "word": "discrete",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 103,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'disseminate'?",
+      "options": [
+        "ליצור",
+        "חריגה/אנומליה",
+        "להפיץ",
+        "לטעון בביטחון/לקבוע"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'disseminate' הוא להפיץ",
+      "category": "vocabulary",
+      "word": "disseminate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 104,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'encompass'?",
+      "options": [
+        "לפתח",
+        "להסיק",
+        "נוח",
+        "להקיף/לכלול"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'encompass' הוא להקיף/לכלול",
+      "category": "vocabulary",
+      "word": "encompass",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 105,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'erroneous'?",
+      "options": [
+        "שגוי",
+        "נוח",
+        "בחינה קפדנית/ביקורת",
+        "חסין/בעל יכולת התאוששות"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'erroneous' הוא שגוי",
+      "category": "vocabulary",
+      "word": "erroneous",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 106,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'feasible'?",
+      "options": [
+        "מיותר/עודף",
+        "ישים/בר-ביצוע",
+        "במקום זאת",
+        "מצטבר"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'feasible' הוא ישים/בר-ביצוע",
+      "category": "vocabulary",
+      "word": "feasible",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 107,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'forthcoming'?",
+      "options": [
+        "מושג",
+        "קל",
+        "קרוב/ממשמש ובא",
+        "חד-משמעי"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'forthcoming' הוא קרוב/ממשמש ובא",
+      "category": "vocabulary",
+      "word": "forthcoming",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 108,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'implement'?",
+      "options": [
+        "להעריך (בערך)",
+        "לתאר",
+        "שרירותי",
+        "ליישם"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'implement' הוא ליישם",
+      "category": "vocabulary",
+      "word": "implement",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 109,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'incentive'?",
+      "options": [
+        "תמריץ",
+        "בחינה קפדנית/ביקורת",
+        "מאפיין",
+        "לאמת/לתקף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'incentive' הוא תמריץ",
+      "category": "vocabulary",
+      "word": "incentive",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 110,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'inherent'?",
+      "options": [
+        "להתכוון/משמעותו",
+        "טבוע/מובנה",
+        "לקוי/חסר",
+        "יעיל"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'inherent' הוא טבוע/מובנה",
+      "category": "vocabulary",
+      "word": "inherent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 111,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'mitigate'?",
+      "options": [
+        "קרוב/ממשמש ובא",
+        "לבחור",
+        "למתן/להפחית",
+        "להעריך (בערך)"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'mitigate' הוא למתן/להפחית",
+      "category": "vocabulary",
+      "word": "mitigate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 112,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'paradigm'?",
+      "options": [
+        "הקשר",
+        "מורכב",
+        "גישה",
+        "פרדיגמה/תבנית חשיבה"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'paradigm' הוא פרדיגמה/תבנית חשיבה",
+      "category": "vocabulary",
+      "word": "paradigm",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 113,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'preliminary'?",
+      "options": [
+        "ראשוני/מוקדם",
+        "קבוע",
+        "אילוץ/מגבלה",
+        "מסוגל"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'preliminary' הוא ראשוני/מוקדם",
+      "category": "vocabulary",
+      "word": "preliminary",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 114,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'prevalent'?",
+      "options": [
+        "במקום זאת",
+        "נפוץ/שכיח",
+        "מוקדם",
+        "ישים/בר-ביצוע"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'prevalent' הוא נפוץ/שכיח",
+      "category": "vocabulary",
+      "word": "prevalent",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 115,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'provisional'?",
+      "options": [
+        "לטעון בביטחון/לקבוע",
+        "חד-משמעי",
+        "זמני",
+        "מסוגל"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'provisional' הוא זמני",
+      "category": "vocabulary",
+      "word": "provisional",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 116,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'redundant'?",
+      "options": [
+        "נפוץ/שכיח",
+        "להתכוון/משמעותו",
+        "עיקרי/ראשי",
+        "מיותר/עודף"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'redundant' הוא מיותר/עודף",
+      "category": "vocabulary",
+      "word": "redundant",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 117,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'resilient'?",
+      "options": [
+        "חסין/בעל יכולת התאוששות",
+        "לציין/להצביע",
+        "דו-משמעי/עמום",
+        "מקיף"
+      ],
+      "correct": 0,
+      "explanation": "התרגום הנכון של 'resilient' הוא חסין/בעל יכולת התאוששות",
+      "category": "vocabulary",
+      "word": "resilient",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 118,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'scrutiny'?",
+      "options": [
+        "השערה",
+        "בחינה קפדנית/ביקורת",
+        "לתאר",
+        "אתגר"
+      ],
+      "correct": 1,
+      "explanation": "התרגום הנכון של 'scrutiny' הוא בחינה קפדנית/ביקורת",
+      "category": "vocabulary",
+      "word": "scrutiny",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 119,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'subtle'?",
+      "options": [
+        "דו-משמעי/עמום",
+        "תדירות",
+        "עדין/מעודן/דק",
+        "נוח"
+      ],
+      "correct": 2,
+      "explanation": "התרגום הנכון של 'subtle' הוא עדין/מעודן/דק",
+      "category": "vocabulary",
+      "word": "subtle",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    },
+    {
+      "id": 120,
+      "type": "flashcard",
+      "difficulty": "hard",
+      "question": "What is the best translation of 'validate'?",
+      "options": [
+        "חריגה/אנומליה",
+        "לרמוז",
+        "להמחיש",
+        "לאמת/לתקף"
+      ],
+      "correct": 3,
+      "explanation": "התרגום הנכון של 'validate' הוא לאמת/לתקף",
+      "category": "vocabulary",
+      "word": "validate",
+      "tags": [
+        "hard",
+        "vocabulary",
+        "flashcard"
+      ]
+    }
+  ],
+  "difficultyDistribution": {
+    "easy": 40,
+    "medium": 40,
+    "hard": 40
+  }
+}
